@@ -17,46 +17,43 @@
 # -
 # -
 config:
-#Municipal Services
-        
-  - name: "builds/SANITATION/fsm"
+  #Municipal Services
+
+  - name: 'builds/SANITATION/fsm'
     build:
-      - work-dir: "municipal-services/fsm"
-        image-name: "fsm"
-        dockerfile: "build/maven/Dockerfile"
-      - work-dir: "municipal-services/fsm/src/main/resources/db"
-        image-name: "fsm-db"
+      - work-dir: 'municipal-services/fsm'
+        image-name: 'fsm'
+        dockerfile: 'build/maven/Dockerfile'
+      - work-dir: 'municipal-services/fsm/src/main/resources/db'
+        image-name: 'fsm-db'
 
-
-  - name: "builds/SANITATION/vehicle"
+  - name: 'builds/SANITATION/vehicle'
     build:
-      - work-dir: "municipal-services/vehicle"
-        image-name: "vehicle"
-        dockerfile: "build/maven/Dockerfile"
-      - work-dir: "municipal-services/vehicle/src/main/resources/db"
-        image-name: "vehicle-db"
+      - work-dir: 'municipal-services/vehicle'
+        image-name: 'vehicle'
+        dockerfile: 'build/maven/Dockerfile'
+      - work-dir: 'municipal-services/vehicle/src/main/resources/db'
+        image-name: 'vehicle-db'
 
-  - name: "builds/SANITATION/vendor"
+  - name: 'builds/SANITATION/vendor'
     build:
-      - work-dir: "municipal-services/vendor"
-        image-name: "vendor"
-        dockerfile: "build/maven/Dockerfile"
-      - work-dir: "municipal-services/vendor/src/main/resources/db"
-        image-name: "vendor-db"
+      - work-dir: 'municipal-services/vendor'
+        image-name: 'vendor'
+        dockerfile: 'build/maven/Dockerfile'
+      - work-dir: 'municipal-services/vendor/src/main/resources/db'
+        image-name: 'vendor-db'
 
-  - name: "builds/SANITATION/fsm-calculator"
+  - name: 'builds/SANITATION/fsm-calculator'
     build:
-      - work-dir: "municipal-services/fsm-calculator"
-        image-name: "fsm-calculator"
-        dockerfile: "build/maven/Dockerfile"
-      - work-dir: "municipal-services/fsm-calculator/src/main/resources/db"
-        image-name: "fsm-calculator-db"
+      - work-dir: 'municipal-services/fsm-calculator'
+        image-name: 'fsm-calculator'
+        dockerfile: 'build/maven/Dockerfile'
+      - work-dir: 'municipal-services/fsm-calculator/src/main/resources/db'
+        image-name: 'fsm-calculator-db'
 
-#Sanitation Frontend
-- name: "builds/SANITATION/frontend/micro-ui/sanitation-ui"
+  #Sanitation Frontend
+  - name: 'builds/SANITATION/frontend/micro-ui/sanitation-ui'
     build:
-      - work-dir: "frontend/micro-ui"
-        image-name: "sanitation-ui"
-        dockerfile: "frontend/micro-ui/web/docker/Dockerfile"
-
- 
+      - work-dir: 'frontend/micro-ui'
+        image-name: 'sanitation-ui'
+        dockerfile: 'frontend/micro-ui/web/docker/Dockerfile'
