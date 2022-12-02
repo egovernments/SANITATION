@@ -52,4 +52,11 @@ config:
       - work-dir: "municipal-services/fsm-calculator/src/main/resources/db"
         image-name: "fsm-calculator-db"
 
+#Sanitation Frontend
+- name: "builds/SANITATION/frontend/micro-ui/sanitation-ui"
+    build:
+      - work-dir: "frontend/micro-ui"
+        image-name: "sanitation-ui"
+        dockerfile: "frontend/micro-ui/web/docker/Dockerfile"
+
  

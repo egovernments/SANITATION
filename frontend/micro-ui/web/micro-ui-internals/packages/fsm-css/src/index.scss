@@ -1,0 +1,30 @@
+@import "tailwindcss/base";
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
+
+@import "react-date-range/dist/styles.css";
+@import "react-date-range/dist/theme/default.css";
+
+@import "./components/card.scss";
+@import "./components/toggleSwitch.scss";
+@import "./components/plusMinus.scss";
+
+@media (min-width: 780px) {
+  .fsm-citizen-wrapper {
+    width: calc(100% - 219px);
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-top: 1rem;
+  }
+}
+
+.fsm-inline-style {
+  background: #fafafa;
+  border: 1px solid #d6d5d4;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 40px;
+  width: 90%;
+}
