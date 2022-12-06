@@ -4,8 +4,7 @@ RUN apk update && apk upgrade
 RUN apk add --no-cache git>2.30.0
 ARG WORK_DIR
 WORKDIR /app
-ENV NODE_OPTIONS "--max-old-space-size=4096"
-ENV GENERATE_SOURCEMAP "false"
+ENV NODE_OPTIONS "--max-old-space-size=7168"
 
 COPY ${WORK_DIR} .
 RUN ls -lah
@@ -13,14 +12,13 @@ RUN ls -lah
 #RUN node web/envs.js
 RUN cd web/ \
     && node envs.js \
-    && node -e 'console.log(v8.getHeapStatistics().heap_size_limit/(1024*1024))' \
     &&  ./install-deps.sh \
     && yarn install \
     && yarn build 
 
 FROM nginx:mainline-alpine
 #FROM ghcr.io/egovernments/nginx:mainline-alpine
-ENV WORK_DIR=/var/web/digit-ui
+ENV WORK_DIR=/var/web/sanitation-ui
 
 RUN mkdir -p ${WORK_DIR}
 
