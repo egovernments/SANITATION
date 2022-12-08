@@ -52,7 +52,7 @@ config:
         image-name: 'fsm-calculator-db'
 
   #Sanitation Frontend
-  - name: 'builds/SANITATION/frontend/micro-ui/sanitation-ui'
+  - name: 'builds/SANITATION/frontend/sanitation-ui'
     build:
       - work-dir: 'frontend/micro-ui/'
         image-name: 'sanitation-ui'
