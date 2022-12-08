@@ -34,6 +34,9 @@ export const FsmBreadCrumb = ({ location }) => {
   const isDriverDetails = location?.pathname?.includes("driver-details");
   const isDriverEdit = location?.pathname?.includes("modify-driver");
   const isModifyApplication = location?.pathname?.includes("modify-application");
+  const isNewVendor = location?.pathname?.includes("new-vendor");
+  const isNewVehicle = location?.pathname?.includes("new-vehicle");
+  const isNewDriver = location?.pathname?.includes("new-driver");
 
   const [search, setSearch] = useState(false);
   const [id, setId] = useState(false);
@@ -53,57 +56,61 @@ export const FsmBreadCrumb = ({ location }) => {
 
   const crumbs = [
     {
-      path: DSO ? "/digit-ui/citizen/fsm/dso-dashboard" : "/digit-ui/employee",
+      path: DSO ? `/${window?.contextPath}/citizen/fsm/dso-dashboard` : `/${window?.contextPath}/employee`,
       content: t("ES_COMMON_HOME"),
       show: isFsm,
     },
     {
-      path: isRegistry ? "/digit-ui/employee/fsm/registry" : FSTPO ? "/digit-ui/employee/fsm/fstp-inbox" : "/digit-ui/employee/fsm/home",
+      path: isRegistry ? `/${window?.contextPath}/employee/fsm/registry` : FSTPO ? `/${window?.contextPath}/employee/fsm/fstp-inbox` : `/${window?.contextPath}/employee/fsm/home`,
       content: isVehicleLog ? t("ES_TITLE_INBOX") : "FSM",
       show: isFsm,
     },
     {
-      path: isNewApplication ? "/digit-ui/employee/fsm/new-application" : "",
+      path: isNewApplication ? `/${window?.contextPath}/employee/fsm/new-application` : "",
       content: t("FSM_NEW_DESLUDGING_APPLICATION"),
       show: isFsm && isNewApplication,
     },
     {
-      path: "/digit-ui/employee/fsm/new-application",
+      path: `/${window?.contextPath}/employee/fsm/new-application`,
       content: `${t("FSM_NEW_DESLUDGING_APPLICATION")} / ${t("FSM_SUCCESS")}`,
       show: location.pathname.includes("/employee/fsm/response") ? true : false,
     },
     {
-      path: isInbox || isSearch || isApplicationDetails ? "/digit-ui/employee/fsm/inbox" : "",
+      path: isInbox || isSearch || isApplicationDetails ? `/${window?.contextPath}/employee/fsm/inbox` : "",
       content: t("ES_TITLE_INBOX"),
       show: (isFsm && isInbox) || isSearch || isApplicationDetails,
     },
     {
-      path: "/digit-ui/employee/fsm/search",
+      path: `/${window?.contextPath}/employee/fsm/search`,
       content: t("ES_TITILE_SEARCH_APPLICATION"),
       show: search,
     },
     { content: t("ES_TITLE_APPLICATION_DETAILS"), show: isApplicationDetails },
     { content: t("ES_TITLE_VEHICLE_LOG"), show: isVehicleLog },
     {
-      path: "/digit-ui/employee/fsm/registry/vendor-details/" + id,
+      path: `/${window?.contextPath}/employee/fsm/registry/vendor-details/` + id,
       content: t("ES_TITLE_VENDOR_DETAILS"),
       show: isRegistry && (isVendorDetails || isVendorEdit),
     },
     {
-      path: "/digit-ui/employee/fsm/registry/vehicle-details/" + id,
+      path: `/${window?.contextPath}/employee/fsm/registry/vehicle-details/` + id,
       content: t("ES_TITLE_VEHICLE_DETAILS"),
       show: isRegistry && (isVehicleDetails || isVehicleEdit),
     },
     {
-      path: "/digit-ui/employee/fsm/registry/driver-details/" + id,
+      path: `/${window?.contextPath}/employee/fsm/registry/driver-details/` + id,
       content: t("ES_TITLE_DRIVER_DETAILS"),
       show: isRegistry && (isDriverDetails || isDriverEdit),
     },
     { content: t("ES_TITLE_VENDOR_EDIT"), show: isRegistry && (isVendorEdit || isVehicleEdit || isDriverEdit) },
     {
-      path: "digit-ui/employee/fsm/modify-application/" + id,
+      path: `/${window?.contextPath}/employee/fsm/modify-application/` + id,
       content: t("ES_FSM_APPLICATION_SCHEDULE"),
       show: isModifyApplication,
+    },
+    {
+      content: isNewVendor ? t("ES_FSM_ACTION_CREATE_VENDOR") : isNewVehicle ?  t("ES_FSM_REGISTRY_DETAILS_TYPE_VEHICLE") : isNewDriver ? t("ES_FSM_REGISTRY_DETAILS_TYPE_DRIVER") : null,
+      show: isRegistry && (isNewVendor || isNewVehicle || isNewDriver),
     },
   ];
 
@@ -123,7 +130,7 @@ const EmployeeApp = ({ path, url, userType }) => {
     !DSO && !COLLECTOR && !FSM_EDITOR
       ? [
           {
-            link: "/digit-ui/employee/fsm/new-application",
+            link: `/${window?.contextPath}/employee/fsm/new-application`,
             name: "FSM_NEW_DESLUDGING_APPLICATION",
             icon: <AddNewIcon />,
           },
@@ -133,7 +140,7 @@ const EmployeeApp = ({ path, url, userType }) => {
   const moduleForSomeFSMAdmin = FSM_ADMIN
     ? [
         {
-          link: "/digit-ui/employee/fsm/registry",
+          link: `/${window?.contextPath}/employee/fsm/registry`,
           name: "ES_TITLE_FSM_REGISTRY",
           icon: <AddNewIcon />,
         },
@@ -143,7 +150,7 @@ const EmployeeApp = ({ path, url, userType }) => {
   const module = [
     ...moduleForSomeFSMEmployees,
     {
-      link: "/digit-ui/employee/fsm/inbox",
+      link: `/${window?.contextPath}/employee/fsm/inbox`,
       name: "ES_COMMON_INBOX",
       icon: <InboxIcon />,
     },

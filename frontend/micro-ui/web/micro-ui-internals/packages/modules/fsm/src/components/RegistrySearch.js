@@ -93,11 +93,11 @@ const SearchApplication = ({
   function onActionSelect(action) {
     switch (action) {
       case 'VENDOR':
-        return history.push('/digit-ui/employee/fsm/registry/new-vendor');
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vendor`);
       case 'VEHICLE':
-        return history.push('/digit-ui/employee/fsm/registry/new-vehicle');
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vehicle`);
       case 'DRIVER':
-        return history.push('/digit-ui/employee/fsm/registry/new-driver');
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-driver`);
       default:
         break;
     }

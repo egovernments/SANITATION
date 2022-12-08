@@ -120,8 +120,8 @@ export const ApplicationCard = ({
           linkPrefix
             ? linkPrefix
             : DSO
-            ? '/digit-ui/employee/fsm/application-details/'
-            : '/digit-ui/employee/fsm/'
+            ? `/${window?.contextPath}/employee/fsm/application-details/`
+            : `/${window?.contextPath}/employee/fsm/`
         }
       />
     );

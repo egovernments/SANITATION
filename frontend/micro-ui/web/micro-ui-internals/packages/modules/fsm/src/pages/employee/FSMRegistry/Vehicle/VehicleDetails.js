@@ -82,7 +82,7 @@ const VehicleDetails = (props) => {
       case "DELETE":
         return setShowModal(true);
       case "EDIT":
-        return history.push("/digit-ui/employee/fsm/registry/modify-vehicle/" + vehicleId);
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/modify-vehicle/` + vehicleId);
       default:
         break;
     }
@@ -116,7 +116,7 @@ const VehicleDetails = (props) => {
         queryClient.invalidateQueries("FSM_VEICLES_SEARCH");
         setTimeout(() => {
           closeToast
-          history.push(`/digit-ui/employee/fsm/registry`)
+          history.push(`/${window?.contextPath}/employee/fsm/registry`)
         }, 5000);
       },
     });

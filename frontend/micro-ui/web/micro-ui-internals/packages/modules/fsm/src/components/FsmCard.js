@@ -104,12 +104,12 @@ const FSMCard = () => {
     // kpis: isSuccess ? Object.keys(info).map((key, index) => ({
     //             label: t(key),
     //             count: t(info[key]),
-    //             link: "/digit-ui/employee/fsm/fstp-inbox"
+    //             link: "/${window?.contextPath}/employee/fsm/fstp-inbox"
     //         })): [],
     links: [
       {
         label: t('ES_COMMON_HOME'),
-        link: '/digit-ui/employee/fsm/fstp-operations',
+        link: `/${window?.contextPath}/employee/fsm/fstp-operations`,
       },
     ],
   };
@@ -122,7 +122,7 @@ const FSMCard = () => {
     ? [
         {
           label: t('ES_TITLE_FSM_REGISTRY'),
-          link: `/digit-ui/employee/fsm/registry`,
+          link: `/${window?.contextPath}/employee/fsm/registry`,
         },
       ]
     : [];
@@ -132,7 +132,7 @@ const FSMCard = () => {
       ? [
           {
             label: t('ES_TITLE_NEW_DESULDGING_APPLICATION'),
-            link: `/digit-ui/employee/fsm/new-application`,
+            link: `/${window?.contextPath}/employee/fsm/new-application`,
           },
         ]
       : [];
@@ -144,12 +144,12 @@ const FSMCard = () => {
         // kpis: isSuccess ? Object.keys(info).map((key, index) => ({
         //             label: t(key),
         //             count: t(info[key]),
-        //             link: "/digit-ui/employee/fsm/fstp-inbox"
+        //             link: "/${window?.contextPath}/employee/fsm/fstp-inbox"
         //         })): [],
         links: [
           {
             label: t('ES_COMMON_HOME'),
-            link: '/digit-ui/employee/fsm/fstp-operations',
+            link: `/${window?.contextPath}/employee/fsm/fstp-operations`,
           },
         ],
       }
@@ -160,23 +160,23 @@ const FSMCard = () => {
           {
             count: total,
             label: t('TOTAL_FSM'),
-            link: `/digit-ui/employee/fsm/inbox`,
+            link: `/${window?.contextPath}/employee/fsm/inbox`,
           },
           {
             label: t('TOTAL_NEARING_SLA'),
-            link: `/digit-ui/employee/fsm/inbox`,
+            link: `/${window?.contextPath}/employee/fsm/inbox`,
           },
         ],
         links: [
           {
             count: total,
             label: t('ES_COMMON_HOME'),
-            link: `/digit-ui/employee/fsm/home`,
+            link: `/${window?.contextPath}/employee/fsm/home`,
           },
           // {
           //   count: total,
           //   label: t("ES_COMMON_INBOX"),
-          //   link: `/digit-ui/employee/fsm/inbox`
+          //   link: `/${window?.contextPath}/employee/fsm/inbox`
           // },
           ...linksForSomeFSMEmployees,
           ...linksForSomeFSMAdmin,

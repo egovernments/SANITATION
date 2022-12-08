@@ -32,7 +32,7 @@ const FstpAddVehicle = ({ onSelect }) => {
     }
 
     const onSubmit = (data) => {
-        history.push(`/digit-ui/employee/fsm/fstp-fsm-request/${data.vehicleNumber.trim()}`)
+        history.push(`/${window?.contextPath}/employee/fsm/fstp-fsm-request/${data.vehicleNumber.trim()}`)
     }
 
     function onChange(e) {
