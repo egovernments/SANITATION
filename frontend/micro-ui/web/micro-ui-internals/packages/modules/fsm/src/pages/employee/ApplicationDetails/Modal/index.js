@@ -384,7 +384,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         return setConfig(configCompleteApplication({ t, vehicle, vehicleCapacity: applicationData?.vehicleCapacity, noOfTrips: applicationData?.noOfTrips, applicationCreatedTime: applicationData?.auditDetails?.createdTime, receivedPaymentType: ReceivedPaymentTypeData, action }));
       case "SUBMIT":
       case "FSM_SUBMIT":
-        return history.push("/digit-ui/employee/fsm/modify-application/" + applicationNumber);
+        return history.push(`/${window?.contextPath}/employee/fsm/modify-application/` + applicationNumber);
       case "DECLINE":
       case "DSO_REJECT":
         //declinereason
@@ -444,7 +444,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       case "PAY":
       case "ADDITIONAL_PAY_REQUEST":
       case "FSM_PAY":
-        return history.push(`/digit-ui/employee/payment/collect/FSM.TRIP_CHARGES/${applicationNumber}`);
+        return history.push(`/${window?.contextPath}/employee/payment/collect/FSM.TRIP_CHARGES/${applicationNumber}`);
       case "DECLINEVEHICLE":
         setFormValve(fstpoRejectionReason ? true : false);
         return setConfig(

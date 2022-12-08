@@ -14,6 +14,7 @@ import {
 } from '@egovernments/digit-ui-module-hrms';
 import '@egovernments/digit-ui-css/example/index.css';
 import '@egovernments/digit-ui-fsm-css/example/index.css';
+import { pgrCustomizations, pgrComponents } from './pgr';
 
 var Digit = window.Digit || {};
 
@@ -64,7 +65,7 @@ const initTokens = (stateCode) => {
 
 const initDigitUI = () => {
   window.contextPath =
-    window?.globalConfigs?.getConfig('CONTEXT_PATH') || 'digit-ui';
+    window?.globalConfigs?.getConfig('CONTEXT_PATH') || 'sanitation-ui';
 
   window?.Digit.ComponentRegistryService.setupRegistry({
     // ...pgrComponents,
@@ -79,6 +80,7 @@ const initDigitUI = () => {
   const moduleReducers = (initData) => initData;
 
   window.Digit.Customizations = {
+    PGR: pgrCustomizations,
     TL: {
       customiseCreateFormData: (formData, licenceObject) => licenceObject,
       customiseRenewalCreateFormData: (formData, licenceObject) =>

@@ -24,7 +24,7 @@ const DesktopInbox = (props) => {
   };
 
   function goTo(id) {
-    // history.push("/digit-ui/employee/fsm/complaint/details/" + id);
+    // history.push(`/${window?.contextPath}/employee/fsm/complaint/details/` + id);
   }
 
   const columns = React.useMemo(() => {
@@ -121,7 +121,7 @@ const DesktopInbox = (props) => {
                   <span className='link'>
                     <Link
                       to={
-                        '/digit-ui/employee/fsm/fstp-operator-details/' +
+                        `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
                         row.original['applicationNo']
                       }
                     >
@@ -197,7 +197,7 @@ const DesktopInbox = (props) => {
                   <span className='link'>
                     <Link
                       to={
-                        '/digit-ui/employee/fsm/fstp-operator-details/' +
+                        `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
                         row.original['applicationNo']
                       }
                     >
@@ -223,7 +223,7 @@ const DesktopInbox = (props) => {
                   <span className='link'>
                     <Link
                       to={
-                        '/digit-ui/employee/fsm/fstp-operator-details/' +
+                        `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
                         row.original['applicationNo']
                       }
                     >

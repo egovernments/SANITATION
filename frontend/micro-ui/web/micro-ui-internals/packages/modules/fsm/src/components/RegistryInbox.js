@@ -241,11 +241,11 @@ const RegisryInbox = (props) => {
 
   const onActionSelect = (action, type, data) => {
     if (type === 'VEHICLE') {
-      history.push('/digit-ui/employee/fsm/registry/vehicle-details/' + action);
+      history.push(`/${window?.contextPath}/employee/fsm/registry/vehicle-details/` + action);
     } else {
       let driver = data.find((ele) => ele.name === action);
       history.push(
-        '/digit-ui/employee/fsm/registry/driver-details/' + driver?.id
+        `/${window?.contextPath}/employee/fsm/registry/driver-details/` + driver?.id
       );
     }
   };
@@ -253,11 +253,11 @@ const RegisryInbox = (props) => {
   const onSelectAdd = () => {
     switch (props.selectedTab) {
       case 'VENDOR':
-        return history.push('/digit-ui/employee/fsm/registry/new-vendor');
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vendor`);
       case 'VEHICLE':
-        return history.push('/digit-ui/employee/fsm/registry/new-vehicle');
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vehicle`);
       case 'DRIVER':
-        return history.push('/digit-ui/employee/fsm/registry/new-driver');
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-driver`);
       default:
         break;
     }
@@ -276,7 +276,7 @@ const RegisryInbox = (props) => {
                   <span className='link'>
                     <Link
                       to={
-                        '/digit-ui/employee/fsm/registry/vendor-details/' +
+                        `/${window?.contextPath}/employee/fsm/registry/vendor-details/` +
                         row.original['id']
                       }
                     >
@@ -491,7 +491,7 @@ const RegisryInbox = (props) => {
                   <span className='link'>
                     <Link
                       to={
-                        '/digit-ui/employee/fsm/registry/vehicle-details/' +
+                        `/${window?.contextPath}/employee/fsm/registry/vehicle-details/` +
                         row.original['registrationNumber']
                       }
                     >
@@ -549,7 +549,7 @@ const RegisryInbox = (props) => {
                   <span className='link'>
                     <Link
                       to={
-                        '/digit-ui/employee/fsm/registry/driver-details/' +
+                        `/${window?.contextPath}/employee/fsm/registry/driver-details/` +
                         row.original['id']
                       }
                     >

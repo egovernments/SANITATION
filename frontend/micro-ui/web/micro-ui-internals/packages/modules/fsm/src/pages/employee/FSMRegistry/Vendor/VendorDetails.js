@@ -106,7 +106,7 @@ const VendorDetails = (props) => {
       case "ADD_DRIVER":
         return setShowModal(true);
       case "EDIT":
-        return history.push("/digit-ui/employee/fsm/registry/modify-vendor/" + dsoId);
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/modify-vendor/` + dsoId);
       default:
         break;
     }
@@ -174,7 +174,7 @@ const VendorDetails = (props) => {
         refetchDriver();
         setTimeout(() => {
           closeToast();
-          if (selectedAction === "DELETE") history.push(`/digit-ui/employee/fsm/registry`);
+          if (selectedAction === "DELETE") history.push(`/${window?.contextPath}/employee/fsm/registry`);
         }, 5000);
       },
     });
@@ -184,10 +184,10 @@ const VendorDetails = (props) => {
 
   const onEdit = (details, type, id) => {
     if (type === "ES_FSM_REGISTRY_DETAILS_TYPE_DRIVER") {
-      history.push("/digit-ui/employee/fsm/registry/modify-driver/" + id);
+      history.push(`/${window?.contextPath}/employee/fsm/registry/modify-driver/` + id);
     } else {
       let registrationNumber = details?.values?.find((ele) => ele.title === "ES_FSM_REGISTRY_VEHICLE_NUMBER")?.value;
-      history.push("/digit-ui/employee/fsm/registry/modify-vehicle/" + registrationNumber);
+      history.push(`/${window?.contextPath}/employee/fsm/registry/modify-vehicle/` + registrationNumber);
     }
   };
 
