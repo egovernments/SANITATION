@@ -54,6 +54,6 @@ config:
   #Sanitation Frontend
   - name: 'builds/SANITATION/frontend/micro-ui/sanitation-ui'
     build:
-      - work-dir: 'frontend/micro-ui'
+      - work-dir: 'frontend/micro-ui/'
         image-name: 'sanitation-ui'
         dockerfile: 'frontend/micro-ui/web/docker/Dockerfile'
