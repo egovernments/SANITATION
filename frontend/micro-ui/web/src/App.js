@@ -8,13 +8,23 @@ import { initFSMLibraries } from "@egovernments/digit-ui-fsm-libraries";
 
 import { initFSMComponents } from "@egovernments/digit-ui-module-fsm";
 import { initHRMSComponents } from "@egovernments/digit-ui-module-hrms";
+import {
+  PaymentModule,
+  PaymentLinks,
+  paymentConfigs,
+} from "@egovernments/digit-ui-module-common";
+
 window.contextPath = window?.globalConfigs?.getConfig("CONTEXT_PATH");
 
 initLibraries();
 initFSMLibraries();
 
 const enabledModules = ["FSM", "Payment", "DSS", "Engagement", "HRMS"];
-window.Digit.ComponentRegistryService.setupRegistry({});
+window.Digit.ComponentRegistryService.setupRegistry({
+  ...paymentConfigs,
+  PaymentModule,
+  PaymentLinks,
+});
 
 initDSSComponents();
 initEngagementComponents();
