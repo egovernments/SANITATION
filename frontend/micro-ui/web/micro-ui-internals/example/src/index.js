@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom';
 
 import { initLibraries } from '@egovernments/digit-ui-libraries';
 import { initFSMLibraries } from '@egovernments/digit-ui-fsm-libraries';
-
+import {
+  PaymentModule,
+  PaymentLinks,
+  paymentConfigs,
+} from "@egovernments/digit-ui-module-common";
 import { initDSSComponents } from '@egovernments/digit-ui-module-dss';
 import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
 import { initEngagementComponents } from '@egovernments/digit-ui-module-engagement';
@@ -20,6 +24,7 @@ var Digit = window.Digit || {};
 const enabledModules = [
   // "Works",
   'HRMS',
+  'Payment',
   'FSM',
   // "Engagement"
 ];
@@ -66,9 +71,11 @@ const initDigitUI = () => {
   window.contextPath =
     window?.globalConfigs?.getConfig('CONTEXT_PATH') || 'sanitation-ui';
 
-  window?.Digit.ComponentRegistryService.setupRegistry({
-    // ...pgrComponents,
-  });
+    window.Digit.ComponentRegistryService.setupRegistry({
+      ...paymentConfigs,
+      PaymentModule,
+      PaymentLinks,
+    });    
 
   // initPGRComponents();
   initDSSComponents();
