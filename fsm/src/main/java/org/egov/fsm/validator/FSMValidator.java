@@ -38,23 +38,23 @@ import com.cedarsoftware.util.GraphComparator;
 import com.jayway.jsonpath.JsonPath;
 
 import lombok.extern.slf4j.Slf4j;
+
 @Component
 @Slf4j
 public class FSMValidator {
 
 	@Autowired
 	private MDMSValidator mdmsValidator;
-	
 
 	@Autowired
-	private BoundaryService boundaryService ;
+	private BoundaryService boundaryService;
 
 	@Autowired
 	private FSMConfiguration config;
-	
+
 	@Autowired
 	private DSOService dsoService;
-	
+
 	@Autowired
 	private FSMToFSMAuditUtilConverter converter;
 
@@ -62,8 +62,8 @@ public class FSMValidator {
 	public void validateCreate(FSMRequest fsmRequest, Object mdmsData) {
 		mdmsValidator.validateMdmsData(fsmRequest, mdmsData);
 		FSM fsm = fsmRequest.getFsm();
-		if( fsmRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase(FSMConstants.CITIZEN)) {
-			
+		if (fsmRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase(FSMConstants.CITIZEN)) {
+
 			// when user is created for the citizen but name is mepty
 			if (fsm.getCitizen() != null && StringUtils.isEmpty(fsm.getCitizen().getName())
 					&& StringUtils.isEmpty(fsmRequest.getRequestInfo().getUserInfo().getName())) {
@@ -71,26 +71,32 @@ public class FSMValidator {
 						"Applicant Name and mobile number mandatory");
 			}
 			// ui does not pass citizen in fsm but userInfo in the request is citizen
+
 			if (fsm.getCitizen() == null || StringUtils.isEmpty(fsm.getCitizen().getName())
 					|| StringUtils.isEmpty(fsm.getCitizen().getMobileNumber())) {
 				User citizen = new User();
 				BeanUtils.copyProperties(fsmRequest.getRequestInfo().getUserInfo(), citizen);
-				if(fsmRequest.getFsm().getCitizen()!=null)
+				if (fsmRequest.getFsm().getCitizen() != null)
 					citizen.setGender(fsmRequest.getFsm().getCitizen().getGender());
-					fsm.setCitizen(citizen);
+				fsm.setCitizen(citizen);
 			}
-			
-			if(!StringUtils.isEmpty(fsm.getSource())) {
+
+			if (!StringUtils.isEmpty(fsm.getSource())) {
 				mdmsValidator.validateApplicationChannel(fsm.getSource());
-				
-			}else {
+
+			} else {
 				fsm.setSource(FSMConstants.APPLICATION_CHANNEL_SOURCE);
 			}
-			if(!StringUtils.isEmpty(fsm.getSanitationtype())) {
-				mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype(),fsm.getPitDetail());
+			if (!StringUtils.isEmpty(fsm.getSanitationtype())) {
+				mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype(), fsm.getPitDetail());
 
 			}
-			
+			if (!StringUtils.isEmpty(fsm.getAdvanceAmount())
+					&& fsm.getPaymentPreference().equalsIgnoreCase(FSMConstants.POST_PAY)) {
+				throw new CustomException(FSMErrorConstants.INVALID_PAYMENT_ERROR,
+						"Advance amount payment is not allowed with post pay option ");
+			}
+
 		} else if (fsmRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase(FSMConstants.EMPLOYEE)) {
 			User applicant = fsm.getCitizen();
 			if (applicant == null || StringUtils.isEmpty(applicant.getName())
@@ -98,54 +104,58 @@ public class FSMValidator {
 				throw new CustomException(FSMErrorConstants.INVALID_APPLICANT_ERROR,
 						"Applicant Name and mobile number mandatory");
 			}
-			
-			//validateVehicleType(fsmRequest);
+
+			// validateVehicleType(fsmRequest);
 			validateVehicleCapacity(fsmRequest);
 			mdmsValidator.validateApplicationChannel(fsm.getSource());
-			if(!StringUtils.isEmpty(fsm.getSanitationtype())) {
-				mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype(),fsm.getPitDetail());
+			if (!StringUtils.isEmpty(fsm.getSanitationtype())) {
+				mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype(), fsm.getPitDetail());
 
 			}
+			if (!StringUtils.isEmpty(fsm.getAdvanceAmount())
+					&& fsm.getPaymentPreference().equalsIgnoreCase(FSMConstants.POST_PAY)) {
+				throw new CustomException(FSMErrorConstants.INVALID_PAYMENT_ERROR,
+						"Advance amount payment is not allowed with post pay option ");
+			}
 			validateTripAmount(fsmRequest, mdmsData);
-		}else {
+		} else {
 			// incase of anonymous user, citizen is mandatory
 			if (fsm.getCitizen() == null || StringUtils.isEmpty(fsm.getCitizen().getName())
 					|| StringUtils.isEmpty(fsm.getCitizen().getMobileNumber())) {
 				throw new CustomException(FSMErrorConstants.INVALID_APPLICANT_ERROR,
 						"Applicant Name and mobile number mandatory");
 			}
-			
-			if(!StringUtils.isEmpty(fsm.getSource())) {
+
+			if (!StringUtils.isEmpty(fsm.getSource())) {
 				mdmsValidator.validateApplicationChannel(fsm.getSource());
-				
+
 			}
-			if(!StringUtils.isEmpty(fsm.getSanitationtype())) {
-				mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype() ,fsm.getPitDetail());
+			if (!StringUtils.isEmpty(fsm.getSanitationtype())) {
+				mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype(), fsm.getPitDetail());
 			}
 		}
 		mdmsValidator.validatePropertyType(fsmRequest.getFsm().getPropertyUsage());
 		validateNoOfTrips(fsmRequest, mdmsData);
 		validateSlum(fsmRequest, mdmsData);
 	}
-	
-		
+
 	/**
-	 * validate the vehicle capacity by using Capacity to check if vendor exists for the given vehicle capacity
+	 * validate the vehicle capacity by using Capacity to check if vendor exists for
+	 * the given vehicle capacity
 	 */
 	private void validateVehicleCapacity(FSMRequest fsmRequest) {
 		FSM fsm = fsmRequest.getFsm();
-		
-		VendorSearchCriteria vendorSearchCriteria=new VendorSearchCriteria();
-		vendorSearchCriteria = VendorSearchCriteria.builder()
-				.vehicleCapacity(fsm.getVehicleCapacity())
+
+		VendorSearchCriteria vendorSearchCriteria = new VendorSearchCriteria();
+		vendorSearchCriteria = VendorSearchCriteria.builder().vehicleCapacity(fsm.getVehicleCapacity())
 				.tenantId(fsm.getTenantId()).build();
-		
-		Vendor vendor = dsoService.getVendor(vendorSearchCriteria,fsmRequest.getRequestInfo());
+
+		Vendor vendor = dsoService.getVendor(vendorSearchCriteria, fsmRequest.getRequestInfo());
 		/*
 		 * Vendor vendor = dsoService.getVendor(null, fsm.getTenantId(), null, null,
 		 * null,fsm.getVehicleCapacity(), fsmRequest.getRequestInfo());
 		 */
-		
+
 		if (vendor == null) {
 			throw new CustomException(FSMErrorConstants.NO_VEHICLE_VEHICLE_TYPE,
 					"DSO Does not exists in the ULB with vehicle of capacity " + fsm.getVehicleCapacity());
@@ -155,16 +165,16 @@ public class FSMValidator {
 	/**
 	 * Validates if the search parameters are valid
 	 * 
-	 * @param requestInfo
-	 *            The requestInfo of the incoming request
-	 * @param criteria
-	 *            The FSMSearch Criteria
+	 * @param requestInfo The requestInfo of the incoming request
+	 * @param criteria    The FSMSearch Criteria
 	 */
 //TODO need to make the changes in the data
 	public void validateSearch(RequestInfo requestInfo, FSMSearchCriteria criteria) {
-		
-		if (requestInfo.getUserInfo().getType().equalsIgnoreCase(FSMConstants.EMPLOYEE) && criteria.getTenantId().split("\\.").length == 1) {
-			throw new CustomException(FSMErrorConstants.EMPLOYEE_INVALID_SEARCH, "Employee cannot search at state level");
+
+		if (requestInfo.getUserInfo().getType().equalsIgnoreCase(FSMConstants.EMPLOYEE)
+				&& criteria.getTenantId().split("\\.").length == 1) {
+			throw new CustomException(FSMErrorConstants.EMPLOYEE_INVALID_SEARCH,
+					"Employee cannot search at state level");
 		}
 		if (!requestInfo.getUserInfo().getType().equalsIgnoreCase(FSMConstants.CITIZEN) && criteria.isEmpty())
 			throw new CustomException(FSMErrorConstants.INVALID_SEARCH, "Search without any paramters is not allowed");
@@ -174,24 +184,23 @@ public class FSMValidator {
 			throw new CustomException(FSMErrorConstants.INVALID_SEARCH, "TenantId is mandatory in search");
 
 		if (requestInfo.getUserInfo().getType().equalsIgnoreCase(FSMConstants.CITIZEN) && !criteria.isEmpty()
-				&& !criteria.tenantIdOnly() && criteria.getTenantId() == null) 
+				&& !criteria.tenantIdOnly() && criteria.getTenantId() == null)
 			throw new CustomException(FSMErrorConstants.INVALID_SEARCH, "TenantId is mandatory in search");
-		if(criteria.getTenantId() == null)
+		if (criteria.getTenantId() == null)
 			throw new CustomException(FSMErrorConstants.INVALID_SEARCH, "TenantId is mandatory in search");
-			
+
 		String allowedParamStr = null;
 
 		if (requestInfo.getUserInfo().getType().equalsIgnoreCase(FSMConstants.CITIZEN))
 			allowedParamStr = config.getAllowedCitizenSearchParameters();
 		else if (requestInfo.getUserInfo().getType().equalsIgnoreCase(FSMConstants.EMPLOYEE))
 			allowedParamStr = config.getAllowedEmployeeSearchParameters();
-		
+
 		else if (requestInfo.getUserInfo().getType().equalsIgnoreCase(FSMConstants.SYSTEM))
 			allowedParamStr = config.getAllowedEmployeeSearchParameters();
-		
-		else
-		{
-			
+
+		else {
+
 			throw new CustomException(FSMErrorConstants.INVALID_SEARCH,
 					"The userType: " + requestInfo.getUserInfo().getType() + " does not have any search config");
 		}
@@ -206,10 +215,8 @@ public class FSMValidator {
 	/**
 	 * Validates if the paramters coming in search are allowed
 	 * 
-	 * @param criteria
-	 *            fsm search criteria
-	 * @param allowedParams
-	 *            Allowed Params for search
+	 * @param criteria      fsm search criteria
+	 * @param allowedParams Allowed Params for search
 	 */
 	private void validateSearchParams(FSMSearchCriteria criteria, List<String> allowedParams) {
 
@@ -229,7 +236,7 @@ public class FSMValidator {
 		if (criteria.getFromDate() != null && !allowedParams.contains("fromDate") && criteria.getToDate() != null
 				&& !allowedParams.contains("toDate")) {
 			throw new CustomException(FSMErrorConstants.INVALID_SEARCH, "Search on fromDate and toDate is not allowed");
-		} else if( criteria.getFromDate() != null && criteria.getToDate() != null ){
+		} else if (criteria.getFromDate() != null && criteria.getToDate() != null) {
 
 			if ((criteria.getFromDate() != null && criteria.getToDate() == null)
 					|| criteria.getFromDate() == null && criteria.getToDate() != null) {
@@ -243,15 +250,14 @@ public class FSMValidator {
 			fromDate.set(Calendar.MINUTE, 0);
 			fromDate.set(Calendar.SECOND, 0);
 
-			Calendar toDate =  Calendar.getInstance(TimeZone.getDefault());
+			Calendar toDate = Calendar.getInstance(TimeZone.getDefault());
 			toDate.setTimeInMillis(criteria.getToDate());
 			toDate.set(Calendar.HOUR_OF_DAY, 23);
 			toDate.set(Calendar.MINUTE, 59);
 			toDate.set(Calendar.SECOND, 59);
 			toDate.set(Calendar.MILLISECOND, 0);
 
-
-			if (fromDate.getTimeInMillis() > toDate.getTimeInMillis() ) {
+			if (fromDate.getTimeInMillis() > toDate.getTimeInMillis()) {
 				throw new CustomException(FSMErrorConstants.INVALID_SEARCH, "fromdate cannot be greater than todate.");
 
 			}
@@ -271,25 +277,24 @@ public class FSMValidator {
 
 	}
 
-	public void validateUpdate(FSMRequest fsmRequest, List<FSM> searchResult, Object mdmsData,boolean isDsoRole) {
+	public void validateUpdate(FSMRequest fsmRequest, List<FSM> searchResult, Object mdmsData, boolean isDsoRole) {
 		boundaryService.getAreaType(fsmRequest, config.getHierarchyTypeCode());
 		FSM fsm = fsmRequest.getFsm();
-		
-		if(searchResult.size() <= 0 ) {
+
+		if (searchResult.size() <= 0) {
 			throw new CustomException(FSMErrorConstants.UPDATE_ERROR, "Application Not found in the System" + fsm);
-		} 
-		if(searchResult.size() > 1) {
+		}
+		if (searchResult.size() > 1) {
 			throw new CustomException(FSMErrorConstants.UPDATE_ERROR, "Found multiple application(s)" + fsm);
 		}
-		
-		if(fsmRequest.getWorkflow() == null || StringUtils.isEmpty(fsmRequest.getWorkflow().getAction() )) {
-			throw new CustomException(FSMErrorConstants.INVALID_ACTION," Workflow Action is mandatory!");
+
+		if (fsmRequest.getWorkflow() == null || StringUtils.isEmpty(fsmRequest.getWorkflow().getAction())) {
+			throw new CustomException(FSMErrorConstants.INVALID_ACTION, " Workflow Action is mandatory!");
 		}
-		
-		if(fsmRequest.getFsm() !=null && !StringUtils.hasLength(fsmRequest.getFsm().getPaymentPreference())) {
-			throw new CustomException(FSMErrorConstants.INVALID_ACTION," Payment preference is mandatory!");
+
+		if (fsmRequest.getFsm() != null && !StringUtils.hasLength(fsmRequest.getFsm().getPaymentPreference())) {
+			throw new CustomException(FSMErrorConstants.INVALID_ACTION, " Payment preference is mandatory!");
 		}
-		
 		mdmsValidator.validateMdmsData(fsmRequest, mdmsData);
 		// SAN-889: Added validation for recevied payment
 		if (null != fsmRequest.getWorkflow() && null != fsmRequest.getWorkflow().getAction()
@@ -308,34 +313,41 @@ public class FSMValidator {
 			log.info("additionalDetails.get(\"receivedPayment\"):: " + additionalDetails.get("receivedPayment"));
 			mdmsValidator.validateReceivedPaymentType(additionalDetails.get("receivedPayment"));
 		}
-		
+
 		validateUpdatableParams(fsmRequest, searchResult, mdmsData);
 		validateAllIds(searchResult, fsm);
-		
-		
 		validateVehicleCapacity(fsmRequest);
-		
-		if(!StringUtils.isEmpty(fsm.getSource())) {
+
+		if (!StringUtils.isEmpty(fsm.getSource())) {
 			mdmsValidator.validateApplicationChannel(fsm.getSource());
-			
+
 		}
-		if(!StringUtils.isEmpty(fsm.getSanitationtype())) {
-			mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype(),fsm.getPitDetail());
+		if (!StringUtils.isEmpty(fsm.getSanitationtype())) {
+			mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype(), fsm.getPitDetail());
 		}
-		
+
 		mdmsValidator.validatePropertyType(fsmRequest.getFsm().getPropertyUsage());
 		validateSlum(fsmRequest, mdmsData);
 		validateNoOfTrips(fsmRequest, mdmsData);
 		validateTripAmount(fsmRequest, mdmsData);
-		
+
 		mdmsValidator.validatePaymentPreference(fsm.getPaymentPreference());
 
+		/*
+		 * if (null != fsmRequest.getWorkflow() && null !=
+		 * fsmRequest.getWorkflow().getAction() &&
+		 * fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.
+		 * WF_ACTION_COMPLETE) && isDsoRole)
+		 * mdmsValidator.validateReceivedPaymentType(fsm.getReceivedPayment());
+		 */
+
 	}
-	
+
 	/**
 	 * @param collection the Collection to check
-	 * @param element the element to look for
-	 * @return {@code true} if found atleast partial content, {@code false} otherwise
+	 * @param element    the element to look for
+	 * @return {@code true} if found atleast partial content, {@code false}
+	 *         otherwise
 	 */
 	public boolean contains(@Nullable Collection<String> collection, String element) {
 		if (collection != null) {
@@ -347,14 +359,13 @@ public class FSMValidator {
 		}
 		return false;
 	}
-	
+
 	public void validateUpdatableParams(FSMRequest fsmRequest, List<FSM> searchResult, Object mdmsData) {
 		List<String> listOfAllowedUpdatableParams = JsonPath.read(mdmsData,
 				String.format(FSMConstants.MDMS_FSM_CONFIG_ALLOW_MODIFY, fsmRequest.getFsm().getApplicationStatus()));
-		
+
 		FSMAuditUtil newFsm = converter.convert(fsmRequest.getFsm());
 		FSMAuditUtil oldFsm = converter.convert(searchResult.get(NumberUtils.INTEGER_ZERO));
-		
 
 		if (!CollectionUtils.isEmpty(listOfAllowedUpdatableParams)) {
 			List<String> listOfUpdatedParams = getDelta(oldFsm, newFsm);
@@ -363,19 +374,19 @@ public class FSMValidator {
 					listOfUpdatedParams.remove(property);
 				});
 			}
-			
-			
+
 			if (listOfUpdatedParams.contains(FSMConstants.APPLICATION_STATUS)) {
 				listOfAllowedUpdatableParams.add(FSMConstants.APPLICATION_STATUS);
 			}
 			if (listOfUpdatedParams.contains(FSMConstants.NO_OF_TRIPS)) {
 				listOfAllowedUpdatableParams.add(FSMConstants.NO_OF_TRIPS);
 			}
+
 			if (listOfUpdatedParams.contains(FSMConstants.VEHICLE_CAPACITY)) {
 				listOfAllowedUpdatableParams.add(FSMConstants.VEHICLE_CAPACITY);
 			}
-			
-			for(String updatedParam : listOfUpdatedParams) {
+
+			for (String updatedParam : listOfUpdatedParams) {
 				if (!contains(listOfAllowedUpdatableParams, updatedParam)) {
 					throw new CustomException(FSMErrorConstants.UPDATE_ERROR,
 							String.format("Cannot update the field:%s", updatedParam));
@@ -384,7 +395,7 @@ public class FSMValidator {
 		}
 
 	}
-	
+
 	public List<String> getDelta(FSMAuditUtil source, FSMAuditUtil target) {
 		List<GraphComparator.Delta> deltas = GraphComparator.compare(source, target, new GraphComparator.ID() {
 			@Override
@@ -392,69 +403,76 @@ public class FSMValidator {
 				return "id";
 			}
 		});
-		List<String> updatedFields= new ArrayList<>();
+		List<String> updatedFields = new ArrayList<>();
 		deltas.forEach(delta -> {
-			updatedFields.add(delta.getFieldName());
+			if (!(delta.getFieldName().equalsIgnoreCase("possibleServiceDate"))
+					&& !(delta.getFieldName().equalsIgnoreCase("longitude"))
+					&& !(delta.getFieldName().equalsIgnoreCase("latitude"))) {
+				updatedFields.add(delta.getFieldName());
+			}
 		});
 		return updatedFields;
 	}
-	
+
 	private void validateTripAmount(FSMRequest fsmRequest, Object mdmsData) {
 		FSM fsm = fsmRequest.getFsm();
-		List<Map<String,Object>> tripAountAllowed = JsonPath.read(mdmsData, FSMConstants.FSM_TRIP_AMOUNT_OVERRIDE_ALLOWED);
-		Map<String, String> additionalDetails=null;
+		List<Map<String, Object>> tripAountAllowed = JsonPath.read(mdmsData,
+				FSMConstants.FSM_TRIP_AMOUNT_OVERRIDE_ALLOWED);
+		Map<String, String> additionalDetails = null;
 		try {
-		
+
 			additionalDetails = fsm.getAdditionalDetails() != null ? (Map<String, String>) fsm.getAdditionalDetails()
 					: new HashMap<String, String>();
-		}catch (Exception e) {
-		log.info("format is wrong", e.getMessage());
+		} catch (Exception e) {
+			log.info("format is wrong", e.getMessage());
 		}
-		if(!CollectionUtils.isEmpty(tripAountAllowed) &&  additionalDetails.get("tripAmount") == null   ) {
-			throw new CustomException(FSMErrorConstants.INVALID_TRIP_AMOUNT," tripAmount is invalid");
-		}else if(!CollectionUtils.isEmpty(tripAountAllowed)){
+		if (!CollectionUtils.isEmpty(tripAountAllowed) && additionalDetails.get("tripAmount") == null) {
+			throw new CustomException(FSMErrorConstants.INVALID_TRIP_AMOUNT, " tripAmount is invalid");
+		} else if (!CollectionUtils.isEmpty(tripAountAllowed)) {
 			try {
-				BigDecimal tripAmt = BigDecimal.valueOf(Double.valueOf((String)additionalDetails.get("tripAmount")));
-			}catch(Exception e) {
-				throw new CustomException(FSMErrorConstants.INVALID_TRIP_AMOUNT," tripAmount is invalid");
+				BigDecimal tripAmt = BigDecimal.valueOf(Double.valueOf((String) additionalDetails.get("tripAmount")));
+			} catch (Exception e) {
+				throw new CustomException(FSMErrorConstants.INVALID_TRIP_AMOUNT, " tripAmount is invalid");
 			}
 		}
 	}
-	
+
 	/**
 	 * @param fsmRequest
 	 * @param mdmsData
 	 */
 	private void validateNoOfTrips(FSMRequest fsmRequest, Object mdmsData) {
 		FSM fsm = fsmRequest.getFsm();
-		Integer noOfTrips  = fsm.getNoOfTrips();
-		List<Map<String,String>> noOftripsAllowed = JsonPath.read(mdmsData, FSMConstants.FSM_NO_OF_TRIPS_AMOUNT_OVERRIDE_ALLOWED);
-		
-		if(CollectionUtils.isEmpty(noOftripsAllowed) ) {
-			if(noOfTrips == null || noOfTrips.intValue() !=1) {
+		Integer noOfTrips = fsm.getNoOfTrips();
+		List<Map<String, String>> noOftripsAllowed = JsonPath.read(mdmsData,
+				FSMConstants.FSM_NO_OF_TRIPS_AMOUNT_OVERRIDE_ALLOWED);
+
+		if (CollectionUtils.isEmpty(noOftripsAllowed)) {
+			if (noOfTrips == null || noOfTrips.intValue() != 1) {
 				fsmRequest.getFsm().setNoOfTrips(1);
 			}
 		}
 	}
+
 	/**
 	 * @param fsmRequest
 	 * @param mdmsData
 	 */
 	private void validateSlum(FSMRequest fsmRequest, Object mdmsData) {
 		FSM fsm = fsmRequest.getFsm();
-		
-		String locality = fsm.getAddress().getLocality().getCode();
-		List<Map<String,Object>> slumNameAllowed = JsonPath.read(mdmsData, FSMConstants.FSM_SLUM_OVERRIDE_ALLOWED);
 
-		
-		if(!CollectionUtils.isEmpty(slumNameAllowed) && !StringUtils.isEmpty(fsm.getAddress().getSlumName())) {
+		String locality = fsm.getAddress().getLocality().getCode();
+		List<Map<String, Object>> slumNameAllowed = JsonPath.read(mdmsData, FSMConstants.FSM_SLUM_OVERRIDE_ALLOWED);
+
+		if (!CollectionUtils.isEmpty(slumNameAllowed) && !StringUtils.isEmpty(fsm.getAddress().getSlumName())) {
 //			List<Map<String,Object>> slumNameMapping = JsonPath.read(mdmsData, FSMConstants.SLUM_CODE_PATH.replace("{1}", locality).replace("{2}", fsm.getAddress().getSlumName().trim()));
 //			if(CollectionUtils.isEmpty(slumNameMapping)) {
 //				 throw new CustomException(FSMErrorConstants.INVALID_SLUM, "Slum Name is Invalid!");
 //			}
 		}
-		
+
 	}
+
 	private void validateAllIds(List<FSM> searchResult, FSM fsm) {
 
 		Map<String, FSM> idTofsmFromSearch = new HashMap<>();
@@ -472,14 +490,11 @@ public class FSMValidator {
 		if (!searchedfsm.getId().equalsIgnoreCase(fsm.getId()))
 			errorMap.put("INVALID UPDATE", "The id " + fsm.getId() + " does not exist");
 
-
 		// validate the pit id
-
 
 		if (!CollectionUtils.isEmpty(errorMap))
 			throw new CustomException(errorMap);
 	}
-	
 
 	private void setFieldsFromSearch(FSMRequest fsmRequest, List<FSM> searchResult, Object mdmsData) {
 		Map<String, FSM> idToFsmFromSearch = new HashMap<>();
@@ -494,23 +509,23 @@ public class FSMValidator {
 				.setCreatedTime(idToFsmFromSearch.get(fsmRequest.getFsm().getId()).getAuditDetails().getCreatedTime());
 		fsmRequest.getFsm().setStatus(idToFsmFromSearch.get(fsmRequest.getFsm().getId()).getStatus());
 	}
-	
+
 	public void validateWorkflowActions(FSMRequest fsmRequest) {
 		FSM fsm = fsmRequest.getFsm();
 		// TODO Validate the the current workflow action is valid according to business
 	}
-	
+
 	public void validateAudit(FSMAuditSearchCriteria criteria) {
-		if(criteria.getTenantId()==null) {
+		if (criteria.getTenantId() == null) {
 			throw new CustomException(FSMErrorConstants.INVALID_SEARCH, "TenantId is mandatory in search");
-		}
-		else {
-			 if(StringUtils.isEmpty(criteria.getApplicationNo()) && StringUtils.isEmpty(criteria.getId())) {
-				 throw new CustomException(FSMErrorConstants.INVALID_SEARCH, "applicationNo or id is mandatory in search");
-			 }
+		} else {
+			if (StringUtils.isEmpty(criteria.getApplicationNo()) && StringUtils.isEmpty(criteria.getId())) {
+				throw new CustomException(FSMErrorConstants.INVALID_SEARCH,
+						"applicationNo or id is mandatory in search");
+			}
 		}
 	}
-	
+
 	/**
 	 * @param fsmRequest
 	 * @param mdmsData
@@ -518,56 +533,61 @@ public class FSMValidator {
 	public void validateCheckList(FSMRequest fsmRequest, Object mdmsData) {
 		Map<String, String> errorMap = new HashMap<>();
 		FSM fsm = fsmRequest.getFsm();
-		Map additonalDetails = (Map)fsm.getAdditionalDetails();
-		List<Map<String,String>> requestCheckList = (List<Map<String, String>>) additonalDetails.get(FSMConstants.MDMS_CHECKLIST);
-		List<Map<String,Object>> mdmsCheckList = JsonPath.read(mdmsData, FSMConstants.REQ_CHECKLIST_PATH);
-		if(mdmsCheckList.size() > 0 && (requestCheckList == null || requestCheckList.size() ==0)) {
+		Map additonalDetails = (Map) fsm.getAdditionalDetails();
+		List<Map<String, String>> requestCheckList = (List<Map<String, String>>) additonalDetails
+				.get(FSMConstants.MDMS_CHECKLIST);
+		List<Map<String, Object>> mdmsCheckList = JsonPath.read(mdmsData, FSMConstants.REQ_CHECKLIST_PATH);
+		if (mdmsCheckList.size() > 0 && (requestCheckList == null || requestCheckList.size() == 0)) {
 			errorMap.put(FSMErrorConstants.INVALID_CHECKLIST, " Mandatory checlist is not provided!");
 		}
-		mdmsCheckList.forEach(mdmsClItem->{
-			Map<String,String> reqClItem = null;
-			for( int j=0;j<requestCheckList.size();j++) {
-				if(requestCheckList.get(j).get("code").equalsIgnoreCase((String) mdmsClItem.get("code") )) {
+		mdmsCheckList.forEach(mdmsClItem -> {
+			Map<String, String> reqClItem = null;
+			for (int j = 0; j < requestCheckList.size(); j++) {
+				if (requestCheckList.get(j).get("code").equalsIgnoreCase((String) mdmsClItem.get("code"))) {
 					reqClItem = requestCheckList.get(j);
 				}
 			}
-			if(reqClItem != null) {
-				String[] reqOptions =reqClItem.get("value").split(",");
-				List<String> mdmsClOptions =(List<String>) mdmsClItem.get("options");
-				if(((String) mdmsClItem.get("type")).equalsIgnoreCase(FSMConstants.CHECK_LIST_SINGLE_SELECT) ) {
-					if(reqOptions.length > 1) {
-						errorMap.put(FSMErrorConstants.INVALID_CHECKLIST, "Checklist "+ mdmsClItem.get("code")+" is SINGLE SELECT, cannot select multiple options.");
-					}else if(!mdmsClOptions.contains(reqOptions[0])){
+			if (reqClItem != null) {
+				String[] reqOptions = reqClItem.get("value").split(",");
+				List<String> mdmsClOptions = (List<String>) mdmsClItem.get("options");
+				if (((String) mdmsClItem.get("type")).equalsIgnoreCase(FSMConstants.CHECK_LIST_SINGLE_SELECT)) {
+					if (reqOptions.length > 1) {
+						errorMap.put(FSMErrorConstants.INVALID_CHECKLIST, "Checklist " + mdmsClItem.get("code")
+								+ " is SINGLE SELECT, cannot select multiple options.");
+					} else if (!mdmsClOptions.contains(reqOptions[0])) {
 						errorMap.put(FSMErrorConstants.INVALID_CHECKLIST, " Value provided is not checklist options.");
 					}
-				}else if(((String) mdmsClItem.get("type")).equalsIgnoreCase(FSMConstants.CHECK_LIST_MULTI_SELECT)) {
-					for( int h=0;h<reqOptions.length;h++) {
-						if(!mdmsClOptions.contains(reqOptions[h])) {
-							errorMap.put(FSMErrorConstants.INVALID_CHECKLIST, "Checklist "+mdmsClItem.get("code")+" does not allow option "+reqOptions[h]);
+
+				} else if (((String) mdmsClItem.get("type")).equalsIgnoreCase(FSMConstants.CHECK_LIST_MULTI_SELECT)) {
+					for (int h = 0; h < reqOptions.length; h++) {
+						if (!mdmsClOptions.contains(reqOptions[h])) {
+							errorMap.put(FSMErrorConstants.INVALID_CHECKLIST,
+									"Checklist " + mdmsClItem.get("code") + " does not allow option " + reqOptions[h]);
+
 						}
 					}
-					
-				}else if(((String) mdmsClItem.get("type")).equalsIgnoreCase(FSMConstants.CHECK_LIST_DROP_DOWN)) {
+
+				} else if (((String) mdmsClItem.get("type")).equalsIgnoreCase(FSMConstants.CHECK_LIST_DROP_DOWN)) {
 					log.info("CHECK_LIST_DROP_DOWN ");
-					for( int h=0;h<reqOptions.length;h++) {
-						log.info("reqOptions :: "+reqOptions[h]);
-						if(!mdmsClOptions.contains(reqOptions[h])) {
-							errorMap.put(FSMErrorConstants.INVALID_CHECKLIST, "Checklist "+mdmsClItem.get("code")+" does not allow option "+reqOptions[h]);
+					for (int h = 0; h < reqOptions.length; h++) {
+						log.info("reqOptions :: " + reqOptions[h]);
+						if (!mdmsClOptions.contains(reqOptions[h])) {
+							errorMap.put(FSMErrorConstants.INVALID_CHECKLIST,
+									"Checklist " + mdmsClItem.get("code") + " does not allow option " + reqOptions[h]);
 						}
 					}
-					
-				}
-				else {
+
+				} else {
 					errorMap.put(FSMErrorConstants.INVALID_CHECKLIST, " Value provided is not checklist options.");
 				}
-			}else{
-				errorMap.put(FSMErrorConstants.INVALID_CHECKLIST, " Required CheckList "+mdmsClItem.get("code")+ " is not answered ");
+			} else {
+				errorMap.put(FSMErrorConstants.INVALID_CHECKLIST,
+						" Required CheckList " + mdmsClItem.get("code") + " is not answered ");
 			}
 		});
-		
+
 		if (!errorMap.isEmpty())
 			throw new CustomException(errorMap);
 	}
-	
 
 }

@@ -18,6 +18,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+
 /**
  * Capture the Driver information in the system.
  */
@@ -36,21 +38,21 @@ public class Driver {
 
 	@JsonProperty("tenantId")
 	@SafeHtml
-	@Size(max = 64)
+	@Size(max=64)
 	private String tenantId = null;
 
 	@JsonProperty("name")
 	@SafeHtml
-	@Size(max = 128)
+	@Size(max=128)
 	private String name = null;
 
 	@JsonProperty("owner")
 	@Valid
 	private User owner = null;
-
+	
 	@JsonProperty("ownerId")
-	@SafeHtml
-	@Size(max = 64)
+	@SafeHtml  
+	@Size(max=64)
 	private String ownerId = null;
 
 	@JsonProperty("additionalDetails")
@@ -59,20 +61,22 @@ public class Driver {
 	@SafeHtml
 	@JsonProperty("description")
 	private String description = null;
-
+	
 	@SafeHtml
 	@JsonProperty("licenseNumber")
 	private String licenseNumber = null;
-
+	
 	@JsonProperty("vendor")
 	@Valid
 	private Vendor vendor = null;
-
+	
 	/**
 	 * Inactive records will be consider as soft deleted
 	 */
 	public enum StatusEnum {
-		ACTIVE("ACTIVE"), INACTIVE("INACTIVE"), DISABLED("DISABLED");
+		ACTIVE("ACTIVE"),
+		INACTIVE("INACTIVE"),
+		DISABLED("DISABLED");
 
 		private String value;
 
@@ -83,7 +87,7 @@ public class Driver {
 		@Override
 		@JsonValue
 		public String toString() {
-
+		
 			return String.valueOf(value);
 		}
 
@@ -103,7 +107,7 @@ public class Driver {
 
 	@JsonProperty("auditDetails")
 	private AuditDetails auditDetails = null;
-
+	
 	@JsonProperty("vendorDriverStatus")
 	private StatusEnum vendorDriverStatus = null;
 

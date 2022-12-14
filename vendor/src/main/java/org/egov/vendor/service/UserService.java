@@ -91,8 +91,7 @@ public class UserService {
 					if (isRoleAvailale(userDetailResponse.getUser().get(i), config.getDsoRole(),
 							vendor.getTenantId()) == Boolean.TRUE) {
 						foundOwner = userDetailResponse.getUser().get(i);
-						// throw new CustomException(VendorErrorConstants.INVALID_OWNER_ERROR, "Vendor
-						// already exists with this mobile No");
+						//throw new CustomException(VendorErrorConstants.INVALID_OWNER_ERROR, "Vendor already exists with this mobile No");
 
 					}
 				}
@@ -153,60 +152,63 @@ public class UserService {
 		List<Driver> drivers = vendor.getDrivers();
 		List<Driver> newDrivers = new ArrayList<Driver>();
 		HashMap<String, String> errorMap = new HashMap<String, String>();
-		drivers.forEach(driver -> {
 
-			UserDetailResponse userDetailResponse = null;
+		if (!CollectionUtils.isEmpty(drivers)) {
+			drivers.forEach(driver -> {
 
-			if (driver.getOwner() != null && driver.getOwner().getMobileNumber() != null) {
+				UserDetailResponse userDetailResponse = null;
 
-				userDetailResponse = userExists(driver.getOwner(), requestInfo);
-				User foundDriver = null;
-				if (userDetailResponse != null && !CollectionUtils.isEmpty(userDetailResponse.getUser())) {
+				if (driver.getOwner() != null && driver.getOwner().getMobileNumber()!=null) {
 
-					for (int i = 0; i < userDetailResponse.getUser().size(); i++) {
+					userDetailResponse = userExists(driver.getOwner(), requestInfo);
+					User foundDriver = null;
+					if (userDetailResponse != null && !CollectionUtils.isEmpty(userDetailResponse.getUser())) {
 
-						if (isRoleAvailale(userDetailResponse.getUser().get(i), config.getDsoDriver(),
-								vendor.getTenantId()) == Boolean.TRUE) {
-							foundDriver = userDetailResponse.getUser().get(i);
-						}
-					}
+						for (int i = 0; i < userDetailResponse.getUser().size(); i++) {
 
-					if (foundDriver == null) {
-						foundDriver = userDetailResponse.getUser().get(0);
-						foundDriver.getRoles().add(getRolObj(config.getDsoDriver(), config.getDsoDriverRoleName()));
-						UserRequest userRequest = UserRequest.builder().user(foundDriver).requestInfo(requestInfo)
-								.build();
-						StringBuilder uri = new StringBuilder();
-						uri.append(config.getUserHost()).append(config.getUserContextPath())
-								.append(config.getUserUpdateEndpoint());
-						UserDetailResponse userResponse = ownerCall(userRequest, uri);
-						if (userResponse != null || !CollectionUtils.isEmpty(userResponse.getUser())) {
-							foundDriver = userResponse.getUser().get(0);
-						} else {
-							errorMap.put(VendorErrorConstants.INVALID_DRIVER_ERROR,
-									"Unable to add Driver role to the existing user !");
+							if (isRoleAvailale(userDetailResponse.getUser().get(i), config.getDsoDriver(),
+									vendor.getTenantId()) == Boolean.TRUE) {
+								foundDriver = userDetailResponse.getUser().get(i);
+							}
 						}
 
+						if (foundDriver == null) {
+							foundDriver = userDetailResponse.getUser().get(0);
+							foundDriver.getRoles().add(getRolObj(config.getDsoDriver(), config.getDsoDriverRoleName()));
+							UserRequest userRequest = UserRequest.builder().user(foundDriver).requestInfo(requestInfo)
+									.build();
+							StringBuilder uri = new StringBuilder();
+							uri.append(config.getUserHost()).append(config.getUserContextPath())
+									.append(config.getUserUpdateEndpoint());
+							UserDetailResponse userResponse = ownerCall(userRequest, uri);
+							if (userResponse != null || !CollectionUtils.isEmpty(userResponse.getUser())) {
+								foundDriver = userResponse.getUser().get(0);
+							} else {
+								errorMap.put(VendorErrorConstants.INVALID_DRIVER_ERROR,
+										"Unable to add Driver role to the existing user !");
+							}
+
+						}
+
+					} else {
+						foundDriver = createDriver(driver.getOwner(), requestInfo);
 					}
+					driver.setOwner(foundDriver);
+					//foundDriver.setVendorDriverStatus(driver.getVendorDriverStatus());
+					
+					newDrivers.add(driver);
 
 				} else {
-					foundDriver = createDriver(driver.getOwner(), requestInfo);
+					log.debug("MobileNo is not existed in Application.");
+					errorMap.put(VendorErrorConstants.INVALID_DRIVER_ERROR,
+							"MobileNo is mandatory for Driver " + driver.toString());
 				}
-
-				driver.setOwner(foundDriver);
-				// foundDriver.setVendorDriverStatus(driver.getVendorDriverStatus());
-
-				newDrivers.add(driver);
-
-			} else {
-				log.debug("MobileNo is not existed in Application.");
-				errorMap.put(VendorErrorConstants.INVALID_DRIVER_ERROR,
-						"MobileNo is mandatory for Driver " + driver.toString());
+			});
+			vendor.setDrivers(newDrivers);
+			
+			if (!errorMap.isEmpty()) {
+				throw new CustomException(errorMap);
 			}
-		});
-		vendor.setDrivers(newDrivers);
-		if (!errorMap.isEmpty()) {
-			throw new CustomException(errorMap);
 		}
 
 	}

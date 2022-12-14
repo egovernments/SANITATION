@@ -116,7 +116,16 @@ public class NotificationUtil {
 				}
 				
 				if (message.contains("{AMOUNT_TO_BE_PAID}")) {
-					BigDecimal amount = getAmountToBePaid(fsmRequest.getRequestInfo(), fsmRequest.getFsm());
+					BigDecimal amount ;
+					if (fsm.getAdvanceAmount() != null
+							&& fsm.getApplicationStatus().equalsIgnoreCase(FSMConstants.WF_STATUS_PENDING_APPL_FEE_PAYMENT)) {
+						amount = fsm.getAdvanceAmount();
+					}
+						
+					else {
+						amount = getAmountToBePaid(fsmRequest.getRequestInfo(), fsmRequest.getFsm());
+					}
+						
 					message = message.replace("{AMOUNT_TO_BE_PAID}", amount.toString());
 				}
 				if (message.contains("{DSO_MOBILE_NUMBER}") && vendor != null) {
@@ -168,6 +177,7 @@ public class NotificationUtil {
 				if(message.contains("{APPLICATION_ID}") ) {
 					message = message.replace("{APPLICATION_ID}", fsm.getApplicationNo());
 				}
+
 				
 				if (message.contains("{RECEIPT_LINK}") ) {
 

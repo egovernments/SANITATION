@@ -6,6 +6,7 @@ import java.util.TimeZone;
 
 import org.egov.fsm.config.FSMConfiguration;
 import org.egov.fsm.web.model.FSMSearchCriteria;
+import org.egov.fsm.web.model.vehicle.trip.VehicleTripDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -20,19 +21,22 @@ public class FSMQueryBuilder {
 	private static final String Query = "select count(*) OVER() AS full_count,fsm.*,fsm_address.*,fsm_geo.*,fsm_pit.*,fsm.id as fsm_id, fsm.createdby as fsm_createdby,"
 			+ "  fsm.lastmodifiedby as fsm_lastmodifiedby, fsm.createdtime as fsm_createdtime, fsm.lastmodifiedtime as fsm_lastmodifiedtime,"
 			+ "	 fsm.additionaldetails,fsm_address.id as fsm_address_id,fsm_geo.id as fsm_geo_id,"
-			+ "	 fsm_pit.id as fsm_pit_id, fsm_pit.additionalDetails as fsm_pit_additionalDetails" + "	 FROM eg_fsm_application fsm"
+			+ "	 fsm_pit.id as fsm_pit_id, fsm_pit.additionalDetails as fsm_pit_additionalDetails"
+			+ "	 FROM eg_fsm_application fsm"
 			+ "	 INNER JOIN   eg_fsm_address fsm_address on fsm_address.fsm_id = fsm.id"
 			+ "	 LEFT OUTER JOIN  eg_fsm_geolocation fsm_geo on fsm_geo.address_id = fsm_address.id"
 			+ "	 LEFT OUTER JOIN  eg_fsm_pit_detail fsm_pit on fsm_pit.fsm_id = fsm.id";
 
 	private final String paginationWrapper = "{} {orderby} {pagination}";
-	
-	public static final String GET_PERIODIC_ELGIABLE_APPLICATIONS="select applicationno from eg_fsm_application ";
 
-	public static final String GET_UNIQUE_TENANTS="select distinct(tenantid) from eg_fsm_application";
+	public static final String GET_PERIODIC_ELGIABLE_APPLICATIONS = "select applicationno from eg_fsm_application ";
 
-	public static final String GET_APPLICATION_LIST="select applicationno from eg_fsm_application where oldapplicationno=? and tenantid=?";
-	
+	public static final String GET_UNIQUE_TENANTS = "select distinct(tenantid) from eg_fsm_application";
+
+	public static final String GET_APPLICATION_LIST = "select applicationno from eg_fsm_application where oldapplicationno=? and tenantid=?";
+
+	public static final String GET_VEHICLE_TRIPS_LIST="SELECT * FROM eg_vehicle_trip_detail WHERE referenceno= ? and status='ACTIVE' order by createdtime desc ";
+
 	public String getFSMSearchQuery(FSMSearchCriteria criteria, String dsoId, List<Object> preparedStmtList) {
 
 		StringBuilder builder = new StringBuilder(Query);
@@ -79,14 +83,14 @@ public class FSMQueryBuilder {
 			addToPreparedStatement(preparedStmtList, ids);
 
 		}
-		
-		if (criteria.getApplicationType()!=null) {
+
+		if (criteria.getApplicationType() != null) {
 			addClauseIfRequired(preparedStmtList, builder);
 			builder.append(" fsm.applicationType=? ");
 			preparedStmtList.add(criteria.getApplicationType());
 
 		}
-		
+
 		List<String> oldApplicationNo = criteria.getOldApplicationNos();
 		if (!CollectionUtils.isEmpty(oldApplicationNo)) {
 			addClauseIfRequired(preparedStmtList, builder);
@@ -96,12 +100,12 @@ public class FSMQueryBuilder {
 		}
 
 		if (criteria.getFromDate() != null && criteria.getToDate() != null) {
-			
+
 			Calendar fromDate = Calendar.getInstance(TimeZone.getDefault());
 			fromDate.setTimeInMillis(criteria.getFromDate());
-			fromDate.set(Calendar.HOUR_OF_DAY,0);
-			fromDate.set(Calendar.MINUTE,0);
-			fromDate.set(Calendar.SECOND,0);
+			fromDate.set(Calendar.HOUR_OF_DAY, 0);
+			fromDate.set(Calendar.MINUTE, 0);
+			fromDate.set(Calendar.SECOND, 0);
 
 			Calendar toDate = Calendar.getInstance(TimeZone.getDefault());
 			toDate.setTimeInMillis(criteria.getToDate());
@@ -110,13 +114,11 @@ public class FSMQueryBuilder {
 			toDate.set(Calendar.SECOND, 59);
 			toDate.set(Calendar.MILLISECOND, 0);
 
-			
-			
 			addClauseIfRequired(preparedStmtList, builder);
 			builder.append(" fsm.createdtime BETWEEN ").append(fromDate.getTimeInMillis()).append(" AND ")
 					.append(toDate.getTimeInMillis());
 		}
-		
+
 		List<String> ownerIds = criteria.getOwnerIds();
 		if (!CollectionUtils.isEmpty(ownerIds)) {
 			addClauseIfRequired(preparedStmtList, builder);
@@ -253,17 +255,29 @@ public class FSMQueryBuilder {
 	private String addPaginationClause(StringBuilder builder, List<Object> preparedStmtList,
 			FSMSearchCriteria criteria) {
 
-		if (criteria.getLimit()!=null && criteria.getLimit() != 0) {
-			builder.append("and fsm.id in (select id from eg_fsm_application where tenantid= ? order by id offset ? limit ?)");
+		if (criteria.getLimit() != null && criteria.getLimit() != 0) {
+			builder.append(
+					"and fsm.id in (select id from eg_fsm_application where tenantid= ? order by id offset ? limit ?)");
 			preparedStmtList.add(criteria.getTenantId());
 			preparedStmtList.add(criteria.getOffset());
 			preparedStmtList.add(criteria.getLimit());
 
-			 addOrderByClause(builder, criteria);
+			addOrderByClause(builder, criteria);
 
 		} else {
-			 addOrderByClause(builder, criteria);
+			addOrderByClause(builder, criteria);
 		}
 		return builder.toString();
 	}
+
+	public String getTripDetailSarchQuery(String referenceNumber, int numOfRecords, List<Object> preparedStmtList) {
+		StringBuilder builder = new StringBuilder(GET_VEHICLE_TRIPS_LIST);
+		preparedStmtList.add(referenceNumber);
+		if(numOfRecords !=0) {
+			builder.append("fetch first ? rows only");
+			preparedStmtList.add(numOfRecords);
+		}
+		return builder.toString();
+	}
+
 }

@@ -62,6 +62,7 @@ public class Vendor {
 	@Valid
 	private List<Driver> drivers = null;
 
+
 	@JsonProperty("additionalDetails")
 	private Object additionalDetails = null;
 

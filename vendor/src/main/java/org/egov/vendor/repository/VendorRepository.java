@@ -47,17 +47,18 @@ public class VendorRepository {
 	public void update(VendorRequest vendorRequest) {
 		producer.push(configuration.getUpdateTopic(), vendorRequest);
 	}
-
-
+	
 	public void updateVendorVehicleDriver(VendorRequest vendorRequest) {
 		producer.push(configuration.getSaveVendorVehicleDriverTopic(), vendorRequest);
 	}
-
+	
 	public VendorResponse getVendorData(VendorSearchCriteria vendorSearchCriteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = vendorQueryBuilder.getVendorSearchQuery(vendorSearchCriteria, preparedStmtList);
 		List<Vendor> vendorData = jdbcTemplate.query(query, preparedStmtList.toArray(), vendorrowMapper);
+		//VehicleResponse response = VehicleResponse.builder().vehicle(vehicles).totalCount(Integer.valueOf(rowMapper.getFullCount())).build();
 		VendorResponse response= VendorResponse.builder().vendor(vendorData).totalCount(Integer.valueOf(vendorrowMapper.getFullCount())).build();
+		
 		System.out.println("query is " + query);
 		return response;
 	}
@@ -97,6 +98,7 @@ public class VendorRepository {
 				preparedStmtList.toArray(), String.class);
 		return vendorIds;
 	}
+	
 
 	public List<String> fetchVendorIds(@Valid VendorSearchCriteria criteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
@@ -131,3 +133,4 @@ public class VendorRepository {
 	}
 
 }
+ 

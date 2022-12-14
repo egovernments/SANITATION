@@ -4,6 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.egov.fsm.web.model.AuditDetails;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -98,5 +99,8 @@ public class VehicleTripDetail {
 
 	  @JsonProperty("auditDetails")
 	  private AuditDetails auditDetails = null;
+	 
+	  @JsonProperty("trip_id")
+	  private String trip_id = null;
 	  
 }

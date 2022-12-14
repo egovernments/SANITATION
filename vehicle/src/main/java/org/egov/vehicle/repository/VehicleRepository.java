@@ -69,10 +69,11 @@ public class VehicleRepository {
 			VehicleResponse response = VehicleResponse.builder().vehicle(vehicles).totalCount(Integer.valueOf(rowMapper.getFullCount())).build();
 			return response;
 		}
-
+		
 		public Integer getVehicleCount(VehicleRequest vehicleRequest, String status) {
 			List<Object> preparedStmtList = new ArrayList<>();
 			String query = queryBuilder.vehicleExistsQuery(vehicleRequest, preparedStmtList);
+			preparedStmtList.add(status);
 			Integer count = null;
 			try {
 				count = jdbcTemplate.queryForObject(query, preparedStmtList.toArray(), Integer.class);
@@ -82,6 +83,7 @@ public class VehicleRepository {
 			return count;
 		}
 
+		
 		public List<String> fetchVehicleIds(@Valid VehicleSearchCriteria criteria) {
 
 			List<Object> preparedStmtList = new ArrayList<>();

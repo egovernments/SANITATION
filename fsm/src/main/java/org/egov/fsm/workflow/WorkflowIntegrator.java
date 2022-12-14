@@ -87,7 +87,9 @@ public class WorkflowIntegrator {
 		JSONObject obj = new JSONObject();
 		obj.put(BUSINESSIDKEY, fsm.getApplicationNo());
 		obj.put(TENANTIDKEY, wfTenantId);
-		if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY.equalsIgnoreCase(
+		if(fsm.getAdvanceAmount()!=null)
+			obj.put(BUSINESSSERVICEKEY, FSMConstants.FSM_ADVANCE_PAY_BusinessService);
+		else if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY.equalsIgnoreCase(
 				fsmRequest.getFsm().getPaymentPreference())) 
 			obj.put(BUSINESSSERVICEKEY, FSMConstants.FSM_POST_PAY_BusinessService);	
 		else

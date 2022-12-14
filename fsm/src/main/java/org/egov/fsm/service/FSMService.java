@@ -17,9 +17,10 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
+import org.egov.fsm.billing.models.BillResponse;
 import org.egov.fsm.config.FSMConfiguration;
-import org.egov.fsm.producer.Producer;
 import org.egov.fsm.repository.FSMRepository;
+import org.egov.fsm.service.notification.NotificationService;
 import org.egov.fsm.util.FSMAuditUtil;
 import org.egov.fsm.util.FSMConstants;
 import org.egov.fsm.util.FSMErrorConstants;
@@ -35,7 +36,6 @@ import org.egov.fsm.web.model.PeriodicApplicationRequest;
 import org.egov.fsm.web.model.Workflow;
 import org.egov.fsm.web.model.dso.Vendor;
 import org.egov.fsm.web.model.dso.VendorSearchCriteria;
-import org.egov.fsm.web.model.notification.SMSRequest;
 import org.egov.fsm.web.model.user.User;
 import org.egov.fsm.web.model.user.UserDetailResponse;
 import org.egov.fsm.web.model.vehicle.Vehicle;
@@ -48,7 +48,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.egov.fsm.service.notification.NotificationService;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -107,9 +106,12 @@ public class FSMService {
 
 	@Autowired
 	private FSMRepository repository;
-	
+
 	@Autowired
 	private NotificationService notificationService;
+
+	@Autowired
+	BillingService billingService;
 
 	public FSM create(FSMRequest fsmRequest) {
 		RequestInfo requestInfo = fsmRequest.getRequestInfo();
@@ -164,7 +166,10 @@ public class FSMService {
 		List<FSM> fsms = fsmResponse.getFsm();
 
 		String businessServiceName = null;
-		if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
+		if (fsm.getAdvanceAmount() != null)
+			businessServiceName = FSMConstants.FSM_ADVANCE_PAY_BusinessService;
+		else if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
+				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
 			businessServiceName = FSMConstants.FSM_POST_PAY_BusinessService;
 		else
 			businessServiceName = FSMConstants.FSM_BusinessService;
@@ -197,7 +202,8 @@ public class FSMService {
 		}
 
 		if (fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_DSO_ACCEPT)
-				|| fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SCHEDULE)) {
+				|| fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SCHEDULE)
+				|| fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)) {
 			handleDSOAccept(fsmRequest, oldFSM);
 		}
 		/*
@@ -226,14 +232,13 @@ public class FSMService {
 		}
 
 		enrichmentService.enrichFSMUpdateRequest(fsmRequest, mdmsData, oldFSM);
-
 		wfIntegrator.callWorkFlow(fsmRequest);
-
 		enrichmentService.postStatusEnrichment(fsmRequest);
-		
-		notificationService.process(fsmRequest,oldFSM);
+
+		notificationService.process(fsmRequest, oldFSM);
 
 		repository.update(fsmRequest, workflowService.isStateUpdatable(fsm.getApplicationStatus(), businessService));
+
 		return fsmRequest.getFsm();
 	}
 
@@ -323,14 +328,26 @@ public class FSMService {
 			fsmRequest.getWorkflow().setAssignes(uuids);
 		}
 
-		if (fsmRequest.getFsm().getPaymentPreference() != null && !(FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
-				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))) {
-			vehicleTripService.scheduleVehicleTrip(fsmRequest);
+		if (fsmRequest.getFsm().getAdvanceAmount() == null && fsmRequest.getFsm().getPaymentPreference() != null
+
+				&& !(FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
+						.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))) {
+			vehicleTripService.scheduleVehicleTrip(fsmRequest, null);
+
 		} else if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
 				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
 				&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SCHEDULE)) {
 			calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
-			vehicleTripService.scheduleVehicleTrip(fsmRequest);
+			vehicleTripService.scheduleVehicleTrip(fsmRequest, oldFSM);
+
+		}
+		if (fsmRequest.getFsm().getPaymentPreference() != null
+				&& FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
+						.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
+				&& fsmRequest.getFsm().getAdvanceAmount() != null
+				&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)) {
+			calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
+			vehicleTripService.scheduleVehicleTrip(fsmRequest, oldFSM);
 		}
 
 	}
@@ -398,13 +415,27 @@ public class FSMService {
 		fsmRequest.getWorkflow()
 				.setAssignes(userDetailResponse.getUser().stream().map(User::getUuid).collect(Collectors.toList()));
 
-		if (fsmRequest.getFsm().getPaymentPreference() != null && !(FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
-				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))) {
+		if (fsmRequest.getFsm().getPaymentPreference() != null
+				&& !(FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
+						.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
+				&& fsmRequest.getFsm().getAdvanceAmount() == null) {
 			vehicleTripService.vehicleTripReadyForDisposal(fsmRequest);
 
-		} else if (fsmRequest.getFsm().getPaymentPreference() != null && (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
-				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))) {
+		} else if (fsmRequest.getFsm().getPaymentPreference() != null
+				&& (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
+						.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
+				|| (FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
+						.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
+						&& fsmRequest.getFsm().getAdvanceAmount() != null)) {
+
 			vehicleTripService.updateVehicleTrip(fsmRequest);
+		}
+		RequestInfo requestInfo = fsmRequest.getRequestInfo();
+		BillResponse billResponse = billingService.fetchBill(fsm, requestInfo);
+		log.info("BillResponse from Service", billResponse);
+		if (billResponse != null && billResponse.getBill().size() > 0) {
+			throw new CustomException(FSMErrorConstants.BILL_IS_PENDING,
+					" Can not close the application since bill amount is pending.");
 		}
 	}
 
@@ -475,7 +506,6 @@ public class FSMService {
 						.build();
 
 				Vendor dso = dsoService.getVendor(vendorSearchCriteria, requestInfo);
-
 				if (dso != null && org.apache.commons.lang3.StringUtils.isNotEmpty(dso.getId())) {
 					dsoId = dso.getId();
 				}

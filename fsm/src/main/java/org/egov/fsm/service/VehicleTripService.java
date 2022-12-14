@@ -7,15 +7,18 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.egov.fsm.config.FSMConfiguration;
+import org.egov.fsm.repository.FSMRepository;
 import org.egov.fsm.repository.ServiceRequestRepository;
 import org.egov.fsm.util.FSMConstants;
 import org.egov.fsm.util.FSMErrorConstants;
+import org.egov.fsm.web.model.AuditDetails;
 import org.egov.fsm.web.model.FSM;
 import org.egov.fsm.web.model.FSMRequest;
 import org.egov.fsm.web.model.RequestInfoWrapper;
 import org.egov.fsm.web.model.Workflow;
 import org.egov.fsm.web.model.vehicle.trip.VehicleTrip;
 import org.egov.fsm.web.model.vehicle.trip.VehicleTripDetail;
+import org.egov.fsm.web.model.vehicle.trip.VehicleTripDetail.StatusEnum;
 import org.egov.fsm.web.model.vehicle.trip.VehicleTripRequest;
 import org.egov.fsm.web.model.vehicle.trip.VehicleTripResponse;
 import org.egov.tracer.model.CustomException;
@@ -23,6 +26,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +43,10 @@ public class VehicleTripService {
 	@Autowired
 	private ServiceRequestRepository serviceRequestRepository;
 
-	public void scheduleVehicleTrip(FSMRequest fsmRequest) {
+	@Autowired
+	private FSMRepository fsmRepository;
+
+	public void scheduleVehicleTrip(FSMRequest fsmRequest, FSM oldFsmResult) {
 
 //		SAN-1024: Commenting out this code as now a vehicle can have multiple trips assigned from different applications waiting for 
 		// disposal at the same time
@@ -55,58 +62,122 @@ public class VehicleTripService {
 //			}
 //
 //		}
+
 		FSM fsm = fsmRequest.getFsm();
-		StringBuilder createUri = new StringBuilder(config.getVehicleHost()).append(config.getVehicleTripContextPath())
-				.append(config.getVehicleTripCreateEndpoint());
-		org.egov.common.contract.request.User tripOwner = org.egov.common.contract.request.User.builder().build();
-		BeanUtils.copyProperties(fsm.getDso().getOwner(), tripOwner);
+		boolean increaseTrip = false;
+		boolean tripCurrentEqualstoPreviousTrip = false;
+		Integer remainingNumberOfTrips = fsm.getNoOfTrips();
+		Integer oldNumberOfTrips = 0;
 
-		List<VehicleTrip> vehicleTripsList = new ArrayList<VehicleTrip>();
-		int numberOfTrips = fsm.getNoOfTrips();
-		while (numberOfTrips > 0) {
-			numberOfTrips--;
-			VehicleTrip vehicleTrip = new VehicleTrip();
-			VehicleTripDetail tripDetail = new VehicleTripDetail();
-			if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
-					.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
-					&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SCHEDULE)) {
-
-				vehicleTrip = VehicleTrip.builder().businessService(FSMConstants.VEHICLETRIP_BUSINESSSERVICE_NAME)
-						.tenantId(fsm.getTenantId()).tripOwner(tripOwner).vehicle(fsm.getVehicle()).build();
-				tripDetail = VehicleTripDetail.builder().referenceNo(fsm.getApplicationNo())
-						.referenceStatus(FSMConstants.WF_DISPOSAL_IN_PROGRESS).tenantId(fsm.getTenantId())
-						.volume(Double.valueOf(fsmRequest.getFsm().getVehicleCapacity()))
-						.itemStartTime(Calendar.getInstance().getTimeInMillis())
-						.itemEndTime(Calendar.getInstance().getTimeInMillis() + 100000).build();
-			} else {
-				vehicleTrip = VehicleTrip.builder().businessService(FSMConstants.VEHICLETRIP_BUSINESSSERVICE_NAME)
-						.tenantId(fsm.getTenantId()).tripOwner(tripOwner).vehicle(fsm.getVehicle()).build();
-				tripDetail = VehicleTripDetail.builder().referenceNo(fsm.getApplicationNo())
-						.referenceStatus(fsm.getApplicationStatus()).tenantId(fsm.getTenantId())
-						.volume(fsm.getWasteCollected()).build();
-			}
-
-			List<VehicleTripDetail> tripDetails = new ArrayList<VehicleTripDetail>();
-			tripDetails.add(tripDetail);
-			vehicleTrip.setTripDetails(tripDetails);
-			vehicleTripsList.add(vehicleTrip);
-			log.debug(" prepared request for vehicleTripsList ::" + vehicleTripsList);
+		if (oldFsmResult == null) {
+			oldNumberOfTrips = 0;
+			increaseTrip = true;
 		}
 
+		else {
+			increaseTrip = true;
+			oldNumberOfTrips = oldFsmResult.getNoOfTrips();
+		}
+		List<VehicleTripDetail> vehicleTripDetails = new ArrayList<VehicleTripDetail>();
+		if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
+				&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SCHEDULE)) {
+			increaseTrip = true;
+			remainingNumberOfTrips = fsm.getNoOfTrips();
+		} else if (FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
+				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
+				&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)
+				&& fsmRequest.getFsm().getAdvanceAmount() != null) {
+
+			vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0);
+			log.info("vehicleTripDetails :: " + vehicleTripDetails.size());
+			if (vehicleTripDetails.size() > 0 && oldNumberOfTrips < fsm.getNoOfTrips()) {
+				remainingNumberOfTrips = fsm.getNoOfTrips() - oldNumberOfTrips;
+				increaseTrip = true;
+				// removeReducedTrips="INACTIVE";
+			} else if (vehicleTripDetails.size() > 0 && oldNumberOfTrips > fsm.getNoOfTrips()) {
+				remainingNumberOfTrips = oldNumberOfTrips - fsm.getNoOfTrips();
+				increaseTrip = false;
+
+			} else if (vehicleTripDetails.size() > 0 && oldNumberOfTrips == fsm.getNoOfTrips()) {
+				remainingNumberOfTrips = 0;
+				increaseTrip = true;
+			} else if (vehicleTripDetails.size() == 0 && oldNumberOfTrips == fsm.getNoOfTrips()) {
+				remainingNumberOfTrips = fsm.getNoOfTrips();
+				increaseTrip = true;
+			} else if (vehicleTripDetails.size() == 0 && oldNumberOfTrips > fsm.getNoOfTrips()) {
+				remainingNumberOfTrips = fsm.getNoOfTrips();
+				increaseTrip = true;
+			}
+		}
+		log.debug("remainingNumberOfTrips :: " + remainingNumberOfTrips + " increaseTrip ::" + increaseTrip);
 		try {
-			if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
-					.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
-					&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SCHEDULE)) {
+			if (remainingNumberOfTrips != 0 && increaseTrip) {
+				StringBuilder createUri = new StringBuilder(config.getVehicleHost())
+						.append(config.getVehicleTripContextPath()).append(config.getVehicleTripCreateEndpoint());
+				org.egov.common.contract.request.User tripOwner = org.egov.common.contract.request.User.builder()
+						.build();
+				BeanUtils.copyProperties(fsm.getDso().getOwner(), tripOwner);
+				List<VehicleTrip> vehicleTripsList = new ArrayList<VehicleTrip>();
+				// int numberOfTrips = fsm.getNoOfTrips();
+				while (remainingNumberOfTrips > 0) {
+					remainingNumberOfTrips--;
+					VehicleTrip vehicleTrip = VehicleTrip.builder()
+							.businessService(FSMConstants.VEHICLETRIP_BUSINESSSERVICE_NAME).tenantId(fsm.getTenantId())
+							.tripOwner(tripOwner).vehicle(fsm.getVehicle()).build();
+					VehicleTripDetail tripDetail = VehicleTripDetail.builder().referenceNo(fsm.getApplicationNo())
+							.referenceStatus(FSMConstants.WF_DISPOSAL_IN_PROGRESS).tenantId(fsm.getTenantId())
+							.volume(Double.valueOf(fsmRequest.getFsm().getVehicleCapacity()))
+							.itemStartTime(Calendar.getInstance().getTimeInMillis())
+							.itemEndTime(Calendar.getInstance().getTimeInMillis() + 100000).build();
+					List<VehicleTripDetail> tripDetails = new ArrayList<VehicleTripDetail>();
+					tripDetails.add(tripDetail);
+					vehicleTrip.setTripDetails(tripDetails);
+					vehicleTripsList.add(vehicleTrip);
+				}
+				VehicleTripResponse vehicleTripResponse = new VehicleTripResponse();
 
-				VehicleTripRequest tripRequest = VehicleTripRequest.builder().vehicleTrip(vehicleTripsList)
-						.requestInfo(fsmRequest.getRequestInfo())
-						.workflow(Workflow.builder().action(FSMConstants.TRIP_READY_FOR_DISPOSAL).build()).build();
+				log.debug("WORKFLOW ACTION==> " + fsmRequest.getWorkflow().getAction());
+				if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
+						.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
+						&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SCHEDULE)
+						|| FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
+								.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
+								&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)
+								&& fsmRequest.getFsm().getAdvanceAmount() != null) {
+					log.debug("Vehicle Trip Request call ::" + vehicleTripResponse);
+					VehicleTripRequest tripRequest = VehicleTripRequest.builder().vehicleTrip(vehicleTripsList)
+							.requestInfo(fsmRequest.getRequestInfo())
+							.workflow(Workflow.builder().action(FSMConstants.TRIP_READY_FOR_DISPOSAL).build()).build();
+					serviceRequestRepository.fetchResult(createUri, tripRequest);
 
-				serviceRequestRepository.fetchResult(createUri, tripRequest);
+				}
 
-			} else {
-				serviceRequestRepository.fetchResult(createUri, VehicleTripRequest.builder()
-						.vehicleTrip(vehicleTripsList).requestInfo(fsmRequest.getRequestInfo()).build());
+			}
+			if (!increaseTrip) {
+				log.debug("fsmRequest.getWorkflow().getAction()-->" + fsmRequest.getWorkflow().getAction());
+				vehicleTripDetails = null;
+				vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), remainingNumberOfTrips);
+				if (vehicleTripDetails != null && vehicleTripDetails.size() > 0) {
+					List<VehicleTrip> vehicleTripList = new ArrayList<VehicleTrip>();
+					AuditDetails auditDetails = new AuditDetails();
+					Long time = System.currentTimeMillis();
+					for (int i = 0; i < vehicleTripDetails.size(); i++) {
+
+						VehicleTrip vehicleTrip = new VehicleTrip();
+						auditDetails.setLastModifiedBy(fsmRequest.getRequestInfo().getUserInfo().getUuid());
+						auditDetails.setLastModifiedTime(time);
+
+						vehicleTripDetails.get(i).setStatus(StatusEnum.INACTIVE);
+						vehicleTripDetails.get(i).setAuditDetails(auditDetails);
+
+						vehicleTrip.setId(vehicleTripDetails.get(i).getTrip_id());
+						vehicleTrip.setStatus(org.egov.fsm.web.model.vehicle.trip.VehicleTrip.StatusEnum.INACTIVE);
+						vehicleTrip.setTripDetails(vehicleTripDetails);
+						vehicleTrip.setAuditDetails(auditDetails);
+						vehicleTripList.add(vehicleTrip);
+					}
+					fsmRepository.updateVehicleToInActive(vehicleTripList);
+				}
 
 			}
 
@@ -127,6 +198,7 @@ public class VehicleTripService {
 //							+ existingVehicleTrips.get(0).getTripDetails().get(0).getReferenceNo()
 //							+ ", Cannot complete this FSM Application No " + fsmRequest.getFsm().getApplicationNo());
 //		}else {
+
 		List<VehicleTrip> scheduledTrips = getVehicleTrips(fsmRequest, "SCHEDULED", true);
 		if (scheduledTrips == null) {
 			throw new CustomException(FSMErrorConstants.FSM_INVALID_ACTION,
@@ -141,6 +213,7 @@ public class VehicleTripService {
 				scheduledTripDetail.setVolume(fsmRequest.getFsm().getWasteCollected());
 				scheduledTripDetail.setItemStartTime(Calendar.getInstance().getTimeInMillis());
 				scheduledTripDetail.setItemEndTime(Calendar.getInstance().getTimeInMillis() + 100000);
+
 				vehicleTripList.add(scheduledTrip);
 			});
 

@@ -45,6 +45,8 @@ public class DSOService {
 	@Autowired
 	VehicleService vehicleService;
 	
+	//public Vendor getVendor(String dsoId, String tenantId, String ownerId, String mobileNo, String vehicleType,
+	//		String vehicleCapacity, RequestInfo requestInfo) {
 	public Vendor getVendor(VendorSearchCriteria vendorSearchCriteria,RequestInfo requestInfo) {
 		
 		StringBuilder uri = new StringBuilder(config.getVendorHost()).append(config.getVendorContextPath())
@@ -54,12 +56,12 @@ public class DSOService {
 		if(!CollectionUtils.isEmpty(vendorSearchCriteria.getIds())) {
 			
 			uri.append("&ids="+String.join(",",vendorSearchCriteria.getIds())); 
-			
+			//uri.append("&ids=").append(vendorSearchCriteria.getIds());
 		}
 		
 		if(!CollectionUtils.isEmpty(vendorSearchCriteria.getOwnerIds())) {
 			uri.append("&ownerIds="+String.join(",",vendorSearchCriteria.getOwnerIds()));
-			
+			//uri.append("&ownerIds=").append(vendorSearchCriteria.getOwnerIds());
 		}
 		
 		if(!StringUtils.isEmpty(vendorSearchCriteria.getMobileNumber())) {
@@ -102,6 +104,9 @@ public class DSOService {
 				
 		Vendor vendor = this.getVendor(vendorSearchCriteria,fsmRequest.getRequestInfo());
 		
+		// Vendor vendor = this.getVendor(fsm.getDsoId(), fsm.getTenantId(), null, null,
+		// null, null,fsmRequest.getRequestInfo());
+		
 		if(vendor == null) {
 			throw new CustomException(FSMErrorConstants.INVALID_DSO," DSO Does not belong to DSO!");
 		}else {
@@ -126,9 +131,11 @@ public class DSOService {
 			Map<String, Vehicle> vehilceIdMap = vendor.getVehicles().stream().collect(Collectors.toMap(Vehicle::getId,Function.identity()));
 			if(!CollectionUtils.isEmpty(vehilceIdMap) && vehilceIdMap.get(fsm.getVehicleId()) == null ) {
 				throw new CustomException(FSMErrorConstants.INVALID_DSO_VEHICLE," Vehicle Does not belong to DSO!");
-			}
-			else {
+			}else {
+				//log.info("Printing the value of fsm vehicleid: " +  fsm.getVehicleId());
 				Vehicle vehicle = vehilceIdMap.get(fsm.getVehicleId());
+				//log.info("Printing the value of vehicle capacity from fsm: " +  fsm.getVehicleCapacity());
+				//log.info("Printing the value of vehicle capacity from vehicle : " +  vehicle.getTankCapacity());
 				if (vehicle.getTankCapacity()!=null &&
 						(vehicle.getTankCapacity() < Double.valueOf(fsm.getVehicleCapacity()))) {
 					throw new CustomException(FSMErrorConstants.INVALID_DSO_VEHICLE,

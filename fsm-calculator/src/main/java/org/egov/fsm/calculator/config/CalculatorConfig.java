@@ -53,6 +53,14 @@ public class CalculatorConfig {
 
     @Value("${egov.fsm.search.endpoint}")
     private String fsmSearchEndpoint;
+
+
+
+   @Value("${advance.payment.type}")
+   private String advancePaymentType;
+
+   @Value("${cancellation.fee.type}")
+   private String cancellationFeeType;
    
     //MDMS
     @Value("${egov.mdms.host}")
@@ -61,6 +69,7 @@ public class CalculatorConfig {
     @Value("${egov.mdms.search.endpoint}")
     private String mdmsSearchEndpoint;
 
-
+    @Value("${egov.bill.fetch.endpoint}")
+    private String fetchBillEndpoint;
 
 }

@@ -34,9 +34,9 @@ public class VehicleTripRepository {
 	@Autowired
 	private VehicleConfiguration config;
     
-    @Autowired
-	private JdbcTemplate jdbcTemplate;
     
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
     @Autowired
    	private VehicleTripRowMapper mapper;
     

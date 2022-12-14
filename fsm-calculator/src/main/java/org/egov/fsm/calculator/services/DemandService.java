@@ -240,15 +240,13 @@ public class DemandService {
 
             List<DemandDetail> demandDetails = new LinkedList<>();
             BigDecimal minimumPayableAmt = BigDecimal.ZERO;
-            calculation.getTaxHeadEstimates().forEach(taxHeadEstimate -> {
-            		minimumPayableAmt.add(taxHeadEstimate.getEstimateAmount());
-                demandDetails.add(DemandDetail.builder().taxAmount(taxHeadEstimate.getEstimateAmount())
-                        .taxHeadMasterCode(taxHeadEstimate.getTaxHeadCode())
-                        .collectionAmount(BigDecimal.ZERO)
-                        .tenantId(tenantId)
-                        .build());
-            });
-
+            
+			calculation.getTaxHeadEstimates().forEach(taxHeadEstimate -> {
+				minimumPayableAmt.add(taxHeadEstimate.getEstimateAmount());
+				demandDetails.add(DemandDetail.builder().taxAmount(taxHeadEstimate.getEstimateAmount())
+						.taxHeadMasterCode(taxHeadEstimate.getTaxHeadCode()).collectionAmount(BigDecimal.ZERO)
+						.tenantId(tenantId).build());
+			});
 
              addRoundOffTaxHead(calculation.getTenantId(),demandDetails);
 

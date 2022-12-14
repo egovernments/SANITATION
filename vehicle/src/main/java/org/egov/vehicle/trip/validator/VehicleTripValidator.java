@@ -158,7 +158,6 @@ public class VehicleTripValidator {
 					}
 				}
 			}
-
 		});
 
 	}
@@ -194,10 +193,11 @@ public class VehicleTripValidator {
 	}
 
 	public void validateUpdateRecord(VehicleTripRequest request) {
-
+		log.info("request: getWorkflow: action :: "+request.getWorkflow().getAction());
 		// TODO: Below Validation is required while marking the vehicleTrip for
 		// ReadyForDispoal
 		if (request.getWorkflow().getAction().equalsIgnoreCase(VehicleTripConstants.READY_FOR_DISPOSAL)) {
+			log.info("READY_FOR_DISPOSAL::");
 
 			request.getVehicleTrip().forEach(vehicleTrip -> {
 
@@ -218,13 +218,18 @@ public class VehicleTripValidator {
 
 				List<Object> preparedStmtList = new ArrayList<>();
 				String query = queryBuilder.getVehicleLogExistQuery(vehicleTrip.getId(), preparedStmtList);
+				log.info("vehicle Update QUERY :: " + query.toString());
+				log.info("vehicle Trip Ids:: " + vehicleTrip.getId());
+				log.info("vehicle preparedStmtList:: " + preparedStmtList);
 				int vehicleLogCount = vehicleTripRepository.getDataCount(query, preparedStmtList);
+				log.info("vehicleLogCount :: " + vehicleLogCount);
 				if (vehicleLogCount <= 0) {
 					throw new CustomException(VehicleTripConstants.UPDATE_VEHICLELOG_ERROR,
 							"VehicleLog Not found in the System" + request.getVehicleTrip());
 				}
 			});
 		} else if (request.getWorkflow().getAction().equalsIgnoreCase(VehicleTripConstants.DISPOSE)) {
+			log.info("DISPOSE::" + VehicleTripConstants.DISPOSE);
 			ArrayList<String> ids = new ArrayList<String>();
 
 			request.getVehicleTrip().forEach(vehicleTrip -> {
@@ -251,6 +256,7 @@ public class VehicleTripValidator {
 					PlantMapping plantMapping = vehicleTripFSMService.getPlantMapping(request.getRequestInfo(),
 							vehicleTrip.getTenantId(), request.getRequestInfo().getUserInfo().getUuid());
 					if (null != plantMapping && StringUtils.isNotEmpty(plantMapping.getPlantCode())) {
+
 						Map<String, String> additionalDetails = vehicleTrip.getAdditionalDetails() != null
 								? (Map<String, String>) vehicleTrip.getAdditionalDetails()
 								: new HashMap<String, String>();
@@ -260,10 +266,12 @@ public class VehicleTripValidator {
 							additionalDetails.put("plantCode", plantMapping.getPlantCode());
 							vehicleTrip.setAdditionalDetails(additionalDetails);
 						} else {
+
 							ObjectMapper mapper = new ObjectMapper();
 							ObjectNode additionalDtlObjectNode = mapper.createObjectNode();
 							additionalDtlObjectNode.set("plantCode", TextNode.valueOf(plantMapping.getPlantCode()));
 							vehicleTrip.setAdditionalDetails(additionalDtlObjectNode);
+
 						}
 						log.info("FSTP Plant code" + plantMapping.getPlantCode());
 					} else {
@@ -277,6 +285,7 @@ public class VehicleTripValidator {
 
 		} else if (request.getWorkflow().getAction().equalsIgnoreCase(VehicleTripConstants.DECLINEVEHICLE)) {
 			// SAN-800: Added new workflow for Vehicle Trip decline
+			log.info("DECLINEVEHICLE::" + VehicleTripConstants.DECLINEVEHICLE);
 			request.getVehicleTrip().forEach(vehicleTrip -> {
 
 				Map<String, String> additionalDetails = null;
@@ -306,8 +315,10 @@ public class VehicleTripValidator {
 				}
 
 			});
+
 		} else if (VehicleTripConstants.UPDATE_ONLY_VEHICLE_TRIP_RECORD
 				.equalsIgnoreCase(request.getWorkflow().getAction())) {
+			log.info("UPDATE_ONLY_VEHICLE_TRIP_RECORD::" + VehicleTripConstants.UPDATE_ONLY_VEHICLE_TRIP_RECORD);
 			request.getVehicleTrip().forEach(vehicleTrip -> {
 				vehicleTrip.getTripDetails().forEach(tripDetail -> {
 					if (tripDetail.getVolume() == null || tripDetail.getVolume() <= 0) {
@@ -315,7 +326,9 @@ public class VehicleTripValidator {
 								"Invalid Volume for  tripDetails referenceNo: " + tripDetail.getReferenceNo());
 					}
 				});
+
 			});
+
 		}
 	}
 

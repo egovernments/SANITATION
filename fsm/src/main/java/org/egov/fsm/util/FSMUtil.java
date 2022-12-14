@@ -134,7 +134,6 @@ public class FSMUtil {
 		fsmMasterDtls.add(MasterDetail.builder().name(FSMConstants.MDMS_PAYMENT_PREFERENCE).filter(filterCode).build());
 		fsmMasterDtls.add(MasterDetail.builder().name(FSMConstants.MDMS_RECEIVED_PAYMENT).filter(activeFilter).build());
 		
-		
 		ModuleDetail fsmMasterMDtl = ModuleDetail.builder().masterDetails(fsmMasterDtls)
 				.moduleName(FSMConstants.FSM_MODULE_CODE).build();
 		

@@ -1,10 +1,8 @@
 package org.egov.vehicle.trip.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -66,6 +64,7 @@ public class VehicleLogEnrichmentService {
 				tripDetail.setTrip_id(vehicleTrip.getId());
 				tripDetail.setStatus(VehicleTripDetail.StatusEnum.ACTIVE);
 			});
+			
 			if(vehicleTrip.getTripDetails().get(0).getReferenceNo()!=null) {
 				if(vehicleTrip.getTripOwner() != null) {
 					vehicleTrip.setTripOwnerId(vehicleTrip.getTripOwner().getUuid());
@@ -83,12 +82,11 @@ public class VehicleLogEnrichmentService {
 				}else {
 					addVehicle(vehicleTrip);
 				}
-			}
-
+			}		
+			
 		});
 		setIdgenIds(request);
 		
-
 		if (request.getWorkflow() == null) {
 			request.getVehicleTrip().forEach(vehicleTrip -> {
 				if (vehicleTrip.getTripDetails().get(0).getReferenceNo() == null
@@ -98,6 +96,7 @@ public class VehicleLogEnrichmentService {
 					request.setWorkflow(Workflow.builder().action(VehicleTripConstants.ACTION_SCHEDULE).build());
 				}
 			});
+
 		}
 	}
 
