@@ -301,7 +301,7 @@ const ApplicationDetails = (props) => {
                             <CheckPoint
                               keyValue={index}
                               isCompleted={index === 0}
-                              label={t("CS_COMMON_FSM_" + checkpoint.status)}
+                              label={t("CS_COMMON_FSM_" + `${checkpoint.performedAction === "UPDATE" ? "UPDATE_": ""}` + checkpoint.status)}
                               customChild={getTimelineCaptions(checkpoint)}
                             />
                           </React.Fragment>
