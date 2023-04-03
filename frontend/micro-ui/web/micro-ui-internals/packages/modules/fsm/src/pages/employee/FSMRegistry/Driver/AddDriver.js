@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormComposer, Toast } from "@egovernments/digit-ui-react-components";
+import { FormComposer, Toast, Header, InfoIcon } from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
 import DriverConfig from "../../configs/DriverConfig";
 import { useQueryClient } from "react-query";
@@ -92,36 +92,43 @@ const AddDriver = ({ parentUrl, heading }) => {
         queryClient.invalidateQueries("FSM_DRIVER_SEARCH");
         setTimeout(() => {
           closeToast();
-          history.push(`/${window?.contextPath}/employee/fsm/registry`);
+          history.push(`/digit-ui/employee/fsm/registry?selectedTabs=DRIVER`);
         }, 5000);
       },
     });
   };
 
+  const isMobile = window.Digit.Utils.browser.isMobile();
+
   return (
     <React.Fragment>
-      <FormComposer
-        heading={t("ES_FSM_REGISTRY_TITLE_NEW_DRIVER")}
-        isDisabled={!canSubmit}
-        label={t("ES_COMMON_APPLICATION_SUBMIT")}
-        config={Config.filter((i) => !i.hideInEmployee).map((config) => {
-          return {
-            ...config,
-            body: config.body.filter((a) => !a.hideInEmployee),
-          };
-        })}
-        fieldStyle={{ marginRight: 0 }}
-        onSubmit={onSubmit}
-        defaultValues={defaultValues}
-        onFormValueChange={onFormValueChange}
-      />
-      {showToast && (
-        <Toast
-          error={showToast.key === "error" ? true : false}
-          label={t(showToast.key === "success" ? `ES_FSM_${showToast.action}_SUCCESS` : showToast.action)}
-          onClose={closeToast}
+      <div>
+        <Header>{t("ES_FSM_REGISTRY_TITLE_NEW_DRIVER")}</Header>
+      </div>
+      <div style={!isMobile ? { marginLeft: "-15px" } : {}}>
+        <FormComposer
+          isDisabled={!canSubmit}
+          label={t("ES_COMMON_APPLICATION_SUBMIT")}
+          config={Config.filter((i) => !i.hideInEmployee).map((config) => {
+            return {
+              ...config,
+              body: config.body.filter((a) => !a.hideInEmployee),
+            };
+          })}
+          fieldStyle={{ marginRight: 0 }}
+          onSubmit={onSubmit}
+          defaultValues={defaultValues}
+          onFormValueChange={onFormValueChange}
+          noBreakLine={true}
         />
-      )}
+        {showToast && (
+          <Toast
+            error={showToast.key === "error" ? true : false}
+            label={t(showToast.key === "success" ? `ES_FSM_${showToast.action}_SUCCESS` : showToast.action)}
+            onClose={closeToast}
+          />
+        )}
+      </div>
     </React.Fragment>
   );
 };

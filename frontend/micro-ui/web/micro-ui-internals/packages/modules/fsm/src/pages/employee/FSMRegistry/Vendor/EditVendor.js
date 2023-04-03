@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormComposer, Loader, Toast } from "@egovernments/digit-ui-react-components";
+import { FormComposer, Loader, Toast, Header } from "@egovernments/digit-ui-react-components";
 import { useHistory, useParams } from "react-router-dom";
 import VendorConfig from "../../configs/VendorConfig";
 import { useQueryClient } from "react-query";
@@ -62,7 +62,7 @@ const EditVendor = ({ parentUrl, heading }) => {
         relationship: dsoDetails?.dsoDetails?.owner?.relationship,
         selectGender: dsoDetails?.dsoDetails?.owner?.gender,
         dob: dsoDetails?.dsoDetails?.owner?.dob && Digit.DateUtils.ConvertTimestampToDate(dsoDetails?.dsoDetails?.owner?.dob, "yyyy-MM-dd"),
-        emailId: dsoDetails?.dsoDetails?.owner?.emailId,
+        emailId: dsoDetails?.dsoDetails?.owner?.emailId === "abc@egov.com" ? "" : dsoDetails?.dsoDetails?.owner?.emailId,
         correspondenceAddress: dsoDetails?.dsoDetails?.owner?.correspondenceAddress,
         additionalDetails: dsoDetails?.dsoDetails?.additionalDetails?.description,
       };
@@ -89,6 +89,7 @@ const EditVendor = ({ parentUrl, heading }) => {
 
   const onSubmit = (data) => {
     const name = data?.vendorName;
+    const phone = data?.phone;
     const pincode = data?.pincode;
     const street = data?.street?.trim();
     const doorNo = data?.doorNo?.trim();
@@ -141,6 +142,7 @@ const EditVendor = ({ parentUrl, heading }) => {
           gender: gender || dsoDetails.owner?.gender || "OTHER",
           dob: dob,
           emailId: emailId || "abc@egov.com",
+          mobileNumber: phone,
           relationship: dsoDetails.owner?.relationship || "OTHER",
         },
         additionalDetails: {
@@ -160,11 +162,12 @@ const EditVendor = ({ parentUrl, heading }) => {
         queryClient.invalidateQueries("DSO_SEARCH");
         setTimeout(() => {
           closeToast();
-          history.push(`/${window?.contextPath}/employee/fsm/registry`);
+          history.push(`/digit-ui/employee/fsm/registry/vendor-details/${dsoId}`);
         }, 5000);
       },
     });
   };
+  const isMobile = window.Digit.Utils.browser.isMobile();
 
   if (daoDataLoading || Object.keys(defaultValues).length == 0) {
     return <Loader />;
@@ -172,28 +175,33 @@ const EditVendor = ({ parentUrl, heading }) => {
 
   return (
     <React.Fragment>
-      <FormComposer
-        heading={t("ES_FSM_REGISTRY_TITLE_EDIT_VENDOR")}
-        isDisabled={!canSubmit}
-        label={t("ES_COMMON_APPLICATION_SUBMIT")}
-        config={Config.filter((i) => !i.hideInEmployee).map((config) => {
-          return {
-            ...config,
-            body: config.body.filter((a) => !a.hideInEmployee),
-          };
-        })}
-        fieldStyle={{ marginRight: 0 }}
-        onSubmit={onSubmit}
-        defaultValues={defaultValues}
-        onFormValueChange={onFormValueChange}
-      />
-      {showToast && (
-        <Toast
-          error={showToast.key === "error" ? true : false}
-          label={t(showToast.key === "success" ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS` : showToast.action)}
-          onClose={closeToast}
+      <div>
+        <Header>{t("ES_FSM_REGISTRY_TITLE_EDIT_VENDOR")}</Header>
+      </div>
+      <div style={!isMobile ? { marginLeft: "-15px" } : {}}>
+        <FormComposer
+          isDisabled={!canSubmit}
+          label={t("ES_COMMON_APPLICATION_SUBMIT")}
+          config={Config.filter((i) => !i.hideInEmployee).map((config) => {
+            return {
+              ...config,
+              body: config.body.filter((a) => !a.hideInEmployee),
+            };
+          })}
+          fieldStyle={{ marginRight: 0 }}
+          onSubmit={onSubmit}
+          defaultValues={defaultValues}
+          onFormValueChange={onFormValueChange}
+          noBreakLine={true}
         />
-      )}
+        {showToast && (
+          <Toast
+            error={showToast.key === "error" ? true : false}
+            label={t(showToast.key === "success" ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS` : showToast.action)}
+            onClose={closeToast}
+          />
+        )}
+      </div>
     </React.Fragment>
   );
 };

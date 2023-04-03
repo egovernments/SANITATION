@@ -63,6 +63,7 @@ const SelectLandmark = ({ t, config, onSelect, formData, userType }) => {
         onSkip={onSkip}
         t={t}
         forcedError={t(error)}
+        isDisabled={landmark ? false : true}
       ></FormStep>
     </React.Fragment>
   );

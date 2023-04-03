@@ -82,7 +82,7 @@ const MobileInbox = ({
         <div className="filters-container">
           {/* {!isFstpOperator && !isSearch && <ApplicationLinks linkPrefix={parentRoute} isMobile={true} />} */}
           <div style={{ display: "none" }}>
-            <Filter searchParams={searchParams} applications={data} onFilterChange={onFilterChange} type="mobile" />
+            {!isSearch && <Filter searchParams={searchParams} applications={data} onFilterChange={onFilterChange} type="mobile" />}
           </div>
           <ApplicationCard
             t={t}

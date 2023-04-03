@@ -31,6 +31,7 @@ const SelectName = ({ t, config, onSelect, formData = {}, userType, register, er
         type: "tel",
         title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
       },
+      componentInFront: <div className="employee-card-input employee-card-input--front">+91</div>,
       isMandatory: true,
     },
     {
@@ -69,7 +70,8 @@ const SelectName = ({ t, config, onSelect, formData = {}, userType, register, er
                   {t(input.label)}
                   {input.isMandatory ? " * " : null}
                 </CardLabel>
-                <div className="field">
+                <div className="field" style={{display:"flex"}}>
+                  {input.componentInFront ? input.componentInFront : null}
                   <TextInput
                     key={input.name}
                     value={formData && formData[config.key] ? formData[config.key][input.name] : null}

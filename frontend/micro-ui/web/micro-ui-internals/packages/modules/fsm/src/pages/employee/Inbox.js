@@ -19,7 +19,7 @@ const Inbox = ({ parentRoute, isSearch = false, isInbox = false }) => {
   const [shouldSearch, setShouldSearch] = useState(false);
   const [pageOffset, setPageOffset] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [sortParams, setSortParams] = useState([{ id: "createdTime", desc: false }]);
+  const [sortParams, setSortParams] = useState([{ id: "createdTime", desc: true }]);
 
   const searchParamsKey = isInbox ? "fsm/inbox/searchParams" : "fsm/search/searchParams";
   const searchParamsValue = isInbox
@@ -204,7 +204,7 @@ const Inbox = ({ parentRoute, isSearch = false, isInbox = false }) => {
     if (isMobile) {
       return (
         <div>
-          <Header>{t("ES_COMMON_INBOX")}</Header>
+          {!isSearch && <Header>{t("ES_COMMON_INBOX")}</Header>}
           <MobileInbox
             data={isInbox ? applications : data}
             isLoading={isInbox ? isLoading || isIdle : isSearchLoading}

@@ -39,7 +39,7 @@ const popupActionBarStyles = {
   justifyContent: 'space-around'
 }
 
-const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction, actionData }) => {
+const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction, actionData, module }) => {
   const mobileView = Digit.Utils.browser.isMobile() ? true : false;
   const { data: dsoData, isLoading: isDsoLoading, isSuccess: isDsoSuccess, error: dsoError } = Digit.Hooks.fsm.useDsoSearch(tenantId, { limit: '-1', status: 'ACTIVE' });
   const { isLoading, isSuccess, isError, data: applicationData, error } = Digit.Hooks.fsm.useSearch(
@@ -205,7 +205,8 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   useEffect(() => {
     if (isSuccess && isDsoSuccess && applicationData && applicationData.dsoId) {
       const [dso] = dsoData.filter((dso) => dso.id === applicationData.dsoId);
-      const vehicleNoList = dso?.vehicles?.filter((vehicle) => vehicle.capacity == applicationData?.vehicleCapacity);
+      const tempList = dso?.vehicles?.filter((vehicle) => vehicle.capacity == applicationData?.vehicleCapacity);
+      const vehicleNoList = tempList.sort((a,b) => (a.registrationNumber > b.registrationNumber ? 1 : -1 ));
       setVehicleNoList(vehicleNoList);
     }
   }, [isSuccess, isDsoSuccess]);
@@ -381,10 +382,10 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       case "COMPLETE":
       case "COMPLETED":
         setFormValve(true);
-        return setConfig(configCompleteApplication({ t, vehicle, vehicleCapacity: applicationData?.vehicleCapacity, noOfTrips: applicationData?.noOfTrips, applicationCreatedTime: applicationData?.auditDetails?.createdTime, receivedPaymentType: ReceivedPaymentTypeData, action }));
+        return setConfig(configCompleteApplication({ t, vehicle, vehicleCapacity: applicationData?.vehicleCapacity, noOfTrips: applicationData?.noOfTrips, applicationCreatedTime: applicationData?.auditDetails?.createdTime, receivedPaymentType: ReceivedPaymentTypeData, action, module }));
       case "SUBMIT":
       case "FSM_SUBMIT":
-        return history.push(`/${window?.contextPath}/employee/fsm/modify-application/` + applicationNumber);
+        return history.push("/digit-ui/employee/fsm/modify-application/" + applicationNumber);
       case "DECLINE":
       case "DSO_REJECT":
         //declinereason
@@ -444,7 +445,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       case "PAY":
       case "ADDITIONAL_PAY_REQUEST":
       case "FSM_PAY":
-        return history.push(`/${window?.contextPath}/employee/payment/collect/FSM.TRIP_CHARGES/${applicationNumber}`);
+        return history.push(`/digit-ui/employee/payment/collect/FSM.TRIP_CHARGES/${applicationNumber}`);
       case "DECLINEVEHICLE":
         setFormValve(fstpoRejectionReason ? true : false);
         return setConfig(

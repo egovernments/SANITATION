@@ -1,16 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 
-import {
-  Card,
-  DetailsCard,
-  Loader,
-  PopUp,
-  SearchAction,
-} from '@egovernments/digit-ui-react-components';
-import { FilterAction } from '@egovernments/digit-ui-react-components';
-import Filter from './Filter';
-import SearchApplication from './search';
-import SortBy from './SortBy';
+import { Card, DetailsCard, Loader, PopUp, SearchAction } from "@egovernments/digit-ui-react-components";
+import { FilterAction } from "@egovernments/digit-ui-react-components";
+import Filter from "./Filter";
+import SearchApplication from "./search";
+import SortBy from "./SortBy";
 
 export const ApplicationCard = ({
   t,
@@ -29,32 +23,24 @@ export const ApplicationCard = ({
   removeParam,
   filterData,
 }) => {
-  const [type, setType] = useState(isSearch ? 'SEARCH' : '');
+  const [type, setType] = useState(isSearch ? "SEARCH" : "");
   const [popup, setPopup] = useState(isSearch ? true : false);
   const [params, setParams] = useState(searchParams);
   const [_sortparams, setSortParams] = useState(sortParams);
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const state = Digit.ULBService.getStateId();
-  const {
-    data: roleStatuses,
-    isFetched: isRoleStatusFetched,
-  } = Digit.Hooks.fsm.useMDMS(state, 'DIGIT-UI', 'RoleStatusMapping');
+  const { data: roleStatuses, isFetched: isRoleStatusFetched } = Digit.Hooks.fsm.useMDMS(state, "DIGIT-UI", "RoleStatusMapping");
 
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
 
-  const userRoleDetails = roleStatuses?.filter(
-    (roleDetails) =>
-      userRoles.filter((role) => role === roleDetails.userRole)[0]
-  );
+  const userRoleDetails = roleStatuses?.filter((roleDetails) => userRoles.filter((role) => role === roleDetails.userRole)[0]);
 
   const mergedRoleDetails = userRoleDetails?.reduce(
     (merged, details) => ({
       fixed: details?.fixed && merged?.fixed,
-      statuses: [...merged?.statuses, ...details?.statuses].filter(
-        (item, pos, self) => self.indexOf(item) == pos
-      ),
+      statuses: [...merged?.statuses, ...details?.statuses].filter((item, pos, self) => self.indexOf(item) == pos),
       zeroCheck: details?.zeroCheck || merged?.zeroCheck,
     }),
     { statuses: [] }
@@ -70,7 +56,7 @@ export const ApplicationCard = ({
 
   const onSearchPara = (param) => {
     onFilterChange({ ...params, ...param });
-    setType('');
+    setType("");
     setPopup(false);
   };
 
@@ -78,11 +64,11 @@ export const ApplicationCard = ({
     if (type) setPopup(true);
   }, [type]);
 
-  const DSO = Digit.UserService.hasAccess(['FSM_DSO']) || false;
+  const DSO = Digit.UserService.hasAccess(["FSM_DSO"]) || false;
 
   const handlePopupClose = () => {
     setPopup(false);
-    setType('');
+    setType("");
     setParams(searchParams);
     setSortParams(sortParams);
   };
@@ -90,7 +76,7 @@ export const ApplicationCard = ({
   const onSearchSortParams = (d) => {
     setSortParams(d);
     setPopup(false);
-    setType('');
+    setType("");
     onSort(d);
   };
 
@@ -102,10 +88,10 @@ export const ApplicationCard = ({
   if (!data || data?.length === 0) {
     result = (
       <Card style={{ marginTop: 20 }}>
-        {t('CS_MYAPPLICATIONS_NO_APPLICATION')
-          .split('\\n')
+        {t("CS_MYAPPLICATIONS_NO_APPLICATION")
+          .split("\\n")
           .map((text, index) => (
-            <p key={index} style={{ textAlign: 'center' }}>
+            <p key={index} style={{ textAlign: "center" }}>
               {text}
             </p>
           ))}
@@ -116,83 +102,67 @@ export const ApplicationCard = ({
       <DetailsCard
         data={data}
         serviceRequestIdKey={serviceRequestIdKey}
-        linkPrefix={
-          linkPrefix
-            ? linkPrefix
-            : DSO
-            ? `/${window?.contextPath}/employee/fsm/application-details/`
-            : `/${window?.contextPath}/employee/fsm/`
-        }
+        linkPrefix={linkPrefix ? linkPrefix : DSO ? "/digit-ui/employee/fsm/application-details/" : "/digit-ui/employee/fsm/"}
       />
     );
   }
 
   return (
     <React.Fragment>
-      <div className='searchBox'>
+      <div className="searchBox">
         {onSearch && (
           <SearchAction
-            text='SEARCH'
+            text="SEARCH"
             handleActionClick={() => {
-              setType('SEARCH');
+              setType("SEARCH");
               setPopup(true);
             }}
           />
         )}
-        {!isSearch &&
-          onFilterChange &&
-          ((!DSO && !isFstpOperator && searchParams) ||
-            mergedRoleDetails?.statuses?.length > 0) && (
-            <FilterAction
-              text='FILTER'
-              handleActionClick={() => {
-                setType('FILTER');
-                setPopup(true);
-              }}
-            />
-          )}
-        <FilterAction
-          text='SORT'
+        {!isSearch && onFilterChange && ((!DSO && !isFstpOperator && searchParams) || (mergedRoleDetails?.statuses?.length > 0)) && (
+          <FilterAction
+            text="FILTER"
+            handleActionClick={() => {
+              setType("FILTER");
+              setPopup(true);
+            }}
+          />
+        )}
+        {!isSearch && <FilterAction
+          text="SORT"
           handleActionClick={() => {
-            setType('SORT');
+            setType("SORT");
             setPopup(true);
           }}
-        />
+        />}
       </div>
       {result}
       {popup && (
         <PopUp>
-          {type === 'FILTER' && (
-            <div className='popup-module'>
+          {type === "FILTER" && (
+            <div className="popup-module">
               {
                 <Filter
                   onFilterChange={selectParams}
                   onClose={handlePopupClose}
                   onSearch={onSearchPara}
                   applications={filterData}
-                  type='mobile'
+                  type="mobile"
                   searchParams={params}
                   removeParam={removeParam}
                 />
               }
             </div>
           )}
-          {type === 'SORT' && (
-            <div className='popup-module'>
-              {
-                <SortBy
-                  type='mobile'
-                  sortParams={sortParams}
-                  onClose={handlePopupClose}
-                  onSort={onSort}
-                />
-              }
+          {type === "SORT" && (
+            <div className="popup-module">
+              {<SortBy type="mobile" sortParams={sortParams} onClose={handlePopupClose} onSort={onSort} />}
             </div>
           )}
-          {type === 'SEARCH' && (
-            <div className='popup-module'>
+          {type === "SEARCH" && (
+            <div className="popup-module">
               <SearchApplication
-                type='mobile'
+                type="mobile"
                 onClose={handlePopupClose}
                 onSearch={onSearch}
                 isFstpOperator={isFstpOperator}

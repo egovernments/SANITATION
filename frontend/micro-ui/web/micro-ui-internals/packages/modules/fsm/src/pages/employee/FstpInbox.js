@@ -130,7 +130,7 @@ const FstpInbox = () => {
           vehicleLog={vehicleLog}
           isLoading={isLoading}
           userRole={"FSM_EMP_FSTPO"}
-          linkPrefix={`/${window?.contextPath}/employee/fsm/fstp-operator-details/`}
+          linkPrefix={"/digit-ui/employee/fsm/fstp-operator-details/"}
           onSearch={onSearch}
           searchFields={searchFields}
           onSort={handleSort}
@@ -140,8 +140,10 @@ const FstpInbox = () => {
     );
   } else {
     return (
-      <div>
-        <Header>{t("ES_COMMON_INBOX")}</Header>
+      <React.Fragment>
+        <div style={{ marginLeft: "20px" }}>
+          <Header>{t("ES_COMMON_INBOX")}</Header>
+        </div>
         <DesktopInbox
           data={{ table: vehicleLog }}
           isLoading={isLoading}
@@ -159,7 +161,7 @@ const FstpInbox = () => {
           onPageSizeChange={handlePageSizeChange}
           totalRecords={totalCount || 0}
         />
-      </div>
+      </React.Fragment>
     );
   }
   // }

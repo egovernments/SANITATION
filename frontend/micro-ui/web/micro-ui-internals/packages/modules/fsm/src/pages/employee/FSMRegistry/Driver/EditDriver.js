@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormComposer, Loader, Toast } from "@egovernments/digit-ui-react-components";
+import { FormComposer, Loader, Toast, Header } from "@egovernments/digit-ui-react-components";
 import { useHistory, useParams } from "react-router-dom";
 import { useQueryClient } from "react-query";
 import DriverConfig from "../../configs/DriverConfig";
@@ -44,7 +44,7 @@ const EditDriver = ({ parentUrl, heading }) => {
         license: driverDetails?.driverData?.licenseNumber,
         selectGender: driverDetails?.driverData?.owner?.gender,
         dob: driverDetails?.driverData?.owner?.dob && Digit.DateUtils.ConvertTimestampToDate(driverDetails?.driverData?.owner?.dob, "yyyy-MM-dd"),
-        emailId: driverDetails?.driverData?.owner?.emailId,
+        emailId: driverDetails?.driverData?.owner?.emailId === "abc@egov.com" ? "" : driverDetails?.driverData?.owner?.emailId,
         phone: driverDetails?.driverData?.owner?.mobileNumber,
         additionalDetails: driverDetails?.driverData?.additionalDetails?.description,
       };
@@ -73,6 +73,7 @@ const EditDriver = ({ parentUrl, heading }) => {
     const license = data?.license;
     const gender = data?.selectGender?.code;
     const emailId = data?.emailId;
+    const mobileNumber = data?.phone;
     const dob = new Date(`${data.dob}`).getTime();
     const additionalDetails = data?.additionalDetails;
     const formData = {
@@ -86,6 +87,7 @@ const EditDriver = ({ parentUrl, heading }) => {
           gender: gender || driverDetails.owner.gender || "OTHER",
           dob: dob,
           emailId: emailId || "abc@egov.com",
+          mobileNumber: mobileNumber,
         },
       },
     };
@@ -100,11 +102,12 @@ const EditDriver = ({ parentUrl, heading }) => {
         queryClient.invalidateQueries("FSM_DRIVER_SEARCH");
         setTimeout(() => {
           closeToast();
-          history.push(`/${window?.contextPath}/employee/fsm/registry`);
+          history.push(`/digit-ui/employee/fsm/registry/driver-details/${dsoId}`);
         }, 5000);
       },
     });
   };
+  const isMobile = window.Digit.Utils.browser.isMobile();
 
   if (daoDataLoading || Object.keys(defaultValues).length == 0) {
     return <Loader />;
@@ -112,28 +115,33 @@ const EditDriver = ({ parentUrl, heading }) => {
 
   return (
     <React.Fragment>
-      <FormComposer
-        heading={t("ES_FSM_REGISTRY_TITLE_EDIT_DRIVER")}
-        isDisabled={!canSubmit}
-        label={t("ES_COMMON_APPLICATION_SUBMIT")}
-        config={Config.filter((i) => !i.hideInEmployee).map((config) => {
-          return {
-            ...config,
-            body: config.body.filter((a) => !a.hideInEmployee),
-          };
-        })}
-        fieldStyle={{ marginRight: 0 }}
-        onSubmit={onSubmit}
-        defaultValues={defaultValues}
-        onFormValueChange={onFormValueChange}
-      />
-      {showToast && (
-        <Toast
-          error={showToast.key === "error" ? true : false}
-          label={t(showToast.key === "success" ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS` : showToast.action)}
-          onClose={closeToast}
+      <div>
+        <Header>{t("ES_FSM_REGISTRY_TITLE_EDIT_DRIVER")}</Header>
+      </div>
+      <div style={!isMobile ? { marginLeft: "-15px" } : {}}>
+        <FormComposer
+          isDisabled={!canSubmit}
+          label={t("ES_COMMON_APPLICATION_SUBMIT")}
+          config={Config.filter((i) => !i.hideInEmployee).map((config) => {
+            return {
+              ...config,
+              body: config.body.filter((a) => !a.hideInEmployee),
+            };
+          })}
+          fieldStyle={{ marginRight: 0 }}
+          onSubmit={onSubmit}
+          defaultValues={defaultValues}
+          onFormValueChange={onFormValueChange}
+          noBreakLine={true}
         />
-      )}
+        {showToast && (
+          <Toast
+            error={showToast.key === "error" ? true : false}
+            label={t(showToast.key === "success" ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS` : showToast.action)}
+            onClose={closeToast}
+          />
+        )}
+      </div>
     </React.Fragment>
   );
 };

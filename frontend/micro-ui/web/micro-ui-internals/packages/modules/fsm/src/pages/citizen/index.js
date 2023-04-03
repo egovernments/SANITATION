@@ -19,18 +19,18 @@ const CitizenApp = ({ path }) => {
   return (
     <React.Fragment>
       <div className="fsm-citizen-wrapper">
-        {!location.pathname.includes("/new-application/response") && <BackButton>{t("CS_COMMON_BACK")}</BackButton>}
+        {location.pathname.includes("/response") || location.pathname.split("/").includes("check") ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>}
         <Switch>
           <PrivateRoute
             path={`${path}/inbox`}
             component={() =>
-              Digit.UserService.hasAccess(["FSM_DSO"]) ? <Inbox parentRoute={path} isInbox={true} /> : <Redirect to={`/${window?.contextPath}/citizen`} />
+              Digit.UserService.hasAccess(["FSM_DSO"]) ? <Inbox parentRoute={path} isInbox={true} /> : <Redirect to="/digit-ui/citizen" />
             }
           />
           <PrivateRoute
             path={`${path}/search`}
             component={() =>
-              Digit.UserService.hasAccess(["FSM_DSO"]) ? <Inbox parentRoute={path} isSearch={true} /> : <Redirect to={`/${window?.contextPath}/citizen`} />
+              Digit.UserService.hasAccess(["FSM_DSO"]) ? <Inbox parentRoute={path} isSearch={true} /> : <Redirect to="/digit-ui/citizen" />
             }
           />
           <PrivateRoute path={`${path}/new-application`} component={() => <NewApplicationCitizen parentRoute={path} />} />

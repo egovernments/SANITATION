@@ -287,13 +287,13 @@ export const WSSearch = {
         serviceType == "WATER"
           ? [
               { title: "PDF_STATIC_LABEL_APPLICATION_NUMBER_LABEL", value: wsDataDetails?.applicationNo || t("NA") },
-              { title: "WS_SERVICE_NAME_LABEL", value:  t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType}`) },
+              { title: "WS_SERVICE_NAME_LABEL", value:  t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType ? wsDataDetails?.applicationType : wsDataDetails?.serviceType}`) },
               { title: "WS_NO_OF_CONNECTIONS_PROPOSED_LABEL", value: wsDataDetails?.proposedTaps || t("NA") },
               { title: "WS_PROPOSED_PIPE_SIZE", value: wsDataDetails?.proposedPipeSize || t("NA") },
             ]
           : [
               { title: "PDF_STATIC_LABEL_APPLICATION_NUMBER_LABEL", value: wsDataDetails?.applicationNo || t("NA") },
-              { title: "WS_SERVICE_NAME_LABEL", value:  t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType}`) },
+              { title: "WS_SERVICE_NAME_LABEL", value:  t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType ? wsDataDetails?.applicationType : wsDataDetails?.serviceType}`) },
               { title: "WS_NO_WATER_CLOSETS_LABEL", value: wsDataDetails?.proposedWaterClosets || t("NA") },
               { title: "WS_PROPOSED_WATER_TOILETS_LABEL", value: wsDataDetails?.proposedToilets || t("NA") },
             ],
@@ -345,12 +345,23 @@ export const WSSearch = {
       values: [
         { title: "WS_PROPERTY_ID_LABEL", value: propertyDataDetails?.propertyId },
         { title: "WS_COMMON_OWNER_NAME_LABEL", value: getOwnerNames(propertyDataDetails) },
-        { title: "WS_PROPERTY_ADDRESS_LABEL", value: getAddress(propertyDataDetails?.address, t), isNotTranslated: true, privacy: { uuid: propertyDataDetails?.owners?.[0]?.uuid, fieldName: ["doorNo", "street", "landmark"], model: "Property" }, },
+        { title: "WS_PROPERTY_ADDRESS_LABEL", value: getAddress(propertyDataDetails?.address, t), isNotTranslated: true, privacy: { uuid: propertyDataDetails?.owners?.[0]?.uuid, fieldName: ["doorNo", "street", "landmark"], model: "Property",showValue: true,
+        loadData: {
+          serviceName: "/property-services/property/_search",
+          requestBody: {},
+          requestParam: { tenantId, propertyIds : propertyids },
+          jsonPath: "Properties[0].address.street",
+          isArray: false,
+          d: (res) => {
+            let resultString = (_.get(res,"Properties[0].address.doorNo") ?  `${_.get(res,"Properties[0].address.doorNo")}, ` : "") + (_.get(res,"Properties[0].address.street")? `${_.get(res,"Properties[0].address.street")}, ` : "") + (_.get(res,"Properties[0].address.landmark") ? `${_.get(res,"Properties[0].address.landmark")}`:"")
+            return resultString;
+          }
+        },}, },
       ],
       additionalDetails: {
         redirectUrl: {
-          title: "View Complete Property details",
-          url: `/${window?.contextPath}/employee/pt/property-details/${propertyDataDetails?.propertyId}?from=WS_APPLICATION_DETAILS_HEADER`,
+          title: t("WS_VIEW_PROPERTY_DETAILS"),
+          url: `/digit-ui/employee/pt/property-details/${propertyDataDetails?.propertyId}?from=WS_APPLICATION_DETAILS_HEADER`,
         },
       },
     };
@@ -364,11 +375,39 @@ export const WSSearch = {
         wsDataDetails?.connectionHolders?.length > 0
           ? [
             { title: "WS_OWN_DETAIL_NAME", value: wsDataDetails?.connectionHolders?.[0]?.name || t("NA") },
-            { title: "WS_CONN_HOLDER_OWN_DETAIL_GENDER_LABEL", value: wsDataDetails?.connectionHolders?.[0]?.gender, privacy: { uuid: uuid, fieldName: ["gender"], model: "WnSConnectionOwner" }, },
-            { title: "CORE_COMMON_MOBILE_NUMBER", value: wsDataDetails?.connectionHolders?.[0]?.mobileNumber, privacy: { uuid: uuid, fieldName: ["connectionHoldersMobileNumber"], model: "WnSConnectionOwner" }, },
-            { title: "WS_CONN_HOLDER_COMMON_FATHER_OR_HUSBAND_NAME", value: wsDataDetails?.connectionHolders?.[0]?.fatherOrHusbandName, privacy: { uuid: uuid, fieldName: ["fatherOrHusbandName"], model: "WnSConnectionOwner" }, },
+            { title: "WS_CONN_HOLDER_OWN_DETAIL_GENDER_LABEL", value: wsDataDetails?.connectionHolders?.[0]?.gender, privacy: { uuid: uuid, fieldName: ["gender"], model: "WnSConnectionOwner",showValue: false,
+            loadData: {
+              serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+              requestBody: {},
+              requestParam: { tenantId, applicationNumber },
+              jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].gender" : "SewerageConnections[0].connectionHolders[0].gender",
+              isArray: false,
+            }, }, },
+            { title: "CORE_COMMON_MOBILE_NUMBER", value: wsDataDetails?.connectionHolders?.[0]?.mobileNumber, privacy: { uuid: uuid, fieldName: ["connectionHoldersMobileNumber"], model: "WnSConnectionOwner",showValue: false,
+            loadData: {
+              serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+              requestBody: {},
+              requestParam: { tenantId, applicationNumber },
+              jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].mobileNumber" : "SewerageConnections[0].connectionHolders[0].mobileNumber",
+              isArray: false,
+            }, }, },
+            { title: "WS_CONN_HOLDER_COMMON_FATHER_OR_HUSBAND_NAME", value: wsDataDetails?.connectionHolders?.[0]?.fatherOrHusbandName, privacy: { uuid: uuid, fieldName: ["fatherOrHusbandName"], model: "WnSConnectionOwner",showValue: false,
+            loadData: {
+              serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+              requestBody: {},
+              requestParam: { tenantId, applicationNumber },
+              jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].fatherOrHusbandName" : "SewerageConnections[0].connectionHolders[0].fatherOrHusbandName",
+              isArray: false,
+            }, } },
               { title: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_LABEL", value: wsDataDetails?.connectionHolders?.[0]?.relationship,
-              privacy: { uuid: uuid, fieldName: ["relationship"], model: "WnSConnection" },
+              privacy: { uuid: uuid, fieldName: ["relationship"], model: "WnSConnection",showValue: false,
+              loadData: {
+                serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                requestBody: {},
+                requestParam: { tenantId, applicationNumber },
+                jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].relationship" : "SewerageConnections[0].connectionHolders[0].relationship",
+                isArray: false,
+              }, },
             },
             {
               title: "WS_CORRESPONDANCE_ADDRESS_LABEL", value: wsDataDetails?.connectionHolders?.[0]?.correspondenceAddress, 
@@ -377,11 +416,30 @@ export const WSSearch = {
                 fieldName: wsDataDetails?.connectionHolders[0]?.permanentAddress ? ["permanentAddress"] : ["correspondenceAddress"],
                 model: "WnSConnectionOwner",
                 hide: !(wsDataDetails?.connectionHolders[0]?.permanentAddress || wsDataDetails?.connectionHolders[0]?.correspondenceAddress),
+                showValue: false,
+                loadData: {
+                  serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                  requestBody: {},
+                  requestParam: { tenantId, applicationNumber },
+                  jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].correspondenceAddress" : "SewerageConnections[0].connectionHolders[0].correspondenceAddress",
+                  isArray: false,
+              },
               } 
             },
             {
               title: "WS_OWNER_SPECIAL_CATEGORY", value: wsDataDetails?.connectionHolders?.[0]?.ownerType ? (wsDataDetails?.connectionHolders?.[0]?.ownerType?.includes("*") ? wsDataDetails?.connectionHolders?.[0]?.ownerType : (`PROPERTYTAX_OWNERTYPE_${wsDataDetails?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`) ): "NA",
-              privacy: { uuid: uuid, fieldName: ["ownerType"], model: "WnSConnection" },
+              privacy: { uuid: uuid, fieldName: ["ownerType"], model: "WnSConnection",showValue: false,
+              loadData: {
+                serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                requestBody: {},
+                requestParam: { tenantId, applicationNumber },
+                jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].ownerType" : "SewerageConnections[0].connectionHolders[0].ownerType",
+                isArray: false,
+                d: (res) => {
+                  let resultString = (res?.WaterConnection?.[0] ? t(`PROPERTYTAX_OWNERTYPE_${res?.WaterConnection?.[0]?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`) : t(`PROPERTYTAX_OWNERTYPE_${res?.SewerageConnections?.[0]?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`));
+                  return resultString;
+                }
+            }, },
             },
             ]
           : [{ title: "WS_CONN_HOLDER_SAME_AS_OWNER_DETAILS", value: t("SCORE_YES") }],
@@ -456,7 +514,14 @@ export const WSSearch = {
                 { title: "WS_ADDN_DETAILS_PLUMBER_LICENCE_NO_LABEL", value: wsDataDetails?.plumberInfo?.[0]?.licenseNo || t("NA") },
                 { title: "WS_ADDN_DETAILS_PLUMBER_NAME_LABEL", value: wsDataDetails?.plumberInfo?.[0]?.name || t("NA") },
               {
-    title: "WS_PLUMBER_MOBILE_NO_LABEL", value: wsDataDetails?.plumberInfo?.[0]?.mobileNumber || t("NA"), privacy: { uuid: wsDataDetails?.applicationNo, fieldName: ["plumberInfoMobileNumber"], model: "WnSConnectionPlumber" },
+    title: "WS_PLUMBER_MOBILE_NO_LABEL", value: wsDataDetails?.plumberInfo?.[0]?.mobileNumber || t("NA"), privacy: { uuid: wsDataDetails?.applicationNo, fieldName: ["plumberInfoMobileNumber"], model: "WnSConnectionPlumber",showValue: false,
+    loadData: {
+      serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+      requestBody: {},
+      requestParam: { tenantId, applicationNumber },
+      jsonPath: serviceType === "WATER" ? "WaterConnection[0].plumberInfo[0].mobileNumber" : "SewerageConnections[0].plumberInfo[0].mobileNumber",
+      isArray: false,
+    }, },
                 //privacy:{} 
               },
               ]
@@ -594,13 +659,13 @@ export const WSSearch = {
         serviceType == "WATER"
           ? [
             { title: "PDF_STATIC_LABEL_APPLICATION_NUMBER_LABEL", value: wsDataDetails?.applicationNo || t("NA") },
-            { title: "WS_SERVICE_NAME_LABEL", value: t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType}`) },
+            { title: "WS_SERVICE_NAME_LABEL", value: t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType? wsDataDetails?.applicationType : wsDataDetails?.serviceType}`) },
             { title: "WS_NO_OF_CONNECTIONS_PROPOSED_LABEL", value: wsDataDetails?.proposedTaps || t("NA") },
             { title: "WS_PROPOSED_PIPE_SIZE", value: wsDataDetails?.proposedPipeSize || t("NA") },
           ]
           : [
             { title: "PDF_STATIC_LABEL_APPLICATION_NUMBER_LABEL", value: wsDataDetails?.applicationNo || t("NA") },
-            { title: "WS_SERVICE_NAME_LABEL", value: t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType}`) },
+            { title: "WS_SERVICE_NAME_LABEL", value: t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType? wsDataDetails?.applicationType : wsDataDetails?.serviceType}`) },
             { title: "WS_NO_WATER_CLOSETS_LABEL", value: wsDataDetails?.proposedWaterClosets || t("NA") },
             { title: "WS_PROPOSED_WATER_TOILETS_LABEL", value: wsDataDetails?.proposedToilets || t("NA") },
           ],
@@ -638,7 +703,32 @@ export const WSSearch = {
           title: "WS_PROPERTY_ADDRESS_LABEL",
           value: getAddress(propertyDataDetails?.address, t),
           isNotTranslated: true,
-          privacy: { uuid: propertyDataDetails?.owners?.[0]?.uuid, fieldName: ["doorNo", "street", "landmark"], model: "Property" },
+          privacy: [{ uuid: propertyDataDetails?.owners?.[0]?.uuid, fieldName: ["doorNo", "street", "landmark"], model: "Property",showValue: true,
+          loadData: {
+            serviceName: "/property-services/property/_search",
+            requestBody: {},
+            requestParam: { tenantId, propertyIds : propertyids },
+            jsonPath: "Properties[0].address.street",
+            isArray: false,
+            d: (res) => {
+              let resultString = (_.get(res,"Properties[0].address.doorNo") ?  `${_.get(res,"Properties[0].address.doorNo")}, ` : "") + (_.get(res,"Properties[0].address.street")? `${_.get(res,"Properties[0].address.street")}, ` : "") + (_.get(res,"Properties[0].address.landmark") ? `${_.get(res,"Properties[0].address.landmark")}`:"")
+              return resultString;
+            }
+          }},
+          { uuid: oldPropertyDetails?.owners?.[0]?.uuid, fieldName: ["doorNo", "street", "landmark"], model: "Property",showValue: true,
+          loadData: {
+              serviceName: "/property-services/property/_search",
+              requestBody: {},
+              requestParam: { tenantId, propertyIds : wsOldDetails?.propertyId },
+              jsonPath: "Properties[0].address.street",
+              isArray: false,
+              oldValue: true,
+              d: (res) => {
+                let resultString = (_.get(res,"Properties[0].address.doorNo") ?  `${_.get(res,"Properties[0].address.doorNo")}, ` : "") + (_.get(res,"Properties[0].address.street")? `${_.get(res,"Properties[0].address.street")}, ` : "") + (_.get(res,"Properties[0].address.landmark") ? `${_.get(res,"Properties[0].address.landmark")}`:"")
+                return resultString;
+              }
+            }
+          }],
           oldValue: getAddress(propertyDataDetails?.address, t) != getAddress(oldPropertyDetails?.address, t) ?
             [
               { value: getAddress(propertyDataDetails?.address, t), className: "newValue", style: { display: "inline" } },
@@ -651,8 +741,8 @@ export const WSSearch = {
       ],
       additionalDetails: {
         redirectUrl: {
-          title: "View Complete Property details",
-          url: `/${window?.contextPath}/employee/pt/property-details/${propertyDataDetails?.propertyId}?from=WS_APPLICATION_DETAILS_HEADER`,
+          title: t("WS_VIEW_PROPERTY_DETAILS"),
+          url: `/digit-ui/employee/pt/property-details/${propertyDataDetails?.propertyId}?from=WS_APPLICATION_DETAILS_HEADER`,
         },
       },
     };
@@ -660,6 +750,7 @@ export const WSSearch = {
     const uuid = wsDataDetails?.connectionHolders?.[0]?.uuid;
     const olduuid = wsOldData?.connectionHolders?.[0]?.uuid;
     const applicationNoForPrivacy = wsDataDetails?.applicationNo;
+    const OldapplicationNo = wsOldData?.applicationNo;
 
     let connectionHolderDetails = {
       title: "WS_COMMON_CONNECTION_HOLDER_DETAILS_HEADER",
@@ -681,7 +772,26 @@ export const WSSearch = {
             {
               title: "WS_CONN_HOLDER_OWN_DETAIL_GENDER_LABEL",
               value: wsDataDetails?.connectionHolders?.[0]?.gender,
-              privacy: [{ uuid: uuid, fieldName: ["gender"], model: "WnSConnectionOwner" },{ uuid: olduuid, fieldName: ["gender"], model: "WnSConnectionOwner" }],
+              privacy: [{ uuid: uuid, fieldName: ["gender"], model: "WnSConnectionOwner",showValue: false,
+              loadData: {
+                serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                requestBody: {},
+                requestParam: { tenantId, applicationNumber },
+                jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].gender" : "SewerageConnections[0].connectionHolders[0].gender",
+                isArray: false,
+              }, },{ uuid: olduuid, fieldName: ["gender"], model: "WnSConnectionOwner",showValue: false,
+              loadData: {
+                serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                requestBody: {},
+                requestParam: { tenantId, applicationNumber:OldapplicationNo},
+                jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].gender" : "SewerageConnections[0].connectionHolders[0].gender",
+                isArray: false,
+                oldValue: true,
+                d: (res) => {
+                  let resultString = (res?.WaterConnection?.[0] ? `${t("WS_OLD_LABEL_NAME")} ${t(res?.WaterConnection?.[0]?.connectionHolders?.[0]?.gender)}` : `${t("WS_OLD_LABEL_NAME")} ${t(res?.SewerageConnections?.[0]?.connectionHolders?.[0]?.gender)}`);
+                  return resultString;
+                }
+              }, }],
               oldValue: wsDataDetails?.connectionHolders?.[0]?.gender != wsOldData?.connectionHolders?.[0]?.gender ? [
                 { value: wsDataDetails?.connectionHolders?.[0]?.gender ? t(`${wsDataDetails?.connectionHolders?.[0]?.gender}`) : t("NA"), className: "newValue", style: { display: "inline" } },
                 {
@@ -695,11 +805,30 @@ export const WSSearch = {
               value: wsDataDetails?.connectionHolders?.[0]?.mobileNumber,
               privacy: [{
                 uuid: uuid, fieldName: ["connectionHoldersMobileNumber"],
-                model: "WnSConnectionOwner"
+                model: "WnSConnectionOwner",showValue: false,
+                loadData: {
+                  serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                  requestBody: {},
+                  requestParam: { tenantId, applicationNumber },
+                  jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].mobileNumber" : "SewerageConnections[0].connectionHolders[0].mobileNumber",
+                  isArray: false,
+                },
               },
               {
                 uuid: olduuid, fieldName: ["connectionHoldersMobileNumber"],
-                model: "WnSConnectionOwner"
+                model: "WnSConnectionOwner",showValue: false,
+                loadData: {
+                  serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                  requestBody: {},
+                  requestParam: { tenantId, applicationNumber:OldapplicationNo },
+                  jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].mobileNumber" : "SewerageConnections[0].connectionHolders[0].mobileNumber",
+                  isArray: false,
+                  oldValue: true,
+                  d: (res) => {
+                    let resultString = (res?.WaterConnection?.[0] ? `${t("WS_OLD_LABEL_NAME")} ${res?.WaterConnection?.[0]?.connectionHolders?.[0]?.mobileNumber}` : `${t("WS_OLD_LABEL_NAME")} ${res?.SewerageConnections?.[0]?.connectionHolders?.[0]?.mobileNumber}`);
+                    return resultString;
+                  }
+                },
               }],
               oldValue: wsDataDetails?.connectionHolders?.[0]?.mobileNumber != wsOldData?.connectionHolders?.[0]?.mobileNumber ? [
                 { value: wsDataDetails?.connectionHolders?.[0]?.mobileNumber ? t(`${wsDataDetails?.connectionHolders?.[0]?.mobileNumber}`) : t("NA"), className: "newValue", style: { display: "inline" } },
@@ -714,10 +843,29 @@ export const WSSearch = {
               value: wsDataDetails?.connectionHolders?.[0]?.fatherOrHusbandName,
               privacy: [{
                 uuid: uuid, fieldName: ["fatherOrHusbandName"],
-                model: "WnSConnectionOwner"
+                model: "WnSConnectionOwner",showValue: false,
+                loadData: {
+                  serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                  requestBody: {},
+                  requestParam: { tenantId, applicationNumber },
+                  jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].fatherOrHusbandName" : "SewerageConnections[0].connectionHolders[0].fatherOrHusbandName",
+                  isArray: false,
+                },
               },{
                 uuid: olduuid, fieldName: ["fatherOrHusbandName"],
-                model: "WnSConnectionOwner"
+                model: "WnSConnectionOwner",showValue: false,
+                loadData: {
+                  serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                  requestBody: {},
+                  requestParam: { tenantId, applicationNumber:OldapplicationNo},
+                  jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].fatherOrHusbandName" : "SewerageConnections[0].connectionHolders[0].fatherOrHusbandName",
+                  isArray: false,
+                  oldValue: true,
+                  d: (res) => {
+                    let resultString = (res?.WaterConnection?.[0] ? `${t("WS_OLD_LABEL_NAME")} ${res?.WaterConnection?.[0]?.connectionHolders?.[0]?.fatherOrHusbandName}` : `${t("WS_OLD_LABEL_NAME")} ${res?.SewerageConnections?.[0]?.connectionHolders?.[0]?.fatherOrHusbandName}`);
+                    return resultString;
+                  }
+                },
               }],
               oldValue: wsDataDetails?.connectionHolders?.[0]?.fatherOrHusbandName != wsOldData?.connectionHolders?.[0]?.fatherOrHusbandName ? [
                 { value: `${wsDataDetails?.connectionHolders?.[0]?.fatherOrHusbandName ? t(`${wsDataDetails?.connectionHolders?.[0]?.fatherOrHusbandName}`) : t("NA")}`, className: "newValue", style: { display: "inline" } },
@@ -730,7 +878,27 @@ export const WSSearch = {
             {
               title: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_LABEL",
               value: wsDataDetails?.connectionHolders?.[0]?.relationship,
-              privacy: [{ uuid: uuid, fieldName: ["relationship"], model: "WnSConnectionOwner" },{ uuid: olduuid, fieldName: ["relationship"], model: "WnSConnectionOwner" }],
+              privacy: [{ uuid: uuid, fieldName: ["relationship"], model: "WnSConnectionOwner",showValue: false,
+              loadData: {
+                serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                requestBody: {},
+                requestParam: { tenantId, applicationNumber },
+                jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].relationship" : "SewerageConnections[0].connectionHolders[0].relationship",
+                isArray: false,
+              },
+            },{ uuid: olduuid, fieldName: ["relationship"], model: "WnSConnectionOwner",showValue: false,
+            loadData: {
+              serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+              requestBody: {},
+              requestParam: { tenantId, applicationNumber:OldapplicationNo },
+              jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].relationship" : "SewerageConnections[0].connectionHolders[0].relationship",
+              isArray: false,
+              oldValue: true,
+              d: (res) => {
+                let resultString = (res?.WaterConnection?.[0] ? `${t("WS_OLD_LABEL_NAME")} ${t(res?.WaterConnection?.[0]?.connectionHolders?.[0]?.relationship)}` : `${t("WS_OLD_LABEL_NAME")} ${t(res?.SewerageConnections?.[0]?.connectionHolders?.[0]?.relationship)}`);
+                return resultString;
+              }
+            }, }],
               oldValue: wsDataDetails?.connectionHolders?.[0]?.relationship != wsOldData?.connectionHolders?.[0]?.relationship ? [
                 { value: `${wsDataDetails?.connectionHolders?.[0]?.relationship ? t(`${wsDataDetails?.connectionHolders?.[0]?.relationship}`) : t("NA")}`, className: "newValue", style: { display: "inline" } },
                 {
@@ -747,12 +915,33 @@ export const WSSearch = {
                 fieldName: wsDataDetails?.connectionHolders[0]?.permanentAddress ? ["permanentAddress"] : ["correspondenceAddress"],
                 model: "WnSConnectionOwner",
                 hide: !(wsDataDetails?.connectionHolders[0]?.permanentAddress || wsDataDetails?.connectionHolders[0]?.correspondenceAddress),
+                showValue: false,
+                loadData: {
+                  serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                  requestBody: {},
+                  requestParam: { tenantId, applicationNumber },
+                  jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].correspondenceAddress" : "SewerageConnections[0].connectionHolders[0].correspondenceAddress",
+                  isArray: false,
+                },
               },
               {
                 uuid: olduuid,
                 fieldName: wsDataDetails?.connectionHolders[0]?.permanentAddress ? ["permanentAddress"] : ["correspondenceAddress"],
                 model: "WnSConnectionOwner",
                 hide: !(wsDataDetails?.connectionHolders[0]?.permanentAddress || wsDataDetails?.connectionHolders[0]?.correspondenceAddress),
+                showValue: false,
+                loadData: {
+                  serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                  requestBody: {},
+                  requestParam: { tenantId, applicationNumber:OldapplicationNo},
+                  jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].correspondenceAddress" : "SewerageConnections[0].connectionHolders[0].correspondenceAddress",
+                  isArray: false,
+                  oldValue: true,
+                  d: (res) => {
+                    let resultString = (res?.WaterConnection?.[0] ? `${t("WS_OLD_LABEL_NAME")} ${res?.WaterConnection?.[0]?.connectionHolders?.[0]?.correspondenceAddress}` : `${t("WS_OLD_LABEL_NAME")} ${res?.SewerageConnections?.[0]?.connectionHolders?.[0]?.correspondenceAddress}`);
+                    return resultString;
+                  }
+                },
               }],
               oldValue: wsDataDetails?.connectionHolders?.[0]?.correspondenceAddress != wsOldData?.connectionHolders?.[0]?.correspondenceAddress ? [
                 { value: wsDataDetails?.connectionHolders?.[0]?.correspondenceAddress || t("NA"), className: "newValue", style: { display: "inline" } },
@@ -765,7 +954,31 @@ export const WSSearch = {
             {
               title: "WS_OWNER_SPECIAL_CATEGORY",
               value: wsDataDetails?.connectionHolders?.[0]?.ownerType ? (wsDataDetails?.connectionHolders?.[0]?.ownerType?.includes("*") ? wsDataDetails?.connectionHolders?.[0]?.ownerType : (t(`PROPERTYTAX_OWNERTYPE_${wsDataDetails?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`))) : "NA",
-              privacy: [{ uuid: uuid, fieldName: ["ownerType"], model: "WnSConnection" },{ uuid: olduuid, fieldName: ["ownerType"], model: "WnSConnection" }],
+              privacy: [{ uuid: uuid, fieldName: ["ownerType"], model: "WnSConnection",showValue: false,
+              loadData: {
+                serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                requestBody: {},
+                requestParam: { tenantId, applicationNumber },
+                jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].ownerType" : "SewerageConnections[0].connectionHolders[0].ownerType",
+                isArray: false,
+                d: (res) => {
+                  let resultString = (res?.WaterConnection?.[0]? t(`PROPERTYTAX_OWNERTYPE_${res?.WaterConnection?.[0]?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`) : t(`PROPERTYTAX_OWNERTYPE_${res?.SewerageConnections?.[0]?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`));
+                  return resultString;
+                }
+            }, },
+              { uuid: olduuid, fieldName: ["ownerType"], model: "WnSConnection",showValue: false,
+              loadData: {
+                serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                requestBody: {},
+                requestParam: { tenantId, applicationNumber:OldapplicationNo },
+                jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].ownerType" : "SewerageConnections[0].connectionHolders[0].ownerType",
+                isArray: false,
+                oldValue: true,
+                d: (res) => {
+                  let resultString = (res?.WaterConnection?.[0] ? `${t("WS_OLD_LABEL_NAME")} ${t(`PROPERTYTAX_OWNERTYPE_${res?.WaterConnection?.[0]?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`)}` : `${t("WS_OLD_LABEL_NAME")} ${t(`PROPERTYTAX_OWNERTYPE_${res?.SewerageConnections?.[0]?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`)}`);
+                  return resultString;
+                }
+            }, }],
               oldValue: wsDataDetails?.connectionHolders?.[0]?.ownerType != wsOldData?.connectionHolders?.[0]?.ownerType ? [
                 { value: `${wsDataDetails?.connectionHolders?.[0]?.ownerType ? t(`${wsDataDetails?.connectionHolders?.[0]?.ownerType}`) : t("NA")}`, className: "newValue", style: { display: "inline" } },
                 {
@@ -1051,7 +1264,8 @@ export const WSSearch = {
     };
   },
 
-  applicationDetailsBillAmendment: async (t, tenantId, applicationNumber, serviceType = "WATER", config = {}, businessService="BS.AMENDMENT") => {
+  applicationDetailsBillAmendment: async (t, tenantId, applicationNumber, serviceType = "WATER", config = {}, businessService="WS.AMENDMENT") => {
+    businessService = serviceType === "WATER" ? "WS.AMENDMENT" : "SW.AMENDMENT";
     const businessServiceWf = await WorkflowService.init(tenantId,businessService)
     
     let billAmendSearchService="WS";
@@ -1280,7 +1494,7 @@ export const WSSearch = {
         serviceType == "WATER"
           ? [
               { title: "PDF_STATIC_LABEL_CONSUMER_NUMBER_LABEL", value: wsDataDetails?.connectionNo || t("NA") },
-              { title: "WS_SERVICE_NAME_LABEL", value: t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType}`) },
+              { title: "WS_SERVICE_NAME_LABEL", value: t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType? wsDataDetails?.applicationType : wsDataDetails?.serviceType}`) },
               {
                 title: "WS_SERV_DETAIL_CONN_TYPE",
                 value: wsDataDetails?.connectionType
@@ -1311,14 +1525,14 @@ export const WSSearch = {
               { title: "WS_INITIAL_METER_READING_LABEL", value: wsDataDetails?.additionalDetails?.initialMeterReading || t("NA") },
               {
                 title: "WS_VIEW_CONSUMPTION_DETAIL",
-                to: `/${window?.contextPath}/employee/ws/consumption-details?applicationNo=${wsDataDetails?.connectionNo}&tenantId=${wsDataDetails?.tenantId}&service=${serviceType}&from=WS_COMMON_CONNECTION_DETAIL`,
+                to: `/digit-ui/employee/ws/consumption-details?applicationNo=${wsDataDetails?.connectionNo}&tenantId=${wsDataDetails?.tenantId}&service=${serviceType}&from=${window.location.href.includes("bill-details") ? "ABG_BILL_DETAILS_HEADER" : "WS_COMMON_CONNECTION_DETAIL"}`,
                 value: "",
                 isLink: wsDataDetails?.connectionType ==="Metered" ? true:false,
               },
             ]
           : [
               { title: "PDF_STATIC_LABEL_CONSUMER_NUMBER_LABEL", value: wsDataDetails?.connectionNo || t("NA") },
-              { title: "WS_SERVICE_NAME_LABEL", value: t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType}`) },
+              { title: "WS_SERVICE_NAME_LABEL", value: t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType? wsDataDetails?.applicationType : wsDataDetails?.serviceType}`) },
               { title: "WS_NUMBER_WATER_CLOSETS_LABEL", value: wsDataDetails?.noOfWaterClosets || t("NA") },
               { title: "WS_SERV_DETAIL_NO_OF_TOILETS", value: wsDataDetails?.noOfToilets || t("NA") },
               {
@@ -1346,12 +1560,23 @@ export const WSSearch = {
           privacy: {
             uuid: propertyDataDetails?.owners?.[0]?.uuid, 
             fieldName: ["doorNo" , "street" , "landmark"], 
-            model: "Property"
+            model: "Property",showValue: true,
+            loadData: {
+              serviceName: "/property-services/property/_search",
+              requestBody: {},
+              requestParam: { tenantId, propertyIds : propertyids },
+              jsonPath: "Properties[0].address.street",
+              isArray: false,
+              d: (res) => {
+                let resultString = (_.get(res,"Properties[0].address.doorNo") ?  `${_.get(res,"Properties[0].address.doorNo")}, ` : "") + (_.get(res,"Properties[0].address.street")? `${_.get(res,"Properties[0].address.street")}, ` : "") + (_.get(res,"Properties[0].address.landmark") ? `${_.get(res,"Properties[0].address.landmark")}`:"")
+                return resultString;
+              }
+            }
           }
         },
         {
           title: "WS_VIEW_PROPERTY_DETAIL",
-          to: `/${window?.contextPath}/employee/pt/property-details/${propertyDataDetails?.propertyId}?from=WS_COMMON_CONNECTION_DETAIL`,
+          to: `/digit-ui/employee/pt/property-details/${propertyDataDetails?.propertyId}?from=${window.location.href.includes("bill-details") ? "ABG_BILL_DETAILS_HEADER" : "WS_COMMON_CONNECTION_DETAIL"}`,
           value: "",
           isLink: true,
         },
@@ -1379,7 +1604,14 @@ export const WSSearch = {
                 privacy: { 
                   uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, 
                   fieldName: "gender", 
-                  model: "WnSConnectionOwner" 
+                  model: "WnSConnectionOwner",showValue: false,
+                  loadData: {
+                    serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                    requestBody: {},
+                    requestParam: { tenantId, connectionNumber, searchType: "CONNECTION" },
+                    jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].gender" : "SewerageConnections[0].connectionHolders[0].gender",
+                    isArray: false,
+                  },
                 } 
               },
               { 
@@ -1388,7 +1620,14 @@ export const WSSearch = {
                 privacy: { 
                   uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, 
                   fieldName: "connectionHoldersMobileNumber", 
-                  model: "WnSConnectionOwner" 
+                  model: "WnSConnectionOwner",showValue: false,
+                  loadData: {
+                    serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                    requestBody: {},
+                    requestParam: { tenantId, connectionNumber, searchType: "CONNECTION" },
+                    jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].mobileNumber" : "SewerageConnections[0].connectionHolders[0].mobileNumber",
+                    isArray: false,
+                  },
                 } 
               },
               { 
@@ -1397,14 +1636,28 @@ export const WSSearch = {
                 privacy: { 
                   uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, 
                   fieldName: "fatherOrHusbandName", 
-                  model: "WnSConnectionOwner" 
+                  model: "WnSConnectionOwner",showValue: false,
+                  loadData: {
+                    serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                    requestBody: {},
+                    requestParam: { tenantId, connectionNumber, searchType: "CONNECTION" },
+                    jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].fatherOrHusbandName" : "SewerageConnections[0].connectionHolders[0].fatherOrHusbandName",
+                    isArray: false,
+                  },
                 }
               },
               { title: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_LABEL", value: wsDataDetails?.connectionHolders?.[0]?.relationship,
                 privacy: { 
                   uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, 
                   fieldName: ["relationship"], 
-                  model: "WnSConnection" 
+                  model: "WnSConnection",showValue: false,
+                  loadData: {
+                    serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                    requestBody: {},
+                    requestParam: { tenantId, connectionNumber, searchType: "CONNECTION" },
+                    jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].relationship" : "SewerageConnections[0].connectionHolders[0].relationship",
+                    isArray: false,
+                  },
                 }  
               },
               { 
@@ -1413,14 +1666,32 @@ export const WSSearch = {
                 privacy: { 
                   uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, 
                   fieldName: "correspondenceAddress", 
-                  model: "WnSConnectionOwner" 
+                  model: "WnSConnectionOwner",showValue: false,
+                  loadData: {
+                    serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                    requestBody: {},
+                    requestParam: { tenantId, connectionNumber, searchType: "CONNECTION" },
+                    jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].correspondenceAddress" : "SewerageConnections[0].connectionHolders[0].correspondenceAddress",
+                    isArray: false,
+                  },
                 }
               },
               { title: "WS_OWNER_SPECIAL_CATEGORY", value: wsDataDetails?.connectionHolders?.[0]?.ownerType ? !(wsDataDetails?.connectionHolders?.[0]?.ownerType?.includes("*")) ? `PROPERTYTAX_OWNERTYPE_${wsDataDetails?.connectionHolders?.[0]?.ownerType?.toUpperCase()}` : wsDataDetails?.connectionHolders?.[0]?.ownerType : "NA",
               privacy: { 
                 uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, 
                 fieldName: ["ownerType"], 
-                model: "WnSConnection" 
+                model: "WnSConnection",showValue: false,
+                loadData: {
+                  serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                  requestBody: {},
+                  requestParam: { tenantId, connectionNumber, searchType: "CONNECTION" },
+                  jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].ownerType" : "SewerageConnections[0].connectionHolders[0].ownerType",
+                  isArray: false,
+                  d: (res) => {
+                    let resultString = (res?.WaterConnection?.[0] ? t(`PROPERTYTAX_OWNERTYPE_${res?.WaterConnection?.[0]?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`) : t(`PROPERTYTAX_OWNERTYPE_${res?.SewerageConnections?.[0]?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`));
+                    return resultString;
+                  }
+              },
               } }
             ]
           : [{ title: "WS_CONN_HOLDER_SAME_AS_OWNER_DETAILS", value: t("SCORE_YES") }],
@@ -1516,10 +1787,11 @@ export const WSSearch = {
         [
           { title: "PDF_STATIC_LABEL_APPLICATION_NUMBER_LABEL", value: wsDataDetails?.applicationNo || t("NA") },
           { title: "PDF_STATIC_LABEL_CONSUMER_NUMBER_LABEL", value: wsDataDetails?.connectionNo || t("NA") },
-          { title: "WS_SERVICE_NAME_LABEL", value: t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType}`) },
+          { title: "WS_SERVICE_NAME_LABEL", value: t(`WS_APPLICATION_TYPE_${wsDataDetails?.applicationType? wsDataDetails?.applicationType : wsDataDetails?.serviceType}`) },
           { title: "PDF_STATIC_LABEL_WS_CONSOLIDATED_ACKNOWELDGMENT_DISCONNECTION_TYPE", value: t(`${applicationType}`) },
           { title: "WNS_COMMON_TABLE_COL_AMT_DUE_LABEL", value: fetchBillData.Bill[0]?.totalAmount ? "₹ " + fetchBillData.Bill[0]?.totalAmount : "₹ 0" },
           { title: "WS_DISCONNECTION_PROPOSED_DATE", value: wsDataDetails?.dateEffectiveFrom ? convertEpochToDate(wsDataDetails?.dateEffectiveFrom) : t("NA") },
+          { title: "WS_DISCONNECTION_EXECUTED_DATE", value: wsDataDetails?.disconnectionExecutionDate ? convertEpochToDate(wsDataDetails?.disconnectionExecutionDate) : t("NA") },
           { title: "WS_DISCONNECTION_REASON", value: wsDataDetails?.disconnectionReason || t("NA") },
         ]
     };
@@ -1534,13 +1806,24 @@ export const WSSearch = {
         privacy: {
           uuid: propertyDataDetails?.owners?.[0]?.uuid, 
           fieldName: ["doorNo" , "street" , "landmark"], 
-          model: "Property"
+          model: "Property",showValue: true,
+          loadData: {
+            serviceName: "/property-services/property/_search",
+            requestBody: {},
+            requestParam: { tenantId, propertyIds : propertyids },
+            jsonPath: "Properties[0].address.street",
+            isArray: false,
+            d: (res) => {
+              let resultString = (_.get(res,"Properties[0].address.doorNo") ?  `${_.get(res,"Properties[0].address.doorNo")}, ` : "") + (_.get(res,"Properties[0].address.street")? `${_.get(res,"Properties[0].address.street")}, ` : "") + (_.get(res,"Properties[0].address.landmark") ? `${_.get(res,"Properties[0].address.landmark")}`:"")
+              return resultString;
+            }
+          }
         } },
       ],
       additionalDetails: {
         redirectUrl: {
-          title: "View Complete Property details",
-          url: `/${window?.contextPath}/employee/pt/property-details/${propertyDataDetails?.propertyId}?from=WS_APPLICATION_DETAILS_HEADER`,
+          title: t("WS_VIEW_PROPERTY_DETAILS"),
+          url: `/digit-ui/employee/pt/property-details/${propertyDataDetails?.propertyId}?from=WS_APPLICATION_DETAILS_HEADER`,
         },
       },
     };
@@ -1561,23 +1844,69 @@ export const WSSearch = {
             privacy: {
               uuid: wsDataDetails?.connectionHolders?.[0]?.uuid,
               fieldName: ["gender"],
-              model: "WnSConnectionOwner",
+              model: "WnSConnectionOwner",showValue: false,
+              loadData: {
+                serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                requestBody: {},
+                requestParam: { tenantId, applicationNumber },
+                jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].gender" : "SewerageConnections[0].connectionHolders[0].gender",
+                isArray: false,
+              },
             } },
             { title: "CORE_COMMON_MOBILE_NUMBER", value: wsDataDetails?.connectionHolders?.[0]?.mobileNumber,
-            privacy: { uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, fieldName: ["connectionHoldersMobileNumber"], model: "WnSConnectionOwner" } },
+            privacy: { uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, fieldName: ["connectionHoldersMobileNumber"], model: "WnSConnectionOwner",showValue: false,
+            loadData: {
+              serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+              requestBody: {},
+              requestParam: { tenantId, applicationNumber },
+              jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].mobileNumber" : "SewerageConnections[0].connectionHolders[0].mobileNumber",
+              isArray: false,
+            }, } },
             { title: "WS_CONN_HOLDER_COMMON_FATHER_OR_HUSBAND_NAME", value: wsDataDetails?.connectionHolders?.[0]?.fatherOrHusbandName,
-            privacy: { uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, fieldName: ["fatherOrHusbandName"], model: "WnSConnectionOwner" } },
+            privacy: { uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, fieldName: ["fatherOrHusbandName"], model: "WnSConnectionOwner",showValue: false,
+            loadData: {
+              serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+              requestBody: {},
+              requestParam: { tenantId, applicationNumber },
+              jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].fatherOrHusbandName" : "SewerageConnections[0].connectionHolders[0].fatherOrHusbandName",
+              isArray: false,
+            }, } },
             { title: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_LABEL", value: wsDataDetails?.connectionHolders?.[0]?.relationship,
-            privacy: { uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, fieldName: ["relationship"], model: "WnSConnection" }, },
+            privacy: { uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, fieldName: ["relationship"], model: "WnSConnection",showValue: false,
+            loadData: {
+              serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+              requestBody: {},
+              requestParam: { tenantId, applicationNumber },
+              jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].relationship" : "SewerageConnections[0].connectionHolders[0].relationship",
+              isArray: false,
+            }, }, },
             { title: "WS_CORRESPONDANCE_ADDRESS_LABEL", value: wsDataDetails?.connectionHolders?.[0]?.correspondenceAddress,
             privacy: {
               uuid: wsDataDetails?.connectionHolders?.[0]?.uuid,
               fieldName: wsDataDetails?.connectionHolders[0]?.permanentAddress ? ["permanentAddress"] : ["correspondenceAddress"],
               model: "WnSConnectionOwner",
-              hide: !(wsDataDetails?.connectionHolders[0]?.permanentAddress || wsDataDetails?.connectionHolders[0]?.correspondenceAddress),
+              hide: !(wsDataDetails?.connectionHolders[0]?.permanentAddress || wsDataDetails?.connectionHolders[0]?.correspondenceAddress),showValue: false,
+              loadData: {
+                serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+                requestBody: {},
+                requestParam: { tenantId, applicationNumber },
+                jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].correspondenceAddress" : "SewerageConnections[0].connectionHolders[0].correspondenceAddress",
+                isArray: false,
+              },
             } },
             { title: "WS_OWNER_SPECIAL_CATEGORY", value: wsDataDetails?.connectionHolders?.[0]?.ownerType ? !(wsDataDetails?.connectionHolders?.[0]?.ownerType?.includes("*")) ? `PROPERTYTAX_OWNERTYPE_${wsDataDetails?.connectionHolders?.[0]?.ownerType?.toUpperCase()}` : wsDataDetails?.connectionHolders?.[0]?.ownerType : "NA" ,
-            privacy: { uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, fieldName: ["ownerType"], model: "WnSConnection" }},
+            privacy: { uuid: wsDataDetails?.connectionHolders?.[0]?.uuid, fieldName: ["ownerType"], model: "WnSConnection",showValue: false,
+            loadData: {
+              serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+              requestBody: {},
+              requestParam: { tenantId, applicationNumber },
+              jsonPath: serviceType === "WATER" ? "WaterConnection[0].connectionHolders[0].ownerType" : "SewerageConnections[0].connectionHolders[0].ownerType",
+              isArray: false,
+              d: (res) => {
+                let resultString = (res?.WaterConnection?.[0] ? t(`PROPERTYTAX_OWNERTYPE_${res?.WaterConnection?.[0]?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`) : t(`PROPERTYTAX_OWNERTYPE_${res?.SewerageConnections?.[0]?.connectionHolders?.[0]?.ownerType?.toUpperCase()}`));
+                return resultString;
+              }
+          }, }},
           ]
           : [{ title: "WS_CONN_HOLDER_SAME_AS_OWNER_DETAILS", value: t("SCORE_YES") }],
     };
@@ -1596,7 +1925,14 @@ export const WSSearch = {
             },
             { title: "WS_ADDN_DETAILS_PLUMBER_LICENCE_NO_LABEL", value: wsDataDetails?.plumberInfo?.[0]?.licenseNo || t("NA") },
             { title: "WS_ADDN_DETAILS_PLUMBER_NAME_LABEL", value: wsDataDetails?.plumberInfo?.[0]?.name || t("NA") },
-            { title: "WS_PLUMBER_MOBILE_NO_LABEL", value: wsDataDetails?.plumberInfo?.[0]?.mobileNumber || t("NA"),privacy: { uuid: wsDataDetails?.applicationNo, fieldName: ["plumberInfoMobileNumber"], model: "WnSConnectionPlumber" }  },
+            { title: "WS_PLUMBER_MOBILE_NO_LABEL", value: wsDataDetails?.plumberInfo?.[0]?.mobileNumber || t("NA"),privacy: { uuid: wsDataDetails?.applicationNo, fieldName: ["plumberInfoMobileNumber"], model: "WnSConnectionPlumber",showValue: false,
+            loadData: {
+              serviceName: serviceType === "WATER" ? "/ws-services/wc/_search" : "/sw-services/swc/_search",
+              requestBody: {},
+              requestParam: { tenantId, applicationNumber },
+              jsonPath: serviceType === "WATER" ? "WaterConnection[0].plumberInfo[0].mobileNumber" : "SewerageConnections[0].plumberInfo[0].mobileNumber",
+              isArray: false,
+            }, }  },
           ]
           : [
             {
@@ -1631,6 +1967,8 @@ export const WSSearch = {
     let details = [];
     details = [...details, applicationHeaderDetails, propertyDetails, connectionHolderDetails, plumberDetails, documentDetails];
     wsDataDetails.serviceType = serviceDataType;
+    //for unmasking of plumber mobilenumber in FI/DV edit disconnection
+    sessionStorage.removeItem("IsDetailsExists");
 
     return {
       applicationData: wsDataDetails,

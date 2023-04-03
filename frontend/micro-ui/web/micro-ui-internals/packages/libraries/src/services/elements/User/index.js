@@ -50,9 +50,9 @@ export const UserService = {
       window.localStorage.clear();
       window.sessionStorage.clear();
       if (userType === "citizen") {
-        window.location.replace(`/${window?.contextPath}/citizen`);
+        window.location.replace("/digit-ui/citizen");
       } else {
-        window.location.replace(`/${window?.contextPath}/employee/user/language-selection`);
+        window.location.replace("/digit-ui/employee/user/language-selection");
       }
     }
   },
@@ -103,7 +103,7 @@ export const UserService = {
   changePassword: (details, stateCode) =>
     ServiceRequest({
       serviceName: "changePassword",
-      url: Urls.ChangePassword1,
+      url: Digit.SessionStorage.get("User")?.info ? Urls.ChangePassword1 : Urls.ChangePassword,
       data: {
         ...details,
       },

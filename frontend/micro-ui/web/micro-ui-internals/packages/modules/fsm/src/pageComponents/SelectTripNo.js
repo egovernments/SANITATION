@@ -92,7 +92,7 @@ const SelectTripNo = ({ config, formData, t, onSelect, userType }) => {
         />
         <CardText> {t("ES_VEHICLE CAPACITY")} </CardText>
         <RadioOrSelect
-          options={vehicleMenu?.map((vehicle) => ({ ...vehicle, label: vehicle.capacity }))}
+          options={vehicleMenu?.map((vehicle) => ({ ...vehicle, label: vehicle.capacity })).sort((a, b) => a.capacity - b.capacity)}
           selectedOption={vehicleCapacity}
           optionKey="capacity"
           onSelect={selectVehicle}
