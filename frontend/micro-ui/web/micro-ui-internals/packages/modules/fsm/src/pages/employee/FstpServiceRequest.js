@@ -137,7 +137,7 @@ const FstpServiceRequest = () => {
   }
 
   if (vehicleLog?.length === 0 && tripDetails?.length === 0 && isSuccess && !isSearchLoading && tripDetail?.length === 0 && !isVehiclesLoading) {
-    history.push(`/digit-ui/employee/fsm/fstp/new-vehicle-entry/${vehicleNumber}`);
+    history.push(`/${window?.contextPath}/employee/fsm/fstp/new-vehicle-entry/${vehicleNumber}`);
   }
 
   let citizenInfo = [];
@@ -165,7 +165,7 @@ const FstpServiceRequest = () => {
         <span className="link" style={{ margin: "8px" }}>
           <Link
             to={{
-              pathname: "/digit-ui/employee/fsm/fstp/new-vehicle-entry/",
+              pathname: `/${window?.contextPath}/employee/fsm/fstp/new-vehicle-entry/`,
             }}
           >
             {t("ES_FSM_FSTP_NEW_ENTRY")}
@@ -201,7 +201,7 @@ const FstpServiceRequest = () => {
         <span className="link" style={{ margin: "294px", padding: "2px" }}>
           <Link
             to={{
-              pathname: "/digit-ui/employee/fsm/fstp/new-vehicle-entry/",
+              pathname: `/${window?.contextPath}/employee/fsm/fstp/new-vehicle-entry/`,
             }}
           >
             {t("ES_FSM_FSTP_NEW_ENTRY")}

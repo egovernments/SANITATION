@@ -117,7 +117,7 @@ const VehicleDetails = (props) => {
       case "DELETE_VENDOR":
         return setShowModal(true);
       case "EDIT":
-        return history.push("/digit-ui/employee/fsm/registry/modify-vehicle/" + vehicleNumber);
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/modify-vehicle/` + vehicleNumber);
       default:
         break;
     }
@@ -257,7 +257,7 @@ const VehicleDetails = (props) => {
         queryClient.invalidateQueries("FSM_VEICLES_SEARCH");
         setTimeout(() => {
           closeToast;
-          history.push(`/digit-ui/employee/fsm/registry`);
+          history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=VEHICLE`);
         }, 5000);
       },
     });

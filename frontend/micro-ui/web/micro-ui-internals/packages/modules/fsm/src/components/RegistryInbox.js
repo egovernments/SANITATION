@@ -264,21 +264,21 @@ const RegisryInbox = (props) => {
 
   const onActionSelect = (action, type, data) => {
     if (type === "VEHICLE") {
-      history.push("/digit-ui/employee/fsm/registry/vehicle-details/" + action);
+      history.push(`/${window?.contextPath}/employee/fsm/registry/vehicle-details/` + action);
     } else {
       let driver = data.find((ele) => ele.name === action);
-      history.push("/digit-ui/employee/fsm/registry/driver-details/" + driver?.id);
+      history.push(`/${window?.contextPath}/employee/fsm/registry/driver-details/` + driver?.id);
     }
   };
 
   const onSelectAdd = () => {
     switch (props.selectedTab) {
       case "VENDOR":
-        return history.push("/digit-ui/employee/fsm/registry/new-vendor");
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vendor`);
       case "VEHICLE":
-        return history.push("/digit-ui/employee/fsm/registry/new-vehicle");
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vehicle`);
       case "DRIVER":
-        return history.push("/digit-ui/employee/fsm/registry/new-driver");
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-driver`);
       default:
         break;
     }
@@ -295,7 +295,7 @@ const RegisryInbox = (props) => {
               return (
                 <div>
                   <span className="link">
-                    <Link to={"/digit-ui/employee/fsm/registry/vendor-details/" + row.original["id"]}>
+                    <Link to={`/${window?.contextPath}/employee/fsm/registry/vendor-details/` + row.original["id"]}>
                       <div>
                         {row.original.name}
                         <br />
@@ -435,7 +435,7 @@ const RegisryInbox = (props) => {
               return (
                 <div>
                   <span className="link">
-                    <Link to={"/digit-ui/employee/fsm/registry/vehicle-details/" + row.original["registrationNumber"]}>
+                    <Link to={`/${window?.contextPath}/employee/fsm/registry/vehicle-details/` + row.original["registrationNumber"]}>
                       <div>
                         {row.original.registrationNumber}
                         <br />
@@ -493,7 +493,7 @@ const RegisryInbox = (props) => {
               return (
                 <div>
                   <span className="link">
-                    <Link to={"/digit-ui/employee/fsm/registry/driver-details/" + row.original["id"]}>
+                    <Link to={`/${window?.contextPath}/employee/fsm/registry/driver-details/` + row.original["id"]}>
                       <div>
                         {row.original.name}
                         <br />

@@ -56,17 +56,17 @@ export const FsmBreadCrumb = ({ location }) => {
 
   const crumbs = [
     {
-      path: DSO ? "/digit-ui/citizen/fsm/dso-dashboard" : "/digit-ui/employee",
+      path: DSO ? `/${window?.contextPath}/citizen/fsm/dso-dashboard` : `/${window?.contextPath}/employee`,
       content: t("ES_COMMON_HOME"),
       show: isFsm,
     },
     {
-      path: isRegistry ? `/digit-ui/employee/fsm/registry?selectedTabs=VENDOR` : FSTPO ? "/digit-ui/employee/fsm/fstp-inbox" : "/digit-ui/employee",
+      path: isRegistry ? `/${window?.contextPath}/employee/fsm/registry?selectedTabs=VENDOR` : FSTPO ? `/${window?.contextPath}/employee/fsm/fstp-inbox` : `/${window?.contextPath}/employee`,
       content: isVehicleLog ? t("ES_TITLE_INBOX") : "FSM",
       show: isFsm,
     },
     {
-      path: isNewApplication ? "/digit-ui/employee/fsm/new-application" : "",
+      path: isNewApplication ? `/${window?.contextPath}/employee/fsm/new-application` : "",
       content: t("FSM_NEW_DESLUDGING_APPLICATION"),
       show: isFsm && isNewApplication,
     },
@@ -76,35 +76,35 @@ export const FsmBreadCrumb = ({ location }) => {
       show: location.pathname.includes("/employee/fsm/response") ? true : false,
     },
     {
-      path: isInbox || isSearch || isApplicationDetails ? "/digit-ui/employee/fsm/inbox" : "",
+      path: isInbox || isSearch || isApplicationDetails ? `/${window?.contextPath}/employee/fsm/inbox` : "",
       content: t("ES_TITLE_INBOX"),
       show: (isFsm && isInbox) || isSearch || isApplicationDetails,
     },
     {
-      path: "/digit-ui/employee/fsm/search",
+      path: `/${window?.contextPath}/employee/fsm/search`,
       content: t("ES_TITILE_SEARCH_APPLICATION"),
       show: search,
     },
     { content: t("ES_TITLE_APPLICATION_DETAILS"), show: isApplicationDetails },
     { content: t("ES_TITLE_VEHICLE_LOG"), show: isVehicleLog },
     {
-      path: "/digit-ui/employee/fsm/registry/vendor-details/" + id,
+      path: `/${window?.contextPath}/employee/fsm/registry/vendor-details/` + id,
       content: t("ES_TITLE_VENDOR_DETAILS"),
       show: isRegistry && (isVendorDetails || isVendorEdit),
     },
     {
-      path: "/digit-ui/employee/fsm/registry/vehicle-details/" + id,
+      path: `/${window?.contextPath}/employee/fsm/registry/vehicle-details/` + id,
       content: t("ES_TITLE_VEHICLE_DETAILS"),
       show: isRegistry && (isVehicleDetails || isVehicleEdit),
     },
     {
-      path: "/digit-ui/employee/fsm/registry/driver-details/" + id,
+      path: `/${window?.contextPath}/employee/fsm/registry/driver-details/` + id,
       content: t("ES_TITLE_DRIVER_DETAILS"),
       show: isRegistry && (isDriverDetails || isDriverEdit),
     },
     { content: t("ES_TITLE_VENDOR_EDIT"), show: isRegistry && (isVendorEdit || isVehicleEdit || isDriverEdit) },
     {
-      path: "digit-ui/employee/fsm/modify-application/" + id,
+      path: `/${window?.contextPath}/employee/fsm/modify-application/` + id,
       content: t("ES_FSM_APPLICATION_UPDATE"),
       show: isModifyApplication,
     },
@@ -136,7 +136,7 @@ const EmployeeApp = ({ path, url, userType }) => {
     !DSO && !COLLECTOR && !FSM_EDITOR
       ? [
           {
-            link: "/digit-ui/employee/fsm/new-application",
+            link: "/${window?.contextPath}/employee/fsm/new-application",
             name: "FSM_NEW_DESLUDGING_APPLICATION",
             icon: <AddNewIcon />,
           },
@@ -146,7 +146,7 @@ const EmployeeApp = ({ path, url, userType }) => {
   const moduleForSomeFSMAdmin = FSM_ADMIN
     ? [
         {
-          link: "/digit-ui/employee/fsm/registry?selectedTabs=VENDOR",
+          link: `/${window?.contextPath}/employee/fsm/registry?selectedTabs=VENDOR`,
           name: "ES_TITLE_FSM_REGISTRY",
           icon: <AddNewIcon />,
         },
@@ -156,7 +156,7 @@ const EmployeeApp = ({ path, url, userType }) => {
   const module = [
     ...moduleForSomeFSMEmployees,
     {
-      link: "/digit-ui/employee/fsm/inbox",
+      link: `/${window?.contextPath}/employee/fsm/inbox`,
       name: "ES_COMMON_INBOX",
       icon: <InboxIcon />,
     },

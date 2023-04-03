@@ -210,7 +210,7 @@ const FSMRegistry = () => {
   const onTabChange = (tab) => {
     setTab(tab);
     if (selectedTabs !== tab) {
-      history.push(`/digit-ui/employee/fsm/registry?selectedTabs=${tab}`);
+      history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=${tab}`);
     }
   };
 

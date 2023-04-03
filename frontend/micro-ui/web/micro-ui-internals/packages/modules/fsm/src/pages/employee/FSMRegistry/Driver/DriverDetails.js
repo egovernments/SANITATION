@@ -110,7 +110,7 @@ const DriverDetails = (props) => {
       case "DELETE_VENDOR":
         return setShowModal(true);
       case "EDIT":
-        return history.push("/digit-ui/employee/fsm/registry/modify-driver/" + dsoId);
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/modify-driver/` + dsoId);
       default:
         break;
     }
@@ -154,7 +154,7 @@ const DriverDetails = (props) => {
         queryClient.invalidateQueries("DSO_SEARCH");
 
         setTimeout(() => {
-          closeToast, history.push(`/digit-ui/employee/fsm/registry`);
+          closeToast, history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=DRIVER`);
         }, 5000);
       },
     });

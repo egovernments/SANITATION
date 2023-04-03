@@ -133,7 +133,7 @@ const AddVehicle = ({ parentUrl, heading }) => {
         queryClient.invalidateQueries("FSM_VEICLES_SEARCH");
         setTimeout(() => {
           closeToast();
-          history.push(`/digit-ui/employee/fsm/registry?selectedTabs=VEHICLE`);
+          history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=VEHICLE`);
         }, 5000);
       },
     });

@@ -132,7 +132,7 @@ const AddVendor = ({ parentUrl, heading }) => {
         queryClient.invalidateQueries("DSO_SEARCH");
         setTimeout(() => {
           closeToast();
-          history.push(`/digit-ui/employee/fsm/registry?selectedTabs=VENDOR`);
+          history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=VENDOR`);
         }, 5000);
       },
     });
