@@ -9,7 +9,7 @@ const ApplicationLinks = ({ linkPrefix }) => {
   const allLinks = [
     {
       text: t("ES_TITLE_NEW_DESULDGING_APPLICATION"),
-      link: `/${window?.contextPath}/employee/fsm/new-application`,
+      link: "/digit-ui/employee/fsm/new-application",
       accessTo: ["FSM_CREATOR_EMP"],
     },
     // { text: t("ES_TITLE_REPORTS"), link: "/employee" },

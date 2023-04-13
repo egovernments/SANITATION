@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormComposer, Toast } from "@egovernments/digit-ui-react-components";
+import { FormComposer, Toast, Header } from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
 import VendorConfig from "../../configs/VendorConfig";
 import { useQueryClient } from "react-query";
@@ -16,13 +16,9 @@ const AddVendor = ({ parentUrl, heading }) => {
   const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("FSM_ERROR_DATA", false);
   const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
 
-  const {
-    isLoading: isLoading,
-    isError: vendorCreateError,
-    data: updateResponse,
-    error: updateError,
-    mutate,
-  } = Digit.Hooks.fsm.useVendorCreate(tenantId);
+  const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useVendorCreate(
+    tenantId
+  );
 
   useEffect(() => {
     setMutationHappened(false);
@@ -32,7 +28,7 @@ const AddVendor = ({ parentUrl, heading }) => {
 
   const { t } = useTranslation();
 
-  const Config = VendorConfig(t)
+  const Config = VendorConfig(t);
 
   const [canSubmit, setSubmitValve] = useState(false);
 
@@ -45,12 +41,7 @@ const AddVendor = ({ parentUrl, heading }) => {
   };
 
   const onFormValueChange = (setValue, formData) => {
-    if (
-      formData?.vendorName &&
-      formData?.phone &&
-      formData?.address?.locality &&
-      formData?.selectGender
-    ) {
+    if (formData?.vendorName && formData?.phone && formData?.address?.locality && formData?.selectGender) {
       setSubmitValve(true);
     } else {
       setSubmitValve(false);
@@ -97,14 +88,14 @@ const AddVendor = ({ parentUrl, heading }) => {
           district,
           region,
           state,
-          country: 'in',
+          country: "in",
           pincode,
           buildingName,
           locality: {
-            code: localityCode || '',
-            name: localityName || '',
+            code: localityCode || "",
+            name: localityName || "",
             label: "Locality",
-            area: localityArea || ''
+            area: localityArea || "",
           },
           geoLocation: {
             latitude: data?.address?.latitude || 0,
@@ -115,19 +106,19 @@ const AddVendor = ({ parentUrl, heading }) => {
           tenantId: stateId,
           name: name,
           fatherOrHusbandName: name,
-          relationship: 'OTHER',
+          relationship: "OTHER",
           gender: gender,
           dob: dob,
-          emailId: emailId || 'abc@egov.com',
-          mobileNumber: phone
+          emailId: emailId || "abc@egov.com",
+          mobileNumber: phone,
+        },
+        additionalDetails: {
+          description: additionalDetails,
+        },
+        vehicle: [],
+        drivers: [],
+        source: "WhatsApp",
       },
-      additionalDetails: {
-        description: additionalDetails,
-      },
-      vehicle: [],
-      drivers: [],
-      source: "WhatsApp"
-      }
     };
 
     mutate(formData, {
@@ -136,41 +127,47 @@ const AddVendor = ({ parentUrl, heading }) => {
         setTimeout(closeToast, 5000);
       },
       onSuccess: (data, variables) => {
-        setShowToast({ key: "success", action: 'ADD_VENDOR' });
+        setShowToast({ key: "success", action: "ADD_VENDOR" });
         setTimeout(closeToast, 5000);
         queryClient.invalidateQueries("DSO_SEARCH");
         setTimeout(() => {
           closeToast();
-          history.push(`/${window?.contextPath}/employee/fsm/registry`);
+          history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=VENDOR`);
         }, 5000);
       },
     });
   };
+  const isMobile = window.Digit.Utils.browser.isMobile();
 
   return (
     <React.Fragment>
-      <FormComposer
-        heading={t("ES_FSM_REGISTRY_TITLE_NEW_VENDOR")}
-        isDisabled={!canSubmit}
-        label={t("ES_COMMON_APPLICATION_SUBMIT")}
-        config={Config.filter((i) => !i.hideInEmployee).map((config) => {
-          return {
-            ...config,
-            body: config.body.filter((a) => !a.hideInEmployee),
-          };
-        })}
-        fieldStyle={{ marginRight: 0 }}
-        onSubmit={onSubmit}
-        defaultValues={defaultValues}
-        onFormValueChange={onFormValueChange}
-      />
-      {showToast && (
-        <Toast
-          error={showToast.key === "error" ? true : false}
-          label={t(showToast.key === "success" ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS` : showToast.action)}
-          onClose={closeToast}
+      <div>
+        <Header>{t("ES_FSM_REGISTRY_TITLE_NEW_VENDOR")}</Header>
+      </div>
+      <div style={!isMobile ? { marginLeft: "-15px" } : {}}>
+        <FormComposer
+          isDisabled={!canSubmit}
+          label={t("ES_COMMON_APPLICATION_SUBMIT")}
+          config={Config.filter((i) => !i.hideInEmployee).map((config) => {
+            return {
+              ...config,
+              body: config.body.filter((a) => !a.hideInEmployee),
+            };
+          })}
+          fieldStyle={{ marginRight: 0 }}
+          onSubmit={onSubmit}
+          defaultValues={defaultValues}
+          onFormValueChange={onFormValueChange}
+          noBreakLine={true}
         />
-      )}
+        {showToast && (
+          <Toast
+            error={showToast.key === "error" ? true : false}
+            label={t(showToast.key === "success" ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS` : showToast.action)}
+            onClose={closeToast}
+          />
+        )}
+      </div>
     </React.Fragment>
   );
 };

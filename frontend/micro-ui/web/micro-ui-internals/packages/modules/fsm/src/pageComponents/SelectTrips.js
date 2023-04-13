@@ -43,12 +43,14 @@ const SelectTrips = ({ t, config, onSelect, formData = {}, userType, styles, FSM
   const inputs = [
     {
       label: "ES_NEW_APPLICATION_PAYMENT_NO_OF_TRIPS",
-      type: "number",
+      type: "text",
       name: "noOfTrips",
       error: t("ES_NEW_APPLICATION_NO_OF_TRIPS_INVALID"),
       validation: {
         isRequired: true,
-        min: 1,
+        pattern: `^[1-9]+`,
+        min: "1",
+        title: t("ES_NEW_APPLICATION_NO_OF_TRIPS_INVALID"),
       },
       default: formData?.tripData?.noOfTrips,
       disable: false,
@@ -85,7 +87,7 @@ const SelectTrips = ({ t, config, onSelect, formData = {}, userType, styles, FSM
         });
 
         const billSlab = billingDetails?.billingSlab?.length && billingDetails?.billingSlab[0];
-        if (billSlab?.price) {
+        if (billSlab?.price || billSlab?.price === 0) {
           setValue({
             amountPerTrip: billSlab.price,
             amount: billSlab.price * formData.tripData.noOfTrips,
@@ -112,7 +114,7 @@ const SelectTrips = ({ t, config, onSelect, formData = {}, userType, styles, FSM
           className="form-field"
           style={styles}
           isMandatory
-          option={vehicleMenu?.map((vehicle) => ({ ...vehicle, label: vehicle.capacity }))}
+          option={vehicleMenu?.map((vehicle) => ({ ...vehicle, label: vehicle.capacity })).sort((a, b) => a.capacity - b.capacity)}
           optionKey="label"
           id="vehicle"
           selected={vehicle}

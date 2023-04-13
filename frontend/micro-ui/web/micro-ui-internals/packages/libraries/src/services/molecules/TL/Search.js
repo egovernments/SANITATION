@@ -64,13 +64,18 @@ export const TLSearch = {
     }
     let employeeResponse = [];
 
-    const applicationNoAndChannel = {
+    let applicationNoAndChannel = {
       title: " ",
       asSectionHeader: false,
       values: [
         { title: "TL_LOCALIZATION_APPLICATION_NO", value: response?.applicationNumber ? `${response?.applicationNumber}` : "NA" },
         { title: "TL_APPLICATION_CHALLAN_LABEL", value: response?.tradeLicenseDetail?.channel ? `TL_CHANNEL_${response?.tradeLicenseDetail?.channel}` : "NA" },
       ]
+    }
+
+    if(response?.licenseNumber && applicationNoAndChannel?.values.filter((ob) => ob?.title === "TL_LOCALIZATION_LICENSE_NO")?.length <= 0)
+    {
+      applicationNoAndChannel?.values.push({ title: "TL_LOCALIZATION_LICENSE_NO", value: response?.licenseNumber ? `${response?.licenseNumber}` : "NA" })
     }
 
     const tradedetails = {
@@ -156,7 +161,7 @@ export const TLSearch = {
         { title: "PROPERTY_ADDRESS", value: propertyAddress || "NA" },
         {
           title: "TL_VIEW_PROPERTY_DETAIL",
-          to: `/${window?.contextPath}/employee/commonpt/view-property?propertyId=${propertyDetails?.Properties?.[0]?.propertyId}&tenantId=${propertyDetails?.Properties?.[0]?.tenantId}&from=TL_APPLICATION_DETAILS_LABEL`,
+          to: `/digit-ui/employee/commonpt/view-property?propertyId=${propertyDetails?.Properties?.[0]?.propertyId}&tenantId=${propertyDetails?.Properties?.[0]?.tenantId}&from=TL_APPLICATION_DETAILS_LABEL`,
           value: "",
           isLink: true,
         },

@@ -129,7 +129,7 @@ const FstpServiceRequest = () => {
   }, []);
 
   // if (isSuccess && totalCount === 0 && !isLoading) {
-  //     history.push('/${window?.contextPath}/employee/fsm/fstp/new-vehicle-entry/')
+  //     history.push('/digit-ui/employee/fsm/fstp/new-vehicle-entry/')
   // }
 
   if (isLoading && !isSuccess && isSearchLoading && isVehiclesLoading && !isIdle && !isVehicleSearchCompleted) {
@@ -156,7 +156,7 @@ const FstpServiceRequest = () => {
           isFSMRequest={true}
           isLoading={isLoading}
           userRole={"FSM_EMP_FSTPO"}
-          linkPrefix={`/${window?.contextPath}/employee/fsm/fstp-operator-details/`}
+          linkPrefix={"/digit-ui/employee/fsm/fstp-operator-details/"}
           onSearch={onSearch}
           searchFields={searchFields}
           onSort={handleSort}

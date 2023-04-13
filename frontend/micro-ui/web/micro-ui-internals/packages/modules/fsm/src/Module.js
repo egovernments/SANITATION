@@ -53,6 +53,7 @@ import { FsmBreadCrumb } from "./pages/employee";
 import AdvanceCollection from "./pageComponents/AdvanceCollection";
 import SelectTrips from "./pageComponents/SelectTrips";
 import PlusMinusInput from "./pageComponents/PlusMinusInput";
+import ConfirmationBox from "./components/Confirmation";
 
 const FSMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "FSM";
@@ -83,7 +84,7 @@ const FSMLinks = ({ matchPath, userType }) => {
   const roleBasedLoginRoutes = [
     {
       role: "FSM_DSO",
-      from: `/${window?.contextPath}/citizen/fsm/dso-dashboard`,
+      from: "/digit-ui/citizen/fsm/dso-dashboard",
       dashoardLink: "CS_LINK_DSO_DASHBOARD",
       loginLink: "CS_LINK_LOGIN_DSO",
     },
@@ -109,7 +110,7 @@ const FSMLinks = ({ matchPath, userType }) => {
         });
       else
         links.push({
-          link: `/${window?.contextPath}/citizen/login`,
+          link: `/digit-ui/citizen/login`,
           state: { role: "FSM_DSO", from },
           i18nKey: t(loginLink),
         });
@@ -201,6 +202,7 @@ const componentsToRegister = {
   AdvanceCollection,
   SelectTrips,
   PlusMinusInput,
+  ConfirmationBox,
 };
 
 export const initFSMComponents = () => {

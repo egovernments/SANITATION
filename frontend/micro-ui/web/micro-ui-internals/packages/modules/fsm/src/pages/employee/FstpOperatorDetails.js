@@ -206,11 +206,12 @@ const FstpOperatorDetails = () => {
   };
 
   const handleCreate = () => {
-    if (newVehicleNumber === null || newVehicleNumber?.trim()?.length === 0) {
-      setShowToast({ key: "error", action: `ES_FSTP_INVALID_VEHICLE_NUMBER` });
+    const re = new RegExp("^[A-Z]{2}\\s{1}[0-9]{2}\\s{0,1}[A-Z]{1,2}\\s{1}[0-9]{4}$");
+    if (!re.test(newVehicleNumber)) {
+      setShowToast({ key: "error", action: `ES_FSM_VEHICLE_FORMAT_TIP` });
       setTimeout(() => {
         closeToast();
-      }, 2000);
+      }, 5000);
       return;
     }
     if (newDsoName === null || newDsoName?.trim()?.length === 0) {
@@ -233,7 +234,7 @@ const FstpOperatorDetails = () => {
       return;
     }
 
-    if (wasteCollected === null || wasteCollected?.trim()?.length === 0) {
+    if (!wasteCollected || wasteCollected?.trim()?.length === 0) {
       setShowToast({ key: "error", action: `ES_FSTP_INVALID_WASTE_AMOUNT` });
       setTimeout(() => {
         closeToast();
@@ -321,7 +322,7 @@ const FstpOperatorDetails = () => {
     setShowToast({ key: "success", action: `ES_FSM_DISPOSE_UPDATE_SUCCESS` });
     setTimeout(() => {
       closeToast();
-      history.push(`/${window?.contextPath}/employee/fsm/fstp-operations`);
+      history.push(`/${window?.contextPath}/employee`);
     }, 5000);
   };
 
@@ -517,19 +518,28 @@ const FstpOperatorDetails = () => {
               text={<MultiUploadWrapper t={t} module="fsm" tenantId={stateId} getFormState={(e) => getData(e)} />}
             />
 
-            {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length > 0 && (
-              <ActionBar>
-                {displayMenu && workflowDetails?.data?.nextActions ? (
-                  <Menu
-                    localeKeyPrefix={""}
-                    options={workflowDetails?.data?.nextActions.map((action) => action.action)}
-                    t={t}
-                    onSelect={onActionSelect}
+            {!workflowDetails?.isLoading &&
+              workflowDetails?.data?.nextActions?.length > 0 &&
+              (workflowDetails?.data?.nextActions?.length === 1 ? (
+                <ActionBar>
+                  <SubmitBar
+                    label={t(`CS_ACTION_${workflowDetails?.data?.nextActions?.[0]?.action}`)}
+                    onSubmit={() => onActionSelect(workflowDetails?.data?.nextActions?.[0]?.action)}
                   />
-                ) : null}
-                <SubmitBar label={t("ES_COMMON_TAKE_ACTION")} onSubmit={() => setDisplayMenu(!displayMenu)} />
-              </ActionBar>
-            )}
+                </ActionBar>
+              ) : (
+                <ActionBar>
+                  {displayMenu && workflowDetails?.data?.nextActions ? (
+                    <Menu
+                      localeKeyPrefix={""}
+                      options={workflowDetails?.data?.nextActions.map((action) => action.action)}
+                      t={t}
+                      onSelect={onActionSelect}
+                    />
+                  ) : null}
+                  <SubmitBar label={t("ES_COMMON_TAKE_ACTION")} onSubmit={() => setDisplayMenu(!displayMenu)} />
+                </ActionBar>
+              ))}
           </form>
           {showModal ? (
             <ActionModal

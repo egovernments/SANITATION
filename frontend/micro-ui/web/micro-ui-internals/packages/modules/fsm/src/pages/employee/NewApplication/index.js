@@ -48,7 +48,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
       formData?.address?.locality?.code &&
       formData?.tripData?.vehicleType &&
       formData?.channel &&
-      formData?.tripData?.amountPerTrip
+      (formData?.tripData?.amountPerTrip || formData?.tripData?.amountPerTrip === 0)
     ) {
       setSubmitValve(true);
       const pitDetailValues = formData?.pitDetail ? Object.values(formData?.pitDetail).filter((value) => value > 0) : null;
@@ -63,7 +63,12 @@ export const NewApplication = ({ parentUrl, heading }) => {
           setSubmitValve(true);
         } else setSubmitValve(false);
       }
-      if (formData?.advancepaymentPreference?.advanceAmount > max || formData?.advancepaymentPreference?.advanceAmount < min) {
+      if (
+        formData?.tripData?.amountPerTrip !== 0 &&
+        (formData?.advancepaymentPreference?.advanceAmount < min ||
+          formData?.advancepaymentPreference?.advanceAmount > max ||
+          formData?.advancepaymentPreference?.advanceAmount === "")
+      ) {
         setSubmitValve(false);
       }
     } else {
@@ -96,8 +101,8 @@ export const NewApplication = ({ parentUrl, heading }) => {
     const localityCode = data?.address?.locality?.code;
     const localityName = data?.address?.locality?.name;
     const gender = data.applicationData.applicantGender;
-    const paymentPreference = data?.paymentPreference ? data?.paymentPreference : "POST_PAY";
-    const advanceAmount = data?.paymentPreference === "PRE_PAY" ? data?.advancepaymentPreference?.advanceAmount : null;
+    const paymentPreference = amount === 0 ? null : data?.paymentPreference ? data?.paymentPreference : null;
+    const advanceAmount = amount === 0 ? null : data?.advancepaymentPreference?.advanceAmount;
 
     const formData = {
       fsm: {
@@ -113,7 +118,6 @@ export const NewApplication = ({ parentUrl, heading }) => {
           tripAmount: amount,
         },
         propertyUsage: data?.subtype,
-        vehicleType: data?.tripData?.vehicleType?.type,
         vehicleCapacity: data?.tripData?.vehicleType?.capacity,
         pitDetail: {
           ...pitDimension,
@@ -149,7 +153,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
     Digit.SessionStorage.set("city_property", null);
     Digit.SessionStorage.set("selected_localities", null);
     Digit.SessionStorage.set("locality_property", null);
-    history.push(`/${window?.contextPath}/employee/fsm/response`, formData);
+    history.push("/digit-ui/employee/fsm/response", formData);
   };
 
   if (isLoading || isTripConfigLoading || isApplicantConfigLoading) {
@@ -175,6 +179,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
             };
           })}
         fieldStyle={{ marginRight: 0 }}
+        formCardStyle={true}
         onSubmit={onSubmit}
         defaultValues={defaultValues}
         onFormValueChange={onFormValueChange}

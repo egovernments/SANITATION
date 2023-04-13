@@ -100,7 +100,7 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
         });
 
         const billSlab = billingDetails?.billingSlab?.length && billingDetails?.billingSlab[0];
-        if (billSlab?.price) {
+        if (billSlab?.price || billSlab?.price === 0) {
           setValue({
             amountPerTrip: billSlab.price,
             amount: billSlab.price * formData.tripData.noOfTrips,
@@ -115,7 +115,7 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
         }
       }
     })();
-  }, [formData?.propertyType, formData?.subtype, formData?.address, formData?.tripData?.vehicleType?.capacity, formData?.tripData?.noOfTrips]);
+  }, [formData?.propertyType, formData?.subtype, formData?.address?.slum, formData?.tripData?.vehicleType?.capacity, formData?.tripData?.noOfTrips]);
 
   return isVehicleMenuLoading && isDsoLoading ? (
     <Loader />
@@ -124,7 +124,7 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
       {inputs?.map((input, index) => (
         <LabelFieldPair key={index}>
           <CardLabel className="card-label-smaller">
-            {t(input.label)}
+            {t(input.label) + " (₹)"}
             {input.isMandatory ? " * " : null}
           </CardLabel>
           <div className="field">

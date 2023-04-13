@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CardLabel, Dropdown, LabelFieldPair, TextInput } from "@egovernments/digit-ui-react-components";
 
-const SelectVehicleType = ({ t, config, onSelect, userType, formData }) => {
+const SelectVehicleType = ({ t, config, onSelect, userType, formData, setValue }) => {
   const stateId = Digit.ULBService.getStateId();
   const { data: vehicleData, isLoading } = Digit.Hooks.fsm.useMDMS(stateId, "Vehicle", "VehicleMakeModel");
   let tenantId = Digit.ULBService.getCurrentTenantId();
@@ -21,6 +21,18 @@ const SelectVehicleType = ({ t, config, onSelect, userType, formData }) => {
       setSelectedCapacity(formData?.vehicle?.tankCapacity);
     }
   }, [formData?.vehicle, vehicleData]);
+
+  useEffect(() => {
+    if (selectedModal?.code && selectedModal?.code !== formData?.vehicle?.modal) {
+      setSelectedType("");
+      setSelectedCapacity("");
+      setValue("additionalDetails", "");
+      setValue("pollutionCert", undefined);
+      setValue("insurance", undefined);
+      setValue("roadTax", undefined);
+      setValue("fitnessValidity", undefined);
+    }
+  }, [formData?.vehicle?.modal]);
 
   useEffect(() => {
     if (vehicleData) {

@@ -38,6 +38,10 @@ const ResponseComposer = ({ data, template, actionButtonLabel, onSubmit }) => {
               <CitizenInfoLabel style={{margin:"0px"}} info={t("CS_FILE_APPLICATION_INFO_LABEL")} text={t("CS_INACTIVE_PROPERTY_NOT_ELIGIBLE")} 
               />
             )}
+            {result.status === "INACTIVE" && (
+              <CitizenInfoLabel style={{margin:"0px"}} info={t("CS_FILE_APPLICATION_INFO_LABEL")} text={t("CS_INACTIVE_PROPERTY_NOT_ELIGIBLE")} 
+              />
+            )}
           </Card>
         );
       })}

@@ -61,7 +61,7 @@ export const FsmBreadCrumb = ({ location }) => {
       show: isFsm,
     },
     {
-      path: isRegistry ? `/${window?.contextPath}/employee/fsm/registry` : FSTPO ? `/${window?.contextPath}/employee/fsm/fstp-inbox` : `/${window?.contextPath}/employee/fsm/home`,
+      path: isRegistry ? `/${window?.contextPath}/employee/fsm/registry?selectedTabs=VENDOR` : FSTPO ? `/${window?.contextPath}/employee/fsm/fstp-inbox` : `/${window?.contextPath}/employee`,
       content: isVehicleLog ? t("ES_TITLE_INBOX") : "FSM",
       show: isFsm,
     },
@@ -71,8 +71,8 @@ export const FsmBreadCrumb = ({ location }) => {
       show: isFsm && isNewApplication,
     },
     {
-      path: `/${window?.contextPath}/employee/fsm/new-application`,
-      content: `${t("FSM_NEW_DESLUDGING_APPLICATION")} / ${t("FSM_SUCCESS")}`,
+      path: "",
+      content: `${t("FSM_SUCCESS")}`,
       show: location.pathname.includes("/employee/fsm/response") ? true : false,
     },
     {
@@ -105,11 +105,17 @@ export const FsmBreadCrumb = ({ location }) => {
     { content: t("ES_TITLE_VENDOR_EDIT"), show: isRegistry && (isVendorEdit || isVehicleEdit || isDriverEdit) },
     {
       path: `/${window?.contextPath}/employee/fsm/modify-application/` + id,
-      content: t("ES_FSM_APPLICATION_SCHEDULE"),
+      content: t("ES_FSM_APPLICATION_UPDATE"),
       show: isModifyApplication,
     },
     {
-      content: isNewVendor ? t("ES_FSM_ACTION_CREATE_VENDOR") : isNewVehicle ?  t("ES_FSM_REGISTRY_DETAILS_TYPE_VEHICLE") : isNewDriver ? t("ES_FSM_REGISTRY_DETAILS_TYPE_DRIVER") : null,
+      content: isNewVendor
+        ? t("ES_FSM_ACTION_CREATE_VENDOR")
+        : isNewVehicle
+        ? t("ES_FSM_REGISTRY_DETAILS_TYPE_VEHICLE")
+        : isNewDriver
+        ? t("ES_FSM_REGISTRY_DETAILS_TYPE_DRIVER")
+        : null,
       show: isRegistry && (isNewVendor || isNewVehicle || isNewDriver),
     },
   ];
@@ -130,7 +136,7 @@ const EmployeeApp = ({ path, url, userType }) => {
     !DSO && !COLLECTOR && !FSM_EDITOR
       ? [
           {
-            link: `/${window?.contextPath}/employee/fsm/new-application`,
+            link: "/${window?.contextPath}/employee/fsm/new-application",
             name: "FSM_NEW_DESLUDGING_APPLICATION",
             icon: <AddNewIcon />,
           },
@@ -140,7 +146,7 @@ const EmployeeApp = ({ path, url, userType }) => {
   const moduleForSomeFSMAdmin = FSM_ADMIN
     ? [
         {
-          link: `/${window?.contextPath}/employee/fsm/registry`,
+          link: `/${window?.contextPath}/employee/fsm/registry?selectedTabs=VENDOR`,
           name: "ES_TITLE_FSM_REGISTRY",
           icon: <AddNewIcon />,
         },
@@ -196,6 +202,13 @@ const EmployeeApp = ({ path, url, userType }) => {
   const EditDriver = Digit.ComponentRegistryService.getComponent("EditDriver");
   const BreadCrumbComp = Digit.ComponentRegistryService.getComponent("FsmBreadCrumb");
 
+  const locationCheck =
+    window.location.href.includes("/employee/fsm/inbox") ||
+    window.location.href.includes("/employee/fsm/registry") ||
+    window.location.href.includes("/employee/fsm/application-details/");
+
+  const desludgingApplicationCheck =
+    window.location.href.includes("/employee/fsm/new-application") || window.location.href.includes("/employee/fsm/modify-application");
   return (
     <Switch>
       <React.Fragment>
@@ -208,7 +221,7 @@ const EmployeeApp = ({ path, url, userType }) => {
               {t("CS_COMMON_BACK")}
             </BackButton>
           ) : (
-            <div>
+            <div style={locationCheck ? { marginLeft: "-4px" } : desludgingApplicationCheck ? { marginLeft: "12px" } : { marginLeft: "20px" }}>
               <BreadCrumbComp location={location} />
             </div>
           )}
@@ -240,7 +253,7 @@ const EmployeeApp = ({ path, url, userType }) => {
           <PrivateRoute exact path={`${path}/fstp-operations`} component={() => <FstpOperations />} />
           <PrivateRoute exact path={`${path}/fstp-add-vehicle`} component={() => <FstpAddVehicle />} />
           <PrivateRoute exact path={`${path}/fstp-fsm-request/:id`} component={() => <FstpServiceRequest />} />
-          <PrivateRoute exact path={`${path}/home`} component={() => <ULBHomeCard module={module} />} />
+          {/* <PrivateRoute exact path={`${path}/home`} component={() => <ULBHomeCard module={module} />} /> */}
           <PrivateRoute exact path={`${path}/fstp/new-vehicle-entry`} component={FstpOperatorDetails} />
           <PrivateRoute exact path={`${path}/fstp/new-vehicle-entry/:id`} component={FstpOperatorDetails} />
         </div>

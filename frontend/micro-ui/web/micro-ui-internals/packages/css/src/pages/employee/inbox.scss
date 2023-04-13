@@ -499,6 +499,9 @@
     }
   }
 }
+.inboxLinksFSM {
+  margin: 0 !important;
+}
 
 .plumber-details-new-value-wrapper {
   flex: 2 1 auto;
@@ -566,14 +569,14 @@
   tHead {
     tr {
       th {
-        text-align: center;
+        text-align: left;
       }
     }
   }
   tBody {
     tr {
       td {
-        text-align: center;
+        text-align: left;
       }
     }
   }

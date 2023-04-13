@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useHistory } from "react-router-dom";
-import { FormComposer, Loader } from "@egovernments/digit-ui-react-components";
+import { FormComposer, Header, Loader } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 
 const isConventionalSpecticTank = (tankDimension) => tankDimension === "lbd";
@@ -52,7 +52,7 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
     pitType: sanitationMenu.filter((type) => type.code === applicationData.sanitationtype)[0],
     pitDetail: applicationData.pitDetail,
     paymentPreference: applicationData.paymentPreference,
-    advanceAmount: applicationData?.advanceAmount,
+    advancepaymentPreference: { advanceAmount: applicationData?.advanceAmount },
   };
 
   const onFormValueChange = (setValue, formData) => {
@@ -61,10 +61,11 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
       formData?.subtype &&
       formData?.address?.locality?.code &&
       formData?.tripData?.vehicleType &&
-      formData?.tripData?.amountPerTrip
+      (formData?.tripData?.amountPerTrip || formData?.tripData?.amountPerTrip === 0)
     ) {
       setSubmitValve(true);
       const pitDetailValues = formData?.pitDetail ? Object.values(formData?.pitDetail).filter((value) => value > 0) : null;
+      let min = Digit.SessionStorage.get("advance_amount");
       if (formData?.pitType) {
         if (pitDetailValues === null || pitDetailValues?.length === 0) {
           setSubmitValve(true);
@@ -73,6 +74,12 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
         } else if (!isConventionalSpecticTank(formData?.pitType?.dimension) && pitDetailValues?.length >= 2) {
           setSubmitValve(true);
         } else setSubmitValve(false);
+      }
+      if (formData?.tripData?.amountPerTrip !== 0 && (formData?.advancepaymentPreference?.advanceAmount > formData?.tripData?.amount || formData?.advancepaymentPreference?.advanceAmount < min)) {
+        setSubmitValve(false);
+      }
+      if (applicationData?.advanceAmount > 0 && formData?.advancepaymentPreference?.advanceAmount <= 0) {
+        setSubmitValve(false);
       }
     } else {
       setSubmitValve(false);
@@ -104,7 +111,7 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
     const localityCode = data?.address?.locality?.code;
     const localityName = data?.address?.locality?.name;
     const propertyUsage = data?.subtype;
-    const advanceAmount = data?.paymentPreference === "PRE_PAY" ? data?.advancepaymentPreference?.advanceAmount : null;
+    const advanceAmount = amount === 0 ? null : data?.advancepaymentPreference?.advanceAmount;
     const { height, length, width, diameter } = pitDimension;
 
     const formData = {
@@ -156,7 +163,7 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
     Digit.SessionStorage.set("city_property", null);
     Digit.SessionStorage.set("selected_localities", null);
     Digit.SessionStorage.set("locality_property", null);
-    history.replace(`/${window?.contextPath}/employee/fsm/response`, {
+    history.replace("/digit-ui/employee/fsm/response", {
       applicationData: formData,
       key: "update",
       action: applicationData?.applicationStatus === "CREATED" ? "SUBMIT" : "SCHEDULE",
@@ -170,25 +177,30 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
   const configs = [...preFields, ...commonFields];
 
   return (
-    <FormComposer
-      heading={t("ES_TITLE_MODIFY_DESULDGING_APPLICATION")}
-      isDisabled={!canSubmit}
-      label={applicationData?.applicationStatus != "CREATED" ? t("ES_FSM_APPLICATION_SCHEDULE") : t("ES_FSM_APPLICATION_UPDATE")}
-      config={configs
-        .filter((i) => !i.hideInEmployee)
-        .map((config) => {
-          return {
-            ...config,
-            body: config.body.filter((a) => !a.hideInEmployee),
-          };
-        })}
-      fieldStyle={{ marginRight: 0 }}
-      onSubmit={onSubmit}
-      defaultValues={defaultValues}
-      onFormValueChange={onFormValueChange}
-      noBreakLine={true}
-      fms_inline
-    />
+    <>
+      <div style={{ marginLeft: "15px" }}>
+        <Header>{t("ES_TITLE_MODIFY_DESULDGING_APPLICATION")}</Header>
+      </div>
+      <FormComposer
+        isDisabled={!canSubmit}
+        label={applicationData?.applicationStatus != "CREATED" ? t("ES_FSM_APPLICATION_SCHEDULE") : t("ES_FSM_APPLICATION_UPDATE")}
+        config={configs
+          .filter((i) => !i.hideInEmployee)
+          .map((config) => {
+            return {
+              ...config,
+              body: config.body.filter((a) => !a.hideInEmployee),
+            };
+          })}
+        fieldStyle={{ marginRight: 0 }}
+        formCardStyle={true}
+        onSubmit={onSubmit}
+        defaultValues={defaultValues}
+        onFormValueChange={onFormValueChange}
+        noBreakLine={true}
+        fms_inline
+      />
+    </>
   );
 };
 

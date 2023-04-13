@@ -2005,6 +2005,19 @@ img, video {
         background-color: #eee;
         background-color: rgba(238, 238, 238, var(--bg-opacity)); }
 
+.fsm-registry-dropdown {
+  margin-bottom: 0; }
+  .fsm-registry-dropdown .select {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+  .fsm-registry-dropdown .select-active, .fsm-registry-dropdown input, .fsm-registry-dropdown .checkbox-wrap .input-emp, .checkbox-wrap .fsm-registry-dropdown .input-emp {
+    text-align: left; }
+  .fsm-registry-dropdown .options-card .profile-dropdown--item {
+    -webkit-box-pack: left;
+    -ms-flex-pack: left;
+    justify-content: left; }
+
 .employee-select-wrap--elipses {
   width: 85% !important;
   overflow: hidden;
@@ -2525,6 +2538,9 @@ img, video {
     --text-opacity:1;
     color: #505a5f;
     color: rgba(80, 90, 95, var(--text-opacity)); }
+
+.employee-data-table .vendor-details-row {
+  margin-left: 15px !important; }
 
 .employee-data-table .last {
   border: none;
@@ -6833,6 +6849,9 @@ video::-webkit-media-controls-panel {
     .groupBill-custom .inbox-action-container .submit-bar-search {
       margin-top: 55px !important; } }
 
+.inboxLinksFSM {
+  margin: 0 !important; }
+
 .connection-details-old-value-wrapper .old-value-null-wrapper, .plumber-details-old-value-wrapper .old-value-null-wrapper {
   visibility: hidden;
   padding-bottom: 8px;
@@ -6878,10 +6897,10 @@ video::-webkit-media-controls-panel {
     font-weight: 700; }
 
 .registryTable tHead tr th {
-  text-align: center; }
+  text-align: left; }
 
 .registryTable tBody tr td {
-  text-align: center; }
+  text-align: left; }
 
 .secondary-action {
   display: inline;

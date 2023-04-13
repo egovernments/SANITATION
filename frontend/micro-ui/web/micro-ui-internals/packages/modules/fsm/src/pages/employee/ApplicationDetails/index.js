@@ -70,10 +70,16 @@ const ApplicationDetails = (props) => {
     tenantId: applicationDetails?.tenantId || tenantId,
     id: applicationNumber,
     moduleCode:
-      DSO || applicationData?.paymentPreference === "POST_PAY"
+      applicationData?.paymentPreference === "POST_PAY"
         ? "FSM_POST_PAY_SERVICE"
-        : applicationData?.advanceAmount
+        : applicationData?.advanceAmount === 0
+        ? "PAY_LATER_SERVICE"
+        : applicationData?.advanceAmount > 0
         ? "FSM_ADVANCE_PAY_SERVICE"
+        : applicationData?.paymentPreference === null &&
+          applicationData?.additionalDetails?.tripAmount === 0 &&
+          applicationData?.advanceAmount === null
+        ? "FSM_ZERO_PAY_SERVICE"
         : "FSM",
     role: DSO ? "FSM_DSO" : "FSM_EMPLOYEE",
     serviceData: applicationDetails,
@@ -93,7 +99,7 @@ const ApplicationDetails = (props) => {
 
   useEffect(() => {
     switch (selectedAction) {
-      case DSO && "SCHEDULE":
+      case "SCHEDULE":
       case "DSO_ACCEPT":
       case "ACCEPT":
       case "ASSIGN":
@@ -112,12 +118,12 @@ const ApplicationDetails = (props) => {
         return setShowModal(true);
       case "SUBMIT":
       case "FSM_SUBMIT":
-      case !DSO && "SCHEDULE":
-        return history.push(`/${window?.contextPath}/employee/fsm/modify-application/` + applicationNumber);
+      // case !DSO && "SCHEDULE":
+        return history.push("/digit-ui/employee/fsm/modify-application/" + applicationNumber);
       case "PAY":
       case "FSM_PAY":
       case "ADDITIONAL_PAY_REQUEST":
-        return history.push(`/${window?.contextPath}/employee/payment/collect/FSM.TRIP_CHARGES/${applicationNumber}?workflow=FSM`);
+        return history.push(`/digit-ui/employee/payment/collect/FSM.TRIP_CHARGES/${applicationNumber}?workflow=FSM`);
       default:
         break;
     }
@@ -193,7 +199,7 @@ const ApplicationDetails = (props) => {
       return (
         <div>
           <Rating withText={true} text={t(`ES_FSM_YOU_RATED`)} currentRating={checkpoint.rating} />
-          <Link to={`/${window?.contextPath}/employee/fsm/rate-view/${applicationNumber}`}>
+          <Link to={`/digit-ui/employee/fsm/rate-view/${applicationNumber}`}>
             <ActionLinks>{t("CS_FSM_RATE_VIEW")}</ActionLinks>
           </Link>
         </div>
@@ -240,6 +246,7 @@ const ApplicationDetails = (props) => {
                 )}
                 <StatusTable>
                   {detail?.values?.map((value, index) => {
+                    if (value === null) return;
                     if (value.map === true && value.value !== "N/A") {
                       return <Row key={t(value.title)} label={t(value.title)} text={<img src={t(value.value)} alt="" />} />;
                     }
@@ -301,7 +308,7 @@ const ApplicationDetails = (props) => {
                             <CheckPoint
                               keyValue={index}
                               isCompleted={index === 0}
-                              label={t("CS_COMMON_FSM_" + `${checkpoint.performedAction === "UPDATE" ? "UPDATE_": ""}` + checkpoint.status)}
+                              label={t("CS_COMMON_FSM_" + `${checkpoint.performedAction === "UPDATE" ? "UPDATE_" : ""}` + checkpoint.status)}
                               customChild={getTimelineCaptions(checkpoint)}
                             />
                           </React.Fragment>
@@ -322,6 +329,7 @@ const ApplicationDetails = (props) => {
               closeModal={closeModal}
               submitAction={submitAction}
               actionData={workflowDetails?.data?.timeline}
+              module={workflowDetails?.data?.applicationBusinessService}
             />
           ) : null}
           {showToast && (
@@ -331,7 +339,15 @@ const ApplicationDetails = (props) => {
               onClose={closeToast}
             />
           )}
-          {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length > 0 && (
+          {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length === 1 && (
+            <ActionBar style={{ zIndex: "19" }}>
+              <SubmitBar
+                label={t(`ES_FSM_${workflowDetails?.data?.nextActions[0].action}`)}
+                onSubmit={() => onActionSelect(workflowDetails?.data?.nextActions[0].action)}
+              />
+            </ActionBar>
+          )}
+          {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length > 1 && (
             <ActionBar style={{ zIndex: "19" }}>
               {displayMenu && workflowDetails?.data?.nextActions ? (
                 <Menu
