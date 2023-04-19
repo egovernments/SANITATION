@@ -29,7 +29,7 @@ config:
 
   - name: 'builds/SANITATION/vehicle'
     build:
-      - work-dir: 'municipal-services/vehicle'
+      - work-dir: 'sanitation/vehicle'
         image-name: 'vehicle'
         dockerfile: 'build/maven/Dockerfile'
       - work-dir: 'municipal-services/vehicle/src/main/resources/db'
