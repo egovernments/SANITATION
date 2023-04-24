@@ -53,6 +53,9 @@ public class FSM   {
 
   @JsonProperty("source")
   private String source = null;
+  
+  @JsonProperty("advanceAmount")
+  private String advanceAmount = null;
 
   @JsonProperty("sanitationtype")
   private String sanitationtype = null;
@@ -65,6 +68,9 @@ public class FSM   {
   
   @JsonProperty("vehicleType")
   private String vehicleType = null;
+  
+  @JsonProperty("vehicleCapacity")
+  private String vehicleCapacity = null;
 
   /**
    * Gets or Sets status
