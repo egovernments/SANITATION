@@ -1,0 +1,699 @@
+---
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8061/vehicle
+  description: Generated server url
+paths:
+  "/trip/v1/_search":
+    post:
+      tags:
+      - vehicle-trip-controller
+      operationId: search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestInfoWrapper:
+                  "$ref": "#/components/schemas/RequestInfoWrapper"
+                criteria:
+                  "$ref": "#/components/schemas/VehicleTripSearchCriteria"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VehicleTripResponse"
+  "/v1/_update":
+    post:
+      tags:
+      - vehicle-controller
+      operationId: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleRequest"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VehicleResponse"
+  "/trip/v1/_plainsearch":
+    post:
+      tags:
+      - vehicle-trip-controller
+      operationId: plainsearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestInfoWrapper:
+                  "$ref": "#/components/schemas/RequestInfoWrapper"
+                criteria:
+                  "$ref": "#/components/schemas/VehicleTripSearchCriteria"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VehicleTripResponse"
+  "/trip/v1/_update":
+    post:
+      tags:
+      - vehicle-trip-controller
+      operationId: update_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleTripRequest"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VehicleTripResponse"
+  "/v1/_create":
+    post:
+      tags:
+      - vehicle-controller
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleRequest"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VehicleResponse"
+  "/trip/v1/_create":
+    post:
+      tags:
+      - vehicle-trip-controller
+      operationId: create_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleTripRequest"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VehicleTripResponse"
+  "/v1/_search":
+    post:
+      tags:
+      - vehicle-controller
+      operationId: search_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestInfoWrapper:
+                  "$ref": "#/components/schemas/RequestInfoWrapper"
+                criteria:
+                  "$ref": "#/components/schemas/VehicleSearchCriteria"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VehicleResponse"
+  "/v1/_plainsearch":
+    post:
+      tags:
+      - vehicle-controller
+      operationId: plainsearch_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestInfoWrapper:
+                  "$ref": "#/components/schemas/RequestInfoWrapper"
+                criteria:
+                  "$ref": "#/components/schemas/VehicleSearchCriteria"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VehicleResponse"
+  "/v1/searchTrip":
+    post:
+      tags:
+      - vehicle-inbox-controller
+      operationId: fetchVehicleTripDetail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestInfoWrapper:
+                  "$ref": "#/components/schemas/RequestInfoWrapper"
+                criteria:
+                  "$ref": "#/components/schemas/VehicleTripSearchCriteria"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VehicleTripDetailResponse"
+  "/v1/fetchApplicationStatusCount":
+    post:
+      tags:
+      - vehicle-inbox-controller
+      operationId: fetchApplicationCount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestInfoWrapper:
+                  "$ref": "#/components/schemas/RequestInfoWrapper"
+                criteria:
+                  "$ref": "#/components/schemas/VehicleSearchCriteria"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VehicleCustomResponse"
+components:
+  schemas:
+    RequestInfo:
+      type: object
+      properties:
+        apiId:
+          type: string
+        ver:
+          type: string
+        ts:
+          type: integer
+          format: int64
+        action:
+          type: string
+        did:
+          type: string
+        key:
+          type: string
+        msgId:
+          type: string
+        authToken:
+          type: string
+        correlationId:
+          type: string
+        userInfo:
+          "$ref": "#/components/schemas/User"
+    RequestInfoWrapper:
+      type: object
+      properties:
+        RequestInfo:
+          "$ref": "#/components/schemas/RequestInfo"
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        code:
+          type: string
+        tenantId:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userName:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        mobileNumber:
+          type: string
+        emailId:
+          type: string
+        roles:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Role"
+        tenantId:
+          type: string
+        uuid:
+          type: string
+    VehicleTripSearchCriteria:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        offset:
+          type: integer
+          format: int32
+        limit:
+          type: integer
+          format: int32
+        tenantId:
+          type: string
+        businessService:
+          type: string
+        ids:
+          type: array
+          items:
+            type: string
+        vehicleIds:
+          type: array
+          items:
+            type: string
+        tripOwnerIds:
+          type: array
+          items:
+            type: string
+        driverIds:
+          type: array
+          items:
+            type: string
+        applicationStatus:
+          type: array
+          items:
+            type: string
+        refernceNos:
+          type: array
+          items:
+            type: string
+        applicationNos:
+          type: array
+          items:
+            type: string
+        status:
+          type: array
+          items:
+            type: string
+        sortBy:
+          type: string
+          enum:
+          - applicationStatus
+          - applicationiNo
+          - vehicle
+          - referenceNo
+          - createdTime
+          - tripStartTime
+          - tripEndTime
+        sortOrder:
+          type: string
+          enum:
+          - ASC
+          - DESC
+    AuditDetails:
+      type: object
+      properties:
+        createdBy:
+          type: string
+        lastModifiedBy:
+          type: string
+        createdTime:
+          type: integer
+          format: int64
+        lastModifiedTime:
+          type: integer
+          format: int64
+    ResponseInfo:
+      type: object
+      properties:
+        apiId:
+          type: string
+        ver:
+          type: string
+        ts:
+          type: integer
+          format: int64
+        resMsgId:
+          type: string
+        msgId:
+          type: string
+        status:
+          type: string
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          maxLength: 64
+          minLength: 0
+          type: string
+        registrationNumber:
+          maxLength: 64
+          minLength: 0
+          type: string
+        model:
+          maxLength: 64
+          minLength: 0
+          type: string
+        type:
+          maxLength: 64
+          minLength: 0
+          type: string
+        tankCapacity:
+          type: number
+          format: double
+        suctionType:
+          type: string
+        vehicleOwner:
+          type: string
+        pollutionCertiValidTill:
+          type: integer
+          format: int64
+        InsuranceCertValidTill:
+          type: integer
+          format: int64
+        fitnessValidTill:
+          type: integer
+          format: int64
+        roadTaxPaidTill:
+          type: integer
+          format: int64
+        gpsEnabled:
+          type: boolean
+        additionalDetails:
+          type: object
+        source:
+          type: string
+        ownerId:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - DISABLED
+        owner:
+          "$ref": "#/components/schemas/User"
+        auditDetails:
+          "$ref": "#/components/schemas/AuditDetails"
+    VehicleTrip:
+      required:
+      - businessService
+      - tenantId
+      - tripDetails
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          maxLength: 64
+          minLength: 0
+          type: string
+        tripOwner:
+          "$ref": "#/components/schemas/User"
+        tripOwnerId:
+          type: string
+        driver:
+          "$ref": "#/components/schemas/User"
+        driverId:
+          maxLength: 64
+          minLength: 0
+          type: string
+        vehicle:
+          "$ref": "#/components/schemas/Vehicle"
+        vehicleId:
+          type: string
+        applicationNo:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+        businessService:
+          type: string
+        applicationStatus:
+          type: string
+        additionalDetails:
+          type: object
+        tripDetails:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleTripDetail"
+        tripStartTime:
+          type: integer
+          format: int64
+        tripEndTime:
+          type: integer
+          format: int64
+        volumeCarried:
+          type: number
+          format: double
+        auditDetails:
+          "$ref": "#/components/schemas/AuditDetails"
+    VehicleTripDetail:
+      required:
+      - tenantId
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        referenceNo:
+          type: string
+        referenceStatus:
+          type: string
+        additionalDetails:
+          type: object
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+        itemStartTime:
+          type: integer
+          format: int64
+        itemEndTime:
+          type: integer
+          format: int64
+        volume:
+          type: number
+          format: double
+        auditDetails:
+          "$ref": "#/components/schemas/AuditDetails"
+        trip_id:
+          type: string
+    VehicleTripResponse:
+      type: object
+      properties:
+        responseInfo:
+          "$ref": "#/components/schemas/ResponseInfo"
+        vehicleTrip:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleTrip"
+        totalCount:
+          type: integer
+          format: int32
+    VehicleRequest:
+      type: object
+      properties:
+        RequestInfo:
+          "$ref": "#/components/schemas/RequestInfo"
+        vehicle:
+          "$ref": "#/components/schemas/Vehicle"
+    VehicleResponse:
+      type: object
+      properties:
+        responseInfo:
+          "$ref": "#/components/schemas/ResponseInfo"
+        vehicle:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Vehicle"
+        totalCount:
+          type: integer
+          format: int32
+    Document:
+      type: object
+      properties:
+        id:
+          maxLength: 64
+          minLength: 0
+          type: string
+        documentType:
+          type: string
+        fileStore:
+          type: string
+        documentUid:
+          maxLength: 64
+          minLength: 0
+          type: string
+        additionalDetails:
+          type: object
+    VehicleTripRequest:
+      required:
+      - RequestInfo
+      - vehicleTrip
+      type: object
+      properties:
+        RequestInfo:
+          "$ref": "#/components/schemas/RequestInfo"
+        vehicleTrip:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleTrip"
+        workflow:
+          "$ref": "#/components/schemas/Workflow"
+    Workflow:
+      type: object
+      properties:
+        action:
+          type: string
+        assignes:
+          type: array
+          items:
+            type: string
+        comments:
+          type: string
+        verificationDocuments:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Document"
+        rating:
+          type: integer
+          format: int32
+    VehicleSearchCriteria:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        offset:
+          type: integer
+          format: int32
+        limit:
+          type: integer
+          format: int32
+        tenantId:
+          type: string
+        mobileNumber:
+          type: string
+        ownerId:
+          type: array
+          items:
+            type: string
+        ids:
+          type: array
+          items:
+            type: string
+        registrationNumber:
+          type: array
+          items:
+            type: string
+        type:
+          type: array
+          items:
+            type: string
+        model:
+          type: array
+          items:
+            type: string
+        tankCapacity:
+          type: number
+          format: double
+        suctionType:
+          type: array
+          items:
+            type: string
+        vehicleOwner:
+          type: array
+          items:
+            type: string
+        applicationStatus:
+          type: array
+          items:
+            type: string
+        status:
+          type: array
+          items:
+            type: string
+        sortBy:
+          type: string
+          enum:
+          - type
+          - model
+          - suctionType
+          - vehicleOwner
+          - pollutionCertiValidTill
+          - InsuranceCertValidTill
+          - fitnessValidTill
+          - roadTaxPaidTill
+          - tankCapicity
+          - createdTime
+          - registrationNumber
+        sortOrder:
+          type: string
+          enum:
+          - ASC
+          - DESC
+        vehicleWithNoVendor:
+          type: boolean
+        vendorVehicleStatus:
+          type: array
+          items:
+            type: string
+    VehicleTripDetailResponse:
+      type: object
+      properties:
+        responseInfo:
+          "$ref": "#/components/schemas/ResponseInfo"
+        vehicleTripDetail:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleTripDetail"
+        totalCount:
+          type: integer
+          format: int32
+    VehicleCustomResponse:
+      type: object
+      properties:
+        responseInfo:
+          "$ref": "#/components/schemas/ResponseInfo"
+        applicationStatusCount:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        applicationIds:
+          type: array
+          items:
+            type: string

@@ -1,12 +1,13 @@
 package org.egov.vendor.util;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.mdms.model.MasterDetail;
 import org.egov.mdms.model.MdmsCriteria;
 import org.egov.mdms.model.MdmsCriteriaReq;
 import org.egov.mdms.model.ModuleDetail;
@@ -28,7 +29,7 @@ public class VendorUtil {
 
 	@Autowired
 	private ServiceRequestRepository serviceRequestRepository;
-	
+
 	@Autowired
 	private VendorConfiguration vendorConfiguration;
 
@@ -57,12 +58,12 @@ public class VendorUtil {
 
 	public Object mDMSCall(RequestInfo requestInfo, String tenantId) {
 		MdmsCriteriaReq mdmsCriteriaReq = getMDMSRequest(requestInfo, tenantId);
-		Object result = serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
-		return result;
+		return serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
 	}
 
 	public StringBuilder getMdmsSearchUrl() {
-		return new StringBuilder().append(vendorConfiguration.getMdmsHost()).append(vendorConfiguration.getMdmsEndPoint());
+		return new StringBuilder().append(vendorConfiguration.getMdmsHost())
+				.append(vendorConfiguration.getMdmsEndPoint());
 	}
 
 	public MdmsCriteriaReq getMDMSRequest(RequestInfo requestInfo, String tenantId) {
@@ -71,20 +72,25 @@ public class VendorUtil {
 		List<ModuleDetail> moduleDetails = new LinkedList<>();
 		moduleDetails.addAll(moduleRequest);
 		MdmsCriteria mdmsCriteria = MdmsCriteria.builder().moduleDetails(moduleDetails).tenantId(tenantId).build();
-		MdmsCriteriaReq mdmsCriteriaReq = MdmsCriteriaReq.builder().mdmsCriteria(mdmsCriteria).requestInfo(requestInfo)
-				.build();
-		return mdmsCriteriaReq;
+		return MdmsCriteriaReq.builder().mdmsCriteria(mdmsCriteria).requestInfo(requestInfo).build();
 	}
 
 	public List<ModuleDetail> getVendorModuleRequest() {
 
-		final String filterCode = "$.[?(@.active==true)].code";
+		final String activeFilter = "$.[?(@.active==true)]";
+		List<ModuleDetail> moduleDtls = new ArrayList<>();
 
-		//TODO No MDMS As of now
+		List<MasterDetail> masterDtls = new ArrayList<>();
+		masterDtls.add(MasterDetail.builder().name(VendorConstants.VENDOR_AGENCY_TYPE).filter(activeFilter).build());
+		masterDtls.add(
+				MasterDetail.builder().name(VendorConstants.VENDOR_PAYMENT_PREFERENCE).filter(activeFilter).build());
+		moduleDtls.add(
+				ModuleDetail.builder().masterDetails(masterDtls).moduleName(VendorConstants.VENDOR_MODULE).build());
 
-		return Arrays.asList();
+		return moduleDtls;
+
 	}
-	
+
 	public AuditDetails getAuditDetails(String by, Boolean isCreate) {
 		Long time = System.currentTimeMillis();
 		if (isCreate)

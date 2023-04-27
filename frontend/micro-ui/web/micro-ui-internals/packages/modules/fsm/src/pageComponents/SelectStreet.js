@@ -21,7 +21,7 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
   } = useForm();
   const formValue = watch();
   const { errors } = localFormState;
-  const checkLocation = window.location.href.includes("tl/new-application") || window.location.href.includes("tl/renew-application-details") || window.location.href.includes("tl/edit-application-details/") || window.location.href.includes("/tl/tradelicence/new-application/street") || window.location.href.includes("/tl/tradelicence/renew-trade") || window.location.href.includes("/tl/tradelicence/edit-application") ;
+  const checkLocation = window.location.href.includes("tl/new-application") || window.location.href.includes("tl/renew-application-details");
   const isRenewal = window.location.href.includes("edit-application") || window.location.href.includes("tl/renew-application-details");
   const [street, setStreet] = useState();
   const [doorNo, setDoorNo] = useState();
@@ -78,21 +78,8 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
   };
 
   useEffect(() => {
-    if(window.location.href.includes("employee/tl/") && formData?.cpt?.details)
-    {
-      setValue("doorNo", formData?.cpt?.details?.address?.doorNo);
-      setValue("street", formData?.cpt?.details?.address?.street);
-    }
-  },[formData])
-  
-  useEffect(() => {
     trigger();
   }, []);
-
-  useEffect(()=>{
-    if(formData?.address?.doorNo) setDoorNo(formData?.address?.doorNo)
-    if(formData?.address?.street) setStreet(formData?.address?.street)
-  },[formData?.address])
 
   useEffect(() => {
     if (formData?.address?.doorNo) setDoorNo(formData?.address?.doorNo);

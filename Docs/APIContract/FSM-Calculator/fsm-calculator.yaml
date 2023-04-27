@@ -1,0 +1,589 @@
+---
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8099/fsm-calculator
+  description: Generated server url
+paths:
+  "/v1/billingSlab/_update":
+    post:
+      tags:
+      - billing-slab-controller
+      operationId: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/BillingSlabRequest"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/BillingSlabResponse"
+  "/v1/billingSlab/_create":
+    post:
+      tags:
+      - billing-slab-controller
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/BillingSlabRequest"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/BillingSlabResponse"
+  "/v1/billingSlab/_search":
+    post:
+      tags:
+      - billing-slab-controller
+      operationId: search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestInfoWrapper:
+                  "$ref": "#/components/schemas/RequestInfoWrapper"
+                criteria:
+                  "$ref": "#/components/schemas/BillingSlabSearchCriteria"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/BillingSlabResponse"
+  "/v1/_calculate":
+    post:
+      tags:
+      - calculator-controller
+      operationId: calculate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CalculationReq"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CalculationRes"
+  "/v1/_advancebalancecalculate":
+    post:
+      tags:
+      - calculator-controller
+      operationId: advanceBalanceCalculate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                totalTripAmount:
+                  type: number
+                tenantId:
+                  type: string
+                requestInfo:
+                  "$ref": "#/components/schemas/RequestInfo"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/AdvanceAmountResponse"
+  "/v1/_estimate":
+    post:
+      tags:
+      - calculator-controller
+      operationId: estimate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CalculationReq"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CalculationRes"
+  "/v1/_cancellationfee":
+    post:
+      tags:
+      - calculator-controller
+      operationId: cancellationFee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                totalTripAmount:
+                  type: number
+                tenantId:
+                  type: string
+                requestInfo:
+                  "$ref": "#/components/schemas/RequestInfo"
+      responses:
+        '200':
+          description: default response
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CancellationAmountResponse"
+components:
+  schemas:
+    AuditDetails:
+      type: object
+      properties:
+        createdBy:
+          type: string
+        lastModifiedBy:
+          type: string
+        createdTime:
+          type: integer
+          format: int64
+        lastModifiedTime:
+          type: integer
+          format: int64
+    BillingSlab:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        capacityFrom:
+          type: number
+        capacityTo:
+          type: number
+        propertyType:
+          type: string
+        slum:
+          type: string
+          enum:
+          - 'YES'
+          - 'NO'
+          - YESNO
+        price:
+          type: number
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+        auditDetails:
+          "$ref": "#/components/schemas/AuditDetails"
+    BillingSlabRequest:
+      type: object
+      properties:
+        RequestInfo:
+          "$ref": "#/components/schemas/RequestInfo"
+        billingSlab:
+          "$ref": "#/components/schemas/BillingSlab"
+    PlainAccessRequest:
+      type: object
+      properties:
+        recordId:
+          type: string
+        plainRequestFields:
+          type: array
+          items:
+            type: string
+    RequestInfo:
+      type: object
+      properties:
+        apiId:
+          type: string
+        ver:
+          type: string
+        ts:
+          type: integer
+          format: int64
+        action:
+          type: string
+        did:
+          type: string
+        key:
+          type: string
+        msgId:
+          type: string
+        authToken:
+          type: string
+        correlationId:
+          type: string
+        plainAccessRequest:
+          "$ref": "#/components/schemas/PlainAccessRequest"
+        userInfo:
+          "$ref": "#/components/schemas/User"
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        code:
+          maxLength: 50
+          minLength: 0
+          type: string
+        tenantId:
+          maxLength: 256
+          minLength: 0
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userName:
+          maxLength: 180
+          minLength: 0
+          type: string
+        name:
+          maxLength: 250
+          minLength: 0
+          type: string
+        type:
+          maxLength: 50
+          minLength: 0
+          type: string
+        mobileNumber:
+          maxLength: 150
+          minLength: 0
+          type: string
+        emailId:
+          maxLength: 300
+          minLength: 0
+          type: string
+        roles:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Role"
+        tenantId:
+          maxLength: 256
+          minLength: 0
+          type: string
+        uuid:
+          maxLength: 36
+          minLength: 0
+          type: string
+    BillingSlabResponse:
+      type: object
+      properties:
+        responseInfo:
+          "$ref": "#/components/schemas/ResponseInfo"
+        billingSlab:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BillingSlab"
+    ResponseInfo:
+      type: object
+      properties:
+        apiId:
+          type: string
+        ver:
+          type: string
+        ts:
+          type: integer
+          format: int64
+        resMsgId:
+          type: string
+        msgId:
+          type: string
+        status:
+          type: string
+    RequestInfoWrapper:
+      type: object
+      properties:
+        RequestInfo:
+          "$ref": "#/components/schemas/RequestInfo"
+    BillingSlabSearchCriteria:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        offset:
+          type: integer
+          format: int32
+        limit:
+          type: integer
+          format: int32
+        tenantId:
+          type: string
+        ids:
+          type: array
+          items:
+            type: string
+        propertyType:
+          type: string
+        capacity:
+          type: number
+          format: double
+        sortBy:
+          type: string
+          enum:
+          - ID
+          - PROPERTYTYPE
+          - CAPACITY
+        sortOrder:
+          type: string
+          enum:
+          - ASC
+          - DESC
+        slum:
+          type: string
+          enum:
+          - 'YES'
+          - 'NO'
+          - YESNO
+    Address:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        doorNo:
+          type: string
+        plotNo:
+          type: string
+        id:
+          type: string
+        landmark:
+          type: string
+        city:
+          type: string
+        district:
+          type: string
+        region:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        pincode:
+          type: string
+        additionDetails:
+          type: string
+        buildingName:
+          type: string
+        street:
+          type: string
+        slumName:
+          type: string
+        locality:
+          "$ref": "#/components/schemas/Boundary"
+        geoLocation:
+          "$ref": "#/components/schemas/GeoLocation"
+        auditDetails:
+          "$ref": "#/components/schemas/AuditDetails"
+    Boundary:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        latitude:
+          type: string
+        longitude:
+          type: string
+        children:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Boundary"
+        materializedPath:
+          type: string
+    CalculationReq:
+      required:
+      - RequestInfo
+      type: object
+      properties:
+        RequestInfo:
+          "$ref": "#/components/schemas/RequestInfo"
+        CalulationCriteria:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CalulationCriteria"
+    CalulationCriteria:
+      required:
+      - feeType
+      - tenantId
+      type: object
+      properties:
+        fsm:
+          "$ref": "#/components/schemas/FSM"
+        applicationNo:
+          maxLength: 64
+          minLength: 2
+          type: string
+        tenantId:
+          maxLength: 256
+          minLength: 2
+          type: string
+        feeType:
+          maxLength: 64
+          minLength: 2
+          type: string
+    FSM:
+      type: object
+      properties:
+        citizen:
+          "$ref": "#/components/schemas/User"
+        id:
+          type: string
+        tenantId:
+          type: string
+        applicationNo:
+          type: string
+        description:
+          type: string
+        accountId:
+          type: string
+        additionalDetails:
+          type: object
+        applicationStatus:
+          type: string
+        source:
+          type: string
+        advanceAmount:
+          type: string
+        sanitationtype:
+          type: string
+        propertyUsage:
+          type: string
+        noOfTrips:
+          type: integer
+          format: int32
+        vehicleType:
+          type: string
+        vehicleCapacity:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+        vehicleId:
+          type: string
+        pitDetail:
+          "$ref": "#/components/schemas/PitDetail"
+        address:
+          "$ref": "#/components/schemas/Address"
+        auditDetails:
+          "$ref": "#/components/schemas/AuditDetails"
+    GeoLocation:
+      type: object
+      properties:
+        id:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        additionalDetails:
+          type: object
+    PitDetail:
+      type: object
+      properties:
+        citizen:
+          "$ref": "#/components/schemas/User"
+        id:
+          type: string
+        tenantId:
+          type: string
+        height:
+          type: number
+          format: double
+        length:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        distanceFromRoad:
+          type: number
+          format: double
+        auditDetails:
+          "$ref": "#/components/schemas/AuditDetails"
+    Calculation:
+      required:
+      - tenantId
+      type: object
+      properties:
+        applicationNumber:
+          type: string
+        fsm:
+          "$ref": "#/components/schemas/FSM"
+        tenantId:
+          maxLength: 256
+          minLength: 2
+          type: string
+        taxHeadEstimates:
+          type: array
+          items:
+            "$ref": "#/components/schemas/TaxHeadEstimate"
+        feeType:
+          type: string
+    CalculationRes:
+      type: object
+      properties:
+        ResponseInfo:
+          "$ref": "#/components/schemas/ResponseInfo"
+        Calculations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Calculation"
+    TaxHeadEstimate:
+      type: object
+      properties:
+        taxHeadCode:
+          type: string
+        estimateAmount:
+          type: number
+        category:
+          type: string
+          enum:
+          - TAX
+          - FEE
+          - REBATE
+          - EXEMPTION
+          - ADVANCE_COLLECTION
+          - PENALTY
+          - FINES
+          - CHARGES
+    AdvanceAmountResponse:
+      type: object
+      properties:
+        ResponseInfo:
+          "$ref": "#/components/schemas/ResponseInfo"
+        advanceAmount:
+          type: number
+    CancellationAmountResponse:
+      type: object
+      properties:
+        ResponseInfo:
+          "$ref": "#/components/schemas/ResponseInfo"
+        cancellationAmount:
+          type: number

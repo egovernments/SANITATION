@@ -62,14 +62,13 @@ public class User {
     @JsonProperty("gender")
     private String gender;
 
-    @NotNull
+    //@NotNull
     @SafeHtml
-    @Pattern(regexp = "^[0-9]{10}$", message = "MobileNumber should be 10 digit number")
+   // @Pattern(regexp = "^[0-9]{10}$", message = "MobileNumber should be 10 digit number")
     @JsonProperty("mobileNumber")
     private String mobileNumber;
 
     @Size(max=128)
-    @NotNull
     @SafeHtml
     @JsonProperty("emailId")
     private String emailId;
@@ -122,7 +121,7 @@ public class User {
     @JsonProperty("active")
     private Boolean active;
 
-    @NotNull
+    
     @JsonProperty("dob")
     private Long dob;
 
@@ -151,13 +150,11 @@ public class User {
     @Valid
     private List<Role> roles;
 
-    @NotNull
     @SafeHtml
     @Size(max=100)
     @JsonProperty("fatherOrHusbandName")
     private String fatherOrHusbandName;
 
-    @NotNull
     @JsonProperty("relationship")
     private GuardianRelation relationship;
 
@@ -205,4 +202,6 @@ public class User {
     @SafeHtml
     @JsonProperty("tenantId")
     private String tenantId;
+    
+   	
 }
