@@ -163,7 +163,7 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
     Digit.SessionStorage.set("city_property", null);
     Digit.SessionStorage.set("selected_localities", null);
     Digit.SessionStorage.set("locality_property", null);
-    history.replace("/digit-ui/employee/fsm/response", {
+    history.replace(`/${window?.contextPath}/employee/fsm/response`, {
       applicationData: formData,
       key: "update",
       action: applicationData?.applicationStatus === "CREATED" ? "SUBMIT" : "SCHEDULE",

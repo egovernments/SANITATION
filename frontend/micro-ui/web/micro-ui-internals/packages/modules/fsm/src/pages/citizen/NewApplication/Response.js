@@ -154,7 +154,7 @@ const Response = ({ data, onSuccess }) => {
           className="w-full"
         />
       )}
-      <Link to={`/digit-ui/citizen`}>
+      <Link to={`/${window?.contextPath}/citizen`}>
         <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
       </Link>
     </Card>

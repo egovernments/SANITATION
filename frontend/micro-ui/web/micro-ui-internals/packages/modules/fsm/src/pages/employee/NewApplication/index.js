@@ -153,7 +153,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
     Digit.SessionStorage.set("city_property", null);
     Digit.SessionStorage.set("selected_localities", null);
     Digit.SessionStorage.set("locality_property", null);
-    history.push("/digit-ui/employee/fsm/response", formData);
+    history.push(`/${window?.contextPath}/employee/fsm/response`, formData);
   };
 
   if (isLoading || isTripConfigLoading || isApplicantConfigLoading) {

@@ -156,7 +156,7 @@ const FstpServiceRequest = () => {
           isFSMRequest={true}
           isLoading={isLoading}
           userRole={"FSM_EMP_FSTPO"}
-          linkPrefix={"/digit-ui/employee/fsm/fstp-operator-details/"}
+          linkPrefix={`/${window?.contextPath}/employee/fsm/fstp-operator-details/`}
           onSearch={onSearch}
           searchFields={searchFields}
           onSort={handleSort}
