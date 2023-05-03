@@ -239,6 +239,28 @@
     }
   }
 
+  .inboxLinksInbox {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 194px;
+    .header {
+      border: none;
+      @apply justify-start;
+      .logo {
+        @apply bg-white;
+        svg {
+          path {
+            fill: #f47738;
+          }
+        }
+      }
+    }
+    .body {
+      margin-left: 0;
+      padding: 8px;
+    }
+  }
+
   .filter-form {
     .filter-card {
       @apply p-md bg-white;
@@ -386,6 +408,37 @@
       }
     }
   }
+
+  .fsm-inbox-wrapper {
+    grid-template-columns: calc(25% - 32px) 75%;
+    display: grid;
+    grid-column-gap: 2rem;
+    column-gap: 2rem;
+    grid-row-gap: 1.5rem;
+    row-gap: 1.5rem;
+    .filters-container {
+      width: auto;
+      .heading {
+        margin-bottom: 15px;
+        .clear-search {
+          border: 1px solid rgb(224, 224, 224);
+          padding: 6px;
+          margin-bottom: 10px;
+          svg {
+            width: 17px;
+            height: 17px;
+          }
+        }
+
+        .filter-label {
+          svg {
+            width: 17px;
+            height: 17px;
+          }
+        }
+      }
+    }
+  }
 }
 
 .document-clear-all {
@@ -415,8 +468,8 @@
 }
 
 .complain-no-cell-text {
-  margin-top: "4px";
-  color: "#505A5F";
+  margin-top: '4px';
+  color: '#505A5F';
 }
 
 .search-error-label {
