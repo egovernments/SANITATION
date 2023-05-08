@@ -339,7 +339,7 @@ const DesktopInbox = (props) => {
   if (props.isLoading) {
     result = <Loader />;
   } else if (
-    (props.isSearch && !props.shouldSearch) ||
+    (props.shouldSearch) ||
     props?.data?.table?.length === 0
   ) {
     result = (
