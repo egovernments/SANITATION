@@ -7,7 +7,7 @@ import {
   PaymentModule,
   PaymentLinks,
   paymentConfigs,
-} from "@egovernments/digit-ui-module-common";
+} from '@egovernments/digit-ui-module-common';
 import { initDSSComponents } from '@egovernments/digit-ui-module-dss';
 import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
 import { initEngagementComponents } from '@egovernments/digit-ui-module-engagement';
@@ -17,7 +17,7 @@ import {
   initHRMSComponents,
 } from '@egovernments/digit-ui-module-hrms';
 import '@egovernments/digit-ui-css/example/index.css';
-import '@egovernments/digit-ui-fsm-css/example/index.css';
+import '@egovernments/digit-ui-san-css/example/index.css';
 
 var Digit = window.Digit || {};
 
@@ -71,11 +71,11 @@ const initDigitUI = () => {
   window.contextPath =
     window?.globalConfigs?.getConfig('CONTEXT_PATH') || 'sanitation-ui';
 
-    window.Digit.ComponentRegistryService.setupRegistry({
-      ...paymentConfigs,
-      PaymentModule,
-      PaymentLinks,
-    });    
+  window.Digit.ComponentRegistryService.setupRegistry({
+    ...paymentConfigs,
+    PaymentModule,
+    PaymentLinks,
+  });
 
   // initPGRComponents();
   initDSSComponents();
