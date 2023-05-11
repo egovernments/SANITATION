@@ -102,6 +102,13 @@ textarea {
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
   height: auto; }
 
+[type=search] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px; }
+
+[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
 details {
   display: block; }
 
@@ -6613,7 +6620,7 @@ video::-webkit-media-controls-panel {
         background-color: #fff;
         background-color: rgba(255, 255, 255, var(--bg-opacity)); }
         .inboxLinksInbox .header .logo svg path {
-          fill: #f47738;}
+          fill: #f47738; }
     .inboxLinksInbox .body {
       margin-left: 0;
       padding: 8px; }
