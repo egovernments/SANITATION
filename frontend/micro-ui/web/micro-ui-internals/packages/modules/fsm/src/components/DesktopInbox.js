@@ -338,10 +338,7 @@ const DesktopInbox = (props) => {
   let result;
   if (props.isLoading) {
     result = <Loader />;
-  } else if (
-    (props.shouldSearch) ||
-    props?.data?.table?.length === 0
-  ) {
+  } else if (props.shouldSearch || props?.data?.table?.length === 0) {
     result = (
       <Card style={{ marginTop: 20 }}>
         {/* TODO Change localization key */}
@@ -393,9 +390,9 @@ const DesktopInbox = (props) => {
   }
 
   const isEnabledFSMInboxModules = window.location.href.includes('/fsm/inbox');
-  const isEnabledFSMSearchModules = window.location.href.includes(
-    '/fsm/search'
-  );
+  const isEnabledFSMSearchModules =
+    window.location.href.includes('/fsm/search') ||
+    window.location.href.includes('/fsm/fstp-inbox');
 
   if (isEnabledFSMInboxModules) {
     return (
