@@ -5971,6 +5971,8 @@ video::-webkit-media-controls-panel {
   .employee .ground-container {
     display: block;
     margin-left: 16px; }
+  .employee .fsm-ground-container {
+    margin-left: unset; }
   .employee .breadcrumb {
     margin-bottom: 24px;
     margin-left: 0; }
@@ -6448,7 +6450,10 @@ video::-webkit-media-controls-panel {
   --bg-opacity:1;
   background-color: #fff;
   background-color: rgba(255, 255, 255, var(--bg-opacity));
-  padding: 10px; }
+  padding: 10px;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  border-radius: 4px; }
   .inbox-container .filters-container .filter .filter-card .filter-card-close-button {
     -webkit-box-orient: horizontal;
     -webkit-box-direction: reverse;
@@ -6667,6 +6672,9 @@ video::-webkit-media-controls-panel {
     .inbox-container .search-container {
       width: 874px; }
       .inbox-container .search-container .search-complaint-container {
+        -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+        border-radius: 4px;
         margin: auto;
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
@@ -6949,6 +6957,11 @@ video::-webkit-media-controls-panel {
 
 .registryTable tBody tr td {
   text-align: left; }
+
+.result table {
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  border-radius: 4px; }
 
 .secondary-action {
   display: inline;
