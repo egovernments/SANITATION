@@ -10,6 +10,8 @@ import {
   DatePicker,
   CardLabelError,
   Header,
+  Card,
+  Toast,
 } from '@egovernments/digit-ui-react-components';
 import DropdownStatus from './DropdownStatus';
 import { useTranslation } from 'react-i18next';
@@ -37,6 +39,7 @@ const SearchApplication = ({
     defaultValues: storedSearchParams || searchParams,
   });
   const [error, setError] = useState(false);
+  const [showToast, setShowToast] = useState(null);
   const mobileView = innerWidth <= 640;
   const FSTP = Digit.UserService.hasAccess('FSM_EMP_FSTPO') || false;
   const watchSearch = watch([
@@ -47,6 +50,8 @@ const SearchApplication = ({
   ]);
 
   const onSubmitInput = (data) => {
+    let isValidate = searchValidation();
+    if (isValidate === false) return null;
     if (!data.mobileNumber) {
       delete data.mobileNumber;
     }
@@ -85,11 +90,19 @@ const SearchApplication = ({
   const searchValidation = (data) => {
     if (FSTP) return null;
 
-    watchSearch.applicationNos ||
-    watchSearch.mobileNumber ||
-    (watchSearch.fromDate && watchSearch.toDate)
-      ? setError(false)
-      : setError(true);
+    if (
+      watchSearch.applicationNos ||
+      watchSearch.mobileNumber ||
+      (watchSearch.fromDate && watchSearch.toDate)
+    ) {
+      setError(false);
+    } else {
+      setError(true);
+      setShowToast({ warning: true, label: "ERR_PT_FILL_VALID_FIELDS" });
+      setTimeout(() => {
+        setShowToast(null);
+      }, 2000);
+    }
     return watchSearch.applicationNos ||
       watchSearch.mobileNumber ||
       (watchSearch.fromDate && watchSearch.toDate)
@@ -131,9 +144,7 @@ const SearchApplication = ({
           <TextInput
             {...input}
             inputRef={register}
-            {...register(input.name, {
-              validate: searchValidation,
-            })}
+            {...register(input.name)}
             watch={watch}
             shouldUpdate={true}
           />
@@ -218,11 +229,6 @@ const SearchApplication = ({
                   </div>
                 )}
               </div>
-              {error ? (
-                <CardLabelError className='search-error-label'>
-                  {t('ES_SEARCH_APPLICATION_ERROR')}
-                </CardLabelError>
-              ) : null}
             </div>
           </div>
         ) : (
@@ -249,6 +255,21 @@ const SearchApplication = ({
                   </span>
                 </div>
               )}
+              {!isInboxPage && (
+              <Card
+                className={"card-caption"}
+                style={{
+                  boxShadow: "none",
+                  padding: 0,
+                  marginLeft: 0,
+                  marginBottom: 0,
+                }}
+              >
+                <span style={{ color: "#505A5F" }}>
+                  {t("ES_SEARCH_APPLICATION_ERROR")}
+                </span>
+              </Card>
+            )}
               <div
                 className={
                   FSTP
@@ -272,6 +293,9 @@ const SearchApplication = ({
                       maxWidth: 'unset',
                       marginLeft: 'unset',
                       marginTop: '55px',
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      alignItems: "baseline",
                     }}
                     className='search-submit-wrapper'
                   >
@@ -284,11 +308,6 @@ const SearchApplication = ({
                   </div>
                 )}
               </div>
-              {error ? (
-                <CardLabelError className='search-error-label'>
-                  {t('ES_SEARCH_APPLICATION_ERROR')}
-                </CardLabelError>
-              ) : null}
             </div>
           </div>
         )}
@@ -304,6 +323,16 @@ const SearchApplication = ({
               submit={true}
             />
           </ActionBar>
+        )}
+        {showToast && (
+          <Toast
+            error={showToast.error}
+            warning={showToast.warning}
+            label={t(showToast.label)}
+            onClose={() => {
+              setShowToast(null);
+            }}
+          />
         )}
       </React.Fragment>
     </form>
