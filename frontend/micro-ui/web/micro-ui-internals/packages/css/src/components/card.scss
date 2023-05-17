@@ -208,7 +208,8 @@
   }
 
   .employeeCard {
-    @apply mb-md mx-md !important;
+    @apply mb-md !important;
+    @apply mx-md ;
 
     &.filter {
       margin-left: auto;

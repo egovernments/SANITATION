@@ -338,7 +338,7 @@ const DesktopInbox = (props) => {
   let result;
   if (props.isLoading) {
     result = <Loader />;
-  } else if (props.shouldSearch || props?.data?.table?.length === 0) {
+  } else if (props?.data?.table?.length === 0) {
     result = (
       <Card style={{ marginTop: 20 }}>
         {/* TODO Change localization key */}
