@@ -1,4 +1,4 @@
-@import "./login.scss";
+@import './login.scss';
 /* TODO: convert using tailwind */
 .employee {
   .breadcrumb {
@@ -374,6 +374,9 @@
   .employee {
     .ground-container {
       @apply block ml-md;
+    }
+    .fsm-ground-container {
+      margin-left: unset;
     }
     .breadcrumb {
       @apply mb-lg;
