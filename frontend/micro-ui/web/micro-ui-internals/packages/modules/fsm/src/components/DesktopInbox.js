@@ -424,15 +424,7 @@ const DesktopInbox = (props) => {
         </div>
         {/* )} */}
         <div>
-          <div
-            className='result'
-            style={{
-              marginLeft: FSTP ? '' : !props?.isSearch ? '24px' : '',
-              flex: 1,
-            }}
-          >
-            {result}
-          </div>
+          <div className='result'>{result}</div>
         </div>
       </div>
     );

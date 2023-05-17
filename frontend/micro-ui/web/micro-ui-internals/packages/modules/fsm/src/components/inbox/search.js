@@ -144,6 +144,9 @@ const SearchApplication = ({
     window.location.href.includes('employee/fsm/inbox') ||
     window.location.href.includes('employee/fsm/fstp-inbox') ||
     window.location.href.includes('employee/fsm/fstp-fsm-request');
+
+  const checkFSMInbox = window.location.href.includes('employee/fsm/inbox');
+
   return (
     <form onSubmit={handleSubmit(onSubmitInput)}>
       <React.Fragment>
@@ -154,71 +157,142 @@ const SearchApplication = ({
         ) : (
           ''
         )}
-        <div
-          className='search-container'
-          style={{
-            width: 'auto',
-            marginLeft: FSTP ? '' : isInboxPage ? '24px' : 'revert',
-          }}
-        >
-          <div className='search-complaint-container'>
-            {(type === 'mobile' || mobileView) && (
-              <div className='complaint-header'>
-                <h2>{t('ES_COMMON_SEARCH_BY')}</h2>
-                <span
-                  style={{
-                    position: 'absolute',
-                    top: '2%',
-                    right: '8px',
-                  }}
-                  onClick={onClose}
-                >
-                  <CloseSvg />
-                </span>
-              </div>
-            )}
+        {checkFSMInbox ? (
+          <div
+            className='search-container'
+            style={{
+              width: 'auto',
+            }}
+          >
             <div
-              className={
-                FSTP
-                  ? 'complaint-input-container for-pt for-search'
-                  : 'complaint-input-container'
-              }
-              style={{ width: '100%' }}
+              className='search-complaint-container'
+              style={{ height: '194px' }}
             >
-              {searchFields?.map((input, index) => (
-                <div key={input.name} className='input-fields'>
-                  <span key={index} className={'mobile-input'}>
-                    {/* <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}> */}
-                    <Label>{input.label}</Label>
-                    {getFields(input)}{' '}
+              {(type === 'mobile' || mobileView) && (
+                <div className='complaint-header'>
+                  <h2>{t('ES_COMMON_SEARCH_BY')}</h2>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '2%',
+                      right: '8px',
+                    }}
+                    onClick={onClose}
+                  >
+                    <CloseSvg />
                   </span>
                 </div>
-              ))}
-              {type === 'desktop' && !mobileView && (
-                <div
-                  style={{
-                    maxWidth: 'unset',
-                    marginLeft: 'unset',
-                    marginTop: '55px',
-                  }}
-                  className='search-submit-wrapper'
-                >
-                  <SubmitBar
-                    className='submit-bar-search'
-                    label={t('ES_COMMON_SEARCH')}
-                    submit
-                  />
-                  <div>{clearAll()}</div>
+              )}
+              <div
+                className={
+                  FSTP
+                    ? 'complaint-input-container for-pt for-search'
+                    : 'complaint-input-container'
+                }
+                style={{ width: '100%' }}
+              >
+                {searchFields?.map((input, index) => (
+                  <div key={input.name} className='input-fields'>
+                    <span key={index} className={'mobile-input'}>
+                      {/* <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}> */}
+                      <Label>{input.label}</Label>
+                      {getFields(input)}{' '}
+                    </span>
+                  </div>
+                ))}
+                {type === 'desktop' && !mobileView && (
+                  <div
+                    style={{
+                      maxWidth: 'unset',
+                      marginLeft: 'unset',
+                      marginTop: '55px',
+                    }}
+                    className='search-submit-wrapper'
+                  >
+                    <SubmitBar
+                      className='submit-bar-search'
+                      label={t('ES_COMMON_SEARCH')}
+                      submit
+                    />
+                    <div>{clearAll()}</div>
+                  </div>
+                )}
+              </div>
+              {error ? (
+                <CardLabelError className='search-error-label'>
+                  {t('ES_SEARCH_APPLICATION_ERROR')}
+                </CardLabelError>
+              ) : null}
+            </div>
+          </div>
+        ) : (
+          <div
+            className='search-container'
+            style={{
+              width: 'auto',
+              marginLeft: FSTP ? '' : isInboxPage ? '24px' : 'revert',
+            }}
+          >
+            <div className='search-complaint-container'>
+              {(type === 'mobile' || mobileView) && (
+                <div className='complaint-header'>
+                  <h2>{t('ES_COMMON_SEARCH_BY')}</h2>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '2%',
+                      right: '8px',
+                    }}
+                    onClick={onClose}
+                  >
+                    <CloseSvg />
+                  </span>
                 </div>
               )}
+              <div
+                className={
+                  FSTP
+                    ? 'complaint-input-container for-pt for-search'
+                    : 'complaint-input-container'
+                }
+                style={{ width: '100%' }}
+              >
+                {searchFields?.map((input, index) => (
+                  <div key={input.name} className='input-fields'>
+                    <span key={index} className={'mobile-input'}>
+                      {/* <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}> */}
+                      <Label>{input.label}</Label>
+                      {getFields(input)}{' '}
+                    </span>
+                  </div>
+                ))}
+                {type === 'desktop' && !mobileView && (
+                  <div
+                    style={{
+                      maxWidth: 'unset',
+                      marginLeft: 'unset',
+                      marginTop: '55px',
+                    }}
+                    className='search-submit-wrapper'
+                  >
+                    <SubmitBar
+                      className='submit-bar-search'
+                      label={t('ES_COMMON_SEARCH')}
+                      submit
+                    />
+                    <div>{clearAll()}</div>
+                  </div>
+                )}
+              </div>
+              {error ? (
+                <CardLabelError className='search-error-label'>
+                  {t('ES_SEARCH_APPLICATION_ERROR')}
+                </CardLabelError>
+              ) : null}
             </div>
-            {error ? (
-              <CardLabelError className='search-error-label'>
-                {t('ES_SEARCH_APPLICATION_ERROR')}
-              </CardLabelError>
-            ) : null}
           </div>
-        </div>
+        )}
+
         {(type === 'mobile' || mobileView) && (
           <ActionBar className='clear-search-container'>
             <button className='clear-search' style={{ flex: 1 }}>
