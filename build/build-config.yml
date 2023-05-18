@@ -29,7 +29,7 @@ config:
 
   - name: 'builds/SANITATION/vehicle'
     build:
-      - work-dir: 'sanitation/vehicle'
+      - work-dir: 'vehicle'
         image-name: 'vehicle'
         dockerfile: 'build/maven/Dockerfile'
       - work-dir: 'vehicle/src/main/resources/db'
@@ -37,7 +37,7 @@ config:
 
   - name: 'builds/SANITATION/vendor'
     build:
-      - work-dir: 'sanitation/vendor'
+      - work-dir: 'vendor'
         image-name: 'vendor'
         dockerfile: 'build/maven/Dockerfile'
       - work-dir: 'vendor/src/main/resources/db'
@@ -45,7 +45,7 @@ config:
 
   - name: 'builds/SANITATION/fsm-calculator'
     build:
-      - work-dir: 'sanitation/fsm-calculator'
+      - work-dir: 'fsm-calculator'
         image-name: 'fsm-calculator'
         dockerfile: 'build/maven/Dockerfile'
       - work-dir: 'fsm-calculator/src/main/resources/db'
@@ -53,7 +53,7 @@ config:
 
   - name: 'builds/SANITATION/inbox'
     build:
-      - work-dir: 'sanitation/inbox'
+      - work-dir: 'inbox'
         image-name: 'inbox'
         dockerfile: 'build/maven/Dockerfile'
 
