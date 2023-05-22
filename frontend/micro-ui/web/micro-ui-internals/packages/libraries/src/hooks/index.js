@@ -78,8 +78,9 @@ import useGetDSSAboutJSON from './useGetDSSAboutJSON';
 import useStaticData from './useStaticData';
 import { usePrivacyContext } from './usePrivacyContext';
 import useCustomAPIHook from './useCustomAPIHook';
-import useRouteSubscription from "./useRouteSubscription";
 import useDynamicData from './useDynamicData';
+import useRouteSubscription from './useRouteSubscription';
+
 
 const dss = {
   useMDMS: useDssMdms,
@@ -176,7 +177,6 @@ const Hooks = {
   useCustomAPIHook,
   useRouteSubscription,
   useDynamicData,
-
 };
 
 export default Hooks;
