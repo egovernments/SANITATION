@@ -1,5 +1,9 @@
 .table {
   @apply bg-white w-full;
+  border-left-width: 24px;
+  border-right-width: 24px;
+  border-left-color: #fff;
+  border-right-color: #fff;
 
   thead {
     th {
@@ -30,6 +34,10 @@
   justify-content: flex-end;
   background-color: rgba(255, 255, 255, var(--bg-opacity));
   border-top: 1px solid rgb(214, 213, 212);
+  border-left-color: white;
+  border-right-color: white;
+  border-right-width: 24px;
+  border-left-width: 24px;
   padding: 20px 40px 20px 0px;
   color: rgb(80, 90, 95);
 

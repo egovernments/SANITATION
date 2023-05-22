@@ -256,19 +256,9 @@ const SearchApplication = ({
                 </div>
               )}
               {!isInboxPage && (
-              <Card
-                className={"card-caption"}
-                style={{
-                  boxShadow: "none",
-                  padding: 0,
-                  marginLeft: 0,
-                  marginBottom: 0,
-                }}
-              >
                 <span style={{ color: "#505A5F" }}>
                   {t("ES_SEARCH_APPLICATION_ERROR")}
                 </span>
-              </Card>
             )}
               <div
                 className={
