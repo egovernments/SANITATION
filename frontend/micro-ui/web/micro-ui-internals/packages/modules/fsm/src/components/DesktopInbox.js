@@ -1,25 +1,25 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { Card, Loader } from "@egovernments/digit-ui-react-components";
-import FSMLink from "./inbox/FSMLink";
-import ApplicationTable from "./inbox/ApplicationTable";
-import Filter from "./inbox/Filter";
-import SearchApplication from "./inbox/search";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { Card, Loader } from '@egovernments/digit-ui-react-components';
+import FSMLink from './inbox/FSMLink';
+import ApplicationTable from './inbox/ApplicationTable';
+import Filter from './inbox/Filter';
+import SearchApplication from './inbox/search';
 
 const DesktopInbox = (props) => {
   const { t } = useTranslation();
-  const DSO = Digit.UserService.hasAccess(["FSM_DSO"]) || false;
-  const GetCell = (value) => <span className="cell-text">{value}</span>;
-  const FSTP = Digit.UserService.hasAccess("FSM_EMP_FSTPO") || false;
+  const DSO = Digit.UserService.hasAccess(['FSM_DSO']) || false;
+  const GetCell = (value) => <span className='cell-text'>{value}</span>;
+  const FSTP = Digit.UserService.hasAccess('FSM_EMP_FSTPO') || false;
 
   const GetSlaCell = (value) => {
-    if (value === "-") return <span className="sla-cell-success">-</span>;
-    if (isNaN(value)) return <span className="sla-cell-success">0</span>;
+    if (value === '-') return <span className='sla-cell-success'>-</span>;
+    if (isNaN(value)) return <span className='sla-cell-success'>0</span>;
     return value < 0 ? (
-      <span className="sla-cell-error">{value}</span>
+      <span className='sla-cell-error'>{value}</span>
     ) : (
-      <span className="sla-cell-success">{value}</span>
+      <span className='sla-cell-success'>{value}</span>
     );
   };
 
@@ -31,21 +31,21 @@ const DesktopInbox = (props) => {
     if (props.isSearch) {
       return [
         {
-          Header: t("ES_INBOX_APPLICATION_NO"),
-          accessor: "applicationNo",
+          Header: t('ES_INBOX_APPLICATION_NO'),
+          accessor: 'applicationNo',
           disableSortBy: true,
           Cell: ({ row }) => {
             return (
               <div>
-                <span className="link">
+                <span className='link'>
                   <Link
                     to={
                       `${props.parentRoute}/${
-                        DSO ? "dso-application-details" : "application-details"
-                      }/` + row.original["applicationNo"]
+                        DSO ? 'dso-application-details' : 'application-details'
+                      }/` + row.original['applicationNo']
                     }
                   >
-                    {row.original["applicationNo"]}
+                    {row.original['applicationNo']}
                   </Link>
                 </span>
                 {/* <a onClick={() => goTo(row.row.original["serviceRequestId"])}>{row.row.original["serviceRequestId"]}</a> */}
@@ -54,27 +54,27 @@ const DesktopInbox = (props) => {
           },
         },
         {
-          Header: t("ES_APPLICATION_DETAILS_APPLICANT_NAME"),
+          Header: t('ES_APPLICATION_DETAILS_APPLICANT_NAME'),
           disableSortBy: true,
-          accessor: (row) => GetCell(row.citizen?.name || ""),
+          accessor: (row) => GetCell(row.citizen?.name || ''),
         },
         {
-          Header: t("ES_APPLICATION_DETAILS_APPLICANT_MOBILE_NO"),
+          Header: t('ES_APPLICATION_DETAILS_APPLICANT_MOBILE_NO'),
           disableSortBy: true,
-          accessor: (row) => GetCell(row.citizen?.mobileNumber || ""),
+          accessor: (row) => GetCell(row.citizen?.mobileNumber || ''),
         },
         {
-          Header: t("ES_APPLICATION_DETAILS_PROPERTY_TYPE"),
+          Header: t('ES_APPLICATION_DETAILS_PROPERTY_TYPE'),
           accessor: (row) => {
             const key = t(
-              `PROPERTYTYPE_MASTERS_${row.propertyUsage.split(".")[0]}`
+              `PROPERTYTYPE_MASTERS_${row.propertyUsage.split('.')[0]}`
             );
             return key;
           },
           disableSortBy: true,
         },
         {
-          Header: t("ES_APPLICATION_DETAILS_PROPERTY_SUB-TYPE"),
+          Header: t('ES_APPLICATION_DETAILS_PROPERTY_SUB-TYPE'),
           accessor: (row) => {
             const key = t(`PROPERTYTYPE_MASTERS_${row.propertyUsage}`);
             return key;
@@ -82,7 +82,7 @@ const DesktopInbox = (props) => {
           disableSortBy: true,
         },
         {
-          Header: t("ES_INBOX_LOCALITY"),
+          Header: t('ES_INBOX_LOCALITY'),
           accessor: (row) =>
             GetCell(
               t(
@@ -95,7 +95,7 @@ const DesktopInbox = (props) => {
           disableSortBy: true,
         },
         {
-          Header: t("ES_INBOX_STATUS"),
+          Header: t('ES_INBOX_STATUS'),
           accessor: (row) => {
             return GetCell(t(`CS_COMMON_FSM_${row.applicationStatus}`));
           },
@@ -104,11 +104,11 @@ const DesktopInbox = (props) => {
       ];
     }
     switch (props.userRole) {
-      case "FSM_EMP_FSTPO_REQUEST":
+      case 'FSM_EMP_FSTPO_REQUEST':
         return [
           {
-            Header: t("ES_INBOX_APPLICATION_NO"),
-            accessor: "applicationNo",
+            Header: t('ES_INBOX_APPLICATION_NO'),
+            accessor: 'applicationNo',
             // disableSortBy: true,
             Cell: ({ row }) => {
               // fetching out citizen info
@@ -118,11 +118,11 @@ const DesktopInbox = (props) => {
               );
               return (
                 <div>
-                  <span className="link">
+                  <span className='link'>
                     <Link
                       to={
                         `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
-                        row.original["applicationNo"]
+                        row.original['applicationNo']
                       }
                     >
                       {citizen_info?.applicationNo}
@@ -133,7 +133,7 @@ const DesktopInbox = (props) => {
             },
           },
           {
-            Header: t("CS_COMMON_CITIZEN_NAME"),
+            Header: t('CS_COMMON_CITIZEN_NAME'),
             disableSortBy: true,
             Cell: ({ row }) => {
               let citizen_info = props?.fstprequest?.find(
@@ -148,9 +148,9 @@ const DesktopInbox = (props) => {
             },
           },
           {
-            Header: t("CS_COMMON_CITIZEN_NUMBER"),
+            Header: t('CS_COMMON_CITIZEN_NUMBER'),
             disableSortBy: true,
-            accessor: "number",
+            accessor: 'number',
             Cell: ({ row }) => {
               let citizen_info = props?.fstprequest?.find(
                 (i) =>
@@ -164,9 +164,9 @@ const DesktopInbox = (props) => {
             },
           },
           {
-            Header: t("ES_INBOX_LOCALITY"),
+            Header: t('ES_INBOX_LOCALITY'),
             disableSortBy: true,
-            accessor: "locality",
+            accessor: 'locality',
             Cell: ({ row }) => {
               let citizen_info = props?.fstprequest?.find(
                 (i) =>
@@ -180,23 +180,23 @@ const DesktopInbox = (props) => {
             },
           },
         ];
-      case "FSM_EMP_FSTPO":
+      case 'FSM_EMP_FSTPO':
         return [
           {
-            Header: t("ES_INBOX_APPLICATION_NO"),
+            Header: t('ES_INBOX_APPLICATION_NO'),
             disableSortBy: true,
-            accessor: "tripDetails",
+            accessor: 'tripDetails',
             Cell: ({ row }) => {
               return (
                 <div>
-                  <span className="link">
+                  <span className='link'>
                     <Link
                       to={
                         `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
-                        row.original["applicationNo"]
+                        row.original['applicationNo']
                       }
                     >
-                      {row.original["tripDetails"].map((i) => (
+                      {row.original['tripDetails'].map((i) => (
                         <div>
                           {i.referenceNo}
                           <br />
@@ -209,20 +209,20 @@ const DesktopInbox = (props) => {
             },
           },
           {
-            Header: t("ES_INBOX_VEHICLE_LOG"),
-            accessor: "applicationNo",
+            Header: t('ES_INBOX_VEHICLE_LOG'),
+            accessor: 'applicationNo',
             disableSortBy: true,
             Cell: ({ row }) => {
               return (
                 <div>
-                  <span className="link">
+                  <span className='link'>
                     <Link
                       to={
                         `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
-                        row.original["applicationNo"]
+                        row.original['applicationNo']
                       }
                     >
-                      {row.original["applicationNo"]}
+                      {row.original['applicationNo']}
                     </Link>
                   </span>
                 </div>
@@ -230,8 +230,8 @@ const DesktopInbox = (props) => {
             },
           },
           {
-            Header: t("ES_INBOX_APPLICATION_DATE"),
-            accessor: "createdTime",
+            Header: t('ES_INBOX_APPLICATION_DATE'),
+            accessor: 'createdTime',
             Cell: ({ row }) => {
               return GetCell(
                 `${new Date(row.original.auditDetails.createdTime).getDate()}/${
@@ -243,12 +243,12 @@ const DesktopInbox = (props) => {
             },
           },
           {
-            Header: t("ES_INBOX_VEHICLE_NO"),
+            Header: t('ES_INBOX_VEHICLE_NO'),
             disableSortBy: true,
             accessor: (row) => row.vehicle?.registrationNumber,
           },
           {
-            Header: t("ES_INBOX_DSO_NAME"),
+            Header: t('ES_INBOX_DSO_NAME'),
             disableSortBy: true,
             accessor: (row) =>
               row.dsoName
@@ -256,12 +256,12 @@ const DesktopInbox = (props) => {
                 : `${row.tripOwner.name}`,
           },
           {
-            Header: t("ES_INBOX_VEHICLE_STATUS"),
+            Header: t('ES_INBOX_VEHICLE_STATUS'),
             disableSortBy: true,
             accessor: (row) => row.status,
           },
           {
-            Header: t("ES_INBOX_WASTE_COLLECTED"),
+            Header: t('ES_INBOX_WASTE_COLLECTED'),
             disableSortBy: true,
             accessor: (row) => row.tripDetails[0]?.volume,
           },
@@ -269,21 +269,21 @@ const DesktopInbox = (props) => {
       default:
         return [
           {
-            Header: t("CS_FILE_DESLUDGING_APPLICATION_NO"),
+            Header: t('CS_FILE_DESLUDGING_APPLICATION_NO'),
             Cell: ({ row }) => {
               return (
                 <div>
-                  <span className="link">
+                  <span className='link'>
                     <Link
                       to={
                         `${props.parentRoute}/${
                           DSO
-                            ? "dso-application-details"
-                            : "application-details"
-                        }/` + row.original["applicationNo"]
+                            ? 'dso-application-details'
+                            : 'application-details'
+                        }/` + row.original['applicationNo']
                       }
                     >
-                      {row.original["applicationNo"]}
+                      {row.original['applicationNo']}
                     </Link>
                   </span>
                   {/* <a onClick={() => goTo(row.row.original["serviceRequestId"])}>{row.row.original["serviceRequestId"]}</a> */}
@@ -292,8 +292,8 @@ const DesktopInbox = (props) => {
             },
           },
           {
-            Header: t("ES_INBOX_APPLICATION_DATE"),
-            accessor: "createdTime",
+            Header: t('ES_INBOX_APPLICATION_DATE'),
+            accessor: 'createdTime',
             Cell: ({ row }) => {
               return GetCell(
                 `${row.original.createdTime.getDate()}/${
@@ -303,13 +303,13 @@ const DesktopInbox = (props) => {
             },
           },
           {
-            Header: t("ES_INBOX_LOCALITY"),
+            Header: t('ES_INBOX_LOCALITY'),
             Cell: ({ row }) => {
               return GetCell(
                 t(
                   Digit.Utils.locale.getRevenueLocalityCode(
-                    row.original["locality"],
-                    row.original["tenantId"]
+                    row.original['locality'],
+                    row.original['tenantId']
                   )
                 )
               );
@@ -319,15 +319,15 @@ const DesktopInbox = (props) => {
             // },
           },
           {
-            Header: t("ES_INBOX_STATUS"),
+            Header: t('ES_INBOX_STATUS'),
             Cell: (row) => {
-              return GetCell(t(`CS_COMMON_FSM_${row.row.original["status"]}`));
+              return GetCell(t(`CS_COMMON_FSM_${row.row.original['status']}`));
             },
           },
           {
-            Header: t("ES_INBOX_SLA_DAYS_REMAINING"),
+            Header: t('ES_INBOX_SLA_DAYS_REMAINING'),
             Cell: ({ row }) => {
-              return GetSlaCell(row.original["sla"]);
+              return GetSlaCell(row.original['sla']);
             },
           },
         ];
@@ -343,10 +343,10 @@ const DesktopInbox = (props) => {
         {/* TODO Change localization key */}
         {
           // t("CS_MYCOMPLAINTS_NO_COMPLAINTS")
-          t("CS_MYAPPLICATIONS_NO_APPLICATION")
-            .split("\\n")
+          t('CS_MYAPPLICATIONS_NO_APPLICATION')
+            .split('\\n')
             .map((text, index) => (
-              <p key={index} style={{ textAlign: "center" }}>
+              <p key={index} style={{ textAlign: 'center' }}>
                 {text}
               </p>
             ))
@@ -363,11 +363,11 @@ const DesktopInbox = (props) => {
           return {
             style: {
               minWidth:
-                cellInfo.column.Header === t("ES_INBOX_APPLICATION_NO")
-                  ? "240px"
-                  : "",
-              padding: "20px 18px",
-              fontSize: "16px",
+                cellInfo.column.Header === t('ES_INBOX_APPLICATION_NO')
+                  ? '240px'
+                  : '',
+              padding: '20px 18px',
+              fontSize: '16px',
               // borderTop: "1px solid grey",
               // textAlign: "left",
               // verticalAlign: "middle",
@@ -388,42 +388,44 @@ const DesktopInbox = (props) => {
     );
   }
 
-  const isEnabledFSMInboxModules = window.location.href.includes("/fsm/inbox");
+  const isEnabledFSMInboxModules = window.location.href.includes('/fsm/inbox');
   const isEnabledFSMSearchModules =
-    window.location.href.includes("/fsm/search") ||
-    window.location.href.includes("/fsm/fstp-inbox");
+    window.location.href.includes('/fsm/search') ||
+    window.location.href.includes('/fsm/fstp-inbox') ||
+    window.location.href.includes('/fsm/fstp-fsm-request') ||
+    window.location.href.includes('/fsm/fstp/new-vehicle-entry');
 
   if (isEnabledFSMInboxModules) {
     return (
       <div
         className={`inbox-container ${
-          isEnabledFSMInboxModules ? "fsm-inbox-wrapper" : ""
+          isEnabledFSMInboxModules ? 'fsm-inbox-wrapper' : ''
         }`}
       >
         {/* {props.userRole !== 'FSM_EMP_FSTPO' && !props.isSearch && ( */}
         <FSMLink parentRoute={props.parentRoute} />
         <SearchApplication
           onSearch={props.onSearch}
-          type="desktop"
+          type='desktop'
           searchFields={props.searchFields}
           isInboxPage={!props?.isSearch}
           searchParams={props.searchParams}
         />
 
-        <div className="filters-container">
+        <div className='filters-container'>
           <div>
             <Filter
               searchParams={props.searchParams}
               paginationParms={props.paginationParms}
               applications={props.data}
               onFilterChange={props.onFilterChange}
-              type="desktop"
+              type='desktop'
             />
           </div>
         </div>
         {/* )} */}
         <div>
-          <div className="result">{result}</div>
+          <div className='result'>{result}</div>
         </div>
       </div>
     );
@@ -431,15 +433,15 @@ const DesktopInbox = (props) => {
   if (isEnabledFSMSearchModules) {
     return (
       <div className={`inbox-container`}>
-        {props.userRole !== "FSM_EMP_FSTPO" && !props.isSearch && (
-          <div className="filters-container">
-            {props.userRole !== "FSM_EMP_FSTPO_REQUEST" ? (
+        {props.userRole !== 'FSM_EMP_FSTPO' && !props.isSearch && (
+          <div className='filters-container'>
+            {props.userRole !== 'FSM_EMP_FSTPO_REQUEST' ? (
               <FSMLink parentRoute={props.parentRoute} />
             ) : null}
             <div
               style={
-                props.userRole !== "FSM_EMP_FSTPO_REQUEST"
-                  ? { marginTop: "24px" }
+                props.userRole !== 'FSM_EMP_FSTPO_REQUEST'
+                  ? { marginTop: '24px' }
                   : {}
               }
             >
@@ -448,23 +450,23 @@ const DesktopInbox = (props) => {
                 paginationParms={props.paginationParms}
                 applications={props.data}
                 onFilterChange={props.onFilterChange}
-                type="desktop"
+                type='desktop'
               />
             </div>
           </div>
         )}
-        <div style={{ flex: 1, marginLeft: "24px" }}>
+        <div style={{ flex: 1, marginLeft: '24px' }}>
           <SearchApplication
             onSearch={props.onSearch}
-            type="desktop"
+            type='desktop'
             searchFields={props.searchFields}
             isInboxPage={!props?.isSearch}
             searchParams={props.searchParams}
           />
           <div
-            className="result"
+            className='result'
             style={{
-              marginLeft: FSTP ? "" : !props?.isSearch ? "24px" : "",
+              marginLeft: FSTP ? '' : !props?.isSearch ? '24px' : '',
               flex: 1,
             }}
           >
