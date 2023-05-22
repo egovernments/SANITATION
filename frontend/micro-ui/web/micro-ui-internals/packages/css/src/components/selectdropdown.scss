@@ -20,7 +20,12 @@
 */
 .employee-select-wrap {
   @apply mb-lg relative;
+  background-color: white;
 
+  .disabled {
+    background-color: #fafafa;
+    color: #9e9e9e;
+  }
   .select {
     @apply relative block w-full h-10 border border-solid border-input-border;
     &:hover {

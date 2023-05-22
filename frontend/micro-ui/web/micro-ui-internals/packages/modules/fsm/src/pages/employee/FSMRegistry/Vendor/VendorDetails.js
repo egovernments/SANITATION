@@ -15,8 +15,8 @@ import {
   EditIcon,
   DeleteIcon,
   Modal,
-  CardText,
   Dropdown,
+  CardLabel,
 } from "@egovernments/digit-ui-react-components";
 
 import { useQueryClient } from "react-query";
@@ -53,6 +53,7 @@ const VendorDetails = (props) => {
   const [selectedAction, setSelectedAction] = useState(null);
   const [config, setCurrentConfig] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [showPopUp, setShowPopUp] = useState(null);
   const [showToast, setShowToast] = useState(null);
   const [vehicles, setVehicles] = useState([]);
   const [drivers, setDrivers] = useState([]);
@@ -138,6 +139,7 @@ const VendorDetails = (props) => {
     setSelectedAction(null);
     setSelectedOption({});
     setShowModal(false);
+    setShowPopUp(false);
   };
 
   const handleVendorUpdate = () => {
@@ -202,7 +204,7 @@ const VendorDetails = (props) => {
     }
   };
 
-  const onDelete = (details, type, id) => {
+  const onDelete = ({details, type, id}) => {
     let formData = {};
     if (type === "ES_FSM_REGISTRY_DETAILS_TYPE_DRIVER") {
       let dsoDetails = dsoData?.[0]?.dsoDetails;
@@ -262,7 +264,7 @@ const VendorDetails = (props) => {
     if (selectedAction === "ADD_VEHICLE") {
       return (
         <>
-          <CardText>{t(`ES_FSM_REGISTRY_SELECT_VEHICLE`)}</CardText>
+          <CardLabel>{t(`ES_FSM_REGISTRY_SELECT_VEHICLE`)}</CardLabel>
           <Dropdown
             t={t}
             option={vehicles}
@@ -277,7 +279,7 @@ const VendorDetails = (props) => {
     if (selectedAction === "ADD_DRIVER") {
       return (
         <>
-          <CardText>{t(`ES_FSM_REGISTRY_SELECT_DRIVER`)}</CardText>
+          <CardLabel>{t(`ES_FSM_REGISTRY_SELECT_DRIVER`)}</CardLabel>
           <Dropdown t={t} option={drivers} value={selectedOption} selected={selectedOption} select={setSelectedOption} optionKey={"name"} />
         </>
       );
@@ -324,7 +326,7 @@ const VendorDetails = (props) => {
                                 <span onClick={() => onEdit(data, detail.type, data.id)}>
                                   <EditIcon style={{ cursor: "pointer", marginRight: "20px" }} className="edit" fill="#f47738" />
                                 </span>
-                                <span onClick={() => onDelete(data, detail.type, data.id)}>
+                                <span onClick={() => setShowPopUp({details: data, type: detail.type, id: data.id})}>
                                   <DeleteIcon style={{ cursor: "pointer" }} className="delete" fill="#f47738" />
                                 </span>
                               </div>
@@ -378,6 +380,22 @@ const VendorDetails = (props) => {
               actionSaveOnSubmit={handleVendorUpdate}
             >
               <Card style={{ boxShadow: "none" }}>{renderModalContent()}</Card>
+            </Modal>
+          )}
+          {showPopUp && (
+            <Modal
+              headerBarMain={
+                <Heading
+                  label={t("ES_FSM_REGISTRY_DELETE_POPUP_HEADER")}
+                />
+              }
+              headerBarEnd={<CloseBtn onClick={closeModal} />}
+              actionCancelLabel={t("CS_COMMON_CANCEL")}
+              actionCancelOnSubmit={closeModal}
+              actionSaveLabel={t("ES_EVENT_DELETE")}
+              actionSaveOnSubmit={() => onDelete(showPopUp)}
+            >
+              <Card style={{ boxShadow: "none" }}>{t("ES_FSM_REGISTRY_DELETE_TEXT")}</Card>
             </Modal>
           )}
           {showToast && (

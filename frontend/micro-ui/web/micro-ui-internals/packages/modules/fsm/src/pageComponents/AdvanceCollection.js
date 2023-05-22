@@ -114,6 +114,11 @@ const AdvanceCollection = ({ t, config, onSelect, formData, userType, FSMTextFie
                         ? true
                         : false
                     }
+                    disable={
+                      (url.includes("modify") && formData?.advancepaymentPreference?.advanceAmount === 0) || AdvanceAmount === TotalAmount
+                        ? true
+                        : false
+                    }
                     type={input.type}
                     key={input.name}
                     style={FSMTextFieldStyle}

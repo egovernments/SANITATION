@@ -15,9 +15,9 @@ import {
   EditIcon,
   DeleteIcon,
   Modal,
-  CardText,
   AddIcon,
   Dropdown,
+  CardLabel,
 } from "@egovernments/digit-ui-react-components";
 
 import { useQueryClient } from "react-query";
@@ -271,7 +271,7 @@ const VehicleDetails = (props) => {
     if (selectedAction === "ADD_VENDOR") {
       return (
         <>
-          <CardText>{t(`ES_FSM_REGISTRY_SELECT_VENODOR`)}</CardText>
+          <CardLabel>{t(`ES_FSM_REGISTRY_SELECT_VENODOR`)}</CardLabel>
           <Dropdown t={t} option={vendors} value={selectedOption} selected={selectedOption} select={setSelectedOption} optionKey={"name"} />
         </>
       );
@@ -279,7 +279,7 @@ const VehicleDetails = (props) => {
     if (selectedAction === "EDIT_VENDOR") {
       return (
         <>
-          <CardText>{t(`ES_FSM_REGISTRY_SELECT_VENODOR`)}</CardText>
+          <CardLabel>{t(`ES_FSM_REGISTRY_SELECT_VENODOR`)}</CardLabel>
           <Dropdown t={t} option={vendors} value={selectedOption} selected={selectedOption} select={setSelectedOption} optionKey={"name"} />
         </>
       );

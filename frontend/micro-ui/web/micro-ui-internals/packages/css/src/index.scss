@@ -293,7 +293,6 @@
 
 .border-none {
   border: none;
-  justify-content: space-between;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -431,6 +430,10 @@ input[type="number"] {
     &:hover {
       @apply border-2 border-solid border-primary-main;
     }
+  }
+  .disabled {
+    background-color: #fafafa;
+    color: #9e9e9e;
   }
 }
 

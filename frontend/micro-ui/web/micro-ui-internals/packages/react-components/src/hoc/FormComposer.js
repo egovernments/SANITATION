@@ -320,7 +320,7 @@ export const FormComposer = (props) => {
                 if (props.fms_inline)
                   return (
                     <Fragment>
-                      <LabelFieldPair key={index}>
+                      <LabelFieldPair key={index} style={field?.component === "SelectTankSize" ? {alignItems: "baseline"} : {}}>
                         {!field.withoutLabel && (
                           <CardLabel style={{ color: field.isSectionText ? "#505A5F" : "", marginBottom: props.inline ? "8px" : "revert" }}>
                             {t(field.label)}
