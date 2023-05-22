@@ -78,6 +78,8 @@ import useGetDSSAboutJSON from './useGetDSSAboutJSON';
 import useStaticData from './useStaticData';
 import { usePrivacyContext } from './usePrivacyContext';
 import useCustomAPIHook from './useCustomAPIHook';
+import useDynamicData from './useDynamicData';
+import useRouteSubscription from './useRouteSubscription';
 
 const dss = {
   useMDMS: useDssMdms,
@@ -172,6 +174,8 @@ const Hooks = {
   useStaticData,
   useBulkPdfDetails,
   useCustomAPIHook,
+  useRouteSubscription,
+  useDynamicData,
 };
 
 export default Hooks;

@@ -10,7 +10,6 @@ import useVehicleTripCreate from './fsm/useVehicleTripCreate';
 import useFSMInbox from './fsm/useInbox';
 import useApplicationUpdate from './fsm/useApplicationUpdate';
 import useWorkflowData from './fsm/useWorkflowData';
-import useRouteSubscription from './useRouteSubscription';
 import useDsoSearch from './fsm/useDsoSearch';
 import useApplicationDetail from './fsm/useApplicationDetail';
 import useApplicationActions from './fsm/useApplicationActions';
@@ -32,6 +31,7 @@ import useDriverUpdate from './fsm/useDriverUpdate';
 import useDriverDetails from './fsm/useDriverDetails';
 import useVendorSearch from './fsm/useVendorSearch';
 import useAdvanceBalanceCalulation from './fsm/useAdvanceBalanceCalculation';
+import useRouteSubscription from './useRouteSubscription';
 
 const fsm = {
   useTenants: useTenantsFSM,
@@ -71,10 +71,10 @@ const fsm = {
   useVehicleTripCreate,
   useVendorSearch,
   useAdvanceBalanceCalulation,
+  useRouteSubscription,
 };
 const Hooks = {
   fsm,
-  useRouteSubscription,
 };
 
 export default Hooks;
