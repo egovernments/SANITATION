@@ -63,7 +63,7 @@ const ApplicationAudit = ({ parentRoute }) => {
         index === 0 ? (
           <p>
             New Request{" "}
-            <Link to={`/digit-ui/employee/fsm/application-details/${id}`}>
+            <Link to={`/${window?.contextPath}/employee/fsm/application-details/${id}`}>
               <LinkButton label={t("ES_VIEW_APPLICATION")} style={{ color: "#1671ba", marginLeft: "8px" }} />
             </Link>
           </p>

@@ -110,7 +110,7 @@ const FSMLinks = ({ matchPath, userType }) => {
         });
       else
         links.push({
-          link: `/digit-ui/citizen/login`,
+          link: `/${window?.contextPath}/citizen/login`,
           state: { role: "FSM_DSO", from },
           i18nKey: t(loginLink),
         });
