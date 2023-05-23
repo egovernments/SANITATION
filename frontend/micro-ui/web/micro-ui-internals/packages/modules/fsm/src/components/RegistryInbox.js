@@ -594,6 +594,7 @@ const RegisryInbox = (props) => {
         disableSort={props.disableSort}
         sortParams={props.sortParams}
         totalRecords={props.totalRecords}
+        customTableWrapperClassName="fsm-table"
       />
     );
   }
