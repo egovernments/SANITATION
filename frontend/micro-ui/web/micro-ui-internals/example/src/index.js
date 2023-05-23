@@ -16,8 +16,7 @@ import {
   HRMSModule,
   initHRMSComponents,
 } from '@egovernments/digit-ui-module-hrms';
-import '@egovernments/digit-ui-css/example/index.css';
-import '@egovernments/digit-ui-fsm-css/example/index.css';
+
 
 var Digit = window.Digit || {};
 
