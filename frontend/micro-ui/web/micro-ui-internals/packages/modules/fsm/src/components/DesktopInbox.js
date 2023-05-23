@@ -384,6 +384,7 @@ const DesktopInbox = (props) => {
         sortParams={props.sortParams}
         totalRecords={props.totalRecords}
         isPaginationRequired={props.isPaginationRequired}
+        customTableWrapperClassName="fsm-table"
       />
     );
   }

@@ -16,7 +16,8 @@ const ApplicationTable = ({
   pageSizeLimit,
   sortParams,
   totalRecords,
-  isPaginationRequired
+  isPaginationRequired,
+  customTableWrapperClassName = ''
 }) => {
   return (
     <Table
@@ -35,6 +36,7 @@ const ApplicationTable = ({
       sortParams={sortParams}
       totalRecords={totalRecords}
       isPaginationRequired={isPaginationRequired}
+      customTableWrapperClassName={customTableWrapperClassName}
     />
   );
 };
