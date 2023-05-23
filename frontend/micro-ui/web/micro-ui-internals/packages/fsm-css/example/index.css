@@ -877,6 +877,187 @@ img, video {
   text-align: center;
   width: 40px; }
 
+.table {
+  --bg-opacity:1;
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, var(--bg-opacity));
+  width: 100%;
+  border-left-width: 24px;
+  border-right-width: 24px;
+  border-left-color: #fff;
+  border-right-color: #fff; }
+  .table thead th {
+    padding: 20px 18px;
+    font-weight: 700;
+    vertical-align: middle;
+    text-align: left; }
+    .table thead th:first-child {
+      min-width: 256px; }
+    .table thead th:nth-child(2) {
+      min-width: 200px; }
+  .table tbody {
+    border: none;
+    padding: 0;
+    margin: 0; }
+    .table tbody td {
+      border-top-width: 1px;
+      --border-opacity:1;
+      border-color: #d6d5d4;
+      border-color: rgba(214, 213, 212, var(--border-opacity));
+      text-align: left;
+      vertical-align: middle;
+      padding: "20px 18px"; }
+
+.fsm-table {
+  width: 100%;
+  display: block;
+  border-radius: 4px 4px 0 0;
+  overflow-x: auto;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16); }
+  .fsm-table .table {
+    --bg-opacity:1;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, var(--bg-opacity));
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+    border-left-width: 24px;
+    border-right-width: 24px;
+    border-left-color: #fff;
+    border-right-color: #fff; }
+    .fsm-table .table thead th {
+      padding: 20px 18px;
+      font-weight: 700;
+      vertical-align: middle;
+      text-align: left; }
+      .fsm-table .table thead th:first-child {
+        min-width: 256px; }
+      .fsm-table .table thead th:nth-child(2) {
+        min-width: 200px; }
+    .fsm-table .table tbody {
+      border: none;
+      padding: 0;
+      margin: 0; }
+      .fsm-table .table tbody td {
+        border-top-width: 1px;
+        --border-opacity:1;
+        border-color: #d6d5d4;
+        border-color: rgba(214, 213, 212, var(--border-opacity));
+        text-align: left;
+        vertical-align: middle;
+        padding: "20px 18px"; }
+
+.pagination {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  background-color: rgba(255, 255, 255, var(--bg-opacity));
+  border-top: 1px solid #d6d5d4;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  border-radius: 0 0 4px 4px;
+  border-left-color: #fff;
+  border-right-color: #fff;
+  border-right-width: 24px;
+  border-left-width: 24px;
+  padding: 20px 40px 20px 0;
+  color: #505a5f; }
+  .pagination svg {
+    fill: #505a5f;
+    margin-left: 16px; }
+
+.pagination button:first-child span:after {
+  content: "\f105"; }
+
+.fullWidth {
+  width: 100% !important; }
+
+.customTable {
+  width: 100%; }
+  .customTable th {
+    font-weight: 700; }
+  .customTable td, .customTable th {
+    text-align: left;
+    border-bottom: 1px solid #b1b4b6;
+    padding: 15px 10px; }
+  .customTable tr:nth-child(odd) {
+    background-color: #eee; }
+  .customTable tr:nth-child(2n) {
+    background-color: #fff; }
+  .customTable thead tr:first-child {
+    background-color: unset; }
+
+.table-fixed-first-column thead th:first-child {
+  position: sticky;
+  background: #fff;
+  left: 0;
+  border-right: 1px solid #b1b4b6;
+  border-top-left-radius: 4px; }
+
+.table-fixed-first-column tbody td:first-child {
+  position: sticky;
+  background: #fff;
+  color: #f47738;
+  left: 0;
+  border-right: 1px solid #b1b4b6; }
+
+.table-fixed-column-common-pay thead th:first-child {
+  left: 0; }
+
+.table-fixed-column-common-pay thead th:first-child, .table-fixed-column-common-pay thead th:last-child {
+  position: sticky;
+  background: #eee;
+  border-top-left-radius: 4px; }
+
+.table-fixed-column-common-pay thead th:last-child {
+  right: 0; }
+
+.table-fixed-column-common-pay tbody td:first-child {
+  left: 0; }
+
+.table-fixed-column-common-pay tbody td:first-child, .table-fixed-column-common-pay tbody td:last-child {
+  position: sticky;
+  background: #eee; }
+
+.table-fixed-column-common-pay tbody td:last-child {
+  right: 0; }
+
+.table-fixed-first-second-column thead th:nth-child(2) {
+  position: sticky;
+  left: 0;
+  background-color: #fff; }
+
+.table-fixed-first-second-column tbody td:nth-child(2) {
+  position: sticky;
+  left: 0;
+  background-color: inherit; }
+
+.table-border-style {
+  border: 1px solid #b1b4b6;
+  border-radius: 4px;
+  border-spacing: 0;
+  border-collapse: initial; }
+
+.dss-table-wrapper {
+  width: 100%;
+  display: block;
+  overflow-x: auto; }
+  .dss-table-wrapper table th .tooltip {
+    min-width: 80px; }
+  .dss-table-wrapper table tr td span {
+    white-space: pre;
+    min-width: 80px; }
+
+.reports-table {
+  margin-top: 2rem; }
+  .reports-table thead th:first-child {
+    min-width: unset; }
+
 @media (min-width: 780px) {
   .fsm-citizen-wrapper {
     width: calc(100% - 219px);
