@@ -15,10 +15,12 @@ const SelectVehicleType = ({ t, config, onSelect, userType, formData, setValue }
   useEffect(() => {
     if (vehicleData) {
       const vehicleModal = vehicleData.filter((vehicle) => vehicle.code === (formData?.vehicle?.modal?.code || formData?.vehicle?.modal));
+      const allVehicleType = vehicleData.filter((vehicle) => vehicle.make === (formData?.vehicle?.modal?.code || formData?.vehicle?.modal));
       const vehicleType = vehicleData.filter((vehicle) => vehicle.code === (formData?.vehicle?.type?.code || formData?.vehicle?.type));
       setSelectedModal(...vehicleModal);
       setSelectedType(...vehicleType);
       setSelectedCapacity(formData?.vehicle?.type?.capacity || formData?.vehicle?.tankCapacity);
+      setTypes(allVehicleType)
     }
   }, [formData?.vehicle, vehicleData]);
 
