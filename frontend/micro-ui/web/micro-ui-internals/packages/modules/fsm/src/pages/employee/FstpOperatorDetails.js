@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import TimePicker from "react-time-picker";
-import { Dropdown, Header, MultiUploadWrapper, TextArea } from "@egovernments/digit-ui-react-components";
+import { Dropdown, Header, MultiUploadWrapper, TextArea,InfoIcon } from "@egovernments/digit-ui-react-components";
 import {
   Card,
   CardLabel,
@@ -358,6 +358,17 @@ const FstpOperatorDetails = () => {
       value: vehicle?.vehicle?.registrationNumber || applicationNos || (
         <TextInput onChange={(e) => onChangeVehicleNumber(e.target.value)} value={newVehicleNumber} />
       ),
+      labelChildren: (
+        <div className="tooltip" style={{ paddingLeft: "10px", marginBottom: "-3px" }}>
+          <InfoIcon />
+          <span
+            className="tooltiptext"
+            style={{ width: "150px", left: "230%", fontSize: "14px", height: "fit-content", top: "20px", display: "flex" }}
+          >
+            {t("ES_FSM_VEHICLE_FORMAT_TIP")}
+          </span>
+        </div>
+      ),
     },
     {
       title: `${t("ES_INBOX_DSO_NAME")} *`,
@@ -426,8 +437,13 @@ const FstpOperatorDetails = () => {
               label={row.title}
               text={row.value || "N/A"}
               last={false}
-              labelStyle={{ fontWeight: "normal" }}
-            />
+              labelStyle={
+                isMobile && history.location.pathname.includes("new-vehicle-entry")
+                  ? { fontWeight: "normal", display: "contents" }
+                  : { fontWeight: "normal" }
+              }
+              labelChildren={history.location.pathname.includes("new-vehicle-entry") ? row.labelChildren : ""}
+                  />
           ))}
           <div ref={tripStartTimeRef}>
             <CardLabelError>{t(errors.tripStartTime)}</CardLabelError>

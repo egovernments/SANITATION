@@ -3142,6 +3142,47 @@ img, video {
       vertical-align: middle;
       padding: "20px 18px"; }
 
+.fsm-table {
+  width: 100%;
+  display: block;
+  border-radius: 4px 4px 0 0;
+  overflow-x: auto;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16); }
+  .fsm-table .table {
+    --bg-opacity:1;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, var(--bg-opacity));
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+    border-left-width: 24px;
+    border-right-width: 24px;
+    border-left-color: #fff;
+    border-right-color: #fff; }
+    .fsm-table .table thead th {
+      padding: 20px 18px;
+      font-weight: 700;
+      vertical-align: middle;
+      text-align: left; }
+      .fsm-table .table thead th:first-child {
+        min-width: 256px; }
+      .fsm-table .table thead th:nth-child(2) {
+        min-width: 200px; }
+    .fsm-table .table tbody {
+      border: none;
+      padding: 0;
+      margin: 0; }
+      .fsm-table .table tbody td {
+        border-top-width: 1px;
+        --border-opacity:1;
+        border-color: #d6d5d4;
+        border-color: rgba(214, 213, 212, var(--border-opacity));
+        text-align: left;
+        vertical-align: middle;
+        padding: "20px 18px"; }
+
 .pagination {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3151,6 +3192,9 @@ img, video {
   justify-content: flex-end;
   background-color: rgba(255, 255, 255, var(--bg-opacity));
   border-top: 1px solid #d6d5d4;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  border-radius: 0 0 4px 4px;
   border-left-color: #fff;
   border-right-color: #fff;
   border-right-width: 24px;
