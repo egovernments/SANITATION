@@ -1653,3 +1653,6 @@ img, video {
   padding: 16px;
   margin-bottom: 40px;
   width: 90%; }
+
+.employee .ground-container {
+  margin-left: unset; }
