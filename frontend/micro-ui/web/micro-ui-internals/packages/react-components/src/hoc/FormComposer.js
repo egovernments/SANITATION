@@ -221,7 +221,7 @@ export const FormComposer = (props) => {
     } else if (section.head) {
       return (
         <>
-          <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {}} id={section.headId}>
+          <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {}} className={props?.sectionHeaderClassName} id={section.headId}>
             {t(section.head)}
           </CardSectionHeader>
         </>

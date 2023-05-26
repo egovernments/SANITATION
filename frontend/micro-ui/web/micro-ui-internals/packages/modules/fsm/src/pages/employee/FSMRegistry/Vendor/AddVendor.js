@@ -155,6 +155,7 @@ const AddVendor = ({ parentUrl, heading }) => {
             };
           })}
           fieldStyle={{ marginRight: 0 }}
+          sectionHeaderClassName="fsm-registry"
           onSubmit={onSubmit}
           defaultValues={defaultValues}
           onFormValueChange={onFormValueChange}

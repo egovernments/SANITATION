@@ -36,3 +36,24 @@
     margin-left: unset;
   }
 }
+
+.employee-data-table .row h2 {
+  width: 25%;
+}
+
+input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 1%;
+  width: 30px;
+  height: 30px;
+}
+
+.employeeCard {
+  .card-section-header.fsm-registry {
+    margin-top: 40px;
+    margin-bottom: unset;
+    &:first-child{
+      margin-top: 0;
+    }
+  }
+}

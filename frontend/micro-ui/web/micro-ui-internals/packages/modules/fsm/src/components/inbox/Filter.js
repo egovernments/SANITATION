@@ -105,7 +105,7 @@ const Filter = ({
                 <span>
                   <FilterIcon />
                 </span>
-                <span>{t(`ES_COMMON_FILTER_BY`)}</span>
+                <span style={{fontSize: "24px", fontWeight: 600}}>{t(`ES_COMMON_FILTER_BY`)}</span>
               </div>
               <span className='clear-search' onClick={clearAll}>
                 <RefreshIcon />

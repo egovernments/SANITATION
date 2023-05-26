@@ -105,6 +105,13 @@ textarea {
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
   height: auto; }
 
+[type=search] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px; }
+
+[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
 details {
   display: block; }
 
@@ -1656,3 +1663,18 @@ img, video {
 
 .employee .ground-container {
   margin-left: unset; }
+
+.employee-data-table .row h2 {
+  width: 25%; }
+
+input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 1%;
+  width: 30px;
+  height: 30px; }
+
+.employeeCard .card-section-header.fsm-registry {
+  margin-top: 40px;
+  margin-bottom: unset; }
+  .employeeCard .card-section-header.fsm-registry:first-child {
+    margin-top: 0; }

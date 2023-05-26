@@ -289,12 +289,12 @@ const SearchApplication = ({
                     }}
                     className='search-submit-wrapper'
                   >
+                    <div>{clearAll()}</div>
                     <SubmitBar
                       className='submit-bar-search'
                       label={t('ES_COMMON_SEARCH')}
                       submit
                     />
-                    <div>{clearAll()}</div>
                   </div>
                 )}
               </div>
