@@ -1,18 +1,18 @@
-@import "tailwindcss/base";
+@import 'tailwindcss/base';
 
-@import "tailwindcss/components";
+@import 'tailwindcss/components';
 
-@import "tailwindcss/utilities";
+@import 'tailwindcss/utilities';
 
-@import "react-date-range/dist/styles.css";
-@import "react-date-range/dist/theme/default.css";
+@import 'react-date-range/dist/styles.css';
+@import 'react-date-range/dist/theme/default.css';
 
-@import "./components/card.scss";
-@import "./components/toggleSwitch.scss";
-@import "./components/plusMinus.scss";
-@import "./components/table.scss";
-@import "./pages/employee/index.scss";
-@import "./pages/employee/login.scss";
+@import './components/card.scss';
+@import './components/toggleSwitch.scss';
+@import './components/plusMinus.scss';
+@import './components/table.scss';
+@import './pages/employee/index.scss';
+@import './pages/employee/login.scss';
 
 @media (min-width: 780px) {
   .fsm-citizen-wrapper {
@@ -52,8 +52,27 @@ input::-webkit-calendar-picker-indicator {
   .card-section-header.fsm-registry {
     margin-top: 40px;
     margin-bottom: unset;
-    &:first-child{
+    &:first-child {
       margin-top: 0;
     }
   }
+}
+@media (min-width: 780px) {
+  .card-home {
+    width: max-content !important;
+  }
+  .complaint-links-container {
+    .header {
+      align-items: center !important;
+    }
+    .removeHeight {
+      padding-right: 16px;
+    }
+    .flex-fit {
+      padding: 8px 16px;
+    }
+  }
+}
+.CitizenHomeCard {
+  border-radius: 4px;
 }
