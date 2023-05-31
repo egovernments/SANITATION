@@ -1695,3 +1695,6 @@ input::-webkit-calendar-picker-indicator {
 
 .CitizenHomeCard {
   border-radius: 4px; }
+
+.fsm-citizen-wrapper .card {
+  margin-bottom: 24px; }
