@@ -1678,3 +1678,20 @@ input::-webkit-calendar-picker-indicator {
   margin-bottom: unset; }
   .employeeCard .card-section-header.fsm-registry:first-child {
     margin-top: 0; }
+
+@media (min-width: 780px) {
+  .card-home {
+    width: -webkit-max-content !important;
+    width: -moz-max-content !important;
+    width: max-content !important; }
+  .complaint-links-container .header {
+    -webkit-box-align: center !important;
+    -ms-flex-align: center !important;
+    align-items: center !important; }
+  .complaint-links-container .removeHeight {
+    padding-right: 16px; }
+  .complaint-links-container .flex-fit {
+    padding: 8px 16px; } }
+
+.CitizenHomeCard {
+  border-radius: 4px; }
