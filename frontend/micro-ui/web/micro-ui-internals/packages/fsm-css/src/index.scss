@@ -14,6 +14,14 @@
 @import './pages/employee/index.scss';
 @import './pages/employee/login.scss';
 
+@media screen and (max-width: 768px) {
+  .employeeCard.fsm {
+    margin-bottom: 70px !important;
+    margin-left: 16px !important;
+    margin-right: 16px !important;
+  }
+}
+
 @media (min-width: 780px) {
   .fsm-citizen-wrapper {
     width: calc(100% - 219px);
@@ -80,4 +88,8 @@ input::-webkit-calendar-picker-indicator {
   .card {
     margin-bottom: 24px;
   }
+}
+
+.primary-label-btn{
+  display: flex;  
 }

@@ -521,7 +521,7 @@ const FstpOperatorDetails = () => {
                     setComments(e.target.value);
                   }
                 }}
-                style={isMobile ? { width: "100%" } : { width: "100%", marginLeft: "35%" }}
+                style={isMobile ? { width: "100%" } : { width: "63%", marginLeft: "30%" }}
               />
             </div>
 

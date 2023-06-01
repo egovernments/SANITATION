@@ -21,6 +21,7 @@ import "@egovernments/digit-ui-fsm-css/example/index.css";
 var Digit = window.Digit || {};
 
 const enabledModules = [
+  "DSS",
   // "Works",
   'HRMS',
   'Payment',
