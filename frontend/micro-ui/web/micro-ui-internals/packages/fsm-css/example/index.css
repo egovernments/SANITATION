@@ -105,13 +105,6 @@ textarea {
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
   height: auto; }
 
-[type=search] {
-  -webkit-appearance: textfield;
-  outline-offset: -2px; }
-
-[type=search]::-webkit-search-decoration {
-  -webkit-appearance: none; }
-
 details {
   display: block; }
 
@@ -1646,6 +1639,12 @@ img, video {
     margin-left: 16px;
     margin-right: 16px; } }
 
+@media screen and (max-width: 768px) {
+  .employeeCard.fsm {
+    margin-bottom: 70px !important;
+    margin-left: 16px !important;
+    margin-right: 16px !important; } }
+
 @media (min-width: 780px) {
   .fsm-citizen-wrapper {
     width: calc(100% - 219px);
@@ -1713,3 +1712,8 @@ input::-webkit-calendar-picker-indicator {
 .fsm-citizen-rating-wrapper .checkbox-wrap .label {
   padding-top: 5px !important;
   margin-left: 45px; }
+
+.primary-label-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
