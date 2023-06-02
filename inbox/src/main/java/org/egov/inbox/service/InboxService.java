@@ -159,7 +159,8 @@ public class InboxService {
             inputStatuses = new ArrayList<>(processCriteria.getStatus());
         StringBuilder assigneeUuid = new StringBuilder();
         String dsoId = null;
-        if (requestInfo.getUserInfo().getRoles().get(0).getCode().equals(FSMConstants.FSM_DSO)) {
+        List<String> roleCodes = requestInfo.getUserInfo().getRoles().stream().map(Role::getCode).collect(Collectors.toList());
+        if (roleCodes.contains(FSMConstants.FSM_DSO)) {
             Map<String, Object> searcherRequestForDSO = new HashMap<>();
             Map<String, Object> searchCriteriaForDSO = new HashMap<>();
             searchCriteriaForDSO.put(TENANT_ID_PARAM, criteria.getTenantId());
