@@ -188,10 +188,11 @@ export const Search = {
           { title: "ES_APPLICATION_DETAILS_VEHICLE_NO", value: vehicle?.registrationNumber || "N/A" },
           { title: "ES_APPLICATION_DETAILS_VEHICLE_CAPACITY", value: response?.vehicleCapacity || "N/A" },
           { title: "ES_APPLICATION_DETAILS_POSSIBLE_SERVICE_DATE", value: displayServiceDate(response?.possibleServiceDate) || "N/A" },
-          { title: "ES_APPLICATION_DETAILS_AMOUNT_RECEIVED", value: receivedPayment || "N/A" },
         ],
       },
     ];
+
+    employeeResponse.map(({values}) => values.map((i)=> i === null ? values.pop(i) : i))
 
     if (userType !== "CITIZEN" && userType !== "DSO") {
       employeeResponse.map((data) => {
@@ -209,20 +210,20 @@ export const Search = {
         totalAmount: totalAmount,
       };
 
-    const citizenResp = employeeResponse.reduce((arr, curr) => {
-      return arr.concat(curr.values.filter((i) => i !== null));
-    }, []);
+    // const citizenResp = employeeResponse.reduce((arr, curr) => {
+    //   return arr.concat(curr.values.filter((i) => i !== null));
+    // }, []);
 
-    const citizenResponse = citizenResp.map((detail) => {
-      // detail.title = detail.title?.replace("ES_", "CS_");
-      if (!detail.map) return detail;
-      delete detail.value;
-      return detail;
-    });
+    // const citizenResponse = citizenResp.map((detail) => {
+    //   // detail.title = detail.title?.replace("ES_", "CS_");
+    //   if (!detail.map) return detail;
+    //   delete detail.value;
+    //   return detail;
+    // });
 
     return {
       tenantId: response.tenantId,
-      applicationDetails: citizenResponse,
+      applicationDetails: employeeResponse,
       pdfData: { ...response, amountPerTrip, totalAmount, vehicleMake, vehicleCapacity, slumName, dsoDetails },
     };
   },
