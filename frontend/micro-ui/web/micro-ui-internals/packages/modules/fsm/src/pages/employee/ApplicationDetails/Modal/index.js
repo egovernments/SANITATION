@@ -197,7 +197,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     if (isSuccess && isDsoSuccess && applicationData && applicationData.dsoId) {
       const [dso] = dsoData.filter((dso) => dso.id === applicationData.dsoId);
       const tempList = dso?.vehicles?.filter((vehicle) => vehicle.capacity == applicationData?.vehicleCapacity);
-      const vehicleNoList = tempList.sort((a,b) => (a.registrationNumber > b.registrationNumber ? 1 : -1 ));
+      const vehicleNoList = tempList?.sort((a,b) => (a?.registrationNumber > b?.registrationNumber ? 1 : -1 ));
       setVehicleNoList(vehicleNoList);
     }
   }, [isSuccess, isDsoSuccess]);

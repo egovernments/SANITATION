@@ -18,11 +18,16 @@ import TLCaption from "./TLCaption";
 
 export const ApplicationTimeline = (props) => {
   const { t } = useTranslation();
-  const { isLoading, data } = Digit.Hooks.useWorkflowDetails({
-    tenantId: props.application?.tenantId,
-    id: props.id,
-    moduleCode: "FSM",
-  });
+  const isCitizen =
+    Digit.UserService.hasAccess("CITIZEN") ||
+    window.location.pathname.includes("citizen") ||
+    false;
+  const data = props?.data;
+  // const { props?.isLoading, data } = Digit.Hooks.useWorkflowDetails({
+  // tenantId: props.application?.tenantId,
+  // id: props.id,
+  // moduleCode: "FSM",
+  // });
 
   const getTimelineCaptions = (checkpoint) => {
     const __comment = checkpoint?.comment?.split("~");
@@ -47,30 +52,42 @@ export const ApplicationTimeline = (props) => {
         otherComment: reason_comment ? reason_comment : null,
       };
       return <TLCaption data={caption} />;
-    } else if (checkpoint.status === "CITIZEN_FEEDBACK_PENDING") {
-      return (
-        <>
-          {data?.nextActions.length > 0 && (
-            <div>
-              <Link to={`/${window?.contextPath}/citizen/fsm/rate/${props.id}`}>
-                <ActionLinks>{t("CS_FSM_RATE")}</ActionLinks>
-              </Link>
-            </div>
-          )}
-        </>
-      );
-    } else if (checkpoint.status === "DSO_INPROGRESS") {
+    }
+    // else if (checkpoint.status === "CITIZEN_FEEDBACK_PENDING") {
+    //   return (
+    //     <>
+    //       {data?.nextActions.length > 0 && (
+    //         <div>
+    //           <Link to={`/${window?.contextPath}/citizen/fsm/rate/${props.id}`}>
+    //             <ActionLinks>{t("CS_FSM_RATE")}</ActionLinks>
+    //           </Link>
+    //         </div>
+    //       )}
+    //     </>
+    //   );
+    // }
+    else if (checkpoint.status === "DSO_INPROGRESS") {
       const caption = {
         name: checkpoint?.assigner,
         mobileNumber: props.application?.dsoDetails?.mobileNumber,
-        date: `${t("CS_FSM_EXPECTED_DATE")} ${Digit.DateUtils.ConvertTimestampToDate(props.application?.possibleServiceDate)}`,
+        date: `${t(
+          "CS_FSM_EXPECTED_DATE"
+        )} ${Digit.DateUtils.ConvertTimestampToDate(
+          props.application?.possibleServiceDate
+        )}`,
       };
       return <TLCaption data={caption} />;
     } else if (checkpoint.status === "COMPLETED") {
       return (
         <div>
-          <Rating withText={true} text={t(`CS_FSM_YOU_RATED`)} currentRating={checkpoint.rating} />
-          <Link to={`/${window?.contextPath}/citizen/fsm/rate-view/${props.id}`}>
+          <Rating
+            withText={true}
+            text={t(`CS_FSM_YOU_RATED`)}
+            currentRating={checkpoint.rating}
+          />
+          <Link
+            to={`/${window?.contextPath}/citizen/fsm/rate-view/${props.id}`}
+          >
             <ActionLinks>{t("CS_FSM_RATE_VIEW")}</ActionLinks>
           </Link>
         </div>
@@ -81,7 +98,10 @@ export const ApplicationTimeline = (props) => {
         name: checkpoint?.assigner,
         mobileNumber: checkpoint?.assigner?.mobileNumber,
       };
-      if (checkpoint?.numberOfTrips) caption.comment = `${t("NUMBER_OF_TRIPS")}: ${checkpoint?.numberOfTrips}`;
+      if (checkpoint?.numberOfTrips)
+        caption.comment = `${t("NUMBER_OF_TRIPS")}: ${
+          checkpoint?.numberOfTrips
+        }`;
       return <TLCaption data={caption} />;
     }
   };
@@ -112,21 +132,31 @@ export const ApplicationTimeline = (props) => {
     }
   };
 
-  if (isLoading) {
+  if (props?.isLoading) {
     return <Loader />;
   }
 
   return (
     <React.Fragment>
-      {!isLoading && (
+      {!props?.isLoading && (
         <Fragment>
           {data?.timeline?.length > 0 && (
-            <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>
+            <CardSectionHeader
+              style={
+                !isCitizen
+                  ? { marginBottom: "16px", marginTop: "32px" }
+                  : { marginBottom: "16px" }
+              }
+            >
               {t("CS_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
             </CardSectionHeader>
           )}
           {data?.timeline && data?.timeline?.length === 1 ? (
-            <CheckPoint isCompleted={true} label={t("CS_COMMON_" + data?.timeline[0]?.status)} customChild={getTimelineCaptions(data?.timeline[0])} />
+            <CheckPoint
+              isCompleted={true}
+              label={t("CS_COMMON_" + data?.timeline[0]?.status)}
+              customChild={getTimelineCaptions(data?.timeline[0])}
+            />
           ) : (
             <ConnectingCheckPoints>
               {data?.timeline &&
@@ -146,7 +176,7 @@ export const ApplicationTimeline = (props) => {
           )}
         </Fragment>
       )}
-      {data && showNextActions(data?.nextActions[0])}
+      {/* {data && showNextActions(data?.nextActions[0])} */}
     </React.Fragment>
   );
 };
