@@ -31,8 +31,8 @@ const RatingCard = ({ config, onSelect, t }) => {
       return (
         <React.Fragment key={index}>
           <CardLabel>{t(input.label)}</CardLabel>
-          {input?.error}
           <Rating currentRating={rating} maxRating={input.maxRating} onFeedback={(e, ref, i) => feedback(e, ref, i)} />
+          {input?.error}
         </React.Fragment>
       );
     }
@@ -41,9 +41,9 @@ const RatingCard = ({ config, onSelect, t }) => {
       return (
         <React.Fragment key={index}>
           <CardLabel>{t(input.label)}</CardLabel>
-          {input?.error}
           {input.checkLabels &&
             input.checkLabels.map((label, index) => <CheckBox style={{ marginBottom: "16px", paddingTop:"10px" }} key={index} name={input.label} label={t(label)} value={label} inputRef={register} />)}
+          {input?.error}
         </React.Fragment>
       );
     }
