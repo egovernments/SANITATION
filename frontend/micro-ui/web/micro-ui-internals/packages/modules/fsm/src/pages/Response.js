@@ -9,6 +9,9 @@ import { getVehicleType } from "../utils";
 const GetMessage = (type, action, isSuccess, isEmployee, t, data) => {
   const zeroPricing = data?.additionalDetails?.tripAmount === 0 || data?.additionalDetails?.tripAmount === null || false;
   const advanceZero = data?.advanceAmount === 0 || false;
+  if(action === "RATE" && isSuccess === true && type === "ACTION") {
+    return t("FSM_RATE_SUBMITTED");
+  }
   return t(
     `${isEmployee ? "E" : "C"}S_FSM_RESPONSE_${action ? action : "CREATE"}_${type}${isSuccess ? "" : "_ERROR"}${
       action ? "" : advanceZero ? "_POST_PAY" : zeroPricing ? "_ZERO_PAY" : ""
@@ -30,6 +33,7 @@ const DisplayText = (action, isSuccess, isEmployee, t, data) => {
 
 const BannerPicker = (props) => {
   let actionMessage = props?.action ? props.action : "CREATE";
+
   let labelMessage = GetLabel(props.data?.fsm?.[0].applicationStatus || props.action, props.isSuccess, props.isEmployee, props.t);
 
   if (props.errorInfo && props.errorInfo !== null && props.errorInfo !== "" && typeof props.errorInfo === "string" && props.action !== "SCHEDULE") {
@@ -211,29 +215,28 @@ const Response = (props) => {
         errorInfo={errorInfo}
       />
       <CardText>{DisplayText(state.action, isSuccess, props.parentRoute.includes("employee"), t, Data?.fsm?.[0])}</CardText>
-      {isSuccess && (
-        <LinkButton
-          label={
-            <div className="response-download-button">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#f47738">
-                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
-                </svg>
-              </span>
-              <span className="download-button">{generatePdfLabel()} </span>
-            </div>
-          }
-          style={{ width: "100px" }}
-          onClick={handleGeneratePdf()}
-        />
+      {isSuccess && state?.action !== "RATE"  && (
+  // <LinkButton
+  //         label={
+  //           <div className="response-download-button">
+  //             <span>
+  //               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#f47738">
+  //                 <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+  //               </svg>
+  //             </span>
+  //             <span className="download-button">{generatePdfLabel()} </span>
+  //           </div>
+  //         }
+  //         style={{ width: "100px" }}
+  //         onClick={handleGeneratePdf()}
+  //       />
+      <SubmitBar onSubmit={handleGeneratePdf()}  />
       )}
+      {ACTIONS.length === 1 ?<LinkButton label={t(`ES_COMMON_${ACTIONS[0]}`)} onClick={() => onActionSelect(ACTIONS[0])} />:null}
       <ActionBar>
         {displayMenu ? <Menu localeKeyPrefix={"ES_COMMON"} options={ACTIONS} t={t} onSelect={onActionSelect} /> : null}
-        {ACTIONS.length === 1 ? (
-          <SubmitBar label={t(`ES_COMMON_${ACTIONS[0]}`)} onSubmit={() => onActionSelect(ACTIONS[0])} />
-        ) : (
-          <SubmitBar label={t("ES_COMMON_TAKE_ACTION")} onSubmit={() => setDisplayMenu(!displayMenu)} />
-        )}
+         {ACTIONS.length !== 1 ?<SubmitBar label={t("ES_COMMON_TAKE_ACTION")} onSubmit={() => setDisplayMenu(!displayMenu)} />
+        :null } 
       </ActionBar>
 
       {showToast && (

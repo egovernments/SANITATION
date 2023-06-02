@@ -81,3 +81,22 @@ input::-webkit-calendar-picker-indicator {
     margin-bottom: 24px;
   }
 }
+.fsm-citizen-rating-wrapper{
+  .card-label {
+    margin-bottom: 20px;
+  }
+  .custom-checkbox {
+    width: 24px;
+    height: 24px;
+  }
+  .checkbox-wrap {
+    input {
+      width: 24px;
+      height: 24px;
+    }
+    .label {
+      padding-top: 5px !important;
+      margin-left: 45px;
+    }
+  }
+}

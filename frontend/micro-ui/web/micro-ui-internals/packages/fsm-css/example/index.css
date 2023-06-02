@@ -1698,3 +1698,18 @@ input::-webkit-calendar-picker-indicator {
 
 .fsm-citizen-wrapper .card {
   margin-bottom: 24px; }
+
+.fsm-citizen-rating-wrapper .card-label {
+  margin-bottom: 20px; }
+
+.fsm-citizen-rating-wrapper .custom-checkbox {
+  width: 30px;
+  height: 30px; }
+
+.fsm-citizen-rating-wrapper .checkbox-wrap input {
+  width: 30px;
+  height: 30px; }
+
+.fsm-citizen-rating-wrapper .checkbox-wrap .label {
+  padding-top: 5px !important;
+  margin-left: 45px; }
