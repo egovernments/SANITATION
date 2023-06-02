@@ -25,7 +25,7 @@ frontend/micro-ui/web/package.json
 ```
 
 ```json
-"@egovernments/digit-ui-fsm-css":"^0.0.6",
+"@egovernments/digit-ui-fsm-css":"^0.0.9",
 ```
 
 then navigate to App.js
@@ -37,19 +37,22 @@ frontend/micro-ui/web/public/index.html
 ```jsx
 /** add this import **/
 
-  <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-fsm-css@0.0.6/dist/index.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-fsm-css@0.0.9/dist/index.css" />
 
 ```
+
 # Changelog
 
 ```bash
+0.0.8 Rating issue fixed for fsm
 0.0.8 homescreen card issue fixed for fsm
 0.0.7 added the readme file
 0.0.6 base version
 ```
 
-## Published from DIGIT Sanitation 
-Digit Dev Repo (https://github.com/egovernments/SANITATION)
+## Published from DIGIT Sanitation
+
+Digit Dev Repo (<https://github.com/egovernments/SANITATION>)
 
 ## License
 
