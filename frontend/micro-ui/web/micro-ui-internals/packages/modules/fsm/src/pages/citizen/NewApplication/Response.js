@@ -139,23 +139,14 @@ const Response = ({ data, onSuccess }) => {
         {t((paymentPreference && paymentPreference == "POST_PAY") || advancePay ? "CS_FILE_PROPERTY_RESPONSE_POST_PAY" : zeroPay ? "CS_FSM_RESPONSE_CREATE_DISPLAY_ZERO_PAY" : "CS_FILE_PROPERTY_RESPONSE")}
       </CardText>
       {isSuccess && (
-        <LinkButton
-          label={
-            <div className="response-download-button">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#f47738">
-                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
-                </svg>
-              </span>
-              <span className="download-button">{t("CS_COMMON_DOWNLOAD")}</span>
-            </div>
-          }
-          onClick={handleDownloadPdf}
+        <SubmitBar
+          label={t("CS_COMMON_DOWNLOAD")}
+          onSubmit={handleDownloadPdf}
           className="w-full"
         />
       )}
       <Link to={`/${window?.contextPath}/citizen`}>
-        <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
+        <LinkButton label={t("CORE_COMMON_GO_TO_HOME")} />
       </Link>
     </Card>
   );
