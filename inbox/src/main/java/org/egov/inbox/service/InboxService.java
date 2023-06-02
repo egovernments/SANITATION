@@ -834,6 +834,10 @@ public class InboxService {
 			//log.info("removeStatusCountMap:: "+ new Gson().toJson(statusCountMap));
 
 		}
+        if(moduleSearchCriteria.containsKey("mobileNumber") || moduleSearchCriteria.containsKey("applicationNos"))
+        {
+            totalCount = inboxes.size();
+        }
 		log.info("statusCountMap size :::: " + statusCountMap.size());
 		
         response.setTotalCount(totalCount);
