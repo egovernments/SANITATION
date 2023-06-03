@@ -255,6 +255,7 @@ const VendorDetails = (props) => {
         }, 5000);
       },
     });
+    setShowPopUp(null);
   };
 
   const renderModalContent = () => {
