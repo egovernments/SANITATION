@@ -339,7 +339,7 @@ const ApplicationDetails = (props) => {
               onClose={closeToast}
             />
           )}
-          {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length === 1 && (
+          {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length === 1 && workflowDetails?.data?.nextActions?.[0]?.action !== "RATE" && (
             <ActionBar style={{ zIndex: "19" }}>
               <SubmitBar
                 label={t(`ES_FSM_${workflowDetails?.data?.nextActions[0].action}`)}

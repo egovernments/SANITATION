@@ -1698,22 +1698,32 @@ input::-webkit-calendar-picker-indicator {
 .fsm-citizen-wrapper .card {
   margin-bottom: 24px; }
 
+.primary-label-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+@media screen and (max-width: 768px) {
+  .card .card-sub-header {
+    font-size: 24px;
+    margin-bottom: 16px; } }
+
 .fsm-citizen-rating-wrapper .card-label {
   margin-bottom: 20px; }
 
 .fsm-citizen-rating-wrapper .custom-checkbox {
-  width: 30px;
-  height: 30px; }
+  width: 24px;
+  height: 24px; }
 
 .fsm-citizen-rating-wrapper .checkbox-wrap input {
-  width: 30px;
-  height: 30px; }
+  width: 24px;
+  height: 24px; }
 
 .fsm-citizen-rating-wrapper .checkbox-wrap .label {
   padding-top: 5px !important;
   margin-left: 45px; }
 
-.primary-label-btn {
+.fsm-citizen-rating-wrapper .primary-label-btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
