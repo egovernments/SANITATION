@@ -1,18 +1,18 @@
-@import "tailwindcss/base";
+@import 'tailwindcss/base';
 
-@import "tailwindcss/components";
+@import 'tailwindcss/components';
 
-@import "tailwindcss/utilities";
+@import 'tailwindcss/utilities';
 
-@import "react-date-range/dist/styles.css";
-@import "react-date-range/dist/theme/default.css";
+@import 'react-date-range/dist/styles.css';
+@import 'react-date-range/dist/theme/default.css';
 
-@import "./components/card.scss";
-@import "./components/toggleSwitch.scss";
-@import "./components/plusMinus.scss";
-@import "./components/table.scss";
-@import "./pages/employee/index.scss";
-@import "./pages/employee/login.scss";
+@import './components/card.scss';
+@import './components/toggleSwitch.scss';
+@import './components/plusMinus.scss';
+@import './components/table.scss';
+@import './pages/employee/index.scss';
+@import './pages/employee/login.scss';
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
@@ -103,7 +103,7 @@ input::-webkit-calendar-picker-indicator {
   }
 }
 
-.fsm-citizen-rating-wrapper{
+.fsm-citizen-rating-wrapper {
   .card-label {
     margin-bottom: 20px;
   }
@@ -122,7 +122,27 @@ input::-webkit-calendar-picker-indicator {
     }
   }
 
-.primary-label-btn{
-  display: flex;  
+  .primary-label-btn {
+    display: flex;
+  }
 }
+.radio-wrap {
+  .radio-btn {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .radio-btn-checkmark {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .radio-btn-checkmark::after {
+    width: 0.75rem !important;
+    height: 0.75rem !important;
+    top: 6px !important;
+    left: 6px !important;
+  }
+}
+.radio-wrap div {
+  display: flex;
+  align-items: center;
 }

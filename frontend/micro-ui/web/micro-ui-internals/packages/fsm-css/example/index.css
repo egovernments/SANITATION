@@ -105,6 +105,13 @@ textarea {
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
   height: auto; }
 
+[type=search] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px; }
+
+[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
 details {
   display: block; }
 
@@ -1727,3 +1734,21 @@ input::-webkit-calendar-picker-indicator {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
+
+.radio-wrap .radio-btn, .radio-wrap .radio-btn-checkmark {
+  width: 1.5rem;
+  height: 1.5rem; }
+
+.radio-wrap .radio-btn-checkmark:after {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+  top: 6px !important;
+  left: 6px !important; }
+
+.radio-wrap div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
