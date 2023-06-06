@@ -146,3 +146,15 @@ input::-webkit-calendar-picker-indicator {
   display: flex;
   align-items: center;
 }
+
+.gender-label-row {
+  display: flex;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  h2 {
+    width: 50%;
+  }
+  .value {
+    width: 50%;
+  }
+}

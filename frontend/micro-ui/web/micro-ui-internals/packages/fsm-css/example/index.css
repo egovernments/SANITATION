@@ -1746,9 +1746,19 @@ input::-webkit-calendar-picker-indicator {
   left: 6px !important; }
 
 .radio-wrap div {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center; }
+
+.gender-label-row, .radio-wrap div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.gender-label-row {
+  padding-bottom: 8px;
+  margin-bottom: 8px; }
+  .gender-label-row h2 {
+    width: 50%; }
+  .gender-label-row .value {
+    width: 50%; }
