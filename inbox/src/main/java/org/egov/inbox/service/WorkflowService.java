@@ -112,7 +112,7 @@ public class WorkflowService {
                         || (!ObjectUtils.isEmpty(criteria.getModuleName()) && 
                         		criteria.getModuleName().equalsIgnoreCase(BpaConstants.BPA) && !roles.contains(BpaConstants.CITIZEN)))
                     url = this.buildWorkflowUrl(criteria, url, Boolean.FALSE);
-                if (requestInfo.getUserInfo().getRoles().get(0).getCode().equals(FSMConstants.FSM_DSO)) {
+                if (roles.contains(FSMConstants.FSM_DSO)) {
                     url.append("&assignee=").append(requestInfo.getUserInfo().getUuid());
                 }
                 
