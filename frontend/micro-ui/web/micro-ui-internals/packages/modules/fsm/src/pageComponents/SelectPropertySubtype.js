@@ -64,7 +64,7 @@ const SelectPropertySubtype = ({ config, onSelect, t, userType, formData }) => {
   } else {
     return (
       <React.Fragment>
-        <Timeline currentStep={1} flow="APPLY" />
+        <Timeline currentStep={1} flow="APPLY" cardStyle={{whiteSpace:"nowrap"}} />
         <FormStep config={config} onSelect={goNext} isDisabled={!subtype} t={t}>
           <CardLabel>{`${t("CS_FILE_APPLICATION_PROPERTY_SUBTYPE_LABEL")} *`}</CardLabel>
           <RadioOrSelect options={subtypeOptions} selectedOption={subtype} optionKey="i18nKey" onSelect={selectedValue} t={t} />

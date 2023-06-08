@@ -1762,3 +1762,6 @@ input::-webkit-calendar-picker-indicator {
     width: 50%; }
   .gender-label-row .value {
     width: 50%; }
+
+.info-banner-wrap h2 {
+  color: #0b0c0c; }
