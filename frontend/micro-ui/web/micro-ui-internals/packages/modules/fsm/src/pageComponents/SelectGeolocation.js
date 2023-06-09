@@ -26,7 +26,9 @@ const SelectGeolocation = ({ t, config, onSelect, formData = {} }) => {
     <React.Fragment>
       <Timeline currentStep={1} flow="APPLY" />
       <LocationSearchCard
-        header={t("CS_ADDCOMPLAINT_SELECT_GEOLOCATION_HEADER")}
+        header={ <div style={{ marginLeft: "5px" }}>
+        {t("CS_ADDCOMPLAINT_SELECT_GEOLOCATION_HEADER")}
+      </div>}
         cardText={t("CS_ADDCOMPLAINT_SELECT_GEOLOCATION_TEXT")}
         nextText={t("CS_COMMON_NEXT")}
         skipAndContinueText={t("CORE_COMMON_SKIP_CONTINUE")}
@@ -37,6 +39,7 @@ const SelectGeolocation = ({ t, config, onSelect, formData = {} }) => {
         onChange={(code, location) => onChange(code, location)}
         disabled={pincode === ""}
         forcedError={t(pincodeServicability)}
+        
       />
     </React.Fragment>
   );

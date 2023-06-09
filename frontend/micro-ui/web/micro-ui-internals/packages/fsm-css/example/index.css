@@ -105,6 +105,13 @@ textarea {
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
   height: auto; }
 
+[type=search] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px; }
+
+[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
 details {
   display: block; }
 
@@ -1727,3 +1734,67 @@ input::-webkit-calendar-picker-indicator {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
+
+.radio-wrap .radio-btn, .radio-wrap .radio-btn-checkmark {
+  width: 1.5rem;
+  height: 1.5rem; }
+
+.radio-wrap .radio-btn-checkmark:after {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+  top: 6px !important;
+  left: 6px !important; }
+
+.radio-wrap div {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
+
+.gender-label-row, .radio-wrap div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.gender-label-row {
+  padding-bottom: 8px;
+  margin-bottom: 8px; }
+  .gender-label-row h2 {
+    width: 50%; }
+  .gender-label-row .value {
+    width: 50%; }
+
+.info-banner-wrap h2 {
+  color: #0b0c0c; }
+
+.multi-upload-wrap div .delete {
+  border-radius: unset;
+  top: 0;
+  right: 0; }
+
+.stepper-gender-wrap {
+  border-bottom-width: 2px;
+  border-color: #d6d5d4;
+  margin-bottom: 16px; }
+  .stepper-gender-wrap h2 {
+    margin-bottom: 16px; }
+
+.fsm-citizen-payment-label-wrapper {
+  border-bottom-width: 2px;
+  margin-bottom: 16px;
+  border-color: #d6d5d4; }
+  .fsm-citizen-payment-label-wrapper .key-note-pair {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+    .fsm-citizen-payment-label-wrapper .key-note-pair h3 {
+      width: 40%;
+      word-break: break-all; }
+
+.fsm-citizen-property-subtype-container .card-header {
+  white-space: nowrap; }
+
+.citizen-payment-error {
+  margin-bottom: 16px; }
+
+.fsm-payment-logo {
+  padding-right: 10px; }
