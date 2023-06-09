@@ -35,6 +35,11 @@ const SelectPaymentPreference = ({
       validation: {
         isRequired: true,
       },
+      componentInFront: (
+        <div className='citizen-card-input citizen-card-input--front fsm-payment-logo'>
+          ₹
+        </div>
+      ),
       disable: MinAmount === totalAmount ? true : false,
       default: formData?.selectPaymentPreference?.advanceAmount,
       isMandatory: true,
@@ -125,7 +130,7 @@ const SelectPaymentPreference = ({
 
   return (
     <React.Fragment>
-      <Timeline currentStep={2} flow='APPLY' />
+      <Timeline currentStep={3} flow='APPLY' />
       <FormStep
         config={config}
         onSelect={onSubmit}
@@ -135,8 +140,11 @@ const SelectPaymentPreference = ({
         }
         t={t}
       >
-        <KeyNote keyValue={t('ADV_TOTAL_AMOUNT') + ' (₹)'} note={max} />
-        <KeyNote keyValue={t('FSM_ADV_MIN_PAY') + ' (₹)'} note={min} />
+        <div className='fsm-citizen-payment-label-wrapper'>
+          <KeyNote keyValue={t('ADV_TOTAL_AMOUNT') + ' (₹)'} note={max} />
+          <KeyNote keyValue={t('FSM_ADV_MIN_PAY') + ' (₹)'} note={min} />
+        </div>
+
         {inputs?.map((input, index) => {
           return (
             <React.Fragment key={index}>
@@ -145,7 +153,8 @@ const SelectPaymentPreference = ({
                   {t(input.label) + ' (₹)'}
                   {input.isMandatory ? ' * ' : null}
                 </CardLabel>
-                <div>
+                <div className='field' style={{ display: 'flex' }}>
+                  {input.componentInFront ? input.componentInFront : null}
                   <TextInput
                     type={input.type}
                     key={input.name}
@@ -154,31 +163,31 @@ const SelectPaymentPreference = ({
                     value={advanceAmount}
                     {...input.validation}
                   />
-                  {currentValue > max && (
-                    <CardLabelError
-                      style={{
-                        width: '100%',
-                        marginTop: '-15px',
-                        fontSize: '14px',
-                        marginBottom: '0px',
-                      }}
-                    >
-                      {t('FSM_ADVANCE_AMOUNT_MAX')}
-                    </CardLabelError>
-                  )}
-                  {currentValue < min && (
-                    <CardLabelError
-                      style={{
-                        width: '100%',
-                        marginTop: '-15px',
-                        fontSize: '14px',
-                        marginBottom: '0px',
-                      }}
-                    >
-                      {t('FSM_ADVANCE_AMOUNT_MIN')}
-                    </CardLabelError>
-                  )}
                 </div>
+                {currentValue > max && (
+                  <CardLabelError
+                    style={{
+                      width: '100%',
+                      marginTop: '-15px',
+                      fontSize: '14px',
+                      marginBottom: '0px',
+                    }}
+                  >
+                    {t('FSM_ADVANCE_AMOUNT_MAX')}
+                  </CardLabelError>
+                )}
+                {currentValue < min && (
+                  <CardLabelError
+                    style={{
+                      width: '100%',
+                      marginTop: '-15px',
+                      fontSize: '14px',
+                      marginBottom: '0px',
+                    }}
+                  >
+                    {t('FSM_ADVANCE_AMOUNT_MIN')}
+                  </CardLabelError>
+                )}
               </LabelFieldPair>
             </React.Fragment>
           );

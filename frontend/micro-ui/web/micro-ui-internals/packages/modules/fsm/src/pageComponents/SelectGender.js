@@ -20,7 +20,6 @@ const SelectGender = ({ config, onSelect, t, userType, formData }) => {
   );
   const [genderType, setGenderType] = useState(formData?.genderType);
   const userInfo = Digit.UserService.getUser().info;
-  console.log('++', userInfo);
 
   useEffect(() => {
     if (!isLoading && GenderData) {
@@ -48,7 +47,6 @@ const SelectGender = ({ config, onSelect, t, userType, formData }) => {
   const onSubmit = () => {
     onSelect(config.key, genderType);
   };
-  console.log('gender', config);
 
   if (isLoading) {
     return <Loader />;
@@ -80,7 +78,7 @@ const SelectGender = ({ config, onSelect, t, userType, formData }) => {
         isDisabled={!genderType}
         t={t}
       >
-        <div>
+        <div className='stepper-gender-wrap'>
           <Row
             label={t('CS_NAME')}
             text={t(userInfo.name)}
@@ -92,8 +90,7 @@ const SelectGender = ({ config, onSelect, t, userType, formData }) => {
             className='gender-label-row'
           />
         </div>
-
-        <hr />
+        <CardLabel>{`${t('CS_COMMON_CHOOSE_GENDER')}`}</CardLabel>
         <RadioOrSelect
           name='gender'
           options={GenderData}

@@ -14,7 +14,7 @@ const getAction = (flow) => {
       actions = [
         'FSM_TIMELINE_PROPERTY_DETAILS',
         'FSM_GENDER_DETAILS',
-        'FSM_PAYMENT_DETAILS',
+        'FSM_SERVICE_DELIVERY_DETAILS',
         'FSM_TIMELINE_SUMMARY',
       ];
       break;

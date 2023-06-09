@@ -106,9 +106,9 @@ const FileComplaint = ({ parentRoute }) => {
   });
 
   configs = [...config];
-  configs.indexRoute = 'select-trip-number';
 
-  console.log('configg', configs);
+  configs.indexRoute = 'property-type';
+
 
   return (
     <Switch>

@@ -160,5 +160,45 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .info-banner-wrap h2 {
-  color: #0B0C0C;
+  color: #0b0c0c;
+}
+.multi-upload-wrap div .delete {
+  border-radius: unset;
+  top: 0;
+  right: 0;
+}
+.stepper-gender-wrap {
+  border-bottom-width: 2px;
+  border-color: #d6d5d4;
+  margin-bottom: 16px;
+  h2 {
+    margin-bottom: 16px;
+  }
+}
+
+.fsm-citizen-payment-label-wrapper {
+  border-bottom-width: 2px;
+  margin-bottom: 16px;
+  border-color: #d6d5d4;
+  .key-note-pair {
+    display: flex;
+    h3 {
+      width: 40%;
+      word-break: break-all;
+    }
+  }
+}
+
+.fsm-citizen-property-subtype-container {
+  .card-header {
+    white-space: nowrap;
+  }
+}
+
+.citizen-payment-error {
+  margin-bottom: 16px;
+}
+
+.fsm-payment-logo {
+  padding-right: 10px;
 }
