@@ -25,7 +25,7 @@ frontend/micro-ui/web/package.json
 ```
 
 ```json
-"@egovernments/digit-ui-fsm-css":"^0.0.10",
+"@egovernments/digit-ui-fsm-css":"^0.0.11",
 ```
 
 then navigate to App.js
@@ -37,13 +37,14 @@ frontend/micro-ui/web/public/index.html
 ```jsx
 /** add this import **/
 
-  <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-fsm-css@0.0.10/dist/index.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-fsm-css@0.0.11/dist/index.css" />
 
 ```
 
 # Changelog
 
 ```bash
+0.0.11 Fixed navbar header fsm citizen
 0.0.10 Updated radio button,checkbox,label,card,header,erorr field for all fsm citizen
 0.0.9 Rating issue fixed for fsm
 0.0.8 homescreen card issue fixed for fsm
