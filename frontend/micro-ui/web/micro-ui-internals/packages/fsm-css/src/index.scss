@@ -202,3 +202,19 @@ input::-webkit-calendar-picker-indicator {
 .fsm-payment-logo {
   padding-right: 10px;
 }
+
+.navbar {
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  img {
+    width: 80%;
+    object-fit: contain;
+  }
+  h3 {
+    margin-left: unset;
+  }
+}

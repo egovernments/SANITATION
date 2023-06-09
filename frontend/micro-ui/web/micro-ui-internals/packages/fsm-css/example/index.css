@@ -1798,3 +1798,23 @@ input::-webkit-calendar-picker-indicator {
 
 .fsm-payment-logo {
   padding-right: 10px; }
+
+.navbar a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center; }
+
+.navbar img {
+  width: 80%;
+  -o-object-fit: contain;
+  object-fit: contain; }
+
+.navbar h3 {
+  margin-left: unset; }
