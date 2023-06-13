@@ -172,6 +172,7 @@ const componentsToRegister = {
   SelectTrips,
   PlusMinusInput,
   ConfirmationBox,
+  DSSCard:null,  // TO HIDE THE DSS CARD IN HOME SCREEN as per MUKTA
 };
 
 export const initFSMComponents = () => {

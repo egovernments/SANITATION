@@ -139,6 +139,11 @@ const FSMCard = () => {
       label: t('ES_TITILE_SEARCH_APPLICATION'),
       link: `/${window?.contextPath}/employee/fsm/search`,
     },
+    {
+      label: t('CR_COMMON_DASHBOARD_HEADER'),
+      link: `/${window?.contextPath}/employee/dss/dashboard/fsm`,
+      roles: ['FSM_DASHBOARD_VIEWER'],
+    },
   ];
 
   links = links.filter((link) =>
