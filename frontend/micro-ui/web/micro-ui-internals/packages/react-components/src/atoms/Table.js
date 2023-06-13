@@ -204,7 +204,7 @@ const Table = ({
           {`${t('CS_COMMON_ROWS_PER_PAGE')} :`}
           <select
             className='cp'
-            value={pageSize}
+            value={pageSizeLimit}
             style={{ marginRight: '15px' }}
             onChange={
               manualPagination
