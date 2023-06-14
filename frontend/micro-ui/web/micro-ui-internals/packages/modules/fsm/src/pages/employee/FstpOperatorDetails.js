@@ -105,12 +105,13 @@ const FstpOperatorDetails = () => {
     isSuccess: totalsuccess,
     data: totalvehicle,
   } = Digit.Hooks.fsm.useVehicleSearch({ tenantId, totalconfig });
+
   const {
     isLoading,
     isSuccess,
     data: vehicle,
   } = Digit.Hooks.fsm.useVehicleSearch({ tenantId, filters, config });
-  console.log("SHSSH", vehicle)
+
   const {
     isLoading: isSearchLoading,
     isIdle,
@@ -249,8 +250,6 @@ const FstpOperatorDetails = () => {
         action: "DISPOSE",
       },
     };
-
-    console.log("DETAILS", details)
 
     mutation.mutate(details, {
       onSuccess: handleSuccess,
