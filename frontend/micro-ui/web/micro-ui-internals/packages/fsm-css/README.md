@@ -44,6 +44,8 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
+0.0.13 Latest version with no changes
+0.0.12 No changes
 0.0.11 Fixed navbar header fsm citizen
 0.0.10 Updated radio button,checkbox,label,card,header,erorr field for all fsm citizen
 0.0.9 Rating issue fixed for fsm
