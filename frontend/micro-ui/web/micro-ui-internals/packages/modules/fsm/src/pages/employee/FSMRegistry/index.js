@@ -9,7 +9,9 @@ const FSMRegistry = () => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [searchParams, setSearchParams] = useState({});
-  const [sortParams, setSortParams] = useState([{ id: "createdTime", desc: true }]);
+  const [sortParams, setSortParams] = useState([
+    { id: "createdTime", desc: true },
+  ]);
   const [pageOffset, setPageOffset] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [tab, setTab] = useState("VENDOR");
@@ -24,8 +26,19 @@ const FSMRegistry = () => {
 
   const userInfo = Digit.UserService.getUser();
 
-  let paginationParms = { limit: pageSize, offset: pageOffset, sortBy: sortParams?.[0]?.id, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
-  const { data: dsoData, isLoading: isLoading, isSuccess: isDsoSuccess, error: dsoError, refetch } =
+  let paginationParms = {
+    limit: pageSize,
+    offset: pageOffset,
+    sortBy: sortParams?.[0]?.id,
+    sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC",
+  };
+  const {
+    data: dsoData,
+    isLoading: isLoading,
+    isSuccess: isDsoSuccess,
+    error: dsoError,
+    refetch,
+  } =
     selectedTabs === "VEHICLE"
       ? Digit.Hooks.fsm.useVehiclesSearch({
           tenantId,
@@ -78,8 +91,13 @@ const FSMRegistry = () => {
   }, []);
 
   useEffect(() => {
+    setPageOffset(0);
     refetch();
-  }, [searchParams, sortParams, pageOffset, pageSize]);
+  }, [searchParams]);
+
+  useEffect(() => {
+    refetch();
+  }, [sortParams, pageOffset, pageSize]);
 
   useEffect(() => {
     if (dsoData?.vehicle && selectedTabs === "VEHICLE") {
@@ -105,7 +123,9 @@ const FSMRegistry = () => {
         id: dso.id,
         auditDetails: dso.auditDetails,
         drivers: dso.drivers,
-        activeDrivers: dso.drivers?.filter((driver) => driver.status === "ACTIVE"),
+        activeDrivers: dso.drivers?.filter(
+          (driver) => driver.status === "ACTIVE"
+        ),
         allVehicles: dso.vehicles,
         dsoDetails: dso,
         vehicles: dso.vehicles
@@ -132,7 +152,9 @@ const FSMRegistry = () => {
     if (vendorData) {
       if (selectedTabs === "VEHICLE") {
         const vehicles = dsoData?.vehicle.map((data) => {
-          let vendor = vendorData.find((ele) => ele.dsoDetails?.vehicles?.find((vehicle) => vehicle.id === data.id));
+          let vendor = vendorData.find((ele) =>
+            ele.dsoDetails?.vehicles?.find((vehicle) => vehicle.id === data.id)
+          );
           if (vendor) {
             data.vendor = vendor.dsoDetails;
           }
@@ -143,7 +165,9 @@ const FSMRegistry = () => {
       }
       if (selectedTabs === "DRIVER") {
         const drivers = dsoData?.driver.map((data) => {
-          let vendor = vendorData.find((ele) => ele.dsoDetails?.drivers?.find((driver) => driver.id === data.id));
+          let vendor = vendorData.find((ele) =>
+            ele.dsoDetails?.drivers?.find((driver) => driver.id === data.id)
+          );
           if (vendor) {
             data.vendor = vendor.dsoDetails;
           }
@@ -180,9 +204,15 @@ const FSMRegistry = () => {
             label: t("ES_FSM_REGISTRY_SEARCH_VEHICLE_NUMBER"),
             name: "registrationNumber",
             labelChildren: (
-              <div className="tooltip" style={{ paddingLeft: "10px", marginBottom: "-3px" }}>
+              <div
+                className="tooltip"
+                style={{ paddingLeft: "10px", marginBottom: "-3px" }}
+              >
                 <InfoIcon />
-                <span className="tooltiptext" style={{ width: "150px", left: "230%", fontSize: "14px" }}>
+                <span
+                  className="tooltiptext"
+                  style={{ width: "150px", left: "230%", fontSize: "14px" }}
+                >
                   {t("ES_FSM_VEHICLE_FORMAT_TIP")}
                 </span>
               </div>
@@ -210,7 +240,9 @@ const FSMRegistry = () => {
   const onTabChange = (tab) => {
     setTab(tab);
     if (selectedTabs !== tab) {
-      history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=${tab}`);
+      history.push(
+        `/${window?.contextPath}/employee/fsm/registry?selectedTabs=${tab}`
+      );
     }
   };
 
