@@ -80,7 +80,7 @@ import { usePrivacyContext } from './usePrivacyContext';
 import useCustomAPIHook from './useCustomAPIHook';
 import useDynamicData from './useDynamicData';
 import useRouteSubscription from './useRouteSubscription';
-
+import useGenderMDMS from './useGenderMDMS';
 
 const dss = {
   useMDMS: useDssMdms,
@@ -177,6 +177,7 @@ const Hooks = {
   useCustomAPIHook,
   useRouteSubscription,
   useDynamicData,
+  useGenderMDMS,
 };
 
 export default Hooks;
