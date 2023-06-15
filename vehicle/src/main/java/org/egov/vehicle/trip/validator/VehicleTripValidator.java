@@ -78,12 +78,12 @@ public class VehicleTripValidator {
 				vehicleTrip = vehicleTripDetailsValidation(vehicleTrip, request);
 
 			} else {
-
-				if (vehicleTrip.getTripStartTime() <= 0 || vehicleTrip.getTripEndTime() <= 0
-						|| vehicleTrip.getTripStartTime() > vehicleTrip.getTripEndTime()) {
-					throw new CustomException(VehicleTripConstants.INVALID_TRIDETAIL_ERROR,
-							"Trip Start and End Time are invalid: ");
-				}
+				/**
+				 * if (vehicleTrip.getTripStartTime() <= 0 || vehicleTrip.getTripEndTime() <= 0
+				 * || vehicleTrip.getTripStartTime() > vehicleTrip.getTripEndTime()) { throw new
+				 * CustomException(VehicleTripConstants.INVALID_TRIDETAIL_ERROR, "Trip Start and
+				 * End Time are invalid: "); }
+				 */
 
 				if (vehicleTrip.getVolumeCarried() == null || vehicleTrip.getVolumeCarried() <= 0) {
 					throw new CustomException(VehicleTripConstants.INVALID_VOLUME, "Invalid volume carried");
