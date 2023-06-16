@@ -13,7 +13,7 @@ const getAction = (flow) => {
     case 'APPLY':
       actions = [
         'FSM_TIMELINE_PROPERTY_DETAILS',
-        'FSM_GENDER_DETAILS',
+        'CS_FSM_PERSONAL_DETAILS',
         'FSM_SERVICE_DELIVERY_DETAILS',
         'FSM_TIMELINE_SUMMARY',
       ];

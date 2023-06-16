@@ -184,7 +184,7 @@ input::-webkit-calendar-picker-indicator {
     display: flex;
     h3 {
       width: 40%;
-      word-break: break-all;
+      word-break: unset;
     }
   }
 }

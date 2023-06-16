@@ -170,7 +170,6 @@ const FstpOperatorDetails = () => {
           : handleSubmit();
       default:
         setSelectedAction();
-        console.debug("default case");
         break;
     }
   }, [selectedAction]);
