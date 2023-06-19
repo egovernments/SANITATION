@@ -1781,7 +1781,7 @@ input::-webkit-calendar-picker-indicator {
     display: flex; }
     .fsm-citizen-payment-label-wrapper .key-note-pair h3 {
       width: 40%;
-      word-break: break-all; }
+      word-break: unset; }
 
 .fsm-citizen-property-subtype-container .card-header {
   white-space: nowrap; }

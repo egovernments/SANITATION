@@ -55,7 +55,7 @@ const SelectPaymentPreference = ({
   };
 
   const onSubmit = () => {
-    onSelect(config.key, { advanceAmount });
+    onSelect(config.key, { advanceAmount, MinAmount, totalAmount });
   };
 
   useEffect(() => {
