@@ -72,6 +72,9 @@ public class UserService {
 							// found user with mobilenumber and username not same and name as equal to the
 							// applicnat name provided by ui
 							// then consider that user as applicant
+							if (applicant != null && applicant.getGender() != null) {
+								user.setGender(applicant.getGender());
+							}
 							applicant = user;
 							foundUser = Boolean.TRUE;
 							break;
@@ -101,6 +104,9 @@ public class UserService {
 				applicant = applicantDetailResponse.getUser().get(0);
 			}
 
+			if (fsm.getCitizen() != null && fsm.getCitizen().getGender() != null) {
+				applicant.setGender(fsm.getCitizen().getGender());
+			}
 			fsm.setCitizen(applicant);
 
 		} else {
@@ -162,7 +168,6 @@ public class UserService {
 	 * Checks if the user exists in the database
 	 * 
 	 * @param applicant   The applicant from the FSM Application
-	 * @param requestInfo The requestInfo of the request
 	 * @return The search response from the user service
 	 */
 	private UserDetailResponse userExists(User applicant) {
