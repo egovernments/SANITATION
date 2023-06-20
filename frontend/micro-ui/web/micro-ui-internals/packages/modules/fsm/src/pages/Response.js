@@ -328,7 +328,6 @@ const Response = (props) => {
           )}
         </CardText>
 
-        {isCitizen}
         {isSuccess && state?.action !== 'RATE' && (
           // <LinkButton
           //         label={
