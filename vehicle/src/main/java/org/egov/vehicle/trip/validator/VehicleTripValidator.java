@@ -395,17 +395,19 @@ public class VehicleTripValidator {
 		}
 
 		VehicleTripResponse response = vehicleTripRepository.getVehicleLogData(tripSearchCriteria);
+		
+		/** #SM-2688 Removed validation on in and out time for vehicle trip 
+		 * 
+		 * if (response.getVehicleTrip() != null &&
+		 * !CollectionUtils.isEmpty(response.getVehicleTrip())) {
+		 * response.getVehicleTrip().forEach(vehicletrip -> { if
+		 * (requestVehicleTrip.getTripStartTime() <= vehicletrip.getTripEndTime()) {
+		 * throw new CustomException(VehicleTripConstants.INVALID_TRIDETAIL_ERROR,
+		 * "Current Trip Start time: " + requestVehicleTrip.getTripStartTime() + "should
+		 * be after the previous trip end time : " +
+		 * requestVehicleTrip.getTripEndTime()); } }); }
+		 */
 
-		if (response.getVehicleTrip() != null && !CollectionUtils.isEmpty(response.getVehicleTrip())) {
-			response.getVehicleTrip().forEach(vehicletrip -> {
-				if (requestVehicleTrip.getTripStartTime() <= vehicletrip.getTripEndTime()) {
-					throw new CustomException(VehicleTripConstants.INVALID_TRIDETAIL_ERROR,
-							"Current Trip Start time: " + requestVehicleTrip.getTripStartTime()
-									+ "should be after the previous trip end time : "
-									+ requestVehicleTrip.getTripEndTime());
-				}
-			});
-		}
 	}
 
 	public void validateSearch(VehicleTripSearchCriteria criteria) {
