@@ -273,7 +273,7 @@ public class VehicleTripValidator {
 			throw new CustomException(VehicleTripConstants.INVALID_TRIP_ENDTIME, "Invalid Trip end time");
 		}
 
-		validateTripInOutTime(vehicleTrip, vehicleTrip.getTripDetails().get(0));
+//		validateTripInOutTime(vehicleTrip, vehicleTrip.getTripDetails().get(0));
 
 		if (VehicleTripConstants.FSM_VEHICLE_TRIP_BUSINESSSERVICE.equalsIgnoreCase(vehicleTrip.getBusinessService())) {
 			PlantMapping plantMapping = vehicleTripFSMService.getPlantMapping(request.getRequestInfo(),
@@ -361,11 +361,14 @@ public class VehicleTripValidator {
 	}
 
 	private void validateStartTimeVolume(VehicleTripDetail tripDetail) {
-		if (tripDetail.getItemStartTime() <= 0 || tripDetail.getItemEndTime() <= 0
-				|| tripDetail.getItemStartTime() > tripDetail.getItemEndTime()) {
-			throw new CustomException(VehicleTripConstants.INVALID_TRIDETAIL_ERROR,
-					"trip Start and End Time are invalid for tripDetails referenceNo: " + tripDetail.getReferenceNo());
-		}
+		
+		/*#SM-2688 Removed validation on in and out time for vehicle trip
+		 * if (tripDetail.getItemStartTime() <= 0 || tripDetail.getItemEndTime() <= 0 ||
+		 * tripDetail.getItemStartTime() > tripDetail.getItemEndTime()) { throw new
+		 * CustomException(VehicleTripConstants.INVALID_TRIDETAIL_ERROR,
+		 * "trip Start and End Time are invalid for tripDetails referenceNo: " +
+		 * tripDetail.getReferenceNo()); }
+		 */
 
 		if (tripDetail.getVolume() == null || tripDetail.getVolume() <= 0) {
 			throw new CustomException(VehicleTripConstants.INVALID_TRIDETAIL_ERROR,
@@ -395,17 +398,19 @@ public class VehicleTripValidator {
 		}
 
 		VehicleTripResponse response = vehicleTripRepository.getVehicleLogData(tripSearchCriteria);
+		
+		/** #SM-2688 Removed validation on in and out time for vehicle trip 
+		 * 
+		 * if (response.getVehicleTrip() != null &&
+		 * !CollectionUtils.isEmpty(response.getVehicleTrip())) {
+		 * response.getVehicleTrip().forEach(vehicletrip -> { if
+		 * (requestVehicleTrip.getTripStartTime() <= vehicletrip.getTripEndTime()) {
+		 * throw new CustomException(VehicleTripConstants.INVALID_TRIDETAIL_ERROR,
+		 * "Current Trip Start time: " + requestVehicleTrip.getTripStartTime() + "should
+		 * be after the previous trip end time : " +
+		 * requestVehicleTrip.getTripEndTime()); } }); }
+		 */
 
-		if (response.getVehicleTrip() != null && !CollectionUtils.isEmpty(response.getVehicleTrip())) {
-			response.getVehicleTrip().forEach(vehicletrip -> {
-				if (requestVehicleTrip.getTripStartTime() <= vehicletrip.getTripEndTime()) {
-					throw new CustomException(VehicleTripConstants.INVALID_TRIDETAIL_ERROR,
-							"Current Trip Start time: " + requestVehicleTrip.getTripStartTime()
-									+ "should be after the previous trip end time : "
-									+ requestVehicleTrip.getTripEndTime());
-				}
-			});
-		}
 	}
 
 	public void validateSearch(VehicleTripSearchCriteria criteria) {
