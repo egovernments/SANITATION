@@ -170,7 +170,6 @@ const FstpOperatorDetails = () => {
         });
         return;
       }
-      return;
     }
     // if (tripStartTime === null) {
     //   setErrors({ tripStartTime: "ES_FSTP_INVALID_START_TIME" });

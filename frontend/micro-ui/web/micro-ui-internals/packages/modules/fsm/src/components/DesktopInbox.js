@@ -261,7 +261,7 @@ const DesktopInbox = (props) => {
             disableSortBy: true,
             accessor: (row) =>
               row.dsoName
-                ? `${row.dsoName} - ${row.tripOwner.name}`
+                ? `${row.dsoName}`
                 : `${row.tripOwner.name}`,
           },
           {

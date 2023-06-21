@@ -10,7 +10,7 @@ const config = {
       totalCount: response?.totalCount,
       vehicleLog: response?.vehicleTrip.map((trip) => {
         const owner = trip.tripOwner;
-        const displayName = owner.name + (owner.userName ? `- ${owner.userName}` : "");
+        const displayName = owner.name;
         const tripOwner = { ...owner, displayName };
         return { ...trip, tripOwner };
       }),
