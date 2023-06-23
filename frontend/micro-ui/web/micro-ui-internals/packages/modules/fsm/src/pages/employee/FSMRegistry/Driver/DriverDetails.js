@@ -68,7 +68,6 @@ const DriverDetails = (props) => {
   } = Digit.Hooks.fsm.useDriverDetails(
     tenantId,
     { ids: dsoId },
-    { staleTime: Infinity }
   );
 
   const {

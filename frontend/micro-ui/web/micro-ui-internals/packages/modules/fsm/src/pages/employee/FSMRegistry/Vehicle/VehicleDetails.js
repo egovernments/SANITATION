@@ -68,7 +68,6 @@ const VehicleDetails = (props) => {
   } = Digit.Hooks.fsm.useVehicleDetails(
     tenantId,
     { registrationNumber: vehicleNumber },
-    { staleTime: Infinity }
   );
 
   useEffect(() => {
