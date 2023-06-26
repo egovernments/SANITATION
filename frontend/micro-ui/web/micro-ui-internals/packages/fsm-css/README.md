@@ -44,7 +44,8 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
-0.0.14 fixed word break 
+0.0.15 Removed selected locality and no result found card extra margin  
+0.0.14 Fixed word break 
 0.0.13 Latest version with no changes
 0.0.12 No changes
 0.0.11 Fixed navbar header fsm citizen
