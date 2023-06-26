@@ -28,12 +28,14 @@
     "dev:fsmlibraries": "cd packages/fsm-libraries && yarn start",
     "dev:components": "cd packages/react-components && yarn start",
     "dev:fsm": "cd packages/modules/fsm && yarn start",
+    "dev:dss": "cd packages/modules/dss && yarn start",
     "dev:example": "cd example && yarn start",
     "build": "run-p build:**",
     "build:libraries": "cd packages/libraries && yarn build",
     "build:fsmlibraries": "cd packages/fsm-libraries && yarn build",
     "build:components": "cd packages/react-components && yarn build",
     "build:fsm": "cd packages/modules/fsm && yarn build",
+    "build:dss": "cd packages/modules/dss && yarn build",
     "deploy:jenkins": "./scripts/jenkins.sh"
   },
   "devDependencies": {
