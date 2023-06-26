@@ -136,6 +136,7 @@ const Filter = ({
                   selectLocality={selectLocality}
                   tenantId={tenantId}
                   boundaryType='revenue'
+                  className="margin-unset"
                 />
                 <div className='tag-container'>
                   {searchParams?.locality.map((locality, index) => {

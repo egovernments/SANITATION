@@ -1812,8 +1812,5 @@ input::-webkit-calendar-picker-indicator {
 .navbar h3 {
   margin-left: unset; }
 
-.tag-container .tag {
-  margin-top: unset; }
-
-.margin-unser {
+.margin-unset {
   margin: unset !important; }
