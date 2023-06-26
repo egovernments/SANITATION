@@ -348,7 +348,7 @@ const DesktopInbox = (props) => {
     result = <Loader />;
   } else if (props?.data?.table?.length === 0) {
     result = (
-      <Card style={{ marginTop: 20 }}>
+      <Card className="margin-unset">
         {/* TODO Change localization key */}
         {
           // t("CS_MYCOMPLAINTS_NO_COMPLAINTS")
