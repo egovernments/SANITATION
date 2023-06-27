@@ -162,6 +162,7 @@ const SelectPaymentPreference = ({
                     onChange={(e) => setAdvanceAmountValue(e.target.value)}
                     value={advanceAmount}
                     {...input.validation}
+                    style={currentValue > max || currentValue < min ? {borderColor: "red"} : {}}
                   />
                 </div>
                 {currentValue > max && (
@@ -170,7 +171,7 @@ const SelectPaymentPreference = ({
                       width: '100%',
                       marginTop: '-15px',
                       fontSize: '14px',
-                      marginBottom: '0px',
+                      marginBottom: '10px',
                     }}
                   >
                     {t('FSM_ADVANCE_AMOUNT_MAX')}
@@ -182,7 +183,7 @@ const SelectPaymentPreference = ({
                       width: '100%',
                       marginTop: '-15px',
                       fontSize: '14px',
-                      marginBottom: '0px',
+                      marginBottom: '10px',
                     }}
                   >
                     {t('FSM_ADVANCE_AMOUNT_MIN')}

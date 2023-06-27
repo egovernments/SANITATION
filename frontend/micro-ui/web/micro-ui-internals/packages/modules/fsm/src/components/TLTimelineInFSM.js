@@ -50,7 +50,7 @@ const Timeline = ({ currentStep = 1, flow = '' }) => {
       const propertyToUrlMap = {
         propertyType: `/${window?.contextPath}/citizen/fsm/new-application/property-type`,
         selectGender: `/${window?.contextPath}/citizen/fsm/new-application/select-gender`,
-        selectPaymentPreference: `/${window?.contextPath}/citizen/fsm/new-application/select-payment-preference`,
+        selectPaymentPreference: `/${window?.contextPath}/citizen/fsm/new-application/select-trip-number`,
       };
       const properties = Object.keys(propertyToUrlMap);
       const propertyName = properties[index];
