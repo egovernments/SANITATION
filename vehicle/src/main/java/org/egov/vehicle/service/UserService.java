@@ -68,23 +68,26 @@ public class UserService {
 		if (owner != null) {
 			userDetailResponse = userExists(owner);
 
-//			if (userDetailResponse != null && !CollectionUtils.isEmpty(userDetailResponse.getUser())) {
-//				owner = userDetailResponse.getUser().get(0);
-////				Integer count = repository.getVehicleCount(vehicleRequest, "ACTIVE");
-//
-////				for (int i = 0; i < userDetailResponse.getUser().size(); i++) {
-////					if (count > 0
-////							&& vehicleRequest.getVehicle().getOwner().getMobileNumber()
-////									.equals(userDetailResponse.getUser().get(i).getMobileNumber())
-////							&& !userDetailResponse.getUser().get(i).getUuid()
-////									.equals(vehicleRequest.getVehicle().getOwner().getUuid())) {
-////
-////						throw new CustomException(VehicleErrorConstants.ALREADY_DRIVER_EXIST,
-////								VehicleErrorConstants.VEHICLE_ERROR_MESSAGE);
-////
-////					}
-////				}
-//			}
+			/*
+			 * # SM-2729 Remove mobile number validation for vehicle creation
+			 * 
+			 * if (userDetailResponse != null &&
+			 * !CollectionUtils.isEmpty(userDetailResponse.getUser())) { owner =
+			 * userDetailResponse.getUser().get(0); Integer count =
+			 * repository.getVehicleCount(vehicleRequest, "ACTIVE");
+			 * 
+			 * for (int i = 0; i < userDetailResponse.getUser().size(); i++) { if (count > 0
+			 * && vehicleRequest.getVehicle().getOwner().getMobileNumber()
+			 * .equals(userDetailResponse.getUser().get(i).getMobileNumber()) &&
+			 * !userDetailResponse.getUser().get(i).getUuid()
+			 * .equals(vehicleRequest.getVehicle().getOwner().getUuid())) {
+			 * 
+			 * throw new CustomException(VehicleErrorConstants.ALREADY_DRIVER_EXIST,
+			 * VehicleErrorConstants.VEHICLE_ERROR_MESSAGE);
+			 * 
+			 * } } }
+			 */
+
 			if (!isUpdate) {
 				if (userDetailResponse != null && !CollectionUtils.isEmpty(userDetailResponse.getUser())) {
 					owner = userDetailResponse.getUser().get(0);
