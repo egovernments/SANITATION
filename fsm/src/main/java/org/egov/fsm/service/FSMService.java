@@ -1,5 +1,6 @@
 package org.egov.fsm.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -7,6 +8,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.TimeZone;
 import java.util.function.Function;
@@ -125,11 +127,10 @@ public class FSMService {
 		wfIntegrator.callWorkFlow(fsmRequest);
 		repository.save(fsmRequest);
 
-		if (fsmRequest.getFsm().getPaymentPreference() != null
-				&& FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
-						.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
-				|| fsmRequest.getFsm().getAdvanceAmount() != null
-						&& fsmRequest.getFsm().getAdvanceAmount().intValue() > 0) {
+		Double tripAmount = wfIntegrator.getAdditionalDetails(fsmRequest.getFsm().getAdditionalDetails());
+
+		if ((fsmRequest.getFsm().getAdvanceAmount() != null && fsmRequest.getFsm().getAdvanceAmount().intValue() > 0)
+				|| tripAmount > 0) {
 			calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
 		}
 
@@ -167,17 +168,20 @@ public class FSMService {
 		List<FSM> fsms = fsmResponse.getFsm();
 
 		String businessServiceName = null;
-		
+
+		Double tripAmount = wfIntegrator.getAdditionalDetails(fsm.getAdditionalDetails());
+
 		if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
 			businessServiceName = FSMConstants.FSM_POST_PAY_BUSINESSSERVICE;
-		else if (FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
+		else if (FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
+				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
 			businessServiceName = FSMConstants.FSM_BUSINESSSERVICE;
-		else if (fsm.getAdvanceAmount() == null && fsm.getPaymentPreference()==null)
+		else if (fsm.getAdvanceAmount() == null && fsm.getPaymentPreference() == null && tripAmount <= 0)
 			businessServiceName = FSMConstants.FSM_ZERO_PRICE_SERVICE;
-		else if (fsm.getAdvanceAmount().intValue() == 0)
-			businessServiceName = FSMConstants.FSM_LATER_PAY_SERVICE;
-		else if (fsm.getAdvanceAmount().intValue() > 0)
+		else if (fsm.getAdvanceAmount() != null && fsm.getAdvanceAmount().intValue() > 0)
 			businessServiceName = FSMConstants.FSM_ADVANCE_PAY_BUSINESSSERVICE;
+		else
+			businessServiceName = FSMConstants.FSM_LATER_PAY_SERVICE;
 
 		BusinessService businessService = workflowService.getBusinessService(fsm, fsmRequest.getRequestInfo(),
 				businessServiceName, null);
@@ -222,7 +226,10 @@ public class FSMService {
 
 	private void callApplicationAndAssignDsoAndAccept(FSMRequest fsmRequest, FSM oldFSM) {
 
-		if (fsmRequest.getFsm().getAdvanceAmount()!=null && fsmRequest.getFsm().getAdvanceAmount().intValue()>0
+		Double tripAmount = wfIntegrator.getAdditionalDetails(fsmRequest.getFsm().getAdditionalDetails());
+
+		if (((fsmRequest.getFsm().getAdvanceAmount() != null && fsmRequest.getFsm().getAdvanceAmount().intValue() > 0)
+				|| tripAmount > 0)
 				&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SUBMIT)) {
 			handleApplicationSubmit(fsmRequest);
 		}
@@ -236,8 +243,6 @@ public class FSMService {
 				|| fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SCHEDULE)
 				|| fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)) {
 			handleDSOAccept(fsmRequest, oldFSM);
-			
-			log.debug("called :callApplicationAndAssignDsoAndAccept");
 		}
 	}
 
@@ -308,8 +313,6 @@ public class FSMService {
 
 		validateDSOVehicle(fsm, vendor, fsmRequest);
 		callVehicleTripService(fsmRequest, fsm, oldFSM);
-		
-		
 
 	}
 
@@ -349,13 +352,13 @@ public class FSMService {
 				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())
 				&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SCHEDULE)) {
 			calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
-
 			vehicleTripService.scheduleVehicleTrip(fsmRequest, oldFSM);
 
 		}
-		else if (fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)) {
+		if (fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)) {
+			Double tripAmount = wfIntegrator.getAdditionalDetails(fsmRequest.getFsm().getAdditionalDetails());
 
-			if (fsmRequest.getFsm().getAdvanceAmount() != null) {
+			if (fsmRequest.getFsm().getAdvanceAmount() != null || tripAmount > 0) {
 				calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
 			}
 
@@ -412,23 +415,26 @@ public class FSMService {
 
 		fsmRequest.getWorkflow().setAssignes(uuidList);
 
-		/*
-		 * commenting for SM-2181
-		 * if (fsmRequest.getFsm().getPaymentPreference() != null
-		 * && !(FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
+		/**
+		 * SM-2181
+		 *
+		 *
+		 * if (fsmRequest.getFsm().getPaymentPreference() != null &&
+		 * !(FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
 		 * .equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())) &&
 		 * fsmRequest.getFsm().getAdvanceAmount() == null) {
 		 * vehicleTripService.vehicleTripReadyForDisposal(fsmRequest);
-		 * 
+		 *
 		 * } else
 		 */
 
 		vehicleTripService.updateVehicleTrip(fsmRequest);
-		
+
 		RequestInfo requestInfo = fsmRequest.getRequestInfo();
 		BillResponse billResponse = billingService.fetchBill(fsm, requestInfo);
 		log.info("BillResponse from Service", billResponse);
-		if (billResponse != null && !billResponse.getBill().isEmpty()) {
+		if (billResponse != null && (!billResponse.getBill().isEmpty()
+				&& billResponse.getBill().get(0).getTotalAmount().compareTo(new BigDecimal(0)) > 0)) {
 			throw new CustomException(FSMErrorConstants.BILL_IS_PENDING,
 					" Can not close the application since bill amount is pending.");
 		}
@@ -548,7 +554,8 @@ public class FSMService {
 
 			dsoService.getVendor(vendorSearchCriteria, requestInfo);
 
-		} 
+		}
+		// SM-1981 My Application list fixed for DSO number
 		if (criteria.tenantIdOnly()) {
 			criteria.setMobileNumber(requestInfo.getUserInfo().getMobileNumber());
 		}
