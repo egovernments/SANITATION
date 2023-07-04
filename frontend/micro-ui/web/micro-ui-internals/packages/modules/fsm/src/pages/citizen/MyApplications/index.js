@@ -12,13 +12,12 @@ export const MyApplications = () => {
     isLoading,
     isError,
     error,
-    data: { data: { table: applicationsList } = {} } = {},
+    data: { data: { table: applicationsList } = {},totalCount } = {},
   } = Digit.Hooks.fsm.useSearchAll(tenantId, {
     uuid: userInfo.uuid,
     limit: 100,
   });
 
-  const totalCounts = applicationsList?.length;
 
   if (isLoading) {
     return <Loader />;
@@ -27,16 +26,16 @@ export const MyApplications = () => {
   return (
     <React.Fragment>
       <Header>
-        {t('CS_FSM_APPLICATION_TITLE_MY_APPLICATION')} ({totalCounts})
+        {t('CS_FSM_APPLICATION_TITLE_MY_APPLICATION')} ({totalCount})
       </Header>
       <div>
-        {totalCounts > 0 &&
+        {totalCount > 0 &&
           applicationsList.map((application, index) => (
             <div key={index}>
               <MyApplication application={application} />
             </div>
           ))}
-        {!totalCounts > 0 && (
+        {!totalCount > 0 && (
           <p style={{ marginLeft: '16px', marginTop: '16px' }}>
             {t('CS_MYAPPLICATIONS_NO_APPLICATION')}
           </p>
