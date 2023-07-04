@@ -38,7 +38,7 @@ const ApplicationDetails = () => {
   const { data: paymentsHistory } = Digit.Hooks.fsm.usePaymentHistory(tenantId, id);
 
   const { isLoading: isWorkflowLoading, data: workflowDetails } = Digit.Hooks.useWorkflowDetails({
-    tenantId: application?.pdfData?.tenantId,
+    tenantId: tenantId,
     id: id,
     moduleCode: "FSM",
   });
