@@ -123,7 +123,7 @@ const FSMCard = () => {
       link: '/employee/report/fsm/FSMDailyDesludingReport',
       hyperlink: true,
       label: t('ES_FSM_VIEW_REPORTS_BUTTON'),
-      roles: ['FSM_ADMIN'],
+      roles: ['FSM_REPORT_VIEWER'],
     },
     {
       label: t('ES_TITLE_FSM_REGISTRY'),
