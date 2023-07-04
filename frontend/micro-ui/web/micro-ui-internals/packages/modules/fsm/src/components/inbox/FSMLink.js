@@ -21,7 +21,7 @@ const FSMLink = ({ parentRoute, isMobile, data }) => {
     {
       text: t("ES_TITLE_REPORTS"),
       link: `/employee/report/fsm/FSMDailyDesludingReport`,
-      roles: ["FSM_ADMIN"],
+      roles: ["FSM_REPORT_VIEWER"],
       hyperlink: true,
     },
   ];
