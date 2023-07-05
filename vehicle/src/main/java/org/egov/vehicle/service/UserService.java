@@ -89,7 +89,7 @@ public class UserService {
 				// users exists with mobile number but non of them have the same Name so create new
 				// user
 				if (notFoundUser) {
-					owner = createVehicleOwner(owner, vehicleRequest.getRequestInfo(), Boolean.FALSE);
+					owner = createVehicleOwner(owner, vehicleRequest.getRequestInfo());
 
 				}
 
@@ -97,7 +97,7 @@ public class UserService {
 				if (!isUpdate) {
 					// User with mobile number itself not found then create new user and consider
 					// the new user as applicant.
-					owner = createVehicleOwner(owner, vehicleRequest.getRequestInfo(), Boolean.TRUE);
+					owner = createVehicleOwner(owner, vehicleRequest.getRequestInfo());
 				} else {
 
 					HashMap<String, String> errorMap = new HashMap<>();
@@ -146,7 +146,7 @@ public class UserService {
 	 * @param requestInfo
 	 * @return
 	 */
-	private User createVehicleOwner(User owner, RequestInfo requestInfo , Boolean newUser) {
+	private User createVehicleOwner(User owner, RequestInfo requestInfo) {
 
 		if (!isUserValid(owner)) {
 			throw new CustomException(VehicleErrorConstants.INVALID_OWNER_ERROR,
@@ -161,13 +161,9 @@ public class UserService {
 		addUserDefaultFields(owner.getTenantId(), null, owner);
 		StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserContextPath())
 				.append(config.getUserCreateEndpoint());
-		
+
 		setUserName(owner);
-		
-		if (newUser) {
-			owner.setUserName(owner.getMobileNumber());
-		}
-			
+
 		owner.setType(Constants.CITIZEN);
 		UserDetailResponse userDetailResponse = userCall(new UserRequest(requestInfo, owner), uri);
 		log.debug("owner created --> " + userDetailResponse.getUser().get(0).getUuid());
