@@ -70,31 +70,25 @@ public class UserService {
 
 			if (userDetailResponse != null && !CollectionUtils.isEmpty(userDetailResponse.getUser()) && !isUpdate) {
 
-				if (!userDetailResponse.getUser().isEmpty()) {
-					Boolean foundUser = Boolean.FALSE;
-					for (int j = 0; j < userDetailResponse.getUser().size(); j++) {
-						User user = userDetailResponse.getUser().get(j);
-						if (!user.getUserName().equalsIgnoreCase(user.getMobileNumber())
-								&& user.getName().equalsIgnoreCase(owner.getName())) {
-							// found user with mobilenumber and username not same and name as equal to the
-							// applicnat name provided by ui
-							// then consider that user as applicant
-							owner = user;
-							foundUser = Boolean.TRUE;
-							break;
-						}
-					}
-					// users exists with mobile number ,non of them have the same userName but having same name then
-					// create new user
-					if (foundUser) {
-						owner = createVehicleOwner(owner, vehicleRequest.getRequestInfo(), Boolean.FALSE);
-//						applicant = applicantDetailResponse.getUser().get(0);
+				Boolean notFoundUser = Boolean.FALSE;
+				for (int j = 0; j < userDetailResponse.getUser().size(); j++) {
+					User user = userDetailResponse.getUser().get(j);
 
-					}
-				} else {
-					// User exists but only one user with the mobile number and username as same, So
-					// create new user
+					if ((user.getUserName().equalsIgnoreCase(user.getMobileNumber())
+							&& user.getName().equalsIgnoreCase(owner.getName()))
+							|| user.getName().equalsIgnoreCase(owner.getName())) {
+						// found user with mobilenumber username not same and name as equal to the
+						// applicnat name provided by ui
+						// then consider that user as applicant
+						owner = user;
+						break;
+					} else
+						notFoundUser = Boolean.TRUE;
 
+				}
+				// users exists with mobile number but non of them have the same Name so create new
+				// user
+				if (notFoundUser) {
 					owner = createVehicleOwner(owner, vehicleRequest.getRequestInfo(), Boolean.FALSE);
 
 				}
@@ -103,7 +97,7 @@ public class UserService {
 				if (!isUpdate) {
 					// User with mobile number itself not found then create new user and consider
 					// the new user as applicant.
-					owner = createVehicleOwner(owner, vehicleRequest.getRequestInfo(),Boolean.TRUE);
+					owner = createVehicleOwner(owner, vehicleRequest.getRequestInfo(), Boolean.TRUE);
 				} else {
 
 					HashMap<String, String> errorMap = new HashMap<>();
