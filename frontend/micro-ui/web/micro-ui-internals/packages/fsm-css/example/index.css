@@ -1703,6 +1703,7 @@ input::-webkit-calendar-picker-indicator {
   border-radius: 4px; }
 
 .fsm-citizen-wrapper .card {
+  padding-bottom: 16px;
   margin-bottom: 24px; }
 
 .fsm-citizen-wrapper .card-text {
@@ -1789,7 +1790,10 @@ input::-webkit-calendar-picker-indicator {
   .fsm-citizen-payment-label-wrapper .key-note-pair {
     display: -webkit-box;
     display: -ms-flexbox;
-    display: flex; }
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between; }
     .fsm-citizen-payment-label-wrapper .key-note-pair h3 {
       width: 40%;
       word-break: unset; }

@@ -182,8 +182,6 @@ const Response = ({ data, onSuccess }) => {
   };
   const isSuccess = !successData ? mutation?.isSuccess : true;
 
-  console.log('++', isSuccess);
-
   return mutation.isLoading || (mutation.isIdle && !mutationHappened) ? (
     <Loader />
   ) : (
