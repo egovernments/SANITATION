@@ -37,7 +37,7 @@ frontend/micro-ui/web/public/index.html
 ```jsx
 /** add this import **/
 
-  <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-fsm-css@0.0.11/dist/index.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-fsm-css@0.0.17/dist/index.css" />
 
 ```
 
