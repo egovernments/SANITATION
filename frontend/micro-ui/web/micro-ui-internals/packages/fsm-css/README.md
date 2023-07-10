@@ -44,6 +44,7 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
+0.0.18 Fixed UI/UX review points   
 0.0.17 Fixed dropdown list view in registry screen    
 0.0.16 Removed extra margin of dropdown from filter and added margin for tag  
 0.0.15 Removed selected locality and no result found card extra margin  
