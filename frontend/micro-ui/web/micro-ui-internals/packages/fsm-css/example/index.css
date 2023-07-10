@@ -1821,3 +1821,9 @@ input::-webkit-calendar-picker-indicator {
 
 .margin-unset {
   margin: unset !important; }
+
+.employee-select-wrap {
+  position: unset; }
+
+.employee-select-wrap .options-card {
+  max-width: 14%; }
