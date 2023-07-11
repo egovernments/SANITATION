@@ -1,18 +1,18 @@
-@import "tailwindcss/base";
+@import 'tailwindcss/base';
 
-@import "tailwindcss/components";
+@import 'tailwindcss/components';
 
-@import "tailwindcss/utilities";
+@import 'tailwindcss/utilities';
 
-@import "react-date-range/dist/styles.css";
-@import "react-date-range/dist/theme/default.css";
+@import 'react-date-range/dist/styles.css';
+@import 'react-date-range/dist/theme/default.css';
 
-@import "./components/card.scss";
-@import "./components/toggleSwitch.scss";
-@import "./components/plusMinus.scss";
-@import "./components/table.scss";
-@import "./pages/employee/index.scss";
-@import "./pages/employee/login.scss";
+@import './components/card.scss';
+@import './components/toggleSwitch.scss';
+@import './components/plusMinus.scss';
+@import './components/table.scss';
+@import './pages/employee/index.scss';
+@import './pages/employee/login.scss';
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
@@ -86,7 +86,11 @@ input::-webkit-calendar-picker-indicator {
 }
 .fsm-citizen-wrapper {
   .card {
+    padding-bottom: 16px;
     margin-bottom: 24px;
+  }
+  .card-text {
+    margin-bottom: 10px;
   }
 }
 
@@ -149,10 +153,11 @@ input::-webkit-calendar-picker-indicator {
 
 .gender-label-row {
   display: flex;
-  padding-bottom: 8px;
-  margin-bottom: 8px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
   h2 {
     width: 50%;
+    font-weight: bold;
   }
   .value {
     width: 50%;
@@ -172,7 +177,7 @@ input::-webkit-calendar-picker-indicator {
   border-color: #d6d5d4;
   margin-bottom: 16px;
   h2 {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 }
 
@@ -182,6 +187,7 @@ input::-webkit-calendar-picker-indicator {
   border-color: #d6d5d4;
   .key-note-pair {
     display: flex;
+    justify-content: space-between;
     h3 {
       width: 40%;
       word-break: unset;
@@ -223,12 +229,19 @@ input::-webkit-calendar-picker-indicator {
   margin: unset !important;
 }
 
-.employee-select-wrap {
-  position: unset;
+.rating-star-wrap {
+  justify-content: center;
 }
 
-.employee-select-wrap .options-card {
-  max-width: 14%;
+.fsm-citizen-reponse-page {
+  padding: 0;
+  .fsm-response-button-wrap {
+    padding: 12px;
+  }
+  p {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 }
 .action-bar-wrap-registry{
   .menu-wrap{

@@ -306,7 +306,7 @@ const Response = (props) => {
   const isSuccess = !successData ? mutation?.isSuccess : true;
   if (isCitizen) {
     return (
-      <Card>
+      <Card className='fsm-citizen-reponse-page'>
         <BannerPicker
           t={t}
           data={Data}
@@ -346,9 +346,9 @@ const Response = (props) => {
           <SubmitBar onSubmit={handleGeneratePdf()} />
         )}
         {ACTIONS.length === 1 ? (
-          <LinkButton
+          <SubmitBar
             label={t(`ES_COMMON_${ACTIONS[0]}`)}
-            onClick={() => onActionSelect(ACTIONS[0])}
+            onSubmit={() => onActionSelect(ACTIONS[0])}
           />
         ) : null}
         <ActionBar>

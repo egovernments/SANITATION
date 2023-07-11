@@ -1,20 +1,24 @@
-import React, { useState } from "react";
-import { LocationSearchCard } from "@egovernments/digit-ui-react-components";
-import Timeline from "../components/TLTimelineInFSM";
+import React, { useState } from 'react';
+import { LocationSearchCard } from '@egovernments/digit-ui-react-components';
+import Timeline from '../components/TLTimelineInFSM';
 
 const SelectGeolocation = ({ t, config, onSelect, formData = {} }) => {
-  const [pincode, setPincode] = useState(formData?.address?.pincode || "");
-  const [geoLocation, setGeoLocation] = useState(formData?.address?.geoLocation || {});
+  const [pincode, setPincode] = useState(formData?.address?.pincode || '');
+  const [geoLocation, setGeoLocation] = useState(
+    formData?.address?.geoLocation || {}
+  );
   const tenants = Digit.Hooks.fsm.useTenants();
   const [pincodeServicability, setPincodeServicability] = useState(null);
 
   const onSkip = () => onSelect();
   const onChange = (code, location) => {
     setPincodeServicability(null);
-    const foundValue = tenants?.find((obj) => obj.pincode?.find((item) => item == code));
+    const foundValue = tenants?.find((obj) =>
+      obj.pincode?.find((item) => item == code)
+    );
     if (!foundValue) {
-      setPincodeServicability("CS_COMMON_PINCODE_NOT_SERVICABLE");
-      setPincode("");
+      setPincodeServicability('CS_COMMON_PINCODE_NOT_SERVICABLE');
+      setPincode('');
       setGeoLocation({});
     } else {
       setPincode(code);
@@ -24,22 +28,23 @@ const SelectGeolocation = ({ t, config, onSelect, formData = {} }) => {
 
   return (
     <React.Fragment>
-      <Timeline currentStep={1} flow="APPLY" />
+      <Timeline currentStep={1} flow='APPLY' />
       <LocationSearchCard
-        header={ <div style={{ marginLeft: "5px" }}>
-        {t("CS_ADDCOMPLAINT_SELECT_GEOLOCATION_HEADER")}
-      </div>}
-        cardText={t("CS_ADDCOMPLAINT_SELECT_GEOLOCATION_TEXT")}
-        nextText={t("CS_COMMON_NEXT")}
-        skipAndContinueText={t("CORE_COMMON_SKIP_CONTINUE")}
+        header={
+          <div style={{ marginLeft: '5px' }}>
+            {t('CS_ADDCOMPLAINT_SELECT_GEOLOCATION_HEADER')}
+          </div>
+        }
+        cardText={t('CS_ADDCOMPLAINT_SELECT_GEOLOCATION_TEXT')}
+        nextText={t('CS_COMMON_NEXT')}
+        skipAndContinueText={t('CORE_COMMON_SKIP_CONTINUE')}
         skip={onSkip}
         t={t}
         position={geoLocation}
         onSave={() => onSelect(config.key, { geoLocation, pincode })}
         onChange={(code, location) => onChange(code, location)}
-        disabled={pincode === ""}
+        disabled={pincode === ''}
         forcedError={t(pincodeServicability)}
-        
       />
     </React.Fragment>
   );
