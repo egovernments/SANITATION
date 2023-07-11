@@ -181,6 +181,14 @@ public class VehicleTripService {
 		log.debug("fsmRequest.getWorkflow().getAction()-->" + fsmRequest.getWorkflow().getAction());
 		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(),
 				remainingNumberOfTrips);
+		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
+		if (!CollectionUtils.isEmpty(vehicleTrips)) {
+			int waitingForDisposal=vehicleTrips.size();
+			if(vehicleTrips.size()<remainingNumberOfTrips);
+			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
+					"Trips are already disposed  So, Decrease is not possible more than:"+ waitingForDisposal +" Trips");
+		}
+		
 		if (vehicleTripDetails != null && !vehicleTripDetails.isEmpty()) {
 			List<VehicleTrip> vehicleTripList = new ArrayList<>();
 			AuditDetails auditDetails = new AuditDetails();
