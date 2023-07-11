@@ -1830,17 +1830,19 @@ input::-webkit-calendar-picker-indicator {
 .margin-unset {
   margin: unset !important; }
 
-.rating-star-wrap {
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center; }
-
+.employee-select-wrap {
+  position: unset; }
 
 .employee-select-wrap .options-card {
   max-width: 14%; }
 
 .action-bar-wrap-registry .menu-wrap {
   position: unset; }
+
+.rating-star-wrap {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
 
 .fsm-citizen-reponse-page {
   padding: 0; }
@@ -1849,4 +1851,3 @@ input::-webkit-calendar-picker-indicator {
   .fsm-citizen-reponse-page p {
     padding-left: 12px;
     padding-right: 12px; }
-
