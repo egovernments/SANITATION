@@ -346,27 +346,31 @@ const Response = (props) => {
           <SubmitBar onSubmit={handleGeneratePdf()} />
         )}
         {ACTIONS.length === 1 ? (
-          <SubmitBar
-            label={t(`ES_COMMON_${ACTIONS[0]}`)}
-            onSubmit={() => onActionSelect(ACTIONS[0])}
-          />
-        ) : null}
-        <ActionBar>
-          {displayMenu ? (
-            <Menu
-              localeKeyPrefix={'ES_COMMON'}
-              options={ACTIONS}
-              t={t}
-              onSelect={onActionSelect}
-            />
-          ) : null}
-          {ACTIONS.length !== 1 ? (
+          <div className='fsm-response-button-wrap'>
             <SubmitBar
-              label={t('ES_COMMON_TAKE_ACTION')}
-              onSubmit={() => setDisplayMenu(!displayMenu)}
+              label={t(`ES_COMMON_${ACTIONS[0]}`)}
+              onSubmit={() => onActionSelect(ACTIONS[0])}
             />
-          ) : null}
-        </ActionBar>
+          </div>
+        ) : null}
+        {ACTIONS.length === 1 ? null : (
+          <ActionBar style={{ bottom: '5px' }}>
+            {displayMenu ? (
+              <Menu
+                localeKeyPrefix={'ES_COMMON'}
+                options={ACTIONS}
+                t={t}
+                onSelect={onActionSelect}
+              />
+            ) : null}
+            {ACTIONS.length !== 1 ? (
+              <SubmitBar
+                label={t('ES_COMMON_TAKE_ACTION')}
+                onSubmit={() => setDisplayMenu(!displayMenu)}
+              />
+            ) : null}
+          </ActionBar>
+        )}
 
         {showToast && (
           <Toast

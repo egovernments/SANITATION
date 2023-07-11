@@ -1851,3 +1851,7 @@ input::-webkit-calendar-picker-indicator {
   .fsm-citizen-reponse-page p {
     padding-left: 12px;
     padding-right: 12px; }
+
+.action-bar-wrap-registry .menu-wrap {
+  position: unset; }
+
