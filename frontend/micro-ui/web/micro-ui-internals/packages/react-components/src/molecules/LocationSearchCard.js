@@ -98,7 +98,6 @@ const LocationSearchCard = ({
         able to pin the location you can skip the continue for next step. */}
           {cardText}
         </CardText>
-
         <LocationSearch
           onChange={
             isPlaceRequired ? onLocationChangewithPlace : onLocationChange
@@ -112,16 +111,17 @@ const LocationSearchCard = ({
       </div>
       {window.location.href.includes(
         'sanitation-ui/citizen/fsm/new-application'
+      ) ? (
+        <ActionBar style={{ bottom: '5px' }}>
+          <SubmitBar label={nextText} onSubmit={onSave} disabled={isDisabled} />
+          {skip && <LinkButton onClick={skip} label={skipAndContinueText} />}
+        </ActionBar>
+      ) : (
+        <React.Fragment>
+          <SubmitBar label={nextText} onSubmit={onSave} disabled={isDisabled} />
+          {skip && <LinkButton onClick={skip} label={skipAndContinueText} />}
+        </React.Fragment>
       )}
-      ?
-      <ActionBar style={{ bottom: '5px' }}>
-        <SubmitBar label={nextText} onSubmit={onSave} disabled={isDisabled} />
-        {skip ? (
-          <LinkButton onClick={skip} label={skipAndContinueText} />
-        ) : null}
-      </ActionBar>
-      :<SubmitBar label={nextText} onSubmit={onSave} disabled={isDisabled} />
-      {skip ? <LinkButton onClick={skip} label={skipAndContinueText} /> : null}
     </Card>
   );
 };
