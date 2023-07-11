@@ -1,18 +1,18 @@
-@import "tailwindcss/base";
+@import 'tailwindcss/base';
 
-@import "tailwindcss/components";
+@import 'tailwindcss/components';
 
-@import "tailwindcss/utilities";
+@import 'tailwindcss/utilities';
 
-@import "react-date-range/dist/styles.css";
-@import "react-date-range/dist/theme/default.css";
+@import 'react-date-range/dist/styles.css';
+@import 'react-date-range/dist/theme/default.css';
 
-@import "./components/card.scss";
-@import "./components/toggleSwitch.scss";
-@import "./components/plusMinus.scss";
-@import "./components/table.scss";
-@import "./pages/employee/index.scss";
-@import "./pages/employee/login.scss";
+@import './components/card.scss';
+@import './components/toggleSwitch.scss';
+@import './components/plusMinus.scss';
+@import './components/table.scss';
+@import './pages/employee/index.scss';
+@import './pages/employee/login.scss';
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
@@ -230,10 +230,12 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .employee-select-wrap {
-  position: unset; }
+  position: unset;
+}
 
 .employee-select-wrap .options-card {
-  max-width: 14%; }
+  max-width: 14%;
+}
 
 .action-bar-wrap-registry {
   .menu-wrap {
@@ -253,5 +255,18 @@ input::-webkit-calendar-picker-indicator {
   p {
     padding-left: 12px;
     padding-right: 12px;
+  }
+}
+
+.check-page-uploaded-images {
+  flex-direction: column;
+  h2 {
+    margin-bottom: 8px;
+  }
+  .value {
+    width: unset !important;
+  }
+  .multi-upload-wrap {
+    margin-bottom: unset;
   }
 }

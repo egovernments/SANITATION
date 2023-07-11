@@ -149,7 +149,7 @@ const CheckPage = ({ onSubmit, value }) => {
           )}
           {pitDetail?.images && (
             <Row
-              className='border-none'
+              className='border-none check-page-uploaded-images'
               label={t('CS_CHECK_SIZE')}
               text={
                 <ViewImages

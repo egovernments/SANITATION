@@ -1852,6 +1852,14 @@ input::-webkit-calendar-picker-indicator {
     padding-left: 12px;
     padding-right: 12px; }
 
-.action-bar-wrap-registry .menu-wrap {
-  position: unset; }
-
+.check-page-uploaded-images {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+  .check-page-uploaded-images h2 {
+    margin-bottom: 8px; }
+  .check-page-uploaded-images .value {
+    width: unset !important; }
+  .check-page-uploaded-images .multi-upload-wrap {
+    margin-bottom: unset; }
