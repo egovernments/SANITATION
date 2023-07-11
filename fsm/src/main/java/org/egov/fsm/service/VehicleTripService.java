@@ -184,8 +184,8 @@ public class VehicleTripService {
 		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(),
 				remainingNumberOfTrips);
 		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
-		if (!CollectionUtils.isEmpty(vehicleTrips)) {
-			if (vehicleTrips.size() < remainingNumberOfTrips)
+		log.debug("Vehicle trips with status waiting for disposal-->" + vehicleTrips);
+		if (vehicleTrips.size() < remainingNumberOfTrips) {
 			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
 					"Trips are already disposed  So, Decrease is not possible more than:" + vehicleTrips.size()
 							+ " Trips");
