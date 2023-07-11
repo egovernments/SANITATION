@@ -183,10 +183,10 @@ public class VehicleTripService {
 //				remainingNumberOfTrips);
 		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
 
-		if (vehicleTrips.size() < remainingNumberOfTrips) {
-			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
-					"Trips are already disposed  So, Decrease is not possible ");
-		}
+//		if (vehicleTrips.size() < remainingNumberOfTrips) {
+//			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
+//					"Trips are already disposed  So, Decrease is not possible ");
+//		}
 		if (vehicleTrips != null && !vehicleTrips.isEmpty()) {
 			List<VehicleTrip> vehicleTripList = new ArrayList<>();
 			AuditDetails auditDetails = new AuditDetails();
@@ -352,6 +352,17 @@ public class VehicleTripService {
 				throw new CustomException(FSMErrorConstants.ILLEGAL_ARGUMENT_EXCEPTION,
 						FSMConstants.OBJECTMAPPER_CONVERT_IN_USER_CALL);
 			}
+		}
+	}
+	
+	
+	public void ValidatedecreaseTripWhileUpdate(FSMRequest fsmRequest, FSM fsm) {
+
+		Integer remainingNumberOfTrips = fsm.getNoOfTrips() - fsmRequest.getFsm().getNoOfTrips();
+		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
+		if (vehicleTrips.size() < remainingNumberOfTrips) {
+			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
+					"Trips are already disposed  So, Decrease is not possible ");
 		}
 	}
 }

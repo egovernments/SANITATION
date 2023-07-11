@@ -357,6 +357,11 @@ public class FSMService {
 		}
 		if (fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)) {
 			Double tripAmount = wfIntegrator.getAdditionalDetails(fsmRequest.getFsm().getAdditionalDetails());
+			
+			if (fsmRequest.getFsm().getNoOfTrips() < oldFSM.getNoOfTrips()) {
+				vehicleTripService.ValidatedecreaseTripWhileUpdate(fsmRequest, oldFSM);
+			}
+				
 
 			if (fsmRequest.getFsm().getAdvanceAmount() != null || tripAmount > 0) {
 				calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
