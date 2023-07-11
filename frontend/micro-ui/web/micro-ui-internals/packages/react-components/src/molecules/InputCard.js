@@ -1,13 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import Card from "../atoms/Card";
-import CardHeader from "../atoms/CardHeader";
-import CardText from "../atoms/CardText";
-import SubmitBar from "../atoms/SubmitBar";
-import LinkButton from "../atoms/LinkButton";
-import CardCaption from "../atoms/CardCaption";
-import TextInput from "../atoms/TextInput";
+import Card from '../atoms/Card';
+import CardHeader from '../atoms/CardHeader';
+import CardText from '../atoms/CardText';
+import SubmitBar from '../atoms/SubmitBar';
+import LinkButton from '../atoms/LinkButton';
+import CardCaption from '../atoms/CardCaption';
+import TextInput from '../atoms/TextInput';
+import ActionBar from '../atoms/ActionBar';
 
 const InputCard = ({
   t,
@@ -24,17 +25,48 @@ const InputCard = ({
   cardStyle = {},
 }) => {
   const isMobile = window.Digit.Utils.browser.isMobile();
+  const checkFSMPage = window.location.href.includes(
+    'sanitation-ui/citizen/fsm/new-application'
+  );
   // TODO: inputs handle
   return (
     <Card style={cardStyle}>
-      {texts.headerCaption && <CardCaption>{t(texts.headerCaption)}</CardCaption>}
+      {texts.headerCaption && (
+        <CardCaption>{t(texts.headerCaption)}</CardCaption>
+      )}
       {texts?.header && <CardHeader>{t(texts.header)}</CardHeader>}
       {texts?.cardText && <CardText>{t(texts.cardText)}</CardText>}
       {children}
-      {texts.submitBarLabel ? <SubmitBar disabled={isDisable} submit={submit} label={t(texts.submitBarLabel)} onSubmit={onNext} /> : null}
-      {texts.skipLabel ? <CardText style={{ marginTop: "10px", textAlign: isMobile ? "center" : "left" }}> {t(texts.skipLabel)} </CardText> : null}
-      {texts.skipText ? <LinkButton label={t(texts.skipText)} onClick={onSkip} /> : null}
-      {isMultipleAllow && texts.addMultipleText ? <LinkButton label={t(texts.addMultipleText)} onClick={onAdd} /> : null}
+
+      <div
+        className={checkFSMPage ? 'action-bar-wrap' : ''}
+        style={{ bottom: '5px' }}
+      >
+        {texts.submitBarLabel ? (
+          <SubmitBar
+            disabled={isDisable}
+            submit={submit}
+            label={t(texts.submitBarLabel)}
+            onSubmit={onNext}
+          />
+        ) : null}
+        {texts.skipLabel ? (
+          <CardText
+            style={{
+              marginTop: '10px',
+              textAlign: isMobile ? 'center' : 'left',
+            }}
+          >
+            {t(texts.skipLabel)}
+          </CardText>
+        ) : null}
+        {texts.skipText ? (
+          <LinkButton label={t(texts.skipText)} onClick={onSkip} />
+        ) : null}
+        {isMultipleAllow && texts.addMultipleText ? (
+          <LinkButton label={t(texts.addMultipleText)} onClick={onAdd} />
+        ) : null}
+      </div>
     </Card>
   );
 };
