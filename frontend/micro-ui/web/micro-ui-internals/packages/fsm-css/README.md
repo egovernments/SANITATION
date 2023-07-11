@@ -37,13 +37,14 @@ frontend/micro-ui/web/public/index.html
 ```jsx
 /** add this import **/
 
-  <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-fsm-css@0.0.17/dist/index.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-fsm-css@0.0.11/dist/index.css" />
 
 ```
 
 # Changelog
 
 ```bash
+0.0.18 No Changes    
 0.0.17 Fixed dropdown list view in registry screen    
 0.0.16 Removed extra margin of dropdown from filter and added margin for tag  
 0.0.15 Removed selected locality and no result found card extra margin  
