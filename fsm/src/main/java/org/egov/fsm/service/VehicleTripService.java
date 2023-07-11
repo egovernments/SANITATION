@@ -191,7 +191,7 @@ public class VehicleTripService {
 			List<VehicleTrip> vehicleTripList = new ArrayList<>();
 			AuditDetails auditDetails = new AuditDetails();
 			Long time = System.currentTimeMillis();
-			for (int i = 0; i < vehicleTrips.size(); i++) {
+			for (int i = 0; i < remainingNumberOfTrips; i++) {
 
 				VehicleTrip vehicleTrip = new VehicleTrip();
 				List<VehicleTripDetail> vehicleTripDetail = vehicleTrips.get(i).getTripDetails();
