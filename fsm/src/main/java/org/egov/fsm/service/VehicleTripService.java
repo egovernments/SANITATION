@@ -1,13 +1,11 @@
 package org.egov.fsm.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.egov.fsm.billing.models.BillResponse;
 import org.egov.fsm.config.FSMConfiguration;
 import org.egov.fsm.repository.FSMRepository;
 import org.egov.fsm.repository.ServiceRequestRepository;
@@ -180,38 +178,59 @@ public class VehicleTripService {
 	}
 
 	private void decreaseTripWhileUpdate(FSMRequest fsmRequest, FSM fsm, Integer remainingNumberOfTrips) {
-		log.debug("fsmRequest.getWorkflow().getAction()-->" + fsmRequest.getWorkflow().getAction());
-		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(),
-				remainingNumberOfTrips);
+//		log.debug("fsmRequest.getWorkflow().getAction()-->" + fsmRequest.getWorkflow().getAction());
+//		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(),
+//				remainingNumberOfTrips);
 		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
-		log.debug("Vehicle trips with status waiting for disposal-->" + vehicleTrips);
+
 		if (vehicleTrips.size() < remainingNumberOfTrips) {
 			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
-					"Trips are already disposed  So, Decrease is not possible more than:" + vehicleTrips.size()
-							+ " Trips");
+					"Trips are already disposed  So, Decrease is not possible ");
 		}
-
-		if (vehicleTripDetails != null && !vehicleTripDetails.isEmpty()) {
+		if (vehicleTrips != null && !vehicleTrips.isEmpty()) {
 			List<VehicleTrip> vehicleTripList = new ArrayList<>();
 			AuditDetails auditDetails = new AuditDetails();
 			Long time = System.currentTimeMillis();
-			for (int i = 0; i < vehicleTripDetails.size(); i++) {
+			for (int i = 0; i < vehicleTrips.size(); i++) {
 
 				VehicleTrip vehicleTrip = new VehicleTrip();
+				VehicleTripDetail vehicleTripDetail = (VehicleTripDetail) vehicleTrips.get(i).getTripDetails();
 				auditDetails.setLastModifiedBy(fsmRequest.getRequestInfo().getUserInfo().getUuid());
 				auditDetails.setLastModifiedTime(time);
 
-				vehicleTripDetails.get(i).setStatus(StatusEnum.INACTIVE);
-				vehicleTripDetails.get(i).setAuditDetails(auditDetails);
+				vehicleTripDetail.setStatus(StatusEnum.INACTIVE);
+				vehicleTripDetail.setAuditDetails(auditDetails);
 
-				vehicleTrip.setId(vehicleTripDetails.get(i).getTrip_id());
+				vehicleTrip.setId(vehicleTripDetail.getTrip_id());
 				vehicleTrip.setStatus(org.egov.fsm.web.model.vehicle.trip.VehicleTrip.StatusEnum.INACTIVE);
-				vehicleTrip.setTripDetails(vehicleTripDetails);
+				vehicleTrip.setTripDetails((List<VehicleTripDetail>) vehicleTripDetail);
 				vehicleTrip.setAuditDetails(auditDetails);
 				vehicleTripList.add(vehicleTrip);
 			}
 			fsmRepository.updateVehicleToInActive(vehicleTripList);
 		}
+
+//		if (vehicleTripDetails != null && !vehicleTripDetails.isEmpty()) {
+//			List<VehicleTrip> vehicleTripList = new ArrayList<>();
+//			AuditDetails auditDetails = new AuditDetails();
+//			Long time = System.currentTimeMillis();
+//			for (int i = 0; i < vehicleTripDetails.size(); i++) {
+//
+//				VehicleTrip vehicleTrip = new VehicleTrip();
+//				auditDetails.setLastModifiedBy(fsmRequest.getRequestInfo().getUserInfo().getUuid());
+//				auditDetails.setLastModifiedTime(time);
+//
+//				vehicleTripDetails.get(i).setStatus(StatusEnum.INACTIVE);
+//				vehicleTripDetails.get(i).setAuditDetails(auditDetails);
+//
+//				vehicleTrip.setId(vehicleTripDetails.get(i).getTrip_id());
+//				vehicleTrip.setStatus(org.egov.fsm.web.model.vehicle.trip.VehicleTrip.StatusEnum.INACTIVE);
+//				vehicleTrip.setTripDetails(vehicleTripDetails);
+//				vehicleTrip.setAuditDetails(auditDetails);
+//				vehicleTripList.add(vehicleTrip);
+//			}
+//			fsmRepository.updateVehicleToInActive(vehicleTripList);
+//		}
 
 	}
 
