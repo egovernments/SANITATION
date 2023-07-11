@@ -1830,6 +1830,15 @@ input::-webkit-calendar-picker-indicator {
 .margin-unset {
   margin: unset !important; }
 
+.employee-select-wrap {
+  position: unset; }
+
+.employee-select-wrap .options-card {
+  max-width: 14%; }
+
+.action-bar-wrap-registry .menu-wrap {
+  position: unset; }
+
 .rating-star-wrap {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
@@ -1845,3 +1854,4 @@ input::-webkit-calendar-picker-indicator {
 
 .action-bar-wrap-registry .menu-wrap {
   position: unset; }
+
