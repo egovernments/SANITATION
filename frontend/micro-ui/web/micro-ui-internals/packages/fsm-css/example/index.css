@@ -1835,6 +1835,13 @@ input::-webkit-calendar-picker-indicator {
   -ms-flex-pack: center;
   justify-content: center; }
 
+
+.employee-select-wrap .options-card {
+  max-width: 14%; }
+
+.action-bar-wrap-registry .menu-wrap {
+  position: unset; }
+
 .fsm-citizen-reponse-page {
   padding: 0; }
   .fsm-citizen-reponse-page .fsm-response-button-wrap {
@@ -1842,3 +1849,4 @@ input::-webkit-calendar-picker-indicator {
   .fsm-citizen-reponse-page p {
     padding-left: 12px;
     padding-right: 12px; }
+

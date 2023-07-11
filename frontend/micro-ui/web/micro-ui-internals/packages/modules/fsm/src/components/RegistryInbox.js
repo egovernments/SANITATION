@@ -316,7 +316,7 @@ const RegisryInbox = (props) => {
             Header: t("ES_FSM_REGISTRY_INBOX_TOTAL_VEHICLES"),
             Cell: ({ row, column }) => {
               return (
-                <div className="action-bar-wrap-registry" style={{ position: "relative" }}>
+                <div className="action-bar-wrap-registry" style={{ position: "absolute" }}>
                   <div
                     className={row.original?.allVehicles?.length ? "link" : "cell-text"}
                     style={{ cursor: "pointer" }}
@@ -341,7 +341,7 @@ const RegisryInbox = (props) => {
             disableSortBy: true,
             Cell: ({ row, column }) => {
               return (
-                <div className="action-bar-wrap-registry" style={{ position: "relative" }}>
+                <div className="action-bar-wrap-registry" style={{ position: "absolute" }}>
                   <div
                     className={row.original?.vehicles?.length ? "link" : "cell-text"}
                     style={{ cursor: "pointer" }}
@@ -366,7 +366,7 @@ const RegisryInbox = (props) => {
             disableSortBy: true,
             Cell: ({ row, column }) => {
               return (
-                <div className="action-bar-wrap-registry" style={{ position: "relative" }}>
+                <div className="action-bar-wrap-registry" style={{ position: "absolute" }}>
                   <div
                     className={row.original?.drivers?.length ? "link" : "cell-text"}
                     style={{ cursor: "pointer" }}
@@ -391,7 +391,7 @@ const RegisryInbox = (props) => {
             disableSortBy: true,
             Cell: ({ row, column }) => {
               return (
-                <div className="action-bar-wrap-registry" style={{ position: "relative" }}>
+                <div className="action-bar-wrap-registry" style={{ position: "absolute" }}>
                   <div
                     className={row.original?.activeDrivers?.length ? "link" : "cell-text"}
                     style={{ cursor: "pointer" }}
