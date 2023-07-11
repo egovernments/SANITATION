@@ -185,11 +185,9 @@ public class VehicleTripService {
 				remainingNumberOfTrips);
 		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
 		if (!CollectionUtils.isEmpty(vehicleTrips)) {
-			int waitingForDisposal = vehicleTrips.size();
-			if (waitingForDisposal < remainingNumberOfTrips)
-				;
+			if (vehicleTrips.size() < remainingNumberOfTrips)
 			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
-					"Trips are already disposed  So, Decrease is not possible more than:" + waitingForDisposal
+					"Trips are already disposed  So, Decrease is not possible more than:" + vehicleTrips.size()
 							+ " Trips");
 		}
 
