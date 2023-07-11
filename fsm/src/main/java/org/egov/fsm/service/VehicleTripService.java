@@ -1,11 +1,13 @@
 package org.egov.fsm.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.egov.fsm.billing.models.BillResponse;
 import org.egov.fsm.config.FSMConfiguration;
 import org.egov.fsm.repository.FSMRepository;
 import org.egov.fsm.repository.ServiceRequestRepository;
@@ -70,7 +72,7 @@ public class VehicleTripService {
 				&& !(FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
 						.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
 				|| fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)) {
-			
+
 			prePayRequestForTripUpdate(remainingNumberOfTrips, increaseTrip, fsmRequest, fsm, oldNumberOfTrips);
 
 		}
@@ -87,7 +89,7 @@ public class VehicleTripService {
 			vehicleId = vehicleTripsForApplication.get(0).getVehicle().getId();
 
 		}
-		if (vehicleId !=null && !vehicleId.equalsIgnoreCase(fsmRequest.getFsm().getVehicleId())) {
+		if (vehicleId != null && !vehicleId.equalsIgnoreCase(fsmRequest.getFsm().getVehicleId())) {
 
 			decreaseTripWhileUpdate(fsmRequest, fsm, oldNumberOfTrips);
 			increaseUpdateTripDetails(fsmRequest.getFsm().getNoOfTrips(), fsmRequest, fsm);
@@ -109,7 +111,7 @@ public class VehicleTripService {
 				remainingNumberOfTrips = fsm.getNoOfTrips();
 				increaseTrip = true;
 			}
-			
+
 			increaseOrDecreaseTrip(remainingNumberOfTrips, increaseTrip, fsmRequest, fsm);
 		}
 	}
@@ -183,12 +185,14 @@ public class VehicleTripService {
 				remainingNumberOfTrips);
 		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
 		if (!CollectionUtils.isEmpty(vehicleTrips)) {
-			int waitingForDisposal=vehicleTrips.size();
-			if(vehicleTrips.size()<remainingNumberOfTrips);
+			int waitingForDisposal = vehicleTrips.size();
+			if (waitingForDisposal < remainingNumberOfTrips)
+				;
 			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
-					"Trips are already disposed  So, Decrease is not possible more than:"+ waitingForDisposal +" Trips");
+					"Trips are already disposed  So, Decrease is not possible more than:" + waitingForDisposal
+							+ " Trips");
 		}
-		
+
 		if (vehicleTripDetails != null && !vehicleTripDetails.isEmpty()) {
 			List<VehicleTrip> vehicleTripList = new ArrayList<>();
 			AuditDetails auditDetails = new AuditDetails();
