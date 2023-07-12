@@ -417,9 +417,10 @@ export const WorkflowService = {
           : location.pathname.includes('dso')
           ? actionRolePair.filter((i) => i.action !== 'PAY')
           : tempCheckStatus.includes('WAITING_FOR_DISPOSAL') ||
-            tempCheckStatus.includes('PENDING_APPL_FEE_PAYMENT') ||
-            tempCheckStatus.includes('DISPOSED')
-          ? actionRolePair
+            tempCheckStatus.includes('PENDING_APPL_FEE_PAYMENT')
+            ? actionRolePair : 
+            tempCheckStatus.includes('DISPOSED') ?
+            actionRolePair.filter((i) => i.action !== "REASSING")
           : actionRolePair.filter((i) => i.action !== 'PAY');
 
         if (role !== 'CITIZEN' && moduleCode === 'PGR') {
