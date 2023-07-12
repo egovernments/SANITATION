@@ -198,10 +198,10 @@ public class VehicleTripService {
 				auditDetails.setLastModifiedBy(fsmRequest.getRequestInfo().getUserInfo().getUuid());
 				auditDetails.setLastModifiedTime(time);
 
-				vehicleTripDetail.get(0).setStatus(StatusEnum.INACTIVE);
-				vehicleTripDetail.get(0).setAuditDetails(auditDetails);
+				vehicleTripDetail.get(i).setStatus(StatusEnum.INACTIVE);
+				vehicleTripDetail.get(i).setAuditDetails(auditDetails);
 
-				vehicleTrip.setId(vehicleTripDetail.get(0).getTrip_id());
+				vehicleTrip.setId(vehicleTripDetail.get(i).getTrip_id());
 				vehicleTrip.setStatus(org.egov.fsm.web.model.vehicle.trip.VehicleTrip.StatusEnum.INACTIVE);
 				vehicleTrip.setTripDetails((List<VehicleTripDetail>) vehicleTripDetail);
 				vehicleTrip.setAuditDetails(auditDetails);
