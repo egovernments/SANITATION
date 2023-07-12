@@ -357,10 +357,11 @@ public class VehicleTripService {
 	
 	
 	public void ValidatedecreaseTripWhileUpdate(FSMRequest fsmRequest, FSM fsm) {
+		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0);
 
 		Integer remainingNumberOfTrips = fsm.getNoOfTrips() - fsmRequest.getFsm().getNoOfTrips();
 		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
-		if (vehicleTrips.size() < remainingNumberOfTrips) {
+		if (!vehicleTripDetails.isEmpty() && vehicleTrips.size() < remainingNumberOfTrips) {
 			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
 					"Trips are already disposed  So, Decrease is not possible ");
 		}
