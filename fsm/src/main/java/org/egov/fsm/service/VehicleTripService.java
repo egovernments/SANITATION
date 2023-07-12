@@ -93,7 +93,7 @@ public class VehicleTripService {
 			increaseUpdateTripDetails(fsmRequest.getFsm().getNoOfTrips(), fsmRequest, fsm);
 		} else {
 
-			List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0);
+			List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0, false);
 			log.info("vehicleTripDetails :: " + vehicleTripDetails.size());
 			if (!vehicleTripDetails.isEmpty() && oldNumberOfTrips < fsm.getNoOfTrips()) {
 				remainingNumberOfTrips = fsm.getNoOfTrips() - oldNumberOfTrips;
@@ -178,59 +178,31 @@ public class VehicleTripService {
 	}
 
 	private void decreaseTripWhileUpdate(FSMRequest fsmRequest, FSM fsm, Integer remainingNumberOfTrips) {
-//		log.debug("fsmRequest.getWorkflow().getAction()-->" + fsmRequest.getWorkflow().getAction());
-//		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(),
-//				remainingNumberOfTrips);
-		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
+		log.debug("fsmRequest.getWorkflow().getAction()-->" + fsmRequest.getWorkflow().getAction());
+		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(),
+				remainingNumberOfTrips, true);
 
-//		if (vehicleTrips.size() < remainingNumberOfTrips) {
-//			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
-//					"Trips are already disposed  So, Decrease is not possible ");
-//		}
-		if (vehicleTrips != null && !vehicleTrips.isEmpty()) {
+		if (vehicleTripDetails != null && !vehicleTripDetails.isEmpty()) {
 			List<VehicleTrip> vehicleTripList = new ArrayList<>();
 			AuditDetails auditDetails = new AuditDetails();
 			Long time = System.currentTimeMillis();
-			for (int i = 0; i < remainingNumberOfTrips; i++) {
+			for (int i = 0; i < vehicleTripDetails.size(); i++) {
 
 				VehicleTrip vehicleTrip = new VehicleTrip();
-				List<VehicleTripDetail> vehicleTripDetail = vehicleTrips.get(i).getTripDetails();
 				auditDetails.setLastModifiedBy(fsmRequest.getRequestInfo().getUserInfo().getUuid());
 				auditDetails.setLastModifiedTime(time);
 
-				vehicleTripDetail.get(i).setStatus(StatusEnum.INACTIVE);
-				vehicleTripDetail.get(i).setAuditDetails(auditDetails);
+				vehicleTripDetails.get(i).setStatus(StatusEnum.INACTIVE);
+				vehicleTripDetails.get(i).setAuditDetails(auditDetails);
 
-				vehicleTrip.setId(vehicleTripDetail.get(i).getTrip_id());
+				vehicleTrip.setId(vehicleTripDetails.get(i).getTrip_id());
 				vehicleTrip.setStatus(org.egov.fsm.web.model.vehicle.trip.VehicleTrip.StatusEnum.INACTIVE);
-				vehicleTrip.setTripDetails(vehicleTripDetail);
+				vehicleTrip.setTripDetails(vehicleTripDetails);
 				vehicleTrip.setAuditDetails(auditDetails);
 				vehicleTripList.add(vehicleTrip);
 			}
 			fsmRepository.updateVehicleToInActive(vehicleTripList);
 		}
-
-//		if (vehicleTripDetails != null && !vehicleTripDetails.isEmpty()) {
-//			List<VehicleTrip> vehicleTripList = new ArrayList<>();
-//			AuditDetails auditDetails = new AuditDetails();
-//			Long time = System.currentTimeMillis();
-//			for (int i = 0; i < vehicleTripDetails.size(); i++) {
-//
-//				VehicleTrip vehicleTrip = new VehicleTrip();
-//				auditDetails.setLastModifiedBy(fsmRequest.getRequestInfo().getUserInfo().getUuid());
-//				auditDetails.setLastModifiedTime(time);
-//
-//				vehicleTripDetails.get(i).setStatus(StatusEnum.INACTIVE);
-//				vehicleTripDetails.get(i).setAuditDetails(auditDetails);
-//
-//				vehicleTrip.setId(vehicleTripDetails.get(i).getTrip_id());
-//				vehicleTrip.setStatus(org.egov.fsm.web.model.vehicle.trip.VehicleTrip.StatusEnum.INACTIVE);
-//				vehicleTrip.setTripDetails(vehicleTripDetails);
-//				vehicleTrip.setAuditDetails(auditDetails);
-//				vehicleTripList.add(vehicleTrip);
-//			}
-//			fsmRepository.updateVehicleToInActive(vehicleTripList);
-//		}
 
 	}
 
@@ -354,10 +326,9 @@ public class VehicleTripService {
 			}
 		}
 	}
-	
-	
+
 	public void ValidatedecreaseTripWhileUpdate(FSMRequest fsmRequest, FSM fsm) {
-		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0);
+		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0, false);
 
 		Integer remainingNumberOfTrips = fsm.getNoOfTrips() - fsmRequest.getFsm().getNoOfTrips();
 		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);

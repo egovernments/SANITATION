@@ -162,16 +162,20 @@ public class FSMRepository {
 		return jdbcTemplate.queryForList(baseQuery.toString(), String.class, preparedStmtList.toArray());
 	}
 
-	public List<VehicleTripDetail> getTrpiDetails(String tripId, int numOfRecords) {
+	public List<VehicleTripDetail> getTrpiDetails(String tripId, int numOfRecords, Boolean waitingForDisposal) {
 		List<VehicleTripDetail> tripDetails = null;
 		List<Object> preparedStmtList = new ArrayList<>();
-		String query = fsmQueryBuilder.getTripDetailSarchQuery(tripId, numOfRecords, preparedStmtList);
-		log.info("query for decreseTrip:: "+numOfRecords+":: query :: "+query);
+		String query = null;
+		if (waitingForDisposal)
+			query = fsmQueryBuilder.getTripDetailSarchQuery(tripId, numOfRecords, preparedStmtList, waitingForDisposal);
+		else
+			query = fsmQueryBuilder.getTripDetailSarchQuery(tripId, numOfRecords, preparedStmtList);
+		log.info("query for decreseTrip:: " + numOfRecords + ":: query :: " + query);
 		try {
 			tripDetails = jdbcTemplate.query(query, preparedStmtList.toArray(), detailMapper);
-			
+
 		} catch (Exception e) {
-			log.info("INVALID_VEHICLE_TRIP_DETAILS "+e.getMessage());
+			log.info("INVALID_VEHICLE_TRIP_DETAILS " + e.getMessage());
 			throw new CustomException("INVALID_VEHICLE_TRIP_DETAILS", "INVALID_VEHICLE_TRIP_DETAILS");
 		}
 
