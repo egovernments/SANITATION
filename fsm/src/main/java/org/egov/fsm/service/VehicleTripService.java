@@ -203,7 +203,7 @@ public class VehicleTripService {
 
 				vehicleTrip.setId(vehicleTripDetail.get(i).getTrip_id());
 				vehicleTrip.setStatus(org.egov.fsm.web.model.vehicle.trip.VehicleTrip.StatusEnum.INACTIVE);
-				vehicleTrip.setTripDetails((List<VehicleTripDetail>) vehicleTripDetail);
+				vehicleTrip.setTripDetails(vehicleTripDetail);
 				vehicleTrip.setAuditDetails(auditDetails);
 				vehicleTripList.add(vehicleTrip);
 			}
