@@ -1834,7 +1834,8 @@ input::-webkit-calendar-picker-indicator {
   position: unset; }
 
 .employee-select-wrap .options-card {
-  max-width: 14%; }
+  max-width: 14%;
+  max-height: 200px; }
 
 .action-bar-wrap-registry .menu-wrap {
   position: unset; }

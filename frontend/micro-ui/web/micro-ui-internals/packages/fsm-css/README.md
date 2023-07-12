@@ -44,6 +44,7 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
+0.0.22 employee dropdown height reduces  
 0.0.21 Multiple image ui fixes  
 0.0.20 Pop up and dropdown position issue fix    
 0.0.19 UI/UX fixes    
