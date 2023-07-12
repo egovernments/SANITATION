@@ -269,7 +269,7 @@ const CheckPage = ({ onSubmit, value }) => {
             )}
         </StatusTable>
       </Card>
-      <ActionBar style={{ zIndex: '19', bottom: '5px' }}>
+      <ActionBar style={{ zIndex: '19' }}>
         <SubmitBar label={t('CS_COMMON_SUBMIT')} onSubmit={onSubmit} />
       </ActionBar>
 
