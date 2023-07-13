@@ -180,7 +180,7 @@ const ApplicationDetails = () => {
         );
       })}
       {!isWorkflowLoading && (
-        <Card style={{ position: 'relative', marginBottom: '40px' }}>
+        <Card style={{ position: 'relative', marginBottom: '80px' }}>
           <ApplicationTimeline
             application={application?.pdfData}
             id={id}
