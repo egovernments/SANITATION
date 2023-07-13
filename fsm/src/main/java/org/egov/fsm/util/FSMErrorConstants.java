@@ -93,6 +93,7 @@ public class FSMErrorConstants {
 	public static final String SCHEDULING_TRIP_IS_PENDING ="SCHEDULING_TRIP_IS_PENDING";
 	public static final String VEHICLE_IS_NOT_ADDED_BEFORE ="VEHICLE IS NOT ADDED BEFORE TO DECREASE THE TRIP";
 	public static final String ILLEGAL_ARGUMENT_EXCEPTION ="IllegalArgumentException";
+	public static final String DECREASE_NOT_POSSIBLE = "DECREASE_NOT_POSSIBLE";
 
 	
 }

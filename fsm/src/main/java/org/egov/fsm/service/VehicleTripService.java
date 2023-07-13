@@ -70,7 +70,7 @@ public class VehicleTripService {
 				&& !(FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY
 						.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
 				|| fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)) {
-			
+
 			prePayRequestForTripUpdate(remainingNumberOfTrips, increaseTrip, fsmRequest, fsm, oldNumberOfTrips);
 
 		}
@@ -87,13 +87,13 @@ public class VehicleTripService {
 			vehicleId = vehicleTripsForApplication.get(0).getVehicle().getId();
 
 		}
-		if (vehicleId !=null && !vehicleId.equalsIgnoreCase(fsmRequest.getFsm().getVehicleId())) {
+		if (vehicleId != null && !vehicleId.equalsIgnoreCase(fsmRequest.getFsm().getVehicleId())) {
 
 			decreaseTripWhileUpdate(fsmRequest, fsm, oldNumberOfTrips);
 			increaseUpdateTripDetails(fsmRequest.getFsm().getNoOfTrips(), fsmRequest, fsm);
 		} else {
 
-			List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0);
+			List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0, false);
 			log.info("vehicleTripDetails :: " + vehicleTripDetails.size());
 			if (!vehicleTripDetails.isEmpty() && oldNumberOfTrips < fsm.getNoOfTrips()) {
 				remainingNumberOfTrips = fsm.getNoOfTrips() - oldNumberOfTrips;
@@ -109,7 +109,7 @@ public class VehicleTripService {
 				remainingNumberOfTrips = fsm.getNoOfTrips();
 				increaseTrip = true;
 			}
-			
+
 			increaseOrDecreaseTrip(remainingNumberOfTrips, increaseTrip, fsmRequest, fsm);
 		}
 	}
@@ -180,7 +180,8 @@ public class VehicleTripService {
 	private void decreaseTripWhileUpdate(FSMRequest fsmRequest, FSM fsm, Integer remainingNumberOfTrips) {
 		log.debug("fsmRequest.getWorkflow().getAction()-->" + fsmRequest.getWorkflow().getAction());
 		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(),
-				remainingNumberOfTrips);
+				remainingNumberOfTrips, true);
+
 		if (vehicleTripDetails != null && !vehicleTripDetails.isEmpty()) {
 			List<VehicleTrip> vehicleTripList = new ArrayList<>();
 			AuditDetails auditDetails = new AuditDetails();
@@ -323,6 +324,17 @@ public class VehicleTripService {
 				throw new CustomException(FSMErrorConstants.ILLEGAL_ARGUMENT_EXCEPTION,
 						FSMConstants.OBJECTMAPPER_CONVERT_IN_USER_CALL);
 			}
+		}
+	}
+
+	public void ValidatedecreaseTripWhileUpdate(FSMRequest fsmRequest, FSM fsm) {
+		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0, false);
+
+		Integer remainingNumberOfTrips = fsm.getNoOfTrips() - fsmRequest.getFsm().getNoOfTrips();
+		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
+		if (!vehicleTripDetails.isEmpty() && vehicleTrips.size() < remainingNumberOfTrips) {
+			throw new CustomException(FSMErrorConstants.DECREASE_NOT_POSSIBLE,
+					"Trips are already disposed  So, Decrease is not possible ");
 		}
 	}
 }
