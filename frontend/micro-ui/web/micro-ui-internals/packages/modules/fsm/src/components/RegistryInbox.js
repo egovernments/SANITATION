@@ -585,6 +585,8 @@ const RegisryInbox = (props) => {
                   select={(value) => onVendorVehicleSelect(row, value)}
                   optionKey='name'
                   t={t}
+                  style={{ position: "unset" }}
+                  optionCardStyles={{ maxWidth: "14%", maxHeight: "200px" }}
                 />
               );
             },
@@ -653,6 +655,8 @@ const RegisryInbox = (props) => {
                   select={(value) => onVendorDriverSelect(row, value)}
                   optionKey='name'
                   t={t}
+                  style={{ position: "unset" }}
+                  optionCardStyles={{ maxWidth: "14%", maxHeight: "200px" }}
                 />
               );
             },

@@ -229,18 +229,16 @@ input::-webkit-calendar-picker-indicator {
   margin: unset !important;
 }
 
-.employee-select-wrap {
-  position: unset;
-}
-
-.employee-select-wrap .options-card {
-  max-width: 14%;
-  max-height: 200px;
+.select-wrap {
+  .options-card {
+    max-height: 200px;
+    overflow-y: scroll;
+  }
 }
 
 .action-bar-wrap-registry {
   .menu-wrap {
-    position: unset;
+    position: relative;
   }
 }
 
