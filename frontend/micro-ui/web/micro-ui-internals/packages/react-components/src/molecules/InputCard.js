@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Card from '../atoms/Card';
 import CardHeader from '../atoms/CardHeader';
 import CardText from '../atoms/CardText';
 import SubmitBar from '../atoms/SubmitBar';
 import LinkButton from '../atoms/LinkButton';
 import CardCaption from '../atoms/CardCaption';
-import TextInput from '../atoms/TextInput';
-import ActionBar from '../atoms/ActionBar';
 
 const InputCard = ({
   t,
@@ -38,10 +35,7 @@ const InputCard = ({
       {texts?.cardText && <CardText>{t(texts.cardText)}</CardText>}
       {children}
 
-      <div
-        className={checkFSMPage ? 'action-bar-wrap' : ''}
-        style={{ bottom: '5px' }}
-      >
+      <div className={checkFSMPage ? 'action-bar-wrap' : ''}>
         {texts.submitBarLabel ? (
           <SubmitBar
             disabled={isDisable}

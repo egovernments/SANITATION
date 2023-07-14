@@ -1861,3 +1861,6 @@ input::-webkit-calendar-picker-indicator {
     width: unset !important; }
   .check-page-uploaded-images .multi-upload-wrap {
     margin-bottom: unset; }
+
+.select-pit-wrapper .toast-success {
+  bottom: 111px; }

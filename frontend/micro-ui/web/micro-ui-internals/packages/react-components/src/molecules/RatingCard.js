@@ -113,7 +113,7 @@ const RatingCard = ({ config, onSelect, t }) => {
       <Card>
         <CardHeader>{t(config.texts.header)}</CardHeader>
         {segments}
-        <ActionBar style={{ bottom: '5px' }}>
+        <ActionBar>
           <SubmitBar label={t(config.texts.submitBarLabel)} submit={true} />
         </ActionBar>
       </Card>

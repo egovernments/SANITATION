@@ -354,7 +354,7 @@ const Response = (props) => {
           </div>
         ) : null}
         {ACTIONS.length === 1 ? null : (
-          <ActionBar style={{ bottom: '5px' }}>
+          <ActionBar>
             {displayMenu ? (
               <Menu
                 localeKeyPrefix={'ES_COMMON'}

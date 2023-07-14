@@ -112,7 +112,7 @@ const LocationSearchCard = ({
       {window.location.href.includes(
         'sanitation-ui/citizen/fsm/new-application'
       ) ? (
-        <ActionBar style={{ bottom: '5px' }}>
+        <ActionBar>
           <SubmitBar label={nextText} onSubmit={onSave} disabled={isDisabled} />
           {skip && <LinkButton onClick={skip} label={skipAndContinueText} />}
         </ActionBar>
