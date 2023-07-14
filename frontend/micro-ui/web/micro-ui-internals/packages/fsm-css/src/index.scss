@@ -85,6 +85,7 @@ input::-webkit-calendar-picker-indicator {
   border-radius: 4px;
 }
 .fsm-citizen-wrapper {
+  min-height: 100vh;
   .card {
     padding-bottom: 16px;
     margin-bottom: 24px;
@@ -273,5 +274,11 @@ input::-webkit-calendar-picker-indicator {
 .select-pit-wrapper {
   .toast-success {
     bottom: 111px;
+  }
+}
+
+.action-bar-wrap {
+  .card-link {
+    margin-top: 4px;
   }
 }
