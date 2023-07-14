@@ -121,9 +121,15 @@ public class VendorService {
 					"OwnerId mismatch between the update request and existing vendor record"
 							+ vendorRequest.getVendor().getName());
 		}
-
 		Object mdmsData = util.mDMSCall(requestInfo, tenantId);
-		vendorValidator.validateCreateOrUpdateRequest(vendorRequest, mdmsData, false, requestInfo);
+		
+		if (!oldVendor.getOwner().getMobileNumber()
+				.equalsIgnoreCase(vendorRequest.getVendor().getOwner().getMobileNumber())) {
+			vendorValidator.validateCreateOrUpdateRequest(vendorRequest, mdmsData, true, requestInfo);
+		} else {
+			vendorValidator.validateCreateOrUpdateRequest(vendorRequest, mdmsData, false, requestInfo);
+
+		}
 		enrichmentService.enrichUpdate(vendorRequest);
 		updateVendor(vendorRequest, tenantId);
 
