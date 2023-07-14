@@ -1702,12 +1702,13 @@ input::-webkit-calendar-picker-indicator {
 .CitizenHomeCard {
   border-radius: 4px; }
 
-.fsm-citizen-wrapper .card {
-  padding-bottom: 16px;
-  margin-bottom: 24px; }
-
-.fsm-citizen-wrapper .card-text {
-  margin-bottom: 10px; }
+.fsm-citizen-wrapper {
+  min-height: 100vh; }
+  .fsm-citizen-wrapper .card {
+    padding-bottom: 16px;
+    margin-bottom: 24px; }
+  .fsm-citizen-wrapper .card-text {
+    margin-bottom: 10px; }
 
 .primary-label-btn {
   display: -webkit-box;
@@ -1864,3 +1865,6 @@ input::-webkit-calendar-picker-indicator {
 
 .select-pit-wrapper .toast-success {
   bottom: 111px; }
+
+.action-bar-wrap .card-link {
+  margin-top: 4px; }
