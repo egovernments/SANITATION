@@ -10,6 +10,7 @@ import org.egov.fsm.web.model.dso.Vendor;
 import org.egov.fsm.web.model.location.Address;
 import org.egov.fsm.web.model.user.User;
 import org.egov.fsm.web.model.vehicle.Vehicle;
+import org.egov.fsm.web.model.workflow.ProcessInstance;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.validation.annotation.Validated;
 
@@ -170,6 +171,10 @@ public class FSM   {
   
   @JsonProperty("paymentPreference")
   private String paymentPreference ;
+
+  @JsonProperty("processInstance")
+private ProcessInstance processInstance;
+
   
  // @JsonProperty("receivedPayment")
  // private String receivedPayment;

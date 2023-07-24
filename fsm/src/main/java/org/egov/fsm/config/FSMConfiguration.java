@@ -284,4 +284,11 @@ public class FSMConfiguration {
 		@Value("${persister.update.fsm.vehicle.trip.details.topic}")
 		private String vehicleUpdateTripToInactive;
 		
+		@Value("${is.external.workflow.enabled}")
+		private Boolean isExternalWorkFlowEnabled;
+		
+		// FSM Event topic
+		@Value("${fsm.event.kafka.topic}")
+		private String fsmEventTopic;
+		
 }
