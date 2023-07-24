@@ -1,34 +1,27 @@
-package org.egov.inbox.web.model;
+package org.egov.inbox.web.model.V2;
 
-import java.util.HashMap;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import org.egov.inbox.web.model.workflow.ProcessInstanceSearchCriteria;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
-
-import org.egov.inbox.web.model.workflow.ProcessInstanceSearchCriteria;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import lombok.Data;
-
+import java.util.HashMap;
 
 @Data
-public class InboxSearchCriteria {
-
-
+public class IndexSearchCriteria {
     @NotNull
     @JsonProperty("tenantId")
     private String tenantId;
 
-    @Valid
-    @JsonProperty("processSearchCriteria")
-    private ProcessInstanceSearchCriteria processSearchCriteria;
-    
+    @NotNull
+    @JsonProperty("moduleName")
+    private String moduleName;
+
     @JsonProperty("moduleSearchCriteria")
     private HashMap<String,Object> moduleSearchCriteria;
-    
+
     @JsonProperty("offset")
     private Integer offset;
 

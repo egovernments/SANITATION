@@ -6,7 +6,6 @@ import static org.egov.inbox.util.BpaConstants.BPA_APPLICATION_NUMBER_PARAM;
 import static org.egov.inbox.util.BpaConstants.LOCALITY_PARAM;
 import static org.egov.inbox.util.BpaConstants.MOBILE_NUMBER_PARAM;
 import static org.egov.inbox.util.BpaConstants.OFFSET_PARAM;
-import static org.egov.inbox.util.BpaConstants.STATUS_PARAM;
 import static org.egov.inbox.util.BpaConstants.STATUS_ID;
 import static org.egov.inbox.util.BpaConstants.STATUS_PARAM;
 import static org.egov.inbox.util.DSSConstants.*;
@@ -184,8 +183,8 @@ public class InboxService {
         
         List<HashMap<String, Object>> bpaCitizenStatusCountMap = new ArrayList<HashMap<String,Object>>();
         List<String> roles = requestInfo.getUserInfo().getRoles().stream().map(Role::getCode).collect(Collectors.toList());
-
-        String moduleName = processCriteria.getModuleName();
+        
+         String moduleName = processCriteria.getModuleName();
 			/*
 			 * SAN-920: Commenting out this code as Module name will now be passed for FSM
 			 * if(ObjectUtils.isEmpty(processCriteria.getModuleName()) &&
@@ -245,7 +244,7 @@ public class InboxService {
                 }
 
             }
-
+            
             Map<String, List<String>> tenantAndApplnNumbersMap = new HashMap<>();
             if(processCriteria != null && !ObjectUtils.isEmpty(processCriteria.getModuleName())
                     && processCriteria.getModuleName().equals(BPA) && roles.contains(BpaConstants.CITIZEN)) {
@@ -597,15 +596,10 @@ public class InboxService {
             } else {
                 processInstanceResponse = workflowService.getProcessInstance(processCriteria, requestInfo);
             }
-
+            
             List<ProcessInstance> processInstances = processInstanceResponse.getProcessInstances();
-
-            Map<String, ProcessInstance> processInstanceMap = new HashMap<>();
-            if(!CollectionUtils.isEmpty(processInstances)) {
-                for (ProcessInstance processInstance : processInstances) {
-                    processInstanceMap.put(processInstance.getBusinessId(), processInstance);
-                }
-            }
+            Map<String, ProcessInstance> processInstanceMap = processInstances.stream()
+                    .collect(Collectors.toMap(ProcessInstance::getBusinessId, Function.identity()));
 
             //Adding searched Items in Inbox result object for WS and SW
             if (moduleName.equals(WS) || moduleName.equals(SW)) {
@@ -658,7 +652,6 @@ public class InboxService {
 			//When Bill Amendment objects are searched
 				for (String businessKey : businessKeys) {
 					Inbox inbox = new Inbox();
-
 					inbox.setProcessInstance(processInstanceMap.get(businessKey));
 					inbox.setBusinessObject(toMap((JSONObject) businessMap.get(businessKey)));
 					inbox.setServiceObject(toMap(
@@ -834,10 +827,6 @@ public class InboxService {
 			//log.info("removeStatusCountMap:: "+ new Gson().toJson(statusCountMap));
 
 		}
-        if(moduleSearchCriteria.containsKey("mobileNumber") || moduleSearchCriteria.containsKey("applicationNos"))
-        {
-            totalCount = inboxes.size();
-        }
 		log.info("statusCountMap size :::: " + statusCountMap.size());
 		
         response.setTotalCount(totalCount);
@@ -1149,7 +1138,6 @@ public class InboxService {
 			if (!param.equalsIgnoreCase("tenantId")) {
 				if (param.equalsIgnoreCase("limit"))
 				    return;
-
 				if (moduleSearchCriteria.get(param) instanceof Collection) {
 					url.append("&").append(param).append("=");
 					url.append(StringUtils
