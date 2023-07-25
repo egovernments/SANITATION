@@ -76,8 +76,8 @@ public class DSOService {
 		requestInfoWrpr.setRequestInfo(requestInfo);
 		try {
 
-			LinkedHashMap responseMap = (LinkedHashMap) serviceRequestRepository.fetchResult(uri, requestInfoWrpr);
-			VendorResponse vendorResponse = mapper.convertValue(responseMap, VendorResponse.class);
+			Object response = serviceRequestRepository.fetchResult(uri, requestInfoWrpr);
+			VendorResponse vendorResponse = mapper.convertValue(response, VendorResponse.class);
 			if (!CollectionUtils.isEmpty(vendorResponse.getVendor())) {
 				return vendorResponse.getVendor().get(0);
 			} else {
