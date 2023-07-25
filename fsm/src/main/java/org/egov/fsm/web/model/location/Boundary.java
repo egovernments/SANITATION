@@ -30,6 +30,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Boundary   {
   @SafeHtml
   @JsonProperty("code")
@@ -57,10 +58,8 @@ public class Boundary   {
 
   @SafeHtml
   @JsonProperty("materializedPath")
-  @JsonIgnoreProperties(ignoreUnknown = true)
   private String materializedPath = null;
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
   public Boundary code(String code) {
     this.code = code;
     return this;
@@ -81,7 +80,6 @@ public class Boundary   {
     this.code = code;
   }
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
   public Boundary name(String name) {
     this.name = name;
     return this;
@@ -102,7 +100,6 @@ public class Boundary   {
     this.name = name;
   }
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
   public Boundary label(String label) {
     this.label = label;
     return this;
@@ -122,7 +119,6 @@ public class Boundary   {
     this.label = label;
   }
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
   public Boundary latitude(String latitude) {
     this.latitude = latitude;
     return this;
@@ -142,7 +138,6 @@ public class Boundary   {
     this.latitude = latitude;
   }
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
   public Boundary longitude(String longitude) {
     this.longitude = longitude;
     return this;
@@ -162,7 +157,6 @@ public class Boundary   {
     this.longitude = longitude;
   }
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
   public Boundary children(List<Boundary> children) {
     this.children = children;
     return this;
@@ -190,7 +184,6 @@ public class Boundary   {
     this.children = children;
   }
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
   public Boundary materializedPath(String materializedPath) {
     this.materializedPath = materializedPath;
     return this;
