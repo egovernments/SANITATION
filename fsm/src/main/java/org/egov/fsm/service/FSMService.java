@@ -285,7 +285,7 @@ public class FSMService {
 		} else {
 			throw new CustomException(FSMErrorConstants.INVALID_POSSIBLE_DATE, " Possible service Date  is invalid");
 		}
-		dsoService.validateDSO(fsmRequest);
+//		dsoService.validateDSO(fsmRequest);
 
 	}
 
