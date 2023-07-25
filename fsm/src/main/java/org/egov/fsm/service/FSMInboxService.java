@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.egov.fsm.config.FSMConfiguration;
-import org.egov.fsm.producer.Producer;
+import org.egov.fsm.fsmProducer.FSMProducer;
 import org.egov.fsm.repository.FSMInboxRepository;
 import org.egov.fsm.util.FSMErrorConstants;
 import org.egov.fsm.web.model.FSMEvent;
@@ -27,7 +27,7 @@ public class FSMInboxService {
 	private FSMInboxRepository fsmInboxRepository;
 
 	@Autowired
-	private Producer producer;
+	private FSMProducer producer;
 
 	@Autowired
 	private FSMConfiguration config;

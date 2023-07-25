@@ -2,7 +2,7 @@ package org.egov.fsm.util;
 
 import org.bouncycastle.crypto.macs.HMac;
 import org.bouncycastle.util.encoders.Hex;
-import org.egov.fsm.producer.Producer;
+import org.egov.fsm.fsmProducer.FSMProducer;
 import org.egov.fsm.web.model.FSMEvent;
 import org.egov.fsm.web.model.user.User;
 import org.egov.hash.HashService;
@@ -19,7 +19,7 @@ public class FSMEventUtil {
 	    private HMac hMac;
 
 	   @Autowired
-		private Producer producer;
+		private FSMProducer producer;
 	    
 	    @Autowired
 	    private HashService hashService;

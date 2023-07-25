@@ -20,7 +20,7 @@ import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
 import org.egov.fsm.billing.models.BillResponse;
 import org.egov.fsm.config.FSMConfiguration;
-import org.egov.fsm.producer.Producer;
+import org.egov.fsm.fsmProducer.FSMProducer;
 import org.egov.fsm.repository.FSMRepository;
 import org.egov.fsm.service.notification.NotificationService;
 import org.egov.fsm.util.FSMAuditUtil;
@@ -108,7 +108,7 @@ public class FSMService {
 	FSMRepository fsmRepository;
 	
 	@Autowired
-	private Producer producer;
+	private FSMProducer producer;
 
 	@Autowired
 	private FSMRepository repository;

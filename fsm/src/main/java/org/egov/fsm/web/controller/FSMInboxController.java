@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -47,7 +46,7 @@ public class FSMInboxController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/_test", method = RequestMethod.POST)
+	@PostMapping(value = "/_test")
 	public ResponseEntity<?> test(@Valid @RequestBody FSMEvent event) {
 		consumer.pushEvent(event);
 		return new ResponseEntity<>(null, HttpStatus.OK);
