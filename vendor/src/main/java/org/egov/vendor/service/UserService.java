@@ -173,6 +173,20 @@ public class UserService {
 			throw new CustomException(VendorErrorConstants.ALREADY_VENDOR_EXIST,
 					VendorErrorConstants.VENDOR_ERROR_MESSAGE);
 		}
+		user.forEach(userinfo -> {
+
+			List<Role> roleList = userinfo.getRoles().stream()
+					.filter(findCitizenRole -> findCitizenRole.getCode().contains(VendorConstants.ROLE_FSM_DSO))
+					.collect(Collectors.toList());
+
+			if (!roleList.isEmpty()) {
+				throw new CustomException(VendorErrorConstants.ALREADY_VENDOR_EXIST,
+						VendorErrorConstants.VENDOR_MOBILE_NUMBER_ALREADY_EXIST);
+
+			}
+
+		});
+
 	}
 
 	/**

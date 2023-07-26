@@ -70,7 +70,6 @@ public class EnrichmentService {
 			vendorRequest.getVendor().setAuditDetails(auditDetails);
 		}
 		vendor.setId(UUID.randomUUID().toString());
-		vendor.setOwnerId(vendor.getOwner().getUuid());
 
 		if (vendorRequest.getVendor().getAddress() != null) {
 			if (StringUtils.isEmpty(vendorRequest.getVendor().getAddress().getId()))
