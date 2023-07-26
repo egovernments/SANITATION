@@ -123,12 +123,12 @@ public class VendorService {
 		}
 		Object mdmsData = util.mDMSCall(requestInfo, tenantId);
 		
-		if (!oldVendor.getOwner().getMobileNumber()
-				.equalsIgnoreCase(vendorRequest.getVendor().getOwner().getMobileNumber())) {
+		// Comparing with username with mobile number because username is same as mobilenumber and it is unique
+		if (!oldVendor.getOwner().getUserName().equalsIgnoreCase(vendorRequest.getVendor().getOwner().getMobileNumber())) {
 			vendorValidator.validateCreateOrUpdateRequest(vendorRequest, mdmsData, true, requestInfo);
 		} else {
 			vendorValidator.validateCreateOrUpdateRequest(vendorRequest, mdmsData, false, requestInfo);
-
+			
 		}
 		enrichmentService.enrichUpdate(vendorRequest);
 		updateVendor(vendorRequest, tenantId);
