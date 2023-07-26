@@ -123,7 +123,7 @@ public class VendorValidator {
 		mdmsValidator.validateAgencyType(vendorRequest);
 		mdmsValidator.validatePaymentPreference(vendorRequest);
 		boundaryService.getAreaType(vendorRequest, config.getHierarchyTypeCode());
-		if (!vendorRequest.getVendor().getVehicles().isEmpty()) {
+		if (vendorRequest.getVendor().getVehicles() != null && !vendorRequest.getVendor().getVehicles().isEmpty()) {
 			vehicleService.manageVehicle(vendorRequest);
 		}
 
@@ -144,7 +144,7 @@ public class VendorValidator {
 			}
 
 		}
-		if (!vendorRequest.getVendor().getDrivers().isEmpty()) {
+		if (vendorRequest.getVendor().getVehicles() != null && !vendorRequest.getVendor().getDrivers().isEmpty()) {
 			ownerService.manageDrivers(vendorRequest);
 
 		}
