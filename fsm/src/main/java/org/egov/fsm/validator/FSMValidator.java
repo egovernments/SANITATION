@@ -110,7 +110,6 @@ public class FSMValidator {
 			throw new CustomException(FSMErrorConstants.INVALID_APPLICANT_ERROR,
 					FSMConstants.APPLICATION_NAME_MOBILE_NUMBER_MANDATORY);
 		}
-		validateVehicleCapacity(fsmRequest);
 		mdmsValidator.validateApplicationChannel(fsm.getSource());
 		if (!StringUtils.isEmpty(fsm.getSanitationtype())) {
 			mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype());
