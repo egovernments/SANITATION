@@ -58,5 +58,7 @@ public class VendorConstants {
 	public static final String TENANT_ID_MANDATORY = "TenantId is mandatory in search";
 	public static final String DISABLED = "DISABLED";
 	public static final String FSM_DRIVER = "FSM_DRIVER";
+	public static final String DuplicateUserNameException = "DuplicateUserNameException";
+
 
 }

@@ -21,6 +21,7 @@ import org.egov.vendor.config.VendorConfiguration;
 import org.egov.vendor.driver.web.model.Driver;
 import org.egov.vendor.repository.ServiceRequestRepository;
 import org.egov.vendor.repository.VendorRepository;
+import org.egov.vendor.util.DuplicateUserNameException;
 import org.egov.vendor.util.VendorConstants;
 import org.egov.vendor.util.VendorErrorConstants;
 import org.egov.vendor.web.model.Vendor;
@@ -278,7 +279,13 @@ public class UserService {
 				.append(config.getUserCreateEndpoint());
 		setUserName(owner);
 		owner.setType(VendorConstants.CITIZEN);
-		UserDetailResponse userDetailResponse = userCall(new UserRequest(requestInfo, owner), uri);
+		UserDetailResponse userDetailResponse = null;
+		try {
+			userDetailResponse = userCall(new UserRequest(requestInfo, owner), uri);
+		} catch (DuplicateUserNameException e) {
+			throw new CustomException(VendorConstants.DuplicateUserNameException,
+					"The mobile number is already in use. Please use another mobile number to create a vendor");
+		}
 		log.info("owner created --> " + userDetailResponse.getUser().get(0).getUuid());
 		return userDetailResponse.getUser().get(0);
 	}
@@ -321,7 +328,7 @@ public class UserService {
 	 * @return Response from user service as parsed as userDetailResponse
 	 */
 	@SuppressWarnings("rawtypes")
-	UserDetailResponse userCall(Object userRequest, StringBuilder uri) {
+	UserDetailResponse userCall(Object userRequest, StringBuilder uri) throws DuplicateUserNameException {
 		String dobFormat = null;
 		if (uri.toString().contains(config.getUserSearchEndpoint())
 				|| uri.toString().contains(config.getUserUpdateEndpoint()))
@@ -337,6 +344,7 @@ public class UserService {
 			throw new CustomException(VendorConstants.ILLEGAL_ARGUMENT_EXCEPTION,
 					"ObjectMapper not able to convertValue in userCall");
 		}
+		
 	}
 
 	/**
@@ -362,7 +370,13 @@ public class UserService {
 				.append(config.getUserCreateEndpoint());
 		setUserName(driver);
 		driver.setType(VendorConstants.CITIZEN);
-		UserDetailResponse userDetailResponse = userCall(new UserRequest(requestInfo, driver), uri);
+		UserDetailResponse userDetailResponse;
+		try {
+			userDetailResponse = userCall(new UserRequest(requestInfo, driver), uri);
+		} catch (DuplicateUserNameException e) {
+			throw new CustomException(VendorConstants.DuplicateUserNameException,
+					"The mobile number is already in use. Please use another mobile number to create a vendor");
+		}
 		log.debug("owner created --> " + userDetailResponse.getUser().get(0).getUuid());
 		return userDetailResponse.getUser().get(0);
 	}
