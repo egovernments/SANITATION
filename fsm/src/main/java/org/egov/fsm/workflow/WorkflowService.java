@@ -72,7 +72,7 @@ public class WorkflowService {
 		} catch (IllegalArgumentException e) {
 			throw new CustomException(FSMErrorConstants.PARSING_ERROR, "Failed to parse response of Workflow");
 		}
-		if (response != null)
+		if (response.getProcessInstances() != null)
 			return response.getProcessInstances().get(0);
 		else return null;
 	}
