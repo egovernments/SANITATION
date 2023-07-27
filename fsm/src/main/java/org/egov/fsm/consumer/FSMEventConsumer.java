@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 	        try {
 	            log.info("Received event on topic - " + record);
 	            FSMEvent fsmEvent = mapper.convertValue(record, FSMEvent.class);
-//	            eventProcessingUtil.processFSMEvent(fsmEvent);
+	            eventProcessingUtil.processFSMEvent(fsmEvent);
 	        }
 	        catch (Exception e){
 	            throw new CustomException("PARSING_ERROR","Failed to parse record to fsmEvent" + e.getMessage());
