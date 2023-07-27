@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class FSMEventUtil {
 	
 	
@@ -33,6 +36,9 @@ public class FSMEventUtil {
 //	        hashMobileNumbers(fsmEvent);
 
 	        producer.push(fsmEventIndexKafkaTopic, fsmEvent);
+	        
+            log.info("Send event on topic - " +fsmEventIndexKafkaTopic +" Request body for topic "+ fsmEvent);
+
 	    }
 
 	
