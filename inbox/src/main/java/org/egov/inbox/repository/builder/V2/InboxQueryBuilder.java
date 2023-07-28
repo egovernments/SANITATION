@@ -287,20 +287,28 @@ public class InboxQueryBuilder implements QueryBuilderInterface {
         SearchParam.Operator operator = nameToOperatorMap.get(key);
         if(operator == null || operator.equals(SearchParam.Operator.EQUAL)){
             // Add terms clause in case the search criteria has a list of values
-            if(params.get(key) instanceof List){
+            if (params.get(key) instanceof List) {
                 Map<String, Object> termsClause = new HashMap<>();
                 termsClause.put("terms", new HashMap<>());
                 Map<String, Object> innerTermsClause = (Map<String, Object>) termsClause.get("terms");
                 innerTermsClause.put(addDataPathToSearchParamKey(key, nameToPathMap), params.get(key));
                 return termsClause;
-            }
-            // Add term clause in case the search criteria has a single value
-            else{
-                Map<String, Object> termClause = new HashMap<>();
-                termClause.put("term", new HashMap<>());
-                Map<String, Object> innerTermClause = (Map<String, Object>) termClause.get("term");
-                innerTermClause.put(addDataPathToSearchParamKey(key, nameToPathMap), params.get(key));
-                return termClause;
+            } else {
+                // Handle wildcard search if the search criteria contains an asterisk (*)
+                if (params.get(key).toString().contains("applicationNos")) {
+                    Map<String, Object> wildcardClause = new HashMap<>();
+                    wildcardClause.put("wildcard", new HashMap<>());
+                    Map<String, Object> innerWildcardClause = (Map<String, Object>) wildcardClause.get("wildcard");
+                    innerWildcardClause.put(addDataPathToSearchParamKey(key, nameToPathMap), params.get(key));
+                    return wildcardClause;
+                } else {
+                    // Add term clause in case the search criteria has a single value
+                    Map<String, Object> termClause = new HashMap<>();
+                    termClause.put("term", new HashMap<>());
+                    Map<String, Object> innerTermClause = (Map<String, Object>) termClause.get("term");
+                    innerTermClause.put(addDataPathToSearchParamKey(key, nameToPathMap), params.get(key));
+                    return termClause;
+                }
             }
         }
         else {
