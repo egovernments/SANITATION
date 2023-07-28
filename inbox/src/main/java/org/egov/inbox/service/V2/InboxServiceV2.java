@@ -66,7 +66,7 @@ public class InboxServiceV2 {
      */
     public InboxResponse getInboxResponse(InboxRequest inboxRequest){
 
-        validator.validateSearchCriteria(inboxRequest);
+//        validator.validateSearchCriteria(inboxRequest);
         InboxQueryConfiguration inboxQueryConfiguration = mdmsUtil.getConfigFromMDMS(inboxRequest.getInbox().getTenantId(), inboxRequest.getInbox().getProcessSearchCriteria().getModuleName());
         hashParamsWhereverRequiredBasedOnConfiguration(inboxRequest.getInbox().getModuleSearchCriteria(), inboxQueryConfiguration);
         List<Inbox> items = getInboxItems(inboxRequest, inboxQueryConfiguration.getIndex());
