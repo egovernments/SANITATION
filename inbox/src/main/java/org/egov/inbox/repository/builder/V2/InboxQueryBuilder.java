@@ -295,7 +295,7 @@ public class InboxQueryBuilder implements QueryBuilderInterface {
                 return termsClause;
             } else {
                 // Handle wildcard search if the search criteria contains an asterisk (*)
-                if (params.get(key).toString().contains("applicationNos")) {
+                if (params.get(key).toString().contains("*")) {
                     Map<String, Object> wildcardClause = new HashMap<>();
                     wildcardClause.put("wildcard", new HashMap<>());
                     Map<String, Object> innerWildcardClause = (Map<String, Object>) wildcardClause.get("wildcard");
