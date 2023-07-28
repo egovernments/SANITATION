@@ -295,7 +295,7 @@ public class InboxQueryBuilder implements QueryBuilderInterface {
                 return termsClause;
             }
            //  Add term clause in case the search criteria has a single value
-            else  if (key.equalsIgnoreCase("applicationNos")){
+            else  if (key.equalsIgnoreCase("applicationNo")){
                 Map<String, Object> wildcardClause = new HashMap<>();
                 wildcardClause.put("wildcard", new HashMap<>());
                 Map<String, Object> innerWildcardClause = (Map<String, Object>) wildcardClause.get("wildcard");
