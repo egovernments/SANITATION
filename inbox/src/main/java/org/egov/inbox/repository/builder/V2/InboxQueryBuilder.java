@@ -294,14 +294,6 @@ public class InboxQueryBuilder implements QueryBuilderInterface {
                 innerTermsClause.put(addDataPathToSearchParamKey(key, nameToPathMap), params.get(key));
                 return termsClause;
             }
-           //  Add term clause in case the search criteria has a single value
-            else  if (key.equalsIgnoreCase("applicationNo")){
-                Map<String, Object> wildcardClause = new HashMap<>();
-                wildcardClause.put("wildcard", new HashMap<>());
-                Map<String, Object> innerWildcardClause = (Map<String, Object>) wildcardClause.get("wildcard");
-                innerWildcardClause.put(addDataPathToSearchParamKey(key, nameToPathMap), "*"+ params.get(key)+"*");
-                return wildcardClause;
-            }
             // Add term clause in case the search criteria has a single value
             else{
                 Map<String, Object> termClause = new HashMap<>();
@@ -310,6 +302,14 @@ public class InboxQueryBuilder implements QueryBuilderInterface {
                 innerTermClause.put(addDataPathToSearchParamKey(key, nameToPathMap), params.get(key));
                 return termClause;
             }
+        }
+        else if(operator.equals(SearchParam.Operator.WILDCARD)){
+        	 // Add wildcard clause in case the search criteria has a single value
+        	 Map<String, Object> wildcardClause = new HashMap<>();
+             wildcardClause.put("wildcard", new HashMap<>());
+             Map<String, Object> innerWildcardClause = (Map<String, Object>) wildcardClause.get("wildcard");
+             innerWildcardClause.put(addDataPathToSearchParamKey(key, nameToPathMap), "*"+ params.get(key)+"*");
+             return wildcardClause;            
         }
         else {
             Map<String, Object> rangeClause = new HashMap<>();

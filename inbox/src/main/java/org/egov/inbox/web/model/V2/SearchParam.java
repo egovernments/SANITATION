@@ -1,6 +1,5 @@
 package org.egov.inbox.web.model.V2;
 
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -13,52 +12,52 @@ import lombok.*;
 @Setter
 public class SearchParam {
 
-    @JsonProperty("name")
-    private String name;
+	@JsonProperty("name")
+	private String name;
 
-    @JsonProperty("path")
-    private String path;
+	@JsonProperty("path")
+	private String path;
 
-    @JsonProperty("isMandatory")
-    private Boolean isMandatory;
+	@JsonProperty("isMandatory")
+	private Boolean isMandatory;
 
-    @JsonProperty("isHashingRequired")
-    private Boolean isHashingRequired;
+	@JsonProperty("isHashingRequired")
+	private Boolean isHashingRequired;
 
-    @JsonProperty("operator")
-    private Operator operator;
+	@JsonProperty("operator")
+	private Operator operator;
 
-    public enum Operator {
+	public enum Operator {
 
-        EQUAL("EQUAL"),
+		EQUAL("EQUAL"),
 
-        GTE("GTE"),
+		GTE("GTE"),
 
-        LTE("LTE");
+		LTE("LTE"), 
+		
+		WILDCARD("WILDCARD");
 
+		private String value;
 
-        private String value;
+		Operator(String value) {
+			this.value = value;
+		}
 
-        Operator(String value) {
-            this.value = value;
-        }
+		@Override
+		@JsonValue
+		public String toString() {
+			return String.valueOf(value);
+		}
 
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        @JsonCreator
-        public static Operator fromValue(String text) {
-            for (Operator b : Operator.values()) {
-                if (String.valueOf(b.value).equalsIgnoreCase(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-    }
-
+		@JsonCreator
+		public static Operator fromValue(String text) {
+			for (Operator b : Operator.values()) {
+				if (String.valueOf(b.value).equalsIgnoreCase(text)) {
+					return b;
+				}
+			}
+			return null;
+		}
+	}
 
 }
