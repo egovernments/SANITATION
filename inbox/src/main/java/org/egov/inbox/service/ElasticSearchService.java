@@ -1,10 +1,48 @@
 package org.egov.inbox.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpHost;
+import static java.util.Objects.isNull;
+import static javax.servlet.http.HttpServletRequest.BASIC_AUTH;
+import static org.apache.commons.codec.CharEncoding.US_ASCII;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_DATAVIEWEDBY_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_DATAVIEW_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_DATA_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_HIT_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_PALINACCESSREQUESTFIELD_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_PALINACCESSREQUEST_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_ROLES_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_SOURCE_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_TIMESTAMP_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_TOTAL_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTICSEARCH_USERID_KEY;
+import static org.egov.inbox.util.DSSConstants.ELASTIC_SEARCH_MASTER;
+import static org.egov.inbox.util.DSSConstants.INTERNALMICROSERVICEROLE_CODE;
+import static org.egov.inbox.util.DSSConstants.INTERNALMICROSERVICEROLE_NAME;
+import static org.egov.inbox.util.DSSConstants.INTERNALMICROSERVICEUSER_MOBILENO;
+import static org.egov.inbox.util.DSSConstants.INTERNALMICROSERVICEUSER_NAME;
+import static org.egov.inbox.util.DSSConstants.INTERNALMICROSERVICEUSER_TYPE;
+import static org.egov.inbox.util.DSSConstants.INTERNALMICROSERVICEUSER_USERNAME;
+import static org.egov.inbox.util.DSSConstants.MDMS_ELASTIC_SEARCH_PATH;
+import static org.egov.inbox.util.DSSConstants.PLACEHOLDER_FROMDATE_KEY;
+import static org.egov.inbox.util.DSSConstants.PLACEHOLDER_LIMIT_KEY;
+import static org.egov.inbox.util.DSSConstants.PLACEHOLDER_OFFSET_KEY;
+import static org.egov.inbox.util.DSSConstants.PLACEHOLDER_SORT_ORDER_KEY;
+import static org.egov.inbox.util.DSSConstants.PLACEHOLDER_TODATE_KEY;
+import static org.egov.inbox.util.DSSConstants.PLACEHOLDER_UUID_KEY;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
+import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
@@ -17,6 +55,7 @@ import org.egov.inbox.web.model.elasticsearch.InboxElasticSearchCriteria;
 import org.egov.inbox.web.model.elasticsearch.InboxElasticSearchRequest;
 import org.egov.inbox.web.model.elasticsearch.UserDetailResponse;
 import org.egov.tracer.model.CustomException;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,19 +64,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import javax.annotation.PostConstruct;
-import java.nio.charset.Charset;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 
-import static java.util.Objects.isNull;
-import static javax.servlet.http.HttpServletRequest.BASIC_AUTH;
-import static org.apache.commons.codec.CharEncoding.US_ASCII;
-import static org.egov.inbox.util.DSSConstants.*;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Service
 public class ElasticSearchService {
 
     @Autowired
@@ -59,16 +93,22 @@ public class ElasticSearchService {
     private MultiStateInstanceUtil centralInstanceUtil;
 
     private String internalMicroserviceRoleUuid = null;
+    
+    public static final String TENANTID_MDC_STRING = "TENANTID";
 
 
     @PostConstruct
     void initalizeSystemuser(){
+    	
+        // Adding in MDC so that tracer can add it in header
+        MDC.put(TENANTID_MDC_STRING, config.getStateLevelTenantId());
+        
         RequestInfo requestInfo = new RequestInfo();
         StringBuilder uri = new StringBuilder();
         uri.append(config.getUserHost()).append(config.getUserSearchEndpoint()); // URL for user search call
         Map<String, Object> userSearchRequest = new HashMap<>();
         userSearchRequest.put("RequestInfo", requestInfo);
-        userSearchRequest.put("tenantId", config.getParentLevelTenantId());
+        userSearchRequest.put("tenantId", config.getStateLevelTenantId());
         userSearchRequest.put("roleCodes", Collections.singletonList(INTERNALMICROSERVICEROLE_CODE));
         try {
             LinkedHashMap<String, Object> responseMap = (LinkedHashMap<String, Object>) serviceRequestRepository.fetchResult(uri, userSearchRequest);
@@ -87,10 +127,10 @@ public class ElasticSearchService {
         //Creating role with INTERNAL_MICROSERVICE_ROLE
         Role role = Role.builder()
                 .name(INTERNALMICROSERVICEROLE_NAME).code(INTERNALMICROSERVICEROLE_CODE)
-                .tenantId(config.getParentLevelTenantId()).build();
+                .tenantId(config.getStateLevelTenantId()).build();
         User user = User.builder().userName(INTERNALMICROSERVICEUSER_USERNAME)
                 .name(INTERNALMICROSERVICEUSER_NAME).mobileNumber(INTERNALMICROSERVICEUSER_MOBILENO)
-                .type(INTERNALMICROSERVICEUSER_TYPE).tenantId(config.getParentLevelTenantId())
+                .type(INTERNALMICROSERVICEUSER_TYPE).tenantId(config.getStateLevelTenantId())
                 .roles(Collections.singletonList(role)).id(0L).build();
 
         userCreateRequest.put("RequestInfo", requestInfo);

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -42,7 +41,6 @@ public class ProcessInstanceSearchCriteria {
     @JsonProperty("limit")
     private Integer limit;
 
-    @NotNull
     @JsonProperty("businessService")
     private List<String> businessService;
 

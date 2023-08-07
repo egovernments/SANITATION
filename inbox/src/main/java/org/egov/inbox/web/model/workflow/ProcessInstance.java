@@ -82,9 +82,6 @@ public class ProcessInstance   {
 
         @JsonProperty("stateSla")
         private Long stateSla;
-        
-        @JsonProperty("assignee")
-        private String assignee;
 
         @JsonProperty("businesssServiceSla")
         private Long businesssServiceSla;
