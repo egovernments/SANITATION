@@ -44,6 +44,7 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
+0.0.16 added style support for inbox v2  
 0.0.16 Removed extra margin of dropdown from filter and added margin for tag  
 0.0.15 Removed selected locality and no result found card extra margin  
 0.0.14 Fixed word break 
