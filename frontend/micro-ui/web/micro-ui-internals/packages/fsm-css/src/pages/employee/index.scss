@@ -1,4 +1,5 @@
 @import "./login.scss";
+@import "./inboxv2.scss";
 /* TODO: convert using tailwind */
 .employee {
   .breadcrumb {
@@ -395,8 +396,8 @@
       display: flex;
       flex-direction: column;
       padding-top: 80px;
-      margin-left: 72px;
-      width: calc(100%-83px);
+      margin-left: 55px;
+      width: calc(100%-55px);
     }
     .citizen-home-container {
       display: flex;
