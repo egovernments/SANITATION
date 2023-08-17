@@ -44,7 +44,14 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
-0.0.16 added style support for inbox v2  
+0.0.24 Added min-height for mobile reponive  
+0.0.23 Dropdown width fixes  
+0.0.22 employee dropdown height reduces  
+0.0.21 Multiple image ui fixes  
+0.0.20 Pop up and dropdown position issue fix    
+0.0.19 UI/UX fixes    
+0.0.18 No Changes    
+0.0.17 Fixed dropdown list view in registry screen    
 0.0.16 Removed extra margin of dropdown from filter and added margin for tag  
 0.0.15 Removed selected locality and no result found card extra margin  
 0.0.14 Fixed word break 

@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Card, Banner, CardText, SubmitBar, LinkButton } from "@egovernments/digit-ui-react-components";
-import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { Loader } from "@egovernments/digit-ui-react-components";
-import getPDFData from "../../../getPDFData";
+import React, { useEffect, useState } from 'react';
+import {
+  Card,
+  Banner,
+  CardText,
+  SubmitBar,
+  LinkButton,
+} from '@egovernments/digit-ui-react-components';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Loader } from '@egovernments/digit-ui-react-components';
+import getPDFData from '../../../getPDFData';
 
 const GetActionMessage = () => {
   const { t } = useTranslation();
-  return t("CS_FILE_DESLUDGING_APPLICATION_SUCCESS");
+  return t('CS_FILE_DESLUDGING_APPLICATION_SUCCESS');
 };
 
 const BannerPicker = (props) => {
@@ -15,7 +21,7 @@ const BannerPicker = (props) => {
     <Banner
       message={GetActionMessage()}
       applicationNumber={props.data?.fsm[0].applicationNo}
-      info={props.t("CS_FILE_DESLUDGING_APPLICATION_NO")}
+      info={props.t('CS_FILE_DESLUDGING_APPLICATION_NO')}
       successful={props.isSuccess}
     />
   );
@@ -24,12 +30,25 @@ const BannerPicker = (props) => {
 const Response = ({ data, onSuccess }) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const mutation = Digit.Hooks.fsm.useDesludging(data?.address?.city ? data.address?.city?.code : tenantId);
+  const mutation = Digit.Hooks.fsm.useDesludging(
+    data?.address?.city ? data.address?.city?.code : tenantId
+  );
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const { tenants } = storeData || {};
-  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
-  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("FSM_ERROR_DATA", false);
-  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
+  const [
+    mutationHappened,
+    setMutationHappened,
+    clear,
+  ] = Digit.Hooks.useSessionStorage('FSM_MUTATION_HAPPENED', false);
+  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage(
+    'FSM_ERROR_DATA',
+    false
+  );
+  const [
+    successData,
+    setsuccessData,
+    clearSuccessData,
+  ] = Digit.Hooks.useSessionStorage('FSM_MUTATION_SUCCESS_DATA', false);
   const [paymentPreference, setPaymentPreference] = useState(null);
   const [advancePay, setAdvancePay] = useState(null);
   const [zeroPay, setZeroPay] = useState(null);
@@ -37,13 +56,18 @@ const Response = ({ data, onSuccess }) => {
   const Data = mutation?.data || successData;
   const localityCode = Data?.fsm?.[0].address?.locality?.code;
   const slumCode = Data?.fsm?.[0].address?.slumName;
-  const slum = Digit.Hooks.fsm.useSlum(Data?.fsm?.[0].address?.tenantId, slumCode, localityCode, {
-    enabled: slumCode ? true : false,
-    retry: slumCode ? true : false,
-  });
+  const slum = Digit.Hooks.fsm.useSlum(
+    Data?.fsm?.[0].address?.tenantId,
+    slumCode,
+    localityCode,
+    {
+      enabled: slumCode ? true : false,
+      retry: slumCode ? true : false,
+    }
+  );
 
   const onError = (error, variables) => {
-    setErrorInfo(error?.response?.data?.Errors[0]?.code || "ERROR");
+    setErrorInfo(error?.response?.data?.Errors[0]?.code || 'ERROR');
     setMutationHappened(true);
   };
   useEffect(() => {
@@ -53,12 +77,31 @@ const Response = ({ data, onSuccess }) => {
   useEffect(() => {
     if (!mutationHappened && !errorInfo) {
       try {
-        const amount = Digit.SessionStorage.get("total_amount");
-        const amountPerTrip = Digit.SessionStorage.get("amount_per_trip");
-        const { subtype, pitDetail, address, pitType, source, selectGender, selectPaymentPreference, selectTripNo } = data;
-        const { city, locality, geoLocation, pincode, street, doorNo, landmark, slum } = address;
+        const amount = Digit.SessionStorage.get('total_amount');
+        const amountPerTrip = Digit.SessionStorage.get('amount_per_trip');
+        const {
+          subtype,
+          pitDetail,
+          address,
+          pitType,
+          source,
+          selectGender,
+          selectPaymentPreference,
+          selectTripNo,
+        } = data;
+        const {
+          city,
+          locality,
+          geoLocation,
+          pincode,
+          street,
+          doorNo,
+          landmark,
+          slum,
+        } = address;
         setPaymentPreference(selectPaymentPreference?.code);
-        const advanceAmount = amount === 0 ? null : selectPaymentPreference?.advanceAmount;
+        const advanceAmount =
+          amount === 0 ? null : selectPaymentPreference?.advanceAmount;
         amount === 0 ? setZeroPay(true) : setZeroPay(false);
         advanceAmount === 0 ? setAdvancePay(true) : setAdvancePay(false);
         const formdata = {
@@ -97,9 +140,16 @@ const Response = ({ data, onSuccess }) => {
             },
             source,
             sanitationtype: pitType?.code,
-            paymentPreference: amount === 0 ? null : selectPaymentPreference?.paymentType ? selectPaymentPreference?.paymentType?.code : null,
+            paymentPreference:
+              amount === 0
+                ? null
+                : selectPaymentPreference?.paymentType
+                ? selectPaymentPreference?.paymentType?.code
+                : null,
             noOfTrips: selectTripNo ? selectTripNo?.tripNo?.code : 1,
-            vehicleCapacity: selectTripNo ? selectTripNo?.vehicleCapacity?.capacity : "",
+            vehicleCapacity: selectTripNo
+              ? selectTripNo?.vehicleCapacity?.capacity
+              : '',
             additionalDetails: {
               totalAmount: amount,
               tripAmount: amountPerTrip,
@@ -115,7 +165,7 @@ const Response = ({ data, onSuccess }) => {
             onSuccess();
           },
         });
-        sessionStorage.removeItem("Digit.total_amount");
+        sessionStorage.removeItem('Digit.total_amount');
       } catch (err) {}
     }
   }, []);
@@ -123,7 +173,9 @@ const Response = ({ data, onSuccess }) => {
   const handleDownloadPdf = () => {
     const { fsm } = Data;
     const [applicationDetails, ...rest] = fsm;
-    const tenantInfo = tenants.find((tenant) => tenant.code === applicationDetails.tenantId);
+    const tenantInfo = tenants.find(
+      (tenant) => tenant.code === applicationDetails.tenantId
+    );
 
     const data = getPDFData({ ...applicationDetails, slum }, tenantInfo, t);
     Digit.Utils.pdf.generate(data);
@@ -133,21 +185,36 @@ const Response = ({ data, onSuccess }) => {
   return mutation.isLoading || (mutation.isIdle && !mutationHappened) ? (
     <Loader />
   ) : (
-    <Card>
-      <BannerPicker t={t} data={Data} isSuccess={isSuccess} isLoading={(mutation.isIdle && !mutationHappened) || mutation?.isLoading} />
+    <Card className='fsm-citizen-reponse-page'>
+      <BannerPicker
+        t={t}
+        data={Data}
+        isSuccess={isSuccess}
+        isLoading={
+          (mutation.isIdle && !mutationHappened) || mutation?.isLoading
+        }
+      />
       <CardText>
-        {t((paymentPreference && paymentPreference == "POST_PAY") || advancePay ? "CS_FILE_PROPERTY_RESPONSE_POST_PAY" : zeroPay ? "CS_FSM_RESPONSE_CREATE_DISPLAY_ZERO_PAY" : "CS_FILE_PROPERTY_RESPONSE")}
+        {t(
+          (paymentPreference && paymentPreference == 'POST_PAY') || advancePay
+            ? 'CS_FILE_PROPERTY_RESPONSE_POST_PAY'
+            : zeroPay
+            ? 'CS_FSM_RESPONSE_CREATE_DISPLAY_ZERO_PAY'
+            : 'CS_FILE_PROPERTY_RESPONSE'
+        )}
       </CardText>
-      {isSuccess && (
-        <SubmitBar
-          label={t("CS_COMMON_DOWNLOAD")}
-          onSubmit={handleDownloadPdf}
-          className="w-full"
-        />
-      )}
-      <Link to={`/${window?.contextPath}/citizen`}>
-        <LinkButton label={t("CORE_COMMON_GO_TO_HOME")} />
-      </Link>
+      <div className='fsm-response-button-wrap'>
+        {isSuccess && (
+          <SubmitBar
+            label={t('CS_COMMON_DOWNLOAD')}
+            onSubmit={handleDownloadPdf}
+            className='w-full'
+          />
+        )}
+        <Link to={`/${window?.contextPath}/citizen`}>
+          <LinkButton label={t('CORE_COMMON_GO_TO_HOME')} />
+        </Link>
+      </div>
     </Card>
   );
 };

@@ -1726,8 +1726,13 @@ input::-webkit-calendar-picker-indicator {
 .CitizenHomeCard {
   border-radius: 4px; }
 
-.fsm-citizen-wrapper .card {
-  margin-bottom: 24px; }
+.fsm-citizen-wrapper {
+  min-height: 100vh; }
+  .fsm-citizen-wrapper .card {
+    padding-bottom: 16px;
+    margin-bottom: 24px; }
+  .fsm-citizen-wrapper .card-text {
+    margin-bottom: 10px; }
 
 .primary-label-btn {
   display: -webkit-box;
@@ -1780,10 +1785,11 @@ input::-webkit-calendar-picker-indicator {
   display: flex; }
 
 .gender-label-row {
-  padding-bottom: 8px;
-  margin-bottom: 8px; }
+  padding-bottom: 0;
+  margin-bottom: 0; }
   .gender-label-row h2 {
-    width: 50%; }
+    width: 50%;
+    font-weight: 700; }
   .gender-label-row .value {
     width: 50%; }
 
@@ -1800,7 +1806,7 @@ input::-webkit-calendar-picker-indicator {
   border-color: #d6d5d4;
   margin-bottom: 16px; }
   .stepper-gender-wrap h2 {
-    margin-bottom: 16px; }
+    margin-bottom: 10px; }
 
 .fsm-citizen-payment-label-wrapper {
   border-bottom-width: 2px;
@@ -1809,7 +1815,10 @@ input::-webkit-calendar-picker-indicator {
   .fsm-citizen-payment-label-wrapper .key-note-pair {
     display: -webkit-box;
     display: -ms-flexbox;
-    display: flex; }
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between; }
     .fsm-citizen-payment-label-wrapper .key-note-pair h3 {
       width: 40%;
       word-break: unset; }
@@ -1845,3 +1854,41 @@ input::-webkit-calendar-picker-indicator {
 
 .margin-unset {
   margin: unset !important; }
+
+.select-wrap .options-card {
+  max-height: 200px;
+  overflow-y: scroll; }
+
+.action-bar-wrap-registry .menu-wrap {
+  position: relative; }
+
+.rating-star-wrap {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
+
+.fsm-citizen-reponse-page {
+  padding: 0; }
+  .fsm-citizen-reponse-page .fsm-response-button-wrap {
+    padding: 12px; }
+  .fsm-citizen-reponse-page p {
+    padding-left: 12px;
+    padding-right: 12px; }
+
+.check-page-uploaded-images {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+  .check-page-uploaded-images h2 {
+    margin-bottom: 8px; }
+  .check-page-uploaded-images .value {
+    width: unset !important; }
+  .check-page-uploaded-images .multi-upload-wrap {
+    margin-bottom: unset; }
+
+.select-pit-wrapper .toast-success {
+  bottom: 111px; }
+
+.action-bar-wrap .card-link {
+  margin-top: 4px; }
