@@ -8,7 +8,7 @@ import javax.validation.Valid;
 
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.fsm.config.FSMConfiguration;
-import org.egov.fsm.producer.Producer;
+import org.egov.fsm.fsmProducer.FSMProducer;
 import org.egov.fsm.repository.querybuilder.FSMAuditQueryBuilder;
 import org.egov.fsm.repository.querybuilder.FSMQueryBuilder;
 import org.egov.fsm.repository.rowmapper.FSMAuditRowMapper;
@@ -40,7 +40,7 @@ public class FSMRepository {
 	private FSMConfiguration config;
 
 	@Autowired
-	private Producer producer;
+	private FSMProducer producer;
 
 	@Autowired
 	private FSMQueryBuilder fsmQueryBuilder;
