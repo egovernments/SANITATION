@@ -10,6 +10,7 @@ import { initFSMComponents } from "@egovernments/digit-ui-module-fsm";
 import { initHRMSComponents } from "@egovernments/digit-ui-module-hrms";
 import { PaymentModule, PaymentLinks, paymentConfigs } from "@egovernments/digit-ui-module-common";
 import { initUtilitiesComponents } from "@egovernments/digit-ui-module-utilities";
+import { UICustomizations } from "./Customisations/UICustomizations";
 
 window.contextPath = window?.globalConfigs?.getConfig("CONTEXT_PATH");
 
@@ -32,6 +33,10 @@ initUtilitiesComponents();
 const moduleReducers = (initData) => ({
   initData,
 });
+
+window.Digit.Customizations = {
+  commonUiConfig: UICustomizations
+};
 
 function App() {
   window.contextPath = window?.globalConfigs?.getConfig("CONTEXT_PATH");
