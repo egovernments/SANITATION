@@ -1,0 +1,25 @@
+.search-instruction-header {
+  margin-bottom: 1rem;
+  font-size: 16px;
+  font-weight: 500;
+  color: #505a5f;
+}
+
+.no-data-found {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & .error-msg {
+    margin: 2rem;
+  }
+}
+.inbox-search-wrapper .inbox-search-component-wrapper .sections-parent.inbox .links .inbox-links-icon {
+  height: 40px;
+  width: 40px;
+  path:first-child {
+    fill: none;
+  }
+}

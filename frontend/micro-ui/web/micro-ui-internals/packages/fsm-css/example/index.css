@@ -105,13 +105,6 @@ textarea {
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
   height: auto; }
 
-[type=search] {
-  -webkit-appearance: textfield;
-  outline-offset: -2px; }
-
-[type=search]::-webkit-search-decoration {
-  -webkit-appearance: none; }
-
 details {
   display: block; }
 
@@ -1207,6 +1200,37 @@ img, video {
   .employee-select-wrap.login-city-dd .options-card {
     max-height: 160px; } }
 
+.search-instruction-header {
+  margin-bottom: 1rem;
+  font-size: 16px;
+  font-weight: 500;
+  color: #505a5f; }
+
+.no-data-found {
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
+  .no-data-found .error-msg {
+    margin: 2rem; }
+
+.inbox-search-wrapper .inbox-search-component-wrapper .sections-parent.inbox .links .inbox-links-icon {
+  height: 40px;
+  width: 40px; }
+  .inbox-search-wrapper .inbox-search-component-wrapper .sections-parent.inbox .links .inbox-links-icon path:first-child {
+    fill: none; }
+
 .employee .breadcrumb {
   margin-left: 8px;
   margin-bottom: 24px; }
@@ -1546,8 +1570,8 @@ img, video {
     -ms-flex-direction: column;
     flex-direction: column;
     padding-top: 80px;
-    margin-left: 72px;
-    width: calc(100% - 83px); }
+    margin-left: 55px;
+    width: calc(100% - 55px); }
   .employee .citizen-home-container, .employee .main {
     display: -webkit-box;
     display: -ms-flexbox;

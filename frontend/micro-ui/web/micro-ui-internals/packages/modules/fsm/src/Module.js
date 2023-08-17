@@ -54,6 +54,8 @@ import AdvanceCollection from "./pageComponents/AdvanceCollection";
 import SelectTrips from "./pageComponents/SelectTrips";
 import PlusMinusInput from "./pageComponents/PlusMinusInput";
 import ConfirmationBox from "./components/Confirmation";
+import WorkflowFilter from "./components/WorkflowFilter";
+import Search from "./pages/employee/Search";
 
 const FSMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "FSM";
@@ -117,7 +119,7 @@ const FSMLinks = ({ matchPath, userType }) => {
     });
 
     return <CitizenHomeCard header={t("CS_HOME_FSM_SERVICES")} links={links} Icon={CitizenTruck} />;
-  } 
+  }
 };
 
 const componentsToRegister = {
@@ -172,7 +174,9 @@ const componentsToRegister = {
   SelectTrips,
   PlusMinusInput,
   ConfirmationBox,
-  DSSCard:null,  // TO HIDE THE DSS CARD IN HOME SCREEN as per MUKTA
+  DSSCard: null, // TO HIDE THE DSS CARD IN HOME SCREEN as per MUKTA
+  WorkflowFilter,
+  FSMSearch: Search,
 };
 
 export const initFSMComponents = () => {

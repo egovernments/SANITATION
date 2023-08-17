@@ -4,7 +4,6 @@ import { useQuery } from "react-query";
 
 const useApplicationStatus = (select, isEnabled = true, statusMap=[]) => {
   const { t } = useTranslation();
-
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
 

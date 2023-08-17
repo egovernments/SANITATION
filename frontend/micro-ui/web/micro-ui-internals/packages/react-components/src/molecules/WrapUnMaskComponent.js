@@ -2,7 +2,7 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Loader, UnMaskComponent,PrivacyMaskIcon} from "..";
+import { Loader, UnMaskComponent, PrivacyMaskIcon } from "..";
 
 /**
  * Custom Component to demask the masked values.
@@ -26,31 +26,30 @@ const formatValue = (showValue) => {
 const WrapUnMaskComponent = React.memo(({ privacy = {}, value, unmaskField, ...rem }) => {
   const [privacyState, setPrivacyState] = useState(false);
   const { loadData = {} } = privacy;
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
   const isMobile = window.Digit.Utils.browser.isMobile();
-  const isEmployee = window.location.href.includes("/employee")
+  const isEmployee = window.location.href.includes("/employee");
 
-  const requestCriteria = [
-    loadData?.serviceName,
-    loadData?.requestParam,
-    loadData?.requestBody,
-    { recordId: privacy?.uuid, plainRequestFields: Array.isArray(privacy?.fieldName) ? privacy?.fieldName : [privacy?.fieldName] },
-    {
+  const requestCriteria = {
+    url: loadData?.serviceName,
+    params: loadData?.requestParam,
+    body: loadData?.requestBody,
+    // { recordId: privacy?.uuid, plainRequestFields: Array.isArray(privacy?.fieldName) ? privacy?.fieldName : [privacy?.fieldName] },
+    config: {
       enabled: privacyState,
       cacheTime: 100,
       select: (data) => {
         if (loadData?.d) {
           let unmaskeddata = loadData?.d(data, value);
-          if(rem?.setunmaskedNumber)
-            rem?.setunmaskedNumber(unmaskeddata);
+          if (rem?.setunmaskedNumber) rem?.setunmaskedNumber(unmaskeddata);
           return unmaskeddata;
         }
         return unmaskField ? unmaskField(_.get(data, loadData?.jsonPath, value)) : _.get(data, loadData?.jsonPath, value);
       },
     },
-  ];
-  const { isLoading, data, revalidate } = Digit.Hooks.useCustomAPIHook(...requestCriteria);
-  
+  };
+  const { isLoading, data, revalidate } = Digit.Hooks.useCustomAPIHook(requestCriteria);
+
   useEffect(() => {
     return () => {
       revalidate();
@@ -61,7 +60,7 @@ const WrapUnMaskComponent = React.memo(({ privacy = {}, value, unmaskField, ...r
     return !unmaskField ? (
       <Loader />
     ) : (
-      <span style={{ display: "inline-flex", width: "fit-content", marginLeft: isMobile && isEmployee ?"":"10px" }}>
+      <span style={{ display: "inline-flex", width: "fit-content", marginLeft: isMobile && isEmployee ? "" : "10px" }}>
         <div className={`tooltip`}>
           <PrivacyMaskIcon className="privacy-icon-2" style={{ ...rem?.style, cursor: "default" }}></PrivacyMaskIcon>
         </div>
