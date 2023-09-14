@@ -1670,6 +1670,9 @@ img, video {
     margin-left: 16px;
     margin-right: 16px; } }
 
+.employee-card-textarea {
+  width: 50%; }
+
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
     margin-bottom: 70px !important;
