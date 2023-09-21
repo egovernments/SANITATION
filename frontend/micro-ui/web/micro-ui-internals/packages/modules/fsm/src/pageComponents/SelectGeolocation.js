@@ -22,8 +22,11 @@ const SelectGeolocation = ({ t, config, onSelect, userType, formData = {} }) => 
     }
   };
   const onPinChange = (pincode, position) => {
+    console.log("SelectGeoLocation - OnPinChange PINCODE", pincode, "POSITION",position,"CONFIG", config?.key);
     onSelect(config?.key, position);
   };
+
+  console.log("SelectGeoLocation - FormData", formData);
 
   if (userType === "employee") {
     return (
