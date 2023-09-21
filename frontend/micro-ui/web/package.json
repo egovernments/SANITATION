@@ -23,7 +23,7 @@
     "@egovernments/digit-ui-module-engagement": "1.5.20",
     "@egovernments/digit-ui-module-core": "1.5.37",
     "@egovernments/digit-ui-react-components": "^1.5.8",
-    "@egovernments/digit-ui-module-fsm": "^1.6.0",
+    "@egovernments/digit-ui-module-fsm": "^1.6.1",
     "@egovernments/digit-ui-module-utilities":"0.0.8",
     "babel-loader": "8.1.0",
     "clean-webpack-plugin": "4.0.0",
