@@ -1,7 +1,7 @@
 import React from "react";
 import { CardLabelError, Dropdown } from "@egovernments/digit-ui-react-components";
 
-export const configAcceptDso = ({ t, dsoData, dso, selectVehicleNo, vehicleNoList, vehicleNo, vehicle, noOfTrips, action }) => {
+export const configAcceptDso = ({ t, dsoData, dso, selectVehicleNo, vehicleNoList, vehicleNo, vehicle, noOfTrips, vehicleDriverList, vehicleDriver, selectVehicleDriver, action }) => {
   return {
     label: {
       heading: `ES_FSM_ACTION_TITLE_${action}`,
@@ -17,9 +17,7 @@ export const configAcceptDso = ({ t, dsoData, dso, selectVehicleNo, vehicleNoLis
             type: "dropdown",
             populators: (
               <React.Fragment>
-                {!vehicleNoList?.length ? (
-                  <CardLabelError>{t("ES_FSM_NO_VEHICLE_AVAILABLE")}</CardLabelError>
-                ) : null}
+                {!vehicleNoList?.length ? <CardLabelError>{t("ES_FSM_NO_VEHICLE_AVAILABLE")}</CardLabelError> : null}
                 <Dropdown
                   option={vehicleNoList}
                   autoComplete="off"
@@ -45,6 +43,25 @@ export const configAcceptDso = ({ t, dsoData, dso, selectVehicleNo, vehicleNoLis
             disable: true,
           },
           {
+            label: t("ES_FSM_DRIVER"),
+            isMandatory: true,
+            type: "dropdown",
+            populators: (
+              <React.Fragment>
+                {!vehicleDriverList?.length ? <CardLabelError>{t("ES_FSM_NO_DRIVER_AVAILABLE")}</CardLabelError> : null}
+                <Dropdown
+                  option={vehicleDriverList}
+                  autoComplete="off"
+                  optionKey="name"
+                  id="driver"
+                  select={selectVehicleDriver}
+                  selected={vehicleDriver}
+                  disable={vehicleDriverList?.length > 0 ? false : true}
+                />
+              </React.Fragment>
+            ),
+          },
+          {
             label: t("ES_FSM_ACTION_NUMBER_OF_TRIPS"),
             isMandatory: true,
             type: "text",
@@ -53,7 +70,7 @@ export const configAcceptDso = ({ t, dsoData, dso, selectVehicleNo, vehicleNoLis
               validation: {
                 required: true,
               },
-              defaultValue: noOfTrips
+              defaultValue: noOfTrips,
             },
             disable: true,
           },

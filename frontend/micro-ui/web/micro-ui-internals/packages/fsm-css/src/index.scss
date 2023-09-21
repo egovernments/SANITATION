@@ -1,18 +1,19 @@
-@import 'tailwindcss/base';
+@import "tailwindcss/base";
 
-@import 'tailwindcss/components';
+@import "tailwindcss/components";
 
-@import 'tailwindcss/utilities';
+@import "tailwindcss/utilities";
 
-@import 'react-date-range/dist/styles.css';
-@import 'react-date-range/dist/theme/default.css';
+@import "react-date-range/dist/styles.css";
+@import "react-date-range/dist/theme/default.css";
 
-@import './components/card.scss';
-@import './components/toggleSwitch.scss';
-@import './components/plusMinus.scss';
-@import './components/table.scss';
-@import './pages/employee/index.scss';
-@import './pages/employee/login.scss';
+@import "./components/card.scss";
+@import "./components/toggleSwitch.scss";
+@import "./components/plusMinus.scss";
+@import "./components/table.scss";
+@import "./pages/employee/index.scss";
+@import "./pages/employee/login.scss";
+@import "./components/applicationTable.scss";
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
@@ -281,4 +282,31 @@ input::-webkit-calendar-picker-indicator {
   .card-link {
     margin-top: 4px;
   }
+}
+
+.sla-cell-success {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0 24px;
+  border-radius: 11px;
+  background-color: rgba(0, 112, 60, 0.12);
+  color: #00703c !important;
+}
+
+.sla-cell-error {
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 11px;
+  padding: 0 24px;
+  color: #d4351c !important;
+  background-color: rgb(212, 53, 28, 0.12);
+}
+
+.sla-cell-warning {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0 24px;
+  border-radius: 11px;
+  color: #f47738 !important;
+  background-color: rgb(241, 143, 94, 0.12);
 }

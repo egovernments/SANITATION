@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormComposer, Loader, Header } from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
+import { config } from "./config";
 
 const isConventionalSpecticTank = (tankDimension) => tankDimension === "lbd";
 
@@ -42,6 +43,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
   };
 
   const onFormValueChange = (setValue, formData) => {
+    console.log("NEWAPP FORMDATA", formData)
     if (
       formData?.propertyType &&
       formData?.subtype &&
@@ -65,9 +67,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
       }
       if (
         formData?.tripData?.amountPerTrip !== 0 &&
-        (formData?.advancepaymentPreference?.advanceAmount < min ||
-          formData?.advancepaymentPreference?.advanceAmount > max ||
-          formData?.advancepaymentPreference?.advanceAmount === "")
+        (formData?.advancepaymentPreference?.advanceAmount < min || formData?.advancepaymentPreference?.advanceAmount > max || formData?.advancepaymentPreference?.advanceAmount === "")
       ) {
         setSubmitValve(false);
       }
@@ -160,7 +160,9 @@ export const NewApplication = ({ parentUrl, heading }) => {
     return <Loader />;
   }
 
-  const configs = [...preFields, ...commonFields];
+  // const configs = [...preFields, ...commonFields];
+  const configs = [...config];
+  console.log("configs", configs);
 
   return (
     <React.Fragment>
