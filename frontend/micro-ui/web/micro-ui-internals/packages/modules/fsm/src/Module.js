@@ -56,6 +56,7 @@ import PlusMinusInput from "./pageComponents/PlusMinusInput";
 import ConfirmationBox from "./components/Confirmation";
 import WorkflowFilter from "./components/WorkflowFilter";
 import Search from "./pages/employee/Search";
+import VehicleTrackingCard from "./components/VehicleTrackingCard";
 
 const FSMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "FSM";
@@ -177,6 +178,7 @@ const componentsToRegister = {
   DSSCard: null, // TO HIDE THE DSS CARD IN HOME SCREEN as per MUKTA
   WorkflowFilter,
   FSMSearch: Search,
+  VehicleTrackingCard,
 };
 
 export const initFSMComponents = () => {
