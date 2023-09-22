@@ -31,6 +31,7 @@ import { useQueryClient } from "react-query";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { ViewImages } from "../../../components/ViewImages";
 import getPDFData from "../../../getPDFData";
+import LocationCard from "../../../components/LocationCard";
 
 const ApplicationDetails = (props) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -357,6 +358,7 @@ const ApplicationDetails = (props) => {
             )}
             {imageZoom ? <ImageViewer imageSrc={imageZoom} onClose={onCloseImageZoom} /> : null}
 
+            <LocationCard position={{ latitude: 12.9129842, longitude: 77.6421466 }} />
             <BreakLine />
             {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
             {!workflowDetails?.isLoading && !isDataLoading && (
