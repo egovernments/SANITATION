@@ -3,8 +3,10 @@ import { FormStep, TextArea, LabelFieldPair, CardLabel } from "@egovernments/dig
 import Timeline from "../components/TLTimelineInFSM";
 
 const SelectLandmark = ({ t, config, onSelect, formData, userType }) => {
-  const [landmark, setLandmark] = useState();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
 
+  const [landmark, setLandmark] = useState();
   const [error, setError] = useState("");
 
   const inputs = [
@@ -37,6 +39,9 @@ const SelectLandmark = ({ t, config, onSelect, formData, userType }) => {
   }
 
   if (userType === "employee") {
+    if (checkvehicletrack?.vehicleTrackingStatus) {
+      return null;
+    }
     return inputs?.map((input, index) => {
       return (
         <LabelFieldPair key={index}>

@@ -6,6 +6,8 @@ import Timeline from "../components/TLTimelineInFSM";
 
 const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setError, clearErrors }) => {
   const onSkip = () => onSelect();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
 
   const [focusIndex, setFocusIndex] = useState({ index: -1, type: "" });
 
@@ -128,6 +130,9 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
   };
 
   if (userType === "employee") {
+    if (checkvehicletrack?.vehicleTrackingStatus) {
+      return null;
+    }
     return inputs?.map((input, index) => {
       return (
         <LabelFieldPair key={index}>
