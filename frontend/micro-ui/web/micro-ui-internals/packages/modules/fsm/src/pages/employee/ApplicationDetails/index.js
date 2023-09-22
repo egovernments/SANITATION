@@ -358,7 +358,13 @@ const ApplicationDetails = (props) => {
             )}
             {imageZoom ? <ImageViewer imageSrc={imageZoom} onClose={onCloseImageZoom} /> : null}
 
-            <LocationCard position={{ latitude: 12.9129842, longitude: 77.6421466 }} />
+            {applicationData?.geoLocation?.latitude && applicationData?.geoLocation?.longitude && (
+              <>
+                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t("ES_APPLICATION_DETAILS_LOCATION_GEOLOCATION")}</CardSectionHeader>
+                <LocationCard position={{ latitude: applicationData?.geoLocation?.latitude, longitude: applicationData?.geoLocation?.longitude }} />
+              </>
+            )}
+
             <BreakLine />
             {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
             {!workflowDetails?.isLoading && !isDataLoading && (

@@ -3,10 +3,12 @@ import { LocationSearchCard, LocationSearch, LabelFieldPair, CardLabel } from "@
 import Timeline from "../components/TLTimelineInFSM";
 
 const SelectGeolocation = ({ t, config, onSelect, userType, formData = {} }) => {
+  const tenantId = Digit.ULBService.getCurrentTenantId();
   const [pincode, setPincode] = useState(formData?.address?.pincode || "");
   const [geoLocation, setGeoLocation] = useState(formData?.address?.geoLocation || {});
   const tenants = Digit.Hooks.fsm.useTenants();
   const [pincodeServicability, setPincodeServicability] = useState(null);
+  const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
 
   const onSkip = () => onSelect();
   const onChange = (code, location) => {
@@ -22,13 +24,10 @@ const SelectGeolocation = ({ t, config, onSelect, userType, formData = {} }) => 
     }
   };
   const onPinChange = (pincode, position) => {
-    console.log("SelectGeoLocation - OnPinChange PINCODE", pincode, "POSITION",position,"CONFIG", config?.key);
     onSelect(config?.key, position);
   };
 
-  console.log("SelectGeoLocation - FormData", formData);
-
-  if (userType === "employee") {
+  if (userType === "employee" && checkvehicletrack?.vehicleTrackingStatus) {
     return (
       <Fragment>
         <LabelFieldPair style={{ alignItems: "normal" }}>

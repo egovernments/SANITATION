@@ -11,6 +11,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
   // const __initSubType__ = window.Digit.SessionStorage.get("subType");
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
+  const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
   // const { data: commonFields, isLoading } = useQuery('newConfig', () => fetch(`http://localhost:3002/commonFields`).then(res => res.json()))
   // const { data: postFields, isLoading: isTripConfigLoading } = useQuery('tripConfig', () => fetch(`http://localhost:3002/tripDetails`).then(res => res.json()))
   const { data: commonFields, isLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "CommonFieldsConfig");
@@ -43,7 +44,6 @@ export const NewApplication = ({ parentUrl, heading }) => {
   };
 
   const onFormValueChange = (setValue, formData) => {
-    console.log("NEWAPP FORMDATA", formData)
     if (
       formData?.propertyType &&
       formData?.subtype &&
@@ -160,9 +160,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
     return <Loader />;
   }
 
-  // const configs = [...preFields, ...commonFields];
-  const configs = [...config];
-  console.log("configs", configs);
+  const configs = [...preFields, ...commonFields];
 
   return (
     <React.Fragment>
