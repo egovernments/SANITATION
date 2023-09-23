@@ -96,6 +96,14 @@ public class FSMQueryBuilder {
 			addToPreparedStatement(preparedStmtList, ids);
 
 		}
+		
+		List<String> driverIds = criteria.getDriverId();
+		if (!CollectionUtils.isEmpty(ids)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" fsm.driverId IN (").append(createQuery(ids)).append(")");
+			addToPreparedStatement(preparedStmtList, driverIds);
+
+		}
 
 		if (criteria.getApplicationType() != null) {
 			addClauseIfRequired(preparedStmtList, builder);
