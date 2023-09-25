@@ -7,6 +7,7 @@ import { initEngagementComponents } from "@egovernments/digit-ui-module-engageme
 import { initFSMLibraries } from "@egovernments/digit-ui-fsm-libraries";
 
 import { initFSMComponents } from "@egovernments/digit-ui-module-fsm";
+import { initTQMComponents } from "@egovernments/digit-ui-module-tqm";
 import { initHRMSComponents } from "@egovernments/digit-ui-module-hrms";
 import { PaymentModule, PaymentLinks, paymentConfigs } from "@egovernments/digit-ui-module-common";
 import { initUtilitiesComponents } from "@egovernments/digit-ui-module-utilities";
@@ -17,7 +18,7 @@ window.contextPath = window?.globalConfigs?.getConfig("CONTEXT_PATH");
 initLibraries();
 initFSMLibraries();
 
-const enabledModules = ["FSM", "Payment", "DSS", "Engagement", "HRMS", "Utilities"];
+const enabledModules = ["FSM", "Payment", "DSS", "Engagement", "HRMS","TQM","Utilities"];
 window.Digit.ComponentRegistryService.setupRegistry({
   ...paymentConfigs,
   PaymentModule,
@@ -29,6 +30,7 @@ initEngagementComponents();
 initFSMComponents();
 initHRMSComponents();
 initUtilitiesComponents();
+initTQMComponents();
 
 const moduleReducers = (initData) => ({
   initData,

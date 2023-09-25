@@ -10,6 +10,7 @@ import { initEngagementComponents } from "@egovernments/digit-ui-module-engageme
 import { DigitUI } from "@egovernments/digit-ui-module-core";
 import { HRMSModule, initHRMSComponents } from "@egovernments/digit-ui-module-hrms";
 import { initUtilitiesComponents } from "@egovernments/digit-ui-module-utilities";
+import { initTQMComponents } from '@egovernments/digit-ui-module-tqm'
 import { UICustomizations } from "./UICustomizations";
 import "@egovernments/digit-ui-fsm-css/example/index.css";
 
@@ -22,6 +23,7 @@ const enabledModules = [
   "Payment",
   "FSM",
   "Utilities",
+  "Tqm",
   // "Engagement"
 ];
 
@@ -71,6 +73,7 @@ const initDigitUI = () => {
   initHRMSComponents();
   initFSMComponents();
   initUtilitiesComponents();
+  initTQMComponents();
   const moduleReducers = (initData) => initData;
 
   window.Digit.Customizations = {
