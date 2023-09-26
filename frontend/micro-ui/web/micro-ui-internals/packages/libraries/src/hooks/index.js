@@ -4,6 +4,7 @@ import useSessionStorage from './useSessionStorage';
 import useQueryParams from './useQueryParams';
 import useDocumentSearch from './useDocumentSearch';
 import useClickOutside from './useClickOutside';
+import useLocation from "./useLocation";
 import {
   useFetchPayment,
   usePaymentUpdate,
@@ -178,6 +179,7 @@ const Hooks = {
   useRouteSubscription,
   useDynamicData,
   useGenderMDMS,
+  useLocation
 };
 
 export default Hooks;

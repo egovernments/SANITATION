@@ -173,6 +173,7 @@ import {
   FirenocIcon,
   InfoIcon,
   LoginIcon,
+  NoResultsFoundIcon
 } from "./atoms/svgindex";
 import Table from "./atoms/Table";
 import TelePhone from "./atoms/TelePhone";
@@ -190,6 +191,7 @@ import InboxLinks from "./atoms/InboxLinks";
 import PopupHeadingLabel from "./atoms/PopupHeadingLabel";
 
 import { FormComposer } from "./hoc/FormComposer";
+import InboxSearchComposer from "./hoc/InboxSearchComposer";
 import Modal from "./hoc/Modal";
 import ResponseComposer from "./hoc/ResponseComposer";
 import InboxComposer from "./hoc/InboxComposer";
@@ -364,6 +366,7 @@ export {
   SortAction,
   // hoc
   FormComposer,
+  InboxSearchComposer,
   ResponseComposer,
   PitDimension,
   Modal,
@@ -453,4 +456,5 @@ export {
   FirenocIcon,
   InfoIcon,
   LoginIcon,
+  NoResultsFoundIcon
 };

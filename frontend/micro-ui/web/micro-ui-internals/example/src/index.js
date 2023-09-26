@@ -73,9 +73,8 @@ const initDigitUI = () => {
   initHRMSComponents();
   initFSMComponents();
   initUtilitiesComponents();
-  initTQMComponents();
+  
   const moduleReducers = (initData) => initData;
-
   window.Digit.Customizations = {
     TL: {
       customiseCreateFormData: (formData, licenceObject) => licenceObject,
@@ -84,6 +83,9 @@ const initDigitUI = () => {
     },
     commonUiConfig: UICustomizations,
   };
+
+  //calling it here so that UICustomizations inside tqm gets added after the common Customizations are added
+  initTQMComponents();
 
   const stateCode = window?.globalConfigs?.getConfig("STATE_LEVEL_TENANT_ID") || "pb";
   initTokens(stateCode);

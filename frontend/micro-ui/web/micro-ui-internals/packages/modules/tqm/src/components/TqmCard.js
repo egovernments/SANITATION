@@ -18,7 +18,7 @@ const TqmCard = () => {
   let links = [
     {
       label: t("test"),
-      link: `/${window?.contextPath}/employee/workbench/manage-master-data`,
+      link: `/${window?.contextPath}/employee/tqm/sample`,
       roles: ["EMPLOYEE"],
     },
   ];
