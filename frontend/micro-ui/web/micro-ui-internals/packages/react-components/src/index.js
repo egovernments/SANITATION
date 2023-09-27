@@ -196,6 +196,9 @@ import PopupHeadingLabel from "./atoms/PopupHeadingLabel";
 
 import { FormComposer } from "./hoc/FormComposer";
 import InboxSearchComposer from "./hoc/InboxSearchComposer";
+import ViewComposer from "./hoc/ViewComposer";
+import { FormComposer as FormComposerV2 } from "./hoc/FormComposer";
+import RenderFormFields from "./molecules/RenderFormFields";
 import Modal from "./hoc/Modal";
 import ResponseComposer from "./hoc/ResponseComposer";
 import InboxComposer from "./hoc/InboxComposer";
@@ -396,6 +399,12 @@ export {
   Poll,
   Details,
   InboxComposer,
+  MobileSearchResults,
+  MobileSearchComponent,
+  ResultsTable,
+  InboxSearchLinks,
+  UploadFileComposer,
+  ViewComposer,
   // Icons
   FilterIcon,
   FilterSvg,
