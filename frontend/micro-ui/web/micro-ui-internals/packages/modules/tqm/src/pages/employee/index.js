@@ -3,6 +3,7 @@ import { Switch, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { PrivateRoute, AppContainer, BreadCrumb } from "@egovernments/digit-ui-react-components";
 import SampleComp from "./SampleComp";
+import TqmSearch from "./search-test-results/TqmSearch";
 
 
 const TqmBreadCrumb = ({ location ,defaultPath}) => {
@@ -32,6 +33,7 @@ const App = ({ path }) => {
         <AppContainer className="tqm">
           <PrivateRoute path={`${path}/sample`} component={() => <SampleComp />} />
           <PrivateRoute path={`${path}/inbox`} component={() => <TqmInbox  {...{ path }}/>} />
+          <PrivateRoute path={`${path}/search-test-results`} component={() => <TqmSearch  {...{ path }}/>} />
         </AppContainer>
       </Switch>
     </React.Fragment>
