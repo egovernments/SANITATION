@@ -5,6 +5,7 @@ import { PrivateRoute, AppContainer, BreadCrumb } from "@egovernments/digit-ui-r
 import SampleComp from "./SampleComp";
 import TqmSearch from "./search-test-results/TqmSearch";
 
+// import TQMSummary from "../../components/TQMSummary";
 
 const TqmBreadCrumb = ({ location ,defaultPath}) => {
   const { t } = useTranslation();
@@ -34,6 +35,7 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/sample`} component={() => <SampleComp />} />
           <PrivateRoute path={`${path}/inbox`} component={() => <TqmInbox  {...{ path }}/>} />
           <PrivateRoute path={`${path}/search-test-results`} component={() => <TqmSearch  {...{ path }}/>} />
+          {/* <PrivateRoute path={`${path}/summary/:id`} component={() => <TQMSummary />} /> */}
         </AppContainer>
       </Switch>
     </React.Fragment>

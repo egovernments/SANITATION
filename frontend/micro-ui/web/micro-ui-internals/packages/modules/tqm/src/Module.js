@@ -5,6 +5,7 @@ import TqmCard from "./components/TqmCard";
 import EmployeeApp from "./pages/employee"
 import CitizenApp from "./pages/citizen";
 import { UICustomizations } from "./configs/UICustomizations";
+// import TQMSummary from "./components/TQMSummary";
 
 // TQM specific components
 import TqmInbox from "./pages/employee/inbox/TqmInbox";
@@ -30,6 +31,7 @@ const componentsToRegister = {
   TqmModule:TQMModule,
   TqmCard,
   TqmInbox
+//   TQMSummary
 };
 
 /* To Overide any existing libraries  we need to use similar method */
