@@ -117,11 +117,16 @@ export const Search = {
     const vehicleMake = _vehicle?.i18nKey;
     const vehicleCapacity = _vehicle?.capacity;
 
-    const demandDetails = await PaymentService.demandSearch(
-      tenantId,
-      applicationNos,
-      'FSM.TRIP_CHARGES'
-    );
+    let demandDetails;
+    try{
+       demandDetails = await PaymentService.demandSearch(
+        tenantId,
+        applicationNos,
+        'FSM.TRIP_CHARGES'
+        );
+      }catch(err){
+        console.error("error while fetching payment details")
+      }
     const amountPerTrip =
       response?.additionalDetails && response?.additionalDetails.tripAmount
         ? response.additionalDetails.tripAmount

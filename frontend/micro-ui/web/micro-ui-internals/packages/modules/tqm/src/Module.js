@@ -5,6 +5,7 @@ import TqmCard from "./components/TqmCard";
 import EmployeeApp from "./pages/employee"
 import CitizenApp from "./pages/citizen";
 import { UICustomizations } from "./configs/UICustomizations";
+import TQMSummary from "./components/TQMSummary";
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "TQM";
@@ -25,7 +26,8 @@ const TQMModule = ({ stateCode, userType, tenants }) => {
 
 const componentsToRegister = {
   TqmModule:TQMModule,
-  TqmCard
+  TqmCard,
+  TQMSummary
 };
 
 /* To Overide any existing libraries  we need to use similar method */
