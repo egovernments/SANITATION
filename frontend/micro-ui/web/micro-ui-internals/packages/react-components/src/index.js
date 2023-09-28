@@ -173,7 +173,9 @@ import {
   FirenocIcon,
   InfoIcon,
   LoginIcon,
-  NoResultsFoundIcon
+  NoResultsFoundIcon,
+  TqmHomePageCardIcon,
+  TqmInboxIcon
 } from "./atoms/svgindex";
 import Table from "./atoms/Table";
 import TelePhone from "./atoms/TelePhone";
@@ -456,5 +458,7 @@ export {
   FirenocIcon,
   InfoIcon,
   LoginIcon,
-  NoResultsFoundIcon
+  NoResultsFoundIcon,
+  TqmHomePageCardIcon,
+  TqmInboxIcon
 };
