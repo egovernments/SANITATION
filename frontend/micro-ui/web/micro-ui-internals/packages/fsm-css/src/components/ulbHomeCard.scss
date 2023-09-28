@@ -1,5 +1,5 @@
 .employeeCard.home-card-tiles-container {
-  margin-bottom: 0 !important;
+  margin: 0;
   background-color: transparent;
   box-shadow: none;
   padding-top: 0;
@@ -10,6 +10,7 @@
     justify-content: space-between;
   }
   .employeeCard.tiles-card {
+    margin: 0;
     min-width: 6.5rem;
     height: 8rem;
     cursor: pointer;

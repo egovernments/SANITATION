@@ -1776,7 +1776,7 @@ img, video {
   justify-content: center; }
 
 .employeeCard.home-card-tiles-container {
-  margin-bottom: 0 !important;
+  margin: 0;
   background-color: initial;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -1789,6 +1789,7 @@ img, video {
     -ms-flex-pack: justify;
     justify-content: space-between; }
   .employeeCard.home-card-tiles-container .employeeCard.tiles-card {
+    margin: 0;
     min-width: 6.5rem;
     height: 8rem;
     cursor: pointer;

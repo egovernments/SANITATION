@@ -44,7 +44,8 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
-0.0.26 Add styles for TQM and Summary and enhancements.  
+0.0.27 Added TQM Home Card and Notification component.  
+0.0.26 Added TQM and Summary and enhancements.  
 0.0.25 Added support fixes for inbox v2 component.  
 0.0.24 Added min-height for mobile reponive  
 0.0.23 Dropdown width fixes  
