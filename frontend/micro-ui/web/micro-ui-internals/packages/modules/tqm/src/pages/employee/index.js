@@ -12,7 +12,7 @@ const TqmBreadCrumb = ({ location ,defaultPath}) => {
   const crumbs = [
     {
       path: `/${window?.contextPath}/employee`,
-      content: t("WORKBENCH_HOME"),
+      content: t("TQM_HOME"),
       show: true,
     },
     
@@ -22,12 +22,16 @@ const TqmBreadCrumb = ({ location ,defaultPath}) => {
 
 const App = ({ path }) => {
   const location = useLocation();
+
+  const TqmInbox = Digit?.ComponentRegistryService?.getComponent("TqmInbox");
+
   return (
     <React.Fragment>
       <TqmBreadCrumb location={location} defaultPath={path} />
       <Switch>
         <AppContainer className="tqm">
           <PrivateRoute path={`${path}/sample`} component={() => <SampleComp />} />
+          <PrivateRoute path={`${path}/inbox`} component={() => <TqmInbox  {...{ path }}/>} />
         </AppContainer>
       </Switch>
     </React.Fragment>
