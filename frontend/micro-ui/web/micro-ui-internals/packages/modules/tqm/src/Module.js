@@ -7,6 +7,12 @@ import CitizenApp from "./pages/citizen";
 import { UICustomizations } from "./configs/UICustomizations";
 import TQMPendingTask from "./pages/employee/TQMPendingTask";
 import TQMHome from "./pages/employee/TQMHome";
+import { CustomisedHooks } from "./hooks";
+
+// import TQMSummary from "./components/TQMSummary";
+
+// TQM specific components
+import TqmInbox from "./pages/employee/inbox/TqmInbox";
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "TQM";
@@ -30,6 +36,38 @@ const componentsToRegister = {
   TqmCard,
   TQMPendingTask,
   TQMHome,
+  TqmInbox,
+  //   TQMSummary
+};
+
+const overrideHooks = () => {
+  Object.keys(CustomisedHooks).map((ele) => {
+    if (ele === "Hooks") {
+      Object.keys(CustomisedHooks[ele]).map((hook) => {
+        Object.keys(CustomisedHooks[ele][hook]).map((method) => {
+          setupHooks(hook, method, CustomisedHooks[ele][hook][method]);
+        });
+      });
+    } else if (ele === "Utils") {
+      Object.keys(CustomisedHooks[ele]).map((hook) => {
+        Object.keys(CustomisedHooks[ele][hook]).map((method) => {
+          setupHooks(hook, method, CustomisedHooks[ele][hook][method], false);
+        });
+      });
+    } else {
+      Object.keys(CustomisedHooks[ele]).map((method) => {
+        setupLibraries(ele, method, CustomisedHooks[ele][method]);
+      });
+    }
+  });
+};
+
+/* To Overide any existing hook we need to use similar method */
+const setupHooks = (HookName, HookFunction, method, isHook = true) => {
+  window.Digit = window.Digit || {};
+  window.Digit[isHook ? "Hooks" : "Utils"] = window.Digit[isHook ? "Hooks" : "Utils"] || {};
+  window.Digit[isHook ? "Hooks" : "Utils"][HookName] = window.Digit[isHook ? "Hooks" : "Utils"][HookName] || {};
+  window.Digit[isHook ? "Hooks" : "Utils"][HookName][HookFunction] = method;
 };
 
 /* To Overide any existing libraries  we need to use similar method */
@@ -45,6 +83,7 @@ const updateCustomConfigs = () => {
 };
 
 export const initTQMComponents = () => {
+  overrideHooks();
   updateCustomConfigs();
   Object.entries(componentsToRegister).forEach(([key, value]) => {
     Digit.ComponentRegistryService.setComponent(key, value);

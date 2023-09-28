@@ -798,10 +798,56 @@ img, video {
   color: #849095;
   padding: .833em; }
 
+.employeeCard {
+  margin: .5rem .5rem 1rem;
+  padding: 1rem .5rem; }
+
 .employeeCard.fsm {
   margin-bottom: 16px !important;
   margin-left: 0 !important;
   margin-right: 16px !important; }
+
+.employeeCard.card-tqm-message {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-wrap: wrap;
+  text-align: center; }
+  .employeeCard.card-tqm-message.success {
+    border: 1px solid #00703c;
+    color: #00703c; }
+  .employeeCard.card-tqm-message.error {
+    border: 1px solid #d4351c;
+    color: #d4351c; }
+
+.employeeCard.tqm-card-reading {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: .5rem; }
+  .employeeCard.tqm-card-reading svg {
+    margin-right: .5rem; }
+  .employeeCard.tqm-card-reading .row.tqm-readings-info {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between; }
+    .employeeCard.tqm-card-reading .row.tqm-readings-info .value, .employeeCard.tqm-card-reading .row.tqm-readings-info h2 {
+      font-size: 1rem;
+      font-weight: 700; }
+    .employeeCard.tqm-card-reading .row.tqm-readings-info .value.success {
+      color: #00703c; }
+    .employeeCard.tqm-card-reading .row.tqm-readings-info .value.error {
+      color: #d4351c; }
+
+.employee-card-sub-header, .employeeCard .card-sub-header, .employeeCard .employee-card-sub-header {
+  font-size: 1.5rem;
+  margin-bottom: 1rem; }
 
 .react-switch-checkbox {
   height: 0;

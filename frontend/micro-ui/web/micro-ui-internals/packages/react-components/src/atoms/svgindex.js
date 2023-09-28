@@ -979,12 +979,14 @@ const InfoBannerIcon = ({ fill = "#3498DB" }) => {
   );
 };
 
-const InfoIcon = () => {
+const InfoIcon = ({ fill = "#F47738" }) => {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M9 5H11V7H9V5ZM9 9H11V15H9V9ZM10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM10 18C5.59 18 2 14.41 2 10C2 5.59 5.59 2 10 2C14.41 2 18 5.59 18 10C18 14.41 14.41 18 10 18Z" fill="#505A5F"/>
+    <svg width="20" height="20" viewBox="0 0 20 20" fill={fill} xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M9 5H11V7H9V5ZM9 9H11V15H9V9ZM10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM10 18C5.59 18 2 14.41 2 10C2 5.59 5.59 2 10 2C14.41 2 18 5.59 18 10C18 14.41 14.41 18 10 18Z"
+        fill={fill}
+      />
     </svg>
-
   );
 };
 
@@ -1296,6 +1298,7 @@ const EditPencilIcon = ({ className, width = 18, height = 18 }) => (
     />
   </svg>
 );
+
 const AddressBookIcon = ({ styles, className }) => (
   <svg className={className} style={{ ...styles }} viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -1485,6 +1488,41 @@ const InboxIcon = () => (
   </svg>
 );
 
+
+const TqmHomePageCardIcon = ({ className = '', fill = '', style = {} }) => (
+  <svg
+    width="56"
+    height="56"
+    viewBox="0 0 56 56"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    style={style}
+  >
+    <rect width="56" height="56" rx="2" fill="#F47738" />
+    <g clip-path="url(#clip0_53234_119512)">
+      <path
+        d="M28.0007 19.6667V13H11.334V43H44.6673V19.6667H28.0007ZM18.0007 39.6667H14.6673V36.3333H18.0007V39.6667ZM18.0007 33H14.6673V29.6667H18.0007V33ZM18.0007 26.3333H14.6673V23H18.0007V26.3333ZM18.0007 19.6667H14.6673V16.3333H18.0007V19.6667ZM24.6673 39.6667H21.334V36.3333H24.6673V39.6667ZM24.6673 33H21.334V29.6667H24.6673V33ZM24.6673 26.3333H21.334V23H24.6673V26.3333ZM24.6673 19.6667H21.334V16.3333H24.6673V19.6667ZM41.334 39.6667H28.0007V36.3333H31.334V33H28.0007V29.6667H31.334V26.3333H28.0007V23H41.334V39.6667ZM38.0007 26.3333H34.6673V29.6667H38.0007V26.3333ZM38.0007 33H34.6673V36.3333H38.0007V33Z"
+        fill="white"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_53234_119512">
+        <rect width="40" height="40" fill="white" transform="translate(8 8)" />
+      </clipPath>
+    </defs>
+  </svg>
+);
+
+const TqmInboxIcon = ({ className = '', fill = '', style = {} }) => (
+  <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.666 0H3.33268C1.86602 0 0.666016 1.2 0.666016 2.66667V21.3333C0.666016 22.8 1.86602 24 3.33268 24H24.666C26.1327 24 27.3327 22.8 27.3327 21.3333V2.66667C27.3327 1.2 26.1327 0 24.666 0ZM11.3327 18.6667H4.66602V16H11.3327V18.6667ZM11.3327 13.3333H4.66602V10.6667H11.3327V13.3333ZM11.3327 8H4.66602V5.33333H11.3327V8ZM17.7593 16L13.9993 12.2133L15.8793 10.3333L17.7593 12.2267L21.986 8L23.8793 9.89333L17.7593 16Z" fill="#F47738"/>
+</svg>
+);
+
+
+
+
 export {
   AnnouncementIcon,
   ReceiptIcon,
@@ -1607,5 +1645,7 @@ export {
   BirthIcon,
   DeathIcon,
   InfoIcon,
-  NoResultsFoundIcon
+  NoResultsFoundIcon,
+  TqmHomePageCardIcon,
+  TqmInboxIcon
 };

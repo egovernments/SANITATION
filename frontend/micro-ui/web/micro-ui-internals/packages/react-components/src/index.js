@@ -175,6 +175,8 @@ import {
   InfoIcon,
   LoginIcon,
   NoResultsFoundIcon,
+  TqmHomePageCardIcon,
+  TqmInboxIcon,
 } from "./atoms/svgindex";
 import Table from "./atoms/Table";
 import TelePhone from "./atoms/TelePhone";
@@ -460,4 +462,6 @@ export {
   LoginIcon,
   NoResultsFoundIcon,
   NotificationComponent,
+  TqmHomePageCardIcon,
+  TqmInboxIcon,
 };
