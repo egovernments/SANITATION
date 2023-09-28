@@ -2,9 +2,11 @@ import { Loader } from "@egovernments/digit-ui-react-components";
 import React, { useEffect } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import TqmCard from "./components/TqmCard";
-import EmployeeApp from "./pages/employee"
+import EmployeeApp from "./pages/employee";
 import CitizenApp from "./pages/citizen";
 import { UICustomizations } from "./configs/UICustomizations";
+import TQMPendingTask from "./pages/employee/TQMPendingTask";
+import TQMHome from "./pages/employee/TQMHome";
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "TQM";
@@ -12,7 +14,7 @@ const TQMModule = ({ stateCode, userType, tenants }) => {
   const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
 
-  if (isLoading) {  
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -24,12 +26,14 @@ const TQMModule = ({ stateCode, userType, tenants }) => {
 };
 
 const componentsToRegister = {
-  TqmModule:TQMModule,
-  TqmCard
+  TqmModule: TQMModule,
+  TqmCard,
+  TQMPendingTask,
+  TQMHome,
 };
 
 /* To Overide any existing libraries  we need to use similar method */
-const setupLibraries = (Library, service, method) => {  
+const setupLibraries = (Library, service, method) => {
   window.Digit = window.Digit || {};
   window.Digit[Library] = window.Digit[Library] || {};
   window.Digit[Library][service] = method;

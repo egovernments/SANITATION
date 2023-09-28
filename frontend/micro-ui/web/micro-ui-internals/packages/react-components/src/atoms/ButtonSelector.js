@@ -7,6 +7,9 @@ const ButtonSelector = (props) => {
     case "border":
       theme = "selector-button-border";
       break;
+    case "secondary":
+      theme = "selector-button-secondary";
+      break;
     default:
       theme = "selector-button-primary";
       break;
