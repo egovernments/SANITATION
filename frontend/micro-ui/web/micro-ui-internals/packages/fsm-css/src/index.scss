@@ -13,6 +13,8 @@
 @import './components/table.scss';
 @import './pages/employee/index.scss';
 @import './pages/employee/login.scss';
+@import './components/notificationComponent.scss';
+@import './components/ulbHomeCard.scss';
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
