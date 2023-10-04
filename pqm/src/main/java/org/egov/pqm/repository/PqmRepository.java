@@ -3,10 +3,10 @@ package org.egov.pqm.repository;
 import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchRequest;
 
-public class PQMRepository {
+public class PqmRepository {
 
 	
-	public TestResponse getFSMData(TestSearchRequest pqmSearchCriteria) {
+	public TestResponse getPqmData(TestSearchRequest pqmSearchCriteria) {
 		
 		return null;
 	}

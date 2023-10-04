@@ -2,7 +2,7 @@ package org.egov.pqm.web.controllers;
 
 import javax.validation.Valid;
 
-import org.egov.pqm.service.PQMService;
+import org.egov.pqm.service.PqmService;
 import org.egov.pqm.util.ResponseInfoFactory;
 import org.egov.pqm.web.model.RequestInfoWrapper;
 import org.egov.pqm.web.model.TestRequest;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PqmController {
 	
 	@Autowired
-	private PQMService pqmService;
+	private PqmService pqmService;
 	
 	@Autowired
 	private ResponseInfoFactory responseInfoFactory;

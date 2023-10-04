@@ -1,5 +1,5 @@
 package org.egov.pqm.repository.rowmapper;
 
-public class PQMRowMapper {
+public class PqmRowMapper {
 
 }

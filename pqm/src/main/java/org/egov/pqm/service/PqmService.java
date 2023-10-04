@@ -8,7 +8,7 @@ import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchRequest;
 
-public class PQMService {
+public class PqmService {
 
 	public TestResponse pqmSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
 
