@@ -57,6 +57,12 @@ config:
         image-name: 'inbox'
         dockerfile: 'build/maven/Dockerfile'
 
+  - name: 'builds/SANITATION/pqm-scheduler'
+    build:
+      - work-dir: 'pqm-scheduler'
+        image-name: 'pqm-scheduler'
+        dockerfile: '/pqm-scheduler/Dockerfile'
+
   #Sanitation Frontend
   - name: 'builds/SANITATION/frontend/sanitation-ui'
     build:
