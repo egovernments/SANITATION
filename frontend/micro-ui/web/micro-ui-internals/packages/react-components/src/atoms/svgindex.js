@@ -327,9 +327,9 @@ const FilterSvg = ({ className,fill="#f47738" }) => (
   </svg>
 );
 
-const SortSvg = ({ className }) => (
+const SortSvg = ({ className,fill="#505A5F" }) => (
   <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M8 16H24V13.3333H8V16ZM0 0V2.66667H24V0H0ZM8 9.33333H24V6.66667H8V9.33333Z" fill="#505A5F" />
+    <path d="M8 16H24V13.3333H8V16ZM0 0V2.66667H24V0H0ZM8 9.33333H24V6.66667H8V9.33333Z" fill={fill} />
   </svg>
 );
 

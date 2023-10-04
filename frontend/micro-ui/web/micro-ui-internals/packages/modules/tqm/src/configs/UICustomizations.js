@@ -50,6 +50,7 @@ export const UICustomizations = {
     preProcess: (data,additionalDetails) => {
       console.log(data,additionalDetails);
       
+      data.config.enabled = false
      //TODO:: here make the request info accordingly and return when you get inbox API details
       return data
     },
