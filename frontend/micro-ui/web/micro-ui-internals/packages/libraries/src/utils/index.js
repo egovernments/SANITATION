@@ -18,6 +18,10 @@ const GetParamFromUrl = (key, fallback, search) => {
   return fallback;
 };
 
+const didEmployeeHasAtleastOneRole = (roles = []) => {
+  return roles.some((role) => didEmployeeHasRole(role));
+};
+
 const getPattern = (type) => {
   switch (type) {
     case "Name":
@@ -281,6 +285,7 @@ export default {
   locale,
   date,
   GetParamFromUrl,
+  didEmployeeHasAtleastOneRole,
   getStaticMapUrl,
   detectDsoRoute,
   routeSubscription,

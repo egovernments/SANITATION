@@ -45,7 +45,8 @@ export const tqmInboxConfigPlantOperator = {
               "processCode":[],
               // "status":"",
               "outputType":[],
-              "status":[]
+              "status":[],
+              "dateRange":""
             },
             "fields": [
               {
@@ -99,6 +100,15 @@ export const tqmInboxConfigPlantOperator = {
                   "customfn": "populateStatusReqCriteria"
                 }
               },
+              {
+                "label":"TQM_INBOX_DATE_RANGE",
+                "type": "dateRange",
+                "isMandatory": false,
+                "disable": false,
+                "populators": { 
+                    "name": "dateRange"
+                }
+            },
               
             ]
           },
@@ -169,8 +179,8 @@ export const tqmInboxConfigPlantOperator = {
             "type": "sort",
             "headerStyle": null,
             "headerLabel":"TQM_INBOX_SORTBY",
-            "primaryLabel": "Filter",
-            "secondaryLabel": "",
+            "primaryLabel": "TQM_INBOX_SORT",
+            "secondaryLabel": "TQM_CLEAR_SEARCH",
             "minReqFields": 0,
             "defaultValues": {
               "sortBy":""

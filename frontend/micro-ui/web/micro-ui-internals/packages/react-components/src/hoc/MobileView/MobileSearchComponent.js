@@ -2,13 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { InboxContext } from "../InboxSearchComposerContext";
-import { FilterIcon, SearchIcon, CloseSvg, RefreshIcon } from "../../atoms/svgindex";
+import { FilterIcon, SearchIcon, CloseSvg, RefreshIcon, DownloadImgIcon,SortSvg } from "../../atoms/svgindex";
 import ActionBar from "../../atoms/ActionBar";
 import SubmitBar from "../../atoms/SubmitBar";
 import LinkLabel from "../../atoms/LinkLabel";
 import RenderFormFields from "../../molecules/RenderFormFields";
 import Toast from "../../atoms/Toast"; 
 import _ from "lodash";
+import Button from "../../atoms/Button"
+
 
 const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = "search", fullConfig, data, onClose, defaultValues }) => {
   const { t } = useTranslation();
@@ -104,15 +106,30 @@ const renderHeader = () => {
         <div className="popup-label" style={{ display: "flex", paddingBottom: "20px" }}>
           <span className="header" style={{ display : "flex" }}>
             <span className="icon" style ={{ marginRight: "12px", marginTop: "5px",  paddingBottom: "3px" }}><FilterIcon/></span>
-            <span style ={{ fontSize: "large" }}>{t(`${uiConfig?.headerLabel || "TQM_INBOX_SORTBY"}`)}:</span>
+            <span style ={{ fontSize: "large",marginRight: "12px" }}>{t(`${uiConfig?.headerLabel || "TQM_INBOX_SORTBY"}`)}</span>
+            <span className="clear-search refresh-icon-container" onClick={clearSearch}><RefreshIcon/></span>
           </span>
-          <span className="clear-search" onClick={clearSearch}><RefreshIcon/></span>
+          {/* <span className="clear-search" onClick={clearSearch}><RefreshIcon/></span> */}
           <span onClick={onClose}>
             <CloseSvg />
           </span>       
         </div>
       )
       }
+      case "sort" : {
+        return (
+          <div className="popup-label" style={{ display: "flex", paddingBottom: "20px" }}>
+            <span className="header" style={{ display : "flex" }}>
+              <span className="icon" style ={{ marginRight: "12px", marginTop: "5px",  paddingBottom: "3px" }}><SortSvg/></span>
+              <span style ={{ fontSize: "large",marginRight: "12px" }}>{t(`${uiConfig?.headerLabel || "TQM_INBOX_SORTBY"}`)}</span>
+              <span className="clear-search refresh-icon-container" onClick={clearSearch}><RefreshIcon/></span>
+            </span>
+            <span onClick={onClose}>
+              <CloseSvg />
+            </span>       
+          </div>
+        )
+        }
     case "search" : {
       return (
         <div className="popup-label" style={{ display: "flex", paddingBottom: "20px" }}>
@@ -146,11 +163,16 @@ const renderHeader = () => {
     <React.Fragment>
       <div className="search-wrapper">
         <div>{renderHeader()}</div>
-        <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => checkKeyDown(e)}>
-          <div className={`search-field-wrapper ${screenType} ${uiConfig?.type}`}>
-            <RenderFormFields 
-              fields={uiConfig?.fields} 
-              control={control} 
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          onKeyDown={(e) => checkKeyDown(e)}
+        >
+          <div
+            className={`search-field-wrapper ${screenType} ${uiConfig?.type}`}
+          >
+            <RenderFormFields
+              fields={uiConfig?.fields}
+              control={control}
               formData={formData}
               errors={errors}
               register={register}
@@ -158,27 +180,45 @@ const renderHeader = () => {
               getValues={getValues}
               setError={setError}
               clearErrors={clearErrors}
-              labelStyle={{fontSize: "16px"}}
+              labelStyle={{ fontSize: '16px' }}
               apiDetails={apiDetails}
-            />  
+            />
             <ActionBar className="clear-search-container">
-              <div className={`search-button-wrapper ${screenType} ${uiConfig?.type}`}>
-                { uiConfig?.secondaryLabel && <LinkLabel style={{marginBottom: 0, whiteSpace: 'nowrap'}} onClick={clearSearch}>{t(uiConfig?.secondaryLabel)}</LinkLabel> }
-                { uiConfig?.primaryLabel && <SubmitBar label={t(uiConfig?.primaryLabel)} submit="submit" disabled={false}/> }
+              <div
+                className={`search-button-wrapper ${screenType} ${uiConfig?.type}`}
+              >
+                {/* { uiConfig?.secondaryLabel && <LinkLabel style={{marginBottom: 0, whiteSpace: 'nowrap'}} onClick={clearSearch}>{t(uiConfig?.secondaryLabel)}</LinkLabel> } */}
+                {uiConfig?.secondaryLabel && (
+                  <Button
+                    label={t(uiConfig?.secondaryLabel)}
+                    variation="secondary"
+                    onButtonClick={() => clearSearch()}
+                    type="button"
+                  />
+                )}
+                {uiConfig?.primaryLabel && (
+                  <SubmitBar
+                    label={t(uiConfig?.primaryLabel)}
+                    submit="submit"
+                    disabled={false}
+                  />
+                )}
               </div>
             </ActionBar>
-          </div> 
+          </div>
         </form>
-        { showToast && <Toast 
-          error={showToast.error}
-          warning={showToast.warning}
-          label={t(showToast.label)}
-          isDleteBtn={true}
-          onClose={closeToast} />
-        }
+        {showToast && (
+          <Toast
+            error={showToast.error}
+            warning={showToast.warning}
+            label={t(showToast.label)}
+            isDleteBtn={true}
+            onClose={closeToast}
+          />
+        )}
       </div>
     </React.Fragment>
-  )
+  );
 };
 
 export default MobileSearchComponent;

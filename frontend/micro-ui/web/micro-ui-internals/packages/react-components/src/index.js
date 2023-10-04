@@ -3,6 +3,7 @@ import ActionLinks from "./atoms/ActionLinks";
 import AppContainer from "./atoms/AppContainer";
 import ApplyFilterBar from "./atoms/ApplyFilterBar";
 import BackButton from "./atoms/BackButton";
+import Button from "./atoms/Button";
 import Banner from "./atoms/Banner";
 import Body from "./atoms/Body";
 import BreadCrumb from "./atoms/BreadCrumb";
@@ -249,6 +250,7 @@ export {
   Menu,
   LinkLabel,
   BackButton,
+  Button,
   BreakLine,
   Card,
   CardCaption,

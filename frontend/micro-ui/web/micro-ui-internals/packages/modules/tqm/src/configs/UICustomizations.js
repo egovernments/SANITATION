@@ -13,7 +13,13 @@ const businessServiceMap = {
  tqm:"PQM"
 };
 
+const tqmRoleMapping = {
+  plant:["PQM_FSTP_OPERATOR"],
+  ulb:["PQM_ADMIN"]
+}
+
 export const UICustomizations = {
+  tqmRoleMapping,
   businessServiceMap,
   SearchAttendanceConfig:{
     populateReqCriteria: () => {

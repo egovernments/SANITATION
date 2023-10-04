@@ -105,6 +105,13 @@ textarea {
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
   height: auto; }
 
+[type=search] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px; }
+
+[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
 details {
   display: block; }
 
@@ -1806,6 +1813,10 @@ img, video {
     -ms-flex-pack: distribute;
     justify-content: space-around;
     word-wrap: break-word; }
+
+.refresh-icon-container {
+  padding: 6px 8px;
+  border: 1px solid #eee; }
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {

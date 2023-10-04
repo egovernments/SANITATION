@@ -8,7 +8,8 @@ import { tqmInboxConfigPlantOperator } from "./inboxConfigPlantOperator";
 const TqmInbox = () => {
     const { t } = useTranslation();
     const location = useLocation()
-  
+    const isPlantOperatorLoggedIn = Digit.Utils.tqm.isPlantOperatorLoggedIn()
+    const isUlbAdminLoggedIn = Digit.Utils.tqm.isUlbAdminLoggedIn()
     const moduleName = Digit?.Utils?.getConfigModuleName() || "commonSanitationUiConfig"
     const tenant = Digit.ULBService.getStateId();
     const { isLoading, data:config } = Digit.Hooks.useCustomMDMS(tenant,
@@ -20,6 +21,12 @@ const TqmInbox = () => {
         ],
         {
           select:(data) => {
+            if(isPlantOperatorLoggedIn){
+              return tqmInboxConfigPlantOperator?.tqmInboxConfig?.[0];
+            }
+            else {
+              return tqmInboxConfig?.tqmInboxConfig?.[0];
+            }
             //for local config
             //ulb
             // return tqmInboxConfig?.tqmInboxConfig?.[0];
