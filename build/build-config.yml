@@ -63,7 +63,7 @@ config:
         image-name: 'pqm-service'
         dockerfile: 'build/maven/Dockerfile'
       - work-dir: 'pqm/src/main/resources/db'
-        image-name: 'pqm-db'
+        image-name: 'pqm-service-db'
 
   - name: 'builds/SANITATION/pqm-scheduler'
     build:
