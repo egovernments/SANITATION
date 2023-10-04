@@ -18,7 +18,7 @@ window.contextPath = window?.globalConfigs?.getConfig("CONTEXT_PATH");
 initLibraries();
 initFSMLibraries();
 
-const enabledModules = ["FSM", "Payment", "DSS", "Engagement", "HRMS","TQM","Utilities"];
+const enabledModules = ["FSM", "Payment", "DSS", "Engagement", "HRMS","Tqm","Utilities"];
 window.Digit.ComponentRegistryService.setupRegistry({
   ...paymentConfigs,
   PaymentModule,
