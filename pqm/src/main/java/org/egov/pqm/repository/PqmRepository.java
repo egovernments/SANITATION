@@ -6,7 +6,7 @@ import org.egov.pqm.web.model.TestSearchRequest;
 public class PqmRepository {
 
 	
-	public TestResponse getPqmData(TestSearchRequest pqmSearchCriteria) {
+	public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {
 		
 		return null;
 	}
