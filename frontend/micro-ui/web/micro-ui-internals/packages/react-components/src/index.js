@@ -197,7 +197,6 @@ import PopupHeadingLabel from "./atoms/PopupHeadingLabel";
 import { FormComposer } from "./hoc/FormComposer";
 import InboxSearchComposer from "./hoc/InboxSearchComposer";
 import ViewComposer from "./hoc/ViewComposer";
-import { FormComposer as FormComposerV2 } from "./hoc/FormComposer";
 import RenderFormFields from "./molecules/RenderFormFields";
 import Modal from "./hoc/Modal";
 import ResponseComposer from "./hoc/ResponseComposer";
@@ -238,6 +237,10 @@ import Paragraph from "./atoms/Paragraph";
 import WorkflowActions from "./atoms/WorkflowActions";
 import WorkflowTimeline from "./atoms/WorkflowTimeline";
 import UploadFileComposer from "./hoc/UploadFileComposer";
+import MobileSearchResults from "./hoc/MobileView/MobileSearchResults";
+import MobileSearchComponent from "./hoc/MobileView/MobileSearchComponent";
+import ResultsTable from "./hoc/ResultsTable";
+import InboxSearchLinks from "./atoms/InboxSearchLinks";
 
 export {
   Phone,
@@ -403,7 +406,6 @@ export {
   MobileSearchComponent,
   ResultsTable,
   InboxSearchLinks,
-  UploadFileComposer,
   ViewComposer,
   // Icons
   FilterIcon,
