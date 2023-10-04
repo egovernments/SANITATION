@@ -9,14 +9,6 @@ import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchRequest;
 
 public class PQMService {
-	
-	/**
-	 * search the fsm applications based on the search criteria
-	 * 
-	 * @param criteria
-	 * @param requestInfo
-	 * @return
-	 */
 
 	public TestResponse pqmSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
 
