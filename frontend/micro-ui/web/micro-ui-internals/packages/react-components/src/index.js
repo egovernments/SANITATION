@@ -228,6 +228,13 @@ import UploadPitPhoto from "./molecules/UploadPitPhoto";
 import { DownloadBtnCommon } from "./atoms/svgindex";
 import ToggleSwitch from "./atoms/ToggleSwitch";
 import NotificationComponent from "./atoms/NotificationComponent";
+import { FormComposerV2 } from "./hoc/FormComposerV2";
+import InputTextAmount from "./atoms/InputTextAmount";
+import Paragraph from "./atoms/Paragraph";
+import WorkflowActions from "./atoms/WorkflowActions";
+import WorkflowTimeline from "./atoms/WorkflowTimeline";
+import UploadFileComposer from "./hoc/UploadFileComposer";
+
 export {
   Phone,
   Body,
@@ -464,4 +471,10 @@ export {
   NotificationComponent,
   TqmHomePageCardIcon,
   TqmInboxIcon,
+  FormComposerV2,
+  InputTextAmount,
+  Paragraph,
+  WorkflowActions,
+  WorkflowTimeline,
+  UploadFileComposer,
 };
