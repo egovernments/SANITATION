@@ -22,9 +22,9 @@ public class TestSearchCriteria {
   @JsonProperty("tenantId")
   private String tenantId = null;
 
-  @JsonProperty("plats")
+  @JsonProperty("plants")
   @Valid
-  private List<String> plats = null;
+  private List<String> plants = null;
 
   @JsonProperty("processes")
   @Valid
