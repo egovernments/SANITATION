@@ -27,7 +27,6 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
     defaultValues
   );
   const [sessionFormData, setSessionFormData, clearSessionFormData] = mobileSearchSession;
-
   const {
     register,
     handleSubmit,
@@ -60,7 +59,7 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
   useEffect(()=>{ 
     if (!_.isEqual(sessionFormData, formData)) {
       const difference = _.pickBy(sessionFormData, (v, k) => !_.isEqual(formData[k], v));
-      setSessionFormData({ ...sessionFormData, ...formData });
+      setSessionFormData({ ...sessionFormData,...formData,  });
     }
   },[formData]);
 
@@ -105,7 +104,7 @@ const renderHeader = () => {
         <div className="popup-label" style={{ display: "flex", paddingBottom: "20px" }}>
           <span className="header" style={{ display : "flex" }}>
             <span className="icon" style ={{ marginRight: "12px", marginTop: "5px",  paddingBottom: "3px" }}><FilterIcon/></span>
-            <span style ={{ fontSize: "large" }}>{t("ES_COMMON_FILTER_BY")}:</span>
+            <span style ={{ fontSize: "large" }}>{t(`${uiConfig?.headerLabel || "TQM_INBOX_SORTBY"}`)}:</span>
           </span>
           <span className="clear-search" onClick={clearSearch}><RefreshIcon/></span>
           <span onClick={onClose}>
@@ -119,7 +118,7 @@ const renderHeader = () => {
         <div className="popup-label" style={{ display: "flex", paddingBottom: "20px" }}>
         <span className="header" style={{ display : "flex" }}>
            <span className="icon" style ={{ marginRight: "12px", marginTop: "5px"}}><SearchIcon/></span>
-           <span style ={{ fontSize: "large" }}>{t("ES_COMMON_SEARCH_BY")}</span>
+           <span style ={{ fontSize: "large" }}>{t(`${uiConfig?.headerLabel || "TQM_INBOX_SORTBY"}`)}</span>
        </span>
         <span onClick={onClose}>
            <CloseSvg />
@@ -132,7 +131,7 @@ const renderHeader = () => {
         <div className="popup-label" style={{ display: "flex", paddingBottom: "20px" }}>
            <span className="header" style={{ display : "flex" }}>
               <span className="icon" style ={{ marginRight: "12px", marginTop: "5px"}}><SearchIcon/></span>
-              <span style ={{ fontSize: "large" }}>{t("ES_COMMON_SEARCH_BY")}</span>
+              <span style ={{ fontSize: "large" }}>{t(`${uiConfig?.headerLabel || "TQM_INBOX_SORTBY"}`)}</span>
           </span>
            <span onClick={onClose}>
               <CloseSvg />

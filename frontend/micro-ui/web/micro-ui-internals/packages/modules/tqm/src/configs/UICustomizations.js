@@ -9,7 +9,12 @@ import { Amount, LinkLabel } from "@egovernments/digit-ui-react-components";
 // these functions will act as middlewares
 var Digit = window.Digit || {};
 
+const businessServiceMap = {
+ tqm:"PQM"
+};
+
 export const UICustomizations = {
+  businessServiceMap,
   SearchAttendanceConfig:{
     populateReqCriteria: () => {
       const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -120,7 +125,33 @@ export const UICustomizations = {
         },
       };
     },
+    populateStatusReqCriteria:() => {
+      const tenantId = Digit.ULBService.getCurrentTenantId();
 
+      return {
+        url: "/egov-workflow-v2/egov-wf/businessservice/_search",
+        params: { tenantId, businessServices: businessServiceMap?.tqm },
+        body: {
+         
+        },
+        changeQueryName:"setWorkflowStatus",
+        config: {
+          enabled: true,
+          select: (data) => {
+           return [
+            {
+              outputCode:"status1",
+              optionKey:"status1"
+            },
+            {
+              outputCode:"status2",
+              optionKey:"status2"
+            }
+           ]
+          },
+        },
+      };
+    },
     
   }
 }

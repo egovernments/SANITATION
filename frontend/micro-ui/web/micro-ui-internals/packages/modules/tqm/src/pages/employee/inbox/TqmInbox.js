@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Header, InboxSearchComposer,Loader } from "@egovernments/digit-ui-react-components";
 import { useLocation } from "react-router-dom";
 import { tqmInboxConfig } from "./inboxConfig";
+import { tqmInboxConfigPlantOperator } from "./inboxConfigPlantOperator";
 
 const TqmInbox = () => {
     const { t } = useTranslation();
@@ -20,7 +21,11 @@ const TqmInbox = () => {
         {
           select:(data) => {
             //for local config
-            return tqmInboxConfig?.tqmInboxConfig?.[0];
+            //ulb
+            // return tqmInboxConfig?.tqmInboxConfig?.[0];
+
+            //plant operator
+            return tqmInboxConfigPlantOperator?.tqmInboxConfig?.[0];
           }
         }
         

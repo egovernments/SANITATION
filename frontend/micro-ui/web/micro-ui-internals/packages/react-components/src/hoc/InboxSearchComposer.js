@@ -204,7 +204,7 @@ const InboxSearchComposer = ({configs}) => {
                     {
                       configs?.sections?.search?.show && (
                         <SearchAction 
-                        text="SEARCH" 
+                        text={t(configs?.sections?.search?.labelMobile)}
                         handleActionClick={() => {
                           setType("SEARCH");
                           setPopup(true);
@@ -213,7 +213,7 @@ const InboxSearchComposer = ({configs}) => {
                     )}
                     {configs?.sections?.filter?.show && (
                       <FilterAction
-                        text="FILTER"
+                        text={t(configs?.sections?.filter?.labelMobile)}
                           handleActionClick={() => {
                             setType("FILTER");
                             setPopup(true);

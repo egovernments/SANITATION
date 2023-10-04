@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import TQMPendingTask from "./TQMPendingTask";
 
-const TQMHome = () => {
+const TQMLanding = () => {
   const { t } = useTranslation();
   const state = Digit.ULBService.getStateId();
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -31,4 +31,4 @@ const TQMHome = () => {
   );
 };
 
-export default TQMHome;
+export default TQMLanding;

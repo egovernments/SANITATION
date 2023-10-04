@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { PrivateRoute, AppContainer, BreadCrumb, BackButton } from "@egovernments/digit-ui-react-components";
 import SampleComp from "./SampleComp";
 import TQMPendingTask from "./TQMPendingTask";
-import TQMHome from "./TQMHome";
+import TQMLanding from "./TQMLanding";
 import TqmSearch from "./search-test-results/TqmSearch";
 
 // import TQMSummary from "../../components/TQMSummary";
@@ -34,7 +34,8 @@ const App = ({ path }) => {
       <TqmBreadCrumb location={location} defaultPath={path} />
       <Switch>
         <AppContainer className="tqm">
-          <PrivateRoute path={`${path}/home`} component={() => <TQMHome />} />
+          <PrivateRoute path={`${path}/landing`} component={() => <TQMLanding />} />
+          <PrivateRoute path={`${path}/home`} component={() => <TQMLanding />} />
           <PrivateRoute path={`${path}/sample`} component={() => <SampleComp />} />
           <PrivateRoute path={`${path}/check`} component={() => <TQMPendingTask />} />
           <PrivateRoute path={`${path}/inbox`} component={() => <TqmInbox {...{ path }} />} />

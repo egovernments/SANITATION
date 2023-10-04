@@ -8,7 +8,7 @@ const ROLES = {
 
 // Mukta Overrriding the Works Home screen card
 const TqmCard = () => {
-
+  const isMobile = Digit.Utils.browser.isMobile();
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
 

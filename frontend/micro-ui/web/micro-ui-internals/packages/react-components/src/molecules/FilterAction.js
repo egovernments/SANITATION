@@ -1,5 +1,5 @@
 import React from "react";
-import { FilterSvg } from "../atoms/svgindex";
+import { FilterSvg,FilterIcon } from "../atoms/svgindex";
 import RoundedLabel from "../atoms/RoundedLabel";
 
 const FilterAction = ({ text, handleActionClick, ...props }) => (

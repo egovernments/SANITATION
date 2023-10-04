@@ -6,7 +6,7 @@ import EmployeeApp from "./pages/employee";
 import CitizenApp from "./pages/citizen";
 import { UICustomizations } from "./configs/UICustomizations";
 import TQMPendingTask from "./pages/employee/TQMPendingTask";
-import TQMHome from "./pages/employee/TQMHome";
+import TQMLanding from "./pages/employee/TQMLanding";
 import { CustomisedHooks } from "./hooks";
 
 // import TQMSummary from "./components/TQMSummary";
@@ -35,7 +35,7 @@ const componentsToRegister = {
   TqmModule: TQMModule,
   TqmCard,
   TQMPendingTask,
-  TQMHome,
+  TQMLanding,
   TqmInbox,
   //   TQMSummary
 };
