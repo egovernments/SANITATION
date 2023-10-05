@@ -105,13 +105,6 @@ textarea {
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
   height: auto; }
 
-[type=search] {
-  -webkit-appearance: textfield;
-  outline-offset: -2px; }
-
-[type=search]::-webkit-search-decoration {
-  -webkit-appearance: none; }
-
 details {
   display: block; }
 
@@ -1745,8 +1738,9 @@ img, video {
   -ms-flex-align: center;
   align-items: center; }
   .notification .notification-flex-container .icon {
-    width: 1.5rem;
     margin-right: .5rem; }
+    .notification .notification-flex-container .icon svg {
+      width: 1.5rem; }
   .notification .notification-flex-container .label {
     font-size: .875rem;
     font-weight: 400;

@@ -1,5 +1,19 @@
 import React, { Fragment } from "react";
-import { BackButton, Card, AddNewIcon, InboxIcon, ViewReportIcon, CardText, CardHeader, ULBHomeCard } from "@egovernments/digit-ui-react-components";
+import {
+  BackButton,
+  Card,
+  AddNewIcon,
+  InboxIcon,
+  ViewReportIcon,
+  CardText,
+  CardHeader,
+  ULBHomeCard,
+  ShippingTruck,
+  DashboardIcon,
+  IssueIcon,
+  TreatmentQualityIcon,
+  VehicleLogIcon,
+} from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import TQMPendingTask from "./TQMPendingTask";
@@ -17,9 +31,24 @@ const TQMLanding = () => {
       icon: <InboxIcon />,
     },
     {
-      name: "ES_FSM_ADD_NEW_BUTTON",
+      name: "ES_FSM_VEHICLE_LOG",
       link: `/${window?.contextPath}/employee/fsm/fstp-add-vehicle`,
-      icon: <AddNewIcon />,
+      icon: <VehicleLogIcon />,
+    },
+    {
+      name: "ES_TQM_TREATMENT_QUALITY",
+      // link: ``,
+      icon: <TreatmentQualityIcon />,
+    },
+    {
+      name: "ES_TQM_ISSUE_MANAGEMENT",
+      // link: ``,
+      icon: <IssueIcon />,
+    },
+    {
+      name: "ES_TQM_VIEW_DASHBOARD",
+      // link: ``,
+      icon: <DashboardIcon />,
     },
   ];
 
