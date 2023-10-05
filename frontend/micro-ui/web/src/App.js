@@ -30,7 +30,7 @@ initEngagementComponents();
 initFSMComponents();
 initHRMSComponents();
 initUtilitiesComponents();
-initTQMComponents();
+
 
 const moduleReducers = (initData) => ({
   initData,
@@ -39,7 +39,8 @@ const moduleReducers = (initData) => ({
 window.Digit.Customizations = {
   commonUiConfig: UICustomizations
 };
-
+//calling it here so that UICustomizations inside tqm gets added after the common Customizations are added
+initTQMComponents();
 function App() {
   window.contextPath = window?.globalConfigs?.getConfig("CONTEXT_PATH");
   const stateCode = window.globalConfigs?.getConfig("STATE_LEVEL_TENANT_ID") || process.env.REACT_APP_STATE_LEVEL_TENANT_ID;
