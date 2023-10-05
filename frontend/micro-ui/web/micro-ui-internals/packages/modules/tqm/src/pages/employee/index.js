@@ -6,6 +6,7 @@ import SampleComp from "./SampleComp";
 import TQMPendingTask from "./TQMPendingTask";
 import TQMLanding from "./TQMLanding";
 import TqmSearch from "./search-test-results/TqmSearch";
+import TqmHome from "./home/TqmHome";
 
 // import TQMSummary from "../../components/TQMSummary";
 
@@ -26,21 +27,24 @@ const TqmBreadCrumb = ({ location, defaultPath }) => {
 const App = ({ path }) => {
   const { t } = useTranslation();
   const location = useLocation();
-
+  const isPlantOperatorLoggedIn = Digit.Utils.tqm.isPlantOperatorLoggedIn()
   const TqmInbox = Digit?.ComponentRegistryService?.getComponent("TqmInbox");
 
   return (
     <React.Fragment>
-      <TqmBreadCrumb location={location} defaultPath={path} />
+      {/* <TqmBreadCrumb location={location} defaultPath={path} /> */}
+      {isPlantOperatorLoggedIn && (location.pathname.includes("/response") ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>)}
       <Switch>
         <AppContainer className="tqm">
           <PrivateRoute path={`${path}/landing`} component={() => <TQMLanding />} />
-          <PrivateRoute path={`${path}/home`} component={() => <TQMLanding />} />
+          <PrivateRoute path={`${path}/home`} component={() => <TqmHome {...{ path }} />} />
           <PrivateRoute path={`${path}/sample`} component={() => <SampleComp />} />
           <PrivateRoute path={`${path}/check`} component={() => <TQMPendingTask />} />
           <PrivateRoute path={`${path}/inbox`} component={() => <TqmInbox {...{ path }} />} />
           <PrivateRoute path={`${path}/search-test-results`} component={() => <TqmSearch {...{ path }} />} />
+          
           {/* <PrivateRoute path={`${path}/summary/:id`} component={() => <TQMSummary />} /> */}
+          
         </AppContainer>
       </Switch>
     </React.Fragment>

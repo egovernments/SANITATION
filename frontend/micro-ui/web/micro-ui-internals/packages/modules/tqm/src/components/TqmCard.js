@@ -9,6 +9,7 @@ const ROLES = {
 // Mukta Overrriding the Works Home screen card
 const TqmCard = () => {
   const isMobile = Digit.Utils.browser.isMobile();
+  const isPlantOperatorLoggedIn = Digit.Utils.tqm.isPlantOperatorLoggedIn()
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
@@ -64,6 +65,10 @@ const TqmCard = () => {
     ],
     links: links,
   };
+
+  if(isPlantOperatorLoggedIn) {
+    delete propsForModuleCard.kpis
+  }
   return <EmployeeModuleCard {...propsForModuleCard} />;
 };
 
