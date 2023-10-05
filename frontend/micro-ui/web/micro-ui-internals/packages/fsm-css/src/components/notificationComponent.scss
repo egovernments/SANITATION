@@ -12,8 +12,10 @@
     justify-content: space-between;
     align-items: center;
     .icon {
-      width: 1.5rem;
       margin-right: 0.5rem;
+      svg {
+        width: 1.5rem;
+      }
     }
     .label {
       font-size: 0.875rem;

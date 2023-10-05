@@ -178,6 +178,13 @@ import {
   NoResultsFoundIcon,
   TqmHomePageCardIcon,
   TqmInboxIcon,
+  TreatmentQualityIcon,
+  MaintainanceIcon,
+  DashboardIcon,
+  IssueIcon,
+  ViewReportsIcon,
+  HelpOutlineIcon,
+  VehicleLogIcon,
 } from "./atoms/svgindex";
 import Table from "./atoms/Table";
 import TelePhone from "./atoms/TelePhone";
@@ -490,4 +497,11 @@ export {
   WorkflowActions,
   WorkflowTimeline,
   UploadFileComposer,
+  TreatmentQualityIcon,
+  MaintainanceIcon,
+  DashboardIcon,
+  IssueIcon,
+  ViewReportsIcon,
+  HelpOutlineIcon,
+  VehicleLogIcon,
 };
