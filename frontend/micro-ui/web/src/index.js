@@ -6,12 +6,13 @@ import "./index.css";
 import App from './App';
 import { TLCustomisations } from './Customisations/tl/TLCustomisation';
 import { UICustomizations } from './Customisations/UICustomizations';
+import { initTQMComponents } from "@egovernments/digit-ui-module-tqm";
 
 initLibraries();
 
 
 window.Digit.Customizations = { PGR: {}, TL: TLCustomisations, commonUiConfig: UICustomizations};
-
+initTQMComponents();
 const user = window.Digit.SessionStorage.get("User");
 
 if (!user || !user.access_token || !user.info) {
