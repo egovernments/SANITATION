@@ -1,0 +1,117 @@
+.tqm-home-container {
+  margin:0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap:1rem;
+  
+  .tqm-home-card {
+    margin:0px;
+  }
+
+  .alerts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    color:#0B0C0C;
+    .alerts-container-header {
+      padding: 16px;
+      @apply bg-white shadow-card p-md mb-xl;
+      border-radius: 4px;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      .alerts-container-count {
+        color:#505A5F;
+      }
+    }
+
+    .alerts-container-subheader {
+      font-size:16px;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+
+    .alerts-container-item {
+      display: flex;
+      justify-content: space-between;
+      color:#505A5F;
+      font-weight: 700;
+      padding: 0 16px 0px 16px;
+      .alerts-container-item-label {
+        
+      }
+
+      .alerts-container-item-count {
+        
+      }
+    }
+  }
+
+  .performance-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+  }
+
+  .performance-container {
+    color:#505A5F;
+    display: flex !important ;
+    flex-direction: row;
+    gap:0.5rem;
+    justify-content: space-between;
+    padding: 1rem;
+    .performance-item {
+      display: flex;
+      flex-direction: column;
+      gap:0.2rem;
+      align-items: center;
+
+      .performance-item-percentage {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+      .performance-item-label{
+        font-size: 1rem;
+        font-weight: 400;
+      }
+      .performance-item-label-caption{
+        display: flex;
+        align-items: center;
+        svg {
+          width: 1rem;
+          height: 1rem;
+        }
+        &__pass {
+          color:#00703C;
+        }
+        &__fail {
+          color:#D4351C;
+        }
+      }
+      .performance-item-sla {
+        padding: 8px 16px;
+        border-radius: 16px;
+        font-weight: 700;
+        &__pass{
+          color:#00703C;
+          background-color: #BAD6C9;
+        }
+        &__fail{
+          color:red;
+          background-color: red;
+        }
+      }
+    }
+
+    .vertical-line {
+      display: block;
+      margin: auto;
+      height: 6rem;
+      width: 1px; /* Adjust the width of your vertical line */
+      background-color: #D6D5D4; /* Adjust the color of your vertical line */
+      /* You can also add other styles like margin, padding, or positioning as needed */
+    }
+  }
+}
