@@ -44,6 +44,7 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
+0.0.28 Added Home screen card styles for plant operator home screen
 0.0.27 Added TQM Home Card and Notification component.  
 0.0.26 Added TQM and Summary and enhancements.  
 0.0.25 Added support fixes for inbox v2 component.  
