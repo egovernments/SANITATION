@@ -14,6 +14,9 @@ import { initUtilitiesComponents } from "@egovernments/digit-ui-module-utilities
 import { UICustomizations } from "./Customisations/UICustomizations";
 
 window.contextPath = window?.globalConfigs?.getConfig("CONTEXT_PATH");
+window.Digit.Customizations = {
+  commonUiConfig: UICustomizations
+};
 
 initLibraries();
 initFSMLibraries();
@@ -36,9 +39,7 @@ const moduleReducers = (initData) => ({
   initData,
 });
 
-window.Digit.Customizations = {
-  commonUiConfig: UICustomizations
-};
+
 //calling it here so that UICustomizations inside tqm gets added after the common Customizations are added
 initTQMComponents();
 function App() {
