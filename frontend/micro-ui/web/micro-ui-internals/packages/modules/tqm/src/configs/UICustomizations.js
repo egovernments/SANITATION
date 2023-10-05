@@ -59,7 +59,7 @@ export const UICustomizations = {
 
       return {
         url: "/egov-workflow-v2/egov-wf/businessservice/_search",
-        params: { tenantId, businessServices: "mukta-estimate" },
+        params: { tenantId, businessServices: businessServiceMap?.tqm },
         body: {
          
         },
@@ -85,7 +85,7 @@ export const UICustomizations = {
 
       return {
         url: "/egov-workflow-v2/egov-wf/businessservice/_search",
-        params: { tenantId, businessServices: "mukta-estimate" },
+        params: { tenantId, businessServices: businessServiceMap?.tqm },
         body: {
          
         },
@@ -111,7 +111,7 @@ export const UICustomizations = {
 
       return {
         url: "/egov-workflow-v2/egov-wf/businessservice/_search",
-        params: { tenantId, businessServices: "mukta-estimate" },
+        params: { tenantId, businessServices: businessServiceMap?.tqm },
         body: {
          
         },
