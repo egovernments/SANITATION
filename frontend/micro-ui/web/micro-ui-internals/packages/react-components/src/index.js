@@ -185,6 +185,7 @@ import {
   ViewReportsIcon,
   HelpOutlineIcon,
   VehicleLogIcon,
+  ArrowLeftWhite,
 } from "./atoms/svgindex";
 import Table from "./atoms/Table";
 import TelePhone from "./atoms/TelePhone";
@@ -504,4 +505,5 @@ export {
   ViewReportsIcon,
   HelpOutlineIcon,
   VehicleLogIcon,
+  ArrowLeftWhite,
 };
