@@ -17,7 +17,6 @@ import lombok.Setter;
 @Component
 public class TestConfiguration {
 
-
 	@Value("${egov.test.default.limit}")
 	private Integer defaultLimit;
 
@@ -27,5 +26,14 @@ public class TestConfiguration {
 	@Value("${egov.test.max.limit}")
 	private Integer maxSearchLimit;
 
-	
+	// Plant Config
+	@Value("${egov.plantMapping.host}")
+	private String plantMappingHost;
+
+	@Value("${egov.plantMapping.context.path}")
+	private String plantMappingContextPath;
+
+	@Value("${egov.plantMapping.search.path}")
+	private String plantMappingSearchEndpoint;
+
 }

@@ -3,27 +3,40 @@ package org.egov.pqm.service;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.common.contract.request.Role;
 import org.egov.pqm.repository.PqmRepository;
+import org.egov.pqm.util.TestConstants;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchRequest;
+import org.egov.pqm.web.model.plantMapping.PlantMapping;
+import org.egov.pqm.web.model.plantMapping.PlantMappingSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class PqmService {
 
 	@Autowired
 	private PqmRepository repository;
+	
+	@Autowired
+	private FstpoService fstpoService;
 
 	public TestResponse testSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
 		
 		List<Test> testList = new LinkedList<>();
+		
+		if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
+			checkRoleInValidateSearch(criteria, requestInfo);
+		}
 		TestResponse testResponse = repository.getPqmData(criteria);
 		List<String> idList = testResponse.getTests().stream().map(Test::getId).collect(Collectors.toList());
 
@@ -77,6 +90,27 @@ public class PqmService {
 //		}
 //
 //		return testResponse;
+	}
+	
+	private void checkRoleInValidateSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
+		List<Role> roles = requestInfo.getUserInfo().getRoles();
+		if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), TestConstants.FSTPO_EMPLOYEE))) {
+			List<String> employeeUuid = new ArrayList<>();
+			employeeUuid.add(requestInfo.getUserInfo().getUuid());
+
+			PlantMappingSearchCriteria plantMappingSearchCriteria = PlantMappingSearchCriteria.builder()
+					.employeeUuid(employeeUuid).tenantId(criteria.getTestSearchCriteria().getTenantId()).build();
+
+			PlantMapping plantMapping = fstpoService.getPlantMapping(plantMappingSearchCriteria, requestInfo);
+			
+		if(plantMapping != null ){
+			List<String> plantcodes = new ArrayList<>();
+			plantcodes.add(plantMapping.getPlantCode());
+			criteria.getTestSearchCriteria().setPlantCodes(plantcodes);
+		}
+
+		}
+
 	}
 
 }
