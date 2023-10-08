@@ -3,6 +3,7 @@ package org.egov.pqm.web.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import javax.validation.Valid;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,31 +23,31 @@ public class TestSearchCriteria {
   @JsonProperty("tenantId")
   private String tenantId = null;
 
-  @JsonProperty("plants")
+  @JsonProperty("plantCodes")
   @Valid
-  private List<String> plants = null;
+  private List<String> plantCodes = null;
 
-  @JsonProperty("processes")
+  @JsonProperty("processCodes")
   @Valid
-  private List<String> processes = null;
+  private List<String> processCodes = null;
 
-  @JsonProperty("stages")
+  @JsonProperty("stageCodes")
   @Valid
-  private List<String> stages = null;
+  private List<String> stageCodes = null;
 
-  @JsonProperty("materials")
+  @JsonProperty("materialCodes")
   @Valid
-  private List<String> materials = null;
+  private List<String> materialCodes = null;
 
-  @JsonProperty("deviceCode")
+  @JsonProperty("deviceCodes")
   @Valid
-  private List<String> deviceCode = null;
+  private List<String> deviceCodes = null;
 
-  @JsonProperty("testStatus")
-  private String testStatus = null;
+  @JsonProperty("wfStatus")
+  private String wfStatus = null;
 
-  @JsonProperty("resultStatus")
-  private TestResultStatus resultStatus = null;
+  @JsonProperty("status")
+  private TestResultStatus status = null;
 
   @JsonProperty("testType")
   private String testType = null;
@@ -56,4 +57,32 @@ public class TestSearchCriteria {
 
   @JsonProperty("toDate")
   private Long toDate = null;
+  
+//  @JsonProperty("offset")
+//  private Integer offset;
+//
+//  @JsonProperty("limit")
+//  private Integer limit;
+//  
+//  @JsonProperty("sortBy")
+//  private SortBy sortBy;
+//  
+//  @JsonProperty("sortOrder")
+//  private SortOrder sortOrder;
+//  
+//  public enum SortOrder {
+//      ASC,
+//      DESC
+//  }
+//
+//  public enum SortBy {
+//	  wfStatus,
+//	  id,
+//	  plantCode,
+//	  processCode,
+//	  stageCode,
+//	  materialCode,
+//	  deviceCode,
+//      createdTime
+//  }
 }

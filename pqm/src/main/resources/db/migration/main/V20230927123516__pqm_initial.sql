@@ -4,15 +4,16 @@ CREATE TABLE IF NOT EXISTS eg_pqm_tests
 (
     id                character varying(64),
     tenantId          character varying(64),
-    plantId           character varying(255),
-    processId         character varying(255),
-    stageId           character varying(255),
-    materialId        character varying(255),
-    deviceId          character varying(255),
-    type              character varying(64),
+    plantCode           character varying(255),
+    processCode         character varying(255),
+    stageCode           character varying(255),
+    materialCode        character varying(255),
+    deviceCode          character varying(255),
+    testType              character varying(64),
     status            character varying(64),
+    wfStatus            character varying(64),
     scheduledDate     bigint,
-    resultCriteria json not null,
+    qualityCriteria json not null,
     additionalDetails json,
     isActive          boolean,
     createdBy         character varying(64),
@@ -32,6 +33,7 @@ CREATE TABLE IF NOT EXISTS eg_pqm_test_result_documents
     documentType     character varying(64),
     filestoreId      character varying(250),
     isActive         boolean,
+    additionalDetails json,
     createdBy        character varying(64),
     lastModifiedBy   character varying(64),
     createdTime      bigint,
@@ -45,22 +47,22 @@ CREATE TABLE IF NOT EXISTS eg_pqm_tests_auditlog
 (
     id                character varying(64),
     tenantId          character varying(64),
-    plantId           character varying(255),
-    processId         character varying(255),
-    stageId           character varying(255),
-    materialId        character varying(255),
-    deviceId          character varying(255),
-    type              character varying(64),
+    plantCode           character varying(255),
+    processCode         character varying(255),
+    stageCode           character varying(255),
+    materialCode        character varying(255),
+    deviceCode          character varying(255),
+    testType              character varying(64),
     status            character varying(64),
+    wfStatus            character varying(64),
     scheduledDate     bigint,
-    resultCriteria    json not null,
+    qualityCriteria json not null,
     additionalDetails json,
     isActive          boolean,
     createdBy         character varying(64),
     lastModifiedBy    character varying(64),
     createdTime       bigint,
-    lastModifiedTime  bigint,
-    CONSTRAINT pk_pqm_tests PRIMARY KEY (id)
+    lastModifiedTime  bigint
 );
 
 
@@ -72,12 +74,11 @@ CREATE TABLE IF NOT EXISTS eg_pqm_test_result_documents_auditlog
     documentUri      character varying(2084),
     documentType     character varying(64),
     filestoreId      character varying(250),
+    additionalDetails json,
     isActive         boolean,
     createdBy        character varying(64),
     lastModifiedBy   character varying(64),
     createdTime      bigint,
-    lastModifiedTime bigint,
-    CONSTRAINT pk_pqm_test_result_documents PRIMARY KEY (id),
-    CONSTRAINT fk_documents_pqm_test_results FOREIGN KEY (testId) REFERENCES eg_pqm_tests (id)
-        ON DELETE CASCADE
+    lastModifiedTime bigint
+    
 );
