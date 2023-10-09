@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Component
-public class TestConfiguration {
+public class ServiceConfiguration {
 
 	@Value("${egov.test.default.limit}")
 	private Integer defaultLimit;
@@ -26,14 +26,14 @@ public class TestConfiguration {
 	@Value("${egov.test.max.limit}")
 	private Integer maxSearchLimit;
 
-	// Plant Config
-	@Value("${egov.plantMapping.host}")
-	private String plantMappingHost;
-
-	@Value("${egov.plantMapping.context.path}")
-	private String plantMappingContextPath;
-
-	@Value("${egov.plantMapping.search.path}")
-	private String plantMappingSearchEndpoint;
+	// MDMS
+	@Value("${egov.mdms.host}")
+	private String mdmsHost;
+	
+	@Value("${egov.mdms.search.endpoint}")
+	private String mdmsEndPoint;
+	
+	@Value("${egov.mdms.search.v2.endpoint}")
+	private String mdmsv2EndPoint;
 
 }

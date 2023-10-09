@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.egov.pqm.config.TestConfiguration;
+import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
@@ -17,7 +17,7 @@ public class PqmQueryBuilder {
 
 
 	@Autowired
-	private TestConfiguration config;
+	private ServiceConfiguration config;
 
 	private static final String QUERY = "select count(*) OVER() AS full_count,test.* from eg_pqm_tests test";
 
