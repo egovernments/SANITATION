@@ -58,31 +58,4 @@ public class TestSearchCriteria {
   @JsonProperty("toDate")
   private Long toDate = null;
   
-//  @JsonProperty("offset")
-//  private Integer offset;
-//
-//  @JsonProperty("limit")
-//  private Integer limit;
-//  
-//  @JsonProperty("sortBy")
-//  private SortBy sortBy;
-//  
-//  @JsonProperty("sortOrder")
-//  private SortOrder sortOrder;
-//  
-//  public enum SortOrder {
-//      ASC,
-//      DESC
-//  }
-//
-//  public enum SortBy {
-//	  wfStatus,
-//	  id,
-//	  plantCode,
-//	  processCode,
-//	  stageCode,
-//	  materialCode,
-//	  deviceCode,
-//      createdTime
-//  }
 }

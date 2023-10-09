@@ -82,19 +82,11 @@ public class MDMSUtils {
     return new StringBuilder().append(config.getMdmsHost()).append(config.getMdmsEndPoint());
   }
 
-  private ModuleDetail getTenantModuleRequestData() {
-    List<MasterDetail> tenantMasterDetails = new ArrayList<>();
+	private ModuleDetail getTenantModuleRequestData() {
+		List<MasterDetail> tenantMasterDetails = new ArrayList<>();
 
-//    MasterDetail tenantMasterDetail = MasterDetail.builder().name(MASTER_TENANTS)
-//        .filter(filterCode).build();
-//
-//    tenantMasterDetails.add(tenantMasterDetail);
-//
-//    ModuleDetail tenantModuleDetail = ModuleDetail.builder().masterDetails(tenantMasterDetails)
-//        .moduleName(MDMS_TENANT_MODULE_NAME).build();
-
-    ModuleDetail tenantModuleDetail =null;
-    return tenantModuleDetail;
-  }
+		ModuleDetail tenantModuleDetail = null;
+		return tenantModuleDetail;
+	}
 
 }

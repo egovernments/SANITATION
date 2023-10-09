@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
-import org.egov.pqm.repository.PqmRepository;
+import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.web.model.Document;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class PqmService {
 
 	@Autowired
-	private PqmRepository repository;
+	private TestRepository repository;
 
 	@Autowired
 	private MDMSUtils mdmsUtils;
@@ -67,25 +67,6 @@ public class PqmService {
 		List<String> masterNameList = new ArrayList<>();
 		masterNameList.add(null);
 		if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
-
-			// fetch list of quality standards for the test
-//			List<String> masterList = new ArrayList<>(
-//					Arrays.asList(
-//							
-//							MASTER_NAME_QUALITY_CRITERIA
-//					));
-//			Map<String, Map<String, JSONArray>> response = mdmsUtils.fetchMdmsData(requestInfo, requestInfo.getUserInfo().getTenantId(), "PQM", masterList);
-//			String jsondata = response.get("PQM").get("MASTER_NAME_QUALITY_CRITERIA").toString();
-//			PlantMappingSearchCriteria plantMappingSearchCriteria = PlantMappingSearchCriteria.builder()
-//					.employeeUuid(employeeUuid).tenantId(criteria.getTestSearchCriteria().getTenantId()).build();
-//
-//			PlantMapping plantMapping = fstpoService.getPlantMapping(plantMappingSearchCriteria, requestInfo);
-
-//		if(plantMapping != null ){
-//			List<String> plantcodes = new ArrayList<>();
-//			plantcodes.add(plantMapping.getPlantCode());
-//			criteria.getTestSearchCriteria().setPlantCodes(plantcodes);
-//		}
 
 		}
 

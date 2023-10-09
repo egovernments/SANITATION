@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.egov.pqm.repository.PqmRepository;
+import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.web.model.AuditDetails;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.QualityCriteria;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class PqmRowMapper implements ResultSetExtractor<List<Test>> {
+public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 
 	@Autowired
 	private ObjectMapper mapper;

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 @Component
-public class PqmQueryBuilder {
+public class TestQueryBuilder {
 
 
 	@Autowired
@@ -241,39 +241,6 @@ public class PqmQueryBuilder {
 
 	}
 
-//	public String getFSMLikeQuery(TestSearchCriteria criteria, List<Object> preparedStmtList) {
-//
-//		StringBuilder builder = new StringBuilder(QUERY);
-//
-//		List<String> ids = criteria.getIds();
-//		if (!CollectionUtils.isEmpty(ids)) {
-//
-//			addClauseIfRequired(preparedStmtList, builder);
-//			builder.append(" test.id IN (").append(createQuery(ids)).append(")");
-//			addToPreparedStatement(preparedStmtList, ids);
-//		}
-//
-//		return addPaginationClause(builder, preparedStmtList, criteria);
-//
-//	}
-//
-//	private String addPaginationClause(StringBuilder builder, List<Object> preparedStmtList,
-//			TestSearchCriteria criteria) {
-//
-//		if (criteria.getLimit() != null && criteria.getLimit() != 0) {
-//			builder.append(
-//					"and test.id in (select id from eg_pqm_tests where tenantid= ? order by id offset ? limit ?)");
-//			preparedStmtList.add(criteria.getTenantId());
-//			preparedStmtList.add(criteria.getOffset());
-//			preparedStmtList.add(criteria.getLimit());
-//
-//			addOrderByClause(builder, criteria);
-//
-//		} else {
-//			addOrderByClause(builder, criteria);
-//		}
-//		return builder.toString();
-//	}
 
 	public String getDocumentSearchQuery(List<String> idList, List<Object> preparedStmtList) {
 		StringBuilder builder = new StringBuilder(DOCUMENT_QUERY);

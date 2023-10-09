@@ -3,9 +3,9 @@ package org.egov.pqm.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.egov.pqm.repository.querybuilder.PqmQueryBuilder;
+import org.egov.pqm.repository.querybuilder.TestQueryBuilder;
 import org.egov.pqm.repository.rowmapper.DocumentRowMapper;
-import org.egov.pqm.repository.rowmapper.PqmRowMapper;
+import org.egov.pqm.repository.rowmapper.TestRowMapper;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Test;
@@ -19,16 +19,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class PqmRepository {
+public class TestRepository {
 
 	@Autowired
-	private PqmQueryBuilder pqmQueryBuilder;
+	private TestQueryBuilder pqmQueryBuilder;
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	private PqmRowMapper pqmRowMapper;
+	private TestRowMapper pqmRowMapper;
 
 	@Autowired
 	private DocumentRowMapper documentRowMapper;
