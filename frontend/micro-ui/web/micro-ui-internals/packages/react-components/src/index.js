@@ -187,7 +187,8 @@ import {
   VehicleLogIcon,
   ArrowLeftWhite,
   ArrowDownward,
-  ArrowUpward
+  ArrowUpward,
+  WarningIcon,
 } from "./atoms/svgindex";
 import Table from "./atoms/Table";
 import TelePhone from "./atoms/TelePhone";
@@ -509,5 +510,6 @@ export {
   VehicleLogIcon,
   ArrowLeftWhite,
   ArrowDownward,
-  ArrowUpward
+  ArrowUpward,
+  WarningIcon,
 };

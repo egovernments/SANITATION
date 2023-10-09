@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
-import { Button, Card, SubmitBar, CardHeader, ViewComposer, Dropdown, FormComposerV2 } from "@egovernments/digit-ui-react-components";
+import { ViewComposer, Toast } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
+import TestWFActions from "./TestWFActions";
 
 // 🚧 WIP: DUMMY DATA FOR DETAILS 👇
 const data = {
@@ -56,118 +57,42 @@ const data = {
 
 function TestDetails() {
   const [status, setStatus] = useState(null);
+  const [showToast, setShowToast] = useState(null);
   const { t } = useTranslation();
-  // 🚧 WIP: DUMMY DATA FOR UPDATE STATUS 👇
-  const updateConfig = [
-    {
-      head: t("ES_TQM_SELECT_SAMPLE_TO_LAB_LABEL"),
-      body: [
-        {
-          label: t("ES_TQM_SELECT_LAB_LABEL"),
-          isMandatory: true,
-          key: "status",
-          type: "dropdown",
-          disable: false,
-          populators: {
-            name: "status",
-            optionsKey: "name",
-            error: t("ES_TQM_SELECT_LAB_LABEL_ERROR"),
-            required: true,
-            // 🚧 WIP: DUMMY DATA FOR UPDATE STATUS 👇
-            options: [{ name: "djhsdkj" }, { name: "34734786" }],
-            // 🚧 WIP: way to call option from mdms 👇
-            //   mdmsConfig: {
-            //     masterName: "ProjectType",
-            //     moduleName: "works",
-            //     localePrefix: "COMMON_MASTERS"
-            // }
-          },
-        },
-      ],
-    },
-  ];
-
-  // 🚧 WIP: DUMMY DATA FOR TEST RESULTS 👇
-  const configs = [
-    {
-      head: t("ES_TQM_ADD_TEST_RESULTS_TITLE"),
-      body: [
-        {
-          label: t("ES_TQM_TEST_PARAM_PH"),
-          isMandatory: true,
-          type: "number",
-          disable: false,
-          populators: { name: "pH", error: t("ES_TQM_TEST_PARAM_ERROR_MESSAGE"), validation: { min: 0, max: 10 } },
-        },
-        {
-          label: t("ES_TQM_TEST_PARAM_BOD"),
-          isMandatory: true,
-          type: "number",
-          disable: false,
-          populators: { name: "bod", error: t("ES_TQM_TEST_PARAM_ERROR_MESSAGE"), validation: { min: 0, max: 10 } },
-        },
-        {
-          label: t("ES_TQM_TEST_PARAM_COD"),
-          isMandatory: true,
-          type: "number",
-          disable: false,
-          populators: { name: "cod", error: t("ES_TQM_TEST_PARAM_ERROR_MESSAGE"), validation: { min: 0, max: 10 } },
-        },
-        {
-          label: t("ES_TQM_TEST_PARAM_TSS"),
-          isMandatory: true,
-          type: "number",
-          disable: false,
-          populators: { name: "tss", error: t("ES_TQM_TEST_PARAM_ERROR_MESSAGE"), validation: { min: 0, max: 10 } },
-        },
-        {
-          label: t("ES_TQM_TEST_PARAM_FCOLI"),
-          isMandatory: true,
-          type: "number",
-          disable: false,
-          populators: { name: "fcoli", error: t("ES_TQM_TEST_PARAM_ERROR_MESSAGE"), validation: { min: 0, max: 10 } },
-        },
-        // {
-        //   label: "Attach Document",
-        //   type: "documentUpload",
-        //   withoutLabel: true,
-        //   module: "UPDATE TEST",
-        //   error: "TEST_REQUIRED_ERR",
-        //   name: "documents",
-        //   customClass: "",
-        //   localePrefix: "TQM",
-        // },
-        {
-          type: "multiupload",
-          label: t("ES_TQM_TEST_PARAM_ATTACH_DOCUMENTS"),
-          populators: {
-            name: "documents",
-            allowedMaxSizeInMB: 5,
-            maxFilesAllowed: 1,
-            customClass: "upload-margin-bottom",
-            errorMessage: t("ES_TQM_TEST_PARAM_ATTACH_DOCUMENTS_ERROR_MSG"),
-            allowedFileTypes: /(.*?)(pdf|jpg|png)$/i,
-            // hintText: t("WORKS_DOC_UPLOAD_HINT"),
-            // showHintBelow: true,
-            // hideInForm: !fetchIsShow("upload"),
-          },
-        },
-      ],
-    },
-  ];
-
-  const onUpdateStatus = ({ status }) => {
-    setStatus(status);
+  // 🚧 WIP: DUMMY DATA WF 👇
+  const [workflowDetails, setWorkflowDetails] = useState(2);
+  const closeToast = () => {
+    setShowToast(null);
   };
 
-  // 🚧 WIP: NEED TO ADD LOGIN FOR SUBMIT HERE 👇
-  const onSubmit = (data) => {};
+  const submitAction = (data) => {
+    console.log("DATA", data);
+    // mutate(data, {
+    //   onError: (error, variables) => {
+    //     setShowToast({ key: "error", action: error });
+    //     setTimeout(closeToast, 5000);
+    //   },
+    //   onSuccess: (data, variables) => {
+    //     setShowToast({ key: "success", action: selectedAction });
+    //     setTimeout(closeToast, 5000);
+    //     queryClient.invalidateQueries("FSM_CITIZEN_SEARCH");
+    //     const inbox = queryClient.getQueryData("FUNCTION_RESET_INBOX");
+    //     inbox?.revalidate();
+    //   },
+    // });
+  };
 
   return (
     <>
       <ViewComposer data={data} isLoading={false} />
-      {!status && <FormComposerV2 config={updateConfig} onSubmit={onUpdateStatus} label={t("ES_TQM_UPDATE_STATUS_BUTTON")} submitInForm={true} />}
-      {status && <FormComposerV2 config={configs} onSubmit={onSubmit} label={t("ES_TQM_SUBMIT_TEST_RESULTS_BUTTON")} submitInForm={true} />}
+      {workflowDetails && <TestWFActions t={t} actionData={workflowDetails} submitAction={submitAction} />}
+      {showToast && (
+        <Toast
+          error={showToast.key === "error" ? true : false}
+          label={t(showToast.key === "success" ? `ES_FSM_${showToast.action}_UPDATE_SUCCESS` : showToast.action)}
+          onClose={closeToast}
+        />
+      )}
     </>
   );
 }
