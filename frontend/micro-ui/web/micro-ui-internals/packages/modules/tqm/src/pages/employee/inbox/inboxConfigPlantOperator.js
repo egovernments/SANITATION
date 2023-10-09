@@ -38,8 +38,8 @@ export const tqmInboxConfigPlantOperator = {
               gridColumn:"3"
             },
             "headerStyle": null,
-            "primaryLabel": "Search",
-            "secondaryLabel": "Clear Search",
+            "primaryLabel": "ES_COMMON_SEARCH",
+            "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
             "minReqFields": 1,
             "defaultValues": {
               "processCode":[],

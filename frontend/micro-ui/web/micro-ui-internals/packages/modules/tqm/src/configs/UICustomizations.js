@@ -160,5 +160,17 @@ export const UICustomizations = {
       };
     },
     
+  },
+  SearchTestResults: {
+    preProcess: (data,additionalDetails) => {
+      console.log(data,additionalDetails);
+      // data.config.enabled = false
+     //TODO:: here make the request info accordingly and return when you get search API details
+      return data
+    },
+    MobileDetailsOnClick:() => {
+      return ""
+    }
   }
+
 }
