@@ -36,14 +36,16 @@ public class PqmController {
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
   }
   
-  @PostMapping(value = "/_search", produces = {"*/*"}, consumes = {"application/json"})
+  @PostMapping(value = "/_search")
   ResponseEntity<TestResponse> search(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
       @Valid @RequestBody TestSearchRequest testSearchRequest) {
-	  TestResponse response = pqmService.pqmSearch(testSearchRequest, requestInfoWrapper.getRequestInfo());
+	  TestResponse response = pqmService.testSearch(testSearchRequest, requestInfoWrapper.getRequestInfo());
 
 		response.setResponseInfo(
 				responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true));
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+//    return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+	return new ResponseEntity<>(response, HttpStatus.OK);
+
   }
 
 }
