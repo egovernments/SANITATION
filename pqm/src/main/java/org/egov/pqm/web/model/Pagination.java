@@ -1,6 +1,7 @@
 package org.egov.pqm.web.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,31 @@ import lombok.NoArgsConstructor;
 public class Pagination {
 
 
-  @JsonProperty("Order")
-  private Order order;
+	@JsonProperty("offset")
+	  private Integer offset;
+
+	  @JsonProperty("limit")
+	  private Integer limit;
+	  
+	  @JsonProperty("sortBy")
+	  private SortBy sortBy;
+	  
+	  @JsonProperty("sortOrder")
+	  private SortOrder sortOrder;
+	  
+	  public enum SortOrder {
+	      ASC,
+	      DESC
+	  }
+
+	  public enum SortBy {
+		  wfStatus,
+		  id,
+		  plantCode,
+		  processCode,
+		  stageCode,
+		  materialCode,
+		  deviceCode,
+	      createdTime
+	  }
 }

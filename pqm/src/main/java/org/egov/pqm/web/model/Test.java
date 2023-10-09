@@ -32,16 +32,22 @@ public class Test {
 
   @JsonProperty("materialCode")
   private String materialCode = null;
+  
+  @JsonProperty("deviceCode")
+  private String deviceCode = null;
 
   @JsonProperty("testCriteria")
   @Valid
-  private List<QualityCriteria> testCriteria = new ArrayList<>();
+  private List<QualityCriteria> qualityCriteria = new ArrayList<>();
 
   @JsonProperty("status")
   private TestResultStatus status = null;
 
   @JsonProperty("wfStatus")
   private String wfStatus = null;
+  
+  @JsonProperty("testType")
+  private String testType = null;
 
   @JsonProperty("scheduledDate")
   private String scheduledDate = null;
