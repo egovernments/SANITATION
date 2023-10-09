@@ -1,8 +1,8 @@
 package org.egov.pqm.web.model;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,19 +10,23 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Document {
 
   @JsonProperty("id")
   private String id = null;
 
+  @JsonProperty("testId")
+  private String testId = null;
+  
   @JsonProperty("documentType")
   private String documentType = null;
 
-  @JsonProperty("fileStore")
-  private String fileStore = null;
-
   @JsonProperty("documentUid")
   private String documentUid = null;
+  
+  @JsonProperty("documentUri")
+  private String documentUri = null;
 
   @JsonProperty("additionalDetails")
   private Object additionalDetails = null;
@@ -32,7 +36,11 @@ public class Document {
 
   @JsonProperty("fileStoreId")
   private String fileStoreId;
+  
+  @JsonProperty("isActive")
+  private boolean isActive;
 
   @JsonProperty("auditDetails")
-  private Map<String, Object> auditDetails;
+  private AuditDetails auditDetails;
+
 }
