@@ -16,15 +16,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class EnrichmentService {
     @Autowired
-    ServiceConfiguration config;
+    private ServiceConfiguration config;
     @Autowired
-    IdGenRepository idGenRepository;
+    private IdGenRepository idGenRepository;
 
-    public void enrichPQMCreateRequest(TestRequest testRequest) {
+    public void enrichPQMCreateRequest(TestRequest testRequest)
+    {
         RequestInfo requestInfo = testRequest.getRequestInfo();
         setIdgenIds(testRequest);
-
-
     }
 
     private void setIdgenIds(TestRequest testRequest) {
