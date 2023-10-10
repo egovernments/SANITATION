@@ -45,13 +45,10 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/check`} component={() => <TQMPendingTask />} />
           <PrivateRoute path={`${path}/inbox`} component={() => <TqmInbox {...{ path }} />} />
           <PrivateRoute path={`${path}/search-test-results`} component={() => <TqmSearch {...{ path }} />} />
-<<<<<<< HEAD
           <PrivateRoute path={`${path}/add-test-result`} component={() => <Create />} />
           
-=======
           <PrivateRoute path={`${path}/test-details`} component={() => <TestDetails />} />
           <PrivateRoute path={`${path}/response`} component={() => <TqmResponse />} />
->>>>>>> ea7b1573faef6b7c467b2f87e43602dd5189e964
           {/* <PrivateRoute path={`${path}/summary/:id`} component={() => <TQMSummary />} /> */}
         </AppContainer>
       </Switch>
