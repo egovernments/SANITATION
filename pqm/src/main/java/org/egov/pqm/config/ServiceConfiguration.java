@@ -38,13 +38,13 @@ public class ServiceConfiguration {
 
 
 	// Kafka Topic
-	@Value("${egov.mdms.search.v2.endpoint}")
+	@Value("${egov.test.create.kafka.topic}")
 	private String testSaveTopic;
 
-	@Value("${egov.mdms.search.v2.endpoint}")
+	@Value("${egov.test.update.kafka.topic}")
 	private String testUpdateTopic;
 
-	@Value("${egov.mdms.search.v2.endpoint}")
+	@Value("${egov.test.update.workflow.kafka.topic}")
 	private String testWorkflowTopic;
 
 }
