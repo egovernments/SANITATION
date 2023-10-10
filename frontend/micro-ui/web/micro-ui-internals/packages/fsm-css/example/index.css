@@ -833,7 +833,11 @@ img, video {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: .5rem; }
+  padding: .5rem;
+  background-color: #f7f8fc;
+  border: 1px solid #d6d5d4;
+  -webkit-box-shadow: none;
+  box-shadow: none; }
   .employeeCard.tqm-card-reading svg {
     margin-right: .5rem; }
   .employeeCard.tqm-card-reading .row.tqm-readings-info {
@@ -855,6 +859,9 @@ img, video {
 .employee-card-sub-header, .employeeCard .card-sub-header, .employeeCard .employee-card-sub-header {
   font-size: 1.5rem;
   margin-bottom: 1rem; }
+
+.employeeCard .employeeCard.tqm-card-reading {
+  margin-left: unset; }
 
 .react-switch-checkbox {
   height: 0;
@@ -1726,6 +1733,26 @@ img, video {
 .break-line {
   border-color: #d6d5d4 !important; }
 
+.upload-file {
+  margin-bottom: 1rem; }
+
+.card-label-error.custom-formcomposer {
+  width: 70%;
+  margin-left: 30%;
+  font-size: 12px;
+  margin-top: -21px; }
+  @media (max-width: 639px) {
+    .card-label-error.custom-formcomposer {
+      margin-left: unset; } }
+
+@media (max-width: 639px) {
+  .employeeCard-override {
+    margin-left: 0.5rem !important; } }
+
+@media (min-width: 1024px) {
+  .field-container {
+    max-width: unset; } }
+
 .notification .card-header {
   color: #000;
   font-family: Roboto;
@@ -1818,138 +1845,6 @@ img, video {
 .refresh-icon-container {
   padding: 6px 8px;
   border: 1px solid #eee; }
-
-.employee-app-container {
-  margin: auto; }
-
-.multilink-label {
-  color: #f47738 !important; }
-
-.tqm-home-container {
-  margin: .5rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  grid-gap: 1rem;
-  gap: 1rem; }
-  .tqm-home-container .tqm-home-card {
-    margin: 0; }
-  .tqm-home-container .alerts-container {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    grid-gap: .8rem;
-    gap: .8rem;
-    color: #0b0c0c; }
-    .tqm-home-container .alerts-container .alerts-container-header {
-      padding: 16px;
-      --bg-opacity:1;
-      background-color: #fff;
-      background-color: rgba(255, 255, 255, var(--bg-opacity));
-      -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
-      padding: 16px;
-      margin-bottom: 64px;
-      border-radius: 4px;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      font-weight: 700; }
-      .tqm-home-container .alerts-container .alerts-container-header .alerts-container-count {
-        color: #505a5f; }
-    .tqm-home-container .alerts-container .alerts-container-subheader {
-      font-size: 16px;
-      font-weight: 400;
-      margin-bottom: .5rem; }
-    .tqm-home-container .alerts-container .alerts-container-item {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-      justify-content: space-between;
-      color: #505a5f;
-      font-weight: 700;
-      padding: 0 16px; }
-  .tqm-home-container .performance-header {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    padding: 8px; }
-  .tqm-home-container .performance-container, .tqm-home-container .performance-header {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between; }
-  .tqm-home-container .performance-container {
-    color: #505a5f;
-    display: -webkit-box !important;
-    display: -ms-flexbox !important;
-    display: flex !important;
-    grid-gap: .5rem;
-    gap: .5rem;
-    padding: 1rem; }
-    .tqm-home-container .performance-container .performance-item {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      grid-gap: .2rem;
-      gap: .2rem;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center; }
-      .tqm-home-container .performance-container .performance-item .performance-item-percentage {
-        font-size: 1.5rem;
-        font-weight: 700; }
-      .tqm-home-container .performance-container .performance-item .performance-item-label {
-        font-size: 1rem;
-        font-weight: 400; }
-      .tqm-home-container .performance-container .performance-item .performance-item-label-caption {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center; }
-        .tqm-home-container .performance-container .performance-item .performance-item-label-caption svg {
-          width: 1rem;
-          height: 1rem; }
-        .tqm-home-container .performance-container .performance-item .performance-item-label-caption__pass {
-          color: #00703c; }
-        .tqm-home-container .performance-container .performance-item .performance-item-label-caption__fail {
-          color: #d4351c; }
-      .tqm-home-container .performance-container .performance-item .performance-item-sla {
-        padding: 8px 16px;
-        border-radius: 16px;
-        font-weight: 700; }
-        .tqm-home-container .performance-container .performance-item .performance-item-sla__pass {
-          color: #00703c;
-          background-color: #bad6c9; }
-        .tqm-home-container .performance-container .performance-item .performance-item-sla__fail {
-          color: red;
-          background-color: red; }
-    .tqm-home-container .performance-container .vertical-line {
-      display: block;
-      margin: auto;
-      height: 6rem;
-      width: 1px;
-      background-color: #d6d5d4; }
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
@@ -2173,3 +2068,6 @@ input::-webkit-calendar-picker-indicator {
 
 .action-bar-wrap .card-link {
   margin-top: 4px; }
+
+.employeeCard .card-section-header {
+  margin-bottom: 16px; }

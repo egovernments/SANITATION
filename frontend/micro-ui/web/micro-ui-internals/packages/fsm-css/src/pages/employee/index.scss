@@ -501,3 +501,28 @@
 .break-line {
   border-color: #d6d5d4 !important;
 }
+
+.upload-file {
+  margin-bottom: 1rem;
+}
+
+.card-label-error.custom-formcomposer {
+  width: 70%;
+  margin-left: 30%;
+  font-size: 12px;
+  margin-top: -21px;
+  @media (max-width: 639px) {
+    margin-left: unset;
+  }
+}
+.employeeCard-override {
+  @media (max-width: 639px) {
+    margin-left: 0.5rem !important;
+  }
+}
+
+.field-container {
+  @media (min-width: 1024px) {
+    max-width: unset;
+  }
+}

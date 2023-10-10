@@ -168,7 +168,7 @@ const renderHeader = () => {
           onKeyDown={(e) => checkKeyDown(e)}
         >
           <div
-            className={`search-field-wrapper ${screenType} ${uiConfig?.type}`}
+            className={`search-field-wrapper ${screenType} ${uiConfig?.type} vertical-gap`}
           >
             <RenderFormFields
               fields={uiConfig?.fields}
@@ -185,7 +185,7 @@ const renderHeader = () => {
             />
             <ActionBar className="clear-search-container">
               <div
-                className={`search-button-wrapper ${screenType} ${uiConfig?.type}`}
+                className={`search-button-wrapper ${screenType} inbox  ${uiConfig?.type}`}
               >
                 {/* { uiConfig?.secondaryLabel && <LinkLabel style={{marginBottom: 0, whiteSpace: 'nowrap'}} onClick={clearSearch}>{t(uiConfig?.secondaryLabel)}</LinkLabel> } */}
                 {uiConfig?.secondaryLabel && (
