@@ -60,9 +60,9 @@ public class FSMRepository {
 	@Autowired
 	private TripDetailRowMapper detailMapper;
 
-	public void save(FSMRequest fsmRequest) {
-		producer.push(config.getSaveTopic(), fsmRequest);
-	}
+		public void save(FSMRequest fsmRequest) {
+			producer.push(config.getSaveTopic(), fsmRequest);
+		}
 
 	public void update(FSMRequest fsmRequest, boolean isStateUpdatable) {
 		RequestInfo requestInfo = fsmRequest.getRequestInfo();
