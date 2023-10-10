@@ -1,7 +1,6 @@
 package org.egov.pqm.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.protocol.types.Field;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.IdGenRepository;
@@ -9,13 +8,9 @@ import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.idgen.IdResponse;
+import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.egov.tracer.model.CustomException;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j

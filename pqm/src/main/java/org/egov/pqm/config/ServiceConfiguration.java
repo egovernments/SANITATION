@@ -36,4 +36,17 @@ public class ServiceConfiguration {
 	@Value("${egov.mdms.search.v2.endpoint}")
 	private String mdmsv2EndPoint;
 
+	// Idgen Config
+	@Value("${egov.idgen.host}")
+	private String idGenHost;
+
+	@Value("${egov.idgen.path}")
+	private String idGenPath;
+
+	@Value("${egov.idgen.pqm.id.name}")
+	private String idName;
+
+	@Value("${egov.idgen.pqm.id.format}")
+	private String idFormat;
+
 }
