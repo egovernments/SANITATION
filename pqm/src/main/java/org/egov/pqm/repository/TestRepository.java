@@ -51,21 +51,21 @@ public class TestRepository {
 	public void update(TestRequest testRequest, boolean isStateUpdatable) {
 		RequestInfo requestInfo = testRequest.getRequestInfo();
 
-		Test fsmForStatusUpdate = null;
-		Test fsmForUpdate = null;
+		Test testForStatusUpdate = null;
+		Test testForUpdate = null;
 
 		Test test = testRequest.getTests().get(0);
 
 		if (isStateUpdatable) {
-			fsmForUpdate = test;
+			testForUpdate = test;
 		} else {
-			fsmForStatusUpdate = test;
+			testForStatusUpdate = test;
 		}
-		if (fsmForUpdate != null)
+		if (testForUpdate != null)
 			producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo, new ArrayList<>(
           (Collection) test), testRequest.getWorkflow()));
 
-		if (fsmForStatusUpdate != null)
+		if (testForStatusUpdate != null)
 			producer.push(config.getTestWorkflowTopic(),
 					new TestRequest(requestInfo,  new ArrayList<>(
 							(Collection) test), testRequest.getWorkflow()));
