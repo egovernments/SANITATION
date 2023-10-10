@@ -28,6 +28,7 @@ import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
+import org.egov.pqm.web.model.TestType;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,14 +105,12 @@ public class PqmService {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     Test test = testRequest.getTests().get(0);
 
-//		Map<String, Map<String, JSONArray>> mdmsData = mdmsUtils.fetchMdmsData(requestInfo, test.getTenantId());
-
     if (test.getId() == null) {
       throw new CustomException(UPDATE_ERROR,
           "Application Not found in the System" + test);
     }
 
-    if (test.getTestType() == "LAB") {
+    if (test.getTestType().equals(TestType.LAB)) {
       if (testRequest.getWorkflow() == null || testRequest.getWorkflow().getAction() == null) {
         throw new CustomException(UPDATE_ERROR,
             "Workflow action cannot be null." + String.format("{Workflow:%s}",

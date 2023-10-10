@@ -47,7 +47,7 @@ public class Test {
   private String wfStatus = null;
   
   @JsonProperty("testType")
-  private String testType = null;
+  private TestType testType = null;
 
   @JsonProperty("scheduledDate")
   private Long scheduledDate = null;

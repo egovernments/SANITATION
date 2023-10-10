@@ -14,6 +14,7 @@ import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestResultStatus;
+import org.egov.pqm.web.model.TestType;
 import org.egov.tracer.model.CustomException;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,8 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 			String statusString = rs.getString("status"); // replace with your actual column name
 			TestResultStatus status = TestResultStatus.valueOf(statusString.toUpperCase());
 			String wfStatus = rs.getString("wfStatus");
-			String testType = rs.getString("testType");
+			String testTypeString = rs.getString("testType");
+			TestType testType = TestType.valueOf(testTypeString.toUpperCase());
 			Long scheduledDate = rs.getLong("scheduledDate");
 			Boolean isActive = rs.getBoolean("isActive");
 			this.setFullCount(rs.getInt("full_count"));
