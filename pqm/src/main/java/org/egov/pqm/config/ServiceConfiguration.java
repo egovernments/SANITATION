@@ -47,4 +47,17 @@ public class ServiceConfiguration {
 	@Value("${egov.test.update.workflow.kafka.topic}")
 	private String testWorkflowTopic;
 
+	// Idgen Config
+	@Value("${egov.idgen.host}")
+	private String idGenHost;
+
+	@Value("${egov.idgen.path}")
+	private String idGenPath;
+
+	@Value("${egov.idgen.pqm.id.name}")
+	private String idName;
+
+	@Value("${egov.idgen.pqm.id.format}")
+	private String idFormat;
+
 }
