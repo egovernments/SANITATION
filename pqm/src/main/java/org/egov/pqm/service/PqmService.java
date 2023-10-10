@@ -150,11 +150,6 @@ public class PqmService {
 
 
 		//add qualitycriteria check
-
-
-		String businessServiceName = null;
-
-
 		//BusinessService businessService = workflowService.getBusinessService(test, testRequest.getRequestInfo(),"TQM");
 		//actionValidator.validateUpdateRequest(fsmRequest, businessService);
 		//testValidator.validateUpdate(testRequest, mdmsData);
