@@ -127,10 +127,8 @@ public class FSMService {
 		wfIntegrator.callWorkFlow(fsmRequest);
 		repository.save(fsmRequest);
 
-		Double tripAmount = wfIntegrator.getAdditionalDetails(fsmRequest.getFsm().getAdditionalDetails());
-
-		if ((fsmRequest.getFsm().getAdvanceAmount() != null && fsmRequest.getFsm().getAdvanceAmount().intValue() > 0)
-				|| tripAmount > 0) {
+		
+		if (fsmRequest.getFsm().getAdvanceAmount()!=null && fsmRequest.getFsm().getAdvanceAmount().intValue()>0) {
 			calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
 		}
 
@@ -169,19 +167,21 @@ public class FSMService {
 
 		String businessServiceName = null;
 
-		Double tripAmount = wfIntegrator.getAdditionalDetails(fsm.getAdditionalDetails());
+
 
 		if (FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
 			businessServiceName = FSMConstants.FSM_POST_PAY_BUSINESSSERVICE;
 		else if (FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
 				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
 			businessServiceName = FSMConstants.FSM_BUSINESSSERVICE;
-		else if (fsm.getAdvanceAmount() == null && fsm.getPaymentPreference() == null && tripAmount <= 0)
+		else if (fsm.getAdvanceAmount() == null && fsm.getPaymentPreference() == null)
 			businessServiceName = FSMConstants.FSM_ZERO_PRICE_SERVICE;
-		else if (fsm.getAdvanceAmount() != null && fsm.getAdvanceAmount().intValue() > 0)
+		else if (fsm.getAdvanceAmount().intValue() == 0)
+			businessServiceName = FSMConstants.FSM_LATER_PAY_SERVICE;
+		else if (fsm.getAdvanceAmount().intValue() > 0)
 			businessServiceName = FSMConstants.FSM_ADVANCE_PAY_BUSINESSSERVICE;
 		else
-			businessServiceName = FSMConstants.FSM_LATER_PAY_SERVICE;
+			businessServiceName = FSMConstants.FSM_BUSINESSSERVICE;
 
 		BusinessService businessService = workflowService.getBusinessService(fsm, fsmRequest.getRequestInfo(),
 				businessServiceName, null);
@@ -226,10 +226,7 @@ public class FSMService {
 
 	private void callApplicationAndAssignDsoAndAccept(FSMRequest fsmRequest, FSM oldFSM) {
 
-		Double tripAmount = wfIntegrator.getAdditionalDetails(fsmRequest.getFsm().getAdditionalDetails());
-
-		if (((fsmRequest.getFsm().getAdvanceAmount() != null && fsmRequest.getFsm().getAdvanceAmount().intValue() > 0)
-				|| tripAmount > 0)
+		if (fsmRequest.getFsm().getAdvanceAmount()!=null && fsmRequest.getFsm().getAdvanceAmount().intValue()>0
 				&& fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_SUBMIT)) {
 			handleApplicationSubmit(fsmRequest);
 		}
@@ -356,9 +353,7 @@ public class FSMService {
 
 		}
 		if (fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)) {
-			Double tripAmount = wfIntegrator.getAdditionalDetails(fsmRequest.getFsm().getAdditionalDetails());
-
-			if (fsmRequest.getFsm().getAdvanceAmount() != null || tripAmount > 0) {
+			if(fsmRequest.getFsm().getAdvanceAmount()!=null) {
 				calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
 			}
 
