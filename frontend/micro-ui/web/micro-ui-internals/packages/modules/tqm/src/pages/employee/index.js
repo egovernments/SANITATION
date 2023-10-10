@@ -7,6 +7,7 @@ import TQMPendingTask from "./TQMPendingTask";
 import TQMLanding from "./TQMLanding";
 import TqmSearch from "./search-test-results/TqmSearch";
 import TqmHome from "./home/TqmHome";
+import Create from "./add-test-results/CreateAddTestResult";
 
 // import TQMSummary from "../../components/TQMSummary";
 
@@ -42,6 +43,7 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/check`} component={() => <TQMPendingTask />} />
           <PrivateRoute path={`${path}/inbox`} component={() => <TqmInbox {...{ path }} />} />
           <PrivateRoute path={`${path}/search-test-results`} component={() => <TqmSearch {...{ path }} />} />
+          <PrivateRoute path={`${path}/add-test-result`} component={() => <Create />} />
           
           {/* <PrivateRoute path={`${path}/summary/:id`} component={() => <TQMSummary />} /> */}
           
