@@ -1,8 +1,9 @@
-import React, { Fragment,useState } from "react";
+import React, { Fragment, useState } from "react";
 import Card from "../../atoms/Card";
 import { Loader } from "../../atoms/Loader";
 import { RenderDataSection, RenderDocumentsSection, RenderWfActions, RenderWfHistorySection } from "./renderUtils";
 import HorizontalNav from "../../atoms/HorizontalNav";
+import CardSubHeader from "../../atoms/CardSubHeader";
 
 // format of data expected by this component
 
@@ -117,47 +118,57 @@ const renderCardSectionJSX = (section) => {
     case "WFACTIONS":
       return <RenderWfActions section={section} />;
     case "COMPONENT":
-      const Component = Digit.ComponentRegistryService.getComponent(section.component) ;
-      return <Component {...section.props} />
+      const Component = Digit.ComponentRegistryService.getComponent(section.component);
+      return <Component {...section.props} />;
     default:
       return <div>Section Not Found</div>;
   }
 };
 
 //data is the response of the hook call for View Screen
-const ViewComposer = ({ isLoading = false,data, ...props }) => {
+const ViewComposer = ({ isLoading = false, data, ...props }) => {
   const { cards } = data;
-  const [activeNav,setActiveNav] = useState(data?.horizontalNav?.activeByDefault)
+  const [activeNav, setActiveNav] = useState(data?.horizontalNav?.activeByDefault);
   console.log(activeNav);
 
   if (isLoading) return <Loader />;
 
   return (
     <>
-    {/* This first {} is for rendering cards at the top without navigationKey(out of navbar) */}
-      {cards?.filter(card => !card?.navigationKey)?.map((card, cardIdx) => {
+      {/* This first {} is for rendering cards at the top without navigationKey(out of navbar) */}
+      {cards
+        ?.filter((card) => !card?.navigationKey)
+        ?.map((card, cardIdx) => {
           const { sections } = card;
           return (
-            <Card style={activeNav && card.navigationKey ? (activeNav!==card.navigationKey?{display:"none"}:{}) : {}} className={"employeeCard-override"}>
+            <Card style={activeNav && card.navigationKey ? (activeNav !== card.navigationKey ? { display: "none" } : {}) : {}} className={"employeeCard-override"}>
               {sections?.map((section, sectionIdx) => {
                 return renderCardSectionJSX(section);
               })}
             </Card>
           );
         })}
-    {/* This second section is for rendering cards that are part of the navBar) */}
+      {/* This second section is for rendering cards that are part of the navBar) */}
 
-      <HorizontalNav showNav={data?.horizontalNav?.showNav} configNavItems={data?.horizontalNav?.configNavItems} activeLink={activeNav} setActiveLink={setActiveNav} inFormComposer={false}>
-        {cards?.filter(card => card?.navigationKey)?.map((card, cardIdx) => {
-          const { sections } = card;
-          return (
-            <Card style={activeNav && card.navigationKey ? (activeNav!==card.navigationKey?{display:"none"}:{}) : {}} className={"employeeCard-override"}>
-              {sections?.map((section, sectionIdx) => {
-                return renderCardSectionJSX(section);
-              })}
-            </Card>
-          );
-        })}
+      <HorizontalNav
+        showNav={data?.horizontalNav?.showNav}
+        configNavItems={data?.horizontalNav?.configNavItems}
+        activeLink={activeNav}
+        setActiveLink={setActiveNav}
+        inFormComposer={false}
+      >
+        {cards
+          ?.filter((card) => card?.navigationKey)
+          ?.map((card, cardIdx) => {
+            const { sections } = card;
+            return (
+              <Card style={activeNav && card.navigationKey ? (activeNav !== card.navigationKey ? { display: "none" } : {}) : {}} className={"employeeCard-override"}>
+                {sections?.map((section, sectionIdx) => {
+                  return renderCardSectionJSX(section);
+                })}
+              </Card>
+            );
+          })}
       </HorizontalNav>
     </>
   );
