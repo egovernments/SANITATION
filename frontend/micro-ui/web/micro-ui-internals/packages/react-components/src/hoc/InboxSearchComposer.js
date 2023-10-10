@@ -12,6 +12,7 @@ import MobileSearchResults from "./MobileView/MobileSearchResults";
 import MediaQuery from 'react-responsive';
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
+import MobileSearchResultsv1 from "./MobileView/MobileSearchResultsv1";
 
 const InboxSearchComposer = ({configs}) => {
     const {t} = useTranslation()
@@ -132,6 +133,7 @@ const InboxSearchComposer = ({configs}) => {
             <div className={`sections-parent ${configs?.type}`}>
                 {
                     configs?.sections?.links?.show &&  
+                    <MediaQuery minWidth={426}>
                         <div className="section links">
                             <InboxSearchLinks 
                               headerText={configs?.sections?.links?.uiConfig?.label} 
@@ -140,9 +142,11 @@ const InboxSearchComposer = ({configs}) => {
                               logoIcon={configs?.sections?.links?.uiConfig?.logoIcon}
                             ></InboxSearchLinks>
                         </div>
+                    </MediaQuery>   
                 }
                 {
                     configs?.type === 'search' && configs?.sections?.search?.show &&
+                    <MediaQuery minWidth={426}>
                         <div className="section search">
                             <SearchComponent 
                                 uiConfig={ configs?.sections?.search?.uiConfig} 
@@ -154,11 +158,11 @@ const InboxSearchComposer = ({configs}) => {
                                 setActiveLink={setActiveLink}
                                 />
                         </div>
-
+                    </MediaQuery>
                 }
                 {   
                     configs?.type === 'search' && configs?.sections?.filter?.show && 
-
+                    <MediaQuery minWidth={426}>
                         <div className="section filter">
                             <SearchComponent 
                                 uiConfig={ configs?.sections?.filter?.uiConfig} 
@@ -170,6 +174,8 @@ const InboxSearchComposer = ({configs}) => {
                                 setActiveLink={setActiveLink}
                                 />
                         </div> 
+                    </MediaQuery>
+
                 }
                 {
                     configs?.type === 'inbox' && configs?.sections?.search?.show &&
@@ -199,28 +205,29 @@ const InboxSearchComposer = ({configs}) => {
                         </div> 
                     </MediaQuery>
                 }
-                {   configs?.type === 'inbox' && <MediaQuery maxWidth={426}>
-                    <div className="searchBox">
-                    {
-                      configs?.sections?.search?.show && (
-                        <SearchAction 
-                        text={t(configs?.sections?.search?.labelMobile)}
-                        handleActionClick={() => {
-                          setType("SEARCH");
-                          setPopup(true);
-                        }}
-                        />
-                    )}
-                    {configs?.sections?.filter?.show && (
-                      <FilterAction
-                        text={t(configs?.sections?.filter?.labelMobile)}
-                          handleActionClick={() => {
-                            setType("FILTER");
+                {   (configs?.type === 'inbox' || configs?.type === 'search') && 
+                    <MediaQuery maxWidth={426}>
+                        <div className="searchBox">
+                        {
+                        configs?.sections?.search?.show && (
+                            <SearchAction 
+                            text={t(configs?.sections?.search?.labelMobile)}
+                            handleActionClick={() => {
+                            setType("SEARCH");
                             setPopup(true);
-                          }}
-                      />
-                    )}
-                   </div>
+                            }}
+                            />
+                        )}
+                        {configs?.sections?.filter?.show && (
+                        <FilterAction
+                            text={t(configs?.sections?.filter?.labelMobile)}
+                            handleActionClick={() => {
+                                setType("FILTER");
+                                setPopup(true);
+                            }}
+                        />
+                        )}
+                    </div>
                    </MediaQuery>
                 }
                 {   
@@ -241,7 +248,13 @@ const InboxSearchComposer = ({configs}) => {
                                 />
                             </MediaQuery>
                             <MediaQuery maxWidth={426}>
-                            <MobileSearchResults
+                            {/* <MobileSearchResults
+                              config={configs?.sections?.searchResult?.uiConfig} 
+                              data={data} 
+                              isLoading={isLoading} 
+                              isFetching={isFetching} 
+                              fullConfig={configs}/> */}
+                              <MobileSearchResultsv1
                               config={configs?.sections?.searchResult?.uiConfig} 
                               data={data} 
                               isLoading={isLoading} 

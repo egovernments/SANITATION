@@ -1,203 +1,220 @@
 export const tqmSearchConfig = {
-  "tenantId": "pb",
-  "moduleName": "commonSanitationUiConfig",
-  "tqmSearchConfig": [
-      {
-          "label": "WORKS_SEARCH_ESTIMATES",
-          "type": "search",
-          "apiDetails": {
-              "serviceName": "/estimate-service/estimate/v1/_search",
-              "requestParam": {},
-              "requestBody": {},
-              "minParametersForSearchForm": 1,
-              "masterName": "commonUiConfig",
-              "moduleName": "SearchEstimateConfig",
-              "tableFormJsonPath": "requestParam",
-              "filterFormJsonPath": "requestParam",
-              "searchFormJsonPath": "requestParam"
-          },
-          "sections": {
-              "search": {
-                  "uiConfig": {
-                      "headerStyle": null,
-                      "formClassName": "custom-both-clear-search",
-                      "primaryLabel": "ES_COMMON_SEARCH",
-                      "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
-                      "minReqFields": 1,
-                      "showFormInstruction": "ESTIMATE_SEARCH_HINT",
-                      "defaultValues": {
-                          "ward": "",
-                          "projectType": "",
-                          "projectName": "",
-                          "estimateNumber": "",
-                          "wfStatus": "",
-                          "fromProposalDate": "",
-                          "toProposalDate": ""
-                      },
-                      "fields": [
-                          {
-                              "label": "COMMON_WARD",
-                              "type": "locationdropdown",
-                              "isMandatory": false,
-                              "disable": false,
-                              "populators": {
-                                  "name": "ward",
-                                  "type": "ward",
-                                  "optionsKey": "name",
-                                  "defaultText": "COMMON_SELECT_WARD",
-                                  "selectedText": "COMMON_SELECTED",
-                                  "allowMultiSelect": false
-                              }
-                          },
-                          {
-                              "label": "WORKS_PROJECT_TYPE",
-                              "type": "dropdown",
-                              "isMandatory": false,
-                              "disable": false,
-                              "populators": {
-                                  "name": "projectType",
-                                  "optionsKey": "name",
-                                  "optionsCustomStyle": {
-                                      "top": "2.3rem"
-                                  },
-                                  "mdmsConfig": {
-                                      "masterName": "ProjectType",
-                                      "moduleName": "works",
-                                      "localePrefix": "COMMON_MASTERS"
-                                  }
-                              }
-                          },
-                          {
-                              "label": "ES_COMMON_PROJECT_NAME",
-                              "type": "text",
-                              "isMandatory": false,
-                              "disable": false,
-                              "preProcess": {
-                                  "convertStringToRegEx": [
-                                      "populators.validation.pattern"
-                                  ]
-                              },
-                              "populators": {
-                                  "name": "projectName",
-                                  "error": "PROJECT_PATTERN_ERR_MSG",
-                                  "validation": {
-                                      "pattern": "^[^\\$\"<>?\\\\~`!@$%^()+={}\\[\\]*:;“”‘’]{1,50}$",
-                                      "minlength": 2
-                                  }
-                              }
-                          },
-                          {
-                              "label": "ESTIMATE_ESTIMATE_NO",
-                              "type": "text",
-                              "isMandatory": false,
-                              "disable": false,
-                              "populators": {
-                                  "name": "estimateNumber",
-                                  "error": "ESTIMATE_PATTERN_ERR_MSG",
-                                  "validation": {
-                                      "pattern": "ES\/[0-9]+-[0-9]+\/[0-9]+",
-                                      "minlength": 2
-                                  }
-                              }
-                          },
-                          {
-                              "label": "CORE_COMMON_STATUS",
-                              "type": "text",
-                              "isMandatory": false,
-                              "disable": false,
-                              "populators": {
-                                  "name": "wfStatus"
-                              }
-                          },
-                          {
-                              "label": "WORKS_COMMON_FROM_DATE_LABEL",
-                              "type": "date",
-                              "isMandatory": false,
-                              "disable": false,
-                              "key" : "fromProposalDate",
-                               "preProcess" : {
-                                 "updateDependent" : ["populators.max"]
-                                },
-                               "populators": {
-                                 "name": "fromProposalDate",
-                                 "max" : "currentDate"
-                              }
-                          },
-                          {
-                              "label": "WORKS_COMMON_TO_DATE_LABEL",
-                              "type": "date",
-                              "isMandatory": false,
-                              "disable": false,
-                              "key" : "toProposalDate",
-                              "preProcess" : {
-                                  "updateDependent" : ["populators.max"]
-                              },
-                              "populators": {
-                                  "name": "toProposalDate",
-                                  "error": "DATE_VALIDATION_MSG",
-                                  "max" : "currentDate"
-                               },
-                              "additionalValidation": {
-                                  "type": "date",
-                                  "keys": {
-                                      "start": "fromProposalDate",
-                                      "end": "toProposalDate"
-                                   }
-                              }
-                          }
-                      ]
+  tenantId: 'pb',
+  moduleName: 'commonSanitationUiConfig',
+  tqmSearchConfig: [
+    {
+      label: 'TQM_VIEW_PAST_RESULTS',
+      type: 'search',
+      apiDetails: {
+        serviceName: '/pqm/v1/_search',
+        requestParam: {},
+        requestBody: {},
+        minParametersForSearchForm: 1,
+        masterName: 'commonUiConfig',
+        moduleName: 'SearchTestResults',
+        tableFormJsonPath: 'requestBody.custom',
+        filterFormJsonPath: 'requestBody.custom',
+        searchFormJsonPath: 'requestBody.custom',
+      },
+      sections: {
+        search: {
+          uiConfig: {
+            type: 'filter',
+            headerLabel: 'TQM_INBOX_FILTERS',
+            headerStyle: null,
+            primaryLabel: 'ES_COMMON_SEARCH',
+            secondaryLabel: 'ES_COMMON_CLEAR_SEARCH',
+            minReqFields: 1,
+            showFormInstruction: 'TQM_SEARCH_HINT',
+            defaultValues: {
+              plantCodes: [],
+              processCodes: [],
+              materialCodes: [],
+              testType: [],
+              dateRange: '',
+            },
+            fields: [
+              {
+                label: 'TQM_PLANT_NAME',
+                type: 'apidropdown',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  optionsCustomStyle: {
+                    top: '2.3rem',
                   },
-                  "label": "",
-                  "children": {},
-                  "show": true
+                  name: 'plantCodes',
+                  optionsKey: 'optionKey',
+                  allowMultiSelect: true,
+                  masterName: 'commonUiConfig',
+                  moduleName: 'TqmInboxConfig',
+                  customfn: 'populateProcessReqCriteria',
+                },
               },
-              "searchResult": {
-                  "label": "",
-                  "estimateNumber": "",
-                  "projectId": "",
-                  "department": "",
-                  "estimateStatus": "",
-                  "fromProposalDate": "",
-                  "toProposalDate": "",
-                  "uiConfig": {
-                      "columns": [
-                          {
-                              "label": "ESTIMATE_ESTIMATE_NO",
-                              "jsonPath": "estimateNumber",
-                              "additionalCustomization": true
-                          },
-                          {
-                              "label": "ES_COMMON_PROJECT_NAME",
-                              "jsonPath": "name"
-                          },
-                          {
-                              "label": "ES_COMMON_LOCATION",
-                              "additionalCustomization": true
-                          },
-                          {
-                              "label": "ESTIMATE_PREPARED_BY",
-                              "jsonPath": "additionalDetails.creator"
-                          },
-                          {
-                              "label": "CORE_COMMON_STATUS",
-                              "jsonPath": "wfStatus"
-                          },
-                          {
-                              "label": "WORKS_ESTIMATED_AMOUNT",
-                              "jsonPath": "estimateDetails",
-                              "additionalCustomization": true,
-                              "headerAlign": "right"
-                          }
-                      ],
-                      "enableGlobalSearch": false,
-                      "enableColumnSort": true,
-                      "resultsJsonPath": "estimates"
+              {
+                label: 'TQM_TREATMENT_PROCESS',
+                type: 'apidropdown',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  optionsCustomStyle: {
+                    top: '2.3rem',
                   },
-                  "children": {},
-                  "show": true
-              }
+                  name: 'processCodes',
+                  optionsKey: 'optionKey',
+                  allowMultiSelect: true,
+                  masterName: 'commonUiConfig',
+                  moduleName: 'TqmInboxConfig',
+                  customfn: 'populateProcessReqCriteria',
+                },
+              },
+              {
+                label: 'TQM_OUTPUT_TYPE',
+                type: 'apidropdown',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  optionsCustomStyle: {
+                    top: '2.3rem',
+                  },
+                  name: 'materialCodes',
+                  optionsKey: 'outputCode',
+                  allowMultiSelect: true,
+                  masterName: 'commonUiConfig',
+                  moduleName: 'TqmInboxConfig',
+                  customfn: 'populateOutputTypeReqCriteria',
+                },
+              },
+              {
+                label: 'TQM_TEST_TYPE',
+                type: 'apidropdown',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  optionsCustomStyle: {
+                    top: '2.3rem',
+                  },
+                  name: 'testType',
+                  optionsKey: 'outputCode',
+                  allowMultiSelect: true,
+                  masterName: 'commonUiConfig',
+                  moduleName: 'TqmInboxConfig',
+                  customfn: 'populateOutputTypeReqCriteria',
+                },
+              },
+              {
+                label: 'TQM_INBOX_DATE_RANGE',
+                type: 'dateRange',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  name: 'dateRange',
+                },
+              },
+            ],
           },
-          "additionalSections": {}
-      }
-  ]
-}
+          label: '',
+          children: {},
+          show: true,
+          labelMobile: 'TQM_INBOX_FILTER',
+        },
+        searchResult: {
+          uiConfig: {
+            columns: [
+              {
+                label: 'TQM_TEST_ID',
+                jsonPath: 'label',
+                additionalCustomization: false,
+              },
+              {
+                label: 'TQM_TREATMENT_PROCESS',
+                jsonPath: 'label',
+                additionalCustomization: false,
+              },
+              {
+                label: 'TQM_PROCESS_STAGE',
+                jsonPath: 'label',
+                additionalCustomization: false,
+              },
+              {
+                label: 'TQM_OUTPUT_TYPE',
+                jsonPath: 'label',
+                additionalCustomization: false,
+              },
+              {
+                label: 'TQM_TEST_TYPE',
+                jsonPath: 'label',
+                additionalCustomization: false,
+              },
+              {
+                label: 'TQM_PENDING_DATE',
+                jsonPath: 'label',
+                additionalCustomization: false,
+              },
+              {
+                label: 'TQM_TEST_RESULTS',
+                jsonPath: 'label',
+                additionalCustomization: true,
+              },
+            ],
+            showActionBarMobileCard: true,
+            actionButtonLabelMobileCard: 'TQM_TAKE_ACTION',
+            enableGlobalSearch: false,
+            enableColumnSort: true,
+            resultsJsonPath: 'estimates',
+          },
+          children: {},
+          show: true,
+        },
+        filter: {
+          uiConfig: {
+            type: 'sort',
+            headerStyle: null,
+            headerLabel: 'TQM_INBOX_SORTBY',
+            primaryLabel: 'TQM_INBOX_SORT',
+            secondaryLabel: 'TQM_CLEAR_SEARCH',
+            minReqFields: 0,
+            defaultValues: {
+              sortOrder: '',
+            },
+            fields: [
+              {
+                label: '',
+                type: 'radio',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  name: 'sortOrder',
+                  options: [
+                    {
+                      code: 'LATEST_FIRST',
+                      name: 'TQM_INBOX_LATEST_FIRST',
+                      value:"ASC"
+                    },
+                    {
+                      code: 'LATEST_LAST',
+                      name: 'TQM_INBOX_LATEST_LAST',
+                      value:"DESC"
+                    },
+                  ],
+                  optionsKey: 'name',
+                  styles: {
+                    gap: '1rem',
+                    flexDirection: 'column',
+                  },
+                  innerStyles: {
+                    display: 'flex',
+                  },
+                },
+              },
+            ],
+          },
+          label: 'Filter',
+          labelMobile: 'TQM_INBOX_SORT',
+          show: true,
+        },
+      },
+      additionalSections: {},
+    },
+  ],
+};
