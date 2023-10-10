@@ -42,7 +42,6 @@ public class PqmService {
   private MDMSUtils mdmsUtils;
 
   /**
-
    * search the PQM applications based on the search criteria
    *
    * @param criteria
@@ -57,7 +56,8 @@ public class PqmService {
       checkRoleInValidateSearch(criteria, requestInfo);
     }
     TestResponse testResponse = repository.getPqmData(criteria);
-    List<String> idList = testResponse.getTests().stream().map(Test::getId).collect(Collectors.toList());
+    List<String> idList = testResponse.getTests().stream().map(Test::getId)
+        .collect(Collectors.toList());
 
     DocumentResponse documentResponse = repository.getDocumentData(idList);
     List<Document> documentList = documentResponse.getDocuments();
@@ -75,72 +75,52 @@ public class PqmService {
   }
 
   private void checkRoleInValidateSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
-		List<Role> roles = requestInfo.getUserInfo().getRoles();
-		TestSearchCriteria testSearchCriteria = criteria.getTestSearchCriteria();
-		List<String> masterNameList = new ArrayList<>();
-		masterNameList.add(null);
-		if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
+    List<Role> roles = requestInfo.getUserInfo().getRoles();
+    TestSearchCriteria testSearchCriteria = criteria.getTestSearchCriteria();
+    List<String> masterNameList = new ArrayList<>();
+    masterNameList.add(null);
+    if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
 
-		}
+    }
 
-	}
-
-
+  }
 
 
+  public Test create(TestRequest testRequest) {
+    RequestInfo requestInfo = testRequest.getRequestInfo();
+    repository.save(testRequest);
+    return testRequest.getTests().get(0);
+  }
 
-	public Test create(TestRequest testRequest) {
-		RequestInfo requestInfo = testRequest.getRequestInfo();
-//		Map<String, Map<String, JSONArray>> mdmsData = mdmsUtils.fetchMdmsData(requestInfo,
-//				testRequest.getTests().get(0).getTenantId(),PQM_MODULE_NAME,);
-//		if (fsmRequest.getFsm().getTenantId().split("\\.").length == 1) {
-//			throw new CustomException(FSMErrorConstants.INVALID_TENANT, " Application cannot be created at StateLevel");
-//		}
-//		testValidator.validateCreate(fsmRequest, mdmsData);
-//		enrichmentService.enrichFSMCreateRequest(fsmRequest);
-//		wfIntegrator.callWorkFlow(fsmRequest);
-		repository.save(testRequest);
-		return testRequest.getTests().get(0);
-	}
+  /**
+   * Updates the Test
+   *
+   * @param testRequest The update Request
+   * @return Updated Test
+   */
+  @SuppressWarnings("unchecked")
+  public Test update(TestRequest testRequest) {
 
-	/**
-	 * Updates the Test
-	 *
-	 * @param testRequest The update Request
-	 * @return Updated Test
-	 */
-	@SuppressWarnings("unchecked")
-	public Test update(TestRequest testRequest) {
-
-		RequestInfo requestInfo = testRequest.getRequestInfo();
-		Test test = testRequest.getTests().get(0);
+    RequestInfo requestInfo = testRequest.getRequestInfo();
+    Test test = testRequest.getTests().get(0);
 
 //		Map<String, Map<String, JSONArray>> mdmsData = mdmsUtils.fetchMdmsData(requestInfo, test.getTenantId());
 
-		if (test.getId() == null) {
-			throw new CustomException(UPDATE_ERROR,
-					"Application Not found in the System" + test);
-		}
+    if (test.getId() == null) {
+      throw new CustomException(UPDATE_ERROR,
+          "Application Not found in the System" + test);
+    }
 
-		if (test.getTestType() == "LAB") {
-			if (testRequest.getWorkflow() == null || testRequest.getWorkflow().getAction() == null) {
-				throw new CustomException(UPDATE_ERROR,
-						"Workflow action cannot be null." + String.format("{Workflow:%s}",
-								testRequest.getWorkflow()));
-			}
-		}
+    if (test.getTestType() == "LAB") {
+      if (testRequest.getWorkflow() == null || testRequest.getWorkflow().getAction() == null) {
+        throw new CustomException(UPDATE_ERROR,
+            "Workflow action cannot be null." + String.format("{Workflow:%s}",
+                testRequest.getWorkflow()));
+      }
+    }
 
-
-		//add qualitycriteria check
-		//BusinessService businessService = workflowService.getBusinessService(test, testRequest.getRequestInfo(),"TQM");
-		//actionValidator.validateUpdateRequest(fsmRequest, businessService);
-		//testValidator.validateUpdate(testRequest, mdmsData);
-		//enrichmentService.enrichFSMUpdateRequest(testRequest, oldFSM);
-		//wfIntegrator.callWorkFlow(fsmRequest);
-
-//		repository.update(testRequest, workflowService.isStateUpdatable(test.getStatus(), PQM_BUSINESS_SERVICE));
-		return testRequest.getTests().get(0);
-	}
+    return testRequest.getTests().get(0);
+  }
 
 
 }
