@@ -1,4 +1,4 @@
-export const newConfig = [
+export const addTestConfig = [
     {
       body: [
         {

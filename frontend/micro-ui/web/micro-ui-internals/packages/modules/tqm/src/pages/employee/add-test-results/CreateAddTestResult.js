@@ -2,7 +2,7 @@ import { Loader, FormComposerV2, Header, Toast } from "@egovernments/digit-ui-re
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { newConfig } from "./config";
+import { addTestConfig } from "./config";
 
 const Create = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -28,7 +28,6 @@ const Create = () => {
       closeToast();
     }
   };
-  const configs = newConfig;
 
   return (
     <div>
@@ -37,7 +36,7 @@ const Create = () => {
         showMultipleCardsWithoutNavs={true}
 
         label="ES_TQM_SUBMIT_TEST_RESULTS_BUTTON"
-        config={configs.map((config) => {
+        config={addTestConfig.map((config) => {
           return {
             ...config,
             body: config.body.filter((a) => !a.hideInEmployee),
