@@ -1,14 +1,19 @@
 package org.egov.pqm.repository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.egov.common.contract.request.RequestInfo;
+import org.egov.pqm.config.ServiceConfiguration;
+import org.egov.pqm.pqmProducer.PqmProducer;
 import org.egov.pqm.repository.querybuilder.TestQueryBuilder;
 import org.egov.pqm.repository.rowmapper.DocumentRowMapper;
 import org.egov.pqm.repository.rowmapper.TestRowMapper;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Test;
+import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +37,40 @@ public class TestRepository {
 
 	@Autowired
 	private DocumentRowMapper documentRowMapper;
+
+	@Autowired
+	private PqmProducer producer;
+
+	@Autowired
+	private ServiceConfiguration config;
+
+	public void save(TestRequest testRequest) {
+		producer.push(config.getTestSaveTopic(), testRequest);
+	}
+
+	public void update(TestRequest testRequest, boolean isStateUpdatable) {
+		RequestInfo requestInfo = testRequest.getRequestInfo();
+
+		Test testForStatusUpdate = null;
+		Test testForUpdate = null;
+
+		Test test = testRequest.getTests().get(0);
+
+		if (isStateUpdatable) {
+			testForUpdate = test;
+		} else {
+			testForStatusUpdate = test;
+		}
+		if (testForUpdate != null)
+			producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo, new ArrayList<>(
+          (Collection) test), testRequest.getWorkflow()));
+
+		if (testForStatusUpdate != null)
+			producer.push(config.getTestWorkflowTopic(),
+					new TestRequest(requestInfo,  new ArrayList<>(
+							(Collection) test), testRequest.getWorkflow()));
+
+	}
 
 	public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
