@@ -13,6 +13,9 @@ import { CustomisedHooks } from "./hooks";
 
 // TQM specific components
 import TqmInbox from "./pages/employee/inbox/TqmInbox";
+import TestDetails from "./pages/employee/test-details/TestDetails";
+import CardReading from "./components/CardReadings";
+import Response from "./pages/employee/Response";
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "TQM";
@@ -37,6 +40,9 @@ const componentsToRegister = {
   TQMPendingTask,
   TQMLanding,
   TqmInbox,
+  TestDetails,
+  TqmCardReading: CardReading,
+  TqmResponse: Response,
   //   TQMSummary
 };
 

@@ -1,23 +1,20 @@
-@import 'tailwindcss/base';
-
-@import 'tailwindcss/components';
-
-@import 'tailwindcss/utilities';
-
-@import 'react-date-range/dist/styles.css';
-@import 'react-date-range/dist/theme/default.css';
-
-@import './components/card.scss';
-@import './components/toggleSwitch.scss';
-@import './components/plusMinus.scss';
-@import './components/table.scss';
-@import './pages/employee/index.scss';
-@import './pages/employee/login.scss';
-@import './components/notificationComponent.scss';
-@import './components/ulbHomeCard.scss';
-@import './components/InboxSearchComposer.scss';
-@import './pages/employee/overridestyles.scss';
-@import './pages/employee/tqmHome.scss';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "react-date-range/dist/styles.css";
+@import "react-date-range/dist/theme/default.css";
+@import "./components/card.scss";
+@import "./components/toggleSwitch.scss";
+@import "./components/plusMinus.scss";
+@import "./components/table.scss";
+@import "./pages/employee/index.scss";
+@import "./pages/employee/login.scss";
+@import "./components/notificationComponent.scss";
+@import "./components/ulbHomeCard.scss";
+@import "./components/InboxSearchComposer.scss";
+@import "./pages/employee/overridestyles.scss";
+@import "./pages/employee/tqmHome.scss";
+@import "./pages/employee/tqmPopUp.scss";
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
@@ -285,5 +282,11 @@ input::-webkit-calendar-picker-indicator {
 .action-bar-wrap {
   .card-link {
     margin-top: 4px;
+  }
+}
+
+.employeeCard {
+  .card-section-header {
+    margin-bottom: 16px;
   }
 }
