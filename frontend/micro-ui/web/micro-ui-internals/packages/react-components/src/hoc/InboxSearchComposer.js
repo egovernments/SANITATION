@@ -12,6 +12,7 @@ import MobileSearchResults from "./MobileView/MobileSearchResults";
 import MediaQuery from 'react-responsive';
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
+import MobileSearchResultsv1 from "./MobileView/MobileSearchResultsv1";
 
 const InboxSearchComposer = ({configs}) => {
     const {t} = useTranslation()
@@ -247,7 +248,13 @@ const InboxSearchComposer = ({configs}) => {
                                 />
                             </MediaQuery>
                             <MediaQuery maxWidth={426}>
-                            <MobileSearchResults
+                            {/* <MobileSearchResults
+                              config={configs?.sections?.searchResult?.uiConfig} 
+                              data={data} 
+                              isLoading={isLoading} 
+                              isFetching={isFetching} 
+                              fullConfig={configs}/> */}
+                              <MobileSearchResultsv1
                               config={configs?.sections?.searchResult?.uiConfig} 
                               data={data} 
                               isLoading={isLoading} 

@@ -9,6 +9,57 @@ import { Amount, LinkLabel } from "@egovernments/digit-ui-react-components";
 // these functions will act as middlewares
 var Digit = window.Digit || {};
 
+function extractArrayByKey(arrayOfObjects, key) {
+  // Use the map() function to extract the values based on the key
+  return arrayOfObjects.map(function(object) {
+    return object[key];
+  });
+}
+
+function cleanObject(obj) {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (Array.isArray(obj[key])) {
+        if (obj[key].length === 0) {
+          delete obj[key];
+        }
+      } else if (obj[key] === undefined || obj[key] === null || obj[key] === false || obj[key] === '' || (typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)) {
+        delete obj[key];
+      }
+    }
+  }
+  return obj;
+}
+
+//this is a recursive function , test it out before you use this
+function cleanObjectNested(obj) {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+        // Recursively clean nested objects
+        cleanObjectNested(obj[key]);
+        // If the nested object becomes empty, remove it
+        if (Object.keys(obj[key]).length === 0) {
+          delete obj[key];
+        }
+      } else if (Array.isArray(obj[key]) && obj[key].length === 0) {
+        // Remove empty arrays
+        delete obj[key];
+      } else if (
+        obj[key] === undefined ||
+        obj[key] === null ||
+        obj[key] === false ||
+        obj[key] === '' ||
+        (typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)
+      ) {
+        // Remove falsy values (except 0)
+        delete obj[key];
+      }
+    }
+  }
+  return obj;
+}
+
 const businessServiceMap = {
  tqm:"PQM"
 };
@@ -18,7 +69,12 @@ const tqmRoleMapping = {
   ulb:["PQM_ADMIN"]
 }
 
+const urls = {
+  search:"/pqm/v1/_search"
+}
+
 export const UICustomizations = {
+  urls,
   tqmRoleMapping,
   businessServiceMap,
   SearchAttendanceConfig:{
@@ -159,17 +215,63 @@ export const UICustomizations = {
         },
       };
     },
+    getCustomActionLabel:(obj,row) => {
+      return ""
+    },
     
   },
   SearchTestResults: {
     preProcess: (data,additionalDetails) => {
-      console.log(data,additionalDetails);
-      // data.config.enabled = false
-     //TODO:: here make the request info accordingly and return when you get search API details
+      
+      const { plantCodes, processCodes, materialCodes, testType, dateRange,sortOrder,limit,offset } = data.body.custom || {};
+
+      data.body.testSearchCriteria={}
+      data.body.pagination={}
+      //update testSearchCriteria
+
+      //update pagination
+
+      //plantcodes
+      data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.processCode)
+
+      //processcodes
+      data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.processCode)
+
+      //materialcodes
+      data.body.testSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.outputCode)
+      //testType
+      data.body.testSearchCriteria.testType = testType?.map(test=>test.outputCode)
+      //dataRange //fromDate //toDate
+      
+      //sortOrder
+      data.body.pagination.sortOrder = sortOrder?.value
+
+
+      cleanObject(data.body.testSearchCriteria)
+      cleanObject(data.body.pagination)
+     
+      if(Digit.Utils.tqm.isPlantOperatorLoggedIn()){
+        data.body.pagination.limit = 100
+      }
+
+      //delete custom
+      delete data.body.custom;
       return data
     },
     MobileDetailsOnClick:() => {
       return ""
+    },
+    onCardClick:(obj,row)=> {
+      
+    },
+    onCardActionClick:(obj,row)=> {
+      
+    },
+    getCustomActionLabel:(obj,row) => {
+      return ""
+    },
+    additionalCustomization:(row, key, column, value, t, searchResult) => {
+
     }
   }
 

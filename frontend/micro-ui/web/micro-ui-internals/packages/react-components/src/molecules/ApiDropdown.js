@@ -42,9 +42,10 @@ const ApiDropdown = ({ populators, formData, props, inputRef, errors }) => {
               );
             }}
             selected={props?.value}
-            defaultLabel={t(populators?.defaultText)}
-            defaultUnit={t(populators?.selectedText)}
+            defaultLabel={t(populators?.defaultText) }
+            defaultUnit={t(populators?.selectedText) || t("TQM_DROPDOWN_SELECTED")}
             config={populators}
+            
           />
         </div>
       )}
