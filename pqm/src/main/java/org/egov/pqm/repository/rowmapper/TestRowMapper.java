@@ -64,7 +64,7 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 			TestResultStatus status = TestResultStatus.valueOf(statusString.toUpperCase());
 			String wfStatus = rs.getString("wfStatus");
 			String testType = rs.getString("testType");
-			String scheduledDate = rs.getString("scheduledDate");
+			Long scheduledDate = rs.getLong("scheduledDate");
 			Boolean isActive = rs.getBoolean("isActive");
 			this.setFullCount(rs.getInt("full_count"));
 			Object additionaldetails = getAdditionalDetail("additionaldetails", rs);
