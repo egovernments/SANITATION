@@ -63,11 +63,10 @@
       <artifactId>swagger-core</artifactId>
       <version>1.5.18</version>
     </dependency>
-    <dependency>
-      <groupId>com.github.joschi.jackson</groupId>
-      <artifactId>jackson-datatype-threetenbp</artifactId>
-      <version>2.6.4</version>
-    </dependency>
+   <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+</dependency>
     <dependency>
       <groupId>com.cedarsoftware</groupId>
       <artifactId>java-util</artifactId>
