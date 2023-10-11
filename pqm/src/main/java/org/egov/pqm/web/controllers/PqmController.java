@@ -29,7 +29,7 @@ public class PqmController {
 	@Autowired
 	private ResponseInfoFactory responseInfoFactory;
 
-  @PostMapping(value = "/_create", produces = {"*/*"}, consumes = {"application/json"})
+  @PostMapping(value = "/_create")
   ResponseEntity<TestResponse> create(@Valid @RequestBody TestRequest testRequest) {
     Test test = pqmService.create(testRequest);
     List<Test> testList = new ArrayList<>();
