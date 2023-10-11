@@ -277,6 +277,7 @@ public class FSMConfiguration {
 		
 		// CONFIGURATIONS
 
+
 		@Value("${egov.fsm.avg.rating.comment.mandatory}")
 		private String averageRatingCommentMandatory;
 		
