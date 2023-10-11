@@ -16,7 +16,7 @@ import {
   usePaymentSearch,
   useBulkPdfDetails,
 } from './payment';
-import useWorkflowDetailsWorks from './workflowWorks';
+import useWorkflowDetailsWorks from './workflowWorks.js';
 import { useUserSearch } from './userSearch';
 import { useApplicationsForBusinessServiceSearch } from './useApplicationForBillSearch';
 import useBoundaryLocalities from './useLocalities';
