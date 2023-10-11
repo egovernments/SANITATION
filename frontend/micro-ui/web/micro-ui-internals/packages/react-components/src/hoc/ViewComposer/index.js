@@ -119,7 +119,12 @@ const renderCardSectionJSX = (section) => {
       return <RenderWfActions section={section} />;
     case "COMPONENT":
       const Component = Digit.ComponentRegistryService.getComponent(section.component);
-      return <Component {...section.props} />;
+      return (
+        <>
+          {section.cardHeader && <CardSubHeader style={section?.cardHeader?.inlineStyles}>{section.cardHeader.value}</CardSubHeader>}
+          <Component {...section.props} />
+        </>
+      );
     default:
       return <div>Section Not Found</div>;
   }
