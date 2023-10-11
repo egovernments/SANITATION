@@ -62,7 +62,7 @@ or
       },
  *
  */
-const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyle, disable, type, additionalWrapperClass = "" }) => {
+const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyle, disable, type, additionalWrapperClass = "",mdmsv2=false }) => {
   const master = { name: config?.mdmsConfig?.masterName };
   if (config?.mdmsConfig?.filter) {
     master["filter"] = config?.mdmsConfig?.filter;
@@ -76,8 +76,8 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
             .filter((opt) => opt?.active)
             .map((opt) => ({ ...opt, name: `${config?.mdmsConfig?.localePrefix}_${Digit.Utils.locale.getTransformedLocale(opt.code)}` }));
         },
-    enabled: config?.mdmsConfig ? true : false,
-  });
+    enabled: (config?.mdmsConfig || config?.mdmsv2) ? true : false,
+  },mdmsv2);
   if (isLoading) {
     return <Loader />;
   }
