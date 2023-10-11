@@ -52,7 +52,7 @@ export const UICustomizations = {
 
       states = Object.keys(states)
         ?.filter((key) => states[key])
-        .flatMap((i) => i.split(","));
+        .flatMap((i) => i.split(", "));
       locality = locality?.map((row) => row?.code);
       states.length > 0 ? (data.body.inbox.moduleSearchCriteria.status = states) : delete data.body.inbox.moduleSearchCriteria.status;
       locality.length > 0 ? (data.body.inbox.moduleSearchCriteria.locality = locality) : delete data.body.inbox.moduleSearchCriteria.locality;
@@ -157,12 +157,7 @@ export const UICustomizations = {
               { name: "CITIZEN_FEEDBACK_PENDING" },
               { name: "DISPOSAL_IN_PROGRESS" },
             ];
-            const allowedStatusForDSO = [
-              { name: "PENDING_DSO_APPROVAL" },
-              { name: "DSO_INPROGRESS" },
-              { name: "COMPLETED" },
-              { name: "DSO_REJECTED" },
-            ];
+            const allowedStatusForDSO = [{ name: "PENDING_DSO_APPROVAL" }, { name: "DSO_INPROGRESS" }, { name: "COMPLETED" }, { name: "DSO_REJECTED" }];
 
             return DSO ? allowedStatusForDSO : workflowOrder;
           },
