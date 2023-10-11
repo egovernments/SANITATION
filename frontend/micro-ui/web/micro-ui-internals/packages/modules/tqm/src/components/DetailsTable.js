@@ -19,7 +19,7 @@ const DetailsTable = ({ columnsData, rowsData, summaryRows, cardHeader }) => {
 
   return (
     <>
-      {cardHeader && <CardSubHeader style={section?.cardHeader?.inlineStyles}>{section.cardHeader.value}</CardSubHeader>}
+      {cardHeader && <CardSubHeader style={cardHeader?.inlineStyles}>{cardHeader?.value}</CardSubHeader>}
       <div className="tqm-table-test-container">
         <table className="table" {...getTableProps()}>
           <thead>
