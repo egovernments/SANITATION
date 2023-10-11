@@ -11,8 +11,8 @@ export const tqmInboxConfigPlantOperator = {
         "requestBody": {
           "inbox": {
             "processSearchCriteria": {
-              "businessService": ["TQM"],
-              "moduleName": "pqm-service"
+              "businessService": ["PQM"],
+              "moduleName": "pqm"
             },
             "moduleSearchCriteria": {}
           }
@@ -22,8 +22,8 @@ export const tqmInboxConfigPlantOperator = {
         "masterName": "commonUiConfig",
         "moduleName": "TqmInboxConfig",
         "tableFormJsonPath": "requestBody.inbox",
-        "filterFormJsonPath": "requestBody.inbox.moduleSearchCriteria",
-        "searchFormJsonPath": "requestBody.inbox.moduleSearchCriteria"
+        "filterFormJsonPath": "requestBody.custom",
+        "searchFormJsonPath": "requestBody.custom"
       },
       "sections": {
         "search": {
@@ -40,11 +40,11 @@ export const tqmInboxConfigPlantOperator = {
             "headerStyle": null,
             "primaryLabel": "ES_COMMON_SEARCH",
             "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
-            "minReqFields": 1,
+            "minReqFields": 0,
             "defaultValues": {
-              "processCode":[],
+              "processCodes":[],
               // "status":"",
-              "outputType":[],
+              "materialCodes":[],
               "status":[],
               "dateRange":""
             },
@@ -58,7 +58,7 @@ export const tqmInboxConfigPlantOperator = {
                   "optionsCustomStyle": {
                     "top": "2.3rem"
                   },
-                  "name": "processCode",
+                  "name": "processCodes",
                   "optionsKey": "optionKey",
                   "allowMultiSelect": true,
                   "masterName": "commonUiConfig",
@@ -75,7 +75,7 @@ export const tqmInboxConfigPlantOperator = {
                   "optionsCustomStyle": {
                     "top": "2.3rem"
                   },
-                  "name": "outputType",
+                  "name": "materialCodes",
                   "optionsKey": "outputCode",
                   "allowMultiSelect": true,
                   "masterName": "commonUiConfig",
@@ -118,58 +118,81 @@ export const tqmInboxConfigPlantOperator = {
           "show": true
         },
         "searchResult": {
-          "label": "",
-          "estimateNumber": "",
-          "projectId": "",
-          "department": "",
-          "estimateStatus": "",
-          "fromProposalDate": "",
-          "toProposalDate": "",
+          // "label": "",
+          // "estimateNumber": "",
+          // "projectId": "",
+          // "department": "",
+          // "estimateStatus": "",
+          // "fromProposalDate": "",
+          // "toProposalDate": "",
           "uiConfig": {
             "columns": [
               {
-                "label": "ESTIMATE_ESTIMATE_NO",
-                "jsonPath": "ProcessInstance.businessId",
-                "key": "estimateNumber",
-                "additionalCustomization": true
+                "label": "testId",
+                "jsonPath": "businessObject.applicationNo",
               },
               {
-                "label": "ES_COMMON_PROJECT_NAME",
-                "jsonPath": "businessObject.project.name"
+                "label": "treatmentProcess",
+                "jsonPath": "businessObject.processCode"
               },
               {
-                "label": "ESTIMATE_PREPARED_BY",
-                "jsonPath": "businessObject.additionalDetails.creator"
+                "label": "stage",
+                "jsonPath": "businessObject.plantCode"
               },
               {
-                "label": "COMMON_ASSIGNEE",
-                "jsonPath": "ProcessInstance.assignes",
-                "additionalCustomization": true,
-                "key": "assignee"
+                "label": "outputType",
+                "jsonPath": "businessObject.plantCode",
               },
               {
-                "label": "COMMON_WORKFLOW_STATES",
-                "jsonPath": "ProcessInstance.state.state",
-                "additionalCustomization": true,
-                "key": "state"
+                "label": "pendingDate",
+                "jsonPath": "businessObject.plantCode",
               },
               {
-                "label": "WORKS_ESTIMATED_AMOUNT",
-                "jsonPath": "businessObject.additionalDetails.totalEstimatedAmount",
-                "additionalCustomization": true,
-                "key": "estimatedAmount",
-                "headerAlign": "right"
+                "label": "status",
+                "jsonPath": "businessObject.serviceSla",
               },
               {
-                "label": "COMMON_SLA_DAYS",
+                "label": "sla",
                 "jsonPath": "businessObject.serviceSla",
                 "additionalCustomization": true,
-                "key": "sla"
               }
             ],
             "enableGlobalSearch": false,
             "enableColumnSort": true,
             "resultsJsonPath": "items"
+          },
+          "children": {},
+          "show": true
+        },
+        "links": {
+          "uiConfig": {
+            "links": [
+              {
+                "text": "TQM_VIEW_PAST_RESULTS",
+                "url": "/employee/tqm/search-test-results",
+                "roles": ["FSM_CREATOR_EMP"]
+              },
+              {
+                "text": "TQM_VIEW_IOT_RESULTS",
+                "url": "/employee/tqm/search-test-results",
+                "roles": ["FSM_CREATOR_EMP"]
+              },
+              {
+                "text": "TQM_SENSOR_MON",
+                "url": "/employee/tqm/search-devices",
+                "roles": ["FSM_CREATOR_EMP"]
+              },
+              {
+                "text": "TQM_VIEW_DASHBOARD",
+                "url": "/employee/tqm/dashboard",
+                "roles": ["FSM_CREATOR_EMP"]
+              },
+            ],
+            "label": "TQM_QUALITY_TESTING",
+            "logoIcon": {
+              "component": "TqmInboxIcon",
+              "customClass": "inbox-links-icon"
+            }
           },
           "children": {},
           "show": true

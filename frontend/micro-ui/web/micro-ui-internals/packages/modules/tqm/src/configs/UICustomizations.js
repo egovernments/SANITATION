@@ -65,7 +65,7 @@ const businessServiceMap = {
 };
 
 const tqmRoleMapping = {
-  plant:["PQM_FSTP_OPERATOR"],
+  plant:["PQM_TP_OPERATOR"],
   ulb:["PQM_ADMIN"]
 }
 
@@ -104,10 +104,42 @@ export const UICustomizations = {
   },
   TqmInboxConfig:{
     preProcess: (data,additionalDetails) => {
-      console.log(data,additionalDetails);
+
+      const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
       
-      data.config.enabled = false
-     //TODO:: here make the request info accordingly and return when you get inbox API details
+      //plantCode
+
+      //materialCodes
+
+      //status
+
+      //fromDate and toDate
+      const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
+      data.body.inbox.moduleSearchCriteria.fromDate = fromDate
+      data.body.inbox.moduleSearchCriteria.toDate = toDate
+
+      //sortOrder sortBy 
+
+      // data.body.inbox.moduleSearchCriteria.sortBy = "createdTime"
+      // data.body.inbox.moduleSearchCriteria.sortOrder = "DESC"
+
+      //limit offset
+
+      cleanObject(data.body.inbox.processSearchCriteria)
+      cleanObject(data.body.inbox.moduleSearchCriteria)
+     
+      if(Digit.Utils.tqm.isPlantOperatorLoggedIn()){
+        data.body.inbox.limit = 100
+        data.body.inbox.offset = 0
+      }
+
+      //set tenantId
+      data.body.inbox.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.inbox.processSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+
+      //delete custom
+      delete data.body.custom;
+
       return data
     },
     populateProcessReqCriteria:() => {
@@ -218,6 +250,16 @@ export const UICustomizations = {
     getCustomActionLabel:(obj,row) => {
       return ""
     },
+    additionalCustomizations:(row, key, column, value, t, searchResult) => {
+      switch (key) {
+        case "sla":
+          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          
+      
+        default:
+          return "case_not_found"
+      }
+    }
     
   },
   SearchTestResults: {
@@ -227,9 +269,8 @@ export const UICustomizations = {
 
       data.body.testSearchCriteria={}
       data.body.pagination={}
-      //update testSearchCriteria
 
-      //update pagination
+      //update testSearchCriteria
 
       //plantcodes
       data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.processCode)
@@ -242,14 +283,18 @@ export const UICustomizations = {
       //testType
       data.body.testSearchCriteria.testType = testType?.map(test=>test.outputCode)
       //dataRange //fromDate //toDate
-      
+      const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
+      data.body.testSearchCriteria.fromDate = fromDate
+      data.body.testSearchCriteria.toDate = toDate
+
       //sortOrder
       data.body.pagination.sortOrder = sortOrder?.value
 
-
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)
-     
+
+      //update pagination
+      
       if(Digit.Utils.tqm.isPlantOperatorLoggedIn()){
         data.body.pagination.limit = 100
       }
@@ -270,8 +315,92 @@ export const UICustomizations = {
     getCustomActionLabel:(obj,row) => {
       return ""
     },
-    additionalCustomization:(row, key, column, value, t, searchResult) => {
+    additionalCustomizations:(row, key, column, value, t, searchResult) => {
+      switch (key) {
+        case "TQM_TEST_RESULTS":
+          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          
+        case "TQM_PENDING_DATE":
+          return  Digit.DateUtils.ConvertEpochToDate(value)
 
+        default:
+          return "case_not_found"
+      }
+    }
+  },
+  SearchTestResultsUlbAdmin: {
+    preProcess: (data,additionalDetails) => {
+      
+      const { plantCodes, processCodes, materialCodes, testType, dateRange,sortOrder,limit,offset } = data.body.custom || {};
+
+      data.body.testSearchCriteria={}
+      data.body.pagination={}
+
+      //update testSearchCriteria
+
+      //plantcodes
+      data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.processCode)
+
+      //processcodes
+      data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.processCode)
+
+      //materialcodes
+      data.body.testSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.outputCode)
+      //testType
+      data.body.testSearchCriteria.testType = testType?.map(test=>test.outputCode)
+      //dataRange //fromDate //toDate
+      const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
+      data.body.testSearchCriteria.fromDate = fromDate
+      data.body.testSearchCriteria.toDate = toDate
+
+      //sortOrder
+      data.body.pagination.sortOrder = sortOrder?.value
+
+      cleanObject(data.body.testSearchCriteria)
+      cleanObject(data.body.pagination)
+
+      //update pagination
+      
+      if(Digit.Utils.tqm.isPlantOperatorLoggedIn()){
+        data.body.pagination.limit = 100
+      }
+
+      //delete custom
+      delete data.body.custom;
+      return data
+    },
+    MobileDetailsOnClick:() => {
+      return ""
+    },
+    onCardClick:(obj,row)=> {
+      
+    },
+    onCardActionClick:(obj,row)=> {
+      
+    },
+    getCustomActionLabel:(obj,row) => {
+      return ""
+    },
+    additionalCustomizations:(row, key, column, value, t, searchResult) => {
+      switch (key) {
+        case "TQM_TEST_RESULTS":
+          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          
+        case "TQM_TEST_DATE":
+          return  Digit.DateUtils.ConvertEpochToDate(value)
+        
+        case "TQM_TEST_ID":
+          return <span className="link">
+            <Link
+              to={`/${window.contextPath}/employee/tqm/view-test-results?tenantId=${Digit.ULBService.getCurrentTenantId()}&testId=${value}`}
+            >
+              {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+            </Link>
+          </span>
+
+        default:
+          return "case_not_found"
+      }
     }
   }
 

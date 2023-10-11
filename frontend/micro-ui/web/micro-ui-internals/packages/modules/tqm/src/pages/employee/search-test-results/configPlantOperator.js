@@ -1,4 +1,4 @@
-export const tqmSearchConfig = {
+export const tqmSearchConfigPlantOperator = {
   tenantId: 'pb',
   moduleName: 'commonSanitationUiConfig',
   tqmSearchConfig: [
@@ -6,10 +6,10 @@ export const tqmSearchConfig = {
       label: 'TQM_VIEW_PAST_RESULTS',
       type: 'search',
       apiDetails: {
-        serviceName: '/pqm/v1/_search',
+        serviceName: '/pqm-service/v1/_search',
         requestParam: {},
         requestBody: {},
-        minParametersForSearchForm: 1,
+        minParametersForSearchForm: 0,
         masterName: 'commonUiConfig',
         moduleName: 'SearchTestResults',
         tableFormJsonPath: 'requestBody.custom',
@@ -24,14 +24,14 @@ export const tqmSearchConfig = {
             headerStyle: null,
             primaryLabel: 'ES_COMMON_SEARCH',
             secondaryLabel: 'ES_COMMON_CLEAR_SEARCH',
-            minReqFields: 1,
+            minReqFields: 0,
             showFormInstruction: 'TQM_SEARCH_HINT',
             defaultValues: {
               plantCodes: [],
               processCodes: [],
               materialCodes: [],
               testType: [],
-              dateRange: '',
+              dateRange: {},
             },
             fields: [
               {
@@ -123,45 +123,54 @@ export const tqmSearchConfig = {
             columns: [
               {
                 label: 'TQM_TEST_ID',
-                jsonPath: 'label',
+                jsonPath: 'id',
                 additionalCustomization: false,
               },
               {
                 label: 'TQM_TREATMENT_PROCESS',
-                jsonPath: 'label',
+                jsonPath: 'processCode',
                 additionalCustomization: false,
+                prefix:"TQM_MASTERS_PQM.ProcessType_",
+                translate:true
               },
               {
                 label: 'TQM_PROCESS_STAGE',
-                jsonPath: 'label',
+                jsonPath: 'stageCode',
                 additionalCustomization: false,
+                prefix:"TQM_MASTERS_PQM.STAGE_",
+                translate:true
               },
               {
                 label: 'TQM_OUTPUT_TYPE',
-                jsonPath: 'label',
+                jsonPath: 'materialCode',
                 additionalCustomization: false,
+                prefix:"TQM_MASTERS_PQM.MATERIAL_",
+                translate:true
               },
               {
                 label: 'TQM_TEST_TYPE',
-                jsonPath: 'label',
+                jsonPath: 'testType',
                 additionalCustomization: false,
+                prefix:"TQM_MASTERS_PQM.TESTTYPE_",
+                translate:true
               },
               {
                 label: 'TQM_PENDING_DATE',
-                jsonPath: 'label',
-                additionalCustomization: false,
+                jsonPath: 'scheduledDate',
+                additionalCustomization: true,
               },
               {
                 label: 'TQM_TEST_RESULTS',
-                jsonPath: 'label',
+                jsonPath: 'wfStatus',
                 additionalCustomization: true,
+                
               },
             ],
             showActionBarMobileCard: true,
-            actionButtonLabelMobileCard: 'TQM_TAKE_ACTION',
+            actionButtonLabelMobileCard: 'TQM_VIEW_RESULTS',
             enableGlobalSearch: false,
             enableColumnSort: true,
-            resultsJsonPath: 'estimates',
+            resultsJsonPath: 'tests',
           },
           children: {},
           show: true,
