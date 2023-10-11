@@ -59,3 +59,22 @@
     }
   }
 }
+
+@media (max-width: 639px) {
+  .tqm-table-test-container {
+    width: auto;
+    overflow-x: scroll;
+    .table {
+      thead {
+        th {
+          max-width: fit-content;
+          min-width: unset;
+        }
+        th:first-child {
+          max-width: fit-content;
+          min-width: unset;
+        }
+      }
+    }
+  }
+}

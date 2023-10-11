@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { ViewComposer, Toast, WorkflowTimeline } from "@egovernments/digit-ui-react-components";
+import { ViewComposer, Toast, WorkflowTimeline, Header } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 
 // 🚧 WIP: DUMMY DATA FOR DETAILS 👇
@@ -83,6 +83,7 @@ function ViewTestResults() {
 
   return (
     <>
+      <Header> {t("ES_TQM_TEST_RESULTS_DETAILS_HEADER")} </Header>
       <ViewComposer data={data} isLoading={false} />
       <WorkflowTimeline businessService={businessService} tenantId={tenantId} applicationNo={applicationNo} timelineStatusPrefix="TQM_TIMELINE_" statusAttribute="status" />
     </>
