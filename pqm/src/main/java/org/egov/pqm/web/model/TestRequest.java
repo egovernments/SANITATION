@@ -16,11 +16,11 @@ import org.egov.common.contract.request.RequestInfo;
 public class TestRequest {
 
   @JsonProperty("requestInfo")
-  private RequestInfo requestInfo = null;
+  private RequestInfo requestInfo ;
 
   @JsonProperty("tests")
-  private List<Test> tests = null;
+  private List<Test> tests ;
 
   @JsonProperty("workflow")
-  private Workflow workflow = null;
+  private Workflow workflow ;
 }
