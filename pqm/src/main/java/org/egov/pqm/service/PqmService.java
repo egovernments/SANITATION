@@ -1,5 +1,10 @@
 package org.egov.pqm.service;
 
+import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
+import static org.egov.pqm.util.Constants.PQM_MODULE_NAME;
+import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
+
+import java.util.ArrayList;
 import static org.egov.pqm.util.Constants.MASTER_NAME_BENCHMARK_RULES;
 import static org.egov.pqm.util.Constants.MASTER_NAME_QUALITY_CRITERIA;
 import static org.egov.pqm.util.Constants.MASTER_NAME_TESTING_STANDARD;
@@ -10,12 +15,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import net.minidev.json.JSONArray;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.util.MDMSUtils;
@@ -24,14 +35,21 @@ import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.common.contract.request.Role;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
+import org.egov.pqm.util.MDMSUtils;
+import org.egov.pqm.util.QualityCriteriaEvaluation;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
+import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
+import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
+import org.egov.pqm.web.model.TestType;
+import org.egov.tracer.model.CustomException;
+import org.egov.pqm.web.model.mdms.MDMSQualityCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.egov.pqm.web.model.mdms.MDMSQualityCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,23 +59,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class PqmService {
 
-  @Autowired
-  private TestRepository repository;
+	@Autowired
+	private TestRepository repository;
 
-  @Autowired
-  private MDMSUtils mdmsUtils;
+	@Autowired
+	private MDMSUtils mdmsUtils;
 
   @Autowired
   private QualityCriteriaEvaluation qualityCriteriaEvaluation;
 
-	/**
-	 * search the PQM applications based on the search criteria
-	 * 
-	 * @param criteria
-	 * @param requestInfo
-	 * @return
-	 */
-	public TestResponse testSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
+  /**
+   * search the PQM applications based on the search criteria
+   *
+   * @param criteria
+   * @param requestInfo
+   * @return
+   */
+  public TestResponse testSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
 
 		List<Test> testList = new LinkedList<>();
 
@@ -92,6 +110,41 @@ public class PqmService {
 		}
 
 	}
+
+
+  public Test create(TestRequest testRequest) {
+    RequestInfo requestInfo = testRequest.getRequestInfo();
+    repository.save(testRequest);
+    return testRequest.getTests().get(0);
+  }
+
+  /**
+   * Updates the Test
+   *
+   * @param testRequest The update Request
+   * @return Updated Test
+   */
+  @SuppressWarnings("unchecked")
+  public Test update(TestRequest testRequest) {
+
+    RequestInfo requestInfo = testRequest.getRequestInfo();
+    Test test = testRequest.getTests().get(0);
+
+    if (test.getId() == null) {
+      throw new CustomException(UPDATE_ERROR,
+          "Application Not found in the System" + test);
+    }
+
+    if (test.getTestType().equals(TestType.LAB)) {
+      if (testRequest.getWorkflow() == null || testRequest.getWorkflow().getAction() == null) {
+        throw new CustomException(UPDATE_ERROR,
+            "Workflow action cannot be null." + String.format("{Workflow:%s}",
+                testRequest.getWorkflow()));
+      }
+    }
+
+    return testRequest.getTests().get(0);
+  }
 
   public void evalutateCriteria(TestRequest testRequest) {
     Test test = testRequest.getTests().get(0);
@@ -144,5 +197,4 @@ public class PqmService {
 
     return codeToQualityCriteriaMap;
   }
-
 }

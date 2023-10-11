@@ -47,10 +47,10 @@ public class Test {
   private String wfStatus = null;
   
   @JsonProperty("testType")
-  private String testType = null;
+  private TestType testType = null;
 
   @JsonProperty("scheduledDate")
-  private String scheduledDate = null;
+  private Long scheduledDate = null;
 
   @JsonProperty("isActive")
   private Boolean isActive = null;
