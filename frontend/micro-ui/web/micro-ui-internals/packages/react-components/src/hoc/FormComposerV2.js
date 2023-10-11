@@ -353,6 +353,7 @@ export const FormComposerV2 = (props) => {
                 config={populators}
                 disable={config?.disable}
                 errorStyle={errors?.[populators.name]}
+                mdmsv2={populators.mdmsv2 ? populators.mdmsv2 : false }
               />
             )}
             rules={!disableFormValidation ? { required: isMandatory, ...populators.validation } : {}}

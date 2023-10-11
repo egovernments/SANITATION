@@ -9,14 +9,17 @@ export const addTestConfig = [
           disable: false,
           populators: {
             name: "plant_name",
-            optionsKey: "name",
+            optionsKey: "i18nKey",
             error: "ES_TQM_REQUIRED",
             required: true,
-            mdmsConfig: {
-              masterName: "GenderType",
-              moduleName: "common-masters",
-              localePrefix: "COMMON_GENDER",
-            },
+            // mdmsConfig: {
+            //   masterName: "GenderType",
+            //   moduleName: "common-masters",
+            //   localePrefix: "COMMON_GENDER",
+            // },
+            mdmsv2:{
+              schemaCode:"PQM.Plant",
+            }
           },
         },
         {
