@@ -1,12 +1,12 @@
 package org.egov.pqm.workflow;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.repository.ServiceRequestRepository;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.RequestInfoWrapper;
 import org.egov.pqm.config.ServiceConfiguration;
+import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.workflow.*;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +33,12 @@ public class WorkflowService {
 	 * Get the workflow config for the given tenant
 	 * 
 	 * @param test         The PQM Object
-	 * @param requestInfo The RequestInfo object of the request
+	 * @param testRequest The RequestInfo object of the request
 	 * @return BusinessService for the given tenantId
 	 */
-	public BusinessService getBusinessService(Test test, RequestInfo requestInfo, String businessServceName,
-			String applicationNo) {
-		StringBuilder url = getSearchURLWithParams(test.getTenantId(), businessServceName, applicationNo);
-		RequestInfoWrapper requestInfoWrapper = RequestInfoWrapper.builder().requestInfo(requestInfo).build();
+	public BusinessService getBusinessService(Test test, TestRequest testRequest, String businessServiceName, String id) {
+		StringBuilder url = getSearchURLWithParams(test.getTenantId(), businessServiceName, id);
+		RequestInfoWrapper requestInfoWrapper = RequestInfoWrapper.builder().requestInfo(testRequest.getRequestInfo()).build();
 		Object result = serviceRequestRepository.fetchResult(url, requestInfoWrapper);
 		BusinessServiceResponse response = null;
 		try {
@@ -54,12 +53,12 @@ public class WorkflowService {
 	 * Get the ProcessInstance for the given Application
 	 * 
 	 * @param test      The PQM Object
-	 * @param requestInfo The RequestInfo object of the request
+	 * @param testRequest The RequestInfo object of the request
 	 * 
 	 */
-	public ProcessInstance getProcessInstance(Test test, RequestInfo requestInfo) {
+	public ProcessInstance getProcessInstance(Test test,String businessServiceName, TestRequest testRequest) {
 		StringBuilder url = getSearchURLWithParams(test.getTenantId(), null, test.getId());
-		RequestInfoWrapper requestInfoWrapper = RequestInfoWrapper.builder().requestInfo(requestInfo).build();
+		RequestInfoWrapper requestInfoWrapper = RequestInfoWrapper.builder().requestInfo(testRequest.getRequestInfo()).build();
 		Object result = serviceRequestRepository.fetchResult(url, requestInfoWrapper);
 		ProcessInstanceResponse response = null;
 		try {
@@ -78,7 +77,7 @@ public class WorkflowService {
 	 * @param tenantId The tenantId for which url is generated
 	 * @return The search url
 	 */
-	private StringBuilder getSearchURLWithParams(String tenantId, String businessService, String applicationNo) {
+	private StringBuilder getSearchURLWithParams(String tenantId, String businessService, String id) {
 		StringBuilder url = new StringBuilder(config.getWfHost());
 
 		if (businessService != null) {
@@ -88,7 +87,7 @@ public class WorkflowService {
 		} else {
 			url.append(config.getWfProcessPath());
 			url.append("?businessIds=");
-			url.append(applicationNo);
+			url.append(id);
 		}
 
 		url.append("&tenantId=");

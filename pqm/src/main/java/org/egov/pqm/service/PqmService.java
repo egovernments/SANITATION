@@ -21,7 +21,10 @@ import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.TestType;
+import org.egov.pqm.web.model.workflow.BusinessService;
+import org.egov.pqm.workflow.ActionValidator;
 import org.egov.pqm.workflow.WorkflowIntegrator;
+import org.egov.pqm.workflow.WorkflowService;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,13 @@ public class PqmService {
 
   @Autowired
   private WorkflowIntegrator workflowIntegrator;
+
+  @Autowired
+  private WorkflowService workflowService;
+
+  @Autowired
+  private ActionValidator actionValidator;
+
   @Autowired
   private TestRepository repository;
 
@@ -99,10 +109,18 @@ public class PqmService {
    * @return Updated Test
    */
   @SuppressWarnings("unchecked")
+
   public Test update(TestRequest testRequest) {
 
-    RequestInfo requestInfo = testRequest.getRequestInfo();
     Test test = testRequest.getTests().get(0);
+    String businessServiceName = null;
+
+    BusinessService businessService = workflowService.getBusinessService(test, testRequest, businessServiceName, null);
+    actionValidator.validateUpdateRequest(testRequest, businessService);
+
+
+    //updating workflow during update
+    workflowIntegrator.callWorkFlow(testRequest);
 
     if (test.getId() == null) {
       throw new CustomException(UPDATE_ERROR,

@@ -34,12 +34,12 @@ public class ActionValidator {
 	/**
 	 * Validates the update request
 	 * 
-	 * @param request
+	 * @param testRequest
 	 *            The PQM update request
 	 */
-	public void validateUpdateRequest(TestRequest request, BusinessService businessService) {
-		validateRoleAction(request,businessService);
-		validateIds(request, businessService);
+	public void validateUpdateRequest(TestRequest testRequest, BusinessService businessService) {
+		validateRoleAction(testRequest,businessService);
+		validateIds(testRequest, businessService);
 	}
 
 	/**
