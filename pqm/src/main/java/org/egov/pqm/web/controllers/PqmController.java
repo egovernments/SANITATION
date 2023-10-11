@@ -29,7 +29,7 @@ public class PqmController {
 	@Autowired
 	private ResponseInfoFactory responseInfoFactory;
 
-  @PostMapping(value = "/_create", produces = {"*/*"}, consumes = {"application/json"})
+  @PostMapping(value = "/_create", consumes = {"application/json"})
   ResponseEntity<TestResponse> create(@Valid @RequestBody TestRequest testRequest) {
     Test test = pqmService.create(testRequest);
     List<Test> testList = new ArrayList<>();
@@ -40,7 +40,7 @@ public class PqmController {
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
-  @PostMapping(value = "/_update", produces = {"*/*"}, consumes = {"application/json"})
+  @PostMapping(value = "/_update", consumes = {"application/json"})
   ResponseEntity<TestResponse> update(@Valid @RequestBody TestRequest testRequest) {
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
   }
