@@ -27,18 +27,13 @@ const data = {
           ],
         },
         {
-          cardHeader: { value: "Test Result", inlineStyles: {} },
           type: "COMPONENT",
           component: "TqmDetailsTable",
           props: {
-            detail: [
-              { id: 1, key: 1, slno: 1, qp: "Quality 1", uom: "Some UOM 1", bench: "Some Benchmark 1", results: 1234 },
-              { id: 2, key: 2, slno: 2, qp: "Quality 2", uom: "Some UOM 2", bench: "Some Benchmark 2", results: 5678 },
-              { id: 2, key: 2, slno: 2, qp: "Quality 2", uom: "Some UOM 2", bench: "Some Benchmark 2", results: 5678 },
-            ],
+            cardHeader: { value: "Test Result", inlineStyles: {} },
             rowsData: [
-              { id: 1, key: 1, slno: 1, qp: "Quality 1", uom: "Some UOM 1", bench: "Some Benchmark 1", results: 1234 },
-              { id: 2, key: 2, slno: 2, qp: "Quality 2", uom: "Some UOM 2", bench: "Some Benchmark 2", results: 5678 },
+              { slno: 1, qp: "Quality 1", uom: "Some UOM 1", bench: "Some Benchmark 1", results: 1234 },
+              { slno: 2, qp: "Quality 2", uom: "Some UOM 2", bench: "Some Benchmark 2", results: 5678 },
             ],
             columnsData: [
               {
