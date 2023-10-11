@@ -147,7 +147,7 @@ public class WorkflowIntegrator {
 			idStatusMap.put(instanceContext.read(BUSINESSIDJOSNKEY), instanceContext.read(STATUSJSONKEY));
 		});
 		// setting the status back to pqm object from wf response
-		test.setStatus(TestResultStatus.valueOf(idStatusMap.get(test.getId())));
+		test.setWfStatus(idStatusMap.get(test.getId()));
 
 	}
 

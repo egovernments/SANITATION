@@ -109,7 +109,6 @@ public class PqmService {
    * @return Updated Test
    */
   @SuppressWarnings("unchecked")
-
   public Test update(TestRequest testRequest) {
 
     Test test = testRequest.getTests().get(0);
