@@ -44,6 +44,7 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
+0.0.31 added styles for tqm view test screen
 0.0.30 added styles for tqm test wf actions and pop up screen
 0.0.29 added styles for tqm test and response screen
 0.0.28 Added Home screen card styles for plant operator home screen
