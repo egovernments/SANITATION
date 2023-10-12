@@ -12,6 +12,7 @@ function ViewTestResults() {
   const businessService = "PQM";
 
   const { isLoading, data: testData, revalidate, isFetching } = Digit.Hooks.tqm.useViewTestResults({
+    tenantId: tenantId,
     id: id,
     config: {
       select: (data) => ({
@@ -20,44 +21,54 @@ function ViewTestResults() {
             sections: [
               {
                 type: "DATA",
-                // sectionHeader: { value: "Section 1", inlineStyles: {} },
                 cardHeader: { value: "Test Details", inlineStyles: { marginTop: 0 } },
                 values: data.details,
               },
-              {
-                type: "COMPONENT",
-                component: "TqmDetailsTable",
-                props: {
-                  cardHeader: { value: "Test Result", inlineStyles: {} },
-                  rowsData: [
-                    { slno: 1, qp: "Quality 1", uom: "Some UOM 1", bench: "Some Benchmark 1", results: 1234 },
-                    { slno: 2, qp: "Quality 2", uom: "Some UOM 2", bench: "Some Benchmark 2", results: 5678 },
-                  ],
-                  columnsData: [
-                    {
-                      Header: "SL. No.",
-                      accessor: "slno",
+              data.tableData
+                ? {
+                    type: "COMPONENT",
+                    component: "TqmDetailsTable",
+                    props: {
+                      cardHeader: { value: "Test Result", inlineStyles: {} },
+                      rowsData: data.tableData.map((i, index) => {
+                        return {
+                          slno: index + 1,
+                          qp: i.qparameter,
+                          uom: i.uom,
+                          bench: i.benchmarkValues,
+                          results: i.results,
+                          status: i.status,
+                        };
+                      }),
+                      columnsData: [
+                        {
+                          Header: "SL. No.",
+                          accessor: "slno",
+                        },
+                        {
+                          Header: "Quality Parameter",
+                          accessor: "qp",
+                        },
+                        {
+                          Header: "UOM",
+                          accessor: "uom",
+                        },
+                        {
+                          Header: "Benchmark",
+                          accessor: "bench",
+                        },
+                        {
+                          Header: "Results",
+                          accessor: "results",
+                          Cell: ({ row }) => {
+                            return <span className={row?.original?.status === "PASS" ? "sla-cell-success" : "sla-cell-error"}>{row?.original?.results}</span>;
+                          },
+                        },
+                      ],
+                      summaryRows: data.testSummary,
                     },
-                    {
-                      Header: "Quality Parameter",
-                      accessor: "qp",
-                    },
-                    {
-                      Header: "UOM",
-                      accessor: "uom",
-                    },
-                    {
-                      Header: "Benchmark",
-                      accessor: "bench",
-                    },
-                    {
-                      Header: "Results",
-                      accessor: "results",
-                    },
-                  ],
-                  summaryRows: ["", "", "", "Total Sum", "1234"],
-                },
-              },
+                  }
+                : {},
               {
                 cardHeader: { value: "Documents", inlineStyles: {} },
                 type: "COMPONENT",

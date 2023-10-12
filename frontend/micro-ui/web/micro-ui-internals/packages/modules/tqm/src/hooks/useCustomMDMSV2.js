@@ -6,6 +6,7 @@ export const useCustomMDMSV2 = ({ tenantId, schemaCode, select }) => {
       MdmsCriteria: {
         tenantId: tenantId,
         schemaCode: schemaCode,
+        isActive: true,
       },
     },
     config: {
@@ -17,14 +18,12 @@ export const useCustomMDMSV2 = ({ tenantId, schemaCode, select }) => {
             //first filter with isActive
             //then make a data array with actual data
             //refer the "code" key in data(for now) and set options array , also set i18nKey in each object to show in UI
-            const options = mdms
-              ?.filter((row) => row?.isActive)
-              ?.map((row) => {
-                return {
-                  i18nKey: Digit.Utils.locale.getTransformedLocale(`TQM_MASTERS_${row?.schemaCode}_${row?.data?.code}`),
-                  ...row.data,
-                };
-              });
+            const options = mdms?.map((row) => {
+              return {
+                i18nKey: Digit.Utils.locale.getTransformedLocale(`${row?.schemaCode}_${row?.data?.code}`),
+                ...row.data,
+              };
+            });
             return options;
           },
     },

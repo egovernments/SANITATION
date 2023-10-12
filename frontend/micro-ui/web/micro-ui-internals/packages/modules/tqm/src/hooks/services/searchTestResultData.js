@@ -1,4 +1,4 @@
-export const searchTestResultData = async ({ id }) => {
+export const searchTestResultData = async ({ id, tenantId }) => {
   const response = await Digit.CustomService.getResponse({
     url: "/pqm-service/v1/_search",
     body: {
@@ -12,6 +12,37 @@ export const searchTestResultData = async ({ id }) => {
     },
   });
   const testResponse = response?.tests?.[0];
+
+  const testcriteraData = testResponse?.testCriteria;
+
+  const mdmsCriteriaData = await Digit.CustomService.getResponse({
+    url: "/mdms-v2/v2/_search",
+    body: {
+      tenantId,
+      MdmsCriteria: {
+        tenantId: tenantId,
+        schemaCode: "PQM.QualityCriteria",
+        isActive: true,
+      },
+    },
+  });
+
+  const combinedData = [];
+
+  testcriteraData.forEach((testItem) => {
+    const matchingMdmsItem = mdmsCriteriaData?.mdms?.find((mdmsItem) => mdmsItem.uniqueIdentifier === testItem.criteriaCode);
+    if (matchingMdmsItem) {
+      const mergedData = {
+        criteriaCode: testItem.criteriaCode,
+        qparameter: matchingMdmsItem.data.parameter,
+        uom: matchingMdmsItem.data.units,
+        benchmarkValues: matchingMdmsItem.data.benchmarkValues?.[0],
+        results: testItem.value,
+        status: testItem.status,
+      };
+      combinedData.push(mergedData);
+    }
+  });
 
   return {
     details: [
@@ -50,5 +81,7 @@ export const searchTestResultData = async ({ id }) => {
     documents: testResponse?.documents?.map((i) => {
       return { title: i?.documentUid, value: i?.fileStoreId };
     }),
+    tableData: combinedData.length !== 0 ? combinedData : null,
+    testSummary: combinedData.length !== 0 ? ["", "", "", "Result summary", !!combinedData.find((i) => i.status !== "PASS") === false ? "PASS" : "FAIL"] : null,
   };
 };
