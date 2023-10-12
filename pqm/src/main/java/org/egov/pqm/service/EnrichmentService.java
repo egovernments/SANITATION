@@ -19,42 +19,43 @@ import java.util.List;
 @Service
 @Slf4j
 public class EnrichmentService {
-    @Autowired
-    private ServiceConfiguration config;
-    @Autowired
-    private PQMUtil pqmUtil;
-    @Autowired
-    private IdGenRepository idGenRepository;
 
-    public void enrichPQMCreateRequest(TestRequest testRequest)
-    {
-        RequestInfo requestInfo = testRequest.getRequestInfo();
-        setIdgenIds(testRequest);
-        setAuditDetails(testRequest);
-    }
-    private void setAuditDetails(TestRequest testRequest)
-    {
-        RequestInfo requestInfo = testRequest.getRequestInfo();
-        AuditDetails auditDetails = pqmUtil.getAuditDetails(requestInfo.getUserInfo().getUuid(),true);
-        testRequest.getTests().get(0).setAuditDetails(auditDetails);
-    }
+  @Autowired
+  private ServiceConfiguration config;
+  @Autowired
+  private PQMUtil pqmUtil;
+  @Autowired
+  private IdGenRepository idGenRepository;
 
-    private void setIdgenIds(TestRequest testRequest) {
-        log.info(testRequest.toString(),"xxxxxxxxxxxxx");
-        RequestInfo requestInfo = testRequest.getRequestInfo();
-        String tenantId = testRequest.getTests().get(0).getTenantId();
-       List<Test> test = testRequest.getTests();
-        String id = getId(requestInfo, tenantId, config.getIdName(), config.getIdFormat());
-        test.get(0).setId(id);
-    }
+  public void enrichPQMCreateRequest(TestRequest testRequest) {
+    RequestInfo requestInfo = testRequest.getRequestInfo();
+    setIdgenIds(testRequest);
+    setAuditDetails(testRequest);
+  }
+
+  private void setAuditDetails(TestRequest testRequest) {
+    RequestInfo requestInfo = testRequest.getRequestInfo();
+    AuditDetails auditDetails = pqmUtil.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
+    testRequest.getTests().get(0).setAuditDetails(auditDetails);
+  }
+
+  private void setIdgenIds(TestRequest testRequest) {
+    log.info(testRequest.toString(), "xxxxxxxxxxxxx");
+    RequestInfo requestInfo = testRequest.getRequestInfo();
+    String tenantId = testRequest.getTests().get(0).getTenantId();
+    List<Test> test = testRequest.getTests();
+    String id = getId(requestInfo, tenantId, config.getIdName(), config.getIdFormat());
+    test.get(0).setId(id);
+  }
 
 
-    private String getId(RequestInfo requestInfo, String tenantId, String idKey, String idFormat) {
-        IdResponse idResponse = idGenRepository.getId(requestInfo, tenantId, idKey, idFormat).getIdResponses().get(0);
-        if (idResponse == null) {
-            throw new CustomException(ErrorConstants.IDGEN_ERROR, "No ids returned from idgen Service");
-        }
-        return idResponse.getId();
+  private String getId(RequestInfo requestInfo, String tenantId, String idKey, String idFormat) {
+    IdResponse idResponse = idGenRepository.getId(requestInfo, tenantId, idKey, idFormat)
+        .getIdResponses().get(0);
+    if (idResponse == null) {
+      throw new CustomException(ErrorConstants.IDGEN_ERROR, "No ids returned from idgen Service");
     }
+    return idResponse.getId();
+  }
 
 }
