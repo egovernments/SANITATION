@@ -52,7 +52,7 @@ const DetailsTable = ({ columnsData, rowsData, summaryRows, cardHeader }) => {
               <tr className="row">
                 {summaryRows.map((cell, index) => (
                   <td className="data" style={index === 3 ? { borderRight: "0.5px solid #d6d5d4", textAlign: "right" } : {}}>
-                    {cell}
+                    {index === 4 ? <span className={cell === "PASS" ? "sla-cell-success" : "sla-cell-error"}> {cell} </span> : cell}
                   </td>
                 ))}
               </tr>

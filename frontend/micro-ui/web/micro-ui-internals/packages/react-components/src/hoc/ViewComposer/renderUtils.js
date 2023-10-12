@@ -19,13 +19,21 @@ export const RenderDataSection = ({ section }) => {
             <Row
               key={row.key}
               label={row.key}
-              text={row?.isLink ? <div>
-                <Link to={row?.to}>
-                  <span className="link" style={{ color: "#F47738" }}>
-                    {row?.value}
-                  </span>
-                </Link>
-              </div> :row.value}
+              text={
+                row?.isLink ? (
+                  <div>
+                    <Link to={row?.to}>
+                      <span className="link" style={{ color: "#F47738" }}>
+                        {row?.value}
+                      </span>
+                    </Link>
+                  </div>
+                ) : row?.isSla ? (
+                  <span className={row.value === "PASS" ? "sla-cell-success bg" : "sla-cell-error bg"}> {row.value} </span>
+                ) : (
+                  row.value
+                )
+              }
               last={rowIdx === section.values?.length - 1}
               caption={row.caption}
               className="border-none"
