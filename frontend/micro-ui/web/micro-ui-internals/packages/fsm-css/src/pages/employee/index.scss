@@ -528,6 +528,9 @@
     margin-top: 32px;
     font-size: 24px;
     line-height: 32px;
+    @media (max-width: 639px) {
+      margin-top: 0;
+    }
   }
 }
 
@@ -535,4 +538,8 @@
   @media (min-width: 1024px) {
     max-width: unset;
   }
+}
+
+.employee-select-wrap .options-card {
+  margin-top: 40px;
 }

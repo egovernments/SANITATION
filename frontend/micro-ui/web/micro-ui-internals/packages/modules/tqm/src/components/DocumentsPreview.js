@@ -22,7 +22,7 @@ function DocumentsPreview({ documents, svgStyles = {} }) {
   }, [filesArray]);
 
   return (
-    <div style={{ marginTop: "19px" }}>
+    <div>
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start" }}>
         {documents.length > 0 ? (
           documents?.map((document, index) => (
@@ -31,7 +31,7 @@ function DocumentsPreview({ documents, svgStyles = {} }) {
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PDFSvg />
                 </div>
-                <p style={{ textAlign: "center" }}>{t(document?.title)}</p>
+                <p className="tqm-document-title">{t(document?.title)}</p>
               </a>
             </React.Fragment>
           ))
@@ -43,39 +43,6 @@ function DocumentsPreview({ documents, svgStyles = {} }) {
       </div>
     </div>
   );
-  // 🚧 WIP: DONT REMOVE IT 👇
-  //   return (
-  //     <div style={{ marginTop: "19px" }}>
-  //       {documents?.map((document, index) => (
-  //         <React.Fragment key={index}>
-  //           {document?.title ? <CardSubHeader style={{ marginTop: "32px", marginBottom: "8px", color: "#505A5F", fontSize: "24px" }}>{t(document?.title)}</CardSubHeader> : null}
-  //           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start" }}>
-  //             {document?.values && document?.values.length > 0 ? (
-  //               document?.values?.map((value, index) => (
-  //                 <a target="_" href={pdfFiles[value.fileStoreId]?.split(",")[0]} style={{ minWidth: "80px", marginRight: "10px", maxWidth: "100px", height: "auto" }} key={index}>
-  //                   <div style={{ display: "flex", justifyContent: "center" }}>
-  //                     <PDFSvg />
-  //                   </div>
-  //                   <p
-  //                     style={
-  //                       checkLocation ? { marginTop: "8px", fontWeight: "bold", fontSize: "16px", lineHeight: "19px", color: "#505A5F", textAlign: "center" } : { marginTop: "8px", fontWeight: "bold" }
-  //                     }
-  //                   >
-  //                     {t(value?.title)}
-  //                   </p>
-  //                   <p style={{ textAlign: "center" }}>{t(value?.documentType)}</p>
-  //                 </a>
-  //               ))
-  //             ) : (
-  //               <div>
-  //                 <p>{t("BPA_NO_DOCUMENTS_UPLOADED_LABEL")}</p>
-  //               </div>
-  //             )}
-  //           </div>
-  //         </React.Fragment>
-  //       ))}
-  //     </div>
-  //   );
 }
 
 export default DocumentsPreview;

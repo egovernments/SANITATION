@@ -1,13 +1,15 @@
-
 import utils from "../utils";
-
+import { useCustomMDMSV2 } from "./useCustomMDMSV2";
+import { useViewTestResults } from "./useViewTestResults";
 
 const tqm = {
-  sampleTQMHook: ()=> {}
+  sampleTQMHook: () => {},
+  useViewTestResults,
+  useCustomMDMSV2,
 };
 
 const Hooks = {
-  tqm
+  tqm,
 };
 
 const Utils = {
@@ -16,7 +18,7 @@ const Utils = {
   },
   tqm: {
     ...utils,
-    sampleUtil:()=> {}
+    sampleUtil: () => {},
   },
 };
 

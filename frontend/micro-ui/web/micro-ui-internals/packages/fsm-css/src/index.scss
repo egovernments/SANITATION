@@ -291,3 +291,21 @@ input::-webkit-calendar-picker-indicator {
     margin-bottom: 16px;
   }
 }
+
+@media (max-width: 639780px) {
+  .toast-success {
+    width: 100%;
+    bottom: 0;
+    border-radius: 0;
+    margin: 0;
+  }
+}
+
+.tqm-document-title {
+  text-align: left;
+  margin-top: 8px;
+  font-weight: 700;
+  line-height: 18.75px;
+  color: #505a5f;
+  font-size: 16px;
+}
