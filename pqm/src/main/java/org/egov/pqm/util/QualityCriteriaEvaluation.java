@@ -27,15 +27,21 @@ public class QualityCriteriaEvaluation {
   @Autowired
   private ServiceConfiguration config;
 
+  /**
+   * @param mdmsQualityCriteria MDMS Quality Criteria
+   * @param value Value to Test
+   * @return QualityCriteria
+   */
   public QualityCriteria evaluateQualityCriteria(MDMSQualityCriteria mdmsQualityCriteria,
       BigDecimal value) {
     String criteriaCode = mdmsQualityCriteria.getCode();
     String benchmarkRule = mdmsQualityCriteria.getBenchmarkRule();
-    String benchmarkValuesString = mdmsQualityCriteria.getBenchmarkValues();
-    String allowedDeviationString = mdmsQualityCriteria.getAllowedDeviation();
+    List<BigDecimal> benchmarkValues = mdmsQualityCriteria.getBenchmarkValues();
+    BigDecimal allowedDeviation = mdmsQualityCriteria.getAllowedDeviation();
 
-    boolean areBenchmarkRulesMet = isBenchmarkMet(value, benchmarkRule, benchmarkValuesString,
-        allowedDeviationString);
+    boolean areBenchmarkRulesMet = isBenchmarkMet(value, benchmarkRule,
+        benchmarkValues.toArray(new BigDecimal[0]),
+        allowedDeviation);
 
     QualityCriteria qualityCriteria = QualityCriteria.builder().criteriaCode(criteriaCode)
         .value(value).status(StatusEnum.PENDING).build();
@@ -49,26 +55,33 @@ public class QualityCriteriaEvaluation {
     return qualityCriteria;
   }
 
+
+  /**
+   * Parsing Json Data to a Code-QualityCriteria Map
+   *
+   * @param valueToCheck     Value to Test
+   * @param benchmarkRule    Benchmark Rule to test against
+   * @param benchmarkValues  Benchmark Values to test against
+   * @param allowedDeviation Allowed Deviation
+   * @return isBenchmarkMet - true if benchmark is met
+   */
   private boolean isBenchmarkMet(BigDecimal valueToCheck, String benchmarkRule,
-      String benchmarkValuesString, String allowedDeviationString) {
-    // Convert benchmarkValues, allowedDeviation and valueAsString from strings to BigDecimals
-    BigDecimal[] benchmarkValues = parseBenchmarkValues(benchmarkValuesString);
-    BigDecimal allowedDeviation = new BigDecimal(allowedDeviationString);
+      BigDecimal[] benchmarkValues, BigDecimal allowedDeviation) {
 
     switch (benchmarkRule) {
-      case "GTR":
+      case GREATER_THAN:
         if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) > 0) {
           return true;
         }
         break;
 
-      case "LST":
+      case LESS_THAN:
         if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) < 0) {
           return true;
         }
         break;
 
-      case "BTW":
+      case BETWEEN:
         if ((benchmarkValues.length == 2) &&
             (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) >= 0) &&
             (valueToCheck.compareTo(benchmarkValues[1].add(allowedDeviation)) <= 0)) {
@@ -76,88 +89,39 @@ public class QualityCriteriaEvaluation {
         }
         break;
 
-      case "OSD":
+      case OUTSIDE_RANGE:
         if ((benchmarkValues.length == 2) &&
-            (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) <= 0) &&
+            (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) <= 0) ||
             (valueToCheck.compareTo(benchmarkValues[1].add(allowedDeviation)) >= 0)) {
           return true;
         }
         break;
 
-      case "EQ":
+      case EQUALS:
         if (valueToCheck.compareTo(benchmarkValues[0]) == 0) {
           return true;
         }
         break;
 
-      case "NEQ":
+      case NOT_EQUAL:
         if (valueToCheck.compareTo(benchmarkValues[0]) != 0) {
           return true;
         }
         break;
 
-      case "GTROREQ":
+      case GREATER_THAN_EQUAL_TO:
         if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) >= 0) {
           return true;
         }
         break;
 
-      case "LSTOREQ":
+      case LESS_THAN_EQUAL_TO:
         if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) <= 0) {
           return true;
         }
         break;
     }
     return false;
-  }
-
-
-  /**
-   * Custom function to parse BigDecimal from string
-   *
-   * @param value
-   * @return valueAsBigDecimal
-   */
-  public static BigDecimal parseBigDecimal(String value) {
-    try {
-      return new BigDecimal(value);
-    } catch (NumberFormatException e) {
-      log.error("Exception while parsing String into BigDecimal ", e);
-      return BigDecimal.ZERO; // Return a default value in case of an error
-    }
-  }
-
-  /**
-   * Custom function to parse benchmark values from a string to BigDecimal or BigDecimal array
-   *
-   * @param values
-   * @return valueAsBigDecimal
-   */
-  public static BigDecimal[] parseBenchmarkValues(String values) {
-    String[] valueArray = values.split(",");
-    BigDecimal[] decimalValues;
-
-    try {
-      if (valueArray.length == 1) {
-        // If there is only one value, parse it as a single BigDecimal
-        BigDecimal singleValue = parseBigDecimal(valueArray[0]);
-        decimalValues = new BigDecimal[]{singleValue};
-      } else if (valueArray.length == 2) {
-        // If there are two values, parse them as a BigDecimal array
-        decimalValues = new BigDecimal[2];
-        decimalValues[0] = parseBigDecimal(valueArray[0]);
-        decimalValues[1] = parseBigDecimal(valueArray[1]);
-      } else {
-        // Handle invalid input
-        throw new IllegalArgumentException("Invalid benchmark values input");
-      }
-    } catch (Exception e) {
-      // Handle any other exceptions that might occur during parsing
-      log.error("Error parsing benchmark values: " + e.getMessage());
-      decimalValues = new BigDecimal[]{BigDecimal.ZERO, BigDecimal.ZERO}; // Return default values
-    }
-
-    return decimalValues;
   }
 
 }

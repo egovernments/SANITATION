@@ -1,6 +1,8 @@
 package org.egov.pqm.web.model.mdms;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,10 +28,10 @@ public class MDMSQualityCriteria {
   private String benchmarkRule = null;
 
   @JsonProperty("benchmarkValues")
-  private String benchmarkValues = null;
+  private List<BigDecimal> benchmarkValues = null;
 
   @JsonProperty("allowedDeviation")
-  private String allowedDeviation = null;
+  private BigDecimal allowedDeviation = null;
 
   @JsonProperty("effectiveFrom")
   private Long effectiveFrom = null;

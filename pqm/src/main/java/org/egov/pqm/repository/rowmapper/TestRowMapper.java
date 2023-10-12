@@ -8,9 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.web.model.AuditDetails;
-import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestResultStatus;

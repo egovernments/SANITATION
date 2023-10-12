@@ -4,6 +4,8 @@ import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
 import static org.egov.pqm.util.Constants.PQM_MODULE_NAME;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import static org.egov.pqm.util.Constants.MASTER_NAME_BENCHMARK_RULES;
 import static org.egov.pqm.util.Constants.MASTER_NAME_QUALITY_CRITERIA;
@@ -27,8 +29,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.util.QualityCriteriaEvaluation;
 import org.egov.pqm.web.model.QualityCriteria;
@@ -57,6 +61,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class PqmService {
 
 	@Autowired
@@ -146,28 +151,33 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
+  /**
+   * Evaluates QualityCriteria list for a Test Object
+   *
+   * @param testRequest The Test Request Object
+   */
   public void evalutateCriteria(TestRequest testRequest) {
     Test test = testRequest.getTests().get(0);
-    //fetch list of quality standards for the test
-    List<String> masterList = new ArrayList<>(
-        Arrays.asList(
-            MASTER_NAME_TESTING_STANDARD,
-            MASTER_NAME_QUALITY_CRITERIA,
-            MASTER_NAME_BENCHMARK_RULES
-        ));
 
-    Map<String, Map<String, JSONArray>> response = mdmsUtils.fetchMdmsData(
-        testRequest.getRequestInfo(), testRequest.getTests().get(0).getTenantId(), MODULE_NAME,
-        masterList);
+    //fetch mdms data for QualityCriteria Master
+    Object jsondata = mdmsUtils.mdmsCallV2(testRequest.getRequestInfo(),
+        testRequest.getTests().get(0).getTenantId(), MASTER_NAME_QUALITY_CRITERIA);
+    String jsonString = "";
 
-    String jsondata = response.get(MODULE_NAME).get(MASTER_NAME_QUALITY_CRITERIA).toString();
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      jsonString = objectMapper.writeValueAsString(jsondata);
+    } catch (Exception e) {
+      throw new CustomException(ErrorConstants.PARSING_ERROR,
+          "Unable to parse QualityCriteria mdms data ");
+    }
 
-    // Parse JSON and create the map
-    Map<String, MDMSQualityCriteria> codeToQualityCriteriaMap = parseJsonToMap(jsondata);
+    // Parse JSON Response and create the map for QualityCriteria
+    Map<String, MDMSQualityCriteria> codeToQualityCriteriaMap = parseJsonToMap(jsonString);
 
+    //evaluate Quality Criteria
     List<QualityCriteria> evaluatedqualityCriteriaList = new ArrayList<>();
     for (QualityCriteria qualityCriteria : test.getQualityCriteria()) {
-
       QualityCriteria evaluatedqualityCriteria = qualityCriteriaEvaluation.evaluateQualityCriteria(
           codeToQualityCriteriaMap.get(qualityCriteria.getCriteriaCode()),
           qualityCriteria.getValue());
@@ -176,23 +186,30 @@ public class PqmService {
     test.setQualityCriteria(evaluatedqualityCriteriaList);
   }
 
-
+  /**
+   * Parsing Json Data to a Code-QualityCriteria Map
+   *
+   * @param jsonData Json Data
+   * @return Map of Code-QualityCriteria
+   */
   public static Map<String, MDMSQualityCriteria> parseJsonToMap(String jsonData) {
     Map<String, MDMSQualityCriteria> codeToQualityCriteriaMap = new HashMap<>();
 
     try {
       ObjectMapper objectMapper = new ObjectMapper();
       JsonNode jsonNode = objectMapper.readTree(jsonData);
-      JsonNode qualityCriteriaArray = jsonNode.get("QualityCriteria");
+      JsonNode qualityCriteriaArray = jsonNode.get("mdms");
 
       for (JsonNode criteriaNode : qualityCriteriaArray) {
-        String code = criteriaNode.get("code").asText();
-        MDMSQualityCriteria qualityCriteria = objectMapper.treeToValue(criteriaNode,
+        String code = criteriaNode.get("data").get("code").asText();
+        MDMSQualityCriteria qualityCriteria = objectMapper.convertValue(criteriaNode.get("data"),
             MDMSQualityCriteria.class);
+
         codeToQualityCriteriaMap.put(code, qualityCriteria);
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new CustomException(ErrorConstants.PARSING_ERROR,
+          "Unable to make Code-QualityCriteria Map");
     }
 
     return codeToQualityCriteriaMap;

@@ -21,6 +21,9 @@ public class QualityCriteria {
   @JsonProperty("value")
   private BigDecimal value = null;
 
+  @JsonProperty("allowedDeviation")
+  private BigDecimal allowedDeviation = null;
+
   /**
    * The result status of the individual quality criteria evaluated with respect to benchmark rules
    * and standard values from MDMS data.
