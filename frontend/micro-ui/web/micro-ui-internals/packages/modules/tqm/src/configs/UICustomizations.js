@@ -105,14 +105,17 @@ export const UICustomizations = {
   },
   TqmInboxConfig:{
     preProcess: (data,additionalDetails) => {
-
+      
       const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
       
-      //plantCode
+      //processcodes
+      data.body.inbox.moduleSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
 
-      //materialCodes
+      //materialcodes
+      data.body.inbox.moduleSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.code)
 
       //status
+      data.body.inbox.moduleSearchCriteria.status = status?.map(status => status.applicationStatus)
 
       //fromDate and toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
@@ -121,18 +124,18 @@ export const UICustomizations = {
 
       //sortOrder sortBy 
 
-      // data.body.inbox.moduleSearchCriteria.sortBy = "createdTime"
-      // data.body.inbox.moduleSearchCriteria.sortOrder = "DESC"
+      data.body.inbox.moduleSearchCriteria.sortBy = "createdTime"
+      data.body.inbox.moduleSearchCriteria.sortOrder = sortOrder?.value
 
       //limit offset
 
       cleanObject(data.body.inbox.processSearchCriteria)
       cleanObject(data.body.inbox.moduleSearchCriteria)
      
-      if(Digit.Utils.tqm.isPlantOperatorLoggedIn()){
-        data.body.inbox.limit = 100
-        data.body.inbox.offset = 0
-      }
+      
+      data.body.inbox.limit = 100
+      data.body.inbox.offset = 0
+      
 
       //set tenantId
       data.body.inbox.tenantId = Digit.ULBService.getCurrentTenantId();
@@ -142,84 +145,6 @@ export const UICustomizations = {
       delete data.body.custom;
 
       return data
-    },
-    populateProcessReqCriteria:() => {
-      const tenantId = Digit.ULBService.getCurrentTenantId();
-
-      return {
-        url: "/egov-workflow-v2/egov-wf/businessservice/_search",
-        params: { tenantId, businessServices: businessServiceMap?.tqm },
-        body: {
-         
-        },
-        config: {
-          enabled: true,
-          select: (data) => {
-           return [
-            {
-              processCode:"process1",
-              optionKey:"Process1"
-            },
-            {
-              processCode:"process2",
-              optionKey:"Process2"
-            }
-           ]
-          },
-        },
-      };
-    },
-    populateStageReqCriteria:() => {
-      const tenantId = Digit.ULBService.getCurrentTenantId();
-
-      return {
-        url: "/egov-workflow-v2/egov-wf/businessservice/_search",
-        params: { tenantId, businessServices: businessServiceMap?.tqm },
-        body: {
-         
-        },
-        config: {
-          enabled: true,
-          select: (data) => {
-           return [
-            {
-              processCode:"process1",
-              optionKey:"stage1"
-            },
-            {
-              processCode:"process2",
-              optionKey:"stage2"
-            }
-           ]
-          },
-        },
-      };
-    },
-    populateOutputTypeReqCriteria:() => {
-      const tenantId = Digit.ULBService.getCurrentTenantId();
-
-      return {
-        url: "/egov-workflow-v2/egov-wf/businessservice/_search",
-        params: { tenantId, businessServices: businessServiceMap?.tqm },
-        body: {
-         
-        },
-        config: {
-          enabled: true,
-          select: (data) => {
-           return [
-            {
-              outputCode:"output1",
-              optionKey:"Output1"
-            },
-            {
-              outputCode:"output2",
-              optionKey:"Output2"
-            }
-           ]
-          },
-        },
-      };
     },
     populateStatusReqCriteria:() => {
       const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -234,16 +159,14 @@ export const UICustomizations = {
         config: {
           enabled: true,
           select: (data) => {
-           return [
-            {
-              outputCode:"status1",
-              optionKey:"status1"
-            },
-            {
-              outputCode:"status2",
-              optionKey:"status2"
-            }
-           ]
+           const wfStates = data?.BusinessServices?.[0]?.states?.filter(state=>state.applicationStatus
+            )?.map(state => {
+              return {
+                i18nKey:`WF_STATUS_${businessServiceMap?.tqm}_${state?.applicationStatus}`,
+                ...state
+              }
+           })
+           return wfStates
           },
         },
       };

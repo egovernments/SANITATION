@@ -43,45 +43,44 @@ export const tqmInboxConfigPlantOperator = {
             "minReqFields": 0,
             "defaultValues": {
               "processCodes":[],
-              // "status":"",
               "materialCodes":[],
               "status":[],
               "dateRange":""
             },
             "fields": [
               {
-                "label": "TQM_TREATMENT_PROCESS",
-                "type": "apidropdown",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
+                label: 'TQM_TREATMENT_PROCESS',
+                type: 'dropdown',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  optionsCustomStyle: {
+                    top: '2.3rem',
                   },
-                  "name": "processCodes",
-                  "optionsKey": "optionKey",
-                  "allowMultiSelect": true,
-                  "masterName": "commonUiConfig",
-                  "moduleName": "TqmInboxConfig",
-                  "customfn": "populateProcessReqCriteria"
-                }
+                  name: 'processCodes',
+                  optionsKey: 'i18nKey',
+                  allowMultiSelect: true,
+                  mdmsv2:{
+                    schemaCode:"PQM.ProcessType",
+                  }
+                },
               },
               {
-                "label": "TQM_OUTPUT_TYPE",
-                "type": "apidropdown",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
+                label: 'TQM_OUTPUT_TYPE',
+                type: 'dropdown',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  optionsCustomStyle: {
+                    top: '2.3rem',
                   },
-                  "name": "materialCodes",
-                  "optionsKey": "outputCode",
-                  "allowMultiSelect": true,
-                  "masterName": "commonUiConfig",
-                  "moduleName": "TqmInboxConfig",
-                  "customfn": "populateOutputTypeReqCriteria"
-                }
+                  name: 'materialCodes',
+                  optionsKey: 'i18nKey',
+                  allowMultiSelect: true,
+                  mdmsv2:{
+                    schemaCode:"PQM.Material",
+                  }
+                },
               },
               {
                 "label": "TQM_INBOX_STATUS",
@@ -93,7 +92,7 @@ export const tqmInboxConfigPlantOperator = {
                     "top": "2.3rem"
                   },
                   "name": "status",
-                  "optionsKey": "optionKey",
+                  "optionsKey": "i18nKey",
                   "allowMultiSelect": true,
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfig",
@@ -206,7 +205,7 @@ export const tqmInboxConfigPlantOperator = {
             "secondaryLabel": "TQM_CLEAR_SEARCH",
             "minReqFields": 0,
             "defaultValues": {
-              "sortBy":""
+              "sortOrder":""
             },
             "fields": [
               {
@@ -215,15 +214,17 @@ export const tqmInboxConfigPlantOperator = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  "name": "sortBy",
+                  "name": "sortOrder",
                   "options": [
                     {
                       "code": "LATEST_FIRST",
-                      "name": "TQM_INBOX_LATEST_FIRST"
+                      "name": "TQM_INBOX_LATEST_FIRST",
+                      "value":"DESC"
                     },
                     {
                       "code": "LATEST_LAST",
-                      "name": "TQM_INBOX_LATEST_LAST"
+                      "name": "TQM_INBOX_LATEST_LAST",
+                      "value":"ASC"
                     }
                   ],
                   "optionsKey": "name",
