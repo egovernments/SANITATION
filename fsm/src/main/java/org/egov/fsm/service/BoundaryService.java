@@ -77,32 +77,6 @@ public class BoundaryService {
 		}
 		uri.append("&").append("boundaryType=");
 
-		/*Map<String, Object> additionalDetails = fsm.getAddress().getAdditionalDetails() != null
-				? (Map<String, Object>) fsm.getAddress().getAdditionalDetails()
-				: new HashMap<>();
-		if (additionalDetails != null || additionalDetails != null && additionalDetails.get("boundaryType") != null) {
-			String boundaryType = (String) additionalDetails.get("boundaryType");
-			uri.append(boundaryType);
-		} else {
-			uri.append("Locality");
-		}*/
-
-		/*String jsonString = (String) fsm.getAddress().getAdditionalDetails();
-		Map<String, String> additionalDetails = null;
-		if (StringUtils.isNotBlank(jsonString)) {
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			JsonElement element = gson.fromJson(jsonString, JsonElement.class);
-			JsonObject jsonObj = element.getAsJsonObject();
-			additionalDetails = new Gson().fromJson(jsonObj, Map.class);
-		}
-		System.out.println(additionalDetails);
-		if (additionalDetails != null && additionalDetails.get("boundaryType") != null) {
-			String boundaryType = (String) additionalDetails.get("boundaryType");
-			uri.append(boundaryType);
-		} else {
-			uri.append("Locality");
-		}*/
-
 		Object additionalDetail = fsm.getAddress().getAdditionalDetails();
 		Map<String, String> additionalDetails = null;
 		if (additionalDetail instanceof Map) {
