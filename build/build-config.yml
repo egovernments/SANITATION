@@ -71,6 +71,14 @@ config:
         image-name: 'pqm-scheduler'
         dockerfile: 'pqm-scheduler/Dockerfile'
 
+  - name: 'builds/SANITATION/pqm-anomaly-finder'
+    build:
+      - work-dir: 'pqm-anomaly-finder'
+        image-name: 'pqm-anomaly-finder'
+        dockerfile: 'build/maven/Dockerfile'
+      - work-dir: 'pqm-anomaly-finder/src/main/resources/db'
+        image-name: 'pqm-anomaly-finder-db'
+
   #Sanitation Frontend
   - name: 'builds/SANITATION/frontend/sanitation-ui'
     build:
