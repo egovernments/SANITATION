@@ -50,7 +50,7 @@ const useCustomMDMS = (tenantId, moduleName, masterDetails = [], config = {},mdm
           //refer the "code" key in data(for now) and set options array , also set i18nKey in each object to show in UI
           const options = mdms?.filter(row => row?.isActive)?.map(row => {
             return {
-              i18nKey:Digit.Utils.locale.getTransformedLocale(`TQM_MASTERS_${row?.schemaCode}_${row?.data?.code}`),
+              i18nKey:Digit.Utils.locale.getTransformedLocale(`${row?.schemaCode}_${row?.data?.code}`),
               ...row.data,
             }
           })

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import NoResultsFound from '../../atoms/NoResultsFound';
 import { Loader } from '../../atoms/Loader';
 import _ from 'lodash';
+import { useHistory } from 'react-router-dom';
 
 // const sampleSearchResult = [
 //   {
@@ -138,8 +139,9 @@ const sampleSearchResult = {
 
 
 const convertRowToDetailCardData = (row,config,t,apiDetails,searchResult) => {
-  
-  const resultantObj = {}
+  const resultantObj = {
+    apiResponse:{...row,hidden:true}
+  }
 
   config.columns.map((column,idx) => {
     resultantObj[t(column.label)] = column.additionalCustomization ? Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.additionalCustomizations(row,column?.label,column, _.get(row,column.jsonPath,""),t, searchResult) : String(_.get(row,column.jsonPath,"") ? column.translate? t(Digit.Utils.locale.getTransformedLocale(column.prefix?`${column.prefix}${_.get(row,column.jsonPath,"")}`:_.get(row,column.jsonPath,""))) : _.get(row,column.jsonPath,"") : t("ES_COMMON_NA")); 
@@ -166,7 +168,7 @@ const MobileSearchResultsv1 = ({
   fullConfig,
 }) => {
   const { t } = useTranslation();
-
+  const history = useHistory()
   const { apiDetails } = fullConfig;
   const resultsKey = config.resultsJsonPath;
 
@@ -188,10 +190,13 @@ const MobileSearchResultsv1 = ({
       showActionBar:config?.showActionBarMobileCard, // to show action button on detail card
       submitButtonLabel:config?.actionButtonLabelMobileCard,
       handleDetailCardClick:(obj)=>{ //fn when action button on card is clicked
-        Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.onCardActionClick(obj)
+        const linkToPushTo = Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.onCardActionClick(obj)
+        history.push(linkToPushTo)
       },
       handleSelect:(obj)=>{
-        Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.onCardClick(obj)
+       const linkToPushTo = Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.onCardClick(obj)
+       history.push(linkToPushTo)
+        // Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.onCardActionClick(obj)
       }, //fn when card container is clicked
       mode:"tqm",
       apiDetails,

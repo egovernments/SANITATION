@@ -64,7 +64,10 @@ const DetailsCard = ({ data, serviceRequestIdKey, linkPrefix, handleSelect, sele
                 : '2px solid #fff',
             }}
             className="details-container"
-            onClick={() => handleClickEnabled && handleSelect(object)}
+            onClick={(e) =>{
+              e.stopPropagation()
+              handleClickEnabled && handleSelect(object)
+              }}
           >
             {Object.keys(object)
               .filter(
@@ -80,8 +83,10 @@ const DetailsCard = ({ data, serviceRequestIdKey, linkPrefix, handleSelect, sele
                     label={name}
                     name={object[name]}
                     key={index}
-                    onClick={() =>
-                      handleClickEnabled && handleDetailCardClick(object)
+                    onClick={(e) =>{
+                      e.stopPropagation()
+                      handleClickEnabled && handleSelect(object)
+                    }
                     }
                   />
                 );
@@ -111,7 +116,10 @@ const DetailsCard = ({ data, serviceRequestIdKey, linkPrefix, handleSelect, sele
                 label={Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.getCustomActionLabel(object) || submitButtonLabel}
                 variation="secondary"
                 type="button"
-                onButtonClick={() => handleDetailCardClick(object)}
+                onButtonClick={(e) => {
+                  e.stopPropagation()
+                  handleDetailCardClick(object)
+                }}
                 className={'header-btn'}
                 textStyles={{fontWeight:700}}
               />

@@ -160,6 +160,8 @@ const RenderFormFields = ({data,...props}) => {
                         config={populators}
                         disable={config?.disable}
                         errorStyle={errors?.[populators.name]}
+                        mdmsv2={populators.mdmsv2 ? populators.mdmsv2 : false }
+                        props={props}
                     />
                     )}
                     rules={{ required: isMandatory, ...populators.validation }}

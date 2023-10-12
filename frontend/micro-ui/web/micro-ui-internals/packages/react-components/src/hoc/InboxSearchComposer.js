@@ -14,6 +14,26 @@ import _ from "lodash";
 import { useTranslation } from "react-i18next";
 import MobileSearchResultsv1 from "./MobileView/MobileSearchResultsv1";
 
+function isFalsyOrEmpty(input) {
+    if (input === false) {
+      return true;
+    }
+
+    if(!input) {
+      return true;
+    }
+    
+    if (Array.isArray(input) && input.length === 0) {
+      return true;
+    }
+    
+    if (typeof input === 'object' && Object.keys(input).length === 0) {
+      return true;
+    }
+    
+    return false;
+  }
+
 const InboxSearchComposer = ({configs}) => {
     const {t} = useTranslation()
     const presets = Digit.Hooks.useQueryParams();
@@ -64,8 +84,8 @@ const InboxSearchComposer = ({configs}) => {
         if(Object.keys(state.tableForm)?.length >= 0) {
             _.set(apiDetails, apiDetails?.tableFormJsonPath, { ..._.get(apiDetails, apiDetails?.tableFormJsonPath, {}),...state.tableForm })  
         }
-        const searchFormParamCount = Object.keys(state.searchForm).reduce((count,key)=>state.searchForm[key]===""?count:count+1,0)
-        const filterFormParamCount = Object.keys(state.filterForm).reduce((count, key) => state.filterForm[key] === "" ? count : count + 1, 0)
+        const searchFormParamCount = Object.keys(state.searchForm).reduce((count,key)=>isFalsyOrEmpty(state.searchForm[key])?count:count+1,0)
+        const filterFormParamCount = Object.keys(state.filterForm).reduce((count, key) =>isFalsyOrEmpty(state.filterForm[key]) ? count : count + 1, 0)
         
         if (Object.keys(state.tableForm)?.length > 0 && (searchFormParamCount >= ( activeLink ?activeLink?.minParametersForSearchForm : apiDetails?.minParametersForSearchForm) || filterFormParamCount >= apiDetails?.minParametersForFilterForm)){
             setEnable(true)

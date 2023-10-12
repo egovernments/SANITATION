@@ -9,7 +9,7 @@ export const tqmSearchConfigPlantOperator = {
         serviceName: '/pqm-service/v1/_search',
         requestParam: {},
         requestBody: {},
-        minParametersForSearchForm: 0,
+        minParametersForSearchForm: 1,
         masterName: 'commonUiConfig',
         moduleName: 'SearchTestResults',
         tableFormJsonPath: 'requestBody.custom',
@@ -24,19 +24,19 @@ export const tqmSearchConfigPlantOperator = {
             headerStyle: null,
             primaryLabel: 'ES_COMMON_SEARCH',
             secondaryLabel: 'ES_COMMON_CLEAR_SEARCH',
-            minReqFields: 0,
+            minReqFields: 1,
             showFormInstruction: 'TQM_SEARCH_HINT',
             defaultValues: {
               plantCodes: [],
               processCodes: [],
               materialCodes: [],
-              testType: [],
+              testType: '',
               dateRange: {},
             },
             fields: [
               {
                 label: 'TQM_PLANT_NAME',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -44,16 +44,16 @@ export const tqmSearchConfigPlantOperator = {
                     top: '2.3rem',
                   },
                   name: 'plantCodes',
-                  optionsKey: 'optionKey',
+                  optionsKey: 'i18nKey',
                   allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateProcessReqCriteria',
+                  mdmsv2:{
+                    schemaCode:"PQM.Plant",
+                  }
                 },
               },
               {
                 label: 'TQM_TREATMENT_PROCESS',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -61,16 +61,16 @@ export const tqmSearchConfigPlantOperator = {
                     top: '2.3rem',
                   },
                   name: 'processCodes',
-                  optionsKey: 'optionKey',
+                  optionsKey: 'i18nKey',
                   allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateProcessReqCriteria',
+                  mdmsv2:{
+                    schemaCode:"PQM.ProcessType",
+                  }
                 },
               },
               {
                 label: 'TQM_OUTPUT_TYPE',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -78,16 +78,16 @@ export const tqmSearchConfigPlantOperator = {
                     top: '2.3rem',
                   },
                   name: 'materialCodes',
-                  optionsKey: 'outputCode',
+                  optionsKey: 'i18nKey',
                   allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateOutputTypeReqCriteria',
+                  mdmsv2:{
+                    schemaCode:"PQM.Material",
+                  }
                 },
               },
               {
                 label: 'TQM_TEST_TYPE',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -95,11 +95,11 @@ export const tqmSearchConfigPlantOperator = {
                     top: '2.3rem',
                   },
                   name: 'testType',
-                  optionsKey: 'outputCode',
-                  allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateOutputTypeReqCriteria',
+                  optionsKey: 'i18nKey',
+                  allowMultiSelect: false,
+                  mdmsv2:{
+                    schemaCode:"PQM.TestType",
+                  }
                 },
               },
               {
@@ -130,28 +130,28 @@ export const tqmSearchConfigPlantOperator = {
                 label: 'TQM_TREATMENT_PROCESS',
                 jsonPath: 'processCode',
                 additionalCustomization: false,
-                prefix:"TQM_MASTERS_PQM.ProcessType_",
+                prefix:"PQM.ProcessType_",
                 translate:true
               },
               {
                 label: 'TQM_PROCESS_STAGE',
                 jsonPath: 'stageCode',
                 additionalCustomization: false,
-                prefix:"TQM_MASTERS_PQM.STAGE_",
+                prefix:"PQM.STAGE_",
                 translate:true
               },
               {
                 label: 'TQM_OUTPUT_TYPE',
                 jsonPath: 'materialCode',
                 additionalCustomization: false,
-                prefix:"TQM_MASTERS_PQM.MATERIAL_",
+                prefix:"PQM.MATERIAL_",
                 translate:true
               },
               {
                 label: 'TQM_TEST_TYPE',
                 jsonPath: 'testType',
                 additionalCustomization: false,
-                prefix:"TQM_MASTERS_PQM.TESTTYPE_",
+                prefix:"PQM.TESTTYPE_",
                 translate:true
               },
               {
@@ -161,7 +161,7 @@ export const tqmSearchConfigPlantOperator = {
               },
               {
                 label: 'TQM_TEST_RESULTS',
-                jsonPath: 'wfStatus',
+                jsonPath: 'status',
                 additionalCustomization: true,
                 
               },

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import _ from "lodash";
 import React from "react";
 import { Amount, LinkLabel } from "@egovernments/digit-ui-react-components";
+import { useHistory } from "react-router-dom";
 
 //create functions here based on module name set in mdms(eg->SearchProjectConfig)
 //how to call these -> Digit?.Customizations?.[masterName]?.[moduleName]
@@ -273,15 +274,15 @@ export const UICustomizations = {
       //update testSearchCriteria
 
       //plantcodes
-      data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.processCode)
+      data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
 
       //processcodes
-      data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.processCode)
+      data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
 
       //materialcodes
-      data.body.testSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.outputCode)
+      data.body.testSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.code)
       //testType
-      data.body.testSearchCriteria.testType = testType?.map(test=>test.outputCode)
+      data.body.testSearchCriteria.testType = testType?.code
       //dataRange //fromDate //toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
       data.body.testSearchCriteria.fromDate = fromDate
@@ -306,11 +307,11 @@ export const UICustomizations = {
     MobileDetailsOnClick:() => {
       return ""
     },
-    onCardClick:(obj,row)=> {
-      
+    onCardClick:(obj)=> {
+      return `summary?id=${obj?.apiResponse?.id}`
     },
-    onCardActionClick:(obj,row)=> {
-      
+    onCardActionClick:(obj)=> {
+      return `summary?id=${obj?.apiResponse?.id}`
     },
     getCustomActionLabel:(obj,row) => {
       return ""
@@ -331,39 +332,29 @@ export const UICustomizations = {
   SearchTestResultsUlbAdmin: {
     preProcess: (data,additionalDetails) => {
       
-      const { plantCodes, processCodes, materialCodes, testType, dateRange,sortOrder,limit,offset } = data.body.custom || {};
-
+      const { id,plantCodes, processCodes, testType, dateRange } = data.body.custom || {};
       data.body.testSearchCriteria={}
-      data.body.pagination={}
 
       //update testSearchCriteria
 
+      //test id
+      data.body.testSearchCriteria.ids = id ? [id] : []
       //plantcodes
-      data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.processCode)
-
+      data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
       //processcodes
-      data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.processCode)
-
-      //materialcodes
-      data.body.testSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.outputCode)
+      data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
       //testType
-      data.body.testSearchCriteria.testType = testType?.map(test=>test.outputCode)
+      data.body.testSearchCriteria.testType = testType?.code
       //dataRange //fromDate //toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
       data.body.testSearchCriteria.fromDate = fromDate
       data.body.testSearchCriteria.toDate = toDate
 
-      //sortOrder
-      data.body.pagination.sortOrder = sortOrder?.value
+      //tenantId
+      data.body.testSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
 
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)
-
-      //update pagination
-      
-      if(Digit.Utils.tqm.isPlantOperatorLoggedIn()){
-        data.body.pagination.limit = 100
-      }
 
       //delete custom
       delete data.body.custom;

@@ -9,28 +9,27 @@ export const tqmSearchConfigUlbAdmin = {
         serviceName: '/pqm-service/v1/_search',
         requestParam: {},
         requestBody: {},
-        minParametersForSearchForm: 0,
+        minParametersForSearchForm: 1,
         masterName: 'commonUiConfig',
         moduleName: 'SearchTestResultsUlbAdmin',
-        tableFormJsonPath: 'requestBody.custom',
+        tableFormJsonPath: 'requestBody.pagination',
         filterFormJsonPath: 'requestBody.custom',
         searchFormJsonPath: 'requestBody.custom',
       },
       sections: {
         search: {
           uiConfig: {
-            type: 'filter',
             headerLabel: 'TQM_INBOX_FILTERS',
             headerStyle: null,
             primaryLabel: 'ES_COMMON_SEARCH',
             secondaryLabel: 'ES_COMMON_CLEAR_SEARCH',
-            minReqFields: 0,
+            minReqFields: 1,
             showFormInstruction: 'TQM_SEARCH_HINT',
             defaultValues: {
               id:'',
               plantCodes: [],
               processCodes: [],
-              testType: [],
+              testType: '',
               dateRange: {},
             },
             fields: [
@@ -55,7 +54,7 @@ export const tqmSearchConfigUlbAdmin = {
               },
               {
                 label: 'TQM_PLANT_NAME',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -63,16 +62,16 @@ export const tqmSearchConfigUlbAdmin = {
                     top: '2.3rem',
                   },
                   name: 'plantCodes',
-                  optionsKey: 'optionKey',
+                  optionsKey: 'i18nKey',
                   allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateProcessReqCriteria',
+                  mdmsv2:{
+                    schemaCode:"PQM.Plant",
+                  }
                 },
               },
               {
                 label: 'TQM_TREATMENT_PROCESS',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -80,16 +79,16 @@ export const tqmSearchConfigUlbAdmin = {
                     top: '2.3rem',
                   },
                   name: 'processCodes',
-                  optionsKey: 'optionKey',
+                  optionsKey: 'i18nKey',
                   allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateProcessReqCriteria',
+                  mdmsv2:{
+                    schemaCode:"PQM.ProcessType",
+                  }
                 },
               },
               {
                 label: 'TQM_TEST_TYPE',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -97,11 +96,11 @@ export const tqmSearchConfigUlbAdmin = {
                     top: '2.3rem',
                   },
                   name: 'testType',
-                  optionsKey: 'outputCode',
-                  allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateOutputTypeReqCriteria',
+                  optionsKey: 'i18nKey',
+                  allowMultiSelect: false,
+                  mdmsv2:{
+                    schemaCode:"PQM.TestType",
+                  }
                 },
               },
               {
@@ -132,21 +131,21 @@ export const tqmSearchConfigUlbAdmin = {
                 label: 'TQM_PLANT',
                 jsonPath: 'plantCode',
                 additionalCustomization: false,
-                prefix:"TQM_MASTERS_PQM.PLANT_",
+                prefix:"PQM.PLANT_",
                 translate:true
               },
               {
                 label: 'TQM_TREATMENT_PROCESS',
                 jsonPath: 'processCode',
                 additionalCustomization: false,
-                prefix:"TQM_MASTERS_PQM.ProcessType_",
+                prefix:"PQM.ProcessType_",
                 translate:true
               },
               {
                 label: 'TQM_TEST_TYPE',
                 jsonPath: 'testType',
                 additionalCustomization: false,
-                prefix:"TQM_MASTERS_PQM.TestType_",
+                prefix:"PQM.TestType_",
                 translate:true
               },
               {
@@ -156,7 +155,7 @@ export const tqmSearchConfigUlbAdmin = {
               },
               {
                 label: 'TQM_TEST_RESULTS',
-                jsonPath: 'wfStatus',
+                jsonPath: 'status',
                 additionalCustomization: true,
               },
             ],
