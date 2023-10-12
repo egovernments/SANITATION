@@ -50,4 +50,20 @@ public class ServiceConfiguration {
 	@Value("${egov.test.update.workflow.kafka.topic}")
 	private String testWorkflowTopic;
 
+	//workflow
+	@Value("${create.pqm.workflow.name}")
+	private String businessServiceValue;
+
+	@Value("${workflow.context.path}")
+	private String wfHost;
+
+	@Value("${workflow.transition.path}")
+	private String wfTransitionPath;
+
+	@Value("${workflow.businessservice.search.path}")
+	private String wfBusinessServiceSearchPath;
+
+	@Value("${workflow.process.path}")
+	private String wfProcessPath;
+
 }
