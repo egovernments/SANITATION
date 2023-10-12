@@ -48,7 +48,6 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 
 		Map<String, Test> testMap = new LinkedHashMap<>();
 		this.setFullCount(0);
-
 		while (rs.next()) {
 			String id = rs.getString("id");
 			Test currentTest = testMap.get(id);
@@ -78,7 +77,8 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 				currentTest = Test.builder().id(id).tenantId(tenantId).plantCode(plantCode).processCode(processCode)
 						.stageCode(stageCode).materialCode(materialCode).deviceCode(deviceCode)
 						.qualityCriteria(qualityCriteriaList).status(status).wfStatus(wfStatus).testType(testType)
-						.scheduledDate(scheduledDate).isActive(isActive).additionalDetails(additionaldetails).auditDetails(auditdetails).build();
+						.scheduledDate(scheduledDate).isActive(isActive).additionalDetails(additionaldetails)
+						.auditDetails(auditdetails).build();
 
 				testMap.put(id, currentTest);
 			}
