@@ -47,7 +47,6 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 	public List<Test> extractData(ResultSet rs) throws SQLException {
 
 		Map<String, Test> testMap = new LinkedHashMap<>();
-		log.info(rs.toString());
 		this.setFullCount(0);
 
 		while (rs.next()) {
