@@ -1,25 +1,17 @@
 package org.egov.pqm.service;
 
-import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
-import static org.egov.pqm.util.Constants.PQM_MODULE_NAME;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
-import net.minidev.json.JSONArray;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
-import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
@@ -29,12 +21,25 @@ import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.TestType;
+import org.egov.pqm.web.model.workflow.BusinessService;
+import org.egov.pqm.workflow.ActionValidator;
+import org.egov.pqm.workflow.WorkflowIntegrator;
+import org.egov.pqm.workflow.WorkflowService;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PqmService {
+
+  @Autowired
+  private WorkflowIntegrator workflowIntegrator;
+
+  @Autowired
+  private WorkflowService workflowService;
+
+  @Autowired
+  private ActionValidator actionValidator;
 
   @Autowired
   private TestRepository repository;
@@ -89,6 +94,10 @@ public class PqmService {
 
   public Test create(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
+
+    //updating workflow during create
+    workflowIntegrator.callWorkFlow(testRequest);
+
     repository.save(testRequest);
     return testRequest.getTests().get(0);
   }
@@ -102,8 +111,15 @@ public class PqmService {
   @SuppressWarnings("unchecked")
   public Test update(TestRequest testRequest) {
 
-    RequestInfo requestInfo = testRequest.getRequestInfo();
     Test test = testRequest.getTests().get(0);
+    String businessServiceName = null;
+
+    BusinessService businessService = workflowService.getBusinessService(test, testRequest, businessServiceName, null);
+    actionValidator.validateUpdateRequest(testRequest, businessService);
+
+
+    //updating workflow during update
+    workflowIntegrator.callWorkFlow(testRequest);
 
     if (test.getId() == null) {
       throw new CustomException(UPDATE_ERROR,

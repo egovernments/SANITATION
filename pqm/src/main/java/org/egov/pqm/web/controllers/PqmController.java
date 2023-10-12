@@ -42,6 +42,8 @@ public class PqmController {
 
   @PostMapping(value = "/_update", consumes = {"application/json"})
   ResponseEntity<TestResponse> update(@Valid @RequestBody TestRequest testRequest) {
+      Test test = pqmService.update(testRequest);
+      List<Test> testList = new ArrayList<>();
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
   }
   

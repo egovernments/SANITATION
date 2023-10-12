@@ -3,10 +3,8 @@ package org.egov.pqm.web.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import javax.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.hibernate.validator.constraints.SafeHtml;
 
 
@@ -14,6 +12,8 @@ import org.hibernate.validator.constraints.SafeHtml;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Getter
+@Setter
 public class Workflow {
 
   @SafeHtml
