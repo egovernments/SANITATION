@@ -64,7 +64,8 @@ module.exports = function (app) {
     "/fsm-calculator",
     "/inbox/v2/_search",
     "/mdms-v2",
-    "/pqm/"
+    "/pqm/",
+    "/pqm-service/"
   ].forEach((location) => app.use(location, createProxy));
   ["/pb-egov-assets"].forEach((location) => app.use(location, assetsProxy));
 };

@@ -5,10 +5,42 @@ import { Link } from 'react-router-dom';
 import NoResultsFound from '../../atoms/NoResultsFound';
 import { Loader } from '../../atoms/Loader';
 import _ from 'lodash';
+import { useHistory } from 'react-router-dom';
 
-const convertDataForDetailsCard = (config,searchResult) => {
+// const sampleSearchResult = [
+//   {
+//     businessObject:{
+//       testId:"AW28929",
+//       treatmentProcess:"KA - 25235",
+//       stage:"Jagadamba Cleaners",
+//       outputType:"KA - 25235",
+//       pendingDate:"12/02/2013",
+//       status:"Pending results",
+//       sla:12
+//     }
+//   }
+// ]
+
+const convertRowToDetailCardData = (row,config,t,apiDetails,searchResult) => {
+  const resultantObj = {
+    apiResponse:{...row,hidden:true}
+  }
+
+  config.columns.map((column,idx) => {
+    resultantObj[t(column.label)] = column.additionalCustomization ? Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.additionalCustomizations(row,column?.label,column, _.get(row,column.jsonPath,""),t, searchResult) : String(_.get(row,column.jsonPath,"") ? column.translate? t(Digit.Utils.locale.getTransformedLocale(column.prefix?`${column.prefix}${_.get(row,column.jsonPath,"")}`:_.get(row,column.jsonPath,""))) : _.get(row,column.jsonPath,"") : t("ES_COMMON_NA")); 
+  })
+
+  return resultantObj
+}
+
+const convertDataForDetailsCard = (config,searchResult,t,apiDetails) => {
 //map over columns and generate data accordingly
 
+  const result = searchResult?.map((row,idx) => {
+    return convertRowToDetailCardData(row,config,t,apiDetails,searchResult)
+  } )
+
+  return result
 }
 
 const MobileSearchResultsv1 = ({
@@ -19,59 +51,35 @@ const MobileSearchResultsv1 = ({
   fullConfig,
 }) => {
   const { t } = useTranslation();
-
-  const sampleData = [
-    {
-      [t('REGISTER_NAME')]: 'NA',
-      [t('REGISTER_ID')]: 'NA',
-      [t('REGISTER_ORG_NAME')]: 'NA',
-      [t('REGISTER_DATES')]: 'NA',
-      [t('REGISTER_STATUS')]: 'NA',
-      [t("ATM_MUSTER_ROLL_ID")]: (
-        <div>
-            <span className="link">
-              <Link to={`view-attendance?tenantId=${tenantId}&musterRollNumber=${123}`}>
-                { t("ES_COMMON_NA")}
-              </Link>
-            </span>
-        </div> 
-    ),
-    },
-    {
-      [t('REGISTER_NAME')]: 'NA',
-      [t('REGISTER_ID')]: 'NA',
-      [t('REGISTER_ORG_NAME')]: 'NA',
-      [t('REGISTER_DATES')]: 'NA',
-      [t('REGISTER_STATUS')]: 'NA',
-    },
-    {
-      [t('REGISTER_NAME')]: 'NA',
-      [t('REGISTER_ID')]: 'NA',
-      [t('REGISTER_ORG_NAME')]: 'NA',
-      [t('REGISTER_DATES')]: 'NA',
-      [t('REGISTER_STATUS')]: 'NA',
-    },
-  ];
+  const history = useHistory()
   const { apiDetails } = fullConfig;
   const resultsKey = config.resultsJsonPath;
 
   let searchResult = _.get(data, resultsKey, []);
+  
+  //for sample result
+  // let searchResult = _.get(sampleSearchResult, resultsKey, []);
+  
   searchResult = searchResult?.length > 0 ? searchResult : [];
-  searchResult = searchResult.reverse();
+  searchResult = searchResult?.reverse();
+  
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
   const RenderResult = () => {
-    const dataForDetailsCard = sampleData || convertDataForDetailsCard(config,searchResult) 
+    const dataForDetailsCard =  convertDataForDetailsCard(config,searchResult,t,apiDetails) 
     const propsForDetailsCard = {
       t,
       data:dataForDetailsCard,
       showActionBar:config?.showActionBarMobileCard, // to show action button on detail card
       submitButtonLabel:config?.actionButtonLabelMobileCard,
       handleDetailCardClick:(obj)=>{ //fn when action button on card is clicked
-        Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.onCardActionClick(obj)
+        const linkToPushTo = Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.onCardActionClick(obj)
+        history.push(linkToPushTo)
       },
       handleSelect:(obj)=>{
-        Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.onCardClick(obj)
+       const linkToPushTo = Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.onCardClick(obj)
+       history.push(linkToPushTo)
+        // Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.onCardActionClick(obj)
       }, //fn when card container is clicked
       mode:"tqm",
       apiDetails,
@@ -80,9 +88,13 @@ const MobileSearchResultsv1 = ({
     return <DetailsCard {...propsForDetailsCard} />
   }
 
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
+
+  if (searchResult?.length === 0) {
+    return ( <NoResultsFound/> );
+  } 
 
   return (
     <React.Fragment>

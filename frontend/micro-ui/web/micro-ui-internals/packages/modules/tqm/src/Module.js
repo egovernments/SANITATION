@@ -21,7 +21,7 @@ import DetailsTable from "./components/DetailsTable";
 import DocumentsPreview from "./components/DocumentsPreview";
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
-  const moduleCode = "TQM";
+  const moduleCode = ["TQM","mdms"];
   const { path, url } = useRouteMatch();
   const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });

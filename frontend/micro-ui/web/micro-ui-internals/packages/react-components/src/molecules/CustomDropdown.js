@@ -3,6 +3,7 @@ import React from "react";
 import { Loader } from "../atoms/Loader";
 import RadioButtons from "../atoms/RadioButtons";
 import Dropdown from "../atoms/Dropdown";
+import MultiSelectDropdown from "../atoms/MultiSelectDropdown";
 
 /**
  * Custom Dropdown / Radio Button component can be used mostly via formcomposer
@@ -62,7 +63,7 @@ or
       },
  *
  */
-const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyle, disable, type, additionalWrapperClass = "",mdmsv2=false }) => {
+const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyle, disable, type, additionalWrapperClass = "",mdmsv2=false,props}) => {
   const master = { name: config?.mdmsConfig?.masterName };
   if (config?.mdmsConfig?.filter) {
     master["filter"] = config?.mdmsConfig?.filter;
@@ -99,7 +100,30 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
           {t(label)}
           {config.required ? " * " : null}
         </CardLabel> */}
-      {type === "radio" ? (
+
+      { (config.allowMultiSelect && type==="dropdown") ?
+        <div style={{ display: "grid", gridAutoFlow: "row" }}>
+        <MultiSelectDropdown
+          options={data || config?.options || []}
+          optionsKey={config?.optionsKey}
+          props={props} //these are props from Controller
+          isPropsNeeded={true}
+          onSelect={(e) => {
+            props.onChange(
+              e
+                ?.map((row) => {
+                  return row?.[1] ? row[1] : null;
+                })
+                .filter((e) => e)
+            );
+          }}
+          selected={props?.value}
+          defaultLabel={t(config?.defaultText) }
+          defaultUnit={t(config?.selectedText) || t("TQM_DROPDOWN_SELECTED")}
+          config={config}
+          
+        />
+      </div> : type === "radio" ? (
         <RadioButtons
           inputRef={inputRef}
           style={{ display: "flex", justifyContent: "flex-start", gap: "3rem", ...config.styles }}
@@ -136,9 +160,9 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
           errorStyle={errorStyle}
           optionCardStyles={config?.optionsCustomStyle}
         />
-      )}
-      {/* </LabelFieldPair> */}
-    </React.Fragment>
+      )
+      } 
+      </React.Fragment>
   );
 };
 
