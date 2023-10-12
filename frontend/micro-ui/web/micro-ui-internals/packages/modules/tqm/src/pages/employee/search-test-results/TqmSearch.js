@@ -1,8 +1,8 @@
 import React, {useMemo} from "react";
 import { useTranslation } from "react-i18next";
 import { Header, InboxSearchComposer,Loader } from "@egovernments/digit-ui-react-components";
-import { tqmSearchConfig } from "./config";
-
+import { tqmSearchConfigPlantOperator } from "./configPlantOperator";
+import { tqmSearchConfigUlbAdmin } from "./configUlbAdmin";
 const TqmSearch = () => {
     const { t } = useTranslation();
 
@@ -18,11 +18,16 @@ const TqmSearch = () => {
         ],
         {
           select: (data) => {
-            
-              const config = data?.[Digit.Utils.getConfigModuleName()]?.SearchEstimateWMSConfig?.[0];
-              return tqmSearchConfig?.tqmSearchConfig?.[0]
-              // return config
-
+              if(Digit.Utils.tqm.isPlantOperatorLoggedIn()){
+                return tqmSearchConfigPlantOperator?.tqmSearchConfig?.[0]
+              }
+              if(Digit.Utils.tqm.isUlbAdminLoggedIn()){
+                return tqmSearchConfigUlbAdmin?.tqmSearchConfig?.[0]
+              }
+              // return tqmSearchConfigPlantOperator?.tqmSearchConfig?.[0]
+              return {
+                
+              }
             },
         }
     );

@@ -1,4 +1,4 @@
-export const tqmSearchConfig = {
+export const tqmSearchConfigPlantOperator = {
   tenantId: 'pb',
   moduleName: 'commonSanitationUiConfig',
   tqmSearchConfig: [
@@ -6,7 +6,7 @@ export const tqmSearchConfig = {
       label: 'TQM_VIEW_PAST_RESULTS',
       type: 'search',
       apiDetails: {
-        serviceName: '/pqm/v1/_search',
+        serviceName: '/pqm-service/v1/_search',
         requestParam: {},
         requestBody: {},
         minParametersForSearchForm: 1,
@@ -30,13 +30,13 @@ export const tqmSearchConfig = {
               plantCodes: [],
               processCodes: [],
               materialCodes: [],
-              testType: [],
-              dateRange: '',
+              testType: '',
+              dateRange: {},
             },
             fields: [
               {
                 label: 'TQM_PLANT_NAME',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -44,16 +44,16 @@ export const tqmSearchConfig = {
                     top: '2.3rem',
                   },
                   name: 'plantCodes',
-                  optionsKey: 'optionKey',
+                  optionsKey: 'i18nKey',
                   allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateProcessReqCriteria',
+                  mdmsv2:{
+                    schemaCode:"PQM.Plant",
+                  }
                 },
               },
               {
                 label: 'TQM_TREATMENT_PROCESS',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -61,16 +61,16 @@ export const tqmSearchConfig = {
                     top: '2.3rem',
                   },
                   name: 'processCodes',
-                  optionsKey: 'optionKey',
+                  optionsKey: 'i18nKey',
                   allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateProcessReqCriteria',
+                  mdmsv2:{
+                    schemaCode:"PQM.ProcessType",
+                  }
                 },
               },
               {
                 label: 'TQM_OUTPUT_TYPE',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -78,16 +78,16 @@ export const tqmSearchConfig = {
                     top: '2.3rem',
                   },
                   name: 'materialCodes',
-                  optionsKey: 'outputCode',
+                  optionsKey: 'i18nKey',
                   allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateOutputTypeReqCriteria',
+                  mdmsv2:{
+                    schemaCode:"PQM.Material",
+                  }
                 },
               },
               {
                 label: 'TQM_TEST_TYPE',
-                type: 'apidropdown',
+                type: 'dropdown',
                 isMandatory: false,
                 disable: false,
                 populators: {
@@ -95,11 +95,11 @@ export const tqmSearchConfig = {
                     top: '2.3rem',
                   },
                   name: 'testType',
-                  optionsKey: 'outputCode',
-                  allowMultiSelect: true,
-                  masterName: 'commonUiConfig',
-                  moduleName: 'TqmInboxConfig',
-                  customfn: 'populateOutputTypeReqCriteria',
+                  optionsKey: 'i18nKey',
+                  allowMultiSelect: false,
+                  mdmsv2:{
+                    schemaCode:"PQM.TestType",
+                  }
                 },
               },
               {
@@ -123,45 +123,54 @@ export const tqmSearchConfig = {
             columns: [
               {
                 label: 'TQM_TEST_ID',
-                jsonPath: 'label',
+                jsonPath: 'id',
                 additionalCustomization: false,
               },
               {
                 label: 'TQM_TREATMENT_PROCESS',
-                jsonPath: 'label',
+                jsonPath: 'processCode',
                 additionalCustomization: false,
+                prefix:"PQM.ProcessType_",
+                translate:true
               },
               {
                 label: 'TQM_PROCESS_STAGE',
-                jsonPath: 'label',
+                jsonPath: 'stageCode',
                 additionalCustomization: false,
+                prefix:"PQM.STAGE_",
+                translate:true
               },
               {
                 label: 'TQM_OUTPUT_TYPE',
-                jsonPath: 'label',
+                jsonPath: 'materialCode',
                 additionalCustomization: false,
+                prefix:"PQM.MATERIAL_",
+                translate:true
               },
               {
                 label: 'TQM_TEST_TYPE',
-                jsonPath: 'label',
+                jsonPath: 'testType',
                 additionalCustomization: false,
+                prefix:"PQM.TESTTYPE_",
+                translate:true
               },
               {
                 label: 'TQM_PENDING_DATE',
-                jsonPath: 'label',
-                additionalCustomization: false,
+                jsonPath: 'scheduledDate',
+                additionalCustomization: true,
               },
               {
                 label: 'TQM_TEST_RESULTS',
-                jsonPath: 'label',
+                jsonPath: 'status',
                 additionalCustomization: true,
+                
               },
             ],
             showActionBarMobileCard: true,
-            actionButtonLabelMobileCard: 'TQM_TAKE_ACTION',
+            actionButtonLabelMobileCard: 'TQM_VIEW_RESULTS',
             enableGlobalSearch: false,
             enableColumnSort: true,
-            resultsJsonPath: 'estimates',
+            resultsJsonPath: 'tests',
           },
           children: {},
           show: true,
