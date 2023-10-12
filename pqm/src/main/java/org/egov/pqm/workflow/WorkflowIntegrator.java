@@ -24,41 +24,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static org.egov.pqm.util.Constants.*;
+
 @Service
 @Slf4j
 public class WorkflowIntegrator {
-
-	private static final String TENANTIDKEY = "tenantId";
-
-	private static final String BUSINESSSERVICEKEY = "businessService";
-
-	private static final String ACTIONKEY = "action";
-
-	private static final String COMMENTKEY = "comment";
-
-	private static final String RATING = "rating";
-
-	private static final String MODULENAMEKEY = "moduleName";
-
-	private static final String BUSINESSIDKEY = "businessId";
-
-	private static final String DOCUMENTSKEY = "documents";
-
-	private static final String ASSIGNEEKEY = "assignes";
-
-	private static final String MODULENAMEVALUE = "pqm";
-
-	private static final String UUIDKEY = "uuid";
-
-	private static final String WORKFLOWREQUESTARRAYKEY = "ProcessInstances";
-
-	private static final String REQUESTINFOKEY = "RequestInfo";
-
-	private static final String PROCESSINSTANCESJOSNKEY = "$.ProcessInstances";
-
-	private static final String BUSINESSIDJOSNKEY = "$.businessId";
-
-	private static final String STATUSJSONKEY = "$.state.applicationStatus";
 
 	private RestTemplate rest;
 

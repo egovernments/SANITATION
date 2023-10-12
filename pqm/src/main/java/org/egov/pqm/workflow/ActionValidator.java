@@ -35,6 +35,7 @@ public class ActionValidator {
 	 * Validates the update request
 	 * 
 	 * @param testRequest
+	 * @param businessService
 	 *            The PQM update request
 	 */
 	public void validateUpdateRequest(TestRequest testRequest, BusinessService businessService) {
@@ -83,6 +84,7 @@ public class ActionValidator {
 	 * Validates if the any new object is added in the request
 	 * 
 	 * @param request
+	 * @param businessService
 	 *            The pqm update request
 	 */
 	private void validateIds(TestRequest request, BusinessService businessService) {

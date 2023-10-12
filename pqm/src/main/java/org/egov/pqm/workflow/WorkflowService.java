@@ -99,7 +99,7 @@ public class WorkflowService {
 	/**
 	 * Returns boolean value to specifying if the state is updatable
 	 * 
-//	 * @param statusEnum      The stateCode of the pqm
+//	 * @param status      The stateCode of the pqm
 	 * @param businessService The BusinessService of the application flow
 	 * @return State object to be fetched
 	 */
@@ -114,13 +114,13 @@ public class WorkflowService {
 	/**
 	 * Returns State Obj fo the current state of the document
 	 * 
-//	 * @param statusEnum      The stateCode of the pqm
+//	 * @param status      The stateCode of the pqm
 	 * @param businessService The BusinessService of the application flow
 	 * @return State object to be fetched
 	 */
 	public State getCurrentStateObj(String status, BusinessService businessService) {
 		for (State state : businessService.getStates()) {
-			if (state.getApplicationStatus() != null && state.getApplicationStatus().equalsIgnoreCase(status))
+			if (state.getApplicationStatus() != null )
 				return state;
 		}
 		return null;

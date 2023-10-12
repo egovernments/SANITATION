@@ -1,5 +1,6 @@
 package org.egov.pqm.service;
 
+import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 
 import java.util.ArrayList;
@@ -112,9 +113,8 @@ public class PqmService {
   public Test update(TestRequest testRequest) {
 
     Test test = testRequest.getTests().get(0);
-    String businessServiceName = null;
 
-    BusinessService businessService = workflowService.getBusinessService(test, testRequest, businessServiceName, null);
+    BusinessService businessService = workflowService.getBusinessService(test, testRequest, PQM_BUSINESS_SERVICE, null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
 
 
