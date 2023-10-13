@@ -37,7 +37,7 @@ const TQMLanding = () => {
     },
     {
       name: "ES_TQM_TREATMENT_QUALITY",
-      // link: ``,
+      link: `/${window?.contextPath}/employee/tqm/home`,
       icon: <TreatmentQualityIcon />,
     },
     {

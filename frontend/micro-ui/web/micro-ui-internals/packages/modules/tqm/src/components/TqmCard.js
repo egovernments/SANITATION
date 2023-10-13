@@ -1,13 +1,14 @@
 import { EmployeeModuleCard, ArrowRightInbox, TqmHomePageCardIcon } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 const ROLES = {
   TQM:["EMPLOYEE"]
 };
 
-// Mukta Overrriding the Works Home screen card
-const TqmCard = () => {
+const TqmCard = ({reRoute=true}) => {
+  const history = useHistory()
   const isMobile = Digit.Utils.browser.isMobile();
   const isPlantOperatorLoggedIn = Digit.Utils.tqm.isPlantOperatorLoggedIn()
   const { t } = useTranslation();
@@ -47,6 +48,7 @@ const TqmCard = () => {
   ];
 
   // links = links.filter((link) => (link?.roles && link?.roles?.length > 0 ? Digit.Utils.didEmployeeHasAtleastOneRole(link?.roles) : true));
+  
 
   const propsForModuleCard = {
     Icon: <TqmHomePageCardIcon />,
@@ -68,6 +70,9 @@ const TqmCard = () => {
 
   if(isPlantOperatorLoggedIn) {
     delete propsForModuleCard.kpis
+  }
+  if(reRoute && isPlantOperatorLoggedIn){
+    history.push( `/${window?.contextPath}/employee/tqm/landing`)
   }
   return <EmployeeModuleCard {...propsForModuleCard} />;
 };
