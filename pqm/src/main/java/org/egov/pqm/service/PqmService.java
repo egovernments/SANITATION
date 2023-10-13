@@ -3,52 +3,23 @@ package org.egov.pqm.service;
 import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
-import static org.egov.pqm.util.Constants.MASTER_NAME_BENCHMARK_RULES;
-import static org.egov.pqm.util.Constants.MASTER_NAME_QUALITY_CRITERIA;
-import static org.egov.pqm.util.Constants.MASTER_NAME_TESTING_STANDARD;
-import static org.egov.pqm.util.Constants.MODULE_NAME;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONArray;
 import org.egov.common.contract.request.RequestInfo;
-import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.util.QualityCriteriaEvaluation;
-import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.common.contract.request.Role;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
-import org.egov.pqm.util.MDMSUtils;
-import org.egov.pqm.util.QualityCriteriaEvaluation;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
-import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
-import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
-import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.TestType;
@@ -57,10 +28,6 @@ import org.egov.pqm.workflow.ActionValidator;
 import org.egov.pqm.workflow.WorkflowIntegrator;
 import org.egov.pqm.workflow.WorkflowService;
 import org.egov.tracer.model.CustomException;
-import org.egov.pqm.web.model.mdms.MDMSQualityCriteria;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.egov.pqm.web.model.mdms.MDMSQualityCriteria;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
