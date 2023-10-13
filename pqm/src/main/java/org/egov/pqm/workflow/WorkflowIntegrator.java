@@ -50,6 +50,7 @@ public class WorkflowIntegrator {
 	 * @param testRequest
 	 */
 	public void callWorkFlow(TestRequest testRequest) {
+//		Test test = testRequest.getTests().get(0);
 		String wfTenantId = testRequest.getTests().get(0).getTenantId();
 		JSONArray array = new JSONArray();
 		Test test = testRequest.getTests().get(0);
@@ -60,13 +61,13 @@ public class WorkflowIntegrator {
 		obj.put(BUSINESSSERVICEKEY, Constants.PQM_BUSINESS_SERVICE);
 
 		obj.put(MODULENAMEKEY, MODULENAMEVALUE);
-		obj.put(ACTIONKEY, testRequest.getWorkflow().getAction());
-		obj.put(COMMENTKEY, testRequest.getWorkflow().getComments());
-		obj.put(RATING, testRequest.getWorkflow().getRating());
+		obj.put(ACTIONKEY, test.getWorkflow().getAction());
+		obj.put(COMMENTKEY, test.getWorkflow().getComments());
+		obj.put(RATING, test.getWorkflow().getRating());
 
-		if (!CollectionUtils.isEmpty(testRequest.getWorkflow().getAssignes())) {
+		if (!CollectionUtils.isEmpty(test.getWorkflow().getAssignes())) {
 			List<Map<String, String>> uuidmaps = new LinkedList<>();
-			testRequest.getWorkflow().getAssignes().forEach(assignee -> {
+			test.getWorkflow().getAssignes().forEach(assignee -> {
 				Map<String, String> uuidMap = new HashMap<>();
 				uuidMap.put(UUIDKEY, assignee);
 				uuidmaps.add(uuidMap);
@@ -74,7 +75,7 @@ public class WorkflowIntegrator {
 			obj.put(ASSIGNEEKEY, uuidmaps);
 		}
 
-		obj.put(DOCUMENTSKEY, testRequest.getWorkflow().getVerificationDocuments());
+		obj.put(DOCUMENTSKEY, test.getWorkflow().getVerificationDocuments());
 		array.add(obj);
 		JSONObject workFlowRequest = new JSONObject();
 		workFlowRequest.put(REQUESTINFOKEY, testRequest.getRequestInfo());

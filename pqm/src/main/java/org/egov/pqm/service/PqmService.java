@@ -127,10 +127,10 @@ public class PqmService {
     }
 
     if (test.getTestType().equals(TestType.LAB)) {
-      if (testRequest.getWorkflow() == null || testRequest.getWorkflow().getAction() == null) {
+      if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
         throw new CustomException(UPDATE_ERROR,
             "Workflow action cannot be null." + String.format("{Workflow:%s}",
-                testRequest.getWorkflow()));
+                test.getWorkflow()));
       }
     }
 

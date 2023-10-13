@@ -20,7 +20,4 @@ public class TestRequest {
 
   @JsonProperty("tests")
   private List<Test> tests = null;
-
-  @JsonProperty("workflow")
-  private Workflow workflow = null;
 }

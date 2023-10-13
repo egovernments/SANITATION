@@ -49,10 +49,10 @@ public class ActionValidator {
 	 * @param request
 	 *            The pqm create or update request
 	 */
-	private void validateRoleAction(TestRequest request, BusinessService businessService) {
-		Test test = request.getTests().get(0);
+	private void validateRoleAction(TestRequest testRequest, BusinessService businessService) {
+		Test test = testRequest.getTests().get(0);
 		Map<String, String> errorMap = new HashMap<>();
-		RequestInfo requestInfo = request.getRequestInfo();
+		RequestInfo requestInfo = testRequest.getRequestInfo();
 		State state = workflowService.getCurrentStateObj(String.valueOf(test.getStatus()),businessService);
 		if(state != null ) {
 			List<Action> actions = state.getActions();
@@ -67,7 +67,7 @@ public class ActionValidator {
 				});
 			});
 
-			if (!validActions.contains(request.getWorkflow().getAction())) {
+			if (!validActions.contains(test.getWorkflow().getAction())) {
 				errorMap.put("UNAUTHORIZED UPDATE", "The action cannot be performed by this user");
 			}
 		}else {
