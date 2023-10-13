@@ -94,11 +94,8 @@ public class PqmService {
 
 
   public Test create(TestRequest testRequest) {
-    RequestInfo requestInfo = testRequest.getRequestInfo();
-
     //updating workflow during create
     workflowIntegrator.callWorkFlow(testRequest);
-
     repository.save(testRequest);
     return testRequest.getTests().get(0);
   }
@@ -114,9 +111,9 @@ public class PqmService {
 
     Test test = testRequest.getTests().get(0);
 
+    //Fetching actions from businessService
     BusinessService businessService = workflowService.getBusinessService(test, testRequest, PQM_BUSINESS_SERVICE, null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
-
 
     //updating workflow during update
     workflowIntegrator.callWorkFlow(testRequest);

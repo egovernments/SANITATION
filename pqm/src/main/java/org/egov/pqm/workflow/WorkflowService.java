@@ -120,7 +120,7 @@ public class WorkflowService {
 	 */
 	public State getCurrentStateObj(String status, BusinessService businessService) {
 		for (State state : businessService.getStates()) {
-			if (state.getApplicationStatus() != null )
+			if (state.getApplicationStatus() != null && state.getState().equalsIgnoreCase(status))
 				return state;
 		}
 		return null;

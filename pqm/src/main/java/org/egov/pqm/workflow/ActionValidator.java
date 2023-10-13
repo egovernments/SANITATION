@@ -46,14 +46,14 @@ public class ActionValidator {
 	/**
 	 * Validates if the role of the logged in user can perform the given action
 	 * 
-	 * @param request
+	 * @param testRequest
 	 *            The pqm create or update request
 	 */
 	private void validateRoleAction(TestRequest testRequest, BusinessService businessService) {
 		Test test = testRequest.getTests().get(0);
 		Map<String, String> errorMap = new HashMap<>();
 		RequestInfo requestInfo = testRequest.getRequestInfo();
-		State state = workflowService.getCurrentStateObj(String.valueOf(test.getStatus()),businessService);
+		State state = workflowService.getCurrentStateObj(String.valueOf(test.getWfStatus()),businessService);
 		if(state != null ) {
 			List<Action> actions = state.getActions();
 			List<Role> roles = requestInfo.getUserInfo().getRoles();
@@ -92,7 +92,7 @@ public class ActionValidator {
 		Test test = request.getTests().get(0);
 		
 		if( !workflowService.isStateUpdatable(String.valueOf(test.getStatus()), businessService)&& test.getId() == null) {
-				errorMap.put(ErrorConstants.CREATE_ERROR, "Id of Application cannot be null");
+				errorMap.put(ErrorConstants.UPDATE_ERROR, "Id of Application cannot be null");
 		}
 		if (!errorMap.isEmpty())
 			throw new CustomException(errorMap);

@@ -13,35 +13,35 @@ public class Constants {
 
 	public static final String PQM_BUSINESS_SERVICE = "PQM";
 
-	public static final String TENANTIDKEY = "tenantId";
+	public static final String TENANT_ID_KEY = "tenantId";
 
-	public static final String BUSINESSSERVICEKEY = "businessService";
+	public static final String BUSINESS_SERVICE_KEY = "businessService";
 
-	public static final String ACTIONKEY = "action";
+	public static final String ACTION_KEY = "action";
 
-	public static final String COMMENTKEY = "comment";
+	public static final String COMMENT_KEY = "comment";
 
 	public static final String RATING = "rating";
 
-	public static final String MODULENAMEKEY = "moduleName";
+	public static final String MODULE_NAME_KEY = "moduleName";
 
-	public static final String BUSINESSIDKEY = "businessId";
+	public static final String BUSINESS_ID_KEY = "businessId";
 
-	public static final String DOCUMENTSKEY = "documents";
+	public static final String DOCUMENTS_KEY = "documents";
 
-	public static final String ASSIGNEEKEY = "assignes";
+	public static final String ASSIGNEE_KEY = "assignes";
 
-	public static final String MODULENAMEVALUE = "pqm";
+	public static final String MODULE_NAME_VALUE = "pqm";
 
-	public static final String UUIDKEY = "uuid";
+	public static final String UUID_KEY = "uuid";
 
-	public static final String WORKFLOWREQUESTARRAYKEY = "ProcessInstances";
+	public static final String WORKFLOW_REQUEST_ARRAY_KEY = "ProcessInstances";
 
-	public static final String REQUESTINFOKEY = "RequestInfo";
+	public static final String REQUEST_INFO_KEY = "RequestInfo";
 
-	public static final String PROCESSINSTANCESJOSNKEY = "$.ProcessInstances";
+	public static final String PROCESS_INSTANCES_JOSN_KEY = "$.ProcessInstances";
 
-	public static final String BUSINESSIDJOSNKEY = "$.businessId";
+	public static final String BUSINESS_ID_JOSN_KEY = "$.businessId";
 
-	public static final String STATUSJSONKEY = "$.state.applicationStatus";
+	public static final String STATUS_JSON_KEY = "$.state.applicationStatus";
 }
