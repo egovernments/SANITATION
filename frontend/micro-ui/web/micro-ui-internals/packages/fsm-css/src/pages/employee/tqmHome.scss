@@ -32,7 +32,7 @@
     }
 
     .alerts-container-item {
-      display: flex;
+      display: flex !important;
       justify-content: space-between;
       color:#505A5F;
       font-weight: 700;
@@ -48,7 +48,7 @@
   }
 
   .performance-header {
-    display: flex;
+    display: flex !important;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -63,7 +63,7 @@
     justify-content: space-between;
     padding: 1rem;
     .performance-item {
-      display: flex;
+      display: flex !important;
       flex-direction: column;
       gap:0.2rem;
       align-items: center;
@@ -77,7 +77,7 @@
         font-weight: 400;
       }
       .performance-item-label-caption{
-        display: flex;
+        display: flex !important;
         align-items: center;
         svg {
           width: 1rem;

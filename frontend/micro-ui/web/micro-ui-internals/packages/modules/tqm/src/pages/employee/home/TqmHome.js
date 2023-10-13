@@ -7,7 +7,7 @@ const TqmHome = (props) => {
   const { t } = useTranslation();
   return (
     <div className='tqm-home-container'>
-      <TqmCard t={t}/>
+      <TqmCard t={t} reRoute={false}/>
       <YourPerformance t={t} />
       <Alerts t={t} />
     </div>

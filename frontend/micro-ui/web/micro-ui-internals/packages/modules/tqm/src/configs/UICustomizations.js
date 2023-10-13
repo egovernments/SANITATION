@@ -238,7 +238,6 @@ export const UICustomizations = {
       //stage
       data.body.inbox.moduleSearchCriteria.stage = stage?.map(st => st.code)
 
-      debugger
       //materialcodes
       data.body.inbox.moduleSearchCriteria.materialCodes = Object.keys(materialCodes?materialCodes:{})?.filter(key => materialCodes[key])
 
