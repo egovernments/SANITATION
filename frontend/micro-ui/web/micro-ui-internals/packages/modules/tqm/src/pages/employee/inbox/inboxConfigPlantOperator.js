@@ -127,31 +127,33 @@ export const tqmInboxConfigPlantOperator = {
           "uiConfig": {
             "columns": [
               {
-                "label": "testId",
-                "jsonPath": "businessObject.applicationNo",
+                "label": "TQM_TEST_ID",
+                "jsonPath": "businessObject.id",
               },
               {
-                "label": "treatmentProcess",
+                "label": "TQM_TREATMENT_PROCESS",
                 "jsonPath": "businessObject.processCode"
               },
               {
-                "label": "stage",
+                "label": "TQM_PROCESS_STAGE",
                 "jsonPath": "businessObject.plantCode"
               },
               {
-                "label": "outputType",
+                "label": "TQM_OUTPUT_TYPE",
                 "jsonPath": "businessObject.plantCode",
               },
               {
-                "label": "pendingDate",
-                "jsonPath": "businessObject.plantCode",
+                "label": "TQM_PENDING_DATE",
+                "jsonPath": "businessObject.scheduledDate",
               },
               {
-                "label": "status",
+                "label": "TQM_INBOX_STATUS",
                 "jsonPath": "businessObject.serviceSla",
+                prefix:"WF_STATUS",
+                translate:true
               },
               {
-                "label": "sla",
+                "label": "TQM_INBOX_SLA",
                 "jsonPath": "businessObject.serviceSla",
                 "additionalCustomization": true,
               }
@@ -198,6 +200,7 @@ export const tqmInboxConfigPlantOperator = {
         },
         "filter": {
           "uiConfig": {
+            "formClassName":"filter",
             "type": "sort",
             "headerStyle": null,
             "headerLabel":"TQM_INBOX_SORTBY",

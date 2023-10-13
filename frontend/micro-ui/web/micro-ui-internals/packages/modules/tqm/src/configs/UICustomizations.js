@@ -141,6 +141,10 @@ export const UICustomizations = {
       data.body.inbox.tenantId = Digit.ULBService.getCurrentTenantId();
       data.body.inbox.processSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
 
+
+      // //testting
+      // data.body.inbox.moduleSearchCriteria.ids = ["8"]
+
       //delete custom
       delete data.body.custom;
 
@@ -176,8 +180,121 @@ export const UICustomizations = {
     },
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
-        case "sla":
+        case "TQM_INBOX_SLA":
           return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          
+        case "TQM_PENDING_DATE":
+          return  Digit.DateUtils.ConvertEpochToDate(value)
+        default:
+          return "case_not_found"
+      }
+    }
+    
+  },
+  TqmInboxConfigUlbAdmin:{
+    populateMdmsv2SearchReqCriteria: ({schemaCode}) => {
+      const tenantId = Digit.ULBService.getCurrentTenantId();
+
+      return {
+        url: "/mdms-v2/v2/_search",
+        params: { },
+        body: {
+          tenantId,
+          MdmsCriteria: {
+            tenantId: tenantId,
+            schemaCode: schemaCode,
+            isActive: true,
+          },
+        },
+        changeQueryName:`mdms-v2-${schemaCode}`,
+        config: {
+          enabled: schemaCode ? true : false,
+          select: (response) => {
+            const { mdms } = response;
+            //first filter with isActive
+            //then make a data array with actual data
+            //refer the "code" key in data(for now) and set options array , also set i18nKey in each object to show in UI
+            const options = mdms?.map((row) => {
+              return {
+                i18nKey: Digit.Utils.locale.getTransformedLocale(`${row?.schemaCode}_${row?.data?.code}`),
+                ...row.data,
+              };
+            });
+            return options;
+          },
+        },
+      };
+    },
+    preProcess: (data,additionalDetails) => {
+      
+      const { id,plantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
+      
+      //ids
+      data.body.inbox.moduleSearchCriteria.ids = id ?  [id] : null
+
+      //plantCodes 
+      data.body.inbox.moduleSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
+
+      //stage
+      data.body.inbox.moduleSearchCriteria.stage = stage?.map(st => st.code)
+
+      debugger
+      //materialcodes
+      data.body.inbox.moduleSearchCriteria.materialCodes = Object.keys(materialCodes?materialCodes:{})?.filter(key => materialCodes[key])
+
+      //processcodes
+      data.body.inbox.moduleSearchCriteria.processCodes = Object.keys(processCodes?processCodes:{})?.filter(key => processCodes[key])
+
+      //status
+      data.body.inbox.moduleSearchCriteria.status = status?.map(status => status.applicationStatus)
+
+      cleanObject(data.body.inbox.processSearchCriteria)
+      cleanObject(data.body.inbox.moduleSearchCriteria)
+
+      //set tenantId
+      data.body.inbox.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.inbox.processSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+
+      //delete custom
+      delete data.body.custom;
+
+      return data
+    },
+    populateStatusReqCriteria:() => {
+      const tenantId = Digit.ULBService.getCurrentTenantId();
+
+      return {
+        url: "/egov-workflow-v2/egov-wf/businessservice/_search",
+        params: { tenantId, businessServices: businessServiceMap?.tqm },
+        body: {
+         
+        },
+        changeQueryName:"setWorkflowStatus",
+        config: {
+          enabled: true,
+          select: (data) => {
+           const wfStates = data?.BusinessServices?.[0]?.states?.filter(state=>state.applicationStatus
+            )?.map(state => {
+              return {
+                i18nKey:`WF_STATUS_${businessServiceMap?.tqm}_${state?.applicationStatus}`,
+                ...state
+              }
+           })
+           return wfStates
+          },
+        },
+      };
+    },
+    getCustomActionLabel:(obj,row) => {
+      return ""
+    },
+    additionalCustomizations:(row, key, column, value, t, searchResult) => {
+      switch (key) {
+        case "TQM_INBOX_SLA":
+          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          
+        case "TQM_PENDING_DATE":
+          return  Digit.DateUtils.ConvertEpochToDate(value)
           
       
         default:
