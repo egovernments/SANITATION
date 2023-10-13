@@ -44,6 +44,11 @@ const TqmCard = () => {
       link: `/${window?.contextPath}/employee/tqm/dashboard`,
       roles: ["EMPLOYEE"],
     },
+    {
+      label: "Notification",
+      link: `/${window?.contextPath}/employee/tqm/test`,
+      roles: ["EMPLOYEE"],
+    }
   ];
 
   // links = links.filter((link) => (link?.roles && link?.roles?.length > 0 ? Digit.Utils.didEmployeeHasAtleastOneRole(link?.roles) : true));

@@ -15,7 +15,7 @@
 @import "./pages/employee/overridestyles.scss";
 @import "./pages/employee/tqmHome.scss";
 @import "./pages/employee/tqmPopUp.scss";
-
+@import "./components/Notification.scss";
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
     margin-bottom: 70px !important;
