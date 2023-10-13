@@ -6,6 +6,7 @@ import com.jayway.jsonpath.PathNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.Test;
@@ -77,12 +78,11 @@ public class WorkflowIntegrator {
 	 *
 	 * and sets the resultant status from wf-response back to pqm object
 	 *
-	 * @param testRequest
+	 * @param test
 	 */
-	public void callWorkFlow(TestRequest testRequest) {
-		String wfTenantId = testRequest.getTests().get(0).getTenantId();
+	public void callWorkFlow(Test test, RequestInfo requestInfo) {
+		String wfTenantId = test.getTenantId();
 		JSONArray array = new JSONArray();
-		Test test = testRequest.getTests().get(0);
 		JSONObject obj = new JSONObject();
 		obj.put(BUSINESSIDKEY, test.getId());
 		obj.put(TENANTIDKEY, wfTenantId);
@@ -90,13 +90,13 @@ public class WorkflowIntegrator {
 		obj.put(BUSINESSSERVICEKEY, Constants.PQM_BUSINESS_SERVICE);
 
 		obj.put(MODULENAMEKEY, MODULENAMEVALUE);
-		obj.put(ACTIONKEY, testRequest.getWorkflow().getAction());
-		obj.put(COMMENTKEY, testRequest.getWorkflow().getComments());
-		obj.put(RATING, testRequest.getWorkflow().getRating());
+		obj.put(ACTIONKEY, test.getWorkflow().getAction());
+		obj.put(COMMENTKEY, test.getWorkflow().getComments());
+		obj.put(RATING, test.getWorkflow().getRating());
 
-		if (!CollectionUtils.isEmpty(testRequest.getWorkflow().getAssignes())) {
+		if (!CollectionUtils.isEmpty(test.getWorkflow().getAssignes())) {
 			List<Map<String, String>> uuidmaps = new LinkedList<>();
-			testRequest.getWorkflow().getAssignes().forEach(assignee -> {
+			test.getWorkflow().getAssignes().forEach(assignee -> {
 				Map<String, String> uuidMap = new HashMap<>();
 				uuidMap.put(UUIDKEY, assignee);
 				uuidmaps.add(uuidMap);
@@ -104,10 +104,10 @@ public class WorkflowIntegrator {
 			obj.put(ASSIGNEEKEY, uuidmaps);
 		}
 
-		obj.put(DOCUMENTSKEY, testRequest.getWorkflow().getVerificationDocuments());
+		obj.put(DOCUMENTSKEY, test.getWorkflow().getVerificationDocuments());
 		array.add(obj);
 		JSONObject workFlowRequest = new JSONObject();
-		workFlowRequest.put(REQUESTINFOKEY, testRequest.getRequestInfo());
+		workFlowRequest.put(REQUESTINFOKEY, requestInfo);
 		workFlowRequest.put(WORKFLOWREQUESTARRAYKEY, array);
 		String response = null;
 		try {

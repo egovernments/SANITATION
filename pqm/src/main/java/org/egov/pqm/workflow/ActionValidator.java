@@ -66,7 +66,7 @@ public class ActionValidator {
 				});
 			});
 
-			if (!validActions.contains(request.getWorkflow().getAction())) {
+			if (!validActions.contains(test.getWorkflow().getAction())) {
 				errorMap.put("UNAUTHORIZED UPDATE", "The action cannot be performed by this user");
 			}
 		}else {
