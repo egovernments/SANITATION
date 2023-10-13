@@ -21,21 +21,8 @@ import MobileNumber from "../atoms/MobileNumber";
 import _ from "lodash";
 
 export const FormComposer = (props) => {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    reset,
-    watch,
-    trigger,
-    control,
-    formState,
-    errors,
-    setError,
-    clearErrors,
-    unregister,
-  } = useForm({
+  const { register, handleSubmit, setValue, getValues, reset, watch, trigger, control, formState, errors, setError, clearErrors, unregister } =
+  useForm({
     defaultValues: props.defaultValues,
   });
   const { t } = useTranslation();
@@ -43,7 +30,13 @@ export const FormComposer = (props) => {
 
   useEffect(() => {
     const iseyeIconClicked = sessionStorage.getItem("eyeIconClicked");
-    if (props?.appData && !(props?.appData?.ConnectionHolderDetails?.[0]?.sameAsOwnerDetails) && iseyeIconClicked && Object.keys(props?.appData)?.length > 0 && (!(_.isEqual(props?.appData?.ConnectionHolderDetails?.[0],formData?.ConnectionHolderDetails?.[0] ))) ) {
+    if (
+      props?.appData &&
+      !props?.appData?.ConnectionHolderDetails?.[0]?.sameAsOwnerDetails &&
+      iseyeIconClicked &&
+      Object.keys(props?.appData)?.length > 0 &&
+      !_.isEqual(props?.appData?.ConnectionHolderDetails?.[0], formData?.ConnectionHolderDetails?.[0])
+      ) {
       reset({ ...props?.appData });
     }
   }, [props?.appData, formData, props?.appData?.ConnectionHolderDetails]);
@@ -98,7 +91,9 @@ export const FormComposer = (props) => {
       case "mobileNumber":
         return (
           <Controller
-            render={(props) => <MobileNumber className={populators?.className || "field"} onChange={props.onChange} value={props.value} disable={disable} labelStyle={populators?.labelStyle} />}
+          render={(props) => (
+            <MobileNumber className={populators?.className || "field"} onChange={props.onChange} value={props.value} disable={disable} />
+            )}
             defaultValue={populators.defaultValue}
             name={populators?.name}
             control={control}

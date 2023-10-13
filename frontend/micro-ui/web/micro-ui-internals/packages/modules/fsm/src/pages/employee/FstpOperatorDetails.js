@@ -351,7 +351,7 @@ const FstpOperatorDetails = () => {
     setShowToast({ key: "success", action: `ES_FSM_DISPOSE_UPDATE_SUCCESS` });
     setTimeout(() => {
       closeToast();
-      history.push(`/${window?.contextPath}/employee`);
+      history.push(`/digit-ui/employee`);
     }, 5000);
   };
 

@@ -80,7 +80,6 @@ const FSMRegistry = () => {
     {
       vehicleIds: vehicleIds,
       driverIds: driverIds,
-      status: "ACTIVE",
     },
     { enabled: false }
   );
