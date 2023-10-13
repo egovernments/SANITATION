@@ -24,7 +24,7 @@ const TqmInbox = () => {
             if(isPlantOperatorLoggedIn){
               return tqmInboxConfigPlantOperator?.tqmInboxConfig?.[0];
             }
-            else {
+            else if(isUlbAdminLoggedIn) {
               return tqmInboxConfig?.tqmInboxConfig?.[0];
             }
             //for local config

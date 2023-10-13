@@ -11,8 +11,8 @@ export const tqmInboxConfigPlantOperator = {
         "requestBody": {
           "inbox": {
             "processSearchCriteria": {
-              "businessService": ["TQM"],
-              "moduleName": "pqm-service"
+              "businessService": ["PQM"],
+              "moduleName": "pqm"
             },
             "moduleSearchCriteria": {}
           }
@@ -22,8 +22,8 @@ export const tqmInboxConfigPlantOperator = {
         "masterName": "commonUiConfig",
         "moduleName": "TqmInboxConfig",
         "tableFormJsonPath": "requestBody.inbox",
-        "filterFormJsonPath": "requestBody.inbox.moduleSearchCriteria",
-        "searchFormJsonPath": "requestBody.inbox.moduleSearchCriteria"
+        "filterFormJsonPath": "requestBody.custom",
+        "searchFormJsonPath": "requestBody.custom"
       },
       "sections": {
         "search": {
@@ -40,48 +40,47 @@ export const tqmInboxConfigPlantOperator = {
             "headerStyle": null,
             "primaryLabel": "ES_COMMON_SEARCH",
             "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
-            "minReqFields": 1,
+            "minReqFields": 0,
             "defaultValues": {
-              "processCode":[],
-              // "status":"",
-              "outputType":[],
+              "processCodes":[],
+              "materialCodes":[],
               "status":[],
               "dateRange":""
             },
             "fields": [
               {
-                "label": "TQM_TREATMENT_PROCESS",
-                "type": "apidropdown",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
+                label: 'TQM_TREATMENT_PROCESS',
+                type: 'dropdown',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  optionsCustomStyle: {
+                    top: '2.3rem',
                   },
-                  "name": "processCode",
-                  "optionsKey": "optionKey",
-                  "allowMultiSelect": true,
-                  "masterName": "commonUiConfig",
-                  "moduleName": "TqmInboxConfig",
-                  "customfn": "populateProcessReqCriteria"
-                }
+                  name: 'processCodes',
+                  optionsKey: 'i18nKey',
+                  allowMultiSelect: true,
+                  mdmsv2:{
+                    schemaCode:"PQM.ProcessType",
+                  }
+                },
               },
               {
-                "label": "TQM_OUTPUT_TYPE",
-                "type": "apidropdown",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
+                label: 'TQM_OUTPUT_TYPE',
+                type: 'dropdown',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  optionsCustomStyle: {
+                    top: '2.3rem',
                   },
-                  "name": "outputType",
-                  "optionsKey": "outputCode",
-                  "allowMultiSelect": true,
-                  "masterName": "commonUiConfig",
-                  "moduleName": "TqmInboxConfig",
-                  "customfn": "populateOutputTypeReqCriteria"
-                }
+                  name: 'materialCodes',
+                  optionsKey: 'i18nKey',
+                  allowMultiSelect: true,
+                  mdmsv2:{
+                    schemaCode:"PQM.Material",
+                  }
+                },
               },
               {
                 "label": "TQM_INBOX_STATUS",
@@ -93,7 +92,7 @@ export const tqmInboxConfigPlantOperator = {
                     "top": "2.3rem"
                   },
                   "name": "status",
-                  "optionsKey": "optionKey",
+                  "optionsKey": "i18nKey",
                   "allowMultiSelect": true,
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfig",
@@ -118,53 +117,45 @@ export const tqmInboxConfigPlantOperator = {
           "show": true
         },
         "searchResult": {
-          "label": "",
-          "estimateNumber": "",
-          "projectId": "",
-          "department": "",
-          "estimateStatus": "",
-          "fromProposalDate": "",
-          "toProposalDate": "",
+          // "label": "",
+          // "estimateNumber": "",
+          // "projectId": "",
+          // "department": "",
+          // "estimateStatus": "",
+          // "fromProposalDate": "",
+          // "toProposalDate": "",
           "uiConfig": {
             "columns": [
               {
-                "label": "ESTIMATE_ESTIMATE_NO",
-                "jsonPath": "ProcessInstance.businessId",
-                "key": "estimateNumber",
-                "additionalCustomization": true
+                "label": "TQM_TEST_ID",
+                "jsonPath": "businessObject.id",
               },
               {
-                "label": "ES_COMMON_PROJECT_NAME",
-                "jsonPath": "businessObject.project.name"
+                "label": "TQM_TREATMENT_PROCESS",
+                "jsonPath": "businessObject.processCode"
               },
               {
-                "label": "ESTIMATE_PREPARED_BY",
-                "jsonPath": "businessObject.additionalDetails.creator"
+                "label": "TQM_PROCESS_STAGE",
+                "jsonPath": "businessObject.plantCode"
               },
               {
-                "label": "COMMON_ASSIGNEE",
-                "jsonPath": "ProcessInstance.assignes",
-                "additionalCustomization": true,
-                "key": "assignee"
+                "label": "TQM_OUTPUT_TYPE",
+                "jsonPath": "businessObject.plantCode",
               },
               {
-                "label": "COMMON_WORKFLOW_STATES",
-                "jsonPath": "ProcessInstance.state.state",
-                "additionalCustomization": true,
-                "key": "state"
+                "label": "TQM_PENDING_DATE",
+                "jsonPath": "businessObject.scheduledDate",
               },
               {
-                "label": "WORKS_ESTIMATED_AMOUNT",
-                "jsonPath": "businessObject.additionalDetails.totalEstimatedAmount",
-                "additionalCustomization": true,
-                "key": "estimatedAmount",
-                "headerAlign": "right"
+                "label": "TQM_INBOX_STATUS",
+                "jsonPath": "businessObject.serviceSla",
+                prefix:"WF_STATUS",
+                translate:true
               },
               {
-                "label": "COMMON_SLA_DAYS",
+                "label": "TQM_INBOX_SLA",
                 "jsonPath": "businessObject.serviceSla",
                 "additionalCustomization": true,
-                "key": "sla"
               }
             ],
             "enableGlobalSearch": false,
@@ -174,8 +165,42 @@ export const tqmInboxConfigPlantOperator = {
           "children": {},
           "show": true
         },
+        "links": {
+          "uiConfig": {
+            "links": [
+              {
+                "text": "TQM_VIEW_PAST_RESULTS",
+                "url": "/employee/tqm/search-test-results",
+                "roles": ["FSM_CREATOR_EMP"]
+              },
+              {
+                "text": "TQM_VIEW_IOT_RESULTS",
+                "url": "/employee/tqm/search-test-results",
+                "roles": ["FSM_CREATOR_EMP"]
+              },
+              {
+                "text": "TQM_SENSOR_MON",
+                "url": "/employee/tqm/search-devices",
+                "roles": ["FSM_CREATOR_EMP"]
+              },
+              {
+                "text": "TQM_VIEW_DASHBOARD",
+                "url": "/employee/tqm/dashboard",
+                "roles": ["FSM_CREATOR_EMP"]
+              },
+            ],
+            "label": "TQM_QUALITY_TESTING",
+            "logoIcon": {
+              "component": "TqmInboxIcon",
+              "customClass": "inbox-links-icon"
+            }
+          },
+          "children": {},
+          "show": true
+        },
         "filter": {
           "uiConfig": {
+            "formClassName":"filter",
             "type": "sort",
             "headerStyle": null,
             "headerLabel":"TQM_INBOX_SORTBY",
@@ -183,7 +208,7 @@ export const tqmInboxConfigPlantOperator = {
             "secondaryLabel": "TQM_CLEAR_SEARCH",
             "minReqFields": 0,
             "defaultValues": {
-              "sortBy":""
+              "sortOrder":""
             },
             "fields": [
               {
@@ -192,15 +217,17 @@ export const tqmInboxConfigPlantOperator = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  "name": "sortBy",
+                  "name": "sortOrder",
                   "options": [
                     {
                       "code": "LATEST_FIRST",
-                      "name": "TQM_INBOX_LATEST_FIRST"
+                      "name": "TQM_INBOX_LATEST_FIRST",
+                      "value":"DESC"
                     },
                     {
                       "code": "LATEST_LAST",
-                      "name": "TQM_INBOX_LATEST_LAST"
+                      "name": "TQM_INBOX_LATEST_LAST",
+                      "value":"ASC"
                     }
                   ],
                   "optionsKey": "name",

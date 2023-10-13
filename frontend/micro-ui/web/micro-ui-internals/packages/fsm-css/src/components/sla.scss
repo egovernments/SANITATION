@@ -1,0 +1,26 @@
+.sla-cell-success {
+  color: #00703c !important;
+  width: fit-content !important;
+  background-color: unset !important;
+  padding: 0 24px;
+  border-radius: 11px;
+  font-weight: 700;
+  &.bg {
+    display: block !important;
+    background-color: #bad6c9 !important;
+  }
+}
+
+.sla-cell-error {
+  color: #d4351c !important;
+  width: fit-content !important;
+  background-color: unset !important;
+  padding: 0 24px;
+  border-radius: 11px;
+  font-weight: 700;
+  &.bg {
+    display: block !important;
+    background-color: #d4351c !important;
+    color: #fff !important;
+  }
+}

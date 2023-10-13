@@ -33,6 +33,7 @@ const App = ({ path }) => {
   const isPlantOperatorLoggedIn = Digit.Utils.tqm.isPlantOperatorLoggedIn();
   const TqmInbox = Digit?.ComponentRegistryService?.getComponent("TqmInbox");
   const TqmResponse = Digit?.ComponentRegistryService?.getComponent("TqmResponse");
+  const TqmViewTestResults = Digit?.ComponentRegistryService?.getComponent("TqmViewTestResults");
 
   return (
     <React.Fragment>
@@ -49,6 +50,7 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/add-test-result`} component={() => <Create />} />
           <PrivateRoute path={`${path}/test-details`} component={() => <TestDetails />} />
           <PrivateRoute path={`${path}/response`} component={() => <TqmResponse />} />
+          <PrivateRoute path={`${path}/view-test-results`} component={() => <TqmViewTestResults />} />
           <PrivateRoute path={`${path}/test`} component={() => <Test />} />
           {/* <PrivateRoute path={`${path}/summary/:id`} component={() => <TQMSummary />} /> */}
         </AppContainer>

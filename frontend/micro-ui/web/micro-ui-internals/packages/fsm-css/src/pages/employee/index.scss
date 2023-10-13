@@ -515,9 +515,22 @@
     margin-left: unset;
   }
 }
+
 .employeeCard-override {
+  @media (min-width: 1024px) {
+    padding: 16px;
+  }
   @media (max-width: 639px) {
     margin-left: 0.5rem !important;
+  }
+  .employee-card-sub-header {
+    margin-bottom: 16px;
+    margin-top: 32px;
+    font-size: 24px;
+    line-height: 32px;
+    @media (max-width: 639px) {
+      margin-top: 0;
+    }
   }
 }
 
@@ -525,4 +538,8 @@
   @media (min-width: 1024px) {
     max-width: unset;
   }
+}
+
+.employee-select-wrap .options-card {
+  margin-top: 40px;
 }

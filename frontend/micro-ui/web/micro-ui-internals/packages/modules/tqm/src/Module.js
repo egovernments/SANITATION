@@ -16,9 +16,12 @@ import TqmInbox from "./pages/employee/inbox/TqmInbox";
 import TestDetails from "./pages/employee/test-details/TestDetails";
 import CardReading from "./components/CardReadings";
 import Response from "./pages/employee/Response";
+import ViewTestResults from "./pages/employee/test-results/ViewTestResults";
+import DetailsTable from "./components/DetailsTable";
+import DocumentsPreview from "./components/DocumentsPreview";
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
-  const moduleCode = "TQM";
+  const moduleCode = ["TQM","mdms"];
   const { path, url } = useRouteMatch();
   const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
@@ -43,6 +46,9 @@ const componentsToRegister = {
   TestDetails,
   TqmCardReading: CardReading,
   TqmResponse: Response,
+  TqmViewTestResults: ViewTestResults,
+  TqmDetailsTable: DetailsTable,
+  TqmDocumentsPreview: DocumentsPreview,
   //   TQMSummary
 };
 
