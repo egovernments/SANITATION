@@ -133,6 +133,7 @@ public class PqmService {
   public Test create(TestRequest testRequest) {
     //updating workflow during create
     workflowIntegrator.callWorkFlow(testRequest);
+    qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
     repository.save(testRequest);
     return testRequest.getTests().get(0);
   }
@@ -171,67 +172,4 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
-  /**
-   * Evaluates QualityCriteria list for a Test Object
-   *
-   * @param testRequest The Test Request Object
-   */
-  public void evalutateCriteria(TestRequest testRequest) {
-    Test test = testRequest.getTests().get(0);
-
-    //fetch mdms data for QualityCriteria Master
-    Object jsondata = mdmsUtils.mdmsCallV2(testRequest.getRequestInfo(),
-        testRequest.getTests().get(0).getTenantId(), MASTER_NAME_QUALITY_CRITERIA);
-    String jsonString = "";
-
-    try {
-      ObjectMapper objectMapper = new ObjectMapper();
-      jsonString = objectMapper.writeValueAsString(jsondata);
-    } catch (Exception e) {
-      throw new CustomException(ErrorConstants.PARSING_ERROR,
-          "Unable to parse QualityCriteria mdms data ");
-    }
-
-    // Parse JSON Response and create the map for QualityCriteria
-    Map<String, MDMSQualityCriteria> codeToQualityCriteriaMap = parseJsonToMap(jsonString);
-
-    //evaluate Quality Criteria
-    List<QualityCriteria> evaluatedqualityCriteriaList = new ArrayList<>();
-    for (QualityCriteria qualityCriteria : test.getQualityCriteria()) {
-      QualityCriteria evaluatedqualityCriteria = qualityCriteriaEvaluation.evaluateQualityCriteria(
-          codeToQualityCriteriaMap.get(qualityCriteria.getCriteriaCode()),
-          qualityCriteria.getValue());
-      evaluatedqualityCriteriaList.add(evaluatedqualityCriteria);
-    }
-    test.setQualityCriteria(evaluatedqualityCriteriaList);
-  }
-
-  /**
-   * Parsing Json Data to a Code-QualityCriteria Map
-   *
-   * @param jsonData Json Data
-   * @return Map of Code-QualityCriteria
-   */
-  public static Map<String, MDMSQualityCriteria> parseJsonToMap(String jsonData) {
-    Map<String, MDMSQualityCriteria> codeToQualityCriteriaMap = new HashMap<>();
-
-    try {
-      ObjectMapper objectMapper = new ObjectMapper();
-      JsonNode jsonNode = objectMapper.readTree(jsonData);
-      JsonNode qualityCriteriaArray = jsonNode.get("mdms");
-
-      for (JsonNode criteriaNode : qualityCriteriaArray) {
-        String code = criteriaNode.get("data").get("code").asText();
-        MDMSQualityCriteria qualityCriteria = objectMapper.convertValue(criteriaNode.get("data"),
-            MDMSQualityCriteria.class);
-
-        codeToQualityCriteriaMap.put(code, qualityCriteria);
-      }
-    } catch (Exception e) {
-      throw new CustomException(ErrorConstants.PARSING_ERROR,
-          "Unable to make Code-QualityCriteria Map");
-    }
-
-    return codeToQualityCriteriaMap;
-  }
 }
