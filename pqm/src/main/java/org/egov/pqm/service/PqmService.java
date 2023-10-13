@@ -4,16 +4,17 @@ import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.pqm.util.MDMSUtils;
+import org.egov.pqm.util.QualityCriteriaEvaluation;
 import org.egov.common.contract.request.Role;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
-import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Test;
@@ -31,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class PqmService {
 
   @Autowired
@@ -45,8 +47,11 @@ public class PqmService {
   @Autowired
   private TestRepository repository;
 
+	@Autowired
+	private MDMSUtils mdmsUtils;
+
   @Autowired
-  private MDMSUtils mdmsUtils;
+  private QualityCriteriaEvaluation qualityCriteriaEvaluation;
 
   /**
    * search the PQM applications based on the search criteria
@@ -57,45 +62,45 @@ public class PqmService {
    */
   public TestResponse testSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
 
-    List<Test> testList = new LinkedList<>();
+		List<Test> testList = new LinkedList<>();
 
-    if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
-      checkRoleInValidateSearch(criteria, requestInfo);
-    }
-    TestResponse testResponse = repository.getPqmData(criteria);
-    List<String> idList = testResponse.getTests().stream().map(Test::getId)
-        .collect(Collectors.toList());
+		if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
+			checkRoleInValidateSearch(criteria, requestInfo);
+		}
+		TestResponse testResponse = repository.getPqmData(criteria);
+		List<String> idList = testResponse.getTests().stream().map(Test::getId).collect(Collectors.toList());
 
-    DocumentResponse documentResponse = repository.getDocumentData(idList);
-    List<Document> documentList = documentResponse.getDocuments();
+		DocumentResponse documentResponse = repository.getDocumentData(idList);
+		List<Document> documentList = documentResponse.getDocuments();
 
-    testList = testResponse.getTests().stream().map(test -> {
-      List<Document> documents = documentList.stream()
-          .filter(document -> test.getId().equalsIgnoreCase(document.getTestId()))
-          .collect(Collectors.toList());
-      test.setDocuments(documents);
-      return test;
-    }).collect(Collectors.toList());
+		testList = testResponse.getTests().stream().map(test -> {
+			List<Document> documents = documentList.stream()
+					.filter(document -> test.getId().equalsIgnoreCase(document.getTestId()))
+					.collect(Collectors.toList());
+			test.setDocuments(documents);
+			return test;
+		}).collect(Collectors.toList());
 
-    return testResponse;
+		return testResponse;
 
-  }
+	}
 
-  private void checkRoleInValidateSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
-    List<Role> roles = requestInfo.getUserInfo().getRoles();
-    TestSearchCriteria testSearchCriteria = criteria.getTestSearchCriteria();
-    List<String> masterNameList = new ArrayList<>();
-    masterNameList.add(null);
-    if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
+	private void checkRoleInValidateSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
+		List<Role> roles = requestInfo.getUserInfo().getRoles();
+		TestSearchCriteria testSearchCriteria = criteria.getTestSearchCriteria();
+		List<String> masterNameList = new ArrayList<>();
+		masterNameList.add(null);
+		if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
 
-    }
+		}
 
-  }
+	}
 
 
   public Test create(TestRequest testRequest) {
     //updating workflow during create
     workflowIntegrator.callWorkFlow(testRequest);
+    qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
     repository.save(testRequest);
     return testRequest.getTests().get(0);
   }
@@ -133,6 +138,5 @@ public class PqmService {
 
     return testRequest.getTests().get(0);
   }
-
 
 }

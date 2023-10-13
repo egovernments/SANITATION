@@ -36,6 +36,9 @@ public class ServiceConfiguration {
 	
 	@Value("${egov.mdms.search.endpoint}")
 	private String mdmsEndPoint;
+
+	@Value("${egov.mdms.v2.host}")
+	private String mdmsHostv2;
 	
 	@Value("${egov.mdms.search.v2.endpoint}")
 	private String mdmsv2EndPoint;
