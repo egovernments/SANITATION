@@ -2,6 +2,7 @@ package org.egov.pqm.repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.egov.common.contract.request.RequestInfo;
@@ -49,27 +50,15 @@ public class TestRepository {
 	}
 
 	public void update(TestRequest testRequest, boolean isStateUpdatable) {
-		RequestInfo requestInfo = testRequest.getRequestInfo();
-
-		Test testForStatusUpdate = null;
-		Test testForUpdate = null;
 
 		Test test = testRequest.getTests().get(0);
+		RequestInfo requestInfo = testRequest.getRequestInfo();
 
 		if (isStateUpdatable) {
-			testForUpdate = test;
+			producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo, Collections.singletonList(test)));
 		} else {
-			testForStatusUpdate = test;
+			producer.push(config.getTestWorkflowTopic(), new TestRequest(requestInfo, Collections.singletonList(test)));
 		}
-		if (testForUpdate != null)
-			producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo, new ArrayList<>(
-          (Collection) test), testRequest.getWorkflow()));
-
-		if (testForStatusUpdate != null)
-			producer.push(config.getTestWorkflowTopic(),
-					new TestRequest(requestInfo,  new ArrayList<>(
-							(Collection) test), testRequest.getWorkflow()));
-
 	}
 
 	public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {

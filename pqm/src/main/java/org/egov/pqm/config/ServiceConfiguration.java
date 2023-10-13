@@ -1,6 +1,8 @@
 package org.egov.pqm.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +17,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Component
+@Configuration
+@PropertySource("classpath:application.properties")
 public class ServiceConfiguration {
 
 	@Value("${egov.test.default.limit}")
