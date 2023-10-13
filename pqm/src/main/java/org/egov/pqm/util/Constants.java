@@ -19,7 +19,7 @@ public class Constants {
   public static final String PQM_SCHEMA_CODE_PROCESS = "PQM.Process";
   public static final String PQM_SCHEMA_CODE_STAGE = "PQM.Stage";
   public static final String PQM_SCHEMA_CODE_MATERIAL = "PQM.Material";
-  public static final String WF_ACTION_SCHEDULE ="SCHEDULE";
+  public static final String WF_ACTION_SCHEDULE = "SCHEDULE";
 
 
 }

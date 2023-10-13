@@ -18,34 +18,37 @@ import lombok.extern.slf4j.Slf4j;
 @Repository
 @Slf4j
 public class ServiceRequestRepository {
-	private ObjectMapper mapper;
 
-	private RestTemplate restTemplate;
+  private ObjectMapper mapper;
 
-	@Autowired
-	public ServiceRequestRepository(ObjectMapper mapper, RestTemplate restTemplate) {
-		this.mapper = mapper;
-		this.restTemplate = restTemplate;
-	}
-	/**
-	 * fetchResult form the different services based on the url and request object
-	 * @param uri
-	 * @param request
-	 * @return
-	 */
-	public Object fetchResult(StringBuilder uri, Object request) {
-		Object response = null;
-		try {
-			response = restTemplate.postForObject(uri.toString(), request, Map.class);
-		} catch (HttpClientErrorException e) {
-			log.error("External Service threw an Exception: ", e);
-			throw new ServiceCallException(e.getResponseBodyAsString());
-		} catch (Exception e) {
-			log.error("Exception while fetching from searcher: ", e);
-			throw new ServiceCallException(e.getMessage());
-		}
+  private RestTemplate restTemplate;
 
-		return response;
-	}
-	
+  @Autowired
+  public ServiceRequestRepository(ObjectMapper mapper, RestTemplate restTemplate) {
+    this.mapper = mapper;
+    this.restTemplate = restTemplate;
+  }
+
+  /**
+   * fetchResult form the different services based on the url and request object
+   *
+   * @param uri
+   * @param request
+   * @return
+   */
+  public Object fetchResult(StringBuilder uri, Object request) {
+    Object response = null;
+    try {
+      response = restTemplate.postForObject(uri.toString(), request, Map.class);
+    } catch (HttpClientErrorException e) {
+      log.error("External Service threw an Exception: ", e);
+      throw new ServiceCallException(e.getResponseBodyAsString());
+    } catch (Exception e) {
+      log.error("Exception while fetching from searcher: ", e);
+      throw new ServiceCallException(e.getMessage());
+    }
+
+    return response;
+  }
+
 }

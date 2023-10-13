@@ -62,14 +62,14 @@ public class TestRepository {
     } else {
       testForStatusUpdate = test;
     }
-		if (testForUpdate != null) {
-			producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo,
+    if (testForUpdate != null) {
+      producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo,
           Collections.singletonList(test)));
-		}
+    }
 
-		if (testForStatusUpdate != null) {
-			producer.push(config.getTestWorkflowTopic(), Collections.singletonList(test));
-		}
+    if (testForStatusUpdate != null) {
+      producer.push(config.getTestWorkflowTopic(), Collections.singletonList(test));
+    }
 
   }
 
