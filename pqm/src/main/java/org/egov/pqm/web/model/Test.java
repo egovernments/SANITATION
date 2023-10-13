@@ -64,4 +64,8 @@ public class Test {
 
   @JsonProperty("auditDetails")
   private AuditDetails auditDetails = null;
+
+  @JsonProperty("workflow")
+  private Workflow workflow = null;
+
 }

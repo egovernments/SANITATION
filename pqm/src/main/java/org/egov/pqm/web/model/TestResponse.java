@@ -28,9 +28,6 @@ public class TestResponse {
 
   @JsonProperty("pagination")
   private Pagination pagination = null;
-
-  @JsonProperty("workflow")
-  private Workflow workflow = null;
   
   @JsonProperty("totalCount")
   private Integer totalCount =0;

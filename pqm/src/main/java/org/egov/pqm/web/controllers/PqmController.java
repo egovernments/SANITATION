@@ -1,6 +1,7 @@
 package org.egov.pqm.web.controllers;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.validation.Valid;
 
@@ -44,7 +45,9 @@ public class PqmController {
   ResponseEntity<TestResponse> update(@Valid @RequestBody TestRequest testRequest) {
       Test test = pqmService.update(testRequest);
       List<Test> testList = new ArrayList<>();
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+      testList.add(test);
+      TestResponse response = TestResponse.builder().tests(testList).responseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(testRequest.getRequestInfo(),true)).build();
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
   }
   
   @PostMapping(value = "/_search")
@@ -54,7 +57,6 @@ public class PqmController {
 
 		response.setResponseInfo(
 				responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true));
-//    return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	return new ResponseEntity<>(response, HttpStatus.OK);
 
   }

@@ -1,5 +1,6 @@
 package org.egov.pqm.service;
 
+import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -130,11 +131,8 @@ public class PqmService {
 
 
   public Test create(TestRequest testRequest) {
-    RequestInfo requestInfo = testRequest.getRequestInfo();
-
     //updating workflow during create
     workflowIntegrator.callWorkFlow(testRequest);
-
     repository.save(testRequest);
     return testRequest.getTests().get(0);
   }
@@ -149,11 +147,10 @@ public class PqmService {
   public Test update(TestRequest testRequest) {
 
     Test test = testRequest.getTests().get(0);
-    String businessServiceName = null;
 
-    BusinessService businessService = workflowService.getBusinessService(test, testRequest, businessServiceName, null);
+    //Fetching actions from businessService
+    BusinessService businessService = workflowService.getBusinessService(test, testRequest, PQM_BUSINESS_SERVICE, null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
-
 
     //updating workflow during update
     workflowIntegrator.callWorkFlow(testRequest);
@@ -164,10 +161,10 @@ public class PqmService {
     }
 
     if (test.getTestType().equals(TestType.LAB)) {
-      if (testRequest.getWorkflow() == null || testRequest.getWorkflow().getAction() == null) {
+      if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
         throw new CustomException(UPDATE_ERROR,
             "Workflow action cannot be null." + String.format("{Workflow:%s}",
-                testRequest.getWorkflow()));
+                test.getWorkflow()));
       }
     }
 
