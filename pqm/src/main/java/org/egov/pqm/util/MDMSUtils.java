@@ -1,5 +1,6 @@
 package org.egov.pqm.util;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +12,9 @@ import org.egov.mdms.model.MdmsResponse;
 import org.egov.mdms.model.ModuleDetail;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.ServiceRequestRepository;
-import org.egov.pqm.web.model.mdms.MdmsCriteriaReq;
-import org.egov.pqm.web.model.mdms.MdmsCriteria;
+import org.egov.pqm.web.model.mdms.MDMSQualityCriteria;
+import org.egov.pqm.web.model.mdms.MdmsCriteriaRequest;
+import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -104,18 +106,47 @@ public class MDMSUtils {
 	}
 
   public Object mdmsCallV2(RequestInfo requestInfo, String tenantId, String schemaCode){
-    org.egov.pqm.web.model.mdms.MdmsCriteriaReq mdmsCriteriaReq = getMDMSRequestV2(requestInfo, tenantId, schemaCode);
+    MdmsCriteriaRequest mdmsCriteriaRequest = getMDMSRequestV2(requestInfo, tenantId, schemaCode);
     StringBuilder uri = getMdmsSearchUrl2();
-    Object result = serviceRequestRepository.fetchResult(uri,mdmsCriteriaReq);
+    Object result = serviceRequestRepository.fetchResult(uri, mdmsCriteriaRequest);
     return result;
   }
 
-  public MdmsCriteriaReq getMDMSRequestV2(RequestInfo requestInfo , String  tenantId ,
+  public MdmsCriteriaRequest getMDMSRequestV2(RequestInfo requestInfo , String  tenantId ,
       String schemaCode){
     org.egov.pqm.web.model.mdms.MdmsCriteria mdmsCriteria = org.egov.pqm.web.model.mdms.MdmsCriteria.builder().tenantId(tenantId).schemaCode(schemaCode).build();
-    org.egov.pqm.web.model.mdms.MdmsCriteriaReq mdmsCriteriaReq =
-        org.egov.pqm.web.model.mdms.MdmsCriteriaReq.builder().mdmsCriteria(mdmsCriteria).requestInfo(requestInfo).build();
-    return mdmsCriteriaReq;
+    MdmsCriteriaRequest mdmsCriteriaRequest =
+        MdmsCriteriaRequest.builder().mdmsCriteria(mdmsCriteria).requestInfo(requestInfo).build();
+    return mdmsCriteriaRequest;
+  }
+
+  /**
+   * Parsing Json Data to a Code-QualityCriteria Map
+   *
+   * @param jsonData Json Data
+   * @return Map of Code-QualityCriteria
+   */
+  public static Map<String, MDMSQualityCriteria> parseJsonToMap(String jsonData) {
+    Map<String, MDMSQualityCriteria> codeToQualityCriteriaMap = new HashMap<>();
+
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      JsonNode jsonNode = objectMapper.readTree(jsonData);
+      JsonNode qualityCriteriaArray = jsonNode.get("mdms");
+
+      for (JsonNode criteriaNode : qualityCriteriaArray) {
+        String code = criteriaNode.get("data").get("code").asText();
+        MDMSQualityCriteria qualityCriteria = objectMapper.convertValue(criteriaNode.get("data"),
+            MDMSQualityCriteria.class);
+
+        codeToQualityCriteriaMap.put(code, qualityCriteria);
+      }
+    } catch (Exception e) {
+      throw new CustomException(ErrorConstants.PARSING_ERROR,
+          "Unable to make Code-QualityCriteria Map");
+    }
+
+    return codeToQualityCriteriaMap;
   }
 
 }

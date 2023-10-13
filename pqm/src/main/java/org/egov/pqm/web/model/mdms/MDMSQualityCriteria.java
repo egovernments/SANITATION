@@ -12,34 +12,31 @@ import lombok.NoArgsConstructor;
 @Data
 public class MDMSQualityCriteria {
 
-  @JsonProperty("criteriaCode")
-  private String criteriaCode = null;
-
   @JsonProperty("code")
-  private String code = null;
+  private String code;
 
   @JsonProperty("parameter")
-  private String parameter = null;
+  private String parameter;
 
   @JsonProperty("units")
-  private String units = null;
+  private String units;
 
   @JsonProperty("benchmarkRule")
-  private String benchmarkRule = null;
+  private String benchmarkRule;
 
   @JsonProperty("benchmarkValues")
-  private List<BigDecimal> benchmarkValues = null;
+  private List<BigDecimal> benchmarkValues;
 
   @JsonProperty("allowedDeviation")
-  private BigDecimal allowedDeviation = null;
+  private BigDecimal allowedDeviation;
 
   @JsonProperty("effectiveFrom")
-  private Long effectiveFrom = null;
+  private Long effectiveFrom;
 
   @JsonProperty("effectiveTo")
-  private String effectiveTo = null;
+  private String effectiveTo;
 
   @JsonProperty("active")
-  private Boolean active = null;
+  private Boolean active;
 
 }

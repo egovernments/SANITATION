@@ -1,6 +1,7 @@
 package org.egov.pqm.util;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
@@ -8,11 +9,14 @@ import org.apache.kafka.common.protocol.types.Field.Str;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.QualityCriteria.StatusEnum;
+import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 
 import static org.egov.pqm.util.Constants.*;
+import static org.egov.pqm.util.MDMSUtils.parseJsonToMap;
 
 import org.egov.pqm.web.model.mdms.MDMSQualityCriteria;
+import org.egov.tracer.model.CustomException;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,11 +32,48 @@ public class QualityCriteriaEvaluation {
   private ServiceConfiguration config;
 
   /**
+   * Evaluates QualityCriteria list for a Test Object
+   *
+   * @param testRequest The Test Request Object
+   */
+  public void evalutateQualityCriteria(TestRequest testRequest) {
+    Test test = testRequest.getTests().get(0);
+
+    //fetch mdms data for QualityCriteria Master
+    Object jsondata = mdmsUtil.mdmsCallV2(testRequest.getRequestInfo(),
+        testRequest.getTests().get(0).getTenantId(), MASTER_NAME_QUALITY_CRITERIA);
+    String jsonString = "";
+
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      jsonString = objectMapper.writeValueAsString(jsondata);
+    } catch (Exception e) {
+      throw new CustomException(ErrorConstants.PARSING_ERROR,
+          "Unable to parse QualityCriteria mdms data ");
+    }
+
+    // Parse JSON Response and create the map for QualityCriteria
+    Map<String, MDMSQualityCriteria> codeToQualityCriteriaMap = parseJsonToMap(jsonString);
+
+    //evaluate Quality Criteria
+    List<QualityCriteria> evaluatedqualityCriteriaList = new ArrayList<>();
+    for (QualityCriteria qualityCriteria : test.getQualityCriteria()) {
+      QualityCriteria evaluatedqualityCriteria = enrichQualityCriteriaFields(
+          codeToQualityCriteriaMap.get(qualityCriteria.getCriteriaCode()),
+          qualityCriteria.getValue());
+
+      evaluatedqualityCriteriaList.add(evaluatedqualityCriteria);
+    }
+    test.setQualityCriteria(evaluatedqualityCriteriaList);
+  }
+
+  /**
+   * returns a qualityCriteria with enriched status and allowedDeviation
    * @param mdmsQualityCriteria MDMS Quality Criteria
    * @param value Value to Test
    * @return QualityCriteria
    */
-  public QualityCriteria evaluateQualityCriteria(MDMSQualityCriteria mdmsQualityCriteria,
+  public QualityCriteria enrichQualityCriteriaFields(MDMSQualityCriteria mdmsQualityCriteria,
       BigDecimal value) {
     String criteriaCode = mdmsQualityCriteria.getCode();
     String benchmarkRule = mdmsQualityCriteria.getBenchmarkRule();
@@ -52,6 +93,8 @@ public class QualityCriteriaEvaluation {
       qualityCriteria.setStatus(StatusEnum.FAIL);
     }
 
+    //enriching allowedDeviation
+    qualityCriteria.setAllowedDeviation(mdmsQualityCriteria.getAllowedDeviation());
     return qualityCriteria;
   }
 

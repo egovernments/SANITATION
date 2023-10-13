@@ -12,12 +12,12 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MdmsCriteriaReq {
+public class MdmsCriteriaRequest {
   @JsonProperty("RequestInfo")
   @Valid
-  private RequestInfo requestInfo = null;
+  private RequestInfo requestInfo;
 
   @JsonProperty("MdmsCriteria")
   @Valid
-  private MdmsCriteria mdmsCriteria =null;
+  private MdmsCriteria mdmsCriteria;
 }
