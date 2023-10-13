@@ -43,45 +43,44 @@ export const tqmInboxConfigPlantOperator = {
             "minReqFields": 0,
             "defaultValues": {
               "processCodes":[],
-              // "status":"",
               "materialCodes":[],
               "status":[],
               "dateRange":""
             },
             "fields": [
               {
-                "label": "TQM_TREATMENT_PROCESS",
-                "type": "apidropdown",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
+                label: 'TQM_TREATMENT_PROCESS',
+                type: 'dropdown',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  optionsCustomStyle: {
+                    top: '2.3rem',
                   },
-                  "name": "processCodes",
-                  "optionsKey": "optionKey",
-                  "allowMultiSelect": true,
-                  "masterName": "commonUiConfig",
-                  "moduleName": "TqmInboxConfig",
-                  "customfn": "populateProcessReqCriteria"
-                }
+                  name: 'processCodes',
+                  optionsKey: 'i18nKey',
+                  allowMultiSelect: true,
+                  mdmsv2:{
+                    schemaCode:"PQM.ProcessType",
+                  }
+                },
               },
               {
-                "label": "TQM_OUTPUT_TYPE",
-                "type": "apidropdown",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
+                label: 'TQM_OUTPUT_TYPE',
+                type: 'dropdown',
+                isMandatory: false,
+                disable: false,
+                populators: {
+                  optionsCustomStyle: {
+                    top: '2.3rem',
                   },
-                  "name": "materialCodes",
-                  "optionsKey": "outputCode",
-                  "allowMultiSelect": true,
-                  "masterName": "commonUiConfig",
-                  "moduleName": "TqmInboxConfig",
-                  "customfn": "populateOutputTypeReqCriteria"
-                }
+                  name: 'materialCodes',
+                  optionsKey: 'i18nKey',
+                  allowMultiSelect: true,
+                  mdmsv2:{
+                    schemaCode:"PQM.Material",
+                  }
+                },
               },
               {
                 "label": "TQM_INBOX_STATUS",
@@ -93,7 +92,7 @@ export const tqmInboxConfigPlantOperator = {
                     "top": "2.3rem"
                   },
                   "name": "status",
-                  "optionsKey": "optionKey",
+                  "optionsKey": "i18nKey",
                   "allowMultiSelect": true,
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfig",
@@ -128,31 +127,33 @@ export const tqmInboxConfigPlantOperator = {
           "uiConfig": {
             "columns": [
               {
-                "label": "testId",
-                "jsonPath": "businessObject.applicationNo",
+                "label": "TQM_TEST_ID",
+                "jsonPath": "businessObject.id",
               },
               {
-                "label": "treatmentProcess",
+                "label": "TQM_TREATMENT_PROCESS",
                 "jsonPath": "businessObject.processCode"
               },
               {
-                "label": "stage",
+                "label": "TQM_PROCESS_STAGE",
                 "jsonPath": "businessObject.plantCode"
               },
               {
-                "label": "outputType",
+                "label": "TQM_OUTPUT_TYPE",
                 "jsonPath": "businessObject.plantCode",
               },
               {
-                "label": "pendingDate",
-                "jsonPath": "businessObject.plantCode",
+                "label": "TQM_PENDING_DATE",
+                "jsonPath": "businessObject.scheduledDate",
               },
               {
-                "label": "status",
+                "label": "TQM_INBOX_STATUS",
                 "jsonPath": "businessObject.serviceSla",
+                prefix:"WF_STATUS",
+                translate:true
               },
               {
-                "label": "sla",
+                "label": "TQM_INBOX_SLA",
                 "jsonPath": "businessObject.serviceSla",
                 "additionalCustomization": true,
               }
@@ -199,6 +200,7 @@ export const tqmInboxConfigPlantOperator = {
         },
         "filter": {
           "uiConfig": {
+            "formClassName":"filter",
             "type": "sort",
             "headerStyle": null,
             "headerLabel":"TQM_INBOX_SORTBY",
@@ -206,7 +208,7 @@ export const tqmInboxConfigPlantOperator = {
             "secondaryLabel": "TQM_CLEAR_SEARCH",
             "minReqFields": 0,
             "defaultValues": {
-              "sortBy":""
+              "sortOrder":""
             },
             "fields": [
               {
@@ -215,15 +217,17 @@ export const tqmInboxConfigPlantOperator = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  "name": "sortBy",
+                  "name": "sortOrder",
                   "options": [
                     {
                       "code": "LATEST_FIRST",
-                      "name": "TQM_INBOX_LATEST_FIRST"
+                      "name": "TQM_INBOX_LATEST_FIRST",
+                      "value":"DESC"
                     },
                     {
                       "code": "LATEST_LAST",
-                      "name": "TQM_INBOX_LATEST_LAST"
+                      "name": "TQM_INBOX_LATEST_LAST",
+                      "value":"ASC"
                     }
                   ],
                   "optionsKey": "name",
