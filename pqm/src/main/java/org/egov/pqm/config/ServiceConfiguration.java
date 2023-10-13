@@ -50,6 +50,9 @@ public class ServiceConfiguration {
   @Value("${egov.test.update.workflow.kafka.topic}")
   private String testWorkflowTopic;
 
+  @Value("${egov.pqm.anomaly.create.kafka.topic}")
+  private String anomalyCreateTopic;
+
   //workflow
   @Value("${create.pqm.workflow.name}")
   private String businessServiceValue;

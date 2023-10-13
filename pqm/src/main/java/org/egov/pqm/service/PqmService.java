@@ -1,25 +1,17 @@
 package org.egov.pqm.service;
 
-import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
-import static org.egov.pqm.util.Constants.PQM_MODULE_NAME;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 
-import java.util.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
-import net.minidev.json.JSONArray;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
-import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.web.model.Document;
@@ -47,6 +39,8 @@ public class PqmService {
 
   @Autowired
   private MDMSValidator mdmsValidator;
+
+
 
 
   /**
@@ -95,13 +89,13 @@ public class PqmService {
 
 
   public Test create(TestRequest testRequest) {
-    RequestInfo requestInfo = testRequest.getRequestInfo();
-    String tenantId = testRequest.getTests().get(0).getTenantId();
     mdmsValidator.validateMdmsData(testRequest);
     enrichmentService.enrichPQMCreateRequest(testRequest);
+    enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     repository.save(testRequest);
     return testRequest.getTests().get(0);
   }
+
 
   /**
    * Updates the Test

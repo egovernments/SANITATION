@@ -48,6 +48,9 @@ public class TestRepository {
   public void save(TestRequest testRequest) {
     producer.push(config.getTestSaveTopic(), testRequest);
   }
+  public void save(String topic,TestRequest testRequest) {
+    producer.push(topic,testRequest);
+  }
 
   public void update(TestRequest testRequest, boolean isStateUpdatable) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
