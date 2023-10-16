@@ -1,11 +1,17 @@
 import utils from "../utils";
 import { useCustomMDMSV2 } from "./useCustomMDMSV2";
 import { useViewTestResults } from "./useViewTestResults";
+import { useViewTestSummary } from "./useViewTestSummary";
+import { useSearchTest } from "./useSearchTest";
+import useTestUpdate from "./useTestUpdate";
 
 const tqm = {
   sampleTQMHook: () => {},
   useViewTestResults,
+  useViewTestSummary,
   useCustomMDMSV2,
+  useSearchTest,
+  useTestUpdate,
 };
 
 const Hooks = {

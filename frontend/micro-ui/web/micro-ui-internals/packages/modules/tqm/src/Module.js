@@ -9,8 +9,6 @@ import TQMPendingTask from "./pages/employee/TQMPendingTask";
 import TQMLanding from "./pages/employee/TQMLanding";
 import { CustomisedHooks } from "./hooks";
 
-// import TQMSummary from "./components/TQMSummary";
-
 // TQM specific components
 import TqmInbox from "./pages/employee/inbox/TqmInbox";
 import TestDetails from "./pages/employee/test-details/TestDetails";
@@ -19,6 +17,8 @@ import Response from "./pages/employee/Response";
 import ViewTestResults from "./pages/employee/test-results/ViewTestResults";
 import DetailsTable from "./components/DetailsTable";
 import DocumentsPreview from "./components/DocumentsPreview";
+import ParameterReadings from "./components/ParameterReadings";
+import TQMSummary from "./components/TQMSummary";
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = ["TQM","mdms"];
@@ -49,7 +49,8 @@ const componentsToRegister = {
   TqmViewTestResults: ViewTestResults,
   TqmDetailsTable: DetailsTable,
   TqmDocumentsPreview: DocumentsPreview,
-  //   TQMSummary
+  TQMSummary,
+  TqmParameterReadings: ParameterReadings,
 };
 
 const overrideHooks = () => {
