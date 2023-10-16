@@ -35,6 +35,7 @@ public class ActionValidator {
 	 * Validates the update request
 	 * 
 	 * @param testRequest
+	 * @param businessService
 	 *            The PQM update request
 	 */
 	public void validateUpdateRequest(TestRequest testRequest, BusinessService businessService) {
@@ -45,14 +46,14 @@ public class ActionValidator {
 	/**
 	 * Validates if the role of the logged in user can perform the given action
 	 * 
-	 * @param request
+	 * @param testRequest
 	 *            The pqm create or update request
 	 */
-	private void validateRoleAction(TestRequest request, BusinessService businessService) {
-		Test test = request.getTests().get(0);
+	private void validateRoleAction(TestRequest testRequest, BusinessService businessService) {
+		Test test = testRequest.getTests().get(0);
 		Map<String, String> errorMap = new HashMap<>();
-		RequestInfo requestInfo = request.getRequestInfo();
-		State state = workflowService.getCurrentStateObj(String.valueOf(test.getStatus()),businessService);
+		RequestInfo requestInfo = testRequest.getRequestInfo();
+		State state = workflowService.getCurrentStateObj(String.valueOf(test.getWfStatus()),businessService);
 		if(state != null ) {
 			List<Action> actions = state.getActions();
 			List<Role> roles = requestInfo.getUserInfo().getRoles();
@@ -83,6 +84,7 @@ public class ActionValidator {
 	 * Validates if the any new object is added in the request
 	 * 
 	 * @param request
+	 * @param businessService
 	 *            The pqm update request
 	 */
 	private void validateIds(TestRequest request, BusinessService businessService) {
@@ -90,7 +92,7 @@ public class ActionValidator {
 		Test test = request.getTests().get(0);
 		
 		if( !workflowService.isStateUpdatable(String.valueOf(test.getStatus()), businessService)&& test.getId() == null) {
-				errorMap.put(ErrorConstants.CREATE_ERROR, "Id of Application cannot be null");
+				errorMap.put(ErrorConstants.UPDATE_ERROR, "Id of Application cannot be null");
 		}
 		if (!errorMap.isEmpty())
 			throw new CustomException(errorMap);

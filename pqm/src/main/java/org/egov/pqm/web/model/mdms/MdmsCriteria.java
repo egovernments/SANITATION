@@ -13,7 +13,9 @@ import javax.validation.constraints.Size;
 import java.util.Map;
 import java.util.Set;
 
-
+/**
+ * MdmsCriteria
+ */
 @Validated
 @Data
 @AllArgsConstructor
@@ -24,29 +26,29 @@ public class MdmsCriteria {
   @JsonProperty("tenantId")
   @Size(min = 1, max = 100)
   @NotNull
-  private String tenantId = null;
+  private String tenantId;
 
   @JsonProperty("ids")
-  private Set<String> ids = null;
+  private Set<String> ids;
 
   @JsonProperty("uniqueIdentifier")
   @Size(min = 1, max = 64)
-  private String uniqueIdentifier = null;
+  private String uniqueIdentifier;
 
   @JsonProperty("schemaCode")
-  private String schemaCode = null;
+  private String schemaCode;
 
   @JsonProperty("filters")
-  private Map<String, String> filterMap = null;
+  private Map<String, String> filterMap;
 
   @JsonProperty("isActive")
-  private Boolean isActive = null;
+  private Boolean isActive;
 
   @JsonIgnore
-  private Map<String, String> schemaCodeFilterMap = null;
+  private Map<String, String> schemaCodeFilterMap;
 
   @JsonIgnore
-  private Set<String> uniqueIdentifiersForRefVerification = null;
+  private Set<String> uniqueIdentifiersForRefVerification;
 
   @JsonProperty("offset")
   private Integer offset;
