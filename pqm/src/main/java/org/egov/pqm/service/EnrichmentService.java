@@ -110,7 +110,7 @@ public class EnrichmentService {
 
   public void pushToAnomalyDetectorIfTestResultStatusFail(TestRequest testRequest) {
     if (testRequest.getTests().get(0).getStatus() == TestResultStatus.FAIL) {
-      testRepository.save(config.getAnomalyCreateTopic(), testRequest);
+      testRepository.saveAnomaly(config.getAnomalyCreateTopic(), testRequest);
     }
   }
 
