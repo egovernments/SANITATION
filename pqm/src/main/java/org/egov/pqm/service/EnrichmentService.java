@@ -40,8 +40,23 @@ public class EnrichmentService {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setIdgenIds(testRequest);
     setAuditDetails(testRequest);
-    setWorkflow(testRequest.getTests().get(0));
+//  setWorkflow(testRequest.getTests().get(0));
+//    setWorkflowStatus();
     setTestResultStatus(testRequest);
+    setDocumentsIdAndTestId(testRequest);
+  }
+
+  public void enrichPQMCreateRequestForLabTest(TestRequest testRequest) {
+    RequestInfo requestInfo = testRequest.getRequestInfo();
+    setIdgenIds(testRequest);
+    setAuditDetails(testRequest);
+    setWorkflow(testRequest.getTests().get(0));
+    setDocumentsIdAndTestId(testRequest);
+  }
+
+  public void enrichPQMUpdateRequest(TestRequest testRequest) {
+    RequestInfo requestInfo = testRequest.getRequestInfo();
+    setAuditDetails(testRequest);
     setDocumentsIdAndTestId(testRequest);
   }
   private void setDocumentsIdAndTestId(TestRequest testRequest)
@@ -54,7 +69,7 @@ public class EnrichmentService {
     }
   }
 
-  private void setTestResultStatus(TestRequest testRequest) {
+  void setTestResultStatus(TestRequest testRequest) {
     boolean pass = true;
     for (QualityCriteria criteria : testRequest.getTests().get(0).getQualityCriteria()) {
       if (criteria.getStatus() == StatusEnum.FAIL) {

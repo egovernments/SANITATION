@@ -1,6 +1,7 @@
 package org.egov.pqm.service;
 
 import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
+import static org.egov.pqm.util.Constants.UPDATE_RESULT;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 
 import java.util.ArrayList;
@@ -116,6 +117,14 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
+  public Test scheduleTest(TestRequest testRequest) {
+    mdmsValidator.validateMdmsData(testRequest);
+    enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
+    workflowIntegrator.callWorkFlow(testRequest);
+    repository.save(testRequest);
+    return testRequest.getTests().get(0);
+  }
+
   /**
    * Updates the Test
    *
@@ -127,9 +136,18 @@ public class PqmService {
 
     Test test = testRequest.getTests().get(0);
 
+    //validate if application exists
     if (test.getId() == null) {
       throw new CustomException(UPDATE_ERROR,
           "Application Not found in the System" + test);
+    }
+
+    if (test.getTestType().equals(TestType.LAB)) {
+      if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
+        throw new CustomException(UPDATE_ERROR,
+            "Workflow action cannot be null." + String.format("{Workflow:%s}",
+                test.getWorkflow()));
+      }
     }
 
     //Fetching actions from businessService
@@ -140,13 +158,16 @@ public class PqmService {
     //updating workflow during update
     workflowIntegrator.callWorkFlow(testRequest);
 
-    if (test.getTestType().equals(TestType.LAB)) {
-      if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
-        throw new CustomException(UPDATE_ERROR,
-            "Workflow action cannot be null." + String.format("{Workflow:%s}",
-                test.getWorkflow()));
-      }
+    //enrich update request
+    enrichmentService.enrichPQMUpdateRequest(testRequest);
+
+    //calculate test result
+    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {
+      qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+      enrichmentService.setTestResultStatus(testRequest);
+      enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     }
+
 
     return testRequest.getTests().get(0);
   }
