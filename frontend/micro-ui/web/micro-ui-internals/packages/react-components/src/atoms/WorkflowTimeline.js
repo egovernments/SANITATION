@@ -108,7 +108,6 @@ const WorkflowTimeline = ({ businessService, tenantId,applicationNo, timelineSta
                                                                 />
                                                             </React.Fragment>
                                                     }   
-                                                    {index !== 0 &&
                                                         <CheckPoint
                                                             keyValue={index}
                                                             isCompleted={checkpoint?.isTerminateState && index === 0}
@@ -118,7 +117,6 @@ const WorkflowTimeline = ({ businessService, tenantId,applicationNo, timelineSta
                                                             )}
                                                             customChild={getTimelineCaptions(checkpoint, index)}
                                                         />
-                                                    }
                                                 </React.Fragment>
                                             );  
                                         })}
