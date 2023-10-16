@@ -44,11 +44,6 @@ const TqmCard = ({reRoute=true}) => {
       label: t("TQM_DASHBOARD"),
       link: `/${window?.contextPath}/employee/tqm/dashboard`,
       roles: ["EMPLOYEE"],
-    },
-    {
-      label: "Notification",
-      link: `/${window?.contextPath}/employee/tqm/test`,
-      roles: ["EMPLOYEE"],
     }
   ];
 

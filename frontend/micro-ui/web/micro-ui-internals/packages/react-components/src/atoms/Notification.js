@@ -4,7 +4,8 @@ import Header from "./Header";
 import Button from "./Button";
 import { CloseSvg, NotificationBell } from "./svgindex";
 
-const Notification = ({ header, actions, eventNotificationText, timePastAfterEventCreation, timeApproxiamationInUnits }) => {
+
+const Notification = ({ actions }) => {
     const { t } = useTranslation();
 
     const [notifications, setNotifications] = useState([]);
@@ -16,7 +17,6 @@ const Notification = ({ header, actions, eventNotificationText, timePastAfterEve
     const handleClearAll = () => {
         setNotifications([]);
     };
-    console.log("Notifications:", notifications);
 
     const handleClearNotification = (index) => {
         const updatedNotifications = [...notifications];
@@ -46,7 +46,7 @@ const Notification = ({ header, actions, eventNotificationText, timePastAfterEve
                                         <p>{item.timePastAfterEventCreation + ` ${t(item.timeApproxiamationInUnits)}`}</p>
                                     </div>
                                     <div className="button-container">
-                                        <button className="notification-button" href={item.actionUrl}>{`${t(item.code)}`}</button>
+                                        <Button className={"header-btn viewDetailsButton"} label={t("ES_TQM_VIEW_TEST_DETAILS")} variation="secondary" type="button" onButtonClick={() => { }} />
                                     </div>
                                 </div>
                             </div>

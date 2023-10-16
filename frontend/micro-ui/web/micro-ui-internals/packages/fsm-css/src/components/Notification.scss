@@ -1,39 +1,44 @@
-.notification-button {
-    border: 2px solid #F47738;
-    color: #F47738;
-    padding: 5px 40px;
-    font-weight: bold;
-    margin: 10px 30px;
-}
-
 .button-container {
     display: flex;
     justify-content: flex-end;
 
 }
-.headerContainer{
+
+.headerContainer {
     display: flex;
     flex-wrap: wrap;
 }
-.clear-all-link{
+
+.clear-all-link {
     color: #F47738;
     text-decoration: underline;
     margin-left: auto;
     margin-top: 10px;
 }
-  
-.bell-icon{
-    margin-top : 8px;
-    margin-right : 10px;
+
+.bell-icon {
+    margin-top: 8px;
+    margin-right: 10px;
 }
-.notificationContent{
+
+.notificationContent {
     display: flex;
     justify-content: space-between;
 }
-.WhatsNewCard{
-    margin-bottom : 15px;
+
+.WhatsNewCard {
+    margin-bottom: 15px;
 }
-.NotificationHeader{
+
+.NotificationHeader {
     display: flex;
     justify-content: space-between;
+}
+
+.viewDetailsButton {
+    h2 {
+        color: #F47738;
+        padding: 5px 10px;
+        margin: 10px 20px;
+    }
 }
