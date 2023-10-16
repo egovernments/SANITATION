@@ -189,7 +189,7 @@ export const WorkflowService = {
         // const EnrichedWfData = await makeCommentsSubsidariesOfPreviousActions(processInstances)
         //if any documents are there this fn will add thumbnails to show
         
-        await makeCommentsSubsidariesOfPreviousActionsWorks(processInstances)
+        // await makeCommentsSubsidariesOfPreviousActionsWorks(processInstances)
 
         let timeline = processInstances.map((instance, ind) => {
           let checkPoint = {

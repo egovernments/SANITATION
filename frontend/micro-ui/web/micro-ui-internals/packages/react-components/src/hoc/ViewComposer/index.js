@@ -126,7 +126,7 @@ const renderCardSectionJSX = (section) => {
         </>
       );
     default:
-      return <div>Section Not Found</div>;
+      return null;
   }
 };
 
@@ -142,7 +142,7 @@ const ViewComposer = ({ isLoading = false, data, ...props }) => {
     <>
       {/* This first {} is for rendering cards at the top without navigationKey(out of navbar) */}
       {cards
-        ?.filter((card) => !card?.navigationKey)
+        ?.filter((card) => !card?.navigationKey && card?.sections)
         ?.map((card, cardIdx) => {
           const { sections } = card;
           return (

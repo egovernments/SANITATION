@@ -29,7 +29,7 @@ export const searchTestResultData = async ({ id, tenantId }) => {
 
   const combinedData = [];
 
-  testcriteraData.forEach((testItem) => {
+  testcriteraData?.forEach((testItem) => {
     const matchingMdmsItem = mdmsCriteriaData?.mdms?.find((mdmsItem) => mdmsItem.uniqueIdentifier === testItem.criteriaCode);
     if (matchingMdmsItem) {
       const mergedData = {
@@ -44,44 +44,54 @@ export const searchTestResultData = async ({ id, tenantId }) => {
     }
   });
 
+  const workflowData = await Digit.WorkflowService.getDetailsByIdWorks({ tenantId, id, moduleCode: "PQM" });
+  const sla = Math.round(workflowData?.processInstances?.[0]?.stateSla / (24 * 60 * 60 * 1000));
+
   return {
     details: [
       {
-        key: "Test ID",
+        key: "ES_TQM_LABEL_TEST_ID",
         value: testResponse?.id || "N/A",
       },
       {
-        key: "Plant name",
-        value: testResponse?.plantCode || "N/A",
+        key: "ES_TQM_LABEL_PLANT_NAME",
+        value: Digit.Utils.locale.getTransformedLocale(`PQM.Plant_${testResponse?.plantCode}`) || "N/A",
       },
       {
-        key: "Treatment process",
-        value: testResponse?.processCode || "N/A",
+        key: "ES_TQM_LABEL_TREATMENT_PROCESS",
+        value: Digit.Utils.locale.getTransformedLocale(`PQM.Process_${testResponse?.processCode}`) || "N/A",
       },
       {
-        key: "Stage",
-        value: testResponse?.stageCode || "N/A",
+        key: "ES_TQM_LABEL_STAGE",
+        value: Digit.Utils.locale.getTransformedLocale(`PQM.Stage_${testResponse?.stageCode}`) || "N/A",
       },
       {
-        key: "Test type",
-        value: testResponse?.testType || "N/A",
+        key: "ES_TQM_LABEL_TEST_TYPE",
+        value: Digit.Utils.locale.getTransformedLocale(`PQM.TestType_${testResponse?.testType}`) || "N/A",
       },
       {
-        key: "Test scheduled on",
+        key: "ES_TQM_LABEL_TEST_SCHEDULED_ON",
         value:
           (testResponse?.scheduledDate &&
-            `${new Date(testResponse?.scheduledDate).getDate()}/${new Date(testResponse?.scheduledDate).getMonth()}/${new Date(testResponse?.scheduledDate).getFullYear()}`) ||
+            `${new Date(testResponse?.scheduledDate).getDate()}/${new Date(testResponse?.scheduledDate).getMonth() + 1}/${new Date(testResponse?.scheduledDate).getFullYear()}`) ||
           "N/A",
       },
       {
-        key: "Status",
+        key: "ES_TQM_LABEL_STATUS",
         value: testResponse?.status || "N/A",
+      },
+      {
+        key: "ES_TQM_LABEL_SLA",
+        isSla: true,
+        isSuccess: Math.sign(sla) === -1 ? false : true,
+        value: sla ? sla : "N/A",
       },
     ],
     documents: testResponse?.documents?.map((i) => {
       return { title: i?.documentUid, value: i?.fileStoreId };
     }),
     tableData: combinedData.length !== 0 ? combinedData : null,
-    testSummary: combinedData.length !== 0 ? ["", "", "", "Result summary", !!combinedData.find((i) => i.status !== "PASS") === false ? "PASS" : "FAIL"] : null,
+    testSummary: combinedData.length !== 0 ? ["", "", "", "ES_TQM_LABEL_RESULT_SUMMARY", !!combinedData.find((i) => i.status !== "PASS") === false ? "ES_TQM_LABEL_RESULT_PASS" : "ES_TQM_LABEL_RESULT_FAIL"] : null,
+    wfStatus: testResponse?.wfStatus,
   };
 };

@@ -34,6 +34,7 @@ const App = ({ path }) => {
   const TqmInbox = Digit?.ComponentRegistryService?.getComponent("TqmInbox");
   const TqmResponse = Digit?.ComponentRegistryService?.getComponent("TqmResponse");
   const TqmViewTestResults = Digit?.ComponentRegistryService?.getComponent("TqmViewTestResults");
+  const TQMSummary = Digit?.ComponentRegistryService?.getComponent("TQMSummary");
 
   return (
     <React.Fragment>
@@ -53,6 +54,7 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/view-test-results`} component={() => <TqmViewTestResults />} />
           <PrivateRoute path={`${path}/test`} component={() => <Test />} />
           {/* <PrivateRoute path={`${path}/summary/:id`} component={() => <TQMSummary />} /> */}
+          <PrivateRoute path={`${path}/summary`} component={() => <TQMSummary />} />
         </AppContainer>
       </Switch>
     </React.Fragment>

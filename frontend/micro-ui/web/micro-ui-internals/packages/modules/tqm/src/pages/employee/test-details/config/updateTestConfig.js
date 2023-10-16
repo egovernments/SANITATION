@@ -1,4 +1,4 @@
-export const updateConfig = ({ t, options }) => {
+export const updateConfig = ({ t, testLabs }) => {
   return [
     {
       head: t("ES_TQM_SELECT_SAMPLE_TO_LAB_LABEL"),
@@ -11,17 +11,10 @@ export const updateConfig = ({ t, options }) => {
           disable: false,
           populators: {
             name: "status",
-            optionsKey: "name",
+            optionsKey: "i18nKey",
             error: t("ES_TQM_SELECT_LAB_LABEL_ERROR"),
             required: true,
-            // 🚧 WIP: DUMMY DATA FOR UPDATE STATUS 👇
-            options: [{ name: "djhsdkj" }, { name: "34734786" }],
-            // 🚧 WIP: way to call option from mdms 👇
-            //   mdmsConfig: {
-            //     masterName: "ProjectType",
-            //     moduleName: "works",
-            //     localePrefix: "COMMON_MASTERS"
-            // }
+            options: testLabs,
           },
         },
       ],
