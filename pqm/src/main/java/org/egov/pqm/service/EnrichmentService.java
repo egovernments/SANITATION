@@ -1,6 +1,8 @@
 package org.egov.pqm.service;
 
 
+import java.util.List;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.config.ServiceConfiguration;
@@ -9,6 +11,7 @@ import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.AuditDetails;
+import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.QualityCriteria.StatusEnum;
 import org.egov.pqm.web.model.Test;
@@ -39,6 +42,16 @@ public class EnrichmentService {
     setAuditDetails(testRequest);
     setWorkflow(testRequest.getTests().get(0));
     setTestResultStatus(testRequest);
+    setDocumentsIdAndTestId(testRequest);
+  }
+  private void setDocumentsIdAndTestId(TestRequest testRequest)
+  {
+    List<Document> documentList = testRequest.getTests().get(0).getDocuments();
+    for(Document doc : documentList)
+    {
+      doc.setTestId(testRequest.getTests().get(0).getId());
+      doc.setId(String.valueOf(UUID.randomUUID()));
+    }
   }
 
   private void setTestResultStatus(TestRequest testRequest) {
