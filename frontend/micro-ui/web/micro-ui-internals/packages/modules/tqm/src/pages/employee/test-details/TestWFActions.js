@@ -3,38 +3,53 @@ import React, { Fragment, useEffect, useState } from "react";
 import { updateConfig } from "./config/updateTestConfig";
 import { testResultsConfig } from "./config/testResultsConfig";
 
-function TestWFActions({ t, actionData, submitAction }) {
-  // 🚧 WIP: DUMMY DATA FOR TEST RESULTS 👇
-
+function TestWFActions({ id, t, WFData, actionData, actionState, submitAction }) {
   const [showPopUp, setshowPopUp] = useState(null);
   const [config, setConfig] = useState(null);
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const { isLoading: istestLabLoading, data: testLabs } = Digit.Hooks.tqm.useCustomMDMSV2({
+    tenantId: tenantId,
+    schemaCode: "PQM.QualityTestLab",
+  });
+
+  const { isLoading: isDataLoading, data: testDetailsData } = Digit.Hooks.tqm.useSearchTest({ id: id, tenantId: tenantId });
 
   const onSubmit = (data) => {
-    if (actionData === 2 && !showPopUp) {
+    if (actionState === "PENDINGRESULTS" && !showPopUp) {
       setshowPopUp(data);
       return null;
     }
-    submitAction(data);
+    const { action: workflow } = actionData;
+    testDetailsData.workflow = workflow;
+    submitAction(testDetailsData);
   };
 
   useEffect(() => {
-    switch (actionData) {
-      case 1:
-        return setConfig(updateConfig({ t }));
-      case 2:
+    switch (actionState) {
+      case "SCHEDULED":
+        return setConfig(updateConfig({ t, testLabs }));
+      case "PENDINGRESULTS":
         return setConfig(testResultsConfig({ t }));
       default:
         null;
     }
-  }, [actionData]);
+  }, [actionState, testLabs, istestLabLoading]);
 
   const onConfirm = () => {
-    submitAction(showPopUp);
+    const { action: workflow } = actionData;
+    testDetailsData.workflow = workflow;
+    testDetailsData.additionalDetails.testData = showPopUp;
+    submitAction(testDetailsData);
   };
 
   return (
     <>
-      <FormComposerV2 config={config} onSubmit={onSubmit} label={t(actionData === 1 ? "ES_TQM_UPDATE_STATUS_BUTTON" : "ES_TQM_SUBMIT_TEST_RESULTS_BUTTON")} submitInForm={true} />
+      <FormComposerV2
+        config={config}
+        onSubmit={onSubmit}
+        label={t(actionState === "SCHEDULED" ? "ES_TQM_UPDATE_STATUS_BUTTON" : "ES_TQM_SUBMIT_TEST_RESULTS_BUTTON")}
+        submitInForm={true}
+      />
       {showPopUp && (
         <Modal
           popmoduleClassName="tqm-pop-module"

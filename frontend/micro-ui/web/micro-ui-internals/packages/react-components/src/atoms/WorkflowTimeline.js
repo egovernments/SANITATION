@@ -108,15 +108,17 @@ const WorkflowTimeline = ({ businessService, tenantId,applicationNo, timelineSta
                                                                 />
                                                             </React.Fragment>
                                                     }   
-                                                    <CheckPoint
-                                                        keyValue={index}
-                                                        isCompleted={checkpoint?.isTerminateState && index === 0}
-                                                        label={t(
-                                                            Digit.Utils.locale.getTransformedLocale(`${timelineStatusPrefix}STATUS_${checkpoint?.performedAction === "EDIT" ? `${checkpoint?.performedAction}` :   `${checkpoint?.performedAction}`
-                                                            }`)
-                                                        )}
-                                                        customChild={getTimelineCaptions(checkpoint, index)}
-                                                    />
+                                                    {index !== 0 &&
+                                                        <CheckPoint
+                                                            keyValue={index}
+                                                            isCompleted={checkpoint?.isTerminateState && index === 0}
+                                                            label={t(
+                                                                Digit.Utils.locale.getTransformedLocale(`${timelineStatusPrefix}STATUS_${checkpoint?.performedAction === "EDIT" ? `${checkpoint?.performedAction}` :   `${checkpoint?.performedAction}`
+                                                                }`)
+                                                            )}
+                                                            customChild={getTimelineCaptions(checkpoint, index)}
+                                                        />
+                                                    }
                                                 </React.Fragment>
                                             );  
                                         })}
