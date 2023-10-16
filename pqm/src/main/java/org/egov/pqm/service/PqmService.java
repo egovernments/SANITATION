@@ -73,13 +73,14 @@ public class PqmService {
 	 */
 	public TestResponse testSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
 
-		List<Test> testList = new LinkedList<>();
+    List<Test> testList = new LinkedList<>();
 
-		if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
-			checkRoleInValidateSearch(criteria, requestInfo);
-		}
-		TestResponse testResponse = repository.getPqmData(criteria);
-		List<String> idList = testResponse.getTests().stream().map(Test::getId).collect(Collectors.toList());
+    if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
+      checkRoleInValidateSearch(criteria, requestInfo);
+    }
+    TestResponse testResponse = repository.getPqmData(criteria);
+    List<String> idList = testResponse.getTests().stream().map(Test::getId)
+        .collect(Collectors.toList());
 
 		List<QualityCriteria> qualityCriteriaList =repository.getQualityCriteriaData(idList);
 
@@ -94,45 +95,50 @@ public class PqmService {
 		DocumentResponse documentResponse = repository.getDocumentData(idList);
 		List<Document> documentList = documentResponse.getDocuments();
 
-		testList = testResponse.getTests().stream().map(test -> {
-			List<Document> documents = documentList.stream()
-					.filter(document -> test.getId().equalsIgnoreCase(document.getTestId()))
-					.collect(Collectors.toList());
-			test.setDocuments(documents);
-			return test;
-		}).collect(Collectors.toList());
+    testList = testResponse.getTests().stream().map(test -> {
+      List<Document> documents = documentList.stream()
+          .filter(document -> test.getId().equalsIgnoreCase(document.getTestId()))
+          .collect(Collectors.toList());
+      test.setDocuments(documents);
+      return test;
+    }).collect(Collectors.toList());
 
-		return testResponse;
+    return testResponse;
 
-	}
+  }
 
-	private void checkRoleInValidateSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
-		List<Role> roles = requestInfo.getUserInfo().getRoles();
-		TestSearchCriteria testSearchCriteria = criteria.getTestSearchCriteria();
-		List<String> masterNameList = new ArrayList<>();
-		masterNameList.add(null);
-		if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
+  private void checkRoleInValidateSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
+    List<Role> roles = requestInfo.getUserInfo().getRoles();
+    TestSearchCriteria testSearchCriteria = criteria.getTestSearchCriteria();
+    List<String> masterNameList = new ArrayList<>();
+    masterNameList.add(null);
+    if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
 
-		}
+    }
 
-	}
+  }
 
-	public Test create(TestRequest testRequest) {
-		mdmsValidator.validateMdmsData(testRequest);
-		qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
-		enrichmentService.enrichPQMCreateRequest(testRequest);
-		enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
-		repository.save(testRequest);
-		return testRequest.getTests().get(0);
-	}
+  /**
+   * Creates Test
+   *
+   * @param testRequest The Create Request
+   * @return New Test
+   */
+  public Test create(TestRequest testRequest) {
+    //updating workflow during create
+    workflowIntegrator.callWorkFlow(testRequest);
+    qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+    repository.save(testRequest);
+    return testRequest.getTests().get(0);
+  }
 
-	public Test scheduleTest(TestRequest testRequest) {
-		mdmsValidator.validateMdmsData(testRequest);
-		enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
-		workflowIntegrator.callWorkFlow(testRequest);
-		repository.save(testRequest);
-		return testRequest.getTests().get(0);
-	}
+    public Test scheduleTest(TestRequest testRequest) {
+        mdmsValidator.validateMdmsData(testRequest);
+        enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
+        workflowIntegrator.callWorkFlow(testRequest);
+        repository.save(testRequest);
+        return testRequest.getTests().get(0);
+    }
 
 	/**
 	 * Updates the Test
@@ -173,4 +179,17 @@ public class PqmService {
     repository.update(testRequest);
 		return testRequest.getTests().get(0);
 	}
+
+
+    /**
+     * Creates Scheduled Tests
+     *
+     * @param testRequest The Create Request
+     * @return New Test
+     */
+    public Test createScheduledTest(TestRequest testRequest, Object mdmsData) {
+        RequestInfo requestInfo = testRequest.getRequestInfo();
+        repository.save(testRequest);
+        return testRequest.getTests().get(0);
+    }
 }
