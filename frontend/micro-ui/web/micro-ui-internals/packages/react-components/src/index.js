@@ -252,8 +252,10 @@ import MobileSearchResults from "./hoc/MobileView/MobileSearchResults";
 import MobileSearchComponent from "./hoc/MobileView/MobileSearchComponent";
 import ResultsTable from "./hoc/ResultsTable";
 import InboxSearchLinks from "./atoms/InboxSearchLinks";
+import Notification from "./atoms/Notification";
 
 export {
+  Notification,
   Phone,
   Body,
   Loader,

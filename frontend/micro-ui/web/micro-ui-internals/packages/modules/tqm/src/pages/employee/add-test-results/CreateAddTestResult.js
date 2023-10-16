@@ -53,3 +53,67 @@ const Create = () => {
 };
 
 export default Create;
+
+
+
+
+// let inputData = {
+//   "plantCode": {
+//       "code": "MALE",
+//       "active": true,
+//       "name": "COMMON_GENDER_MALE"
+//   },
+//   "processCode": {
+//       "code": "MALE",
+//       "active": true,
+//       "name": "COMMON_GENDER_MALE"
+//   },
+//   "stageCode": {
+//       "code": "MALE",
+//       "active": true,
+//       "name": "COMMON_GENDER_MALE"
+//   },
+//   "materialCode": {
+//       "code": "MALE",
+//       "active": true,
+//       "name": "COMMON_GENDER_MALE"
+//   },
+//   "qualityParameter": {
+//       "pH": "6"
+//   },
+//   "basicDetails_photograph": []
+// };
+// // Convert the input data to the desired format
+// let outputData = {
+//   "tests": [
+//       {
+//           // "id": "3",
+//           // "tenantId": "pb.amritsar",
+//           "plantCode": data.plantCode.code,
+//           "processCode": data.processCode.code,
+//           "stageCode": data.stageCode.code,
+//           "materialCode": data.materialCode.code,
+//           // "wfStatus": "APPLIED",
+//           // "testType": "LAB",
+//           "testCriteria": [
+//               {
+//                   "criteriaCode": "PHGRT7",
+//                   "value": parseFloat(inputData.qualityParameter.pH),
+//                   "isActive": true
+//               }
+//           ],
+//           "isActive": true,
+//           "documents": [
+//               {
+//                   "id": "124",
+//                   "documentType": "string",
+//                   "fileStore": "string",
+//                   "documentUid": "string",
+//                   "additionalDetails": {}
+//               }
+//           ],
+//           "additionalDetails": {}
+//       }
+//   ]
+// };
+

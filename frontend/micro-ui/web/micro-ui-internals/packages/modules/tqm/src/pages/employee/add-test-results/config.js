@@ -3,7 +3,7 @@ export const addTestConfig = [
       body: [
         {
           isMandatory: true,
-          key: "plant_name",
+          key: "plantCode",
           type: "radioordropdown",
           label: "TQM_PLANT_NAME",
           disable: false,
@@ -24,12 +24,12 @@ export const addTestConfig = [
         },
         {
           isMandatory: true,
-          key: "process",
+          key: "processCode",
           type: "radioordropdown",
           label: "TQM_TREATMENT_PROCESS",
           disable: false,
           populators: {
-            name: "process",
+            name: "processCode",
             optionsKey: "name",
             error: "ES_TQM_REQUIRED",
             required: true,
@@ -42,12 +42,12 @@ export const addTestConfig = [
         },
         {
           isMandatory: true,
-          key: "stage",
+          key: "stageCode",
           type: "radioordropdown",
           label: "TQM_PROCESS_STAGE",
           disable: false,
           populators: {
-            name: "stage",
+            name: "stageCode",
             optionsKey: "name",
             error: "ES_TQM_REQUIRED",
             required: true,
@@ -60,12 +60,12 @@ export const addTestConfig = [
         },
         {
           isMandatory: true,
-          key: "output",
+          key: "materialCode",
           type: "radioordropdown",
           label: "TQM_OUTPUT_TYPE",
           disable: false,
           populators: {
-            name: "output",
+            name: "materialCode",
             optionsKey: "name",
             error: "ES_TQM_REQUIRED",
             required: true,
