@@ -98,12 +98,12 @@ public class MDMSUtils {
     return new StringBuilder().append(config.getMdmsHostv2()).append(config.getMdmsv2EndPoint());
   }
 
-	private ModuleDetail getTenantModuleRequestData() {
-		List<MasterDetail> tenantMasterDetails = new ArrayList<>();
+  private ModuleDetail getTenantModuleRequestData() {
+    List<MasterDetail> tenantMasterDetails = new ArrayList<>();
 
-		ModuleDetail tenantModuleDetail = null;
-		return tenantModuleDetail;
-	}
+    ModuleDetail tenantModuleDetail = null;
+    return tenantModuleDetail;
+  }
 
   public Object mdmsCallV2(RequestInfo requestInfo, String tenantId, String schemaCode){
     MdmsCriteriaRequest mdmsCriteriaRequest = getMDMSRequestV2(requestInfo, tenantId, schemaCode);

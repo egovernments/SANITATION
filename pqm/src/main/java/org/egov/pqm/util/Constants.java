@@ -39,7 +39,7 @@ public class Constants {
   public static final String LESS_THAN_EQUAL_TO = "LSTOREQ.Less than or Equal to";
 
 	public static final String TENANT_ID_KEY = "tenantId";
-  
+
   // Workflow Constants
 
 	public static final String BUSINESS_SERVICE_KEY = "businessService";
@@ -71,4 +71,17 @@ public class Constants {
 	public static final String BUSINESS_ID_JOSN_KEY = "$.businessId";
 
 	public static final String STATUS_JSON_KEY = "$.state.applicationStatus";
+
+  public static final String UPDATE_RESULT = "UPDATE_RESULT";
+  public static final String SUBMITTED = "SUBMITTED";
+  public static final String PENDING = "PENDING";
+
+  //Validation MDMS Constants
+  public static final String PQM_SCHEMA_CODE_CRITERIA = "PQM.QualityCriteria";
+  public static final String PQM_SCHEMA_CODE_PLANT = "PQM.Plant";
+  public static final String PQM_SCHEMA_CODE_PROCESS = "PQM.Process";
+  public static final String PQM_SCHEMA_CODE_STAGE = "PQM.Stage";
+  public static final String PQM_SCHEMA_CODE_MATERIAL = "PQM.Material";
+  public static final String WF_ACTION_SCHEDULE = "SCHEDULE";
+
 }
