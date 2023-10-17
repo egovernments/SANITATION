@@ -1,6 +1,9 @@
 package org.egov.pqm.service;
 
 
+import static org.egov.pqm.util.Constants.SUBMITTED;
+import static org.egov.pqm.web.model.TestResultStatus.PENDING;
+
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -41,15 +44,20 @@ public class EnrichmentService {
     setIdgenIds(testRequest);
     setAuditDetails(testRequest);
 //  setWorkflow(testRequest.getTests().get(0));
-//    setWorkflowStatus();
+    setWorkflowStatus(testRequest);
     setTestResultStatus(testRequest);
     setDocumentsIdAndTestId(testRequest);
+  }
+  private void setWorkflowStatus(TestRequest testRequest)
+  {
+    testRequest.getTests().get(0).setWfStatus(SUBMITTED);
   }
 
   public void enrichPQMCreateRequestForLabTest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setIdgenIds(testRequest);
     setAuditDetails(testRequest);
+    testRequest.getTests().get(0).setStatus(PENDING);
     setWorkflow(testRequest.getTests().get(0));
     setDocumentsIdAndTestId(testRequest);
   }

@@ -73,6 +73,8 @@ public class Constants {
 	public static final String STATUS_JSON_KEY = "$.state.applicationStatus";
 
   public static final String UPDATE_RESULT = "UPDATE_RESULT";
+  public static final String SUBMITTED = "SUBMITTED";
+  public static final String PENDING = "PENDING";
 
   //Validation MDMS Constants
   public static final String PQM_SCHEMA_CODE_CRITERIA = "PQM.QualityCriteria";
