@@ -18,6 +18,7 @@ public class MdmsTest {
 
   @JsonProperty("code")
   private String code = null;
+
   @JsonProperty("plant")
   private String plant = null;
 

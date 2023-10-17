@@ -8,7 +8,7 @@ public class Constants {
   //MDMS constants
   public static final String MODULE_NAME = "TQM";
 
-  public static final String  MASTER_NAME_TESTING_STANDARD = "TestingStandard";
+  public static final String  MASTER_NAME_TESTING_STANDARD = "PQM.TestingStandard";
 
   public static final String  MASTER_NAME_QUALITY_CRITERIA = "PQM.QualityCriteria";
 

@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS eg_pqm_tests
 (
     id                character varying(64),
     tenantId          character varying(64),
+    testCode          character varying(64),
     plantCode           character varying(255),
     processCode         character varying(255),
     stageCode           character varying(255),
@@ -94,6 +95,7 @@ CREATE TABLE IF NOT EXISTS eg_pqm_tests_auditlog
 (
     id                character varying(64),
     tenantId          character varying(64),
+    testCode          character varying(64),
     plantCode           character varying(255),
     processCode         character varying(255),
     stageCode           character varying(255),

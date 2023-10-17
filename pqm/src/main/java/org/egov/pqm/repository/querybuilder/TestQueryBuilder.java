@@ -6,6 +6,7 @@ import java.util.TimeZone;
 
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.Pagination;
+import org.egov.pqm.web.model.Pagination.SortBy;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,13 @@ public class TestQueryBuilder {
 			addClauseIfRequired(preparedStmtList, builder);
 			builder.append(" test.id IN (").append(createQuery(ids)).append(")");
 			addToPreparedStatement(preparedStmtList, ids);
+		}
+
+		List<String> testCodes = criteria.getTestCode();
+		if (!CollectionUtils.isEmpty(testCodes)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" test.testCode IN (").append(createQuery(testCodes)).append(")");
+			addToPreparedStatement(preparedStmtList, testCodes);
 		}
 		
 		List<String> plantCodes = criteria.getPlantCodes();
@@ -217,6 +225,9 @@ public class TestQueryBuilder {
 
 		else if (criteria.getSortBy() == Pagination.SortBy.id)
 			builder.append(" ORDER BY test.id ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.scheduledDate)
+			builder.append(" ORDER BY test.scheduledDate ");
 
 		else if (criteria.getSortBy() == Pagination.SortBy.plantCode)
 			builder.append(" ORDER BY test.plantCode ");

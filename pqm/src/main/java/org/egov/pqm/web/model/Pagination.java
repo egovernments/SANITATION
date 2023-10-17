@@ -39,6 +39,7 @@ public class Pagination {
 		  stageCode,
 		  materialCode,
 		  deviceCode,
-	      createdTime
+	      createdTime,
+			scheduledDate
 	  }
 }

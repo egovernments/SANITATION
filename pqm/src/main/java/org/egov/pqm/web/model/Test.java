@@ -20,6 +20,9 @@ public class Test {
   @JsonProperty("id")
   private String id;
 
+  @JsonProperty("testCode")
+  private String testCode;
+
   @JsonProperty("tenantId")
   private String tenantId;
 

@@ -23,6 +23,9 @@ public class TestSearchCriteria {
   @JsonProperty("tenantId")
   private String tenantId = null;
 
+  @JsonProperty("testCode")
+  private List<String> testCode = null;
+
   @JsonProperty("plantCodes")
   @Valid
   private List<String> plantCodes = null;
