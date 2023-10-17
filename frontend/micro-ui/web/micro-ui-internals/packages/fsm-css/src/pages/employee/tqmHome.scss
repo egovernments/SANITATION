@@ -37,6 +37,7 @@
       color:#505A5F;
       font-weight: 700;
       padding: 0 16px 0px 16px;
+      margin-bottom: 0.81rem;
       .alerts-container-item-label {
         
       }
@@ -77,6 +78,7 @@
         font-weight: 400;
       }
       .performance-item-label-caption{
+        text-align: center;
         display: flex !important;
         align-items: center;
         svg {
@@ -109,6 +111,8 @@
       display: block;
       margin: auto;
       height: 6rem;
+      min-height: 6rem;
+      min-width: 1px;
       width: 1px; /* Adjust the width of your vertical line */
       background-color: #D6D5D4; /* Adjust the color of your vertical line */
       /* You can also add other styles like margin, padding, or positioning as needed */

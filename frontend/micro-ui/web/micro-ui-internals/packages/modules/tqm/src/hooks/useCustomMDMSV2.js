@@ -1,4 +1,4 @@
-export const useCustomMDMSV2 = ({ tenantId, schemaCode, select }) => {
+export const useCustomMDMSV2 = ({ tenantId, schemaCode, select, changeQueryName = "Random" }) => {
   const requestCriteria = {
     url: "/mdms-v2/v2/_search",
     body: {
@@ -27,6 +27,7 @@ export const useCustomMDMSV2 = ({ tenantId, schemaCode, select }) => {
             return options;
           },
     },
+    changeQueryName,
   };
   const { isLoading, data } = Digit.Hooks.useCustomAPIHook(requestCriteria);
   return { isLoading, data };

@@ -604,7 +604,7 @@ export const FormComposerV2 = (props) => {
                   <CardLabel
                     style={{
                       color: field.isSectionText ? "#505A5F" : "",
-                      marginBottom: props.inline ? "8px" : "revert",
+                      marginBottom: "0.5rem",
                       fontWeight: props.isDescriptionBold ? "600" : null,
                     }}
                     className="bolder"
