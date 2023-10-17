@@ -42,8 +42,7 @@ public class EnrichmentService {
   public void enrichPQMCreateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setIdgenIds(testRequest);
-    setAuditDetails(testRequest);
-//  setWorkflow(testRequest.getTests().get(0));
+    setAuditDetails(testRequest,true);
     setWorkflowStatus(testRequest);
     setTestResultStatus(testRequest);
     setDocumentsIdAndTestId(testRequest);
@@ -56,17 +55,18 @@ public class EnrichmentService {
   public void enrichPQMCreateRequestForLabTest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setIdgenIds(testRequest);
-    setAuditDetails(testRequest);
+    setAuditDetails(testRequest,true);
     testRequest.getTests().get(0).setStatus(PENDING);
-    setWorkflow(testRequest.getTests().get(0));
+    setInitialWorkflowAction(testRequest.getTests().get(0));
     setDocumentsIdAndTestId(testRequest);
   }
 
   public void enrichPQMUpdateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
-    setAuditDetails(testRequest);
+    setAuditDetails(testRequest, false);
     setDocumentsIdAndTestId(testRequest);
   }
+
   private void setDocumentsIdAndTestId(TestRequest testRequest)
   {
     List<Document> documentList = testRequest.getTests().get(0).getDocuments();
@@ -91,29 +91,30 @@ public class EnrichmentService {
     }
   }
 
-  private void setWorkflow(Test test) {
+  private void setInitialWorkflowAction(Test test) {
     if (test.getWorkflow() == null) {
       String action = Constants.WF_ACTION_SCHEDULE;
       test.setWorkflow(Workflow.builder().action(action).build());
     }
   }
 
-  private void setAuditDetails(TestRequest testRequest) {
+  private void setAuditDetails(TestRequest testRequest, boolean isCreate) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
-    AuditDetails auditDetails = getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
-    testRequest.getTests().get(0).setAuditDetails(auditDetails);
-  }
-
-  public AuditDetails getAuditDetails(String by, Boolean isCreate) {
+    AuditDetails auditDetails = null;
+    String createdBy = requestInfo.getUserInfo().getUuid();
     Long time = System.currentTimeMillis();
     if (isCreate) {
-      return AuditDetails.builder().createdBy(by).lastModifiedBy(by).createdTime(time)
+      auditDetails = AuditDetails.builder().createdBy(createdBy).lastModifiedBy(createdBy)
+          .createdTime(time)
           .lastModifiedTime(time)
           .build();
     } else {
-      return AuditDetails.builder().lastModifiedBy(by).lastModifiedTime(time).build();
+      auditDetails = AuditDetails.builder().lastModifiedBy(createdBy).lastModifiedTime(time)
+          .build();
     }
+    testRequest.getTests().get(0).setAuditDetails(auditDetails);
   }
+
 
   private void setIdgenIds(TestRequest testRequest) {
     String id = getId(testRequest.getRequestInfo(), testRequest.getTests().get(0).getTenantId(),
