@@ -16,56 +16,55 @@ import lombok.NoArgsConstructor;
 public class Test {
 
   @JsonProperty("id")
-  private String id = null;
+  private String id;
 
   @JsonProperty("tenantId")
-  private String tenantId = null;
+  private String tenantId;
 
   @JsonProperty("plantCode")
-  private String plantCode = null;
+  private String plantCode;
 
   @JsonProperty("processCode")
-  private String processCode = null;
+  private String processCode;
 
   @JsonProperty("stageCode")
-  private String stageCode = null;
+  private String stageCode;
 
   @JsonProperty("materialCode")
-  private String materialCode = null;
-  
+  private String materialCode;
+
   @JsonProperty("deviceCode")
-  private String deviceCode = null;
+  private String deviceCode;
 
   @JsonProperty("testCriteria")
   @Valid
   private List<QualityCriteria> qualityCriteria = new ArrayList<>();
 
   @JsonProperty("status")
-  private TestResultStatus status = null;
+  private TestResultStatus status;
 
   @JsonProperty("wfStatus")
-  private String wfStatus = null;
-  
+  private String wfStatus;
+
   @JsonProperty("testType")
-  private TestType testType = null;
+  private TestType testType;
 
   @JsonProperty("scheduledDate")
-  private Long scheduledDate = null;
+  private Long scheduledDate;
 
   @JsonProperty("isActive")
-  private Boolean isActive = null;
+  private Boolean isActive;
 
   @JsonProperty("documents")
   @Valid
-  private List<Document> documents = null;
+  private List<Document> documents;
 
   @JsonProperty("additionalDetails")
-  private Object additionalDetails = null;
+  private Object additionalDetails;
 
   @JsonProperty("auditDetails")
-  private AuditDetails auditDetails = null;
+  private AuditDetails auditDetails;
 
   @JsonProperty("workflow")
-  private Workflow workflow = null;
-
+  private Workflow workflow;
 }

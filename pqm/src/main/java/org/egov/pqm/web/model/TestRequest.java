@@ -11,13 +11,11 @@ import org.egov.common.contract.request.RequestInfo;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@Setter
 public class TestRequest {
 
-  @JsonProperty("requestInfo")
-  private RequestInfo requestInfo = null;
+  @JsonProperty("RequestInfo")
+  private RequestInfo requestInfo;
 
   @JsonProperty("tests")
-  private List<Test> tests = null;
+  private List<Test> tests;
 }

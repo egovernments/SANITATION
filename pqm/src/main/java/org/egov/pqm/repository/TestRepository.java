@@ -49,22 +49,22 @@ public class TestRepository {
 		producer.push(config.getTestSaveTopic(), testRequest);
 	}
 
-	public void update(TestRequest testRequest, boolean isStateUpdatable) {
+  public void saveAnomaly(String topic,TestRequest testRequest) {
+    producer.push(topic,testRequest);
+  }
+
+
+	public void update(TestRequest testRequest) {
 
 		Test test = testRequest.getTests().get(0);
 		RequestInfo requestInfo = testRequest.getRequestInfo();
+		producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo, Collections.singletonList(test)));
 
-		if (isStateUpdatable) {
-			producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo, Collections.singletonList(test)));
-		} else {
-			producer.push(config.getTestWorkflowTopic(), new TestRequest(requestInfo, Collections.singletonList(test)));
-		}
 	}
 
 	public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = pqmQueryBuilder.getPqmSearchQuery(testSearchCriteria, preparedStmtList);
-
 		List<Test> tests = jdbcTemplate.query(query, preparedStmtList.toArray(), pqmRowMapper);
 		return TestResponse.builder().tests(tests).totalCount(pqmRowMapper.getFullCount()).build();
 	}
