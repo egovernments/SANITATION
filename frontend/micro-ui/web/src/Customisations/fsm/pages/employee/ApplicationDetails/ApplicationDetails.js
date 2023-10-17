@@ -127,7 +127,7 @@ const ApplicationDetails = (props) => {
       case "SUBMIT":
       case "FSM_SUBMIT":
       // case !DSO && "SCHEDULE":
-        return history.push(`/${window?.contextPath}/employee/fsm/modify-application/` + applicationNumber);
+      //   return history.push(`/${window?.contextPath}/employee/fsm/modify-application/` + applicationNumber);
       case "PAY":
       case "FSM_PAY":
       case "ADDITIONAL_PAY_REQUEST":

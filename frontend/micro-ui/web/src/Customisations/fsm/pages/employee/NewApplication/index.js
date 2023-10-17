@@ -45,8 +45,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
     if (
       formData?.propertyType &&
       formData?.subtype &&
-      (formData?.address?.locality?.code ||
-      (formData?.address?.propertyLocation?.code === "FROM_GRAM_PANCHAYAT" && formData?.address?.gramPanchayat?.code)) &&
+      formData?.address?.locality?.code &&
       formData?.tripData?.vehicleType &&
       formData?.channel &&
       (formData?.tripData?.amountPerTrip || formData?.tripData?.amountPerTrip === 0)
@@ -106,7 +105,6 @@ export const NewApplication = ({ parentUrl, heading }) => {
     const advanceAmount = amount === 0 ? null : data?.advancepaymentPreference?.advanceAmount;
     const gramPanchayat = data?.address.gramPanchayat;
     const village = data?.address.village;
-    const propertyLocation = data?.address?.propertyLocation?.code;
 
     const formData = {
       fsm: {
@@ -119,7 +117,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
         sanitationtype: sanitationtype,
         source: applicationChannel.code,
         additionalDetails: {
-          tripAmount: JSON.stringify(amount),
+          tripAmount: amount,
         },
         propertyUsage: data?.subtype,
         vehicleCapacity: data?.tripData?.vehicleType?.capacity,
@@ -137,28 +135,27 @@ export const NewApplication = ({ parentUrl, heading }) => {
           pincode,
           slumName: slum,
           locality: {
-            code: localityCode ? localityCode : village?.code ? village?.code : gramPanchayat?.code,
-            name: localityName ? localityName : village?.name ? village?.name : gramPanchayat?.name,
+            code: localityCode,
+            name: localityName,
           },
           geoLocation: {
             latitude: data?.address?.latitude,
             longitude: data?.address?.longitude,
           },
           additionalDetails: {
-            boundaryType: propertyLocation === "FROM_GRAM_PANCHAYAT" ? (village?.code ? "Village" : "GP") : "Locality",
             gramPanchayat: {
               code: gramPanchayat?.code,
               name: gramPanchayat?.name,
             },
             village: {
-              code: village?.code ? village?.code : "",
-              name: village?.name ? village?.name : village,
+              code: village?.code,
+              name: village?.name,
             },
           },
         },
         noOfTrips,
         paymentPreference,
-        advanceAmount: typeof advanceAmount === "number" ? JSON.stringify(advanceAmount) : advanceAmount,
+        advanceAmount,
       },
       workflow: null,
     };

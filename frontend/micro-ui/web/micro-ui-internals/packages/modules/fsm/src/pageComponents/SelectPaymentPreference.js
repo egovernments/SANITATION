@@ -64,7 +64,8 @@ const SelectPaymentPreference = ({
         formData?.propertyType &&
         formData?.subtype &&
         formData?.address &&
-        formData?.selectTripNo?.vehicleCapacity.capacity
+        formData?.selectTripNo?.vehicleCapacity.capacity &&
+        formData?.address?.propertyLocation?.code === "WITHIN_ULB_LIMITS"
       ) {
         const capacity = formData?.selectTripNo?.vehicleCapacity.capacity;
         const { slum: slumDetails } = formData.address;
@@ -107,6 +108,9 @@ const SelectPaymentPreference = ({
           sessionStorage.removeItem('Digit.advance_amount');
           setError(true);
         }
+      } else {
+        setAdvanceAmount(0);
+        Digit.SessionStorage.set("advance_amount", 0);
       }
     })();
   }, [
@@ -141,7 +145,19 @@ const SelectPaymentPreference = ({
         t={t}
       >
         <div className='fsm-citizen-payment-label-wrapper'>
-          <KeyNote keyValue={t('ADV_TOTAL_AMOUNT') + ' (₹)'} note={max} />
+          <KeyNote keyValue={t('ADV_TOTAL_AMOUNT') + ' (₹)'} note={formData?.address?.propertyLocation?.code === "FROM_GRAM_PANCHAYAT" ? "N/A" : max} />
+          {formData?.address?.propertyLocation?.code === "FROM_GRAM_PANCHAYAT" && (
+          <CardLabelError
+            style={{
+              width: "100%",
+              marginTop: "-15px",
+              fontSize: "14px",
+              marginBottom: "0px",
+            }}
+          >
+            {t("FSM_TOTAL_AMOUNT_NOTE")}
+          </CardLabelError>
+         )}
           <KeyNote keyValue={t('FSM_ADV_MIN_PAY') + ' (₹)'} note={min} />
         </div>
 
@@ -167,24 +183,24 @@ const SelectPaymentPreference = ({
                 </div>
                 {currentValue > max && (
                   <CardLabelError
-                    style={{
-                      width: '100%',
-                      marginTop: '-15px',
-                      fontSize: '14px',
-                      marginBottom: '10px',
-                    }}
+                  style={{
+                    width: "100%",
+                    marginTop: "-15px",
+                    fontSize: "14px",
+                    marginBottom: "0px",
+                  }}
                   >
                     {t('FSM_ADVANCE_AMOUNT_MAX')}
                   </CardLabelError>
                 )}
                 {currentValue < min && (
                   <CardLabelError
-                    style={{
-                      width: '100%',
-                      marginTop: '-15px',
-                      fontSize: '14px',
-                      marginBottom: '10px',
-                    }}
+                  style={{
+                    width: "100%",
+                    marginTop: "-15px",
+                    fontSize: "14px",
+                    marginBottom: "0px",
+                  }}
                   >
                     {t('FSM_ADVANCE_AMOUNT_MIN')}
                   </CardLabelError>

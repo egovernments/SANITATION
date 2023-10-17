@@ -152,8 +152,19 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
           latitude: data?.address?.latitude ? data?.address?.latitude : applicationData.address.geoLocation.latitude,
           longitude: data?.address?.longitude ? data?.address?.longitude : applicationData.address.geoLocation.longitude,
         },
+        additionalDetails: {
+          boundaryType: propertyLocation === "FROM_GRAM_PANCHAYAT" ? (village?.code ? "Village" : "GP") : "Locality",
+          gramPanchayat: {
+            code: gramPanchayat?.code,
+            name: gramPanchayat?.name,
+          },
+          village: {
+            code: village?.code ? village?.code : "",
+            name: village?.name ? village?.name : village,
+          },
+        },
       },
-      advanceAmount,
+      advanceAmount: typeof advanceAmount === "number" ? JSON.stringify(advanceAmount) : advanceAmount,
     };
 
     delete formData["responseInfo"];

@@ -153,8 +153,8 @@ const getBillsGenieKey = (tenantId, moduleCode) => ({
         masterDetails: [{ name: 'tenants' }, { name: 'citymodule' }],
       },
       {
-        moduleName: 'common-masters',
-        masterDetails: [{ name: 'uiCommonPay' }],
+        moduleName: "common-masters",
+        masterDetails: [{ name: "uiCommonPay" }],
       },
     ],
   },
@@ -223,6 +223,24 @@ const getApplicationChannelCriteria = (tenantId, moduleCode) => ({
         masterDetails: [
           {
             name: 'ApplicationChannel',
+            filter: null,
+          },
+        ],
+      },
+    ],
+  },
+});
+
+const getUrcConfigCriteria = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId: tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [
+          {
+            name: "UrcConfig",
             filter: null,
           },
         ],
@@ -657,10 +675,10 @@ const getGenderTypeList = (tenantId, moduleCode, type) => ({
 const getMeterStatusTypeList = (tenantId) => ({
   moduleDetails: [
     {
-      moduleName: 'ws-services-calculation',
+      moduleName: "ws-services-calculation",
       masterDetails: [
         {
-          name: 'MeterStatus',
+          name: "MeterStatus",
           filter: `$.*.name`,
         },
       ],
@@ -671,11 +689,11 @@ const getMeterStatusTypeList = (tenantId) => ({
 const getBillingPeriodValidation = (tenantId) => ({
   moduleDetails: [
     {
-      moduleName: 'ws-services-masters',
+      moduleName: "ws-services-masters",
       masterDetails: [
         {
-          name: 'billingPeriod',
-          filter: '*',
+          name: "billingPeriod",
+          filter: "*",
         },
       ],
     },
@@ -941,10 +959,10 @@ const getWSTaxHeadMasterCritera = (tenantId, moduleCode, type) => ({
 const getHowItWorksJSON = (tenantId) => ({
   moduleDetails: [
     {
-      moduleName: 'common-masters',
+      moduleName: "common-masters",
       masterDetails: [
         {
-          name: 'howItWorks',
+          name: "howItWorks",
         },
       ],
     },
@@ -1030,6 +1048,8 @@ const GetApplicationChannel = (MdmsRes) =>
     })
   );
 
+const getUrcConfig = (MdmsRes) => MdmsRes["FSM"].UrcConfig;
+
 const GetPropertyType = (MdmsRes) =>
   MdmsRes['FSM'].PropertyType.filter(
     (property) => property.active && !property.propertyType
@@ -1059,12 +1079,11 @@ const GetVehicleType = (MdmsRes) =>
     });
 
 const GetVehicleMakeModel = (MdmsRes) =>
-  MdmsRes['Vehicle'].VehicleMakeModel.filter((vehicle) => vehicle.active).map(
-    (vehicleDetails) => {
-      return {
-        ...vehicleDetails,
-        i18nKey: `COMMON_MASTER_VEHICLE_${vehicleDetails.code}`,
-      };
+MdmsRes["Vehicle"].VehicleMakeModel.filter((vehicle) => vehicle.active).map((vehicleDetails) => {
+  return {
+    ...vehicleDetails,
+    i18nKey: `COMMON_MASTER_VEHICLE_${vehicleDetails.code}`,
+    };
     }
   );
 
@@ -1506,6 +1525,8 @@ const transformResponse = (type, MdmsRes, moduleCode, tenantId) => {
       return GetTripNumber(MdmsRes);
     case 'ReceivedPaymentType':
       return GetReceivedPaymentType(MdmsRes);
+    case "UrcConfig":
+      return getUrcConfig(MdmsRes);
     default:
       return MdmsRes;
   }
@@ -1653,6 +1674,9 @@ export const MdmsService = {
       getApplicationChannelCriteria(tenantId, moduleCode),
       moduleCode
     );
+  },
+  getUrcConfig: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getUrcConfigCriteria(tenantId, moduleCode, type), moduleCode);
   },
   getPropertyType: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(
