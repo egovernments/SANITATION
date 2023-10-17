@@ -18,6 +18,7 @@ import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.validator.MDMSValidator;
+import org.egov.pqm.web.model.AuditDetails;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Test;
@@ -148,6 +149,9 @@ public class PqmService {
                 test.getWorkflow()));
       }
     }
+    // fetch auditDetails from DB
+    AuditDetails auditDetails = enrichmentService.fetchAuditDetailsFromDB(testRequest);
+
 
     //Fetching actions from businessService
     BusinessService businessService = workflowService.getBusinessService(test, testRequest,
@@ -158,7 +162,7 @@ public class PqmService {
     workflowIntegrator.callWorkFlow(testRequest);
 
     //enrich update request
-    enrichmentService.enrichPQMUpdateRequest(testRequest);
+    enrichmentService.enrichPQMUpdateRequest(testRequest,auditDetails);
 
     //calculate test result
     if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {

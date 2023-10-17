@@ -4,6 +4,7 @@ package org.egov.pqm.service;
 import static org.egov.pqm.util.Constants.SUBMITTED;
 import static org.egov.pqm.web.model.TestResultStatus.PENDING;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +16,15 @@ import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.AuditDetails;
 import org.egov.pqm.web.model.Document;
+import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.QualityCriteria.StatusEnum;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
+import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestResultStatus;
+import org.egov.pqm.web.model.TestSearchCriteria;
+import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.Workflow;
 import org.egov.pqm.web.model.idgen.IdResponse;
 import org.egov.tracer.model.CustomException;
@@ -42,36 +47,39 @@ public class EnrichmentService {
   public void enrichPQMCreateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setIdgenIds(testRequest);
-    setAuditDetails(testRequest,true);
+    setAuditDetails(testRequest, true);
     setWorkflowStatus(testRequest);
     setTestResultStatus(testRequest);
     setDocumentsIdAndTestId(testRequest);
   }
-  private void setWorkflowStatus(TestRequest testRequest)
-  {
+
+  private void setWorkflowStatus(TestRequest testRequest) {
     testRequest.getTests().get(0).setWfStatus(SUBMITTED);
   }
 
   public void enrichPQMCreateRequestForLabTest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setIdgenIds(testRequest);
-    setAuditDetails(testRequest,true);
+    setAuditDetails(testRequest, true);
     testRequest.getTests().get(0).setStatus(PENDING);
     setInitialWorkflowAction(testRequest.getTests().get(0));
     setDocumentsIdAndTestId(testRequest);
   }
 
-  public void enrichPQMUpdateRequest(TestRequest testRequest) {
+  public void enrichPQMUpdateRequest(TestRequest testRequest, AuditDetails auditDetails) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
+    Test test = testRequest.getTests().get(0);
+    //setting LastModifiedBy and LastModifiedTime while update
     setAuditDetails(testRequest, false);
+    //setting createdBy and createdTime from previous auditDetails at the time of create
+    test.getAuditDetails().setCreatedBy(auditDetails.getCreatedBy());
+    test.getAuditDetails().setCreatedTime(auditDetails.getCreatedTime());
     setDocumentsIdAndTestId(testRequest);
   }
 
-  private void setDocumentsIdAndTestId(TestRequest testRequest)
-  {
+  private void setDocumentsIdAndTestId(TestRequest testRequest) {
     List<Document> documentList = testRequest.getTests().get(0).getDocuments();
-    for(Document doc : documentList)
-    {
+    for (Document doc : documentList) {
       doc.setTestId(testRequest.getTests().get(0).getId());
       doc.setId(String.valueOf(UUID.randomUUID()));
     }
@@ -136,6 +144,28 @@ public class EnrichmentService {
     if (testRequest.getTests().get(0).getStatus() == TestResultStatus.FAIL) {
       testRepository.saveAnomaly(config.getAnomalyCreateTopic(), testRequest);
     }
+  }
+
+  public AuditDetails fetchAuditDetailsFromDB(TestRequest testRequest) {
+    Test test = testRequest.getTests().get(0);
+    //fetching  the test with given id and tenantId from database
+    List<String> ids = new ArrayList<>();
+    ids.add(test.getId());
+
+    TestSearchCriteria criteria = TestSearchCriteria.builder()
+        .ids(ids).tenantId(test.getTenantId())
+        .build();
+    Pagination Pagination = new Pagination();
+    TestSearchRequest request = TestSearchRequest.builder()
+        .testSearchCriteria(criteria).pagination(Pagination)
+        .build();
+
+    TestResponse testResponse = testRepository.getPqmData(request);
+    List<Test> tests = testResponse.getTests();
+    Test oldTest = tests.get(0);
+    //returning auditDetails from DB
+    return oldTest.getAuditDetails();
+
   }
 
 }
