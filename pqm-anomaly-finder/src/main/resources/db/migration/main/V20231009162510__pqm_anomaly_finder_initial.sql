@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS eg_pqm_anomaly_details
     anomalyType       character varying(64),
     description       character varying(500),
     referenceId       character varying(64),
-    status            character varying(64),
+    resolutionStatus character varying(64),
     additionalDetails json,
     isActive          boolean,
     createdBy         character varying(64),
@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS eg_pqm_anomaly_details
     lastModifiedTime  bigint,
     CONSTRAINT pk_pqm_anomaly_details PRIMARY KEY (id),
     CONSTRAINT fk_pqm_anomaly_details_pqm_tests FOREIGN KEY (testId) REFERENCES eg_pqm_tests (id)
-        ON DELETE CASCADE
 );
 
 
@@ -30,7 +29,7 @@ CREATE TABLE IF NOT EXISTS eg_pqm_anomaly_details_auditlog
     anomalyType       character varying(64),
     description       character varying(500),
     referenceId       character varying(64),
-    status            character varying(64),
+    resolutionStatus character varying(64),
     additionalDetails json,
     isActive          boolean,
     createdBy         character varying(64),

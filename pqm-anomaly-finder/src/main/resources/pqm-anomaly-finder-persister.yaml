@@ -1,0 +1,45 @@
+serviceMaps:
+  serviceName: pqm-anomaly-finder-service
+  mappings:
+    - version: 1.0
+      description: Persists PQM Test Anomaly Data in eg_pqm_anomaly_details table
+      fromTopic: save-pqm-test-anomaly-details
+      isTransaction: true
+      queryMaps:
+        - query: INSERT INTO eg_pqm_anomaly_details(id, tenantId, testId, anomalyType, description, referenceId, resolutionStatus, additionalDetails, isActive, createdBy, lastModifiedBy, createdTime, lastModifiedTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+          basePath: $.pqmAnomaly.*
+          jsonMaps:
+            - jsonPath: $.tests.*.id
+            - jsonPath: $.tests.*.tenantId
+            - jsonPath: $.tests.*.testId
+            - jsonPath: $.tests.*.anomalyType
+            - jsonPath: $.tests.*.description
+            - jsonPath: $.tests.*.referenceId
+            - jsonPath: $.tests.*.resolutionStatus
+            - jsonPath: $.tests.*.additionalDetails
+              type: JSON
+              dbType: JSONB
+            - jsonPath: $.tests.*.isActive
+            - jsonPath: $.tests.*.auditDetails.createdBy
+            - jsonPath: $.tests.*.auditDetails.lastModifiedBy
+            - jsonPath: $.tests.*.auditDetails.createdTime
+            - jsonPath: $.tests.*.auditDetails.lastModifiedTime
+
+        - query: INSERT INTO eg_pqm_anomaly_details_auditlog(id, tenantId, testId, anomalyType, description, referenceId, resolutionStatus, additionalDetails, isActive, createdBy, lastModifiedBy, createdTime, lastModifiedTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+          basePath: $.pqmAnomaly.*
+          jsonMaps:
+            - jsonPath: $.tests.*.id
+            - jsonPath: $.tests.*.tenantId
+            - jsonPath: $.tests.*.testId
+            - jsonPath: $.tests.*.anomalyType
+            - jsonPath: $.tests.*.description
+            - jsonPath: $.tests.*.referenceId
+            - jsonPath: $.tests.*.resolutionStatus
+            - jsonPath: $.tests.*.additionalDetails
+              type: JSON
+              dbType: JSONB
+            - jsonPath: $.tests.*.isActive
+            - jsonPath: $.tests.*.auditDetails.createdBy
+            - jsonPath: $.tests.*.auditDetails.lastModifiedBy
+            - jsonPath: $.tests.*.auditDetails.createdTime
+            - jsonPath: $.tests.*.auditDetails.lastModifiedTime
