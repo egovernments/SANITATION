@@ -2,6 +2,7 @@ package org.egov.pqm.repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.egov.common.contract.request.RequestInfo;
@@ -48,34 +49,22 @@ public class TestRepository {
 		producer.push(config.getTestSaveTopic(), testRequest);
 	}
 
-	public void update(TestRequest testRequest, boolean isStateUpdatable) {
-		RequestInfo requestInfo = testRequest.getRequestInfo();
+  public void saveAnomaly(String topic,TestRequest testRequest) {
+    producer.push(topic,testRequest);
+  }
 
-		Test testForStatusUpdate = null;
-		Test testForUpdate = null;
+
+	public void update(TestRequest testRequest) {
 
 		Test test = testRequest.getTests().get(0);
-
-		if (isStateUpdatable) {
-			testForUpdate = test;
-		} else {
-			testForStatusUpdate = test;
-		}
-		if (testForUpdate != null)
-			producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo, new ArrayList<>(
-          (Collection) test), testRequest.getWorkflow()));
-
-		if (testForStatusUpdate != null)
-			producer.push(config.getTestWorkflowTopic(),
-					new TestRequest(requestInfo,  new ArrayList<>(
-							(Collection) test), testRequest.getWorkflow()));
+		RequestInfo requestInfo = testRequest.getRequestInfo();
+		producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo, Collections.singletonList(test)));
 
 	}
 
 	public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = pqmQueryBuilder.getPqmSearchQuery(testSearchCriteria, preparedStmtList);
-
 		List<Test> tests = jdbcTemplate.query(query, preparedStmtList.toArray(), pqmRowMapper);
 		return TestResponse.builder().tests(tests).totalCount(pqmRowMapper.getFullCount()).build();
 	}

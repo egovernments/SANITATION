@@ -6,12 +6,12 @@ import com.jayway.jsonpath.PathNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.config.ServiceConfiguration;
-import org.egov.pqm.web.model.TestResultStatus;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,41 +24,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static org.egov.pqm.util.Constants.*;
+
 @Service
 @Slf4j
 public class WorkflowIntegrator {
-
-	private static final String TENANTIDKEY = "tenantId";
-
-	private static final String BUSINESSSERVICEKEY = "businessService";
-
-	private static final String ACTIONKEY = "action";
-
-	private static final String COMMENTKEY = "comment";
-
-	private static final String RATING = "rating";
-
-	private static final String MODULENAMEKEY = "moduleName";
-
-	private static final String BUSINESSIDKEY = "businessId";
-
-	private static final String DOCUMENTSKEY = "documents";
-
-	private static final String ASSIGNEEKEY = "assignes";
-
-	private static final String MODULENAMEVALUE = "pqm";
-
-	private static final String UUIDKEY = "uuid";
-
-	private static final String WORKFLOWREQUESTARRAYKEY = "ProcessInstances";
-
-	private static final String REQUESTINFOKEY = "RequestInfo";
-
-	private static final String PROCESSINSTANCESJOSNKEY = "$.ProcessInstances";
-
-	private static final String BUSINESSIDJOSNKEY = "$.businessId";
-
-	private static final String STATUSJSONKEY = "$.state.applicationStatus";
 
 	private RestTemplate rest;
 
@@ -84,31 +54,31 @@ public class WorkflowIntegrator {
 		JSONArray array = new JSONArray();
 		Test test = testRequest.getTests().get(0);
 		JSONObject obj = new JSONObject();
-		obj.put(BUSINESSIDKEY, test.getId());
-		obj.put(TENANTIDKEY, wfTenantId);
+		obj.put(BUSINESS_ID_KEY, test.getId());
+		obj.put(TENANT_ID_KEY, wfTenantId);
 
-		obj.put(BUSINESSSERVICEKEY, Constants.PQM_BUSINESS_SERVICE);
+		obj.put(BUSINESS_SERVICE_KEY, Constants.PQM_BUSINESS_SERVICE);
 
-		obj.put(MODULENAMEKEY, MODULENAMEVALUE);
-		obj.put(ACTIONKEY, testRequest.getWorkflow().getAction());
-		obj.put(COMMENTKEY, testRequest.getWorkflow().getComments());
-		obj.put(RATING, testRequest.getWorkflow().getRating());
+		obj.put(MODULE_NAME_KEY, MODULE_NAME_VALUE);
+		obj.put(ACTION_KEY, test.getWorkflow().getAction());
+		obj.put(COMMENT_KEY, test.getWorkflow().getComments());
+		obj.put(RATING, test.getWorkflow().getRating());
 
-		if (!CollectionUtils.isEmpty(testRequest.getWorkflow().getAssignes())) {
+		if (!CollectionUtils.isEmpty(test.getWorkflow().getAssignes())) {
 			List<Map<String, String>> uuidmaps = new LinkedList<>();
-			testRequest.getWorkflow().getAssignes().forEach(assignee -> {
+			test.getWorkflow().getAssignes().forEach(assignee -> {
 				Map<String, String> uuidMap = new HashMap<>();
-				uuidMap.put(UUIDKEY, assignee);
+				uuidMap.put(UUID_KEY, assignee);
 				uuidmaps.add(uuidMap);
 			});
-			obj.put(ASSIGNEEKEY, uuidmaps);
+			obj.put(ASSIGNEE_KEY, uuidmaps);
 		}
 
-		obj.put(DOCUMENTSKEY, testRequest.getWorkflow().getVerificationDocuments());
+		obj.put(DOCUMENTS_KEY, test.getWorkflow().getVerificationDocuments());
 		array.add(obj);
 		JSONObject workFlowRequest = new JSONObject();
-		workFlowRequest.put(REQUESTINFOKEY, testRequest.getRequestInfo());
-		workFlowRequest.put(WORKFLOWREQUESTARRAYKEY, array);
+		workFlowRequest.put(REQUEST_INFO_KEY, testRequest.getRequestInfo());
+		workFlowRequest.put(WORKFLOW_REQUEST_ARRAY_KEY, array);
 		String response = null;
 		try {
 			response = rest.postForObject(config.getWfHost().concat(config.getWfTransitionPath()), workFlowRequest,
@@ -139,12 +109,12 @@ public class WorkflowIntegrator {
 		 * object
 		 */
 		DocumentContext responseContext = JsonPath.parse(response);
-		List<Map<String, Object>> responseArray = responseContext.read(PROCESSINSTANCESJOSNKEY);
+		List<Map<String, Object>> responseArray = responseContext.read(PROCESS_INSTANCES_JOSN_KEY);
 		Map<String, String> idStatusMap = new HashMap<>();
 		responseArray.forEach(object -> {
 
 			DocumentContext instanceContext = JsonPath.parse(object);
-			idStatusMap.put(instanceContext.read(BUSINESSIDJOSNKEY), instanceContext.read(STATUSJSONKEY));
+			idStatusMap.put(instanceContext.read(BUSINESS_ID_JOSN_KEY), instanceContext.read(STATUS_JSON_KEY));
 		});
 		// setting the status back to pqm object from wf response
 		test.setWfStatus(idStatusMap.get(test.getId()));

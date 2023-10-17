@@ -1,18 +1,23 @@
 package org.egov.pqm.service;
 
+import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
+import static org.egov.pqm.util.Constants.UPDATE_RESULT;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.pqm.util.MDMSUtils;
+import org.egov.pqm.util.QualityCriteriaEvaluation;
 import org.egov.common.contract.request.Role;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.MDMSUtils;
+import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Test;
@@ -30,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class PqmService {
 
   @Autowired
@@ -45,7 +51,16 @@ public class PqmService {
   private TestRepository repository;
 
   @Autowired
+  private EnrichmentService enrichmentService;
+
+  @Autowired
   private MDMSUtils mdmsUtils;
+
+  @Autowired
+  private QualityCriteriaEvaluation qualityCriteriaEvaluation;
+
+  @Autowired
+  private MDMSValidator mdmsValidator;
 
   /**
    * search the PQM applications based on the search criteria
@@ -93,11 +108,18 @@ public class PqmService {
 
 
   public Test create(TestRequest testRequest) {
-    RequestInfo requestInfo = testRequest.getRequestInfo();
+    mdmsValidator.validateMdmsData(testRequest);
+    qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+    enrichmentService.enrichPQMCreateRequest(testRequest);
+    enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
+    repository.save(testRequest);
+    return testRequest.getTests().get(0);
+  }
 
-    //updating workflow during create
+  public Test scheduleTest(TestRequest testRequest) {
+    mdmsValidator.validateMdmsData(testRequest);
+    enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
     workflowIntegrator.callWorkFlow(testRequest);
-
     repository.save(testRequest);
     return testRequest.getTests().get(0);
   }
@@ -112,28 +134,40 @@ public class PqmService {
   public Test update(TestRequest testRequest) {
 
     Test test = testRequest.getTests().get(0);
-    String businessServiceName = null;
 
-    BusinessService businessService = workflowService.getBusinessService(test, testRequest, businessServiceName, null);
-    actionValidator.validateUpdateRequest(testRequest, businessService);
-
-
-    //updating workflow during update
-    workflowIntegrator.callWorkFlow(testRequest);
-
+    //validate if application exists
     if (test.getId() == null) {
       throw new CustomException(UPDATE_ERROR,
           "Application Not found in the System" + test);
     }
 
     if (test.getTestType().equals(TestType.LAB)) {
-      if (testRequest.getWorkflow() == null || testRequest.getWorkflow().getAction() == null) {
+      if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
         throw new CustomException(UPDATE_ERROR,
             "Workflow action cannot be null." + String.format("{Workflow:%s}",
-                testRequest.getWorkflow()));
+                test.getWorkflow()));
       }
     }
 
+    //Fetching actions from businessService
+    BusinessService businessService = workflowService.getBusinessService(test, testRequest,
+        PQM_BUSINESS_SERVICE, null);
+    actionValidator.validateUpdateRequest(testRequest, businessService);
+
+    //updating workflow during update
+    workflowIntegrator.callWorkFlow(testRequest);
+
+    //enrich update request
+    enrichmentService.enrichPQMUpdateRequest(testRequest);
+
+    //calculate test result
+    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {
+      qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+      enrichmentService.setTestResultStatus(testRequest);
+      enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
+    }
+
+    repository.update(testRequest);
     return testRequest.getTests().get(0);
   }
 

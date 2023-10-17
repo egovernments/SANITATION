@@ -20,19 +20,16 @@ import lombok.NoArgsConstructor;
 public class TestResponse {
 
   @JsonProperty("responseInfo")
-  private ResponseInfo responseInfo = null;
+  private ResponseInfo responseInfo;
 
   @JsonProperty("tests")
   @Valid
-  private List<Test> tests = null;
+  private List<Test> tests;
 
   @JsonProperty("pagination")
-  private Pagination pagination = null;
+  private Pagination pagination;
 
-  @JsonProperty("workflow")
-  private Workflow workflow = null;
-  
   @JsonProperty("totalCount")
-  private Integer totalCount =0;
+  private Integer totalCount = 0;
 
 }
