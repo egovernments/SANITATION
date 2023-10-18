@@ -22,21 +22,21 @@ public class Constants {
 
   //Benchmark Rule Constants
 
-  public static final String GREATER_THAN = "GTR.Greater Than";
+  public static final String GREATER_THAN = "GTR";
 
-  public static final String LESS_THAN = "LST.Less Than";
+  public static final String LESS_THAN = "LST";
 
-  public static final String BETWEEN = "BTW.Between";
+  public static final String BETWEEN = "BTW";
 
-  public static final String OUTSIDE_RANGE = "OSD.Outside Range";
+  public static final String OUTSIDE_RANGE = "OSD";
 
-  public static final String EQUALS = "EQ.Equals";
+  public static final String EQUALS = "EQ";
 
-  public static final String NOT_EQUAL = "NEQ.Not Equal";
+  public static final String NOT_EQUAL = "NEQ";
 
-  public static final String GREATER_THAN_EQUAL_TO = "GTROREQ.Greater than or Equal to";
+  public static final String GREATER_THAN_EQUAL_TO = "GTROREQ";
 
-  public static final String LESS_THAN_EQUAL_TO = "LSTOREQ.Less than or Equal to";
+  public static final String LESS_THAN_EQUAL_TO = "LSTOREQ";
 
 	public static final String TENANT_ID_KEY = "tenantId";
 

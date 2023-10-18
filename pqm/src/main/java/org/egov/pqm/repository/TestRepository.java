@@ -13,9 +13,11 @@ import org.egov.pqm.repository.rowmapper.DocumentRowMapper;
 import org.egov.pqm.repository.rowmapper.TestRowMapper;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
+import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
+import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -74,5 +76,23 @@ public class TestRepository {
 		String query = pqmQueryBuilder.getDocumentSearchQuery(idList, preparedStmtList);
 		List<Document> documents = jdbcTemplate.query(query, preparedStmtList.toArray(), documentRowMapper);
 		return DocumentResponse.builder().documents(documents).build();
+	}
+
+	public List<Test> fetchFromDB(TestRequest testRequest) {
+		Test test = testRequest.getTests().get(0);
+		List<String> ids = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
+		ids.add(test.getId());
+
+		TestSearchCriteria criteria = TestSearchCriteria.builder()
+				.ids(ids).tenantId(test.getTenantId())
+				.build();
+		Pagination Pagination = new Pagination();
+		TestSearchRequest request = TestSearchRequest.builder()
+				.testSearchCriteria(criteria).pagination(Pagination)
+				.build();
+
+		TestResponse testResponse = getPqmData(request);
+		List<Test> tests = testResponse.getTests();
+		return tests;
 	}
 }

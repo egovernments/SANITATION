@@ -66,14 +66,9 @@ public class EnrichmentService {
     setDocumentsIdAndTestId(testRequest);
   }
 
-  public void enrichPQMUpdateRequest(TestRequest testRequest, AuditDetails auditDetails) {
+  public void enrichPQMUpdateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
-    Test test = testRequest.getTests().get(0);
-    //setting LastModifiedBy and LastModifiedTime while update
     setAuditDetails(testRequest, false);
-    //setting createdBy and createdTime from previous auditDetails at the time of create
-    test.getAuditDetails().setCreatedBy(auditDetails.getCreatedBy());
-    test.getAuditDetails().setCreatedTime(auditDetails.getCreatedTime());
     setDocumentsIdAndTestId(testRequest);
   }
 
@@ -118,6 +113,8 @@ public class EnrichmentService {
           .build();
     } else {
       auditDetails = AuditDetails.builder().lastModifiedBy(createdBy).lastModifiedTime(time)
+          .createdBy(testRequest.getTests().get(0).getAuditDetails().getCreatedBy())
+          .createdTime(testRequest.getTests().get(0).getAuditDetails().getCreatedTime())
           .build();
     }
     testRequest.getTests().get(0).setAuditDetails(auditDetails);
@@ -146,26 +143,6 @@ public class EnrichmentService {
     }
   }
 
-  public AuditDetails fetchAuditDetailsFromDB(TestRequest testRequest) {
-    Test test = testRequest.getTests().get(0);
-    //fetching  the test with given id and tenantId from database
-    List<String> ids = new ArrayList<>();
-    ids.add(test.getId());
 
-    TestSearchCriteria criteria = TestSearchCriteria.builder()
-        .ids(ids).tenantId(test.getTenantId())
-        .build();
-    Pagination Pagination = new Pagination();
-    TestSearchRequest request = TestSearchRequest.builder()
-        .testSearchCriteria(criteria).pagination(Pagination)
-        .build();
-
-    TestResponse testResponse = testRepository.getPqmData(request);
-    List<Test> tests = testResponse.getTests();
-    Test oldTest = tests.get(0);
-    //returning auditDetails from DB
-    return oldTest.getAuditDetails();
-
-  }
 
 }
