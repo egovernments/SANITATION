@@ -3,6 +3,7 @@ import { ViewComposer, Toast, Loader } from "@egovernments/digit-ui-react-compon
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import TestWFActions from "./TestWFActions";
+import { useQueryClient } from "react-query";
 
 function TestDetails() {
   const { t } = useTranslation();
@@ -15,8 +16,9 @@ function TestDetails() {
   const [showToast, setShowToast] = useState(null);
   const [workflowDetails, setWorkflowDetails] = useState(null);
   const [nextAction, setNextAction] = useState(null);
+  const queryClient = useQueryClient();
 
-  const { isLoading, data: testData, revalidate, isFetching } = Digit.Hooks.tqm.useViewTestResults({
+  const { isLoading, data: testData, revalidate, isFetching, refetch } = Digit.Hooks.tqm.useViewTestResults({
     id: id,
     tenantId: tenantId,
     config: {
@@ -67,7 +69,7 @@ function TestDetails() {
     },
   });
 
-  const { isLoading: updatingTest, isError: updateTestError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.tqm.useTestUpdate(tenantId);
+  const { mutate } = Digit.Hooks.tqm.useTestUpdate(tenantId);
 
   const closeToast = () => {
     setShowToast(null);
@@ -90,6 +92,8 @@ function TestDetails() {
         setShowToast({ key: "success", action: "ES_TQM_STATUS_UPDATED_SUCCESSFULLY" });
         setTimeout(closeToast, 5000);
         queryClient.invalidateQueries("TQM_ADMIN_TEST_RESULTS");
+        queryClient.invalidateQueries("workFlowDetailsWorks");
+        refetch();
       },
     });
   };
@@ -111,11 +115,7 @@ function TestDetails() {
         />
       )}
       {showToast && (
-        <Toast
-          error={showToast.key === "error" ? true : false}
-          label={t(showToast.key === "success" ? `ES_TQM_STATUS_UPDATE_SUCCESS` : showToast.action)}
-          onClose={closeToast}
-        />
+        <Toast error={showToast.key === "error" ? true : false} label={t(showToast.key === "success" ? `ES_TQM_STATUS_UPDATE_SUCCESS` : showToast.action)} onClose={closeToast} />
       )}
     </>
   );
