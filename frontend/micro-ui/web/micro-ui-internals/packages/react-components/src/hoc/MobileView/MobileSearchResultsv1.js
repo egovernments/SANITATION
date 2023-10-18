@@ -61,7 +61,7 @@ const MobileSearchResultsv1 = ({
   // let searchResult = _.get(sampleSearchResult, resultsKey, []);
   
   searchResult = searchResult?.length > 0 ? searchResult : [];
-  searchResult = searchResult?.reverse();
+  // searchResult = searchResult?.reverse();
   
   const tenantId = Digit.ULBService.getCurrentTenantId();
 

@@ -176,7 +176,18 @@ export const UICustomizations = {
       };
     },
     getCustomActionLabel:(obj,row) => {
-      return ""
+      const type = obj.apiResponse?.ProcessInstance?.state?.applicationStatus
+      switch (type) {
+        case "SCHEDULED":
+          return "TQM_INBOX_ACTION_UPDATE_STATUS"
+        
+        case "PENDINGRESULTS":
+          return "TQM_INBOX_ACTION_UPDATE_RESULTS"
+          
+        default:
+          return "case_not_found"
+      }
+      
     },
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {

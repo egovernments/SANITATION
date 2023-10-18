@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 const ROLES = {
-  TQM:["EMPLOYEE"]
+  plant:["PQM_TP_OPERATOR"],
+  ulb:["PQM_ADMIN"]
 };
 
 const TqmCard = ({reRoute=true}) => {
@@ -14,36 +15,63 @@ const TqmCard = ({reRoute=true}) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
+  const requestCriteria = {
+    url: "/inbox/v2/_search",
+    body: {
+      inbox: {
+        tenantId,
+        processSearchCriteria: {
+          "businessService": [
+              "PQM"
+          ],
+          "moduleName": "pqm",
+          tenantId
+      },
+        moduleSearchCriteria: {
+          tenantId,
+        },
+        limit: 100,
+        offset: 0,
+      },
+    },
+    config: {
+      enabled: Digit.Utils.didEmployeeHasAtleastOneRole(ROLES.plant) || Digit.Utils.didEmployeeHasAtleastOneRole(ROLES.ulb),
+    },
+  };
+
+  const { isLoading, data:tqmInboxData } = Digit.Hooks.useCustomAPIHook(requestCriteria);
+
   let links = [
     {
       label: t("TQM_INBOX"),
       link: `/${window?.contextPath}/employee/tqm/inbox`,
-      roles: ["EMPLOYEE"],
+      roles: [...ROLES.plant,ROLES.ulb],
+      count:  isLoading ? '-' : tqmInboxData?.totalCount
     },
     {
       label: t("TQM_VIEW_PAST_RESULTS"),
       link: `/${window?.contextPath}/employee/tqm/search-test-results`,
-      roles: ["EMPLOYEE"],
+      roles: [...ROLES.plant,ROLES.ulb],
     },
     {
       label: t("TQM_VIEW_IOT_READING"),
       link: `/${window?.contextPath}/employee/tqm/search-test-results`,
-      roles: ["EMPLOYEE"],
+      roles: [...ROLES.plant,ROLES.ulb],
     },
     {
       label: t("TQM_SENSOR_MON"),
       link: `/${window?.contextPath}/employee/tqm/search-devices`,
-      roles: ["EMPLOYEE"],
+      roles: [...ROLES.plant,ROLES.ulb],
     },
     {
       label: t("TQM_ADD_TEST_RESULT"),
       link: `/${window?.contextPath}/employee/tqm/add-test-result`,
-      roles: ["EMPLOYEE"],
+      roles: [...ROLES.ulb],
     },
     {
       label: t("TQM_DASHBOARD"),
       link: `/${window?.contextPath}/employee/tqm/dashboard`,
-      roles: ["EMPLOYEE"],
+      roles: [...ROLES.plant,ROLES.ulb],
     }
   ];
 
@@ -55,13 +83,8 @@ const TqmCard = ({reRoute=true}) => {
     moduleName: t("ACTION_TEST_TQM"),
     kpis: [
       {
-        count:  '-' ,
+        count:  isLoading ? '-' : tqmInboxData?.totalCount ,
         label: t('TQM_KPI_PENDING_TESTS'),
-        link: `/${window?.contextPath}/employee/tqm/inbox`,
-      },
-      {
-        count:  '-' ,
-        label: t('TQM_KPI_NEARING_SLA'),
         link: `/${window?.contextPath}/employee/tqm/inbox`,
       },
     ],
