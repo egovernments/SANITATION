@@ -15,11 +15,17 @@ import lombok.NoArgsConstructor;
 @Builder
 public class QualityCriteria {
 
+  @JsonProperty("id")
+  private String id;
+
+  @JsonProperty("testId")
+  private String testId;
+
   @JsonProperty("criteriaCode")
   private String criteriaCode = null;
 
-  @JsonProperty("value")
-  private BigDecimal value = null;
+  @JsonProperty("resultValue")
+  private BigDecimal resultValue = null;
 
   @JsonProperty("allowedDeviation")
   private BigDecimal allowedDeviation = null;
@@ -58,9 +64,12 @@ public class QualityCriteria {
     }
   }
 
-  @JsonProperty("status")
-  private StatusEnum status = null;
+  @JsonProperty("resultStatus")
+  private StatusEnum resultStatus = null;
 
   @JsonProperty("isActive")
   private Boolean isActive = Boolean.TRUE;
+
+  @JsonProperty("auditDetails")
+  private AuditDetails auditDetails;
 }

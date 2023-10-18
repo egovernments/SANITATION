@@ -51,6 +51,7 @@ public class EnrichmentService {
     setWorkflowStatus(testRequest);
     setTestResultStatus(testRequest);
     setDocumentsIdAndTestId(testRequest);
+    setTestCriteriaIdAndTestID(testRequest);
   }
 
   private void setWorkflowStatus(TestRequest testRequest) {
@@ -64,6 +65,7 @@ public class EnrichmentService {
     testRequest.getTests().get(0).setStatus(PENDING);
     setInitialWorkflowAction(testRequest.getTests().get(0));
     setDocumentsIdAndTestId(testRequest);
+    setTestCriteriaIdAndTestID(testRequest);
   }
 
   public void enrichPQMUpdateRequest(TestRequest testRequest) {
@@ -80,10 +82,18 @@ public class EnrichmentService {
     }
   }
 
+  private void setTestCriteriaIdAndTestID(TestRequest testRequest) {
+    List<QualityCriteria> qualityCriteriaList = testRequest.getTests().get(0).getQualityCriteria();
+    for (QualityCriteria qualityCriteria : qualityCriteriaList) {
+      qualityCriteria.setTestId(testRequest.getTests().get(0).getId());
+      qualityCriteria.setId(String.valueOf(UUID.randomUUID()));
+    }
+  }
+
   void setTestResultStatus(TestRequest testRequest) {
     boolean pass = true;
     for (QualityCriteria criteria : testRequest.getTests().get(0).getQualityCriteria()) {
-      if (criteria.getStatus() == StatusEnum.FAIL) {
+      if (criteria.getResultStatus() == StatusEnum.FAIL) {
         pass = false;
       }
     }
@@ -118,6 +128,12 @@ public class EnrichmentService {
           .build();
     }
     testRequest.getTests().get(0).setAuditDetails(auditDetails);
+
+    //setting quality criteria AuditDetails
+    for(QualityCriteria criteria: testRequest.getTests().get(0).getQualityCriteria())
+    {
+      criteria.setAuditDetails(auditDetails);
+    }
   }
 
 

@@ -159,12 +159,12 @@ public class PqmService {
         PQM_BUSINESS_SERVICE, null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
     workflowIntegrator.callWorkFlow(testRequest);//updating workflow during update
-    enrichmentService.enrichPQMUpdateRequest(testRequest);  //enrich update request
     if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {   //calculate test result
       qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
       enrichmentService.setTestResultStatus(testRequest);
       enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     }
+    enrichmentService.enrichPQMUpdateRequest(testRequest);  //enrich update request
     repository.update(testRequest);
     return testRequest.getTests().get(0);
   }

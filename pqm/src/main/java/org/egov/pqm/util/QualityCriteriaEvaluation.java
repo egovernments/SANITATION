@@ -6,7 +6,9 @@ import java.math.BigDecimal;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.protocol.types.Field.Str;
+import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.config.ServiceConfiguration;
+import org.egov.pqm.web.model.AuditDetails;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.QualityCriteria.StatusEnum;
 import org.egov.pqm.web.model.Test;
@@ -60,7 +62,7 @@ public class QualityCriteriaEvaluation {
     for (QualityCriteria qualityCriteria : test.getQualityCriteria()) {
       QualityCriteria evaluatedqualityCriteria = enrichQualityCriteriaFields(
           codeToQualityCriteriaMap.get(qualityCriteria.getCriteriaCode()),
-          qualityCriteria.getValue());
+          qualityCriteria.getResultValue());
 
       evaluatedqualityCriteriaList.add(evaluatedqualityCriteria);
     }
@@ -86,16 +88,17 @@ public class QualityCriteriaEvaluation {
         allowedDeviation);
 
     QualityCriteria qualityCriteria = QualityCriteria.builder().criteriaCode(criteriaCode)
-        .value(value).status(StatusEnum.PENDING).build();
+        .resultValue(value).resultStatus(StatusEnum.PENDING).build();
 
     if (areBenchmarkRulesMet) {
-      qualityCriteria.setStatus(StatusEnum.PASS);
+      qualityCriteria.setResultStatus(StatusEnum.PASS);
     } else {
-      qualityCriteria.setStatus(StatusEnum.FAIL);
+      qualityCriteria.setResultStatus(StatusEnum.FAIL);
     }
 
     //enriching allowedDeviation
     qualityCriteria.setAllowedDeviation(mdmsQualityCriteria.getAllowedDeviation());
+    qualityCriteria.setIsActive(Boolean.TRUE);
     return qualityCriteria;
   }
 
