@@ -115,7 +115,7 @@ export const UICustomizations = {
       data.body.inbox.moduleSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.code)
 
       //status
-      data.body.inbox.moduleSearchCriteria.status = status?.map(status => status.applicationStatus)
+      data.body.inbox.moduleSearchCriteria.wfStatus = status?.map(status => status.applicationStatus)
 
       //fromDate and toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
@@ -199,7 +199,10 @@ export const UICustomizations = {
         default:
           return "case_not_found"
       }
-    }
+    },
+    onCardActionClick:(obj)=> {
+      return `test-details?id=${obj?.apiResponse?.ProcessInstance?.businessId}`
+    },
     
   },
   TqmInboxConfigUlbAdmin:{
@@ -239,15 +242,14 @@ export const UICustomizations = {
     preProcess: (data,additionalDetails) => {
       
       const { id,plantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
-      
       //ids
       data.body.inbox.moduleSearchCriteria.ids = id ?  [id] : null
 
       //plantCodes 
-      data.body.inbox.moduleSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
+      data.body.inbox.moduleSearchCriteria.plantCodes = plantCodes?.code
 
       //stage
-      data.body.inbox.moduleSearchCriteria.stage = stage?.map(st => st.code)
+      data.body.inbox.moduleSearchCriteria.stageCodes = stage?.map(st => st.code)
 
       //materialcodes
       data.body.inbox.moduleSearchCriteria.materialCodes = Object.keys(materialCodes?materialCodes:{})?.filter(key => materialCodes[key])
@@ -256,7 +258,7 @@ export const UICustomizations = {
       data.body.inbox.moduleSearchCriteria.processCodes = Object.keys(processCodes?processCodes:{})?.filter(key => processCodes[key])
 
       //status
-      data.body.inbox.moduleSearchCriteria.status = status?.map(status => status.applicationStatus)
+      data.body.inbox.moduleSearchCriteria.status = status ? Object?.keys(status)?.filter(key=>status[key]) : null
 
       cleanObject(data.body.inbox.processSearchCriteria)
       cleanObject(data.body.inbox.moduleSearchCriteria)
@@ -305,7 +307,15 @@ export const UICustomizations = {
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
-          
+        
+        case "TQM_TEST_ID":
+          return <span className="link">
+            <Link
+              to={`/${window.contextPath}/employee/tqm/view-test-results?tenantId=${Digit.ULBService.getCurrentTenantId()}&id=${value}`}
+            >
+              {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+            </Link>
+          </span> 
       
         default:
           return "case_not_found"
@@ -433,7 +443,7 @@ export const UICustomizations = {
         case "TQM_TEST_ID":
           return <span className="link">
             <Link
-              to={`/${window.contextPath}/employee/tqm/view-test-results?tenantId=${Digit.ULBService.getCurrentTenantId()}&testId=${value}`}
+              to={`/${window.contextPath}/employee/tqm/view-test-results?tenantId=${Digit.ULBService.getCurrentTenantId()}&id=${value}`}
             >
               {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
             </Link>
