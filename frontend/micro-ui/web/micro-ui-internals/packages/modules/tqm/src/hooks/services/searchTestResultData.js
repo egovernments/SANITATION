@@ -45,7 +45,7 @@ export const searchTestResultData = async ({ id, tenantId }) => {
   });
 
   const workflowData = await Digit.WorkflowService.getDetailsByIdWorks({ tenantId, id, moduleCode: "PQM" });
-  const sla = Math.round(workflowData?.processInstances?.[0]?.stateSla / (24 * 60 * 60 * 1000));
+  const sla = Math.round(workflowData?.processInstances?.[0]?.businesssServiceSla / (24 * 60 * 60 * 1000));
 
   return {
     details: [

@@ -20,7 +20,7 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction })
       return null;
     }
     const { action: workflow } = actionData;
-    testDetailsData.workflow = workflow;
+    testDetailsData.workflow = { action: workflow };
     submitAction(testDetailsData);
   };
 
