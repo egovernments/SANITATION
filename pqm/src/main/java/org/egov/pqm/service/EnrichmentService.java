@@ -7,6 +7,7 @@ import static org.egov.pqm.web.model.TestResultStatus.PENDING;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.IdGenRepository;
