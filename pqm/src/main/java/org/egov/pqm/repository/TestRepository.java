@@ -15,7 +15,6 @@ import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.QualityCriteria;
-import org.egov.pqm.web.model.QualityCriteriaResponse;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
@@ -85,12 +84,12 @@ public class TestRepository {
     return DocumentResponse.builder().documents(documents).build();
   }
   
-  public QualityCriteriaResponse getQualityCriteriaData(List<String> idList) {
+  public List<QualityCriteria> getQualityCriteriaData(List<String> idList) {
 	    List<Object> preparedStmtList = new ArrayList<>();
 	    String query = pqmQueryBuilder.getQualityCriteriaQuery(idList, preparedStmtList);
 	    List<QualityCriteria> qualityCriterias = jdbcTemplate.query(query, preparedStmtList.toArray(),
 	    		qualityCriteriaRowMapper);
-	    return QualityCriteriaResponse.builder().qualityCriteria(qualityCriterias).build();
+	    return qualityCriterias;
 	  }
 
   public List<Test> fetchFromDB(TestRequest testRequest) {

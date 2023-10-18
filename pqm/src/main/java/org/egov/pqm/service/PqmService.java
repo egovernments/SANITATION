@@ -21,7 +21,6 @@ import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.QualityCriteria;
-import org.egov.pqm.web.model.QualityCriteriaResponse;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
@@ -83,8 +82,7 @@ public class PqmService {
 		TestResponse testResponse = repository.getPqmData(criteria);
 		List<String> idList = testResponse.getTests().stream().map(Test::getId).collect(Collectors.toList());
 
-		QualityCriteriaResponse qualityResponse = repository.getQualityCriteriaData(idList);
-		List<QualityCriteria> qualityCriteriaList = qualityResponse.getQualityCriteria();
+		List<QualityCriteria> qualityCriteriaList =repository.getQualityCriteriaData(idList);
 
 		testList = testResponse.getTests().stream().map(test -> {
 			List<QualityCriteria> QualityCriterias = qualityCriteriaList.stream()
