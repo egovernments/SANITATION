@@ -113,7 +113,7 @@ const DetailsCard = ({ data, serviceRequestIdKey, linkPrefix, handleSelect, sele
             ) : null}
             {showActionBar && mode==="tqm" && (
               <Button
-                label={Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.getCustomActionLabel(object) || submitButtonLabel}
+                label={t(Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.getCustomActionLabel(object) || submitButtonLabel)}
                 variation="secondary"
                 type="button"
                 onButtonClick={(e) => {
