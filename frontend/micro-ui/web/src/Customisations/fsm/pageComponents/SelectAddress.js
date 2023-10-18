@@ -252,7 +252,7 @@ const SelectAddress = ({ t, config, onSelect, userType, formData }) => {
           t={t}
         />
           
-          {/* {selectedCity && localities && (
+          {selectedCity && localities && (
             <CardLabel>{`${t("CS_CREATECOMPLAINT_MOHALLA")} *`}</CardLabel>
           )}
           {selectedCity && localities && (
@@ -264,7 +264,7 @@ const SelectAddress = ({ t, config, onSelect, userType, formData }) => {
               onSelect={selectLocality}
               t={t}
             />
-          )} */}
+          )}
         </FormStep>
       </div>
     </React.Fragment>
