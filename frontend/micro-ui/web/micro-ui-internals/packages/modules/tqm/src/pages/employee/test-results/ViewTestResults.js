@@ -12,6 +12,7 @@ function ViewTestResults() {
   const businessService = "PQM";
 
   const { isLoading, data: testData, revalidate, isFetching } = Digit.Hooks.tqm.useViewTestResults({
+    t,
     tenantId: tenantId,
     id: id,
     config: {

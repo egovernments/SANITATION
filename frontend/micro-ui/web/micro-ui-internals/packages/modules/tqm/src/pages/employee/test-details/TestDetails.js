@@ -19,7 +19,7 @@ function TestDetails() {
   const queryClient = useQueryClient();
 
   const { isLoading, data: testData, revalidate, isFetching, refetch } = Digit.Hooks.tqm.useViewTestResults({
-    t: t,
+    t,
     id: id,
     tenantId: tenantId,
     config: {
