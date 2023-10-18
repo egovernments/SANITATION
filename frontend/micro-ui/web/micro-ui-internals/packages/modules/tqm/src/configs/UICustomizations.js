@@ -115,7 +115,7 @@ export const UICustomizations = {
       data.body.inbox.moduleSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.code)
 
       //status
-      data.body.inbox.moduleSearchCriteria.status = status?.map(status => status.applicationStatus)
+      data.body.inbox.moduleSearchCriteria.wfStatus = status?.map(status => status.applicationStatus)
 
       //fromDate and toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
