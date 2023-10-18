@@ -138,13 +138,13 @@ export const tqmInboxConfigPlantOperator = {
               },
               {
                 "label": "TQM_PROCESS_STAGE",
-                "jsonPath": "businessObject.stage",
+                "jsonPath": "businessObject.stageCode",
                 prefix:"PQM.Stage_",
                 translate:true
               },
               {
                 "label": "TQM_OUTPUT_TYPE",
-                "jsonPath": "businessObject.material",
+                "jsonPath": "businessObject.materialCode",
                 prefix:"PQM.Material_",
                 translate:true
               },
@@ -156,7 +156,7 @@ export const tqmInboxConfigPlantOperator = {
               {
                 "label": "TQM_INBOX_STATUS",
                 "jsonPath": "ProcessInstance.state.applicationStatus",
-                prefix:"WF_STATUS_TQM",
+                prefix:"WF_STATUS_TQM_",
                 translate:true
               },
               {
