@@ -1,6 +1,5 @@
 package org.egov.pqm.repository.rowmapper;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,15 +9,11 @@ import java.util.Map;
 
 import org.egov.pqm.web.model.AuditDetails;
 import org.egov.pqm.web.model.QualityCriteria;
-import org.egov.pqm.web.model.QualityCriteria.StatusEnum;
 import org.egov.pqm.web.model.TestResultStatus;
-import org.egov.tracer.model.CustomException;
-import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +36,7 @@ public class QualityCriteriaRowMapper implements ResultSetExtractor<List<Quality
 			
 			if (currentQualityCriteria == null) {
 				String resultStatusString = rs.getString("resultStatus");
-				StatusEnum resultStatus = StatusEnum.valueOf(resultStatusString.toUpperCase());
+				TestResultStatus resultStatus = TestResultStatus.valueOf(resultStatusString.toUpperCase());
 				AuditDetails auditdetails = AuditDetails.builder().createdBy(rs.getString("createdBy"))
 						.createdTime(rs.getLong("createdTime")).lastModifiedBy(rs.getString("lastModifiedBy"))
 						.lastModifiedTime(rs.getLong("lastModifiedTime")).build();
