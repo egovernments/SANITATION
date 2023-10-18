@@ -11,7 +11,7 @@ export const tqmInboxConfig = {
         "requestBody": {
           "inbox": {
             "processSearchCriteria": {
-              "businessService": ["TQM"],
+              "businessService": ["PQM"],
               "moduleName": "pqm"
             },
             "moduleSearchCriteria": {}

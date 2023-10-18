@@ -128,28 +128,35 @@ export const tqmInboxConfigPlantOperator = {
             "columns": [
               {
                 "label": "TQM_TEST_ID",
-                "jsonPath": "businessObject.id",
+                "jsonPath": "ProcessInstance.businessId",
               },
               {
                 "label": "TQM_TREATMENT_PROCESS",
-                "jsonPath": "businessObject.processCode"
+                "jsonPath": "businessObject.processCode",
+                prefix:"PQM.Process_",
+                translate:true
               },
               {
                 "label": "TQM_PROCESS_STAGE",
-                "jsonPath": "businessObject.plantCode"
+                "jsonPath": "businessObject.stage",
+                prefix:"PQM.Stage_",
+                translate:true
               },
               {
                 "label": "TQM_OUTPUT_TYPE",
-                "jsonPath": "businessObject.plantCode",
+                "jsonPath": "businessObject.material",
+                prefix:"PQM.Material_",
+                translate:true
               },
               {
                 "label": "TQM_PENDING_DATE",
                 "jsonPath": "businessObject.scheduledDate",
+                additionalCustomization:true
               },
               {
                 "label": "TQM_INBOX_STATUS",
-                "jsonPath": "businessObject.serviceSla",
-                prefix:"WF_STATUS",
+                "jsonPath": "ProcessInstance.state.applicationStatus",
+                prefix:"WF_STATUS_TQM",
                 translate:true
               },
               {
