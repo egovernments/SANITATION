@@ -18,8 +18,8 @@ public class MDMSQualityCriteria {
   @JsonProperty("parameter")
   private String parameter;
 
-  @JsonProperty("units")
-  private String units;
+  @JsonProperty("unit")
+  private String unit;
 
   @JsonProperty("benchmarkRule")
   private String benchmarkRule;

@@ -4,6 +4,7 @@ package org.egov.pqm.service;
 import static org.egov.pqm.util.Constants.SUBMITTED;
 import static org.egov.pqm.web.model.TestResultStatus.PENDING;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +16,15 @@ import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.AuditDetails;
 import org.egov.pqm.web.model.Document;
+import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.QualityCriteria.StatusEnum;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
+import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestResultStatus;
+import org.egov.pqm.web.model.TestSearchCriteria;
+import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.Workflow;
 import org.egov.pqm.web.model.idgen.IdResponse;
 import org.egov.tracer.model.CustomException;
@@ -42,20 +47,20 @@ public class EnrichmentService {
   public void enrichPQMCreateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setIdgenIds(testRequest);
-    setAuditDetails(testRequest,true);
+    setAuditDetails(testRequest, true);
     setWorkflowStatus(testRequest);
     setTestResultStatus(testRequest);
     setDocumentsIdAndTestId(testRequest);
   }
-  private void setWorkflowStatus(TestRequest testRequest)
-  {
+
+  private void setWorkflowStatus(TestRequest testRequest) {
     testRequest.getTests().get(0).setWfStatus(SUBMITTED);
   }
 
   public void enrichPQMCreateRequestForLabTest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setIdgenIds(testRequest);
-    setAuditDetails(testRequest,true);
+    setAuditDetails(testRequest, true);
     testRequest.getTests().get(0).setStatus(PENDING);
     setInitialWorkflowAction(testRequest.getTests().get(0));
     setDocumentsIdAndTestId(testRequest);
@@ -67,11 +72,9 @@ public class EnrichmentService {
     setDocumentsIdAndTestId(testRequest);
   }
 
-  private void setDocumentsIdAndTestId(TestRequest testRequest)
-  {
+  private void setDocumentsIdAndTestId(TestRequest testRequest) {
     List<Document> documentList = testRequest.getTests().get(0).getDocuments();
-    for(Document doc : documentList)
-    {
+    for (Document doc : documentList) {
       doc.setTestId(testRequest.getTests().get(0).getId());
       doc.setId(String.valueOf(UUID.randomUUID()));
     }
@@ -110,6 +113,8 @@ public class EnrichmentService {
           .build();
     } else {
       auditDetails = AuditDetails.builder().lastModifiedBy(createdBy).lastModifiedTime(time)
+          .createdBy(testRequest.getTests().get(0).getAuditDetails().getCreatedBy())
+          .createdTime(testRequest.getTests().get(0).getAuditDetails().getCreatedTime())
           .build();
     }
     testRequest.getTests().get(0).setAuditDetails(auditDetails);
@@ -137,5 +142,6 @@ public class EnrichmentService {
       testRepository.saveAnomaly(config.getAnomalyCreateTopic(), testRequest);
     }
   }
+
 
 }
