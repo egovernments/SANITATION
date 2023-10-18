@@ -4,10 +4,9 @@ package org.egov.pqm.service;
 import static org.egov.pqm.util.Constants.SUBMITTED;
 import static org.egov.pqm.web.model.TestResultStatus.PENDING;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import lombok.extern.slf4j.Slf4j;
+
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.IdGenRepository;
@@ -16,20 +15,17 @@ import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.AuditDetails;
 import org.egov.pqm.web.model.Document;
-import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.QualityCriteria;
-import org.egov.pqm.web.model.QualityCriteria.StatusEnum;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
-import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestResultStatus;
-import org.egov.pqm.web.model.TestSearchCriteria;
-import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.Workflow;
 import org.egov.pqm.web.model.idgen.IdResponse;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 @Service
@@ -83,7 +79,7 @@ public class EnrichmentService {
   void setTestResultStatus(TestRequest testRequest) {
     boolean pass = true;
     for (QualityCriteria criteria : testRequest.getTests().get(0).getQualityCriteria()) {
-      if (criteria.getStatus() == StatusEnum.FAIL) {
+      if (criteria.getResultStatus() == TestResultStatus.FAIL) {
         pass = false;
       }
     }

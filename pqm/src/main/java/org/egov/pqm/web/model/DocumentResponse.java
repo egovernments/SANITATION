@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DocumentResponse {
 
-	  @JsonProperty("tests")
+	  @JsonProperty("documents")
 	  private List<Document> documents = null;
 }
