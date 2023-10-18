@@ -60,7 +60,7 @@ public class QualityCriteriaEvaluation {
     for (QualityCriteria qualityCriteria : test.getQualityCriteria()) {
       QualityCriteria evaluatedqualityCriteria = enrichQualityCriteriaFields(
           codeToQualityCriteriaMap.get(qualityCriteria.getCriteriaCode()),
-          qualityCriteria.getValue());
+          qualityCriteria.getResultValue());
 
       evaluatedqualityCriteriaList.add(evaluatedqualityCriteria);
     }
@@ -86,12 +86,12 @@ public class QualityCriteriaEvaluation {
         allowedDeviation);
 
     QualityCriteria qualityCriteria = QualityCriteria.builder().criteriaCode(criteriaCode)
-        .value(value).status(StatusEnum.PENDING).build();
+        .resultValue(value).resultStatus(StatusEnum.PENDING).build();
 
     if (areBenchmarkRulesMet) {
-      qualityCriteria.setStatus(StatusEnum.PASS);
+      qualityCriteria.setResultStatus(StatusEnum.PASS);
     } else {
-      qualityCriteria.setStatus(StatusEnum.FAIL);
+      qualityCriteria.setResultStatus(StatusEnum.FAIL);
     }
 
     //enriching allowedDeviation

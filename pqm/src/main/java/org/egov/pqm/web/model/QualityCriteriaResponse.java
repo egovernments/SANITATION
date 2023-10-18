@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DocumentResponse {
+public class QualityCriteriaResponse {
 
-	  @JsonProperty("documents")
-	  private List<Document> documents = null;
+	  @JsonProperty("qualityCriteria")
+	  private List<QualityCriteria> qualityCriteria = null;
 }
