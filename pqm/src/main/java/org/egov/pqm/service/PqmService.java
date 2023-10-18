@@ -26,6 +26,7 @@ import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.Pagination.SortBy;
+import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
@@ -47,72 +48,73 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PqmService {
 
-	@Autowired
-	private WorkflowIntegrator workflowIntegrator;
+  @Autowired
+  private WorkflowIntegrator workflowIntegrator;
 
-	@Autowired
-	private WorkflowService workflowService;
+  @Autowired
+  private WorkflowService workflowService;
 
-	@Autowired
-	private ActionValidator actionValidator;
+  @Autowired
+  private ActionValidator actionValidator;
 
-	@Autowired
-	private TestRepository repository;
+  @Autowired
+  private TestRepository repository;
 
-	@Autowired
-	private EnrichmentService enrichmentService;
+  @Autowired
+  private EnrichmentService enrichmentService;
 
-	@Autowired
-	private MDMSUtils mdmsUtils;
+  @Autowired
+  private MDMSUtils mdmsUtils;
 
 	@Autowired
 	private QualityCriteriaEvaluationService qualityCriteriaEvaluation;
 
-	@Autowired
-	private MDMSValidator mdmsValidator;
+  @Autowired
+  private MDMSValidator mdmsValidator;
 
-	/**
-	 * search the PQM applications based on the search criteria
-	 *
-	 * @param criteria
-	 * @param requestInfo
-	 * @return
-	 */
-	public TestResponse testSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
+  /**
+   * search the PQM applications based on the search criteria
+   *
+   * @param criteria
+   * @param requestInfo
+   * @return
+   */
+  public TestResponse testSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
 
-		List<Test> testList = new LinkedList<>();
+    List<Test> testList = new LinkedList<>();
 
-		if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
-			checkRoleInValidateSearch(criteria, requestInfo);
-		}
-		TestResponse testResponse = repository.getPqmData(criteria);
-		List<String> idList = testResponse.getTests().stream().map(Test::getId).collect(Collectors.toList());
+    if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
+      checkRoleInValidateSearch(criteria, requestInfo);
+    }
+    TestResponse testResponse = repository.getPqmData(criteria);
+    List<String> idList = testResponse.getTests().stream().map(Test::getId)
+        .collect(Collectors.toList());
 
     DocumentResponse documentResponse = repository.getDocumentData(idList);
     List<Document> documentList = documentResponse.getDocuments();
 
-		testList = testResponse.getTests().stream().map(test -> {
-			List<Document> documents = documentList.stream()
-					.filter(document -> test.getId().equalsIgnoreCase(document.getTestId()))
-					.collect(Collectors.toList());
-			test.setDocuments(documents);
-			return test;
-		}).collect(Collectors.toList());
+    testList = testResponse.getTests().stream().map(test -> {
+      List<Document> documents = documentList.stream()
+          .filter(document -> test.getId().equalsIgnoreCase(document.getTestId()))
+          .collect(Collectors.toList());
+      test.setDocuments(documents);
+      return test;
+    }).collect(Collectors.toList());
 
-		return testResponse;
+    return testResponse;
 
-	}
+  }
 
-	private void checkRoleInValidateSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
-		List<Role> roles = requestInfo.getUserInfo().getRoles();
-		TestSearchCriteria testSearchCriteria = criteria.getTestSearchCriteria();
-		List<String> masterNameList = new ArrayList<>();
-		masterNameList.add(null);
-		if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
+  private void checkRoleInValidateSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
+    List<Role> roles = requestInfo.getUserInfo().getRoles();
+    TestSearchCriteria testSearchCriteria = criteria.getTestSearchCriteria();
+    List<String> masterNameList = new ArrayList<>();
+    masterNameList.add(null);
+    if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
 
-		}
+    }
 
-	}
+  }
 
   /**
    * Creates Test
@@ -136,45 +138,52 @@ public class PqmService {
         return testRequest.getTests().get(0);
     }
 
-	/**
-	 * Updates the Test
-	 *
-	 * @param testRequest The update Request
-	 * @return Updated Test
-	 */
-	@SuppressWarnings("unchecked")
-	public Test update(TestRequest testRequest) {
+  /**
+   * Updates the Test
+   *
+   * @param testRequest The update Request
+   * @return Updated Test
+   */
+  @SuppressWarnings("unchecked")
+  public Test update(TestRequest testRequest) {
 
-		List<Test> tests = testRequest.getTests();
-		Test test = tests.get(0);
-		if (test.getId() == null) { // validate if application exists
-			throw new CustomException(UPDATE_ERROR, "Application Not found in the System" + test);
-		}
-		if (test.getTestType().equals(TestType.LAB)) {
-			if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
-				throw new CustomException(UPDATE_ERROR,
-						"Workflow action cannot be null." + String.format("{Workflow:%s}", test.getWorkflow()));
-			}
-		}
-		List<Test> oldTests = repository.fetchFromDB(testRequest); // fetching tests from DB
-		if (tests.size() != oldTests.size()) // checking for the list of all ids to be present in DB
-		{
-			throw new CustomException(TEST_NOT_IN_DB, "test not present in database which we want to update ");
-		}
-		// Fetching actions from businessService
-		BusinessService businessService = workflowService.getBusinessService(test, testRequest, PQM_BUSINESS_SERVICE,
-				null);
-		actionValidator.validateUpdateRequest(testRequest, businessService);
-		workflowIntegrator.callWorkFlow(testRequest);// updating workflow during update
-		if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) { // calculate test result
-			qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
-			enrichmentService.setTestResultStatus(testRequest);
-			enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
-		}
-    enrichmentService.enrichPQMUpdateRequest(testRequest); // enrich update request
+    Test test = testRequest.getTests().get(0);
+
+    //validate if application exists
+    if (test.getId() == null) {
+      throw new CustomException(UPDATE_ERROR,
+          "Application Not found in the System" + test);
+    }
+
+    if (test.getTestType().equals(TestType.LAB)) {
+      if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
+        throw new CustomException(UPDATE_ERROR,
+            "Workflow action cannot be null." + String.format("{Workflow:%s}",
+                test.getWorkflow()));
+      }
+    }
+
+    //Fetching actions from businessService
+    BusinessService businessService = workflowService.getBusinessService(test, testRequest,
+        PQM_BUSINESS_SERVICE, null);
+    actionValidator.validateUpdateRequest(testRequest, businessService);
+
+    //updating workflow during update
+    workflowIntegrator.callWorkFlow(testRequest);
+
+    //enrich update request
+    enrichmentService.enrichPQMUpdateRequest(testRequest);
+
+    //calculate test result
+    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {
+      qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+      enrichmentService.setTestResultStatus(testRequest);
+      enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
+    }
+
     repository.update(testRequest);
-		return testRequest.getTests().get(0);
-	}
+    return testRequest.getTests().get(0);
+  }
 
   /**
    * Schedules Test
@@ -217,6 +226,15 @@ public class PqmService {
       LocalDate calculatedDate = currentDate.plusDays(frequency);
       Instant instant = calculatedDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
 
+
+      List<QualityCriteria> qualityCriteriaList = new ArrayList<>();
+
+      for(String mdmsQualityCriteria : mdmsTest.getQualityCriteria())
+      {
+        QualityCriteria qualityCriteria = QualityCriteria.builder().criteriaCode(mdmsQualityCriteria).build();
+
+      }
+
       if(testListFromDb == null)
       {
         //case 1: when no pending tests exist in DB
@@ -227,7 +245,7 @@ public class PqmService {
             .processCode(mdmsTest.getProcess())
             .stageCode(mdmsTest.getStage())
             .materialCode(mdmsTest.getMaterial())
-            .qualityCriteria(mdmsTest.getQualityCriteria())
+            .qualityCriteria(qualityCriteriaList)
             .testType(TestType.LAB)
             //will there ever be a scenario where inside of scheduler test type is not lab
             .isActive(Boolean.TRUE)
@@ -251,7 +269,7 @@ public class PqmService {
               .processCode(testFromDb.getProcessCode())
               .stageCode(testFromDb.getStageCode())
               .materialCode(testFromDb.getMaterialCode())
-              .qualityCriteria(mdmsTest.getQualityCriteria())
+              .qualityCriteria(qualityCriteriaList)
               .testType(TestType.LAB)
               //will there ever be a scenario where inside of scheduler test type is not lab
               .isActive(Boolean.TRUE)
