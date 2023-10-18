@@ -1,27 +1,34 @@
 package org.egov.pqm.util;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.egov.pqm.util.Constants.BETWEEN;
+import static org.egov.pqm.util.Constants.EQUALS;
+import static org.egov.pqm.util.Constants.GREATER_THAN;
+import static org.egov.pqm.util.Constants.GREATER_THAN_EQUAL_TO;
+import static org.egov.pqm.util.Constants.LESS_THAN;
+import static org.egov.pqm.util.Constants.LESS_THAN_EQUAL_TO;
+import static org.egov.pqm.util.Constants.MASTER_NAME_QUALITY_CRITERIA;
+import static org.egov.pqm.util.Constants.NOT_EQUAL;
+import static org.egov.pqm.util.Constants.OUTSIDE_RANGE;
+import static org.egov.pqm.util.MDMSUtils.parseJsonToMap;
+
 import java.math.BigDecimal;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.protocol.types.Field.Str;
-import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.AuditDetails;
 import org.egov.pqm.web.model.QualityCriteria;
-import org.egov.pqm.web.model.QualityCriteria.StatusEnum;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
-
-import static org.egov.pqm.util.Constants.*;
-import static org.egov.pqm.util.MDMSUtils.parseJsonToMap;
-
+import org.egov.pqm.web.model.TestResultStatus;
 import org.egov.pqm.web.model.mdms.MDMSQualityCriteria;
 import org.egov.tracer.model.CustomException;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -88,12 +95,12 @@ public class QualityCriteriaEvaluation {
         allowedDeviation);
 
     QualityCriteria qualityCriteria = QualityCriteria.builder().criteriaCode(criteriaCode)
-        .resultValue(value).resultStatus(StatusEnum.PENDING).build();
+        .resultValue(value).resultStatus(TestResultStatus.PENDING).build();
 
     if (areBenchmarkRulesMet) {
-      qualityCriteria.setResultStatus(StatusEnum.PASS);
+      qualityCriteria.setResultStatus(TestResultStatus.PASS);
     } else {
-      qualityCriteria.setResultStatus(StatusEnum.FAIL);
+      qualityCriteria.setResultStatus(TestResultStatus.FAIL);
     }
 
     //enriching allowedDeviation

@@ -1,7 +1,6 @@
 package org.egov.pqm.repository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,10 +9,12 @@ import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.pqmProducer.PqmProducer;
 import org.egov.pqm.repository.querybuilder.TestQueryBuilder;
 import org.egov.pqm.repository.rowmapper.DocumentRowMapper;
+import org.egov.pqm.repository.rowmapper.QualityCriteriaRowMapper;
 import org.egov.pqm.repository.rowmapper.TestRowMapper;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Pagination;
+import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
@@ -41,6 +42,9 @@ public class TestRepository {
   @Autowired
   private DocumentRowMapper documentRowMapper;
 
+  @Autowired
+  private QualityCriteriaRowMapper qualityCriteriaRowMapper;
+  
   @Autowired
   private PqmProducer producer;
 
@@ -79,6 +83,14 @@ public class TestRepository {
         documentRowMapper);
     return DocumentResponse.builder().documents(documents).build();
   }
+  
+  public List<QualityCriteria> getQualityCriteriaData(List<String> idList) {
+	    List<Object> preparedStmtList = new ArrayList<>();
+	    String query = pqmQueryBuilder.getQualityCriteriaQuery(idList, preparedStmtList);
+	    List<QualityCriteria> qualityCriterias = jdbcTemplate.query(query, preparedStmtList.toArray(),
+	    		qualityCriteriaRowMapper);
+	    return qualityCriterias;
+	  }
 
   public List<Test> fetchFromDB(TestRequest testRequest) {
     Test test = testRequest.getTests().get(0);

@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class QualityCriteria {
 
-  @JsonProperty("id")
-  private String id;
+   @JsonProperty("id")
+   private String id;
 
-  @JsonProperty("testId")
-  private String testId;
+   @JsonProperty("testId")
+   private String testId;
 
   @JsonProperty("criteriaCode")
   private String criteriaCode = null;
@@ -30,42 +30,8 @@ public class QualityCriteria {
   @JsonProperty("allowedDeviation")
   private BigDecimal allowedDeviation = null;
 
-  /**
-   * The result status of the individual quality criteria evaluated with respect to benchmark rules
-   * and standard values from MDMS data.
-   */
-  public enum StatusEnum {
-    PASS("PASS"),
-
-    FAIL("FAIL"),
-
-    PENDING("PENDING");
-
-    private final String value;
-
-    StatusEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static StatusEnum fromValue(String text) {
-      for (StatusEnum b : StatusEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
-
   @JsonProperty("resultStatus")
-  private StatusEnum resultStatus = null;
+  private TestResultStatus resultStatus = null;
 
   @JsonProperty("isActive")
   private Boolean isActive = Boolean.TRUE;
