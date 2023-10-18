@@ -69,8 +69,9 @@ public class QualityCriteriaEvaluation {
 
   /**
    * returns a qualityCriteria with enriched status and allowedDeviation
+   *
    * @param mdmsQualityCriteria MDMS Quality Criteria
-   * @param value Value to Test
+   * @param value               Value to Test
    * @return QualityCriteria
    */
   public QualityCriteria enrichQualityCriteriaFields(MDMSQualityCriteria mdmsQualityCriteria,

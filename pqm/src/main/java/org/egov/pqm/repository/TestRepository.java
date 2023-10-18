@@ -29,70 +29,72 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TestRepository {
 
-	@Autowired
-	private TestQueryBuilder pqmQueryBuilder;
+  @Autowired
+  private TestQueryBuilder pqmQueryBuilder;
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+  @Autowired
+  private JdbcTemplate jdbcTemplate;
 
-	@Autowired
-	private TestRowMapper pqmRowMapper;
+  @Autowired
+  private TestRowMapper pqmRowMapper;
 
-	@Autowired
-	private DocumentRowMapper documentRowMapper;
+  @Autowired
+  private DocumentRowMapper documentRowMapper;
 
-	@Autowired
-	private PqmProducer producer;
+  @Autowired
+  private PqmProducer producer;
 
-	@Autowired
-	private ServiceConfiguration config;
+  @Autowired
+  private ServiceConfiguration config;
 
-	public void save(TestRequest testRequest) {
-		producer.push(config.getTestSaveTopic(), testRequest);
-	}
+  public void save(TestRequest testRequest) {
+    producer.push(config.getTestSaveTopic(), testRequest);
+  }
 
-  public void saveAnomaly(String topic,TestRequest testRequest) {
-    producer.push(topic,testRequest);
+  public void saveAnomaly(String topic, TestRequest testRequest) {
+    producer.push(topic, testRequest);
   }
 
 
-	public void update(TestRequest testRequest) {
+  public void update(TestRequest testRequest) {
 
-		Test test = testRequest.getTests().get(0);
-		RequestInfo requestInfo = testRequest.getRequestInfo();
-		producer.push(config.getTestUpdateTopic(), new TestRequest(requestInfo, Collections.singletonList(test)));
+    Test test = testRequest.getTests().get(0);
+    RequestInfo requestInfo = testRequest.getRequestInfo();
+    producer.push(config.getTestUpdateTopic(),
+        new TestRequest(requestInfo, Collections.singletonList(test)));
 
-	}
+  }
 
-	public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {
-		List<Object> preparedStmtList = new ArrayList<>();
-		String query = pqmQueryBuilder.getPqmSearchQuery(testSearchCriteria, preparedStmtList);
-		List<Test> tests = jdbcTemplate.query(query, preparedStmtList.toArray(), pqmRowMapper);
-		return TestResponse.builder().tests(tests).totalCount(pqmRowMapper.getFullCount()).build();
-	}
+  public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {
+    List<Object> preparedStmtList = new ArrayList<>();
+    String query = pqmQueryBuilder.getPqmSearchQuery(testSearchCriteria, preparedStmtList);
+    List<Test> tests = jdbcTemplate.query(query, preparedStmtList.toArray(), pqmRowMapper);
+    return TestResponse.builder().tests(tests).totalCount(pqmRowMapper.getFullCount()).build();
+  }
 
-	public DocumentResponse getDocumentData(List<String> idList) {
-		List<Object> preparedStmtList = new ArrayList<>();
-		String query = pqmQueryBuilder.getDocumentSearchQuery(idList, preparedStmtList);
-		List<Document> documents = jdbcTemplate.query(query, preparedStmtList.toArray(), documentRowMapper);
-		return DocumentResponse.builder().documents(documents).build();
-	}
+  public DocumentResponse getDocumentData(List<String> idList) {
+    List<Object> preparedStmtList = new ArrayList<>();
+    String query = pqmQueryBuilder.getDocumentSearchQuery(idList, preparedStmtList);
+    List<Document> documents = jdbcTemplate.query(query, preparedStmtList.toArray(),
+        documentRowMapper);
+    return DocumentResponse.builder().documents(documents).build();
+  }
 
-	public List<Test> fetchFromDB(TestRequest testRequest) {
-		Test test = testRequest.getTests().get(0);
-		List<String> ids = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
-		ids.add(test.getId());
+  public List<Test> fetchFromDB(TestRequest testRequest) {
+    Test test = testRequest.getTests().get(0);
+    List<String> ids = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
+    ids.add(test.getId());
 
-		TestSearchCriteria criteria = TestSearchCriteria.builder()
-				.ids(ids).tenantId(test.getTenantId())
-				.build();
-		Pagination Pagination = new Pagination();
-		TestSearchRequest request = TestSearchRequest.builder()
-				.testSearchCriteria(criteria).pagination(Pagination)
-				.build();
+    TestSearchCriteria criteria = TestSearchCriteria.builder()
+        .ids(ids).tenantId(test.getTenantId())
+        .build();
+    Pagination Pagination = new Pagination();
+    TestSearchRequest request = TestSearchRequest.builder()
+        .testSearchCriteria(criteria).pagination(Pagination)
+        .build();
 
-		TestResponse testResponse = getPqmData(request);
-		List<Test> tests = testResponse.getTests();
-		return tests;
-	}
+    TestResponse testResponse = getPqmData(request);
+    List<Test> tests = testResponse.getTests();
+    return tests;
+  }
 }

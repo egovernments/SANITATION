@@ -110,7 +110,7 @@ public class PqmService {
 
 
   public Test create(TestRequest testRequest) {
-     mdmsValidator.validateMdmsData(testRequest);
+    mdmsValidator.validateMdmsData(testRequest);
     qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
     enrichmentService.enrichPQMCreateRequest(testRequest);
     enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
@@ -119,7 +119,7 @@ public class PqmService {
   }
 
   public Test scheduleTest(TestRequest testRequest) {
-     mdmsValidator.validateMdmsData(testRequest);
+    mdmsValidator.validateMdmsData(testRequest);
     enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
     workflowIntegrator.callWorkFlow(testRequest);
     repository.save(testRequest);
