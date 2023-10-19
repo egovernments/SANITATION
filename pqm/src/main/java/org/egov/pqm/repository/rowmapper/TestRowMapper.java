@@ -59,8 +59,6 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 				String stageCode = rs.getString("stageCode");
 				String materialCode = rs.getString("materialCode");
 				String deviceCode = rs.getString("deviceCode");
-				String qualityCriteriaJson = rs.getString("qualityCriteria");
-				List<QualityCriteria> qualityCriteriaList = parseQualityCriteriaJson(qualityCriteriaJson);
 				String statusString = rs.getString("status");
 				TestResultStatus status = TestResultStatus.valueOf(statusString.toUpperCase());
 				String wfStatus = rs.getString("wfStatus");
@@ -76,7 +74,7 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 
 				currentTest = Test.builder().id(id).tenantId(tenantId).plantCode(plantCode).processCode(processCode)
 						.stageCode(stageCode).materialCode(materialCode).deviceCode(deviceCode)
-						.qualityCriteria(qualityCriteriaList).status(status).wfStatus(wfStatus).testType(testType)
+						.status(status).wfStatus(wfStatus).testType(testType)
 						.scheduledDate(scheduledDate).isActive(isActive).additionalDetails(additionaldetails)
 						.auditDetails(auditdetails).build();
 
