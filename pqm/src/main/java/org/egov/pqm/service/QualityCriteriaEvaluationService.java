@@ -125,60 +125,49 @@ public class QualityCriteriaEvaluationService {
   private boolean isBenchmarkMet(BigDecimal valueToCheck, String benchmarkRule,
       BigDecimal[] benchmarkValues, BigDecimal allowedDeviation) {
 
+    BigDecimal lowerBound;
+    BigDecimal upperBound;
+
     switch (benchmarkRule) {
-      case GREATER_THAN:
-        if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) > 0) {
-          return true;
-        }
-        break;
-
-      case LESS_THAN:
-        if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) < 0) {
-          return true;
-        }
-        break;
-
-      case BETWEEN:
-        if ((benchmarkValues.length == 2) &&
-            (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) >= 0) &&
-            (valueToCheck.compareTo(benchmarkValues[1].add(allowedDeviation)) <= 0)) {
-          return true;
-        }
-        break;
-
-      case OUTSIDE_RANGE:
-        if ((benchmarkValues.length == 2) &&
-            (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) <= 0) ||
-            (valueToCheck.compareTo(benchmarkValues[1].add(allowedDeviation)) >= 0)) {
-          return true;
-        }
-        break;
-
       case EQUALS:
-        if (valueToCheck.compareTo(benchmarkValues[0]) == 0) {
-          return true;
-        }
-        break;
+        lowerBound = benchmarkValues[0].subtract(allowedDeviation);
+        upperBound = benchmarkValues[0].add(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) >= 0 && valueToCheck.compareTo(upperBound) <= 0);
 
       case NOT_EQUAL:
-        if (valueToCheck.compareTo(benchmarkValues[0]) != 0) {
-          return true;
-        }
-        break;
+        lowerBound = benchmarkValues[0].subtract(allowedDeviation);
+        upperBound = benchmarkValues[0].add(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) < 0 || valueToCheck.compareTo(upperBound) > 0);
 
-      case GREATER_THAN_EQUAL_TO:
-        if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) >= 0) {
-          return true;
-        }
-        break;
+      case LESS_THAN:
+        upperBound = benchmarkValues[0].add(allowedDeviation);
+        return (valueToCheck.compareTo(upperBound) < 0);
 
       case LESS_THAN_EQUAL_TO:
-        if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) <= 0) {
-          return true;
-        }
-        break;
+        upperBound = benchmarkValues[0].add(allowedDeviation);
+        return (valueToCheck.compareTo(upperBound) <= 0);
+
+      case GREATER_THAN:
+        lowerBound = benchmarkValues[0].subtract(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) > 0);
+
+      case GREATER_THAN_EQUAL_TO:
+        lowerBound = benchmarkValues[0].subtract(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) >= 0);
+
+      case BETWEEN:
+        lowerBound = benchmarkValues[0].subtract(allowedDeviation);
+        upperBound = benchmarkValues[1].add(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) >= 0 && valueToCheck.compareTo(upperBound) <= 0);
+
+      case OUTSIDE_RANGE:
+        lowerBound = benchmarkValues[0].add(allowedDeviation);
+        upperBound = benchmarkValues[1].subtract(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) < 0 || valueToCheck.compareTo(upperBound) > 0);
+
+      default:
+        return false;
     }
-    return false;
   }
 
 }
