@@ -28,6 +28,9 @@ public class PqmAnomalyConfiguration {
 	public void initialize() {
 		TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
 	}
+	
+	@Value("${save.test.anomaly.details}")
+	private String saveTestAnomalyTopic;
 
 	// Persister Config
 	@Value("${persister.save.pqm.topic}")

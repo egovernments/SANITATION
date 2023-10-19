@@ -21,11 +21,7 @@ public class AnomalyFinderService {
 	private EnrichmentService enrichmentService;
 	
 	public void anomalyCreate(TestRequest testRequest) {
-		
-//		List<Test> tests = new ArrayList<>();
-//		for (Test test : testRequest.getTests()) {
-//			tests.add(test);
-//		}
+	
 		PqmAnomalyRequest pqmAnomalyRequest=enrichmentService.enrichPqmAnomalyCreateRequest(testRequest);
 		anomalyRepository.save(pqmAnomalyRequest);
 //		notificationService.process(testRequest);

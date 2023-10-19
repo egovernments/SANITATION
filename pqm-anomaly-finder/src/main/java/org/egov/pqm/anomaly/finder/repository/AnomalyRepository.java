@@ -15,12 +15,15 @@ public class AnomalyRepository {
 	private PqmAnomalyFinderProducer producer;
 	
 	@Autowired
-	private PqmAnomalyConfiguration config;
+	private PqmAnomalyConfiguration pqmAnomalyConfiguration;
 	
 	public void save(PqmAnomalyRequest pqmAnomalyRequest) {
-		producer.push("save-pqm-test-anomaly-details", pqmAnomalyRequest);
+		producer.push(pqmAnomalyConfiguration.getSaveTestAnomalyTopic(), pqmAnomalyRequest);
 	}
 	
+	/*
+	 * Added for testing purpose will remove once we done with testing
+	 */
 	public void save(TestRequest testRequest) {
 		producer.push("create-pqm-anomaly-finder", testRequest);
 	}

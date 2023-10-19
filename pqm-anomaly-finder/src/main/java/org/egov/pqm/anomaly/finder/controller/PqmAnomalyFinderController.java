@@ -19,22 +19,21 @@ public class PqmAnomalyFinderController {
 
 	@Autowired
 	private AnomalyRepository anomalyRepository;
-
-//	@Autowired
-//	private ResponseInfoFactory responseInfoFactory;
+	
+	/**
+	 * Created this api for testing purpose 
+	 * Will delete once we will complete testing.
+	 * @param testRequest
+	 *  
+	 */
 
 	@PostMapping(value = "/_create")
 	public ResponseEntity<TestResponse> create(@Valid @RequestBody TestRequest testRequest) {
-//    Test test = pqmService.create(testRequest);
+
 		anomalyRepository.save(testRequest);
 
-//    List<Test> testList = new ArrayList<>();
-//    testList.add(test);
-    TestResponse response = null;
-//    		TestResponse.builder().tests(testList)
-//        .responseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(testRequest.getRequestInfo(), true))
-//        .build();
-		return new ResponseEntity<>(response,HttpStatus.OK);
+		TestResponse response = null;
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }

@@ -34,34 +34,6 @@ public class EnrichmentService {
 	 * @param testRequest
 	 * @param mdmsData
 	 */
-//	public PqmAnomalyRequest enrichPqmAnomalyCreateRequest(TestRequest testRequest) {
-//		RequestInfo requestInfo = testRequest.getRequestInfo();
-//		List<Test> tests = testRequest.getTests();
-//		List<PqmAnomaly> pqmAnomalys = new ArrayList<>();
-//
-//		for (Test test : tests) {
-//			
-//			PqmAnomaly PqmAnomaly = new PqmAnomaly();
-//			AuditDetails auditDetails = pqmAnomalyFinderUtil.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
-//			
-//			AnomalyType anomalyType = null;
-//			if (test.getTestType().equals(TestType.LAB))
-//				anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
-//			else if (test.getTestType().equals(TestType.IOT))
-//				anomalyType = AnomalyType.IOT_DEVICE_RESULTS_NOT_AS_PER_BENCHMARK;
-//			else
-//				anomalyType = AnomalyType.LAB_RESULTS_AND_DEVICE_RESULTS_DO_NOT_MATCH;
-//			PqmAnomaly.builder().id(UUID.randomUUID().toString()).tenantId(test.getTenantId()).tenantId(test.getId())
-//					.anomalyType(anomalyType).description("Description").referenceId("IotID").resolutionStatus("resolutionStatus")
-//					.isActive(test.getIsActive()).additionalDetails(test.getAdditionalDetails())
-//					.auditDetails(auditDetails).build();
-//			pqmAnomalys.add(PqmAnomaly);
-//		}
-//		PqmAnomalyRequest pqmAnomalyRequest = new PqmAnomalyRequest();
-//		pqmAnomalyRequest.builder().requestInfo(requestInfo).pqmAnomalys(pqmAnomalys).build();
-//		return pqmAnomalyRequest;
-//
-//	}
 	public PqmAnomalyRequest enrichPqmAnomalyCreateRequest(TestRequest testRequest) {
 	    RequestInfo requestInfo = testRequest.getRequestInfo();
 	    List<Test> tests = testRequest.getTests();
@@ -82,6 +54,7 @@ public class EnrichmentService {
 	        pqmAnomalys.add(
 	            PqmAnomaly.builder()
 	                .id(UUID.randomUUID().toString())
+	                .testId(test.getId())
 	                .tenantId(test.getTenantId())
 	                .referenceId("IotID")  // Replace with the actual referenceId logic
 	                .anomalyType(anomalyType)
