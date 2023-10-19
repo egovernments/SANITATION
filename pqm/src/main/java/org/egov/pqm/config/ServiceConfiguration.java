@@ -56,6 +56,9 @@ public class ServiceConfiguration {
   @Value("${egov.test.update.kafka.topic}")
   private String testUpdateTopic;
 
+  @Value("${egov.test.update.event.kafka.topic}")
+  private String testUpdateEventTopic;
+
   @Value("${egov.test.update.workflow.kafka.topic}")
   private String testWorkflowTopic;
 

@@ -67,6 +67,8 @@ public class TestRepository {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     producer.push(config.getTestUpdateTopic(),
         new TestRequest(requestInfo, Collections.singletonList(test)));
+    producer.push(config.getTestUpdateEventTopic(),
+            new TestRequest(requestInfo, Collections.singletonList(test)));
 
   }
 
