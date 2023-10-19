@@ -25,6 +25,8 @@ public class TestQueryBuilder {
 	private static final String PAGINATION_WRAPPER = "{} {orderby} {pagination}";
 	
 	private static final String DOCUMENT_QUERY = "select * from eg_pqm_test_result_documents";
+	
+	private static final String QUALITYCRITERIA_QUERY = "select * from eg_pqm_test_criteria_results";
 
 	public String getPqmSearchQuery(TestSearchRequest testSearchRequest, List<Object> preparedStmtList) {
 
@@ -249,6 +251,19 @@ public class TestQueryBuilder {
 		if (!CollectionUtils.isEmpty(idList)) {
 			addClauseIfRequired(preparedStmtList, builder);
 			builder.append(" testId IN (").append(createQuery(idList)).append(")");
+			addToPreparedStatement(preparedStmtList, idList);
+
+		}
+		return builder.toString();
+	}
+	
+	public String getQualityCriteriaQuery(List<String> idList, List<Object> preparedStmtList) {
+		StringBuilder builder = new StringBuilder(QUALITYCRITERIA_QUERY);
+		
+		
+		if (!CollectionUtils.isEmpty(idList)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" testid IN (").append(createQuery(idList)).append(")");
 			addToPreparedStatement(preparedStmtList, idList);
 
 		}
