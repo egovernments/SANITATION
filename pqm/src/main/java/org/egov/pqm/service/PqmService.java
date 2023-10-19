@@ -154,17 +154,18 @@ public class PqmService {
       throw new CustomException(TEST_NOT_IN_DB,
           "test not present in database which we want to update ");
     }
+    mdmsValidator.validateMdmsData(testRequest);
     //Fetching actions from businessService
     BusinessService businessService = workflowService.getBusinessService(test, testRequest,
         PQM_BUSINESS_SERVICE, null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
-    workflowIntegrator.callWorkFlow(testRequest);//updating workflow during update
     enrichmentService.enrichPQMUpdateRequest(testRequest);  //enrich update request
     if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {   //calculate test result
       qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
       enrichmentService.setTestResultStatus(testRequest);
       enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     }
+    workflowIntegrator.callWorkFlow(testRequest);//updating workflow during update
     repository.update(testRequest);
     return testRequest.getTests().get(0);
   }
