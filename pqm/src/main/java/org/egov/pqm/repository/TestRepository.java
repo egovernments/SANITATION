@@ -53,6 +53,7 @@ public class TestRepository {
 
   public void save(TestRequest testRequest) {
     producer.push(config.getTestSaveTopic(), testRequest);
+    producer.push(config.getTestSaveEventTopic(), testRequest);
   }
 
   public void saveAnomaly(String topic, TestRequest testRequest) {
@@ -66,6 +67,8 @@ public class TestRepository {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     producer.push(config.getTestUpdateTopic(),
         new TestRequest(requestInfo, Collections.singletonList(test)));
+    producer.push(config.getTestUpdateEventTopic(),
+            new TestRequest(requestInfo, Collections.singletonList(test)));
 
   }
 
