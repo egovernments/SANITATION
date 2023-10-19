@@ -16,7 +16,6 @@ import org.egov.common.contract.request.Role;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.MDMSUtils;
-import org.egov.pqm.util.QualityCriteriaEvaluation;
 import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
@@ -60,7 +59,7 @@ public class PqmService {
 	private MDMSUtils mdmsUtils;
 
 	@Autowired
-	private QualityCriteriaEvaluation qualityCriteriaEvaluation;
+	private QualityCriteriaEvaluationService qualityCriteriaEvaluation;
 
 	@Autowired
 	private MDMSValidator mdmsValidator;

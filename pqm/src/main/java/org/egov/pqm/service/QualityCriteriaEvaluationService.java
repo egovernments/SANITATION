@@ -1,4 +1,4 @@
-package org.egov.pqm.util;
+package org.egov.pqm.service;
 
 
 import static org.egov.pqm.util.Constants.BETWEEN;
@@ -16,7 +16,8 @@ import java.math.BigDecimal;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.pqm.config.ServiceConfiguration;
-import org.egov.pqm.web.model.AuditDetails;
+import org.egov.pqm.util.ErrorConstants;
+import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
@@ -28,11 +29,9 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Component
 @Slf4j
-public class QualityCriteriaEvaluation {
+public class QualityCriteriaEvaluationService {
 
   @Autowired
   private MDMSUtils mdmsUtil;
@@ -69,7 +68,7 @@ public class QualityCriteriaEvaluation {
     for (QualityCriteria qualityCriteria : test.getQualityCriteria()) {
       QualityCriteria evaluatedqualityCriteria = enrichQualityCriteriaFields(
           codeToQualityCriteriaMap.get(qualityCriteria.getCriteriaCode()),
-          qualityCriteria.getResultValue());
+          qualityCriteria);
 
       evaluatedqualityCriteriaList.add(evaluatedqualityCriteria);
     }
@@ -80,22 +79,29 @@ public class QualityCriteriaEvaluation {
    * returns a qualityCriteria with enriched status and allowedDeviation
    *
    * @param mdmsQualityCriteria MDMS Quality Criteria
-   * @param value               Value to Test
+   * @param incomingQualityCriteria Quality Criteria from request
    * @return QualityCriteria
    */
   public QualityCriteria enrichQualityCriteriaFields(MDMSQualityCriteria mdmsQualityCriteria,
-      BigDecimal value) {
+      QualityCriteria incomingQualityCriteria) {
+    BigDecimal resultValue = incomingQualityCriteria.getResultValue();
     String criteriaCode = mdmsQualityCriteria.getCode();
     String benchmarkRule = mdmsQualityCriteria.getBenchmarkRule();
     List<BigDecimal> benchmarkValues = mdmsQualityCriteria.getBenchmarkValues();
     BigDecimal allowedDeviation = mdmsQualityCriteria.getAllowedDeviation();
 
-    boolean areBenchmarkRulesMet = isBenchmarkMet(value, benchmarkRule,
+    boolean areBenchmarkRulesMet = isBenchmarkMet(resultValue, benchmarkRule,
         benchmarkValues.toArray(new BigDecimal[0]),
         allowedDeviation);
 
-    QualityCriteria qualityCriteria = QualityCriteria.builder().criteriaCode(criteriaCode)
-        .resultValue(value).resultStatus(TestResultStatus.PENDING).build();
+    QualityCriteria qualityCriteria = QualityCriteria.builder()
+        .id(incomingQualityCriteria.getId())
+        .testId(incomingQualityCriteria.getTestId())
+        .criteriaCode(criteriaCode)
+        .resultValue(resultValue)
+        .isActive(Boolean.TRUE)
+        .allowedDeviation(mdmsQualityCriteria.getAllowedDeviation())
+        .resultStatus(TestResultStatus.PENDING).build();
 
     if (areBenchmarkRulesMet) {
       qualityCriteria.setResultStatus(TestResultStatus.PASS);
@@ -103,9 +109,6 @@ public class QualityCriteriaEvaluation {
       qualityCriteria.setResultStatus(TestResultStatus.FAIL);
     }
 
-    //enriching allowedDeviation
-    qualityCriteria.setAllowedDeviation(mdmsQualityCriteria.getAllowedDeviation());
-    qualityCriteria.setIsActive(Boolean.TRUE);
     return qualityCriteria;
   }
 
