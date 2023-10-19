@@ -30,30 +30,30 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TestRepository {
 
-  @Autowired
-  private TestQueryBuilder pqmQueryBuilder;
+	@Autowired
+	private TestQueryBuilder pqmQueryBuilder;
 
-  @Autowired
-  private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-  @Autowired
-  private TestRowMapper pqmRowMapper;
+	@Autowired
+	private TestRowMapper pqmRowMapper;
 
-  @Autowired
-  private DocumentRowMapper documentRowMapper;
+	@Autowired
+	private DocumentRowMapper documentRowMapper;
 
   @Autowired
   private QualityCriteriaRowMapper qualityCriteriaRowMapper;
   
   @Autowired
   private PqmProducer producer;
+  
+	@Autowired
+	private ServiceConfiguration config;
 
-  @Autowired
-  private ServiceConfiguration config;
-
-  public void save(TestRequest testRequest) {
-    producer.push(config.getTestSaveTopic(), testRequest);
-  }
+	public void save(TestRequest testRequest) {
+		producer.push(config.getTestSaveTopic(), testRequest);
+	}
 
   public void saveAnomaly(String topic, TestRequest testRequest) {
     producer.push(topic, testRequest);
@@ -93,12 +93,11 @@ public class TestRepository {
 	  }
 
   public List<Test> fetchFromDB(TestRequest testRequest) {
-    Test test = testRequest.getTests().get(0);
-    List<String> ids = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
-    ids.add(test.getId());
+
+    List<String> ids = Collections.singletonList(testRequest.getTests().get(0).getId());
 
     TestSearchCriteria criteria = TestSearchCriteria.builder()
-        .ids(ids).tenantId(test.getTenantId())
+        .ids(ids).tenantId(testRequest.getTests().get(0).getTenantId())
         .build();
     Pagination Pagination = new Pagination();
     TestSearchRequest request = TestSearchRequest.builder()

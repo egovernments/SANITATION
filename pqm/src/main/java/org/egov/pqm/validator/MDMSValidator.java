@@ -37,7 +37,7 @@ public class MDMSValidator {
     if (result.isEmpty()) {
       throw new CustomException(
           "INVALID" + " " + schemaCode.substring(schemaCode.lastIndexOf('.') + 1).toUpperCase(),
-          schemaCode.substring(schemaCode.lastIndexOf('.') + 1).toUpperCase()
+          schemaCode.substring(schemaCode.lastIndexOf('.') + 1).toLowerCase()
               + " " + "code is not present in mdms");
     }
   }

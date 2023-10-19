@@ -46,7 +46,7 @@ public class EnrichmentService {
     setAuditDetails(testRequest, true);
     setWorkflowStatus(testRequest);
     setTestResultStatus(testRequest);
-    setDocumentsIdAndTestId(testRequest);
+    enrichDocument(testRequest, true);
   }
 
   private void setWorkflowStatus(TestRequest testRequest) {
@@ -59,20 +59,23 @@ public class EnrichmentService {
     setAuditDetails(testRequest, true);
     testRequest.getTests().get(0).setStatus(PENDING);
     setInitialWorkflowAction(testRequest.getTests().get(0));
-    setDocumentsIdAndTestId(testRequest);
+    enrichDocument(testRequest, true);
   }
 
   public void enrichPQMUpdateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setAuditDetails(testRequest, false);
-    setDocumentsIdAndTestId(testRequest);
+    enrichDocument(testRequest, false);
   }
 
-  private void setDocumentsIdAndTestId(TestRequest testRequest) {
+  private void enrichDocument(TestRequest testRequest, boolean isCreate) {
     List<Document> documentList = testRequest.getTests().get(0).getDocuments();
+    AuditDetails auditDetails = setAuditDetails(testRequest, isCreate);
     for (Document doc : documentList) {
       doc.setTestId(testRequest.getTests().get(0).getId());
       doc.setId(String.valueOf(UUID.randomUUID()));
+      doc.setTenantId(testRequest.getTests().get(0).getTenantId());
+      doc.setAuditDetails(auditDetails);
     }
   }
 
@@ -97,7 +100,7 @@ public class EnrichmentService {
     }
   }
 
-  private void setAuditDetails(TestRequest testRequest, boolean isCreate) {
+  private AuditDetails setAuditDetails(TestRequest testRequest, boolean isCreate) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     AuditDetails auditDetails = null;
     String createdBy = requestInfo.getUserInfo().getUuid();
@@ -114,6 +117,7 @@ public class EnrichmentService {
           .build();
     }
     testRequest.getTests().get(0).setAuditDetails(auditDetails);
+    return auditDetails;
   }
 
 
