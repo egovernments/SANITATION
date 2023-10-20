@@ -122,6 +122,12 @@ public class VendorService {
 							+ vendorRequest.getVendor().getName());
 		}
 
+		if (oldVendor.getOwner() != null && vendorRequest.getVendor().getOwner() != null && !oldVendor.getOwner()
+				.getMobileNumber().equalsIgnoreCase(vendorRequest.getVendor().getOwner().getMobileNumber())) {
+			throw new CustomException(VendorConstants.UPDATE_ERROR,
+					"Mobile number update is not allowed" + vendorRequest.getVendor().getOwner().getMobileNumber());
+		}
+
 		Object mdmsData = util.mDMSCall(requestInfo, tenantId);
 		vendorValidator.validateCreateOrUpdateRequest(vendorRequest, mdmsData, false, requestInfo);
 		enrichmentService.enrichUpdate(vendorRequest);

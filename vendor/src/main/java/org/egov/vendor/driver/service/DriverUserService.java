@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
 import org.egov.tracer.model.CustomException;
@@ -65,6 +67,8 @@ public class DriverUserService {
 		RequestInfo requestInfo = driverRequest.getRequestInfo();
 		User driverInfo = driver.getOwner();
 		HashMap<String, String> errorMap = new HashMap<>();
+
+		UserDetailResponse userDetailResponse = null;
 
 		if (driverInfo != null && driverInfo.getMobileNumber() != null) {
 			driverInfoMobileNumber(driverInfo, requestInfo, errorMap, driver, driverRequest, isCreateOrUpdate);

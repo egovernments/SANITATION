@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.vendor.config.VendorConfiguration;
 import org.egov.vendor.driver.web.model.DriverSearchCriteria;
+import org.egov.vendor.web.model.VendorSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -44,22 +45,11 @@ public class DriverQueryBuilder {
 			 */
 
 			List<String> driverName = criteria.getName();
-			if (!CollectionUtils.isEmpty(driverName)
-					&& (driverName.stream().filter(name -> name.length() > 0).findFirst().orElse(null) != null)) {
-				boolean flag = false;
+			if (!CollectionUtils.isEmpty(driverName)) {
 				addClauseIfRequired(preparedStmtList, builder);
-				builder.append(" ( ");
-				for (String drivername : driverName) {
+				builder.append(" driver.name IN (").append(createQuery(driverName)).append(")");
+				addToPreparedStatement(preparedStmtList, driverName);
 
-					if (flag)
-						builder.append(" OR ");
-					builder.append(" LOWER(driver.name) like ?");
-					preparedStmtList.add('%' + StringUtils.lowerCase(drivername) + '%');
-					builder.append(" ESCAPE '_' ");
-					flag = true;
-
-				}
-				builder.append(" ) ");
 			}
 
 			List<String> ownerIds = criteria.getOwnerIds();

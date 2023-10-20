@@ -83,7 +83,7 @@ public class UserService {
 						foundOwner = userDetailResponse.getUser().get(i);
 					}
 				}
-				foundOwnerDetails(userDetailResponse, foundOwner, requestInfo);
+				owner = foundOwnerDetails(userDetailResponse, foundOwner, requestInfo);
 
 			} else {
 				owner = createVendorOwner(owner, vendorRequest.getRequestInfo());
@@ -164,7 +164,7 @@ public class UserService {
 		return owner;
 	}
 
-	public void validateVendorExists(List<User> user) {
+	private void validateVendorExists(List<User> user) {
 		List<String> ownerIds = user.stream().map(User::getUuid).collect(Collectors.toList());
 		int count = vendorRepository.getExistingVenodrsCount(ownerIds);
 
@@ -279,7 +279,7 @@ public class UserService {
 		setUserName(owner);
 		owner.setType(VendorConstants.CITIZEN);
 		UserDetailResponse userDetailResponse = userCall(new UserRequest(requestInfo, owner), uri);
-		log.info("owner created --> " + userDetailResponse.getUser().get(0).getUuid());
+		log.debug("owner created --> " + userDetailResponse.getUser().get(0).getUuid());
 		return userDetailResponse.getUser().get(0);
 	}
 

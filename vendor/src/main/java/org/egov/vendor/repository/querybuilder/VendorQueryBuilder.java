@@ -110,23 +110,13 @@ public class VendorQueryBuilder {
 			 */
 
 			List<String> vendorName = criteria.getName();
-			if (!CollectionUtils.isEmpty(vendorName)
-					&& (vendorName.stream().filter(name -> name.length() > 0).findFirst().orElse(null) != null)) {
+			if (!CollectionUtils.isEmpty(vendorName)) {
 				List<String> vendorNametoLowerCase = criteria.getName().stream().map(String::toLowerCase)
 						.collect(Collectors.toList());
-				boolean flag = false;
 				addClauseIfRequired(preparedStmtList, builder);
-				builder.append(" ( ");
-				for (String vendorname : vendorNametoLowerCase) {
-					if (flag)
-						builder.append(" OR ");
-					builder.append(" LOWER(vendor.name) like ?");
-					preparedStmtList.add('%' + StringUtils.lowerCase(vendorname) + '%');
-					builder.append(" ESCAPE '_' ");
+				builder.append(" LOWER(vendor.name) IN (").append(createQuery(vendorNametoLowerCase)).append(")");
+				addToPreparedStatement(preparedStmtList, vendorNametoLowerCase);
 
-					flag = true;
-				}
-				builder.append(" ) ");
 			}
 
 			List<String> ownerIds = criteria.getOwnerIds();
