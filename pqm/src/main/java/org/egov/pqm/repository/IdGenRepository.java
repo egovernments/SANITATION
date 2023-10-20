@@ -1,5 +1,7 @@
 package org.egov.pqm.repository;
 
+import static org.egov.pqm.util.ErrorConstants.IDGEN_ERROR;
+
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.idgen.IdGenerationRequest;
@@ -44,7 +46,7 @@ public class IdGenRepository {
     } catch (HttpClientErrorException e) {
       throw new ServiceCallException(e.getResponseBodyAsString());
     } catch (Exception e) {
-      throw new CustomException(e.getCause().getClass().getName(), e.getMessage());
+      throw new CustomException(IDGEN_ERROR, e.getMessage());
     }
     return response;
   }

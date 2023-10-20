@@ -53,6 +53,7 @@ public class TestRepository {
 
   public void save(TestRequest testRequest) {
     producer.push(config.getTestSaveTopic(), testRequest);
+    producer.push(config.getTestSaveEventTopic(), testRequest);
   }
 
   public void saveAnomaly(String topic, TestRequest testRequest) {
@@ -61,12 +62,7 @@ public class TestRepository {
 
 
   public void update(TestRequest testRequest) {
-
-    Test test = testRequest.getTests().get(0);
-    RequestInfo requestInfo = testRequest.getRequestInfo();
-    producer.push(config.getTestUpdateTopic(),
-        new TestRequest(requestInfo, Collections.singletonList(test)));
-
+    producer.push(config.getTestUpdateTopic(), testRequest);
   }
 
   public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {
