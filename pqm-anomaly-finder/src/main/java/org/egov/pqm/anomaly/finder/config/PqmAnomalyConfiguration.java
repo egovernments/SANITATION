@@ -28,7 +28,7 @@ public class PqmAnomalyConfiguration {
 	public void initialize() {
 		TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
 	}
-	
+
 	@Value("${save.test.anomaly.details}")
 	private String saveTestAnomalyTopic;
 
@@ -45,5 +45,31 @@ public class PqmAnomalyConfiguration {
 
 	@Value("${egov.usr.events.create.topic}")
 	private String saveUserEventsTopic;
+
+	// User Config
+	@Value("${egov.user.host}")
+	private String userHost;
+
+	@Value("${egov.user.context.path}")
+	private String userContextPath;
+
+	@Value("${egov.user.create.path}")
+	private String userCreateEndpoint;
+
+	@Value("${egov.user.search.path}")
+	private String userSearchEndpoint;
+
+	// Localization
+	@Value("${egov.localization.host}")
+	private String localizationHost;
+
+	@Value("${egov.localization.context.path}")
+	private String localizationContextPath;
+
+	@Value("${egov.localization.search.endpoint}")
+	private String localizationSearchEndpoint;
+
+	@Value("${egov.localization.statelevel}")
+	private Boolean isLocalizationStateLevel;
 
 }
