@@ -61,6 +61,9 @@ public class FSMValidator {
 	public void validateCreate(FSMRequest fsmRequest, Object mdmsData) {
 		mdmsValidator.validateMdmsData(mdmsData);
 		FSM fsm = fsmRequest.getFsm();
+		if (!StringUtils.isEmpty(fsm.getPaymentPreference())) {
+			validatePaymentPreference(fsm.getPaymentPreference());
+		}
 		if (fsmRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase(FSMConstants.CITIZEN)) {
 			validateCitizenDetails(fsm, fsmRequest);
 
@@ -79,10 +82,7 @@ public class FSMValidator {
 				mdmsValidator.validateApplicationChannel(fsm.getSource());
 
 			}
-			if (!StringUtils.isEmpty(fsm.getPaymentPreference())) {
-				validatePaymentPreference(fsm.getPaymentPreference());
-
-			}
+			
 			if (!StringUtils.isEmpty(fsm.getSanitationtype())) {
 				mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype());
 			}

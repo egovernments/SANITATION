@@ -368,7 +368,7 @@ public class FSMService {
 
 	private void handleDSOReject(FSMRequest fsmRequest) {
 		FSM fsm = fsmRequest.getFsm();
-		fsm.setDsoId(null);
+		// fsm.setDsoId(null);
 		fsm.setVehicleId(null);
 		Workflow workflow = fsmRequest.getWorkflow();
 		if (!StringUtils.hasLength(workflow.getComments())) {

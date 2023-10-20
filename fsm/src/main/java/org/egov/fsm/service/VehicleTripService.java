@@ -121,7 +121,7 @@ public class VehicleTripService {
 
 	private void increaseOrDecreaseTrip(Integer remainingNumberOfTrips, boolean increaseTrip, FSMRequest fsmRequest,
 			FSM fsm) {
-		log.info("remainingNumberOfTrips :: " + remainingNumberOfTrips + " increaseTrip ::" + increaseTrip);
+		log.debug("remainingNumberOfTrips :: " + remainingNumberOfTrips + " increaseTrip ::" + increaseTrip);
 		try {
 			if (remainingNumberOfTrips != 0 && increaseTrip) {
 				increaseUpdateTripDetails(remainingNumberOfTrips, fsmRequest, fsm);
@@ -159,16 +159,16 @@ public class VehicleTripService {
 			vehicleTripsList.add(vehicleTrip);
 		}
 		VehicleTripResponse vehicleTripResponse = new VehicleTripResponse();
-		log.info("increaseUpdateTripDetails for pre pay");
+		log.debug("increaseUpdateTripDetails for pre pay");
 		updateCreatedVehicleTrip(fsmRequest, vehicleTripResponse, vehicleTripsList, createUri);
 
 	}
 
 	private void updateCreatedVehicleTrip(FSMRequest fsmRequest, VehicleTripResponse vehicleTripResponse,
 			List<VehicleTrip> vehicleTripsList, StringBuilder createUri) {
-		log.info("WORKFLOW ACTION==> " + fsmRequest.getWorkflow().getAction());
+		log.debug("WORKFLOW ACTION==> " + fsmRequest.getWorkflow().getAction());
 
-		log.info("Vehicle Trip Request call ::" + vehicleTripResponse);
+		log.debug("Vehicle Trip Request call ::" + vehicleTripResponse);
 		VehicleTripRequest tripRequest = VehicleTripRequest.builder().vehicleTrip(vehicleTripsList)
 				.requestInfo(fsmRequest.getRequestInfo())
 				.workflow(Workflow.builder().action(FSMConstants.TRIP_READY_FOR_DISPOSAL).build()).build();
