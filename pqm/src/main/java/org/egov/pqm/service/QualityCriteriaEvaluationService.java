@@ -1,4 +1,4 @@
-package org.egov.pqm.util;
+package org.egov.pqm.service;
 
 
 import static org.egov.pqm.util.Constants.BETWEEN;
@@ -13,11 +13,11 @@ import static org.egov.pqm.util.Constants.OUTSIDE_RANGE;
 import static org.egov.pqm.util.MDMSUtils.parseJsonToMap;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
+import lombok.extern.slf4j.Slf4j;
 import org.egov.pqm.config.ServiceConfiguration;
+import org.egov.pqm.util.ErrorConstants;
+import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
@@ -29,11 +29,9 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Component
 @Slf4j
-public class QualityCriteriaEvaluation {
+public class QualityCriteriaEvaluationService {
 
   @Autowired
   private MDMSUtils mdmsUtil;
@@ -70,7 +68,7 @@ public class QualityCriteriaEvaluation {
     for (QualityCriteria qualityCriteria : test.getQualityCriteria()) {
       QualityCriteria evaluatedqualityCriteria = enrichQualityCriteriaFields(
           codeToQualityCriteriaMap.get(qualityCriteria.getCriteriaCode()),
-          qualityCriteria.getResultValue());
+          qualityCriteria);
 
       evaluatedqualityCriteriaList.add(evaluatedqualityCriteria);
     }
@@ -81,22 +79,29 @@ public class QualityCriteriaEvaluation {
    * returns a qualityCriteria with enriched status and allowedDeviation
    *
    * @param mdmsQualityCriteria MDMS Quality Criteria
-   * @param value               Value to Test
+   * @param incomingQualityCriteria Quality Criteria from request
    * @return QualityCriteria
    */
   public QualityCriteria enrichQualityCriteriaFields(MDMSQualityCriteria mdmsQualityCriteria,
-      BigDecimal value) {
+      QualityCriteria incomingQualityCriteria) {
+    BigDecimal resultValue = incomingQualityCriteria.getResultValue();
     String criteriaCode = mdmsQualityCriteria.getCode();
     String benchmarkRule = mdmsQualityCriteria.getBenchmarkRule();
     List<BigDecimal> benchmarkValues = mdmsQualityCriteria.getBenchmarkValues();
     BigDecimal allowedDeviation = mdmsQualityCriteria.getAllowedDeviation();
 
-    boolean areBenchmarkRulesMet = isBenchmarkMet(value, benchmarkRule,
+    boolean areBenchmarkRulesMet = isBenchmarkMet(resultValue, benchmarkRule,
         benchmarkValues.toArray(new BigDecimal[0]),
         allowedDeviation);
 
-    QualityCriteria qualityCriteria = QualityCriteria.builder().criteriaCode(criteriaCode)
-        .resultValue(value).resultStatus(TestResultStatus.PENDING).build();
+    QualityCriteria qualityCriteria = QualityCriteria.builder()
+        .id(incomingQualityCriteria.getId())
+        .testId(incomingQualityCriteria.getTestId())
+        .criteriaCode(criteriaCode)
+        .resultValue(resultValue)
+        .isActive(Boolean.TRUE)
+        .allowedDeviation(mdmsQualityCriteria.getAllowedDeviation())
+        .resultStatus(TestResultStatus.PENDING).build();
 
     if (areBenchmarkRulesMet) {
       qualityCriteria.setResultStatus(TestResultStatus.PASS);
@@ -104,8 +109,6 @@ public class QualityCriteriaEvaluation {
       qualityCriteria.setResultStatus(TestResultStatus.FAIL);
     }
 
-    //enriching allowedDeviation
-    qualityCriteria.setAllowedDeviation(mdmsQualityCriteria.getAllowedDeviation());
     return qualityCriteria;
   }
 
@@ -122,60 +125,49 @@ public class QualityCriteriaEvaluation {
   private boolean isBenchmarkMet(BigDecimal valueToCheck, String benchmarkRule,
       BigDecimal[] benchmarkValues, BigDecimal allowedDeviation) {
 
+    BigDecimal lowerBound;
+    BigDecimal upperBound;
+
     switch (benchmarkRule) {
-      case GREATER_THAN:
-        if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) > 0) {
-          return true;
-        }
-        break;
-
-      case LESS_THAN:
-        if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) < 0) {
-          return true;
-        }
-        break;
-
-      case BETWEEN:
-        if ((benchmarkValues.length == 2) &&
-            (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) >= 0) &&
-            (valueToCheck.compareTo(benchmarkValues[1].add(allowedDeviation)) <= 0)) {
-          return true;
-        }
-        break;
-
-      case OUTSIDE_RANGE:
-        if ((benchmarkValues.length == 2) &&
-            (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) <= 0) ||
-            (valueToCheck.compareTo(benchmarkValues[1].add(allowedDeviation)) >= 0)) {
-          return true;
-        }
-        break;
-
       case EQUALS:
-        if (valueToCheck.compareTo(benchmarkValues[0]) == 0) {
-          return true;
-        }
-        break;
+        lowerBound = benchmarkValues[0].subtract(allowedDeviation);
+        upperBound = benchmarkValues[0].add(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) >= 0 && valueToCheck.compareTo(upperBound) <= 0);
 
       case NOT_EQUAL:
-        if (valueToCheck.compareTo(benchmarkValues[0]) != 0) {
-          return true;
-        }
-        break;
+        lowerBound = benchmarkValues[0].subtract(allowedDeviation);
+        upperBound = benchmarkValues[0].add(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) < 0 || valueToCheck.compareTo(upperBound) > 0);
 
-      case GREATER_THAN_EQUAL_TO:
-        if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) >= 0) {
-          return true;
-        }
-        break;
+      case LESS_THAN:
+        upperBound = benchmarkValues[0].add(allowedDeviation);
+        return (valueToCheck.compareTo(upperBound) < 0);
 
       case LESS_THAN_EQUAL_TO:
-        if (valueToCheck.compareTo(benchmarkValues[0].subtract(allowedDeviation)) <= 0) {
-          return true;
-        }
-        break;
+        upperBound = benchmarkValues[0].add(allowedDeviation);
+        return (valueToCheck.compareTo(upperBound) <= 0);
+
+      case GREATER_THAN:
+        lowerBound = benchmarkValues[0].subtract(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) > 0);
+
+      case GREATER_THAN_EQUAL_TO:
+        lowerBound = benchmarkValues[0].subtract(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) >= 0);
+
+      case BETWEEN:
+        lowerBound = benchmarkValues[0].subtract(allowedDeviation);
+        upperBound = benchmarkValues[1].add(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) >= 0 && valueToCheck.compareTo(upperBound) <= 0);
+
+      case OUTSIDE_RANGE:
+        lowerBound = benchmarkValues[0].add(allowedDeviation);
+        upperBound = benchmarkValues[1].subtract(allowedDeviation);
+        return (valueToCheck.compareTo(lowerBound) < 0 || valueToCheck.compareTo(upperBound) > 0);
+
+      default:
+        return false;
     }
-    return false;
   }
 
 }

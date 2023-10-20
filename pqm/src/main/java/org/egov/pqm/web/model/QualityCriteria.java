@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class QualityCriteria {
-	
+
    @JsonProperty("id")
-   private String id = null;
+   private String id;
 
    @JsonProperty("testId")
-   private String testId = null;
+   private String testId;
 
   @JsonProperty("criteriaCode")
   private String criteriaCode = null;
@@ -35,7 +35,7 @@ public class QualityCriteria {
 
   @JsonProperty("isActive")
   private Boolean isActive = Boolean.TRUE;
-  
+
   @JsonProperty("auditDetails")
   private AuditDetails auditDetails;
 }

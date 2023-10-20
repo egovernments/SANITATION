@@ -62,14 +62,7 @@ public class TestRepository {
 
 
   public void update(TestRequest testRequest) {
-
-    Test test = testRequest.getTests().get(0);
-    RequestInfo requestInfo = testRequest.getRequestInfo();
-    producer.push(config.getTestUpdateTopic(),
-        new TestRequest(requestInfo, Collections.singletonList(test)));
-    producer.push(config.getTestUpdateEventTopic(),
-            new TestRequest(requestInfo, Collections.singletonList(test)));
-
+    producer.push(config.getTestUpdateTopic(), testRequest);
   }
 
   public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {

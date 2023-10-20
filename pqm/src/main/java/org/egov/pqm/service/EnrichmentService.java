@@ -7,6 +7,7 @@ import static org.egov.pqm.web.model.TestResultStatus.PENDING;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.IdGenRepository;
@@ -25,7 +26,6 @@ import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
 
 
 @Service
@@ -47,6 +47,7 @@ public class EnrichmentService {
     setWorkflowStatus(testRequest);
     setTestResultStatus(testRequest);
     setDocumentsIdAndTestId(testRequest);
+    setTestCriteriaIdAndTestID(testRequest);
   }
 
   private void setWorkflowStatus(TestRequest testRequest) {
@@ -60,6 +61,7 @@ public class EnrichmentService {
     testRequest.getTests().get(0).setStatus(PENDING);
     setInitialWorkflowAction(testRequest.getTests().get(0));
     setDocumentsIdAndTestId(testRequest);
+    setTestCriteriaIdAndTestID(testRequest);
   }
 
   public void enrichPQMUpdateRequest(TestRequest testRequest) {
@@ -73,6 +75,14 @@ public class EnrichmentService {
     for (Document doc : documentList) {
       doc.setTestId(testRequest.getTests().get(0).getId());
       doc.setId(String.valueOf(UUID.randomUUID()));
+    }
+  }
+
+  private void setTestCriteriaIdAndTestID(TestRequest testRequest) {
+    List<QualityCriteria> qualityCriteriaList = testRequest.getTests().get(0).getQualityCriteria();
+    for (QualityCriteria qualityCriteria : qualityCriteriaList) {
+      qualityCriteria.setTestId(testRequest.getTests().get(0).getId());
+      qualityCriteria.setId(String.valueOf(UUID.randomUUID()));
     }
   }
 
@@ -114,6 +124,12 @@ public class EnrichmentService {
           .build();
     }
     testRequest.getTests().get(0).setAuditDetails(auditDetails);
+
+    //setting quality criteria AuditDetails
+    for(QualityCriteria criteria: testRequest.getTests().get(0).getQualityCriteria())
+    {
+      criteria.setAuditDetails(auditDetails);
+    }
   }
 
 
