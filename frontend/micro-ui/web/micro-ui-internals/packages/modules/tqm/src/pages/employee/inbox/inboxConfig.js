@@ -11,7 +11,7 @@ export const tqmInboxConfig = {
         "requestBody": {
           "inbox": {
             "processSearchCriteria": {
-              "businessService": ["TQM"],
+              "businessService": ["PQM"],
               "moduleName": "pqm"
             },
             "moduleSearchCriteria": {}
@@ -38,7 +38,7 @@ export const tqmInboxConfig = {
             "headerStyle": null,
             "primaryLabel": "Search",
             "secondaryLabel": "Clear Search",
-            "minReqFields": 1,
+            "minReqFields": 0,
             "defaultValues": {
               "id": "",
               "plantCodes": "",
@@ -90,23 +90,29 @@ export const tqmInboxConfig = {
               {
                 "label": "TQM_TEST_ID",
                 "jsonPath": "businessObject.id",
+                additionalCustomization:true
               },
               {
                 "label": "TQM_PLANT_NAME",
-                "jsonPath": "businessObject.plantCode"
+                "jsonPath": "businessObject.plantCode",
+                prefix:"PQM.Plant_",
+                translate:true
               },
               {
                 "label": "TQM_PENDING_DATE",
                 "jsonPath": "businessObject.scheduledDate",
+                additionalCustomization:true
               },
               {
                 "label": "TQM_TREATMENT_PROCESS",
-                "jsonPath": "businessObject.processCode"
+                "jsonPath": "businessObject.processCode",
+                prefix:"PQM.Process_",
+                translate:true
               },
               {
                 "label": "TQM_INBOX_STATUS",
-                "jsonPath": "processInstance.state.applicationStatus",
-                prefix:"WF_STATUS",
+                "jsonPath": "ProcessInstance.state.applicationStatus",
+                prefix:"WF_STATUS_",
                 translate:true
               },
               {
@@ -125,41 +131,25 @@ export const tqmInboxConfig = {
         "links": {
           "uiConfig": {
             "links": [
-              // {
-              //   "text": "ACTION_TEST_CREATE_ESTIMATE",
-              //   "url": "/employee/project/search-project",
-              //   "roles": ["ESTIMATE_CREATOR"]
-              // },
-              // {
-              //   "text": "ACTION_TEST_SEARCH_ESTIMATE",
-              //   "url": "/employee/estimate/search-estimate",
-              //   "roles": [
-              //     "ESTIMATE_VIEWER",
-              //     "ESTIMATE_CREATOR",
-              //     "ESTIMATE_VERIFIER",
-              //     "TECHNICAL_SANCTIONER",
-              //     "ESTIMATE_APPROVER"
-              //   ]
-              // }
               {
                 "text": "TQM_VIEW_PAST_RESULTS",
                 "url": "/employee/tqm/search-test-results",
-                "roles": ["FSM_CREATOR_EMP"]
+                "roles":["PQM_ADMIN"]
               },
               {
                 "text": "TQM_VIEW_IOT_RESULTS",
                 "url": "/employee/tqm/search-test-results",
-                "roles": ["FSM_CREATOR_EMP"]
+                "roles": ["PQM_ADMIN"]
               },
               {
                 "text": "TQM_SENSOR_MON",
                 "url": "/employee/tqm/search-devices",
-                "roles": ["FSM_CREATOR_EMP"]
+                "roles": ["PQM_ADMIN"]
               },
               {
                 "text": "TQM_VIEW_DASHBOARD",
                 "url": "/employee/tqm/dashboard",
-                "roles": ["FSM_CREATOR_EMP"]
+                "roles": ["PQM_ADMIN"]
               },
             ],
             "label": "TQM_QUALITY_TESTING",
@@ -192,8 +182,8 @@ export const tqmInboxConfig = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  "name": "processCode",
-                  "optionsKey": "processCode",
+                  "name": "processCodes",
+                  "optionsKey": "i18nKey",
                   "labelKey":"i18nKey",
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfigUlbAdmin",
@@ -239,8 +229,8 @@ export const tqmInboxConfig = {
                 "disable": false,
                 "populators": {
                   "componentLabel": "TQM_WF_STATUS",
-                  "name": "state",
-                  "labelPrefix": "WF_STATUS",
+                  "name": "status",
+                  "labelPrefix": "WF_STATUS_",
                   "businessService": "PQM"
                 }
               },

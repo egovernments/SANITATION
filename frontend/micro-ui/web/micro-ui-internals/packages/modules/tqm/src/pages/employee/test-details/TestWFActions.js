@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { updateConfig } from "./config/updateTestConfig";
 import { testResultsConfig } from "./config/testResultsConfig";
 
-function TestWFActions({ id, t, WFData, actionData, actionState, submitAction }) {
+function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, testDetailsData, isDataLoading }) {
   const [showPopUp, setshowPopUp] = useState(null);
   const [config, setConfig] = useState(null);
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -12,7 +12,13 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction })
     schemaCode: "PQM.QualityTestLab",
   });
 
-  const { isLoading: isDataLoading, data: testDetailsData } = Digit.Hooks.tqm.useSearchTest({ id: id, tenantId: tenantId });
+  // const { isLoading: isDataLoading, data: testDetailsData } = Digit.Hooks.tqm.useSearchTest({ id: id, tenantId: tenantId });
+
+  const { isLoading: istestCriteriaLoading, data: testCriteriaData } = Digit.Hooks.tqm.useCustomMDMSV2({
+    tenantId: tenantId,
+    schemaCode: "PQM.QualityCriteria",
+    changeQueryName: "QualityCriteria",
+  });
 
   const onSubmit = (data) => {
     if (actionState === "PENDINGRESULTS" && !showPopUp) {
@@ -20,7 +26,7 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction })
       return null;
     }
     const { action: workflow } = actionData;
-    testDetailsData.workflow = workflow;
+    testDetailsData.workflow = { action: workflow };
     submitAction(testDetailsData);
   };
 
@@ -29,17 +35,29 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction })
       case "SCHEDULED":
         return setConfig(updateConfig({ t, testLabs }));
       case "PENDINGRESULTS":
-        return setConfig(testResultsConfig({ t }));
+        return setConfig(testResultsConfig({ t, testCriteriaData, testDetailsData }));
       default:
-        null;
+        return setConfig(null);
     }
-  }, [actionState, testLabs, istestLabLoading]);
+  }, [actionState, testLabs, istestLabLoading, istestCriteriaLoading, testCriteriaData, testDetailsData, isDataLoading, WFData]);
 
   const onConfirm = () => {
+    const keyf = Object.keys(showPopUp);
+    const tempCriteria = testDetailsData?.testCriteria;
+    keyf?.forEach((i) => {
+      const _ = tempCriteria?.find((h) => h?.criteriaCode === i);
+      if (_) {
+        _.resultValue = showPopUp[i];
+      }
+    });
+    if (showPopUp?.documents?.length > 0) {
+      const fileStoreIds = showPopUp.documents.map(([, obj]) => obj.fileStoreId.fileStoreId);
+      testDetailsData.documents[0].fileStoreId = fileStoreIds[0];
+    }
     const { action: workflow } = actionData;
-    testDetailsData.workflow = workflow;
-    testDetailsData.additionalDetails.testData = showPopUp;
+    testDetailsData.workflow = { action: workflow };
     submitAction(testDetailsData);
+    setshowPopUp(null);
   };
 
   return (

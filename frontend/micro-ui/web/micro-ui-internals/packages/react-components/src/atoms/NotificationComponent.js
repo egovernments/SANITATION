@@ -20,7 +20,7 @@ function NotificationComponent(props) {
                 <CardText className="label">{t(i?.title)}</CardText>
                 <ButtonSelector theme="secondary" label={t(`ES_TQM_LABEL_${i?.action ? i?.action : ""}`)} />
               </div>
-              <span className="sla-cell-success">{t(`ES_TQM_SLA_PENDING_DUE_DATE`, { NO_OF_DAYS: i?.date })}</span>
+              <span className="sla-cell-success bg">{t(`ES_TQM_SLA_PENDING_DUE_DATE`, { NO_OF_DAYS: i?.date })}</span>
               <hr className="break-line" />
             </>
           ) : (

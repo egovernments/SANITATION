@@ -39,7 +39,7 @@ const App = ({ path }) => {
   return (
     <React.Fragment>
       {/* <TqmBreadCrumb location={location} defaultPath={path} /> */}
-      {isPlantOperatorLoggedIn && (location.pathname.includes("/response") ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>)}
+      {isPlantOperatorLoggedIn && ((location.pathname.includes("/response") ||location.pathname.includes("/landing") ) ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>)}
       <Switch>
         <AppContainer className="tqm">
           <PrivateRoute path={`${path}/landing`} component={() => <TQMLanding />} />

@@ -3,6 +3,7 @@ import { ViewComposer, Toast, Loader } from "@egovernments/digit-ui-react-compon
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import TestWFActions from "./TestWFActions";
+import { useQueryClient } from "react-query";
 
 function TestDetails() {
   const { t } = useTranslation();
@@ -15,44 +16,49 @@ function TestDetails() {
   const [showToast, setShowToast] = useState(null);
   const [workflowDetails, setWorkflowDetails] = useState(null);
   const [nextAction, setNextAction] = useState(null);
+  const queryClient = useQueryClient();
 
-  const { isLoading, data: testData, revalidate, isFetching } = Digit.Hooks.tqm.useViewTestResults({
+  const { isLoading, data: testData, revalidate, isFetching, refetch } = Digit.Hooks.tqm.useViewTestResults({
+    t,
     id: id,
     tenantId: tenantId,
     config: {
       select: (data) => ({
-        cards: [
-          {
-            sections: [
-              {
-                type: "DATA",
-                cardHeader: { value: t("ES_TQM_TEST_DETAILS_HEADING"), inlineStyles: { marginTop: 0 } },
-                values: data.details,
-              },
-              {
-                type: "COMPONENT",
-                component: "TqmCardReading",
-                props: {
-                  title: "Quality Parameter 1 (in UoM)",
+        data: {
+          cards: [
+            {
+              sections: [
+                {
+                  type: "DATA",
+                  cardHeader: { value: t("ES_TQM_TEST_DETAILS_HEADING"), inlineStyles: { marginTop: 0 } },
+                  values: data.details,
                 },
-              },
-              {
-                type: "COMPONENT",
-                component: "TqmCardReading",
-                props: {
-                  title: "Quality Parameter 2 (in UoM)",
+                {
+                  type: "COMPONENT",
+                  component: "TqmCardReading",
+                  props: {
+                    title: "Quality Parameter 1 (in UoM)",
+                  },
                 },
-              },
-              {
-                type: "COMPONENT",
-                component: "TqmCardReading",
-                props: {
-                  title: "Quality Parameter 3 (in UoM)",
+                {
+                  type: "COMPONENT",
+                  component: "TqmCardReading",
+                  props: {
+                    title: "Quality Parameter 2 (in UoM)",
+                  },
                 },
-              },
-            ],
-          },
-        ],
+                {
+                  type: "COMPONENT",
+                  component: "TqmCardReading",
+                  props: {
+                    title: "Quality Parameter 3 (in UoM)",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        response: data.testResponse,
       }),
     },
   });
@@ -67,7 +73,7 @@ function TestDetails() {
     },
   });
 
-  const { isLoading: updatingTest, isError: updateTestError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.tqm.useTestUpdate(tenantId);
+  const { mutate } = Digit.Hooks.tqm.useTestUpdate(tenantId);
 
   const closeToast = () => {
     setShowToast(null);
@@ -76,7 +82,7 @@ function TestDetails() {
   useEffect(() => {
     if (WFData && !isWFLoading) {
       setWorkflowDetails(WFData);
-      setNextAction(WFData?.actionState?.applicationStatus);
+      WFData?.actionState?.applicationStatus === "SUBMITTED" ? setNextAction(null) : setNextAction(WFData?.actionState?.applicationStatus);
     }
   }, [WFData, isWFLoading]);
 
@@ -90,6 +96,8 @@ function TestDetails() {
         setShowToast({ key: "success", action: "ES_TQM_STATUS_UPDATED_SUCCESSFULLY" });
         setTimeout(closeToast, 5000);
         queryClient.invalidateQueries("TQM_ADMIN_TEST_RESULTS");
+        queryClient.invalidateQueries("workFlowDetailsWorks");
+        refetch();
       },
     });
   };
@@ -99,8 +107,8 @@ function TestDetails() {
   }
   return (
     <>
-      {!isLoading && <ViewComposer data={testData} isLoading={isLoading} />}
-      {workflowDetails && nextAction && (
+      {!isLoading && <ViewComposer data={testData?.data} isLoading={isLoading} />}
+      {testData && !isLoading && workflowDetails && nextAction && (
         <TestWFActions
           id={id}
           t={t}
@@ -108,14 +116,12 @@ function TestDetails() {
           actionData={workflowDetails?.nextActions?.[0]}
           actionState={workflowDetails?.actionState?.applicationStatus}
           submitAction={submitAction}
+          testDetailsData={testData?.response}
+          isDataLoading={isLoading}
         />
       )}
       {showToast && (
-        <Toast
-          error={showToast.key === "error" ? true : false}
-          label={t(showToast.key === "success" ? `ES_TQM_STATUS_UPDATE_SUCCESS` : showToast.action)}
-          onClose={closeToast}
-        />
+        <Toast error={showToast.key === "error" ? true : false} label={t(showToast.key === "success" ? `ES_TQM_STATUS_UPDATE_SUCCESS` : showToast.action)} onClose={closeToast} />
       )}
     </>
   );

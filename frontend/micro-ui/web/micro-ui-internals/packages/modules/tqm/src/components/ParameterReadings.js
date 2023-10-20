@@ -25,7 +25,19 @@ function ParameterReadings({ reading }) {
         <CardMessage
           success={isTestPassed}
           title={isTestPassed ? t("ES_TQM_TEST_PARAMS_SUCCESS_TITLE") : t("ES_TQM_TEST_PARAMS_FAIL_TITLE")}
-          message={isTestPassed ? t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE") : t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE")}
+          message={
+            isTestPassed ? (
+              <>
+                <p>{t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE_PRI")}</p>
+                <p>{t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE_SECND")}</p>
+              </>
+            ) : (
+              <>
+                <p>{t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE_PRI")}</p>
+                <p>{t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE_SECND")}</p>
+              </>
+            )
+          }
         />
       ) : null}
       <SubmitBar label={t("ES_TQM_TEST_BACK_BUTTON")} onSubmit={() => history.goBack()} style={{ marginBottom: "12px" }} />

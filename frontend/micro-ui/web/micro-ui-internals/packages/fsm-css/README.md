@@ -44,6 +44,10 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
+0.0.35 sla css fixes
+0.0.34 pop up css fixes
+0.0.33 ui ux fixes
+0.0.32 added styles for tqm home
 0.0.31 added styles for tqm view test screen
 0.0.30 added styles for tqm test wf actions and pop up screen
 0.0.29 added styles for tqm test and response screen
