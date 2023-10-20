@@ -432,6 +432,94 @@ export const UICustomizations = {
           return "case_not_found"
       }
     }
+  },
+  SensorConfig:{
+    preProcess: (data,additionalDetails) => {
+      
+      const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
+      
+      //processcodes
+      data.body.inbox.moduleSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
+
+      //materialcodes
+      data.body.inbox.moduleSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.code)
+
+      //status
+      data.body.inbox.moduleSearchCriteria.status = status?.map(status => status.applicationStatus)
+
+      //fromDate and toDate
+      const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
+      data.body.inbox.moduleSearchCriteria.fromDate = fromDate
+      data.body.inbox.moduleSearchCriteria.toDate = toDate
+
+      //sortOrder sortBy 
+
+      data.body.inbox.moduleSearchCriteria.sortBy = "createdTime"
+      data.body.inbox.moduleSearchCriteria.sortOrder = sortOrder?.value
+
+      //limit offset
+
+      cleanObject(data.body.inbox.processSearchCriteria)
+      cleanObject(data.body.inbox.moduleSearchCriteria)
+     
+      
+      data.body.inbox.limit = 100
+      data.body.inbox.offset = 0
+      
+
+      //set tenantId
+      data.body.inbox.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.inbox.processSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+
+
+      // //testting
+      // data.body.inbox.moduleSearchCriteria.ids = ["8"]
+
+      //delete custom
+      delete data.body.custom;
+
+      return data
+    },
+    populateStatusReqCriteria:() => {
+      const tenantId = Digit.ULBService.getCurrentTenantId();
+
+      return {
+        url: "/egov-workflow-v2/egov-wf/businessservice/_search",
+        params: { tenantId, businessServices: businessServiceMap?.tqm },
+        body: {
+         
+        },
+        changeQueryName:"setWorkflowStatus",
+        config: {
+          enabled: true,
+          select: (data) => {
+           const wfStates = data?.BusinessServices?.[0]?.states?.filter(state=>state.applicationStatus
+            )?.map(state => {
+              return {
+                i18nKey:`WF_STATUS_${businessServiceMap?.tqm}_${state?.applicationStatus}`,
+                ...state
+              }
+           })
+           return wfStates
+          },
+        },
+      };
+    },
+    getCustomActionLabel:(obj,row) => {
+      return ""
+    },
+    additionalCustomizations:(row, key, column, value, t, searchResult) => {
+      switch (key) {
+        case "TQM_INBOX_SLA":
+          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          
+        case "TQM_PENDING_DATE":
+          return  Digit.DateUtils.ConvertEpochToDate(value)
+        default:
+          return "case_not_found"
+      }
+    }
+    
   }
 
 }
