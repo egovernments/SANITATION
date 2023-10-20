@@ -24,38 +24,41 @@ function TestDetails() {
     tenantId: tenantId,
     config: {
       select: (data) => ({
-        cards: [
-          {
-            sections: [
-              {
-                type: "DATA",
-                cardHeader: { value: t("ES_TQM_TEST_DETAILS_HEADING"), inlineStyles: { marginTop: 0 } },
-                values: data.details,
-              },
-              {
-                type: "COMPONENT",
-                component: "TqmCardReading",
-                props: {
-                  title: "Quality Parameter 1 (in UoM)",
+        data: {
+          cards: [
+            {
+              sections: [
+                {
+                  type: "DATA",
+                  cardHeader: { value: t("ES_TQM_TEST_DETAILS_HEADING"), inlineStyles: { marginTop: 0 } },
+                  values: data.details,
                 },
-              },
-              {
-                type: "COMPONENT",
-                component: "TqmCardReading",
-                props: {
-                  title: "Quality Parameter 2 (in UoM)",
+                {
+                  type: "COMPONENT",
+                  component: "TqmCardReading",
+                  props: {
+                    title: "Quality Parameter 1 (in UoM)",
+                  },
                 },
-              },
-              {
-                type: "COMPONENT",
-                component: "TqmCardReading",
-                props: {
-                  title: "Quality Parameter 3 (in UoM)",
+                {
+                  type: "COMPONENT",
+                  component: "TqmCardReading",
+                  props: {
+                    title: "Quality Parameter 2 (in UoM)",
+                  },
                 },
-              },
-            ],
-          },
-        ],
+                {
+                  type: "COMPONENT",
+                  component: "TqmCardReading",
+                  props: {
+                    title: "Quality Parameter 3 (in UoM)",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        response: data.testResponse,
       }),
     },
   });
@@ -79,7 +82,7 @@ function TestDetails() {
   useEffect(() => {
     if (WFData && !isWFLoading) {
       setWorkflowDetails(WFData);
-      setNextAction(WFData?.actionState?.applicationStatus);
+      WFData?.actionState?.applicationStatus === "SUBMITTED" ? setNextAction(null) : setNextAction(WFData?.actionState?.applicationStatus);
     }
   }, [WFData, isWFLoading]);
 
@@ -104,8 +107,8 @@ function TestDetails() {
   }
   return (
     <>
-      {!isLoading && <ViewComposer data={testData} isLoading={isLoading} />}
-      {workflowDetails && nextAction && (
+      {!isLoading && <ViewComposer data={testData?.data} isLoading={isLoading} />}
+      {testData && !isLoading && workflowDetails && nextAction && (
         <TestWFActions
           id={id}
           t={t}
@@ -113,6 +116,8 @@ function TestDetails() {
           actionData={workflowDetails?.nextActions?.[0]}
           actionState={workflowDetails?.actionState?.applicationStatus}
           submitAction={submitAction}
+          testDetailsData={testData?.response}
+          isDataLoading={isLoading}
         />
       )}
       {showToast && (

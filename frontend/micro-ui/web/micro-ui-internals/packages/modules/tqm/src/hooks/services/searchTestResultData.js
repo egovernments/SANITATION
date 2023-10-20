@@ -96,5 +96,6 @@ export const searchTestResultData = async ({ t, id, tenantId }) => {
         ? ["", "", "", t("ES_TQM_LABEL_RESULT_SUMMARY"), !!combinedData.find((i) => i.status !== "PASS") === false ? t("ES_TQM_LABEL_RESULT_PASS") : t("ES_TQM_LABEL_RESULT_FAIL")]
         : null,
     wfStatus: testResponse?.wfStatus,
+    testResponse,
   };
 };
