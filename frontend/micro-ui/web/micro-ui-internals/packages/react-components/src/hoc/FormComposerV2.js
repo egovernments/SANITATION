@@ -628,11 +628,11 @@ export const FormComposerV2 = (props) => {
         {!props.noBreakLine && (array.length - 1 === index ? null : <BreakLine style={props?.breaklineStyle ? props?.breaklineStyle : {}} />)}
       </React.Fragment>
     ),
-    [props.config, formData]
+    [props?.config, formData]
   );
   const formFieldsAll = useMemo(
     () =>
-      props.config?.map((section, index, array) => {
+      props?.config?.map((section, index, array) => {
         return (
           <React.Fragment key={index}>
             {section && getCombinedComponent(section)}
@@ -697,7 +697,7 @@ export const FormComposerV2 = (props) => {
           </React.Fragment>
         );
       }),
-    [props.config, formData]
+    [props?.config, formData]
   );
 
   const getCardStyles = (shouldDisplay = true) => {

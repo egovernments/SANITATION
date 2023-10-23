@@ -58,7 +58,7 @@ const TQMSummary = () => {
     }),
   };
 
-  const { isLoading, data: testData, revalidate, isFetching } = Digit.Hooks.tqm.useViewTestSummary({ id: id, config });
+  const { isLoading, data: testData, revalidate, isFetching } = Digit.Hooks.tqm.useViewTestSummary({ t, id: id, config });
 
   if (isLoading || !testData) {
     return <Loader />;

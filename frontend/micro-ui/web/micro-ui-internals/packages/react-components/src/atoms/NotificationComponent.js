@@ -5,9 +5,17 @@ import ButtonSelector from "./ButtonSelector";
 import CardText from "./CardText";
 import ActionLinks from "./ActionLinks";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function NotificationComponent(props) {
   const { t } = useTranslation();
+  const history = useHistory();
+
+  const onSubmit = (route, id) => {
+    return history.push(`${props?.actionRoute}?id=${id}`);
+  };
+
   return (
     <Card className="notification">
       <CardHeader>{props?.heading}</CardHeader>
@@ -18,13 +26,17 @@ function NotificationComponent(props) {
               <div className="notification-flex-container">
                 <div className="icon">{i?.icon}</div>
                 <CardText className="label">{t(i?.title)}</CardText>
-                <ButtonSelector theme="secondary" label={t(`ES_TQM_LABEL_${i?.action ? i?.action : ""}`)} />
+                <ButtonSelector onSubmit={() => onSubmit(i?.route, i?.id)} theme="secondary" label={t(`ES_TQM_LABEL_${i?.action ? i?.action : ""}`)} />
               </div>
               <span className="sla-cell-success bg">{t(`ES_TQM_SLA_PENDING_DUE_DATE`, { NO_OF_DAYS: i?.date })}</span>
               <hr className="break-line" />
             </>
           ) : (
-            index === 3 && <ActionLinks>{t(`ES_TQM_VIEW_ALL_PENDING_TASKS`)}</ActionLinks>
+            index === 3 && (
+              <Link to={props?.viewAllRoute}>
+                <ActionLinks>{t(`ES_TQM_VIEW_ALL_PENDING_TASKS`)}</ActionLinks>
+              </Link>
+            )
           )
         )
       ) : (
