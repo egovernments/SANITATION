@@ -47,7 +47,7 @@ public class TestSearchCriteria {
   private String wfStatus = null;
 
   @JsonProperty("status")
-  private TestResultStatus status = null;
+  private String status = null;
 
   @JsonProperty("testType")
   private String testType = null;
