@@ -59,7 +59,7 @@ const Create = () => {
         }, 5000);
       },
       onSuccess: async (data) => {
-        history.push(`/sanitation-ui/employee/tqm/view-test-results?id=${data.tests[0].id}`
+        history.push(`/sanitation-ui/employee/tqm/view-test-results?id=${data.tests[0].id}&type=adhoc`
         );
       }
     });

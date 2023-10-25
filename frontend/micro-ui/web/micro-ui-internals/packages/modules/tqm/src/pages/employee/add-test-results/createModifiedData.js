@@ -13,7 +13,7 @@ export const createModifiedData = (data) => {
                     resultValue: data?.QualityParameter[criteriaCode],
                     isActive: true
                 })),
-            "testType": null,
+            "testType": "LAB",
             "scheduledDate": null,
             "isActive": null,
             "documents": [
