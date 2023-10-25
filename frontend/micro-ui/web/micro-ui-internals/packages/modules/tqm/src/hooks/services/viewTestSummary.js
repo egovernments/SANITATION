@@ -11,6 +11,7 @@ export const viewTestSummary = async ({ t, id }) => {
       },
     },
   });
+  
   const testResponse = response?.tests?.[0];
 
   return {
@@ -50,7 +51,7 @@ export const viewTestSummary = async ({ t, id }) => {
       },
     ],
     documents: testResponse?.documents?.map((i) => {
-      return { title: i?.documentUid, value: i?.fileStoreId };
+      return { title: i?.title, value: i?.fileStoreId };
     }),
     reading: testResponse?.testCriteria
       ? {

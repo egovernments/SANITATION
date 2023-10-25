@@ -31,7 +31,7 @@ function DocumentsPreview({ documents, svgStyles = {} }) {
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PDFSvg />
                 </div>
-                <p className="tqm-document-title">{t(document?.title)}</p>
+                {document?.title && <p className="tqm-document-title">{t(document?.title)}</p>}
               </a>
             </React.Fragment>
           ))
