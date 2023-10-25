@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useHistory } from "react-router-dom";
 import TestWFActions from "./TestWFActions";
 import { useQueryClient } from "react-query";
+import { UICustomizations } from "../../../configs/UICustomizations";
 
 function TestDetails() {
   const { t } = useTranslation();
@@ -83,7 +84,7 @@ function TestDetails() {
   useEffect(() => {
     if (WFData && !isWFLoading) {
       setWorkflowDetails(WFData);
-      WFData?.actionState?.applicationStatus === "SUBMITTED" ? setNextAction(null) : setNextAction(WFData?.actionState?.applicationStatus);
+      WFData?.actionState?.applicationStatus === UICustomizations?.workflowStatusMap?.submit ? setNextAction(null) : setNextAction(WFData?.actionState?.applicationStatus);
     }
   }, [WFData, isWFLoading]);
 
@@ -99,7 +100,7 @@ function TestDetails() {
         queryClient.invalidateQueries("TQM_ADMIN_TEST_RESULTS");
         queryClient.invalidateQueries("workFlowDetailsWorks");
         refetch();
-        if (WFData?.actionState?.applicationStatus === "PENDINGRESULTS") {
+        if (WFData?.actionState?.applicationStatus === UICustomizations?.workflowStatusMap?.pendingResults) {
           return history.push(`/${window.contextPath}/employee/tqm/response?testId=${id}&isSuccess=${true}`, {
             message: "ES_TQM_TEST_UPDATE_SUCCESS_RESPONSE",
             text: "ES_TQM_TEST_UPDATE_SUCCESS_RESPONSE_TEXT",
