@@ -1,6 +1,7 @@
 import React,{useContext} from 'react'
 import Joyride from 'react-joyride';
-import { TutorialContext } from './TutorialContext';
+
+// import { TutorialContext } from './TutorialContext';
 
 const theme = {
   primaryColor:"#ad7bff",
@@ -9,13 +10,13 @@ const theme = {
 }
 
 
-const Tutorial = ({...props}) => {
+const Tutorial = ({tutorial,updateTutorial,...props}) => {
   
-  const {tutorial,updateTutorial} = useContext(TutorialContext)
+  // const {tutorial,updateTutorial} = useContext(TutorialContext)
   
   const {run,stepIndex,steps}  = tutorial;
   const handleCallback = (data) => {
-    
+    debugger
   }
 
   return (

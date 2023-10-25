@@ -1,7 +1,7 @@
 import React, { useEffect,useReducer } from "react";
 import { Switch, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PrivateRoute, AppContainer, BreadCrumb, BackButton } from "@egovernments/digit-ui-react-components";
+import { PrivateRoute, AppContainer, BreadCrumb, BackButton,Tutorial,initialTutorialState,TutorialReducer } from "@egovernments/digit-ui-react-components";
 import SampleComp from "./SampleComp";
 import TQMPendingTask from "./TQMPendingTask";
 import TQMLanding from "./TQMLanding";
@@ -12,9 +12,8 @@ import Create from "./add-test-results/CreateAddTestResult";
 import Test from "./test";
 import TqmHeader from "../../components/TqmHeader";
 import { TutorialContext } from "../../components/Tutorial/TutorialContext";
-import tutorialReducer,{initialTutorialState} from "../../components/Tutorial/TutorialReducer"
-import Tutorial from "../../components/Tutorial/Tutorial";
 // import TQMSummary from "../../components/TQMSummary";
+
 
 const TqmBreadCrumb = ({ location, defaultPath }) => {
   const { t } = useTranslation();
@@ -40,14 +39,14 @@ const App = ({ path }) => {
   const TqmViewTestResults = Digit?.ComponentRegistryService?.getComponent("TqmViewTestResults");
   const TQMSummary = Digit?.ComponentRegistryService?.getComponent("TQMSummary");
 
-  const [tutorial, updateTutorial] = useReducer(tutorialReducer, initialTutorialState);
+  const [tutorial, updateTutorial] = useReducer(TutorialReducer, initialTutorialState);
 
   return (
     <TutorialContext.Provider value={{tutorial,updateTutorial}}>
       {isUlbAdminLoggedIn && <TqmBreadCrumb location={location} defaultPath={path} />}
       {/* {isPlantOperatorLoggedIn && (location.pathname.includes("/response") ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>)} */}
       {isPlantOperatorLoggedIn && <TqmHeader />}
-      <Tutorial />
+      <Tutorial tutorial={tutorial} updateTutorial={updateTutorial} />
       <Switch>
         <AppContainer className="tqm">
           <PrivateRoute path={`${path}/landing`} component={() => <TQMLanding />} />

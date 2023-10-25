@@ -11,11 +11,11 @@ export const initialTutorialState = {
   tourActive: false,
 }
 
-const reducer = (state, action) => {
+export const TutorialReducer = (state, action) => {
   switch (action.type) {
     case "updateTourState":
       return {...action.state};
   }
 }
 
-export default reducer;
+
