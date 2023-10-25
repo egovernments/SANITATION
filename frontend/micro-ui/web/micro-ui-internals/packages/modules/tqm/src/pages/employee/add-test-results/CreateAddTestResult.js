@@ -9,7 +9,7 @@ const Create = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const [showToast, setShowToast] = useState(false);
-  const { mutate } = Digit.Hooks.tqm.useCreate(tenantId);
+  const { mutate } = Digit.Hooks.tqm.useCreateTest(tenantId);
   const closeToast = () => {
     setTimeout(() => {
       setShowToast(false);
@@ -18,7 +18,7 @@ const Create = () => {
 
   const onSubmit = async (data) => {
     const qualityParams = data.QualityParameter;
-    if (qualityParams === undefined) {
+    if (!qualityParams) {
       setShowToast({
         label: t('ES_TQM_ATLEAST_ONE_PARAMETER'),
         isError: true
@@ -44,6 +44,7 @@ const Create = () => {
           isError: true
         });
         closeToast();
+        return ;
       }
     }
     const modifiedData = createModifiedData(data);
@@ -82,7 +83,6 @@ const Create = () => {
         onSubmit={onSubmit}
         fieldStyle={{ marginRight: 0 }}
         noBreakLine={true}
-
       />
 
       {showToast && <Toast error={showToast.isError} label={showToast.label} isDleteBtn={"true"} onClose={() => setShowToast(false)} style={{ bottom: "8%" }} />}

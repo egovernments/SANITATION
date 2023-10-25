@@ -5,40 +5,14 @@ import { useForm, Controller } from "react-hook-form";
 import _ from "lodash";
 import { useCustomMDMSV2 } from "../../../hooks/useCustomMDMSV2";
 
-
-const QualityParameter = ({ config, onSelect, userType, formData, setError, formState, clearErrors }) => {
+const QualityParameter = ({onSelect,formData }) => {
     const { t } = useTranslation();
-    const [focusIndex, setFocusIndex] = useState({ index: -1, type: "" });
-    const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger, getValues } = useForm();
-    const formValue = watch();
-    const { errors } = localFormState;
-    const [isErrors, setIsErrors] = useState(false);
+    const { control} = useForm();
     const [showComponent, setShowComponent] = useState(false);
-    const [plantCode, setplantCode] = useState(null);
-    const [processCode, setprocessCode] = useState(null);
-    const [stageCode, setstageCode] = useState(null);
-    const [materialCode, setmaterialCode] = useState(null);
+    const {plantCode,processCode,stageCode,materialCode} = formData
     const [showToast, setShowToast] = useState(false);
     const tenant = Digit.ULBService.getStateId();
-
-    useEffect(() => {
-        setplantCode(formData?.plantCode?.code)
-    }, [formData?.plantCode?.code])
-
-    useEffect(() => {
-        setprocessCode(formData?.processCode?.code)
-    }, [formData?.processCode?.code])
-
-    useEffect(() => {
-        setstageCode(formData?.stageCode?.code)
-    }, [formData?.stageCode?.code])
-
-    useEffect(() => {
-        setmaterialCode(formData?.materialCode?.code)
-    }, [formData?.materialCode?.code])
-
     const [allFieldsDefined, setallFieldsDefined] = useState(false);
-    const [value, setValues] = useState();
 
     useEffect(() => {
         const excludedField = "QualityParameter";
@@ -54,26 +28,20 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
         }
     }, [formData])
 
-    useEffect(() => {
-        if (allFieldsDefined) {
-            setShowComponent(true);
-        }
-        else setShowComponent(false);
-    }, [allFieldsDefined]);
-
-    const { isLoading, data, isError } = useCustomMDMSV2({
+    const { isLoading, data } = useCustomMDMSV2({
         tenantId: tenant,
         "filters": {
-            "plant": plantCode,
-            "process": processCode,
-            "stage": stageCode,
-            "material": materialCode
+            "plant": plantCode?.code,
+            "process": processCode?.code,
+            "stage": stageCode?.code,
+            "material": materialCode?.code
         },
         schemaCode: "PQM.TestStandard",
-        changeQueryName: `${plantCode}${processCode}${stageCode}${materialCode}`,
+        changeQueryName: `${plantCode?.code}${processCode?.code}${stageCode?.code}${materialCode?.code}`,
         config: {
             enabled: !!allFieldsDefined,
-            staleTime: 0
+            staleTime: 0,
+            cacheTime:0
         }
     })
     const closeToast = () => {
@@ -82,7 +50,7 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
         }, 5000)
     };
     useEffect(() => {
-        if (data === undefined) {
+        if (!data) {
             setShowToast(false);
         }
         else if (!data || Object.keys(data).length === 0) {
@@ -95,7 +63,6 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
         }
         else setShowComponent(true);
     }, [data]);
-
 
     const qualityCriteria = data?.map(item => item.qualityCriteria);
     const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
@@ -112,6 +79,9 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
         onSelect("QualityParameter", quality);
     }, [quality])
 
+    if(isLoading) {
+        return <Loader />
+    }
     return (
         <div>
             {showComponent && (
@@ -126,7 +96,7 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
                                     <div className="field">
                                         <Controller
                                             control={control}
-                                            name={`QualityParameter`}
+                                            name={`QualityParameter.${criteria}`}
                                             rules={{
                                                 validate: {
                                                     pattern: (v) => (/^$|^[a-zA-Z0-9]+$/.test(v) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")),
