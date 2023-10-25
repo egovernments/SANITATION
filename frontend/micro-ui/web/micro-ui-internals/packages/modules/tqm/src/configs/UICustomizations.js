@@ -65,6 +65,11 @@ const businessServiceMap = {
  tqm:"PQM"
 };
 
+const workflowStatusMap = {
+  pendingResults:"PENDINGRESULTS",
+  submit: "SUBMITTED"
+ };
+
 const tqmRoleMapping = {
   plant:["PQM_TP_OPERATOR"],
   ulb:["PQM_ADMIN"]
@@ -78,6 +83,7 @@ export const UICustomizations = {
   urls,
   tqmRoleMapping,
   businessServiceMap,
+  workflowStatusMap,
   SearchAttendanceConfig:{
     populateReqCriteria: () => {
       const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -192,7 +198,7 @@ export const UICustomizations = {
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
         case "TQM_INBOX_SLA":
-          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          return value > 0 ? <span className="sla-cell-success">{value} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{value} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
@@ -303,7 +309,7 @@ export const UICustomizations = {
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
         case "TQM_INBOX_SLA":
-          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          return value > 0 ? <span className="sla-cell-success">{value} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{value} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)

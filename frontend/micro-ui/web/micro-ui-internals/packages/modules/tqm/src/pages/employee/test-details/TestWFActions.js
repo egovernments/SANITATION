@@ -1,4 +1,4 @@
-import { CardText, FormComposerV2, Modal, WarningIcon } from "@egovernments/digit-ui-react-components";
+import { CardText, FormComposerV2, Loader, Modal, WarningIcon } from "@egovernments/digit-ui-react-components";
 import React, { Fragment, useEffect, useState } from "react";
 import { updateConfig } from "./config/updateTestConfig";
 import { testResultsConfig } from "./config/testResultsConfig";
@@ -35,7 +35,7 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
       case "SCHEDULED":
         return setConfig(updateConfig({ t, testLabs }));
       case "PENDINGRESULTS":
-        return setConfig(testResultsConfig({ t, testCriteriaData, testDetailsData }));
+        return setConfig(testResultsConfig({ t, testDetailsData, testCriteriaData }));
       default:
         return setConfig(null);
     }
@@ -59,6 +59,10 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
     submitAction(testDetailsData);
     setshowPopUp(null);
   };
+
+  if (istestCriteriaLoading || isDataLoading || istestLabLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
