@@ -27,6 +27,7 @@ const QualityParameter = ({onSelect,formData }) => {
             }
         }
     }, [formData])
+    console.log(formData);
 
     const { isLoading, data } = useCustomMDMSV2({
         tenantId: tenant,
@@ -92,7 +93,8 @@ const QualityParameter = ({onSelect,formData }) => {
                         <div key={index}>
                             {criterionList.map((criteria, subindex) => (
                                 <LabelFieldPair key={subindex}>
-                                    <CardLabel style={CardLabelStyle}>{t(criteria)}</CardLabel>
+                                    <CardLabel style={CardLabelStyle}>{t(Digit.Utils.locale.getTransformedLocale(`${"PQM.TestStandard"}_${criteria}`))}</CardLabel>
+                                    
                                     <div className="field">
                                         <Controller
                                             control={control}
