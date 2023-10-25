@@ -2,10 +2,9 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, InboxSearchComposer, Loader } from "@egovernments/digit-ui-react-components";
 import { SensorScreenConfigUlbAdmin } from "./configUlbAdmin";
+import { SensorScreenConfigPlantOperator } from "./configPlantOperator";
 const SensorScreen = () => {
     const { t } = useTranslation();
-    console.log("ffje");
-
     const configModuleName = Digit.Utils.getConfigModuleName()
     const tenant = Digit.ULBService.getStateId();
     const { isLoading, data } = Digit.Hooks.useCustomMDMS(
@@ -20,7 +19,7 @@ const SensorScreen = () => {
             select: (data) => {
 
                 if (Digit.Utils.tqm.isPlantOperatorLoggedIn()) {
-                    return SensorScreenConfigUlbAdmin?.SensorConfig?.[0]
+                    return SensorScreenConfigPlantOperator ?.SensorConfig?.[0]
                 }
                 if (Digit.Utils.tqm.isUlbAdminLoggedIn()) {
                     return SensorScreenConfigUlbAdmin?.SensorConfig?.[0]
@@ -32,8 +31,6 @@ const SensorScreen = () => {
             },
         }
     );
-
-    console.log(isLoading);
     // const configs = Digit.Utils.configUpdater(searchConfigMuktaFuzzy())
 
     // const configs = data?.[configModuleName].SearchEstimateWMSConfig?.[0]

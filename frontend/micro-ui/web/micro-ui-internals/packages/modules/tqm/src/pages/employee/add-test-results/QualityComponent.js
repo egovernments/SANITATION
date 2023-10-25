@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { CardLabel, LabelFieldPair, Dropdown, TextInput, LinkButton, CardLabelError, MobileNumber, DatePicker, Loader, Header, ImageUploadHandler, UploadFile, MultiUploadWrapper } from "@egovernments/digit-ui-react-components";
+import { CardLabel, LabelFieldPair, Toast, TextInput, LinkButton, CardLabelError, MobileNumber, DatePicker, Loader, Header, ImageUploadHandler, UploadFile, MultiUploadWrapper } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash";
 import { useCustomMDMSV2 } from "../../../hooks/useCustomMDMSV2";
+
 
 const QualityParameter = ({ config, onSelect, userType, formData, setError, formState, clearErrors }) => {
     const { t } = useTranslation();
@@ -17,6 +18,7 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
     const [processCode, setprocessCode] = useState(null);
     const [stageCode, setstageCode] = useState(null);
     const [materialCode, setmaterialCode] = useState(null);
+    const [showToast, setShowToast] = useState(false);
     const tenant = Digit.ULBService.getStateId();
 
     useEffect(() => {
@@ -43,14 +45,13 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
         let allFieldsDefined = false;
         for (const key in formData) {
             if (key !== excludedField && formData[key] === undefined) {
-                allFieldsDefined = false;
+                setallFieldsDefined(false);
                 break;
             }
             else {
-                allFieldsDefined = true;
+                setallFieldsDefined(formData);
             }
         }
-        setallFieldsDefined(allFieldsDefined);
     }, [formData])
 
     useEffect(() => {
@@ -60,7 +61,7 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
         else setShowComponent(false);
     }, [allFieldsDefined]);
 
-    const { isLoading, data } = useCustomMDMSV2({
+    const { isLoading, data, isError } = useCustomMDMSV2({
         tenantId: tenant,
         "filters": {
             "plant": plantCode,
@@ -69,10 +70,33 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
             "material": materialCode
         },
         schemaCode: "PQM.TestStandard",
+        changeQueryName: `${plantCode}${processCode}${stageCode}${materialCode}`,
         config: {
-            enabled: allFieldsDefined
+            enabled: !!allFieldsDefined,
+            staleTime: 0
         }
     })
+    const closeToast = () => {
+        setTimeout(() => {
+            setShowToast(false);
+        }, 5000)
+    };
+    useEffect(() => {
+        if (data === undefined) {
+            setShowToast(false);
+        }
+        else if (!data || Object.keys(data).length === 0) {
+            setShowToast({
+                label: t('TQM_QUALITY_CRITERIA_NOT_PRESENT'),
+                isWarning: true
+            });
+            closeToast();
+            setShowComponent(false);
+        }
+        else setShowComponent(true);
+    }, [data]);
+
+
     const qualityCriteria = data?.map(item => item.qualityCriteria);
     const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
     const CardLabelStyle = { marginTop: "-5px" }
@@ -82,7 +106,6 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
         let temp = quality
         temp[criteria] = newValue;
         setQuality(temp)
-        // onSelect("QualityParameter", quality);
     }
 
     useEffect(() => {
@@ -122,6 +145,7 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
                                         />
                                     </div>
                                 </LabelFieldPair>
+
                             ))}
                         </div>
                     ))}
@@ -168,8 +192,13 @@ const QualityParameter = ({ config, onSelect, userType, formData, setError, form
                             />
                         </div>
                     </LabelFieldPair>
+
                 </React.Fragment>
+
             )}
+            {showToast && !showComponent && <Toast warning={showToast.isWarning} label={showToast.label} isDleteBtn={"true"} onClose={() => setShowToast(false)} style={{ bottom: "8%" }} />}
+
+
         </div>
     )
 }

@@ -34,7 +34,7 @@ export const SensorScreenConfigUlbAdmin = {
               },
               fields: [
                 {
-                  "label": "Device ID",
+                  "label": "TQM_DEVICE_ID",
                   "type": "text",
                   "isMandatory": false,
                   "disable": false,
@@ -87,7 +87,7 @@ export const SensorScreenConfigUlbAdmin = {
                   },
                 },
                 {
-                  label: 'Stage',
+                  label: 'TQM_PROCESS_STAGE',
                   type: 'dropdown',
                   isMandatory: false,
                   disable: false,
@@ -104,7 +104,7 @@ export const SensorScreenConfigUlbAdmin = {
                   },
                 },
                 {
-                    "label": "STATUS",
+                    "label": "TQM_WF_STATUS",
                     "type": "apidropdown",
                     "isMandatory": false,
                     "disable": false,
@@ -131,7 +131,7 @@ export const SensorScreenConfigUlbAdmin = {
             uiConfig: {
               columns: [
                 {
-                  label: 'TQM_TEST_ID',
+                  label: 'TQM_DEVICE_ID',
                   jsonPath: 'id',
                   additionalCustomization: true,
                 },
@@ -150,14 +150,14 @@ export const SensorScreenConfigUlbAdmin = {
                   translate:true
                 },
                 {
-                  label: 'Stage',
+                  label: 'TQM_PROCESS_STAGE',
                   jsonPath: 'testType',
                   additionalCustomization: false,
                   prefix:"PQM.TestType_",
                   translate:true
                 },
                 {
-                  label: 'Output Type',
+                  label: 'TQM_OUTPUT_TYPE',
                   jsonPath: 'scheduledDate',
                   additionalCustomization: true,
                 },
@@ -167,7 +167,7 @@ export const SensorScreenConfigUlbAdmin = {
                   additionalCustomization: true,
                 },
                 {
-                    label: 'Parameters',
+                    label: 'TQM_PARAMETERS',
                     jsonPath: 'scheduledDate',
                     additionalCustomization: true,
                 }

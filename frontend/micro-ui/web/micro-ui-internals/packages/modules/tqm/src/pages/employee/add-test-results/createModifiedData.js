@@ -6,15 +6,13 @@ export const createModifiedData = (data) => {
             "processCode": data?.processCode?.code,
             "stageCode": data?.stageCode?.code,
             "materialCode": data?.materialCode?.code,
-            "testCriteria": data?.QualityParameter?.map ? Object.keys(data?.QualityParameter)?.map((criteriaCode) => {
-                if (criteriaCode !== "documents") {
-                    return {
-                        criteriaCode: criteriaCode,
-                        resultValue: data?.QualityParameter[criteriaCode],
-                        isActive: true
-                    }
-                }
-            }) : null,
+            "testCriteria": Object.keys(data?.QualityParameter)
+                .filter(criteriaCode => criteriaCode.toLowerCase() !== "document")
+                .map(criteriaCode => ({
+                    criteriaCode: criteriaCode,
+                    resultValue: data?.QualityParameter[criteriaCode],
+                    isActive: true
+                })),
             "testType": null,
             "scheduledDate": null,
             "isActive": null,

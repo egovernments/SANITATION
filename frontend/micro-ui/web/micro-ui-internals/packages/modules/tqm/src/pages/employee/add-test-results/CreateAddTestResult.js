@@ -18,7 +18,6 @@ const Create = () => {
 
   const onSubmit = async (data) => {
     const qualityParams = data.QualityParameter;
-    
     if (qualityParams === undefined) {
       setShowToast({
         label: t('ES_TQM_ATLEAST_ONE_PARAMETER'),
@@ -27,9 +26,14 @@ const Create = () => {
       closeToast();
     }
     else {
+      for (const key in qualityParams) {
+        if (qualityParams[key] === '') {
+          delete qualityParams[key];
+        }
+      }
       let isonlyDocument = false;
       for (const key in qualityParams) {
-        if (qualityParams[key] !== null && key!="document") {
+        if (qualityParams[key] !== null && key != "document") {
           isonlyDocument = true;
           break;
         }
@@ -45,7 +49,6 @@ const Create = () => {
     const modifiedData = createModifiedData(data);
     await mutate(modifiedData, {
       onError: (error, variables) => {
-        
         setShowToast({
           label: error.toString(),
           isError: true
@@ -55,16 +58,11 @@ const Create = () => {
         }, 5000);
       },
       onSuccess: async (data) => {
-        history.push({
-          pathname: "/sanitation-ui/employee/tqm/view-test-results",
-          // state: { responseData: getData }
-        });
+        history.push(`/sanitation-ui/employee/tqm/view-test-results?id=${data.tests[0].id}`
+        );
       }
     });
-    // history.push({
-    //   pathname: "/sanitation-ui/employee/tqm/view-test-results",
-    //   state: { responseData: getData }
-    // });
+
   };
 
   return (
@@ -77,15 +75,16 @@ const Create = () => {
         config={addTestConfig.map((config) => {
           return {
             ...config,
-            // body: config.body.filter((a) => !a.hideInEmployee),
+
           };
         })}
         defaultValues={{}}
         onSubmit={onSubmit}
         fieldStyle={{ marginRight: 0 }}
         noBreakLine={true}
+
       />
-      {console.log("SHOWTOAST", showToast)}
+
       {showToast && <Toast error={showToast.isError} label={showToast.label} isDleteBtn={"true"} onClose={() => setShowToast(false)} style={{ bottom: "8%" }} />}
     </div>
   );
