@@ -21,7 +21,7 @@ const Toast = (props) => {
           {!props?.isWarningButtons ?
             <div className="toast-success" style={{ backgroundColor: "#EA8A3B", ...props.style }}>
               <ErrorIcon />
-              <h2 style={{ marginLeft: "10px" }}>{props.label}</h2>
+              <h2 style={{ marginLeft: "10px" ,display: "contents"}}>{props.label}</h2>
               {props.isDleteBtn ? <DeleteBtn fill="none" className="toast-close-btn" onClick={props.onClose} /> : null}
             </div> : <div style={{ display: "flex" }}>
               <ErrorIcon />

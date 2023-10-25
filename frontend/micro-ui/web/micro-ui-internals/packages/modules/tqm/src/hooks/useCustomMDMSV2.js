@@ -1,12 +1,14 @@
-export const useCustomMDMSV2 = ({ tenantId, schemaCode, select, changeQueryName = "Random" }) => {
+export const useCustomMDMSV2 = ({ tenantId, schemaCode, select, changeQueryName = "Random",filters={},config={} }) => {
+  
   const requestCriteria = {
     url: "/mdms-v2/v2/_search",
     body: {
       tenantId,
       MdmsCriteria: {
         tenantId: tenantId,
+        filters: filters,
         schemaCode: schemaCode,
-        isActive: true,
+        isActive: true
       },
     },
     config: {
@@ -26,6 +28,7 @@ export const useCustomMDMSV2 = ({ tenantId, schemaCode, select, changeQueryName 
             });
             return options;
           },
+          ...config
     },
     changeQueryName,
   };

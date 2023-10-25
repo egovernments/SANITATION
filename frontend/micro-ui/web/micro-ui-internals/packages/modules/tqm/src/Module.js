@@ -19,6 +19,8 @@ import DetailsTable from "./components/DetailsTable";
 import DocumentsPreview from "./components/DocumentsPreview";
 import ParameterReadings from "./components/ParameterReadings";
 import TQMSummary from "./components/TQMSummary";
+import QualityParameter from "./pages/employee/add-test-results/QualityComponent";
+import SensorScreen from "./pages/employee/sensor-monitoring/SensorScreen";
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = ["TQM","mdms"];
@@ -38,6 +40,8 @@ const TQMModule = ({ stateCode, userType, tenants }) => {
 };
 
 const componentsToRegister = {
+  SensorScreen,
+  QualityParameter,
   TqmModule: TQMModule,
   TqmCard,
   TQMPendingTask,

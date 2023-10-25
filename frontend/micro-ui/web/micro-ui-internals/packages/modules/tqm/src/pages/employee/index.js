@@ -35,7 +35,7 @@ const App = ({ path }) => {
   const TqmResponse = Digit?.ComponentRegistryService?.getComponent("TqmResponse");
   const TqmViewTestResults = Digit?.ComponentRegistryService?.getComponent("TqmViewTestResults");
   const TQMSummary = Digit?.ComponentRegistryService?.getComponent("TQMSummary");
-
+  const SensorScreen = Digit?.ComponentRegistryService?.getComponent("SensorScreen");
   return (
     <React.Fragment>
       {/* <TqmBreadCrumb location={location} defaultPath={path} /> */}
@@ -52,9 +52,10 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/test-details`} component={() => <TestDetails />} />
           <PrivateRoute path={`${path}/response`} component={() => <TqmResponse />} />
           <PrivateRoute path={`${path}/view-test-results`} component={() => <TqmViewTestResults />} />
-          <PrivateRoute path={`${path}/test`} component={() => <Test />} />
-          {/* <PrivateRoute path={`${path}/summary/:id`} component={() => <TQMSummary />} /> */}
+          {/* for testing purpose */}
+          <PrivateRoute path={`${path}/test`} component={() => <Test />} /> 
           <PrivateRoute path={`${path}/summary`} component={() => <TQMSummary />} />
+          <PrivateRoute path={`${path}/search-devices`} component={() => <SensorScreen />} />
         </AppContainer>
       </Switch>
     </React.Fragment>
