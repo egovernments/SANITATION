@@ -74,6 +74,10 @@ public class NotificationUtil {
 			message = message.replace("{Output}", test.getMaterialCode());
 		}
 
+		if (message.contains("{Stage}")) {
+			message = message.replace("{Stage}", test.getStageCode());
+		}
+
 		if (message.contains("{Test Submitted Date}")) {
 			Calendar possibleSrvdt = Calendar.getInstance();
 			possibleSrvdt.setTimeInMillis(test.getScheduledDate());
