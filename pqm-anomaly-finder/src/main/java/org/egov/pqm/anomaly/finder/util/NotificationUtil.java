@@ -69,18 +69,18 @@ public class NotificationUtil {
 			
 		if (message.contains("{Plant Name}")) {
 			String messageCode = "PQM_PLANT_" + test.getPlantCode();
-			String plantNmae = getMessageTemplate(messageCode, localizationMessage);
+			String plantNmae = getLocalizationMessage(messageCode, localizationMessage);
 			message = message.replace("{Plant Name}", plantNmae);
 		}
 		if (message.contains("{Output}")) {
 			String messageCode = "PQM_MATERIAL_" + test.getMaterialCode();
-			String materialName = getMessageTemplate(messageCode, localizationMessage);
+			String materialName = getLocalizationMessage(messageCode, localizationMessage);
 			message = message.replace("{Output}", materialName);
 		}
 
 		if (message.contains("{Stage}")) {
 			String messageCode = "PQM_STAGE_" + test.getStageCode();
-			String stageNmae = getMessageTemplate(messageCode, localizationMessage);
+			String stageNmae = getLocalizationMessage(messageCode, localizationMessage);
 			message = message.replace("{Stage}", stageNmae);
 		}
 
@@ -115,6 +115,27 @@ public class NotificationUtil {
 					message = data.get(0).toString();
 				else
 					log.error("Fetching from localization failed with code " + notificationCode);
+			} catch (Exception e) {
+				log.warn("Fetching from localization failed", e);
+			}
+		}
+		return message;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public String getLocalizationMessage(String notificationCode, String localizationMessage) {
+		String path = "$..messages[?(@.code==\"{}\")].message";
+		String message = null;
+		log.info("notificationCode :::  {} " + notificationCode);
+		if (null != notificationCode) {
+			try {
+				path = path.replace("{}", notificationCode.trim());
+				List data = JsonPath.parse(localizationMessage).read(path);
+				if (!CollectionUtils.isEmpty(data))
+					message = data.get(0).toString();
+				else
+					message = notificationCode;
+//					log.error("Fetching from localization failed with code " + notificationCode);
 			} catch (Exception e) {
 				log.warn("Fetching from localization failed", e);
 			}
