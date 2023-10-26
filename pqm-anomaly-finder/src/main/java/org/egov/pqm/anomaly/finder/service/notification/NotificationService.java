@@ -1,5 +1,4 @@
 package org.egov.pqm.anomaly.finder.service.notification;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -103,9 +102,20 @@ public class NotificationService {
 						.build();
 				items.add(item);
 				action = Action.builder().actionUrls(items).build();
+				String eventCategory = null;
+				switch (test.getTestType()) {
+				case LAB:
+					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
+					break;
+				case IOT:
+					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT;
+					break;
+				default:
+					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
+				}
 
 				events.add(Event.builder().tenantId(test.getTenantId()).description(mobileNumberToMsg.get(mobile))
-						.eventType(AnomalyFinderConstants.USREVENTS_EVENT_TYPE)
+						.eventType(AnomalyFinderConstants.USREVENTS_EVENT_TYPE).eventCategory(eventCategory)
 						.name(AnomalyFinderConstants.USREVENTS_EVENT_NAME)
 						.postedBy(AnomalyFinderConstants.USREVENTS_EVENT_POSTEDBY).source(Source.WEBAPP)
 						.recepient(recepient).eventDetails(null).actions(action).build());

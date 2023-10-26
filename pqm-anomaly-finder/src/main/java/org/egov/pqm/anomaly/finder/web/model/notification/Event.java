@@ -27,6 +27,8 @@ public class Event {
 	private String eventType;
 
 	private String name;
+	
+	private String eventCategory;
 
 	@NotNull
 	private String description;

@@ -8,5 +8,7 @@ public class AnomalyFinderConstants {
 //	public static final String USREVENTS_EVENT_POSTEDBY = null;
 	public static final Object SEARCH_MODULE = "rainmaker-common";
 	public static final Object FSM_LOC_SEARCH_MODULE = "rainmaker-pqm";
+	public static final String TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB = "TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB";
+	public static final String TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT = "TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT";
 
 }
