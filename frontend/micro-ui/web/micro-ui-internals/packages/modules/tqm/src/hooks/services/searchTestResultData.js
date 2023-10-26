@@ -1,4 +1,4 @@
-export const searchTestResultData = async ({ t, id, tenantId }) => {
+export const searchTestResultData = async ({ t, id, type, tenantId }) => {
   const response = await Digit.CustomService.getResponse({
     url: "/pqm-service/v1/_search",
     body: {
@@ -44,8 +44,13 @@ export const searchTestResultData = async ({ t, id, tenantId }) => {
     }
   });
 
-  const workflowData = await Digit.WorkflowService.getDetailsByIdWorks({ tenantId, id, moduleCode: "PQM" });
-  const sla = Math.round(workflowData?.processInstances?.[0]?.businesssServiceSla / (24 * 60 * 60 * 1000));
+  let workflowData;
+  let sla = 0;
+
+  if (type !== "adhoc") {
+    workflowData = await Digit.WorkflowService.getDetailsByIdWorks({ tenantId, id, moduleCode: "PQM" });
+    sla = Math.round(workflowData?.processInstances?.[0]?.businesssServiceSla / (24 * 60 * 60 * 1000));
+  }
 
   return {
     details: [
@@ -84,7 +89,7 @@ export const searchTestResultData = async ({ t, id, tenantId }) => {
         key: t("ES_TQM_LABEL_SLA"),
         isSla: true,
         isSuccess: Math.sign(sla) === -1 ? false : true,
-        value: sla ? sla : "N/A",
+        value: sla ? sla : "0",
       },
     ],
     documents: testResponse?.documents?.map((i) => {

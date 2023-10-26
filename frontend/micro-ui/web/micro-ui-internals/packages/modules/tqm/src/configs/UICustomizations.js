@@ -353,7 +353,7 @@ export const UICustomizations = {
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
       data.body.testSearchCriteria.fromDate = fromDate
       data.body.testSearchCriteria.toDate = toDate
-
+      data.body.testSearchCriteria.wfStatus = "SUBMITTED";
       //sortOrder
       data.body.pagination.sortOrder = sortOrder?.value
 
@@ -407,6 +407,7 @@ export const UICustomizations = {
       data.body.testSearchCriteria.ids = id ? [id] : []
       //plantcodes
       data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
+      data.body.testSearchCriteria.wfStatus = "SUBMITTED";
       //processcodes
       data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
       //testType
