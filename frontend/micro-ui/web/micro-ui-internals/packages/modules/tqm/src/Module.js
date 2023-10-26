@@ -21,9 +21,10 @@ import ParameterReadings from "./components/ParameterReadings";
 import TQMSummary from "./components/TQMSummary";
 import QualityParameter from "./pages/employee/add-test-results/QualityComponent";
 import SensorScreen from "./pages/employee/sensor-monitoring/SensorScreen";
+import Test from "./pages/employee/test";
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
-  const moduleCode = ["TQM","mdms"];
+  const moduleCode = ["TQM", "mdms"];
   const { path, url } = useRouteMatch();
   const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
@@ -55,6 +56,7 @@ const componentsToRegister = {
   TqmDocumentsPreview: DocumentsPreview,
   TQMSummary,
   TqmParameterReadings: ParameterReadings,
+  Test,
 };
 
 const overrideHooks = () => {
