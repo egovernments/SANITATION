@@ -13,9 +13,10 @@ import org.egov.pqm.anomaly.finder.config.PqmAnomalyConfiguration;
 import org.egov.pqm.anomaly.finder.repository.ServiceRequestRepository;
 import org.egov.pqm.anomaly.finder.util.AnomalyFinderConstants;
 import org.egov.pqm.anomaly.finder.util.NotificationUtil;
-import org.egov.pqm.anomaly.finder.web.model.Action;
 import org.egov.pqm.anomaly.finder.web.model.Test;
 import org.egov.pqm.anomaly.finder.web.model.TestRequest;
+import org.egov.pqm.anomaly.finder.web.model.notification.Action;
+import org.egov.pqm.anomaly.finder.web.model.notification.ActionItem;
 import org.egov.pqm.anomaly.finder.web.model.notification.Event;
 import org.egov.pqm.anomaly.finder.web.model.notification.EventRequest;
 import org.egov.pqm.anomaly.finder.web.model.notification.Recepient;
@@ -94,11 +95,20 @@ public class NotificationService {
 				toUsers.add(mapOfPhnoAndUUIDs.get(mobile));
 				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(null).build();
 				Action action = null;
+				List<ActionItem> items = new ArrayList<>();
+
+				String actionLink = pqmAnomalyConfiguration.getTestLink().replace("$id", test.getId());
+				actionLink = pqmAnomalyConfiguration.getUiAppHost() + actionLink;
+				ActionItem item = ActionItem.builder().actionUrl(actionLink).code(pqmAnomalyConfiguration.getPayCode())
+						.build();
+				items.add(item);
+				action = Action.builder().actionUrls(items).build();
 
 				events.add(Event.builder().tenantId(test.getTenantId()).description(mobileNumberToMsg.get(mobile))
-						.eventType(AnomalyFinderConstants.USREVENTS_EVENT_TYPE).name(AnomalyFinderConstants.USREVENTS_EVENT_NAME)
-						.postedBy(AnomalyFinderConstants.USREVENTS_EVENT_POSTEDBY).source(Source.WEBAPP).recepient(recepient)
-						.eventDetails(null).actions(action).build());
+						.eventType(AnomalyFinderConstants.USREVENTS_EVENT_TYPE)
+						.name(AnomalyFinderConstants.USREVENTS_EVENT_NAME)
+						.postedBy(AnomalyFinderConstants.USREVENTS_EVENT_POSTEDBY).source(Source.WEBAPP)
+						.recepient(recepient).eventDetails(null).actions(action).build());
 			}
 		}
 

@@ -72,4 +72,10 @@ public class PqmAnomalyConfiguration {
 	@Value("${egov.localization.statelevel}")
 	private Boolean isLocalizationStateLevel;
 
+	@Value("${egov.usr.events.view.application.link}")
+	private String testLink;
+
+	@Value("${egov.usr.events.view.code}")
+	private String payCode;
+
 }

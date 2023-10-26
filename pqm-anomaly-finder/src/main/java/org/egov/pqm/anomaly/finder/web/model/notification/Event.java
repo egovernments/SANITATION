@@ -3,8 +3,6 @@ package org.egov.pqm.anomaly.finder.web.model.notification;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.egov.pqm.anomaly.finder.web.model.Action;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class Event {
-
 
 	@NotNull
 	private String tenantId;
@@ -48,7 +45,5 @@ public class Event {
 	private Action actions;
 
 	private EventDetails eventDetails;
-
-
 
 }
