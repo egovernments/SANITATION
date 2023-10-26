@@ -60,12 +60,13 @@ public class NotificationUtil {
 
 		if (null != messageTemplate && !StringUtils.isEmpty(messageTemplate)) {
 
-			message = callBenchmarkDetails(message, test);
+			message = callBenchmarkDetails(messageTemplate, test);
 		}
 		return message;
 	}
 
 	private String callBenchmarkDetails(String message, Test test) {
+		
 		if (message.contains("{Plant Name}")) {
 			message = message.replace("{Plant Name}", test.getPlantCode());
 		}
