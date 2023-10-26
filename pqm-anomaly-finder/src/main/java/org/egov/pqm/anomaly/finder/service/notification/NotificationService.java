@@ -99,7 +99,7 @@ public class NotificationService {
 
 				String actionLink = pqmAnomalyConfiguration.getTestLink().replace("$id", test.getId());
 				actionLink = pqmAnomalyConfiguration.getUiAppHost() + actionLink;
-				ActionItem item = ActionItem.builder().actionUrl(actionLink).code(pqmAnomalyConfiguration.getPayCode())
+				ActionItem item = ActionItem.builder().actionUrl(actionLink).code(pqmAnomalyConfiguration.getViewCode())
 						.build();
 				items.add(item);
 				action = Action.builder().actionUrls(items).build();

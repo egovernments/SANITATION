@@ -47,7 +47,7 @@ public class Test {
   private String wfStatus = null;
 
   @JsonProperty("scheduledDate")
-  private String scheduledDate = null;
+  private Long scheduledDate = null;
 
   @JsonProperty("isActive")
   private Boolean isActive = null;

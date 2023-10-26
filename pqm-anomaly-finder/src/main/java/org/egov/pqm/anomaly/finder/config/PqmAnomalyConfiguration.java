@@ -76,6 +76,6 @@ public class PqmAnomalyConfiguration {
 	private String testLink;
 
 	@Value("${egov.usr.events.view.code}")
-	private String payCode;
+	private String viewCode;
 
 }

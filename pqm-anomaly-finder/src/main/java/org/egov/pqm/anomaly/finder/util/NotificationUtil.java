@@ -1,5 +1,7 @@
 package org.egov.pqm.anomaly.finder.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class NotificationUtil {
 
 	@Autowired
 	private RestTemplate restTemplate;
-	
+
 	@Autowired
 	private PqmAnomalyFinderProducer pqmAnomalyFinderProducer;
 
@@ -57,41 +59,28 @@ public class NotificationUtil {
 		String messageTemplate = getMessageTemplate(messageCode, localizationMessage);
 
 		if (null != messageTemplate && !StringUtils.isEmpty(messageTemplate)) {
-			message = getInitiatedMsg(test, messageTemplate);
 
-			message = callReceiptDetails(message, test);
+			message = callBenchmarkDetails(message, test);
 		}
 		return message;
 	}
 
-	private String callReceiptDetails(String message, Test test) {
-		if (message.contains("{VIEW_LINK}")) {
-			message = message.replace("{VIEW_LINK}", "link");
+	private String callBenchmarkDetails(String message, Test test) {
+		if (message.contains("{Plant Name}")) {
+			message = message.replace("{Plant Name}", test.getPlantCode());
+		}
+		if (message.contains("{Output}")) {
+			message = message.replace("{Output}", test.getMaterialCode());
 		}
 
-//		if (message.contains("{RECEIPT_LINK}")) {
-//
-//			String actionLink = config.getDownloadLink().replace("$mobile", fsm.getCitizen().getMobileNumber())
-//					.replace("$consumerCode", fsm.getApplicationNo()).replace("$tenantId", fsm.getTenantId())
-//					.replace("$receiptNumber", getPaymentData(FSMConstants.RECEIPT_NUMBER, fsmRequest))
-//					.replace("$businessService", FSMConstants.FSM_PAY_BUSINESS_SERVICE);
-//			message = message.replace("{RECEIPT_LINK}", getShortenedUrl(config.getUiAppHost() + actionLink));
-//
-//		}
-//
-		return message;
-	}
+		if (message.contains("{Test Submitted Date}")) {
+			Calendar possibleSrvdt = Calendar.getInstance();
+			possibleSrvdt.setTimeInMillis(test.getScheduledDate());
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			dateFormat.setTimeZone(possibleSrvdt.getTimeZone());
+			message = message.replace("{Test Submitted Date}", dateFormat.format(possibleSrvdt.getTime()));
+		}
 
-	/**
-	 * Creates customized message for initiate
-	 * 
-	 * @param test    tenantId of the test
-	 * @param message Message from localization for initiate
-	 * @return customized message for initiate
-	 */
-	@SuppressWarnings("unchecked")
-	private String getInitiatedMsg(Test test, String message) {
-		message = message.replace("{2}", test.getId());
 		return message;
 	}
 
@@ -138,9 +127,11 @@ public class NotificationUtil {
 			locale = requestInfo.getMsgId().split("\\|")[1];
 
 		StringBuilder uri = new StringBuilder();
-		uri.append(pqmAnomalyConfiguration.getLocalizationHost()).append(pqmAnomalyConfiguration.getLocalizationContextPath())
-				.append(pqmAnomalyConfiguration.getLocalizationSearchEndpoint()).append("?").append("locale=").append(locale)
-				.append("&tenantId=").append(tenantId).append("&module=").append(AnomalyFinderConstants.SEARCH_MODULE).append(",")
+		uri.append(pqmAnomalyConfiguration.getLocalizationHost())
+				.append(pqmAnomalyConfiguration.getLocalizationContextPath())
+				.append(pqmAnomalyConfiguration.getLocalizationSearchEndpoint()).append("?").append("locale=")
+				.append(locale).append("&tenantId=").append(tenantId).append("&module=")
+				.append(AnomalyFinderConstants.SEARCH_MODULE).append(",")
 				.append(AnomalyFinderConstants.FSM_LOC_SEARCH_MODULE);
 		return uri;
 	}
@@ -187,7 +178,5 @@ public class NotificationUtil {
 
 		log.debug("STAKEHOLDER:: " + request.getEvents().get(0).getDescription());
 	}
-
-
 
 }
