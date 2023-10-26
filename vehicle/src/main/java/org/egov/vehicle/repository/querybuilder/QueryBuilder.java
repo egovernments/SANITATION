@@ -200,22 +200,10 @@ public class QueryBuilder {
 		 */
 
 		List<String> registrationNumber = criteria.getRegistrationNumber();
-		if (!CollectionUtils.isEmpty(registrationNumber) && (registrationNumber.stream()
-				.filter(checkregnumber -> checkregnumber.length() > 0).findFirst().orElse(null) != null)) {
-			boolean flag = false;
+		if (!CollectionUtils.isEmpty(registrationNumber)) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" ( ");
-			for (String registrationno : registrationNumber) {
-				if (flag)
-					builder.append(" OR ");
-				builder.append(" UPPER(registrationNumber) like ?");
-				preparedStmtList.add(
-						'%' + net.logstash.logback.encoder.org.apache.commons.lang.StringUtils.upperCase(registrationno)
-								+ '%');
-				builder.append(" ESCAPE '_' ");
-				flag = true;
-			}
-			builder.append(" ) ");
+			builder.append(" registrationNumber IN (").append(createQuery(registrationNumber)).append(")");
+			addToPreparedStatement(preparedStmtList, registrationNumber);
 		}
 
 		List<String> ids = criteria.getIds();

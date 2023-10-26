@@ -57,7 +57,7 @@ public class Validator {
 		}
 		mdmsValidator.validateVehicleType(vehicleRequest);
 		mdmsValidator.validateSuctionType(vehicle.getSuctionType());
-		userService.manageOwner(vehicleRequest,isUpdate);
+		userService.manageOwner(vehicleRequest);
 
 	}
 
