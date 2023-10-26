@@ -25,9 +25,9 @@ public class AnomalyFinderService {
 
 	public void anomalyCreate(TestRequest testRequest) {
 
-//		TestRequest testRequests = testAnomalyFinderValidator.validateCreate(testRequest);
-		PqmAnomalyRequest pqmAnomalyRequest = enrichmentService.enrichPqmAnomalyCreateRequest(testRequest);
+		TestRequest testRequests = testAnomalyFinderValidator.validateCreate(testRequest);
+		PqmAnomalyRequest pqmAnomalyRequest = enrichmentService.enrichPqmAnomalyCreateRequest(testRequests);
 		anomalyRepository.save(pqmAnomalyRequest);
-		notificationService.process(testRequest);
+		notificationService.process(testRequests);
 	}
 }

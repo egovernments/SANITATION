@@ -60,22 +60,28 @@ public class NotificationUtil {
 
 		if (null != messageTemplate && !StringUtils.isEmpty(messageTemplate)) {
 
-			message = callBenchmarkDetails(messageTemplate, test);
+			message = callBenchmarkDetails(messageTemplate, test,localizationMessage);
 		}
 		return message;
 	}
 
-	private String callBenchmarkDetails(String message, Test test) {
-		
+	private String callBenchmarkDetails(String message, Test test,String localizationMessage) {
+			
 		if (message.contains("{Plant Name}")) {
-			message = message.replace("{Plant Name}", test.getPlantCode());
+			String messageCode = "PQM_PLANT_" + test.getPlantCode();
+			String plantNmae = getMessageTemplate(messageCode, localizationMessage);
+			message = message.replace("{Plant Name}", plantNmae);
 		}
 		if (message.contains("{Output}")) {
-			message = message.replace("{Output}", test.getMaterialCode());
+			String messageCode = "PQM_MATERIAL_" + test.getMaterialCode();
+			String materialName = getMessageTemplate(messageCode, localizationMessage);
+			message = message.replace("{Output}", materialName);
 		}
 
 		if (message.contains("{Stage}")) {
-			message = message.replace("{Stage}", test.getStageCode());
+			String messageCode = "PQM_STAGE_" + test.getStageCode();
+			String stageNmae = getMessageTemplate(messageCode, localizationMessage);
+			message = message.replace("{Stage}", stageNmae);
 		}
 
 		if (message.contains("{Test Submitted Date}")) {
@@ -136,7 +142,7 @@ public class NotificationUtil {
 				.append(pqmAnomalyConfiguration.getLocalizationContextPath())
 				.append(pqmAnomalyConfiguration.getLocalizationSearchEndpoint()).append("?").append("locale=")
 				.append(locale).append("&tenantId=").append(tenantId).append("&module=")
-				.append(AnomalyFinderConstants.SEARCH_MODULE).append(",")
+				.append(AnomalyFinderConstants.SEARCH_MODULE_MDMS).append(",")
 				.append(AnomalyFinderConstants.FSM_LOC_SEARCH_MODULE);
 		return uri;
 	}

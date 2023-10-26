@@ -9,14 +9,14 @@ import org.springframework.util.CollectionUtils;
 @Component
 public class AnomalyFinderQueryBuilder {
 
-	private static final String ANOMALYFINDER_QUERY = "select * from eg_pqm_anomaly_details";
+	private static final String ANOMALYFINDER_QUERY = "select * from eg_pqm_anomaly_details anomaly";
 
 	public String anomalySearchQuery(List<String> idLists, List<Object> preparedStmtList) {
 		StringBuilder builder = new StringBuilder(ANOMALYFINDER_QUERY);
 
 		if (!CollectionUtils.isEmpty(idLists)) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" test.id IN (").append(createQuery(idLists)).append(")");
+			builder.append(" anomaly.testid IN (").append(createQuery(idLists)).append(")");
 			addToPreparedStatement(preparedStmtList, idLists);
 		}
 		return builder.toString();
