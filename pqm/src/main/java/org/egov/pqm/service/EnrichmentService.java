@@ -1,9 +1,10 @@
 package org.egov.pqm.service;
 
 
-import static org.egov.pqm.util.Constants.SUBMITTED;
+import static org.egov.pqm.util.Constants.WFSTATUS_SUBMITTED;
 import static org.egov.pqm.web.model.TestResultStatus.PENDING;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ import org.egov.pqm.web.model.idgen.IdResponse;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.util.CollectionUtils;
 
 
 @Service
@@ -51,7 +52,7 @@ public class EnrichmentService {
   }
 
   private void setWorkflowStatus(TestRequest testRequest) {
-    testRequest.getTests().get(0).setWfStatus(SUBMITTED);
+    testRequest.getTests().get(0).setWfStatus(WFSTATUS_SUBMITTED);
   }
 
   public void enrichPQMCreateRequestForLabTest(TestRequest testRequest) {
@@ -72,6 +73,8 @@ public class EnrichmentService {
 
   private void setDocumentsIdAndTestId(TestRequest testRequest) {
     List<Document> documentList = testRequest.getTests().get(0).getDocuments();
+    if(CollectionUtils.isEmpty(documentList))
+      return;
     for (Document doc : documentList) {
       doc.setTestId(testRequest.getTests().get(0).getId());
       doc.setId(String.valueOf(UUID.randomUUID()));

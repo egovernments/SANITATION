@@ -47,7 +47,7 @@ public class TestSearchCriteria {
   private List<String> deviceCodes = null;
 
   @JsonProperty("wfStatus")
-  private String wfStatus = null;
+  private List<String> wfStatus = null;
 
   @JsonProperty("status")
   private String status = null;

@@ -98,11 +98,11 @@ public class TestQueryBuilder {
 
 		}
 
-		if (criteria.getWfStatus() != null) {
+		List<String> wfStatuses = criteria.getWfStatus();
+		if (!CollectionUtils.isEmpty(wfStatuses)) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" test.wfStatus=? ");
-			preparedStmtList.add(criteria.getWfStatus());
-
+			builder.append(" test.wfStatus IN (").append(createQuery(wfStatuses)).append(")");
+			addToPreparedStatement(preparedStmtList, wfStatuses);
 		}
 		
 		if (criteria.getStatus() != null) {
@@ -147,7 +147,7 @@ public class TestQueryBuilder {
 	 * 
 	 * @param query            prepared Query
 	 * @param preparedStmtList values to be replaced on the query
-	 * @param criteria         test search criteria
+	 * @param testSearchRequest         test search criteria
 	 * @return the query by replacing the placeholders with preparedStmtList
 	 */
 	private String addPaginationWrapper(String query, List<Object> preparedStmtList, TestSearchRequest testSearchRequest) {

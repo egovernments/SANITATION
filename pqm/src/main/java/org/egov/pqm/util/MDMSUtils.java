@@ -158,7 +158,7 @@ public class MDMSUtils {
    * @return Map of Code-QualityCriteria
    */
   public static List<MdmsTest> parseJsonToTestList(String jsonData) {
-    List<MdmsTest> testList = null;
+    List<MdmsTest> testList = new ArrayList<>();
 
     try {
       ObjectMapper objectMapper = new ObjectMapper();
@@ -173,7 +173,7 @@ public class MDMSUtils {
       }
     } catch (Exception e) {
       throw new CustomException(ErrorConstants.PARSING_ERROR,
-          "Unable to make Code-QualityCriteria Map");
+          "Unable to parse Test Standard List");
     }
 
     return testList;

@@ -43,7 +43,7 @@ public class PqmController {
 
   @PostMapping(value = "/_createWithWorkflow", consumes = {"application/json"})
   ResponseEntity<TestResponse> createWithWorkflow(@Valid @RequestBody TestRequest testRequest) {
-    Test test = pqmService.scheduleTest(testRequest);
+    Test test = pqmService.createTestViaScheduler(testRequest);
     List<Test> testList = new ArrayList<>();
     testList.add(test);
     TestResponse response = TestResponse.builder().tests(testList)

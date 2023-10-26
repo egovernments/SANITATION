@@ -34,10 +34,10 @@ public class MdmsTest {
   @JsonProperty("frequency")
   private String frequency = null;
 
-  @JsonProperty("testType")
+  @JsonProperty("sourceType")
   private String testType = null;
 
-  @JsonProperty("testCriteria")
+  @JsonProperty("qualityCriteria")
   @Valid
   private List<String> qualityCriteria = new ArrayList<>();
 

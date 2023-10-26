@@ -1,8 +1,6 @@
 package org.egov.pqm.service;
 
-import static org.egov.pqm.util.Constants.MASTER_NAME_QUALITY_CRITERIA;
-import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
-import static org.egov.pqm.util.Constants.UPDATE_RESULT;
+import static org.egov.pqm.util.Constants.*;
 import static org.egov.pqm.util.ErrorConstants.TEST_NOT_IN_DB;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 import static org.egov.pqm.util.MDMSUtils.parseJsonToTestList;
@@ -22,17 +20,8 @@ import org.egov.common.contract.request.Role;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.validator.MDMSValidator;
-import org.egov.pqm.web.model.Document;
-import org.egov.pqm.web.model.DocumentResponse;
-import org.egov.pqm.web.model.Pagination;
+import org.egov.pqm.web.model.*;
 import org.egov.pqm.web.model.Pagination.SortBy;
-import org.egov.pqm.web.model.QualityCriteria;
-import org.egov.pqm.web.model.Test;
-import org.egov.pqm.web.model.TestRequest;
-import org.egov.pqm.web.model.TestResponse;
-import org.egov.pqm.web.model.TestSearchCriteria;
-import org.egov.pqm.web.model.TestSearchRequest;
-import org.egov.pqm.web.model.TestType;
 import org.egov.pqm.web.model.mdms.MdmsTest;
 import org.egov.pqm.web.model.workflow.BusinessService;
 import org.egov.pqm.workflow.ActionValidator;
@@ -43,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 
 @Service
 @Slf4j
@@ -66,8 +56,8 @@ public class PqmService {
   @Autowired
   private MDMSUtils mdmsUtils;
 
-	@Autowired
-	private QualityCriteriaEvaluationService qualityCriteriaEvaluation;
+  @Autowired
+  private QualityCriteriaEvaluationService qualityCriteriaEvaluation;
 
   @Autowired
   private MDMSValidator mdmsValidator;
@@ -83,12 +73,21 @@ public class PqmService {
 
     List<Test> testList = new LinkedList<>();
 
-    if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
-      checkRoleInValidateSearch(criteria, requestInfo);
-    }
-    TestResponse testResponse = repository.getPqmData(criteria);
-    List<String> idList = testResponse.getTests().stream().map(Test::getId)
-        .collect(Collectors.toList());
+		if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
+			checkRoleInValidateSearch(criteria, requestInfo);
+		}
+		TestResponse testResponse = repository.getPqmData(criteria);
+		List<String> idList = testResponse.getTests().stream().map(Test::getId).collect(Collectors.toList());
+
+		List<QualityCriteria> qualityCriteriaList =repository.getQualityCriteriaData(idList);
+
+		testList = testResponse.getTests().stream().map(test -> {
+			List<QualityCriteria> QualityCriterias = qualityCriteriaList.stream()
+					.filter(qualityCriteria -> test.getId().equalsIgnoreCase(qualityCriteria.getTestId()))
+					.collect(Collectors.toList());
+			test.setQualityCriteria(QualityCriterias);
+			return test;
+		}).collect(Collectors.toList());
 
     DocumentResponse documentResponse = repository.getDocumentData(idList);
     List<Document> documentList = documentResponse.getDocuments();
@@ -123,9 +122,10 @@ public class PqmService {
    * @return New Test
    */
   public Test create(TestRequest testRequest) {
-    //updating workflow during create
-    workflowIntegrator.callWorkFlow(testRequest);
+    mdmsValidator.validateMdmsData(testRequest);
     qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+    enrichmentService.enrichPQMCreateRequest(testRequest);
+    enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     repository.save(testRequest);
     return testRequest.getTests().get(0);
   }
@@ -194,7 +194,7 @@ public class PqmService {
     // get mdms TestStandardData
     //fetch mdms data for TestStandard Master
     Object jsondata = mdmsUtils.mdmsCallV2(requestInfo,
-        "pg", MASTER_NAME_QUALITY_CRITERIA);
+        "pg", SCHEMA_CODE_TEST_STANDARD);
     String jsonString = "";
 
     try {
@@ -205,12 +205,12 @@ public class PqmService {
           "Unable to parse QualityCriteria mdms data ");
     }
 
-    List<MdmsTest> testList = parseJsonToTestList(jsonString);
+    List<MdmsTest> mdmsTestList = parseJsonToTestList(jsonString);
 
-    for(MdmsTest mdmsTest: testList)
+    for(MdmsTest mdmsTest: mdmsTestList)
     {
       TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().testType(
-              String.valueOf(TestType.LAB)).testCode(Collections.singletonList(mdmsTest.getCode())).build();
+          String.valueOf(TestType.LAB)).wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED)).testCode(Collections.singletonList(mdmsTest.getCode())).build();
       Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.scheduledDate)
           .sortOrder(DESC).build();
       TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
@@ -219,9 +219,8 @@ public class PqmService {
       //search from DB for any pending tests
       List<Test> testListFromDb = testSearch(testSearchRequest, requestInfo).getTests();
 
-      Test createTest = null;
+      int frequency = Integer.parseInt(mdmsTest.getFrequency().split("_")[0]);
 
-      int frequency = Integer.parseInt(mdmsTest.getFrequency());
       LocalDate currentDate = LocalDate.now();
       LocalDate calculatedDate = currentDate.plusDays(frequency);
       Instant instant = calculatedDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
@@ -231,29 +230,30 @@ public class PqmService {
 
       for(String mdmsQualityCriteria : mdmsTest.getQualityCriteria())
       {
-        QualityCriteria qualityCriteria = QualityCriteria.builder().criteriaCode(mdmsQualityCriteria).build();
-
+        QualityCriteria qualityCriteria = QualityCriteria.builder().criteriaCode(mdmsQualityCriteria).resultStatus(TestResultStatus.PENDING).isActive(Boolean.TRUE).build();
+        qualityCriteriaList.add(qualityCriteria);
       }
 
-      if(testListFromDb == null)
+      if(CollectionUtils.isEmpty(testListFromDb))
       {
         //case 1: when no pending tests exist in DB
-         createTest = Test.builder()
+        Test createTest = Test.builder()
             .testCode(mdmsTest.getCode())
-            .tenantId("pg")
+            .tenantId("pg.citya")
             .plantCode(mdmsTest.getPlant())
             .processCode(mdmsTest.getProcess())
             .stageCode(mdmsTest.getStage())
             .materialCode(mdmsTest.getMaterial())
             .qualityCriteria(qualityCriteriaList)
             .testType(TestType.LAB)
-            //will there ever be a scenario where inside of scheduler test type is not lab
             .isActive(Boolean.TRUE)
             .scheduledDate(instant.toEpochMilli())
             .build();
 
-        TestRequest testRequest = TestRequest.builder().tests((List<Test>) createTest).requestInfo(requestInfo)
-            .build();
+        TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest)).requestInfo(requestInfo).build();
+
+        //send to create function
+        createTestViaScheduler(testRequest);
       }
       else {
         //case 2: when pending test exist in DB
@@ -263,27 +263,29 @@ public class PqmService {
 
         if(isPastScheduledDate(scheduleDate))
         {
-          createTest = Test.builder()
+          Test createTest = Test.builder()
               .tenantId(testFromDb.getTenantId())
+              .testCode(mdmsTest.getCode())
               .plantCode(testFromDb.getPlantCode())
               .processCode(testFromDb.getProcessCode())
               .stageCode(testFromDb.getStageCode())
               .materialCode(testFromDb.getMaterialCode())
               .qualityCriteria(qualityCriteriaList)
               .testType(TestType.LAB)
-              //will there ever be a scenario where inside of scheduler test type is not lab
               .isActive(Boolean.TRUE)
               .scheduledDate(instant.toEpochMilli())
               .build();
 
-          TestRequest testRequest = TestRequest.builder().tests((List<Test>) createTest).requestInfo(requestInfo)
+          TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest)).requestInfo(requestInfo)
               .build();
+
+          //send to create function
+          createTestViaScheduler(testRequest);
         }
       }
 
-    }
 
-     //send to create function
+    }
 
   }
 
