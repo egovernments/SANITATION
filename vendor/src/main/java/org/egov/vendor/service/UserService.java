@@ -279,7 +279,7 @@ public class UserService {
 		setUserName(owner);
 		owner.setType(VendorConstants.CITIZEN);
 		UserDetailResponse userDetailResponse = userCall(new UserRequest(requestInfo, owner), uri);
-		log.debug("owner created --> " + userDetailResponse.getUser().get(0).getUuid());
+		log.info("owner created --> " + userDetailResponse.getUser().get(0).getUuid());
 		return userDetailResponse.getUser().get(0);
 	}
 

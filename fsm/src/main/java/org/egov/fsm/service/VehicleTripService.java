@@ -121,7 +121,7 @@ public class VehicleTripService {
 
 	private void increaseOrDecreaseTrip(Integer remainingNumberOfTrips, boolean increaseTrip, FSMRequest fsmRequest,
 			FSM fsm) {
-		log.debug("remainingNumberOfTrips :: " + remainingNumberOfTrips + " increaseTrip ::" + increaseTrip);
+		log.info("remainingNumberOfTrips :: " + remainingNumberOfTrips + " increaseTrip ::" + increaseTrip);
 		try {
 			if (remainingNumberOfTrips != 0 && increaseTrip) {
 				increaseUpdateTripDetails(remainingNumberOfTrips, fsmRequest, fsm);

@@ -45,11 +45,22 @@ public class DriverQueryBuilder {
 			 */
 
 			List<String> driverName = criteria.getName();
-			if (!CollectionUtils.isEmpty(driverName)) {
+			if (!CollectionUtils.isEmpty(driverName)
+					&& (driverName.stream().filter(name -> name.length() > 0).findFirst().orElse(null) != null)) {
+				boolean flag = false;
 				addClauseIfRequired(preparedStmtList, builder);
-				builder.append(" driver.name IN (").append(createQuery(driverName)).append(")");
-				addToPreparedStatement(preparedStmtList, driverName);
+				builder.append(" ( ");
+				for (String drivername : driverName) {
 
+					if (flag)
+						builder.append(" OR ");
+					builder.append(" LOWER(driver.name) like ?");
+					preparedStmtList.add('%' + StringUtils.lowerCase(drivername) + '%');
+					builder.append(" ESCAPE '_' ");
+					flag = true;
+
+				}
+				builder.append(" ) ");
 			}
 
 			List<String> ownerIds = criteria.getOwnerIds();

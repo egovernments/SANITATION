@@ -69,8 +69,7 @@ public class FSMQueryBuilder {
 				flag = true;
 
 			}
-			builder.append(" fsm.applicationNo IN (").append(createQuery(applicationNumber)).append(")");
-			addToPreparedStatement(preparedStmtList, applicationNumber);
+			builder.append(" ) ");
 		}
 
 		List<String> applicationStatus = criteria.getApplicationStatus();
