@@ -2,11 +2,15 @@ import { BackButton,HelpOutlineIcon,Label } from '@egovernments/digit-ui-react-c
 import React,{useEffect,useContext} from 'react'
 import { useTranslation } from 'react-i18next'
 import { TutorialContext } from './Tutorial/TutorialContext'
+import { useLocation } from "react-router-dom";
+
 
 
 const TqmHeader = () => {
   const {tutorial,updateTutorial} = useContext(TutorialContext)
   const { t } = useTranslation()
+  //using location.pathname we can update the stepIndex accordingly when help is clicked from any other screen(other than home screen)
+  const location = useLocation()
 
   const startTour = () => {
     updateTutorial({
@@ -14,7 +18,8 @@ const TqmHeader = () => {
       state:{
         ...tutorial,
         run:true,
-        tourActive:true
+        tourActive:true,
+        stepIndex:0
       }
     })
   }

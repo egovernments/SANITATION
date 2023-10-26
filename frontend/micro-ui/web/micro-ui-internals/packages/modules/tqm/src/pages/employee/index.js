@@ -39,6 +39,7 @@ const App = ({ path }) => {
   const TqmViewTestResults = Digit?.ComponentRegistryService?.getComponent("TqmViewTestResults");
   const TQMSummary = Digit?.ComponentRegistryService?.getComponent("TQMSummary");
 
+  //write all the steps in intitialTutorialState inside module and pass it from here
   const [tutorial, updateTutorial] = useReducer(TutorialReducer, initialTutorialState);
 
   return (
