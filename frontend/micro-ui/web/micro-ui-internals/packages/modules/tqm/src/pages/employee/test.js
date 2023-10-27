@@ -19,17 +19,18 @@ const Test = () => {
     const timeDifference = currentTime - timestamp;
     const daysAgo = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
     const monthsAgo = Math.floor(daysAgo / 30);
+    console.log(daysAgo);
     if (monthsAgo >= 1) {
       return monthsAgo === 1 ? t("ES_TQM_MONTH_AGO") : t(`ES_TQM_MONTHS_AGO`, { NO_OF_MONTH: monthsAgo});
     } else {
-      return daysAgo === 1 ? t("ES_TQM_day_AGO") : t(`ES_TQM_DAYS_AGO`, { NO_OF_DAY: daysAgo});
+      return daysAgo === 1 ? t("ES_TQM_DAY_AGO") : t(`ES_TQM_DAYS_AGO`, { NO_OF_DAY: daysAgo});
     }
   };
   
   if(isLoading){
     return <Loader />
   }
-
+  console.log("data",data.events);
   const mappedActions = data.events.map(event => {
     return {
       header: event?.eventCategory,  
