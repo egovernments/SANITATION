@@ -9,12 +9,14 @@ function ViewTestResults() {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
+  const type = searchParams.get("type");
   const businessService = "PQM";
 
   const { isLoading, data: testData, revalidate, isFetching } = Digit.Hooks.tqm.useViewTestResults({
     t,
     tenantId: tenantId,
     id: id,
+    type: type,
     config: {
       select: (data) => ({
         cards: [
@@ -70,14 +72,16 @@ function ViewTestResults() {
                     },
                   }
                 : {},
-              {
-                cardHeader: { value: "Documents", inlineStyles: {} },
-                type: "COMPONENT",
-                component: "TqmDocumentsPreview",
-                props: {
-                  documents: data.documents,
-                },
-              },
+              data.documents?.[0]?.value
+                ? {
+                    cardHeader: { value: "Documents", inlineStyles: {} },
+                    type: "COMPONENT",
+                    component: "TqmDocumentsPreview",
+                    props: {
+                      documents: data.documents,
+                    },
+                  }
+                : {},
               {
                 cardHeader: { value: "Application Timeline", inlineStyles: {} },
                 type: "WFHISTORY",

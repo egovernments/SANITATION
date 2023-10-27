@@ -178,18 +178,21 @@ export const tqmInboxConfig = {
             "fields": [
               {
                 "label": "TQM_TREATMENT_PROCESS",
-                "type": "apicheckboxes",
+                "type": "dropdown",
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
+                  allowMultiSelect: true,
                   "name": "processCodes",
                   "optionsKey": "i18nKey",
                   "labelKey":"i18nKey",
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfigUlbAdmin",
                   "customfn": "populateMdmsv2SearchReqCriteria",
-                  "schemaCode":"PQM.Process"
-                }
+                  mdmsv2:{
+                    "schemaCode":"PQM.Process"
+                  }
+                  }
               },   
               {
                 label: 'TQM_PROCESS_STAGE',
@@ -210,17 +213,20 @@ export const tqmInboxConfig = {
               },
               {
                 "label": "TQM_OUTPUT_TYPE",
-                "type": "apicheckboxes",
+                "type": "dropdown",
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
+                  allowMultiSelect: true,
                   "name": "materialCodes",
                   "optionsKey": "i18nKey",
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfigUlbAdmin",
                   "customfn": "populateMdmsv2SearchReqCriteria",
                   "labelKey":"i18nKey",
+                  mdmsv2:{
                   "schemaCode":"PQM.Material"
+                  }
                 }
               },
               {
