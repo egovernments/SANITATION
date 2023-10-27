@@ -3,13 +3,15 @@ import Joyride, { ACTIONS, EVENTS, LIFECYCLE, STATUS } from 'react-joyride';
 import { useHistory } from 'react-router-dom';
 
 const theme = {
-  primaryColor: '#ad7bff',
-  arrowColor: '#000',
-  textColor: '#fff',
+  // primaryColor: '#ad7bff',
+  // arrowColor: '#000',
+  // textColor: '#fff',
+  primaryColor: '#F47738',
+  arrowColor: '#FFFFFF',
+  textColor: '#505A5F',
 };
 
 const Tutorial = ({ tutorial, updateTutorial, ...props }) => {
-  console.log("tut",tutorial);
   const history = useHistory()
   const { run, stepIndex, steps } = tutorial;
   //currently writing this fn here, this fn will be custom for every module so accept it as props
@@ -74,7 +76,7 @@ const Tutorial = ({ tutorial, updateTutorial, ...props }) => {
       }
     }
 
-    if (type === 'tour:end') {
+    else if (type === 'tour:end') {
       updateTutorial({
         type: 'updateTourState',
         state: {
@@ -86,7 +88,7 @@ const Tutorial = ({ tutorial, updateTutorial, ...props }) => {
       });
     }
 
-    if (type === 'tour:start' && index!==0) {
+    else if (type === 'tour:start' && index!==0) {
       updateTutorial({
         type: 'updateTourState',
         state: {
@@ -97,7 +99,7 @@ const Tutorial = ({ tutorial, updateTutorial, ...props }) => {
       });
     }
 
-    if (type === 'tour:status' && index!==0) {
+    else if (type === 'tour:status' && index!==0) {
       // updateTutorial({
       //   type: 'updateTourState',
       //   state: {
@@ -107,6 +109,18 @@ const Tutorial = ({ tutorial, updateTutorial, ...props }) => {
       //   },
       // });
     } 
+
+    else if (type === "error:target_not_found"){
+      updateTutorial({
+        type: 'updateTourState',
+        state: {
+          ...tutorial,
+          run:false,
+          stepIndex: 0,
+        },
+      });
+    }
+
   };
 
   return (

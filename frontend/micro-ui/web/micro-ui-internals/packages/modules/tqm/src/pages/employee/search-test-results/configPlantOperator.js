@@ -9,7 +9,7 @@ export const tqmSearchConfigPlantOperator = {
         serviceName: '/pqm-service/v1/_search',
         requestParam: {},
         requestBody: {},
-        minParametersForSearchForm: 1,
+        minParametersForSearchForm: 0,
         masterName: 'commonUiConfig',
         moduleName: 'SearchTestResults',
         tableFormJsonPath: 'requestBody.custom',
@@ -24,7 +24,7 @@ export const tqmSearchConfigPlantOperator = {
             headerStyle: null,
             primaryLabel: 'ES_COMMON_SEARCH',
             secondaryLabel: 'ES_COMMON_CLEAR_SEARCH',
-            minReqFields: 1,
+            minReqFields: 0,
             showFormInstruction: 'TQM_SEARCH_HINT',
             defaultValues: {
               plantCodes: [],

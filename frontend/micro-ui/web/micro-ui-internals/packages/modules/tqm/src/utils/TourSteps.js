@@ -1,75 +1,78 @@
 export const Tour = {
   updateTest:[
+    // {
+    //   content:"Let me walk you through on how to upload test results", 
+    //   target:".app-container",
+    //   disableBeacon:true,
+    //   placement:"center",
+    //   title:"This is your Home Screen"
+    // },
     {
-      content:"TOUR_STEP_0", // Welcome plant operator this is your tqm landing screen
+      content:"Let me walk you through on how to upload test results.This is a list of tests that are pending to be updated. All the pending tests will end up in your inbox", 
+      target:".notification",
+      disableBeacon:true,
+      placement:"top",
+      title:"How to Upload Test Results"
+    },
+  ],
+  viewTest:[
+    {
+      content:"Let me walk you through on how to search tests", 
       target:".app-container",
       disableBeacon:true,
       placement:"center",
+      title:"This is your Home Screen"
     },
     {
-      content:"TOUR_STEP_1", // this is your pending tasks you can click on the action button to open test's view screen and clicking on all tasks will route to the inbox screen
-      target:".notification",
+      content:"From the Landing screen, click on the Treatment Quality Card. Click on next to move further", 
+      target:".tiles-card-2",
       disableBeacon:true,
-      // placement:"center"
+      placement:"auto",
+      redirectTo:"/sanitation-ui/employee/tqm/home"
+      // title:"This is your Home Screen"
     },
     {
-      content:"TOUR_STEP_2", // all the cards available in your landing screen, click on the tqm card to go to the home screen of tqm
-      target:".home-card-tiles-container",
+      content:"This is your Home Screen for TQM", 
+      target:".tqm-home-container",
       disableBeacon:true,
-      redirectTo:`/sanitation-ui/employee/tqm/home`,
-      // placement:"center"
+      placement:"center",
+      hideBackButton:true
+      // title:"This is your Home Screen"
     },
-    //starting point of home page index 3
     {
-      content:"TOUR_STEP_3",
-      // target:".tqm-home-container",
+      content:"From the TQM Card on Home Screen, click on the View Past Tests Link. Click on next to move further", 
       target:".complaint-links-container",
       disableBeacon:true,
       placement:"auto",
-      hideBackButton:true
+      redirectTo:"/sanitation-ui/employee/tqm/search-test-results"
+      // title:"This is your Home Screen"
     },
     {
-      content:"TOUR_STEP_4",
-      target:".complaint-links-container",
-      disableBeacon:true,
-      // placement:"center"
-    },
-    {
-      content:"TOUR_STEP_5",
-      target:".performance-container",
-      disableBeacon:true,
-      // placement:"center"
-    },
-    {
-      content:"TOUR_STEP_6",
-      target:".alerts-container",
-      disableBeacon:true,
-      redirectTo:`/sanitation-ui/employee/tqm/inbox`,
-      // placement:"center"
-    },
-    //starting point of inbox
-    {
-      content:"TOUR_STEP_7",
-      target:".employee-app-wrapper",
+      content:"This is View Past Tests Screen. Here you will get the list of tests that are submitted, according to the filters that you have selected", 
+      target:".ground-container",
       disableBeacon:true,
       placement:"center",
       hideBackButton:true
+      // redirectTo:"/sanitation-ui/employee/tqm/search-test-results"
+      // title:"This is your Home Screen"
     },
     {
-      content:"TOUR_STEP_8",
-      target:".employee-app-wrapper",
+      content:"You can search with applicable filters and sort the results using Filter and Sort Action respectively", 
+      target:".searchBox",
       disableBeacon:true,
-      placement:"center",
-      hideBackButton:true
+      placement:"bottom",
+      // redirectTo:"/sanitation-ui/employee/tqm/search-test-results"
+      // title:"This is your Home Screen"
     },
-    
-  
-  ],
-  searchTest:[
+    //Add more steps corresponding to search results when search api is working fine
+
     
   ],
-  viewTest:[
+  viewDashboard:[
 
   ],
+  viewSensors:[
+
+  ]
 
 }
