@@ -123,8 +123,8 @@ public class PqmService {
 
 	public Test create(TestRequest testRequest) {
 		pqmValidator.validateQualityCriteria(testRequest);
-//		mdmsValidator.validateMdmsData(testRequest);
-//		qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+		mdmsValidator.validateMdmsData(testRequest);
+		qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
 		enrichmentService.enrichPQMCreateRequest(testRequest);
 		enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
 		repository.save(testRequest);
