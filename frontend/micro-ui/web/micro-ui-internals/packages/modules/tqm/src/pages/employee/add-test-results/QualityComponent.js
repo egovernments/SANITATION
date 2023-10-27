@@ -27,7 +27,7 @@ const QualityParameter = ({onSelect,formData }) => {
             }
         }
     }, [formData])
-    console.log(formData);
+    
 
     const { isLoading, data } = useCustomMDMSV2({
         tenantId: tenant,

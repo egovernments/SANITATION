@@ -9,7 +9,7 @@ import TqmSearch from "./search-test-results/TqmSearch";
 import TestDetails from "./test-details/TestDetails";
 import TqmHome from "./home/TqmHome";
 import Create from "./add-test-results/CreateAddTestResult";
-import Test from "./test";
+import TqmAdminNotification from "./TqmAdminNotification";
 
 // import TQMSummary from "../../components/TQMSummary";
 
@@ -53,7 +53,7 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/response`} component={() => <TqmResponse />} />
           <PrivateRoute path={`${path}/view-test-results`} component={() => <TqmViewTestResults />} />
           {/* for testing purpose */}
-          <PrivateRoute path={`${path}/test`} component={() => <Test />} /> 
+          <PrivateRoute path={`${path}/notification`} component={() => <TqmAdminNotification />} /> 
           <PrivateRoute path={`${path}/summary`} component={() => <TQMSummary />} />
           <PrivateRoute path={`${path}/search-devices`} component={() => <SensorScreen />} />
         </AppContainer>
