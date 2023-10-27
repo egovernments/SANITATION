@@ -15,4 +15,10 @@ public class PqmValidator {
             throw new CustomException(QualityCriteria_Not_Present,
                     " QualityCriteria is empty");        }
     }
+
+    public void validateTestType(TestRequest testRequest){
+        if(testRequest.getTests().get(0).getTestType().toString() != "LAB"){
+
+        }
+    }
 }
