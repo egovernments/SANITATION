@@ -123,7 +123,7 @@ public class PqmService {
 
 	public Test create(TestRequest testRequest) {
 		pqmValidator.validateQualityCriteria(testRequest);
-		pqmValidator.validateTestType(testRequest);
+		testRequest.getTests().get(0).setTestType(TestType.LAB);
 		mdmsValidator.validateMdmsData(testRequest);
 		qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
 		enrichmentService.enrichPQMCreateRequest(testRequest);

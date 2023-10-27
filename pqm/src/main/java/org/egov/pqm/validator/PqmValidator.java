@@ -17,11 +17,4 @@ public class PqmValidator {
             throw new CustomException(QUALITY_CRITERIA_NOT_PRESENT,
                     " testCriteria is empty in test object");        }
     }
-    public void validateTestType(TestRequest testRequest){
-        if(testRequest.getTests().get(0).getTestType().toString() != "LAB"){
-            throw new CustomException(INVALID_TEST_TYPE,
-                    "invalid testType in test object");
-        }
-    }
-
 }
