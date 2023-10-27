@@ -33,6 +33,7 @@ import org.egov.pqm.workflow.WorkflowService;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.egov.pqm.validator.PqmValidator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,6 +46,9 @@ public class PqmService {
 
 	@Autowired
 	private WorkflowService workflowService;
+
+	@Autowired
+	private PqmValidator pqmValidator;
 
 	@Autowired
 	private ActionValidator actionValidator;
@@ -118,6 +122,8 @@ public class PqmService {
 	}
 
 	public Test create(TestRequest testRequest) {
+		pqmValidator.validateQualityCriteria(testRequest);
+		testRequest.getTests().get(0).setTestType(TestType.LAB);
 		mdmsValidator.validateMdmsData(testRequest);
 		qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
 		enrichmentService.enrichPQMCreateRequest(testRequest);
