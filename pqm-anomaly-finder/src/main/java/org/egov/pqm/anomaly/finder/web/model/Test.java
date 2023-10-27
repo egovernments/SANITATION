@@ -1,9 +1,12 @@
 package org.egov.pqm.anomaly.finder.web.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,7 +47,7 @@ public class Test {
   private String wfStatus = null;
 
   @JsonProperty("scheduledDate")
-  private String scheduledDate = null;
+  private Long scheduledDate = null;
 
   @JsonProperty("isActive")
   private Boolean isActive = null;
@@ -55,6 +58,9 @@ public class Test {
 
   @JsonProperty("additionalDetails")
   private Object additionalDetails = null;
+  
+  @JsonProperty("testType")
+  private TestType testType = null;
 
   @JsonProperty("auditDetails")
   private AuditDetails auditDetails = null;
