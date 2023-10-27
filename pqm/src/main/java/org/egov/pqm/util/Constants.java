@@ -1,6 +1,9 @@
 package org.egov.pqm.util;
 
 import org.springframework.stereotype.Component;
+import java.util.regex.Pattern;
+
+
 
 @Component
 public class Constants {
@@ -83,5 +86,5 @@ public class Constants {
   public static final String PQM_SCHEMA_CODE_STAGE = "PQM.Stage";
   public static final String PQM_SCHEMA_CODE_MATERIAL = "PQM.Material";
   public static final String WF_ACTION_SCHEDULE = "SCHEDULE";
-
+  public static final Pattern REGEX_METACHARACTER_PATTERN = Pattern.compile("[.*+?{|()\\[\\]\\\\@#$%&!;':\"<>,.~_]");
 }

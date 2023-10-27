@@ -46,8 +46,15 @@ public class EnrichmentService {
     setAuditDetails(testRequest, true);
     setWorkflowStatus(testRequest);
     setTestResultStatus(testRequest);
-    setDocumentsIdAndTestId(testRequest);
-    setTestCriteriaIdAndTestID(testRequest);
+    enrichDocument(testRequest, true);
+    setTestCriteriaDetails(testRequest);
+    setScheduledDate(testRequest);
+  }
+
+  private void setScheduledDate(TestRequest testRequest)
+  {
+    Long time = System.currentTimeMillis();
+    testRequest.getTests().get(0).setScheduledDate(time);
   }
 
   private void setWorkflowStatus(TestRequest testRequest) {
@@ -60,33 +67,41 @@ public class EnrichmentService {
     setAuditDetails(testRequest, true);
     testRequest.getTests().get(0).setStatus(PENDING);
     setInitialWorkflowAction(testRequest.getTests().get(0));
-    setDocumentsIdAndTestId(testRequest);
-    setTestCriteriaIdAndTestID(testRequest);
+    enrichDocument(testRequest, true);
+    setTestCriteriaDetails(testRequest);
   }
 
   public void enrichPQMUpdateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setAuditDetails(testRequest, false);
-    setDocumentsIdAndTestId(testRequest);
+    enrichDocument(testRequest, false);
   }
 
-  private void setDocumentsIdAndTestId(TestRequest testRequest) {
+  private void enrichDocument(TestRequest testRequest, boolean isCreate) {
     List<Document> documentList = testRequest.getTests().get(0).getDocuments();
-    for (Document doc : documentList) {
-      doc.setTestId(testRequest.getTests().get(0).getId());
-      doc.setId(String.valueOf(UUID.randomUUID()));
+    if (!documentList.isEmpty()) {
+      for (Document document : documentList) {
+        if (document.getFileStoreId() != null) {
+          AuditDetails auditDetails = setAuditDetails(testRequest, isCreate);
+          document.setTestId(testRequest.getTests().get(0).getId());
+          document.setId(String.valueOf(UUID.randomUUID()));
+          document.setTenantId(testRequest.getTests().get(0).getTenantId());
+          document.setAuditDetails(auditDetails);
+        }
+      }
     }
   }
 
-  private void setTestCriteriaIdAndTestID(TestRequest testRequest) {
+  private void setTestCriteriaDetails(TestRequest testRequest) {
     List<QualityCriteria> qualityCriteriaList = testRequest.getTests().get(0).getQualityCriteria();
     for (QualityCriteria qualityCriteria : qualityCriteriaList) {
       qualityCriteria.setTestId(testRequest.getTests().get(0).getId());
       qualityCriteria.setId(String.valueOf(UUID.randomUUID()));
+      qualityCriteria.setResultStatus(PENDING);
     }
   }
 
-  void setTestResultStatus(TestRequest testRequest) {
+  public void setTestResultStatus(TestRequest testRequest) {
     boolean pass = true;
     for (QualityCriteria criteria : testRequest.getTests().get(0).getQualityCriteria()) {
       if (criteria.getResultStatus() == TestResultStatus.FAIL) {
@@ -107,7 +122,7 @@ public class EnrichmentService {
     }
   }
 
-  private void setAuditDetails(TestRequest testRequest, boolean isCreate) {
+  private AuditDetails setAuditDetails(TestRequest testRequest, boolean isCreate) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     AuditDetails auditDetails = null;
     String createdBy = requestInfo.getUserInfo().getUuid();
@@ -130,6 +145,7 @@ public class EnrichmentService {
     {
       criteria.setAuditDetails(auditDetails);
     }
+    return auditDetails;
   }
 
 
