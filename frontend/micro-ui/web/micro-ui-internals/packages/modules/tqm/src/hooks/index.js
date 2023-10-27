@@ -4,6 +4,7 @@ import { useViewTestResults } from "./useViewTestResults";
 import { useViewTestSummary } from "./useViewTestSummary";
 import { useSearchTest } from "./useSearchTest";
 import useTestUpdate from "./useTestUpdate";
+import useCreateTest from "./useCreate";
 
 const tqm = {
   sampleTQMHook: () => {},
@@ -12,6 +13,7 @@ const tqm = {
   useCustomMDMSV2,
   useSearchTest,
   useTestUpdate,
+  useCreateTest
 };
 
 const Hooks = {

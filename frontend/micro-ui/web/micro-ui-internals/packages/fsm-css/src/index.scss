@@ -54,6 +54,11 @@
 .employee-data-table .row h2 {
   width: 25%;
 }
+.employee-data-table .row {
+  @media (min-width: 1024px) {
+    justify-content: flex-start;
+  }
+}
 
 input::-webkit-calendar-picker-indicator {
   position: absolute;

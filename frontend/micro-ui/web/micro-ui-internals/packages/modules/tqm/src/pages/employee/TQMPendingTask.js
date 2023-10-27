@@ -1,37 +1,61 @@
 import React, { useState } from "react";
-import { NotificationComponent, TreatmentQualityIcon } from "@egovernments/digit-ui-react-components";
+import { Loader, NotificationComponent, TreatmentQualityIcon } from "@egovernments/digit-ui-react-components";
 
 function TQMPendingTask(props) {
-  // 🚧 WIP: DUMMY DATA IS ADDED HERE 👇
-  const [data, setData] = useState([
-    {
-      icon: <TreatmentQualityIcon />,
-      title: "Submit sample for testing",
-      action: "VIEW_DETAILS",
-      date: "5",
-    },
-    {
-      icon: <TreatmentQualityIcon />,
-      title: "Submit sample for testing",
-      action: "VIEW_DETAILS",
-      date: "5",
-    },
-    {
-      icon: <TreatmentQualityIcon />,
-      title: "Submit sample for testing",
-      action: "VIEW_DETAILS",
-      date: "5",
-    },
-    {
-      icon: <TreatmentQualityIcon />,
-      title: "Submit sample for testing",
-      action: "VIEW_DETAILS",
-      date: "5",
-    },
-  ]);
-  // 🚧 WIP: CODE WILL BE ADDED FOR FETCHING TASKS 👇
+  const tenantId = Digit.ULBService.getCurrentTenantId();
 
-  return <NotificationComponent heading="Pending Tasks" data={data} />;
+  const requestCriteria = {
+    url: "/inbox/v2/_search",
+    body: {
+      inbox: {
+        tenantId,
+        processSearchCriteria: {
+          businessService: ["PQM"],
+          moduleName: "pqm",
+          tenantId,
+        },
+        moduleSearchCriteria: {
+          tenantId,
+          sortBy: "createdTime",
+          sortOrder: "ASC",
+        },
+        limit: 100,
+        offset: 0,
+      },
+    },
+    config: {
+      select: (data) => {
+        const items = data?.items;
+
+        const tasks = items.map((i) => {
+          return {
+            icon: <TreatmentQualityIcon />,
+            id: i?.businessObject?.id,
+            title: i?.businessObject?.id,
+            action: i?.ProcessInstance?.state?.actions?.[0]?.action,
+            date: i?.businessObject?.serviceSla,
+          };
+        });
+        return tasks;
+      },
+    },
+  };
+
+  const { isLoading, data: tqm, revalidate, isFetching } = Digit.Hooks.useCustomAPIHook(requestCriteria);
+
+  if (isLoading) return <Loader />;
+
+  return (
+    !isLoading &&
+    tqm && (
+      <NotificationComponent
+        heading="Pending Tasks"
+        data={tqm}
+        viewAllRoute={`/${window?.contextPath}/employee/tqm/inbox`}
+        actionRoute={`/${window?.contextPath}/employee/tqm/test-details`}
+      />
+    )
+  );
 }
 
 export default TQMPendingTask;

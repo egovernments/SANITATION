@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 function ParameterReadings({ reading }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const isTestPassed = reading?.readings?.map((i) => i.status).includes("FAIL") ? false : true;
+  const isTestPassed = reading?.readings?.map((i) => i.resultStatus).includes("FAIL") ? false : true;
   return reading ? (
     <>
       {reading?.title ? <CardSubHeader>{t(reading?.title)}</CardSubHeader> : null}
@@ -19,13 +19,25 @@ function ParameterReadings({ reading }) {
         </CardCaption>
       ) : null}
       {reading?.readings && reading?.readings?.length > 0
-        ? reading?.readings?.map(({ criteriaCode, value, status }) => <CardReading showInfo={true} success={status === "PASS"} title={criteriaCode} value={value} />)
+        ? reading?.readings?.map(({ criteriaCode, resultValue, resultStatus }) => <CardReading showInfo={true} success={resultStatus === "PASS"} title={criteriaCode} value={resultValue} />)
         : null}
       {reading?.readings?.length > 0 ? (
         <CardMessage
           success={isTestPassed}
           title={isTestPassed ? t("ES_TQM_TEST_PARAMS_SUCCESS_TITLE") : t("ES_TQM_TEST_PARAMS_FAIL_TITLE")}
-          message={isTestPassed ? t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE") : t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE")}
+          message={
+            isTestPassed ? (
+              <>
+                <p>{t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE_PRI")}</p>
+                <p>{t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE_SECND")}</p>
+              </>
+            ) : (
+              <>
+                <p>{t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE_PRI")}</p>
+                <p>{t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE_SECND")}</p>
+              </>
+            )
+          }
         />
       ) : null}
       <SubmitBar label={t("ES_TQM_TEST_BACK_BUTTON")} onSubmit={() => history.goBack()} style={{ marginBottom: "12px" }} />

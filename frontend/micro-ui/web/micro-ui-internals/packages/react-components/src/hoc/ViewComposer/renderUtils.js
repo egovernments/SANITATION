@@ -30,7 +30,7 @@ export const RenderDataSection = ({ section }) => {
                     </Link>
                   </div>
                 ) : row?.isSla ? (
-                  <span className={row.isSuccess ? "sla-cell-success bg" : "sla-cell-error bg"}> {row?.value} </span>
+                  <span className={row.isSuccess ? "sla-cell-success" : "sla-cell-error"}> {row?.value} </span>
                 ) : (
                   row.value
                 )
