@@ -1,5 +1,6 @@
 package org.egov.pqm.validator;
 
+
 import static org.egov.pqm.util.Constants.REGEX_METACHARACTER_PATTERN;
 import static org.egov.pqm.util.ErrorConstants.FILE_STORE_ID_INVALID_CODE;
 import static org.egov.pqm.util.ErrorConstants.FILE_STORE_ID_INVALID_MESSAGE;
@@ -58,5 +59,4 @@ public class PqmValidator {
       }
     }
   }
-
 }

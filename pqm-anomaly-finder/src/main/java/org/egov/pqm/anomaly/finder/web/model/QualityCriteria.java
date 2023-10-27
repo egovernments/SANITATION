@@ -5,57 +5,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class QualityCriteria {
 
-  @JsonProperty("criteriaCode")
-  private String criteriaCode = null;
+	@JsonProperty("id")
+	private String id;
 
-  @JsonProperty("value")
-  private BigDecimal value = null;
+	@JsonProperty("testId")
+	private String testId;
 
-  /**
-   * The result status of the individual quality criteria evaluated with respect to benchmark rules
-   * and standard values from MDMS data.
-   */
-  public enum StatusEnum {
-    PASS("PASS"),
+	@JsonProperty("criteriaCode")
+	private String criteriaCode = null;
 
-    FAIL("FAIL"),
+	@JsonProperty("resultValue")
+	private BigDecimal resultValue = null;
 
-    PENDING("PENDING");
+	@JsonProperty("allowedDeviation")
+	private BigDecimal allowedDeviation = null;
 
-    private final String value;
+	@JsonProperty("resultStatus")
+	private TestResultStatus resultStatus = null;
 
-    StatusEnum(String value) {
-      this.value = value;
-    }
+	@JsonProperty("isActive")
+	private Boolean isActive = Boolean.TRUE;
 
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static StatusEnum fromValue(String text) {
-      for (StatusEnum b : StatusEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
-
-  @JsonProperty("status")
-  private StatusEnum status = null;
-
-  @JsonProperty("isActive")
-  private Boolean isActive = null;
+	@JsonProperty("auditDetails")
+	private AuditDetails auditDetails;
 }

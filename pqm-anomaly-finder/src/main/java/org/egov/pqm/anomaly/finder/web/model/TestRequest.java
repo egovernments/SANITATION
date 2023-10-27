@@ -14,12 +14,9 @@ import org.egov.common.contract.request.RequestInfo;
 @Builder
 public class TestRequest {
 
-  @JsonProperty("requestInfo")
-  private RequestInfo requestInfo = null;
+	@JsonProperty("RequestInfo")
+	private RequestInfo requestInfo;
 
-  @JsonProperty("tests")
-  private List<Test> tests = null;
-
-  @JsonProperty("workflow")
-  private Workflow workflow = null;
+	@JsonProperty("tests")
+	private List<Test> tests;
 }
