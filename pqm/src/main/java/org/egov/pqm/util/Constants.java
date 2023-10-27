@@ -12,6 +12,8 @@ public class Constants {
 
   public static final String MASTER_NAME_QUALITY_CRITERIA = "PQM.QualityCriteria";
 
+  public static final String QUALITY_CRITERIA_NOT_PRESENT = "TestCriteria_Not_present";
+
   public static final String MASTER_NAME_BENCHMARK_RULES = "BenchmarkRule";
 
   public static final String FSTPO_EMPLOYEE = "FSM_EMP_FSTPO";
