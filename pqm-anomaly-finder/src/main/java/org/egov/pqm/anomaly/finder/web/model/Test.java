@@ -1,12 +1,9 @@
 package org.egov.pqm.anomaly.finder.web.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.Valid;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,50 +15,56 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Test {
 
-  @JsonProperty("id")
-  private String id = null;
+	@JsonProperty("id")
+	private String id;
 
-  @JsonProperty("tenantId")
-  private String tenantId = null;
+	@JsonProperty("tenantId")
+	private String tenantId;
 
-  @JsonProperty("plantCode")
-  private String plantCode = null;
+	@JsonProperty("plantCode")
+	private String plantCode;
 
-  @JsonProperty("processCode")
-  private String processCode = null;
+	@JsonProperty("processCode")
+	private String processCode;
 
-  @JsonProperty("stageCode")
-  private String stageCode = null;
+	@JsonProperty("stageCode")
+	private String stageCode;
 
-  @JsonProperty("materialCode")
-  private String materialCode = null;
+	@JsonProperty("materialCode")
+	private String materialCode;
 
-  @JsonProperty("testCriteria")
-  @Valid
-  private List<QualityCriteria> testCriteria = new ArrayList<>();
+	@JsonProperty("deviceCode")
+	private String deviceCode;
 
-  @JsonProperty("status")
-  private TestResultStatus status = null;
+	@JsonProperty("testCriteria")
+	@Valid
+	private List<QualityCriteria> qualityCriteria = new ArrayList<>();
 
-  @JsonProperty("wfStatus")
-  private String wfStatus = null;
+	@JsonProperty("status")
+	private TestResultStatus status;
 
-  @JsonProperty("scheduledDate")
-  private Long scheduledDate = null;
+	@JsonProperty("wfStatus")
+	private String wfStatus;
 
-  @JsonProperty("isActive")
-  private Boolean isActive = null;
+	@JsonProperty("testType")
+	private TestType testType;
 
-  @JsonProperty("documents")
-  @Valid
-  private List<Document> documents = null;
+	@JsonProperty("scheduledDate")
+	private Long scheduledDate;
 
-  @JsonProperty("additionalDetails")
-  private Object additionalDetails = null;
-  
-  @JsonProperty("testType")
-  private TestType testType = null;
+	@JsonProperty("isActive")
+	private Boolean isActive;
 
-  @JsonProperty("auditDetails")
-  private AuditDetails auditDetails = null;
+	@JsonProperty("documents")
+	@Valid
+	private List<Document> documents;
+
+	@JsonProperty("additionalDetails")
+	private Object additionalDetails;
+
+	@JsonProperty("auditDetails")
+	private AuditDetails auditDetails;
+
+	@JsonProperty("workflow")
+	private Workflow workflow;
 }
