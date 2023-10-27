@@ -6,19 +6,15 @@ import org.egov.pqm.web.model.TestRequest;
 import org.egov.tracer.model.CustomException;
 import org.springframework.stereotype.Component;
 
-import static org.egov.pqm.util.Constants.QualityCriteria_Not_Present;
+import static org.egov.pqm.util.Constants.QUALITY_CRITERIA_NOT_PRESENT;
+
 @Component
 public class PqmValidator {
 
     public void validateQualityCriteria(TestRequest testRequest){
         if(testRequest.getTests().get(0).getQualityCriteria().isEmpty()){
-            throw new CustomException(QualityCriteria_Not_Present,
-                    " QualityCriteria is empty");        }
+            throw new CustomException(QUALITY_CRITERIA_NOT_PRESENT,
+                    " testCriteria is empty in test object");        }
     }
 
-    public void validateTestType(TestRequest testRequest){
-        if(testRequest.getTests().get(0).getTestType().toString() != "LAB"){
-
-        }
-    }
 }
