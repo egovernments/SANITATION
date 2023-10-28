@@ -255,6 +255,7 @@ public class DriverUserService {
 				.append(config.getUserCreateEndpoint());
 		setUserName(driver);
 		driver.setType(VendorConstants.EMPLOYEE);
+		driver.setPassword("eGov@123");
 		UserDetailResponse userDetailResponse = userCall(new UserRequest(requestInfo, driver), uri);
 		log.info("owner created --> " + userDetailResponse.getUser().get(0).getUuid());
 		return userDetailResponse.getUser().get(0);
