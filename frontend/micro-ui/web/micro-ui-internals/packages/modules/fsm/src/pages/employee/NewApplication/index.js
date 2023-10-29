@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormComposer, Loader, Header } from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
+import { config } from "./config";
 
 const isConventionalSpecticTank = (tankDimension) => tankDimension === "lbd";
 
@@ -10,6 +11,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
   // const __initSubType__ = window.Digit.SessionStorage.get("subType");
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
+  const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
   // const { data: commonFields, isLoading } = useQuery('newConfig', () => fetch(`http://localhost:3002/commonFields`).then(res => res.json()))
   // const { data: postFields, isLoading: isTripConfigLoading } = useQuery('tripConfig', () => fetch(`http://localhost:3002/tripDetails`).then(res => res.json()))
   const { data: commonFields, isLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "CommonFieldsConfig");
@@ -65,9 +67,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
       }
       if (
         formData?.tripData?.amountPerTrip !== 0 &&
-        (formData?.advancepaymentPreference?.advanceAmount < min ||
-          formData?.advancepaymentPreference?.advanceAmount > max ||
-          formData?.advancepaymentPreference?.advanceAmount === "")
+        (formData?.advancepaymentPreference?.advanceAmount < min || formData?.advancepaymentPreference?.advanceAmount > max || formData?.advancepaymentPreference?.advanceAmount === "")
       ) {
         setSubmitValve(false);
       }

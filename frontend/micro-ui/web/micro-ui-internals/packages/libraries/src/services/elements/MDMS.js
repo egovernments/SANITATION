@@ -389,6 +389,25 @@ const getSlumLocalityCriteria = (tenantId, moduleCode, type) => ({
     ],
   },
 });
+
+const getVehicleTrackingCheckCriteria = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [
+          {
+            name: 'VehicleTracking',
+          },
+        ],
+      },
+    ],
+  },
+});
+
+
 const getPropertyOwnerTypeCriteria = (tenantId, moduleCode, type) => ({
   type,
   details: {
@@ -1714,6 +1733,13 @@ export const MdmsService = {
     MdmsService.getDataByCriteria(
       tenantId,
       getSlumLocalityCriteria(tenantId, moduleCode, type),
+      moduleCode
+    ),
+
+  getVehicleTrackingCheck: (tenantId, moduleCode, type) =>
+    MdmsService.getDataByCriteria(
+      tenantId,
+      getVehicleTrackingCheckCriteria(tenantId, moduleCode, type),
       moduleCode
     ),
 

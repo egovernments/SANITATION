@@ -4,6 +4,7 @@ import Timeline from "../components/TLTimelineInFSM";
 
 const SelectSlumName = ({ config, onSelect, t, userType, formData }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
   const stateId = Digit.ULBService.getStateId();
   const [slum, setSlum] = useState();
   const slumTenantId = formData?.address?.city ? formData?.address?.city.code : tenantId;
@@ -81,7 +82,9 @@ const SelectSlumName = ({ config, onSelect, t, userType, formData }) => {
   }
 
   if (slumDataLoading) return <Loader />;
-
+  if (userType === "employee" && checkvehicletrack?.vehicleTrackingStatus) {
+    return null;
+  }
   return userType === "employee" ? (
     <LabelFieldPair>
       <CardLabel className="card-label-smaller">{t("ES_NEW_APPLICATION_SLUM_NAME")}</CardLabel>

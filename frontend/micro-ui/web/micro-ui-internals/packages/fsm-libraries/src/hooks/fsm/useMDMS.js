@@ -1,4 +1,4 @@
-import { MdmsService } from '@egovernments/digit-ui-libraries/src/services/elements/MDMS';
+import { MdmsService } from "@egovernments/digit-ui-libraries/src/services/elements/MDMS";
 import { useQuery } from "react-query";
 
 const useMDMS = (tenantId, moduleCode, type, config = {}, payload = []) => {
@@ -41,11 +41,7 @@ const useMDMS = (tenantId, moduleCode, type, config = {}, payload = []) => {
   };
 
   const useSlumLocality = () => {
-    return useQuery(
-      ["SLUM_LOCALITY_MAPPING", tenantId, moduleCode],
-      () => MdmsService.getSlumLocalityMapping(tenantId, moduleCode, type),
-      queryConfig
-    );
+    return useQuery(["SLUM_LOCALITY_MAPPING", tenantId, moduleCode], () => MdmsService.getSlumLocalityMapping(tenantId, moduleCode, type), queryConfig);
   };
 
   const useReason = () => {
@@ -91,6 +87,9 @@ const useMDMS = (tenantId, moduleCode, type, config = {}, payload = []) => {
     return useQuery("FSM_RECEIVED_PAYMENT_TYPE", () => MdmsService.getWSTaxHeadMaster(tenantId, moduleCode, type), queryConfig);
   };
 
+  const useCheckVehicleTracking = () => {
+    return useQuery(["VEHICLE_TRACKING_CHECK", tenantId, moduleCode], () => MdmsService.getVehicleTrackingCheck(tenantId, moduleCode, type), queryConfig);
+  };
 
   switch (type) {
     case "SanitationType":
@@ -146,7 +145,9 @@ const useMDMS = (tenantId, moduleCode, type, config = {}, payload = []) => {
     case "ReceivedPaymentType":
       return useReceivedPaymentType();
     case "WSTaxHeadMaster":
-      return useWSTaxHeadMaster()
+      return useWSTaxHeadMaster();
+    case "VehicleTracking":
+      return useCheckVehicleTracking();
     default:
       return null;
   }

@@ -18,6 +18,8 @@
 @import "./components/DetailsCard.scss";
 @import "./components/sla.scss";
 @import "./components/Notification.scss";
+@import "./components/applicationTable.scss";
+
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
     margin-bottom: 70px !important;
@@ -314,4 +316,29 @@ input::-webkit-calendar-picker-indicator {
   line-height: 18.75px;
   color: #505a5f;
   font-size: 16px;
+.sla-cell-success {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0 24px;
+  border-radius: 11px;
+  background-color: rgba(0, 112, 60, 0.12);
+  color: #00703c !important;
+}
+
+.sla-cell-error {
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 11px;
+  padding: 0 24px;
+  color: #d4351c !important;
+  background-color: rgb(212, 53, 28, 0.12);
+}
+
+.sla-cell-warning {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0 24px;
+  border-radius: 11px;
+  color: #f47738 !important;
+  background-color: rgb(241, 143, 94, 0.12);
 }
