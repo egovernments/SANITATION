@@ -1,0 +1,65 @@
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+.headerContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.clear-all-link {
+    color: #F47738;
+    text-decoration: underline;
+    margin-left: auto;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.bell-icon {
+    margin-top: 8px;
+    margin-right: 10px;
+}
+
+.notificationContent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.WhatsNewCard {
+    margin-bottom: 15px;
+}
+
+.NotificationHeader {
+    display: flex;
+    justify-content: space-between;
+    font-size: x-large;
+    font-weight: 700;
+}
+
+.viewDetailsButton {
+    h2 {
+        color: #F47738;
+        padding: 5px 10px;
+        margin: 10px 20px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+.view-all-button {
+    color: #F47738;
+    text-decoration: underline;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.view-all-button-container {
+    text-align: right;
+}
+
+.view-all-button:active {
+    border: none;
+}

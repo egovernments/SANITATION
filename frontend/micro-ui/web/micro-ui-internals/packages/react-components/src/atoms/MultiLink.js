@@ -26,7 +26,7 @@ const MultiLink = forwardRef(({ className, onHeadClick, displayOptions = false, 
     <div className={className} ref={ref} style={reportStyles}>
       <div className={`multilink-labelWrap ${downloadBtnClassName}`} onClick={onHeadClick} style={style}>
         {icon ? icon : <PrimaryDownlaodIcon />}
-        <LinkButton label={label || t("CS_COMMON_DOWNLOAD")} className="multilink-link-button" />
+        <LinkButton label={label || t("CS_COMMON_DOWNLOAD")} className="multilink-link-button multilink-label" />
       </div>
       {displayOptions ? <MenuWrapper ref={ref} /> : null}
     </div>

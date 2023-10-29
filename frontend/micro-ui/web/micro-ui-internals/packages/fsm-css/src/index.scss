@@ -1,18 +1,23 @@
 @import "tailwindcss/base";
-
 @import "tailwindcss/components";
-
 @import "tailwindcss/utilities";
-
 @import "react-date-range/dist/styles.css";
 @import "react-date-range/dist/theme/default.css";
-
 @import "./components/card.scss";
 @import "./components/toggleSwitch.scss";
 @import "./components/plusMinus.scss";
 @import "./components/table.scss";
 @import "./pages/employee/index.scss";
 @import "./pages/employee/login.scss";
+@import "./components/notificationComponent.scss";
+@import "./components/ulbHomeCard.scss";
+@import "./components/InboxSearchComposer.scss";
+@import "./pages/employee/overridestyles.scss";
+@import "./pages/employee/tqmHome.scss";
+@import "./pages/employee/tqmPopUp.scss";
+@import "./components/DetailsCard.scss";
+@import "./components/sla.scss";
+@import "./components/Notification.scss";
 @import "./components/applicationTable.scss";
 
 @media screen and (max-width: 768px) {
@@ -48,6 +53,11 @@
 
 .employee-data-table .row h2 {
   width: 25%;
+}
+.employee-data-table .row {
+  @media (min-width: 1024px) {
+    justify-content: flex-start;
+  }
 }
 
 input::-webkit-calendar-picker-indicator {
@@ -284,6 +294,28 @@ input::-webkit-calendar-picker-indicator {
   }
 }
 
+.employeeCard {
+  .card-section-header {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 639780px) {
+  .toast-success {
+    width: 100%;
+    bottom: 0;
+    border-radius: 0;
+    margin: 0;
+  }
+}
+
+.tqm-document-title {
+  text-align: left;
+  margin-top: 8px;
+  font-weight: 700;
+  line-height: 18.75px;
+  color: #505a5f;
+  font-size: 16px;
 .sla-cell-success {
   font-size: 1rem;
   font-weight: 700;
