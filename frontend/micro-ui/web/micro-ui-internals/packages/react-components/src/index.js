@@ -254,9 +254,13 @@ import ResultsTable from "./hoc/ResultsTable";
 import InboxSearchLinks from "./atoms/InboxSearchLinks";
 import Notification from "./atoms/Notification";
 import Tutorial from "./hoc/Tutorial/Tutorial";
-
+import { useTourState,TourProvider } from "./hoc/Tutorial/TourProvider";
+import Help from "./hoc/Tutorial/Help";
 export {
+  Help,
   Tutorial,
+  useTourState,
+  TourProvider,
   Notification,
   Phone,
   Body,
