@@ -82,14 +82,14 @@ public class PqmService {
       checkRoleInValidateSearch(criteria, requestInfo);
     }
     TestResponse testResponse = repository.getPqmData(criteria);
-    List<String> idList = testResponse.getTests().stream().map(Test::getId)
+    List<String> idList = testResponse.getTests().stream().map(Test::getTestId)
         .collect(Collectors.toList());
 
     List<QualityCriteria> qualityCriteriaList = repository.getQualityCriteriaData(idList);
 
     testList = testResponse.getTests().stream().map(test -> {
       List<QualityCriteria> QualityCriterias = qualityCriteriaList.stream()
-          .filter(qualityCriteria -> test.getId().equalsIgnoreCase(qualityCriteria.getTestId()))
+          .filter(qualityCriteria -> test.getTestId().equalsIgnoreCase(qualityCriteria.getTestId()))
           .collect(Collectors.toList());
       test.setQualityCriteria(QualityCriterias);
       return test;
@@ -100,7 +100,7 @@ public class PqmService {
 
     testList = testResponse.getTests().stream().map(test -> {
       List<Document> documents = documentList.stream()
-          .filter(document -> test.getId().equalsIgnoreCase(document.getTestId()))
+          .filter(document -> test.getTestId().equalsIgnoreCase(document.getTestId()))
           .collect(Collectors.toList());
       test.setDocuments(documents);
       return test;
@@ -150,7 +150,7 @@ public class PqmService {
 
   public TestResponse fetchFromDb(TestRequest testRequest) {
     List<String> ids = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
-    ids.add(testRequest.getTests().get(0).getId());
+    ids.add(testRequest.getTests().get(0).getTestId());
     TestSearchCriteria criteria = TestSearchCriteria.builder()
         .ids(ids).tenantId(testRequest.getTests().get(0).getTenantId())
         .build();
@@ -172,10 +172,10 @@ public class PqmService {
   
       List<Test> tests = testRequest.getTests();
     Test test = tests.get(0);
-    if (test.getId() == null) { // validate if application exists
+    if (test.getTestId() == null) { // validate if application exists
       throw new CustomException(UPDATE_ERROR, "Application Not found in the System" + test);
     }
-    if (test.getTestType().equals(TestType.LAB)) {
+    if (test.getTestId().equals(SourceType.LAB)) {
       if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
         throw new CustomException(UPDATE_ERROR,
             "Workflow action cannot be null." + String.format("{Workflow:%s}", test.getWorkflow()));
@@ -231,7 +231,7 @@ public class PqmService {
     for(MdmsTest mdmsTest: mdmsTestList)
     {
       TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().testType(
-          String.valueOf(TestType.LAB)).wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED)).testCode(Collections.singletonList(mdmsTest.getCode())).build();
+          String.valueOf(SourceType.LAB)).wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED)).testCode(Collections.singletonList(mdmsTest.getCode())).build();
       Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.scheduledDate)
           .sortOrder(DESC).build();
       TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
@@ -266,7 +266,7 @@ public class PqmService {
             .stageCode(mdmsTest.getStage())
             .materialCode(mdmsTest.getMaterial())
             .qualityCriteria(qualityCriteriaList)
-            .testType(TestType.LAB)
+            .sourceType(SourceType.LAB)
             .isActive(Boolean.TRUE)
             .scheduledDate(instant.toEpochMilli())
             .build();
@@ -292,7 +292,7 @@ public class PqmService {
               .stageCode(testFromDb.getStageCode())
               .materialCode(testFromDb.getMaterialCode())
               .qualityCriteria(qualityCriteriaList)
-              .testType(TestType.LAB)
+              .sourceType(SourceType.LAB)
               .isActive(Boolean.TRUE)
               .scheduledDate(instant.toEpochMilli())
               .build();

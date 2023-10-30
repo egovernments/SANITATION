@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Objects;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.Test;
+import org.egov.pqm.web.model.SourceType;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResultStatus;
-import org.egov.pqm.web.model.TestType;
 import org.egov.tracer.model.CustomException;
 import org.springframework.stereotype.Component;
 
@@ -42,8 +42,8 @@ public class PqmValidator {
   }
 
   private void validateTestType(TestRequest testRequest) {
-    if (testRequest.getTests().get(0).getTestType() == null
-        || testRequest.getTests().get(0).getTestType() == TestType.IOT) {
+    if (testRequest.getTests().get(0).getSourceType() == null
+        || testRequest.getTests().get(0).getSourceType() == SourceType.IOT) {
       throw new CustomException(TEST_TYPE_CAN_ONLY_BE_LAB, "test type can only be lab");
     }
   }
@@ -74,7 +74,7 @@ public class PqmValidator {
   public void validateTestRequestFieldsWhileupdate(List<Test> testList, List<Test> oldTestList) {
     Test test = testList.get(0);
     Test oldTest = oldTestList.get(0);
-    if (test.getTestType() != oldTest.getTestType()) {
+    if (test.getSourceType() != oldTest.getSourceType()) {
       throw new CustomException(TEST_TYPE_INVALID_CODE, TEST_TYPE_INVALID_MESSAGE);
     }
     if (!Objects.equals(test.getPlantCode(), oldTest.getPlantCode())) {
