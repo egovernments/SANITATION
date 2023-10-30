@@ -22,8 +22,8 @@ import org.egov.pqm.util.Constants;
 import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.web.model.*;
 import org.egov.pqm.web.model.Pagination.SortBy;
-import org.egov.pqm.validator.PqmValidator;
 import org.egov.pqm.web.model.mdms.MdmsTest;
+import org.egov.pqm.validator.PqmValidator;
 import org.egov.pqm.web.model.workflow.BusinessService;
 import org.egov.pqm.workflow.ActionValidator;
 import org.egov.pqm.workflow.WorkflowIntegrator;
@@ -31,11 +31,10 @@ import org.egov.pqm.workflow.WorkflowService;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.egov.pqm.validator.PqmValidator;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 
 @Service
 @Slf4j
@@ -190,13 +189,12 @@ public class PqmService {
           "test not present in database which we want to update ");
     }
     mdmsValidator.validateMdmsData(testRequest);
-    pqmValidator.validateTestRequestFieldsWhileupdate(tests, oldTests);
     // Fetching actions from businessService
     BusinessService businessService = workflowService.getBusinessService(test, testRequest,
         PQM_BUSINESS_SERVICE,
         null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
-    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {
+    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) { 
       // calculate test result
 			qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
       enrichmentService.setTestResultStatus(testRequest);
