@@ -23,6 +23,9 @@ import QualityParameter from "./pages/employee/add-test-results/QualityComponent
 import SensorScreen from "./pages/employee/sensor-monitoring/SensorScreen";
 import Test from "./pages/employee/test";
 
+//Tour
+import { TourProvider } from "./components/Tutorial/TourProvider";
+
 const TQMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = ["TQM", "mdms"];
   const { path, url } = useRouteMatch();
@@ -36,7 +39,9 @@ const TQMModule = ({ stateCode, userType, tenants }) => {
   if (userType === "citizen") {
     return <CitizenApp path={path} />;
   } else {
-    return <EmployeeApp path={path} url={url} userType={userType} />;
+    return <TourProvider>
+      <EmployeeApp path={path} url={url} userType={userType} />;
+    </TourProvider>
   }
 };
 

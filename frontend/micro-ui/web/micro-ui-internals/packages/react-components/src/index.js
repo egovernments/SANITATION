@@ -254,11 +254,9 @@ import ResultsTable from "./hoc/ResultsTable";
 import InboxSearchLinks from "./atoms/InboxSearchLinks";
 import Notification from "./atoms/Notification";
 import Tutorial from "./hoc/Tutorial/Tutorial";
-import { initialTutorialState,TutorialReducer } from "./hoc/Tutorial/TutorialReducer"
+
 export {
   Tutorial,
-  initialTutorialState,
-  TutorialReducer,
   Notification,
   Phone,
   Body,

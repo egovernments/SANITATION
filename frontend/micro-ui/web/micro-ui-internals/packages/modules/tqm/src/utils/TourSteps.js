@@ -162,3 +162,25 @@ export const Tour = {
   ],
   viewSensors: [],
 };
+
+export const TourSteps = {
+  '/sanitation-ui/employee/tqm/landing':[
+    {
+      content:
+        'From the Landing screen, click on the Treatment Quality Card. Click on next to move further',
+      target: '.tiles-card-2',
+      disableBeacon: true,
+      placement: 'auto',
+      redirectTo: '/sanitation-ui/employee/tqm/home',
+      // title:"This is your Home Screen"
+    },
+    {
+      content:
+        'This is a list of tests that are pending to be updated.  Clicking on the Action Button will take you to the test update screen. Alternatively we can visit the inbox from the TQM home screen.',
+      target: '.pending-tasks-container',
+      disableBeacon: true,
+      placement: 'top',
+      title: 'How to Upload Test Results',
+    },
+  ]
+}
