@@ -24,10 +24,34 @@ const Tutorial = ({ tutorial, updateTutorial, ...props }) => {
     
     // console.log('here', ACTIONS, EVENTS, LIFECYCLE, STATUS);
 
+    if(type === 'step:before'){
+      if (action === 'next') {
+        if(currentStep?.stopTour){
+          updateTutorial({
+            type: 'updateTourState',
+            state: {
+              ...tutorial,
+              run:false,
+              stepIndex: currentStep.stepIndex,
+            },
+          });
+        }
+      }
+    }
+
     if (type === 'step:after') {
       if (action === 'next') {
-        
-        if(currentStep.redirectTo){
+        if(currentStep?.stopTour){
+          updateTutorial({
+            type: 'updateTourState',
+            state: {
+              ...tutorial,
+              run:false,
+              stepIndex: currentStep.stepIndex,
+            },
+          });
+        }
+        else if(currentStep.redirectTo){
           updateTutorial({
             type: 'updateTourState',
             state: {

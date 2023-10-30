@@ -2,8 +2,9 @@ import {
   BackButton,
   HelpOutlineIcon,
   Label,
+  Tutorial,
 } from '@egovernments/digit-ui-react-components';
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext,Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TutorialContext } from './Tutorial/TutorialContext';
 import { useLocation } from 'react-router-dom';
@@ -16,7 +17,7 @@ const mappingScreensToStepIndex = {
 };
 
 const TqmHeader = () => {
-  const { updateTest, viewTest } = Tour;
+  const { updateTest, viewTest, viewDashboard } = Tour;
   const { tutorial, updateTutorial } = useContext(TutorialContext);
   const { t } = useTranslation();
   //using location.pathname we can update the stepIndex accordingly when help is clicked from any other screen(other than home screen)
@@ -35,15 +36,19 @@ const TqmHeader = () => {
   };
 
   return (
-    <div className="tqm-header">
-      <BackButton>{t('CS_COMMON_BACK')}</BackButton>
-      {location.pathname.includes('/tqm/landing') && (
-        <div className="header-icon-container" onClick={startTour}>
-          <Label>{t('Help')}</Label>
-          <HelpOutlineIcon />
-        </div>
-      )}
-    </div>
+    <>
+      <Tutorial tutorial={tutorial} updateTutorial={updateTutorial} />
+
+      <div className="tqm-header">
+        <BackButton>{t('CS_COMMON_BACK')}</BackButton>
+        {location.pathname.includes('/tqm/landing') && (
+          <div className="header-icon-container" onClick={startTour}>
+            <Label>{t('Help')}</Label>
+            <HelpOutlineIcon />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
