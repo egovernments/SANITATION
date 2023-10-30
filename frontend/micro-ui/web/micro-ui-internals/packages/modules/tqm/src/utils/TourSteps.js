@@ -167,12 +167,51 @@ export const TourSteps = {
   '/sanitation-ui/employee/tqm/landing':[
     {
       content:
-        'From the Landing screen, click on the Treatment Quality Card. Click on next to move further',
+        'Landing Page',
+      target: '.app-container',
+      disableBeacon: true,
+      placement: 'center',
+      title:"This is your Home Screen"
+    },
+    {
+      content:
+        'Card 1',
+      target: '.tiles-card-0',
+      disableBeacon: true,
+      placement: 'auto',
+      title:"This is your Home Screen"
+    },
+    {
+      content:
+        'Card2',
+      target: '.tiles-card-1',
+      disableBeacon: true,
+      placement: 'auto',
+      title:"This is your Home Screen"
+    },
+    {
+      content:
+        'Card3',
       target: '.tiles-card-2',
       disableBeacon: true,
       placement: 'auto',
-      redirectTo: '/sanitation-ui/employee/tqm/home',
-      // title:"This is your Home Screen"
+      title:"This is your Home Screen"
+    },
+    {
+      content:
+        'Card4',
+      target: '.tiles-card-3',
+      disableBeacon: true,
+      placement: 'auto',
+      title:"This is your Home Screen"
+    },
+    {
+      content:
+        'Card5',
+      target: '.tiles-card-4',
+      disableBeacon: true,
+      placement: 'auto',
+      title:"This is your Home Screen"
     },
     {
       content:
@@ -180,7 +219,7 @@ export const TourSteps = {
       target: '.pending-tasks-container',
       disableBeacon: true,
       placement: 'top',
-      title: 'How to Upload Test Results',
+      title: 'View Pending Tests',
     },
   ]
 }
