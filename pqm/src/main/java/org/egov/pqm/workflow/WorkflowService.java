@@ -57,7 +57,7 @@ public class WorkflowService {
 	 * 
 	 */
 	public ProcessInstance getProcessInstance(Test test,String businessServiceName, TestRequest testRequest) {
-		StringBuilder url = getSearchURLWithParams(test.getTenantId(), null, test.getId());
+		StringBuilder url = getSearchURLWithParams(test.getTenantId(), null, test.getTestId());
 		RequestInfoWrapper requestInfoWrapper = RequestInfoWrapper.builder().requestInfo(testRequest.getRequestInfo()).build();
 		Object result = serviceRequestRepository.fetchResult(url, requestInfoWrapper);
 		ProcessInstanceResponse response = null;

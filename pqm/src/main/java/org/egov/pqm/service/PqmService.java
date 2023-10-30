@@ -18,15 +18,7 @@ import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.validator.PqmValidator;
-import org.egov.pqm.web.model.Document;
-import org.egov.pqm.web.model.DocumentResponse;
-import org.egov.pqm.web.model.QualityCriteria;
-import org.egov.pqm.web.model.Test;
-import org.egov.pqm.web.model.TestRequest;
-import org.egov.pqm.web.model.TestResponse;
-import org.egov.pqm.web.model.TestSearchCriteria;
-import org.egov.pqm.web.model.TestSearchRequest;
-import org.egov.pqm.web.model.TestType;
+import org.egov.pqm.web.model.*;
 import org.egov.pqm.web.model.workflow.BusinessService;
 import org.egov.pqm.workflow.ActionValidator;
 import org.egov.pqm.workflow.WorkflowIntegrator;
@@ -83,14 +75,14 @@ public class PqmService {
       checkRoleInValidateSearch(criteria, requestInfo);
     }
     TestResponse testResponse = repository.getPqmData(criteria);
-    List<String> idList = testResponse.getTests().stream().map(Test::getId)
+    List<String> idList = testResponse.getTests().stream().map(Test::getTestId)
         .collect(Collectors.toList());
 
     List<QualityCriteria> qualityCriteriaList = repository.getQualityCriteriaData(idList);
 
     testList = testResponse.getTests().stream().map(test -> {
       List<QualityCriteria> QualityCriterias = qualityCriteriaList.stream()
-          .filter(qualityCriteria -> test.getId().equalsIgnoreCase(qualityCriteria.getTestId()))
+          .filter(qualityCriteria -> test.getTestId().equalsIgnoreCase(qualityCriteria.getTestId()))
           .collect(Collectors.toList());
       test.setQualityCriteria(QualityCriterias);
       return test;
@@ -101,7 +93,7 @@ public class PqmService {
 
     testList = testResponse.getTests().stream().map(test -> {
       List<Document> documents = documentList.stream()
-          .filter(document -> test.getId().equalsIgnoreCase(document.getTestId()))
+          .filter(document -> test.getTestId().equalsIgnoreCase(document.getTestId()))
           .collect(Collectors.toList());
       test.setDocuments(documents);
       return test;
@@ -152,10 +144,10 @@ public class PqmService {
 
     List<Test> tests = testRequest.getTests();
     Test test = tests.get(0);
-    if (test.getId() == null) { // validate if application exists
+    if (test.getTestId() == null) { // validate if application exists
       throw new CustomException(UPDATE_ERROR, "Application Not found in the System" + test);
     }
-    if (test.getTestType().equals(TestType.LAB)) {
+    if (test.getTestId().equals(SourceType.LAB)) {
       if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
         throw new CustomException(UPDATE_ERROR,
             "Workflow action cannot be null." + String.format("{Workflow:%s}", test.getWorkflow()));

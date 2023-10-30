@@ -91,7 +91,7 @@ public class TestRepository {
   public List<Test> fetchFromDB(TestRequest testRequest) {
     Test test = testRequest.getTests().get(0);
     List<String> ids = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
-    ids.add(test.getId());
+    ids.add(test.getTestId());
 
     TestSearchCriteria criteria = TestSearchCriteria.builder()
         .ids(ids).tenantId(test.getTenantId())

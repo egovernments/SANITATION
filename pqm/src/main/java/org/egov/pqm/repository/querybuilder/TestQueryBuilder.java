@@ -49,7 +49,7 @@ public class TestQueryBuilder {
 		List<String> ids = criteria.getIds();
 		if (!CollectionUtils.isEmpty(ids)) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" test.id IN (").append(createQuery(ids)).append(")");
+			builder.append(" test.testId IN (").append(createQuery(ids)).append(")");
 			addToPreparedStatement(preparedStmtList, ids);
 		}
 		
@@ -106,7 +106,7 @@ public class TestQueryBuilder {
 		
 		if (criteria.getTestType() != null) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" test.testType=? ");
+			builder.append(" test.sourceType=? ");
 			preparedStmtList.add(criteria.getTestType());
 
 		}
