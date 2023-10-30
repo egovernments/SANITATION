@@ -31,10 +31,11 @@ import org.egov.pqm.workflow.WorkflowService;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.egov.pqm.validator.PqmValidator;
+import org.springframework.util.CollectionUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.CollectionUtils;
 
 @Service
 @Slf4j
@@ -195,8 +196,9 @@ public class PqmService {
         PQM_BUSINESS_SERVICE,
         null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
-    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) { // calculate test result
-      qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {
+      // calculate test result
+			qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
       enrichmentService.setTestResultStatus(testRequest);
       enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     }
