@@ -23,6 +23,7 @@ import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.web.model.*;
 import org.egov.pqm.web.model.Pagination.SortBy;
 import org.egov.pqm.web.model.mdms.MdmsTest;
+import org.egov.pqm.validator.PqmValidator;
 import org.egov.pqm.web.model.workflow.BusinessService;
 import org.egov.pqm.workflow.ActionValidator;
 import org.egov.pqm.workflow.WorkflowIntegrator;
@@ -30,6 +31,7 @@ import org.egov.pqm.workflow.WorkflowService;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.egov.pqm.validator.PqmValidator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
@@ -54,6 +56,9 @@ public class PqmService {
   private EnrichmentService enrichmentService;
 
   @Autowired
+  private PqmValidator pqmValidator;
+
+  @Autowired
   private MDMSUtils mdmsUtils;
 
   @Autowired
@@ -73,21 +78,22 @@ public class PqmService {
 
     List<Test> testList = new LinkedList<>();
 
-		if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
-			checkRoleInValidateSearch(criteria, requestInfo);
-		}
-		TestResponse testResponse = repository.getPqmData(criteria);
-		List<String> idList = testResponse.getTests().stream().map(Test::getId).collect(Collectors.toList());
+    if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
+      checkRoleInValidateSearch(criteria, requestInfo);
+    }
+    TestResponse testResponse = repository.getPqmData(criteria);
+    List<String> idList = testResponse.getTests().stream().map(Test::getId)
+        .collect(Collectors.toList());
 
-		List<QualityCriteria> qualityCriteriaList =repository.getQualityCriteriaData(idList);
+    List<QualityCriteria> qualityCriteriaList = repository.getQualityCriteriaData(idList);
 
-		testList = testResponse.getTests().stream().map(test -> {
-			List<QualityCriteria> QualityCriterias = qualityCriteriaList.stream()
-					.filter(qualityCriteria -> test.getId().equalsIgnoreCase(qualityCriteria.getTestId()))
-					.collect(Collectors.toList());
-			test.setQualityCriteria(QualityCriterias);
-			return test;
-		}).collect(Collectors.toList());
+    testList = testResponse.getTests().stream().map(test -> {
+      List<QualityCriteria> QualityCriterias = qualityCriteriaList.stream()
+          .filter(qualityCriteria -> test.getId().equalsIgnoreCase(qualityCriteria.getTestId()))
+          .collect(Collectors.toList());
+      test.setQualityCriteria(QualityCriterias);
+      return test;
+    }).collect(Collectors.toList());
 
     DocumentResponse documentResponse = repository.getDocumentData(idList);
     List<Document> documentList = documentResponse.getDocuments();
@@ -115,6 +121,7 @@ public class PqmService {
 
   }
 
+  
   /**
    * Creates Test
    *
@@ -122,6 +129,7 @@ public class PqmService {
    * @return New Test
    */
   public Test create(TestRequest testRequest) {
+    pqmValidator.validateTestRequestBody(testRequest);
     mdmsValidator.validateMdmsData(testRequest);
     qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
     enrichmentService.enrichPQMCreateRequest(testRequest);
@@ -130,13 +138,15 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
-    public Test createTestViaScheduler(TestRequest testRequest) {
-        mdmsValidator.validateMdmsData(testRequest);
-        enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
-        workflowIntegrator.callWorkFlow(testRequest);
-        repository.save(testRequest);
-        return testRequest.getTests().get(0);
+  
+   public Test createTestViaScheduler(TestRequest testRequest) {
+    mdmsValidator.validateMdmsData(testRequest);
+    enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
+    workflowIntegrator.callWorkFlow(testRequest);
+    repository.save(testRequest);
+    return testRequest.getTests().get(0);
     }
+
 
   /**
    * Updates the Test
@@ -146,41 +156,38 @@ public class PqmService {
    */
   @SuppressWarnings("unchecked")
   public Test update(TestRequest testRequest) {
-
-    Test test = testRequest.getTests().get(0);
-
-    //validate if application exists
-    if (test.getId() == null) {
-      throw new CustomException(UPDATE_ERROR,
-          "Application Not found in the System" + test);
+  
+      List<Test> tests = testRequest.getTests();
+    Test test = tests.get(0);
+    if (test.getId() == null) { // validate if application exists
+      throw new CustomException(UPDATE_ERROR, "Application Not found in the System" + test);
     }
-
     if (test.getTestType().equals(TestType.LAB)) {
       if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
         throw new CustomException(UPDATE_ERROR,
-            "Workflow action cannot be null." + String.format("{Workflow:%s}",
-                test.getWorkflow()));
+            "Workflow action cannot be null." + String.format("{Workflow:%s}", test.getWorkflow()));
       }
     }
-
-    //Fetching actions from businessService
+    List<Test> oldTests = repository.fetchFromDB(testRequest); // fetching tests from DB
+    if (tests.size() != oldTests.size()) // checking for the list of all ids to be present in DB
+    {
+      throw new CustomException(TEST_NOT_IN_DB,
+          "test not present in database which we want to update ");
+    }
+    mdmsValidator.validateMdmsData(testRequest);
+    // Fetching actions from businessService
     BusinessService businessService = workflowService.getBusinessService(test, testRequest,
-        PQM_BUSINESS_SERVICE, null);
+        PQM_BUSINESS_SERVICE,
+        null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
-
-    //updating workflow during update
-    workflowIntegrator.callWorkFlow(testRequest);
-
-    //enrich update request
-    enrichmentService.enrichPQMUpdateRequest(testRequest);
-
-    //calculate test result
-    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {
-      qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) { 
+      // calculate test result
+			qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
       enrichmentService.setTestResultStatus(testRequest);
       enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     }
-
+    enrichmentService.enrichPQMUpdateRequest(testRequest); // enrich update request
+    workflowIntegrator.callWorkFlow(testRequest);// updating workflow during update
     repository.update(testRequest);
     return testRequest.getTests().get(0);
   }
@@ -313,5 +320,6 @@ public class PqmService {
     repository.save(testRequest);
     return testRequest.getTests().get(0);
   }
+
 
 }

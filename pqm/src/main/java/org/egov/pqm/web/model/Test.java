@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,6 +44,7 @@ public class Test {
 
   @JsonProperty("testCriteria")
   @Valid
+  @NotNull
   private List<QualityCriteria> qualityCriteria = new ArrayList<>();
 
   @JsonProperty("status")

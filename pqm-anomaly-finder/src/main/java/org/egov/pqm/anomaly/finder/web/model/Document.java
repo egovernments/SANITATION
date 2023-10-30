@@ -1,7 +1,7 @@
 package org.egov.pqm.anomaly.finder.web.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,27 +11,34 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Document {
 
-  @JsonProperty("id")
-  private String id = null;
+	@JsonProperty("id")
+	private String id = null;
 
-  @JsonProperty("documentType")
-  private String documentType = null;
+	@JsonProperty("testId")
+	private String testId = null;
 
-  @JsonProperty("fileStore")
-  private String fileStore = null;
+	@JsonProperty("documentType")
+	private String documentType = null;
 
-  @JsonProperty("documentUid")
-  private String documentUid = null;
+	@JsonProperty("documentUid")
+	private String documentUid = null;
 
-  @JsonProperty("additionalDetails")
-  private Object additionalDetails = null;
+	@JsonProperty("documentUri")
+	private String documentUri = null;
 
-  @JsonProperty("tenantId")
-  private String tenantId;
+	@JsonProperty("additionalDetails")
+	private Object additionalDetails = null;
 
-  @JsonProperty("fileStoreId")
-  private String fileStoreId;
+	@JsonProperty("tenantId")
+	private String tenantId;
 
-  @JsonProperty("auditDetails")
-  private Map<String, Object> auditDetails;
+	@JsonProperty("fileStoreId")
+	private String fileStoreId;
+
+	@JsonProperty("isActive")
+	private boolean isActive;
+
+	@JsonProperty("auditDetails")
+	private AuditDetails auditDetails;
+
 }
