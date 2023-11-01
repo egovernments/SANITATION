@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useReducer,Fragment } from "react";
 import { Switch, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { PrivateRoute, AppContainer, BreadCrumb, BackButton } from "@egovernments/digit-ui-react-components";
@@ -9,9 +9,12 @@ import TqmSearch from "./search-test-results/TqmSearch";
 import TestDetails from "./test-details/TestDetails";
 import TqmHome from "./home/TqmHome";
 import Create from "./add-test-results/CreateAddTestResult";
+import Test from "./test";
+import TqmHeader from "../../components/TqmHeader";
 import TqmAdminNotification from "./TqmAdminNotification";
 
 // import TQMSummary from "../../components/TQMSummary";
+
 
 const TqmBreadCrumb = ({ location, defaultPath }) => {
   const { t } = useTranslation();
@@ -31,15 +34,20 @@ const App = ({ path }) => {
   const { t } = useTranslation();
   const location = useLocation();
   const isPlantOperatorLoggedIn = Digit.Utils.tqm.isPlantOperatorLoggedIn();
+  const isUlbAdminLoggedIn = Digit.Utils.tqm.isUlbAdminLoggedIn();
   const TqmInbox = Digit?.ComponentRegistryService?.getComponent("TqmInbox");
   const TqmResponse = Digit?.ComponentRegistryService?.getComponent("TqmResponse");
   const TqmViewTestResults = Digit?.ComponentRegistryService?.getComponent("TqmViewTestResults");
   const TQMSummary = Digit?.ComponentRegistryService?.getComponent("TQMSummary");
   const SensorScreen = Digit?.ComponentRegistryService?.getComponent("SensorScreen");
+  
+
   return (
-    <React.Fragment>
-      {/* <TqmBreadCrumb location={location} defaultPath={path} /> */}
-      {isPlantOperatorLoggedIn && ((location.pathname.includes("/response") ||location.pathname.includes("/landing") ) ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>)}
+    <>
+      {isUlbAdminLoggedIn && <TqmBreadCrumb location={location} defaultPath={path} />}
+      {/* {isPlantOperatorLoggedIn && (location.pathname.includes("/response") ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>)} */}
+      {isPlantOperatorLoggedIn && <TqmHeader />}
+      
       <Switch>
         <AppContainer className="tqm">
           <PrivateRoute path={`${path}/landing`} component={() => <TQMLanding />} />
@@ -58,7 +66,7 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/search-devices`} component={() => <SensorScreen />} />
         </AppContainer>
       </Switch>
-    </React.Fragment>
+      </>
   );
 };
 
