@@ -134,7 +134,7 @@ const renderCardSectionJSX = (section) => {
 const ViewComposer = ({ isLoading = false, data, ...props }) => {
   const { cards } = data;
   const [activeNav, setActiveNav] = useState(data?.horizontalNav?.activeByDefault);
-  console.log(activeNav);
+  
 
   if (isLoading) return <Loader />;
 

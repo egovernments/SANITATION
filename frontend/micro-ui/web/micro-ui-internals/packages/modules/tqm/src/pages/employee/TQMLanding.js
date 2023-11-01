@@ -55,9 +55,7 @@ const TQMLanding = () => {
   return (
     <React.Fragment>
       <ULBHomeCard module={module}> </ULBHomeCard>
-      <div className="pending-tasks-container">
-        <TQMPendingTask />
-      </div>
+      <TQMPendingTask />
     </React.Fragment>
   );
 };

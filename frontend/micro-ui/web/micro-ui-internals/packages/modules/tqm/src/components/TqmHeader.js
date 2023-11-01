@@ -19,7 +19,6 @@ const TqmHeader = () => {
   const { t } = useTranslation();
   //using location.pathname we can update the stepIndex accordingly when help is clicked from any other screen(other than home screen)
   const { pathname } = useLocation();
-  console.log("path",pathname);
   const startTour = () => {
     setTourState({
       run: true,
