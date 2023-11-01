@@ -21,7 +21,7 @@ import ParameterReadings from "./components/ParameterReadings";
 import TQMSummary from "./components/TQMSummary";
 import QualityParameter from "./pages/employee/add-test-results/QualityComponent";
 import SensorScreen from "./pages/employee/sensor-monitoring/SensorScreen";
-import Test from "./pages/employee/test";
+import TqmAdminNotification from "./pages/employee/TqmAdminNotification";
 
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
@@ -59,7 +59,7 @@ const componentsToRegister = {
   TqmDocumentsPreview: DocumentsPreview,
   TQMSummary,
   TqmParameterReadings: ParameterReadings,
-  Test,
+  TqmAdminNotification,
 };
 
 const overrideHooks = () => {
