@@ -211,6 +211,8 @@ const EmployeeApp = ({ path, url, userType }) => {
   const BreadCrumbComp = Digit.ComponentRegistryService.getComponent("FsmBreadCrumb");
   const FSMSearch = Digit.ComponentRegistryService.getComponent("FSMSearch");
   const VehicleTrackingCard = Digit.ComponentRegistryService.getComponent("VehicleTrackingCard");
+  const VehicleTrackingAlerts = Digit.ComponentRegistryService.getComponent("Alerts");
+  const IllegalDumpingSites = Digit.ComponentRegistryService.getComponent("IllegalDumpingSites");
 
   const locationCheck =
     window.location.href.includes("/employee/fsm/inbox") ||
@@ -267,6 +269,8 @@ const EmployeeApp = ({ path, url, userType }) => {
           <PrivateRoute exact path={`${path}/fstp/new-vehicle-entry`} component={FstpOperatorDetails} />
           <PrivateRoute exact path={`${path}/fstp/new-vehicle-entry/:id`} component={FstpOperatorDetails} />
           <PrivateRoute exact path={`${path}/vehicle-tracking/home`} component={() => <VehicleTrackingCard matchPath={path} userType={userType} />} />
+          <PrivateRoute path={`${path}/vehicle-tracking/alerts`} component={() => <VehicleTrackingAlerts parentRoute={path} isInbox={true} />} />
+          <PrivateRoute path={`${path}/vehicle-tracking/illegal-dumping-sites`} component={() => <IllegalDumpingSites />} />
         </div>
       </React.Fragment>
     </Switch>

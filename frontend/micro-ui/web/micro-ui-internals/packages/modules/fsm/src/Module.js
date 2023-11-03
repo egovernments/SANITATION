@@ -57,6 +57,8 @@ import ConfirmationBox from "./components/Confirmation";
 import WorkflowFilter from "./components/WorkflowFilter";
 import Search from "./pages/employee/Search";
 import VehicleTrackingCard from "./components/VehicleTrackingCard";
+import Alerts from "./pages/employee/Alerts";
+import IllegalDumpingSites from "./pages/employee/IllegalDumpingSites";
 
 const FSMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "FSM";
@@ -179,6 +181,8 @@ const componentsToRegister = {
   WorkflowFilter,
   FSMSearch: Search,
   VehicleTrackingCard,
+  Alerts,
+  IllegalDumpingSites,
 };
 
 export const initFSMComponents = () => {

@@ -33,6 +33,8 @@ import useVendorSearch from './fsm/useVendorSearch';
 import useAdvanceBalanceCalulation from './fsm/useAdvanceBalanceCalculation';
 import useRouteSubscription from './useRouteSubscription';
 import useVehicleTrackingCheck from './fsm/useVehicleTrackingCheck';
+import useAlertsSearch from "./vehicleTracking/useAlertsSearch";
+import useTripTrack from "./vehicleTracking/useTripTrack";
 
 const fsm = {
   useTenants: useTenantsFSM,
@@ -73,7 +75,9 @@ const fsm = {
   useVendorSearch,
   useAdvanceBalanceCalulation,
   useRouteSubscription,
-  useVehicleTrackingCheck
+  useVehicleTrackingCheck,
+  useAlertsSearch,
+  useTripTrack,
 };
 const Hooks = {
   fsm,
