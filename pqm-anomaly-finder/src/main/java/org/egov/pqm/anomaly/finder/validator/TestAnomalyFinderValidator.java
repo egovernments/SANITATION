@@ -21,12 +21,12 @@ public class TestAnomalyFinderValidator {
 	
 	public TestRequest validateCreate(TestRequest testRequest) {
 		
-		List<String> idLists = testRequest.getTests().stream().map(Test::getId).collect(Collectors.toList());
+		List<String> idLists = testRequest.getTests().stream().map(Test::getTestId).collect(Collectors.toList());
 		List<Test> tests = testRequest.getTests();
 		List<PqmAnomaly> pqmAnomalys = anomalyRepository.getAnomalyFinderData(idLists);
 		List<String> testIds = pqmAnomalys.stream().map(PqmAnomaly::getTestId).collect(Collectors.toList());
 
-		List<Test> filterTests = tests.stream().filter(test -> !testIds.contains(test.getId())).collect(Collectors.toList());
+		List<Test> filterTests = tests.stream().filter(test -> !testIds.contains(test.getTestId())).collect(Collectors.toList());
 		return TestRequest.builder().tests(filterTests).requestInfo(testRequest.getRequestInfo()).build();
 	}
 }

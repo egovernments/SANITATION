@@ -12,8 +12,10 @@ import org.egov.mdms.model.MdmsResponse;
 import org.egov.mdms.model.ModuleDetail;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.ServiceRequestRepository;
+import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.mdms.MDMSQualityCriteria;
 import org.egov.pqm.web.model.mdms.MdmsCriteriaRequest;
+import org.egov.pqm.web.model.mdms.MdmsTest;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -147,6 +149,34 @@ public class MDMSUtils {
     }
 
     return codeToQualityCriteriaMap;
+  }
+
+  /**
+   * Parsing Json Data to a Code-QualityCriteria Map
+   *
+   * @param jsonData Json Data
+   * @return Map of Code-QualityCriteria
+   */
+  public static List<MdmsTest> parseJsonToTestList(String jsonData) {
+    List<MdmsTest> testList = new ArrayList<>();
+
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      JsonNode jsonNode = objectMapper.readTree(jsonData);
+      JsonNode testArray = jsonNode.get("mdms");
+
+      for (JsonNode criteriaNode : testArray) {
+        MdmsTest test = objectMapper.convertValue(criteriaNode.get("data"),
+            MdmsTest.class);
+
+        testList.add(test);
+      }
+    } catch (Exception e) {
+      throw new CustomException(ErrorConstants.PARSING_ERROR,
+          "Unable to parse Test Standard List");
+    }
+
+    return testList;
   }
 
 }
