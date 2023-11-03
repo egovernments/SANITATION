@@ -24,6 +24,8 @@ import static org.egov.pqm.util.ErrorConstants.TEST_TYPE_INVALID_MESSAGE;
 
 import java.util.List;
 import java.util.Objects;
+
+import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.SourceType;
 import org.egov.pqm.web.model.Test;
@@ -75,6 +77,9 @@ public class PqmValidator {
   public void validateTestRequestFieldsWhileupdate(List<Test> testList, List<Test> oldTestList) {
     Test test = testList.get(0);
     Test oldTest = oldTestList.get(0);
+    if(test.getId() != oldTest.getId()){
+      throw new CustomException(ErrorConstants.ID_CHANGED_ERROR, "id cannot be changed");
+    }
     if (test.getSourceType() != oldTest.getSourceType()) {
       throw new CustomException(TEST_TYPE_INVALID_CODE, TEST_TYPE_INVALID_MESSAGE);
     }

@@ -207,6 +207,7 @@ public class PqmService {
           "test not present in database which we want to update ");
     }
     mdmsValidator.validateMdmsData(testRequest);
+    pqmValidator.validateTestRequestFieldsWhileupdate(tests, oldTests);
     // Fetching actions from businessService
     BusinessService businessService = workflowService.getBusinessService(test, testRequest,
         PQM_BUSINESS_SERVICE,
