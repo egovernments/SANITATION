@@ -96,14 +96,14 @@ public class NotificationService {
 				Action action = null;
 				List<ActionItem> items = new ArrayList<>();
 
-				String actionLink = pqmAnomalyConfiguration.getTestLink().replace("$id", test.getId());
+				String actionLink = pqmAnomalyConfiguration.getTestLink().replace("$id", test.getTestId());
 				actionLink = pqmAnomalyConfiguration.getUiAppHost() + actionLink;
 				ActionItem item = ActionItem.builder().actionUrl(actionLink).code(pqmAnomalyConfiguration.getViewCode())
 						.build();
 				items.add(item);
 				action = Action.builder().actionUrls(items).build();
 				String eventCategory = null;
-				switch (test.getTestType()) {
+				switch (test.getSourceType()) {
 				case LAB:
 					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
 					break;
