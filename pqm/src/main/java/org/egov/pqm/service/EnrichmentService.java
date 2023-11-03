@@ -41,11 +41,14 @@ public class EnrichmentService {
   @Autowired
   private TestRepository testRepository;
 
+  String originalId = "";
+
   public void enrichPQMCreateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     Test test = testRequest.getTests().get(0);
     UUID uuid = UUID.randomUUID();
     test.setId(uuid.toString());
+    originalId = testRequest.getTests().get(0).getId();
     setIdgenIds(testRequest);
     setAuditDetails(testRequest, true);
     setWorkflowStatus(testRequest);
@@ -67,6 +70,9 @@ public class EnrichmentService {
 
   public void enrichPQMCreateRequestForLabTest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
+    Test test = testRequest.getTests().get(0);
+    UUID uuid = UUID.randomUUID();
+    test.setId(uuid.toString());
     setIdgenIds(testRequest);
     setAuditDetails(testRequest, true);
     testRequest.getTests().get(0).setStatus(PENDING);
@@ -77,6 +83,9 @@ public class EnrichmentService {
 
   public void enrichPQMUpdateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
+    if(testRequest.getTests().get(0).getId() != originalId){
+      throw new CustomException(ErrorConstants.ID_CHANGED_ERROR, "id cannot be changed");
+    }
     setAuditDetails(testRequest, false);
     enrichDocument(testRequest, false);
   }

@@ -188,7 +188,6 @@ public class PqmService {
    */
   @SuppressWarnings("unchecked")
   public Test update(TestRequest testRequest) {
-  
       List<Test> tests = testRequest.getTests();
     Test test = tests.get(0);
     if (test.getTestId() == null) { // validate if application exists
