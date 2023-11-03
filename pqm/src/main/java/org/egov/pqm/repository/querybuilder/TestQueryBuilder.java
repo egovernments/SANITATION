@@ -47,7 +47,7 @@ public class TestQueryBuilder {
 		/*
 		 * Enable part search by application number of fsm application
 		 */
-		List<String> ids = criteria.getIds();
+		List<String> ids = criteria.getTestIds();
 		if (!CollectionUtils.isEmpty(ids)) {
 			addClauseIfRequired(preparedStmtList, builder);
 			builder.append(" test.testId IN (").append(createQuery(ids)).append(")");
@@ -112,10 +112,10 @@ public class TestQueryBuilder {
 
 		}
 		
-		if (criteria.getTestType() != null) {
+		if (criteria.getSourceType() != null) {
 			addClauseIfRequired(preparedStmtList, builder);
 			builder.append(" test.sourceType=? ");
-			preparedStmtList.add(criteria.getTestType());
+			preparedStmtList.add(criteria.getSourceType());
 
 		}
 
@@ -223,8 +223,8 @@ public class TestQueryBuilder {
 		else if (criteria.getSortBy() == Pagination.SortBy.wfStatus)
 			builder.append(" ORDER BY test.wfStatus ");
 
-		else if (criteria.getSortBy() == Pagination.SortBy.id)
-			builder.append(" ORDER BY test.id ");
+		else if (criteria.getSortBy() == Pagination.SortBy.testId)
+			builder.append(" ORDER BY test.testId ");
 
 		else if (criteria.getSortBy() == Pagination.SortBy.scheduledDate)
 			builder.append(" ORDER BY test.scheduledDate ");
