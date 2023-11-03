@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import Header from "./Header";
 import Button from "./Button";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { CloseSvg, NotificationBell } from "./svgindex";
 
 
@@ -55,12 +55,9 @@ const Notification = ({ actions }) => {
                                         <p>{item.timePastAfterEventCreation}</p>
                                     </div>
                                     <div className="button-container">
-                                        <Button className={"header-btn viewDetailsButton"} label={t("VIEW_TEST_DETAILS")} variation="secondary" type="button"
-                                            onButtonClick={() => {
-                                                const url = item.actionUrl;
-                                                const id = url.split('id=')[1];
-                                                history.push(`tqm/view-test-results?id=${id}`)
-                                            }} />
+                                    <Link to={`/${window.contextPath}/employee/tqm/view-test-results?id=${item.actionUrl.split('id=')[1]}`}>
+                                        <Button className={"header-btn viewDetailsButton"} label={t("VIEW_TEST_DETAILS")} variation="secondary" type="button"/>
+                                    </Link>
                                     </div>
                                 </div>
                             </div>

@@ -35,10 +35,10 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
       const mergedData = {
         criteriaCode: testItem.criteriaCode,
         qparameter: matchingMdmsItem.data.parameter,
-        uom: matchingMdmsItem.data.units,
+        uom: matchingMdmsItem.data.unit,
         benchmarkValues: matchingMdmsItem.data.benchmarkValues?.[0],
-        results: testItem.value,
-        status: testItem.status,
+        results: testItem.resultValue,
+        status: testItem.resultStatus,
       };
       combinedData.push(mergedData);
     }
@@ -48,8 +48,12 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
   let sla = 0;
 
   if (type !== "adhoc") {
-    workflowData = await Digit.WorkflowService.getDetailsByIdWorks({ tenantId, id, moduleCode: "PQM" });
-    sla = Math.round(workflowData?.processInstances?.[0]?.businesssServiceSla / (24 * 60 * 60 * 1000));
+    try{
+      workflowData = await Digit.WorkflowService.getDetailsByIdWorks({ tenantId, id, moduleCode: "PQM" });
+      sla = Math.round(workflowData?.processInstances?.[0]?.businesssServiceSla / (24 * 60 * 60 * 1000));
+    }catch(err){
+      console.error("error fetching workflow data")
+    }
   }
 
   return {
