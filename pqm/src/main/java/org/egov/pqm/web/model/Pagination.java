@@ -33,7 +33,7 @@ public class Pagination {
 
 	  public enum SortBy {
 		  wfStatus,
-		  id,
+		  testId,
 		  plantCode,
 		  processCode,
 		  stageCode,
