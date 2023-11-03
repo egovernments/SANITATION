@@ -20,6 +20,7 @@ import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.validator.PqmValidator;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
+import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
@@ -141,6 +142,19 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
+  public TestResponse fetchFromDb(TestRequest testRequest) {
+    List<String> ids = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
+    ids.add(testRequest.getTests().get(0).getId());
+    TestSearchCriteria criteria = TestSearchCriteria.builder()
+        .ids(ids).tenantId(testRequest.getTests().get(0).getTenantId())
+        .build();
+    Pagination Pagination = new Pagination();
+    TestSearchRequest request = TestSearchRequest.builder()
+        .testSearchCriteria(criteria).pagination(Pagination)
+        .build();
+    return testSearch(request, testRequest.getRequestInfo());
+  }
+
   /**
    * Updates the Test
    *
@@ -161,20 +175,22 @@ public class PqmService {
             "Workflow action cannot be null." + String.format("{Workflow:%s}", test.getWorkflow()));
       }
     }
-    List<Test> oldTests = repository.fetchFromDB(testRequest); // fetching tests from DB
+    TestResponse testResponse = fetchFromDb(testRequest);
+    List<Test> oldTests = testResponse.getTests();
     if (tests.size() != oldTests.size()) // checking for the list of all ids to be present in DB
     {
       throw new CustomException(TEST_NOT_IN_DB,
           "test not present in database which we want to update ");
     }
     mdmsValidator.validateMdmsData(testRequest);
+    pqmValidator.validateTestRequestFieldsWhileupdate(tests, oldTests);
     // Fetching actions from businessService
     BusinessService businessService = workflowService.getBusinessService(test, testRequest,
         PQM_BUSINESS_SERVICE,
         null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
     if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) { // calculate test result
-			qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+      qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
       enrichmentService.setTestResultStatus(testRequest);
       enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     }

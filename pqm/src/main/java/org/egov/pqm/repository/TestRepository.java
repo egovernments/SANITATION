@@ -11,6 +11,7 @@ import org.egov.pqm.repository.querybuilder.TestQueryBuilder;
 import org.egov.pqm.repository.rowmapper.DocumentRowMapper;
 import org.egov.pqm.repository.rowmapper.QualityCriteriaRowMapper;
 import org.egov.pqm.repository.rowmapper.TestRowMapper;
+import org.egov.pqm.service.PqmService;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Pagination;
@@ -44,7 +45,7 @@ public class TestRepository {
 
   @Autowired
   private QualityCriteriaRowMapper qualityCriteriaRowMapper;
-  
+
   @Autowired
   private PqmProducer producer;
 
@@ -79,30 +80,12 @@ public class TestRepository {
         documentRowMapper);
     return DocumentResponse.builder().documents(documents).build();
   }
-  
+
   public List<QualityCriteria> getQualityCriteriaData(List<String> idList) {
-	    List<Object> preparedStmtList = new ArrayList<>();
-	    String query = pqmQueryBuilder.getQualityCriteriaQuery(idList, preparedStmtList);
-	    List<QualityCriteria> qualityCriterias = jdbcTemplate.query(query, preparedStmtList.toArray(),
-	    		qualityCriteriaRowMapper);
-	    return qualityCriterias;
-	  }
-
-  public List<Test> fetchFromDB(TestRequest testRequest) {
-    Test test = testRequest.getTests().get(0);
-    List<String> ids = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
-    ids.add(test.getId());
-
-    TestSearchCriteria criteria = TestSearchCriteria.builder()
-        .ids(ids).tenantId(test.getTenantId())
-        .build();
-    Pagination Pagination = new Pagination();
-    TestSearchRequest request = TestSearchRequest.builder()
-        .testSearchCriteria(criteria).pagination(Pagination)
-        .build();
-
-    TestResponse testResponse = getPqmData(request);
-    List<Test> tests = testResponse.getTests();
-    return tests;
+    List<Object> preparedStmtList = new ArrayList<>();
+    String query = pqmQueryBuilder.getQualityCriteriaQuery(idList, preparedStmtList);
+    List<QualityCriteria> qualityCriterias = jdbcTemplate.query(query, preparedStmtList.toArray(),
+        qualityCriteriaRowMapper);
+    return qualityCriterias;
   }
 }
