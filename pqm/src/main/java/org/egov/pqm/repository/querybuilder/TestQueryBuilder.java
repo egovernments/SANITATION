@@ -44,14 +44,18 @@ public class TestQueryBuilder {
 				preparedStmtList.add(criteria.getTenantId());
 			}
 		}
-		/*
-		 * Enable part search by application number of fsm application
-		 */
-		List<String> ids = criteria.getTestIds();
+		List<String> ids = criteria.getIds();
 		if (!CollectionUtils.isEmpty(ids)) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" test.testId IN (").append(createQuery(ids)).append(")");
+			builder.append(" test.id IN (").append(createQuery(ids)).append(")");
 			addToPreparedStatement(preparedStmtList, ids);
+		}
+
+		List<String> testIds = criteria.getTestIds();
+		if (!CollectionUtils.isEmpty(testIds)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" test.testId IN (").append(createQuery(testIds)).append(")");
+			addToPreparedStatement(preparedStmtList, testIds);
 		}
 
 		List<String> testCodes = criteria.getTestCode();

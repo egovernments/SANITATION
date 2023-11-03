@@ -16,6 +16,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TestSearchCriteria {
 
+  @JsonProperty("ids")
+  private List<String> ids = null;
+
   @JsonProperty("testIds")
   @Valid
   private List<String> testIds = null;

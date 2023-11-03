@@ -49,6 +49,7 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 			Test currentTest = testMap.get(testId);
 
 			if (currentTest == null) {
+				String id = rs.getString("id");
 				String tenantId = rs.getString("tenantId");
 				String plantCode = rs.getString("plantCode");
 				String processCode = rs.getString("processCode");
@@ -70,7 +71,7 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 						.lastModifiedTime(rs.getLong("lastmodifiedtime")).build();
 
 
-				currentTest = Test.builder().testId(testId).tenantId(tenantId).plantCode(plantCode).processCode(processCode)
+				currentTest = Test.builder().id(id).testId(testId).tenantId(tenantId).plantCode(plantCode).processCode(processCode)
 						.stageCode(stageCode).materialCode(materialCode).deviceCode(deviceCode)
 						.status(status).wfStatus(wfStatus).sourceType(sourceType)
 						.scheduledDate(scheduledDate).isActive(isActive).additionalDetails(additionaldetails)
