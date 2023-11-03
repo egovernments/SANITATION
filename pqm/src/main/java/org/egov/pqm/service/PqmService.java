@@ -171,7 +171,7 @@ public class PqmService {
     List<String> ids = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
     ids.add(testRequest.getTests().get(0).getTestId());
     TestSearchCriteria criteria = TestSearchCriteria.builder()
-        .ids(ids).tenantId(testRequest.getTests().get(0).getTenantId())
+        .testIds(ids).tenantId(testRequest.getTests().get(0).getTenantId())
         .build();
     Pagination Pagination = new Pagination();
     TestSearchRequest request = TestSearchRequest.builder()
