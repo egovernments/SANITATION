@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Test {
 
-	@JsonProperty("id")
-	private String id;
+	@JsonProperty("testId")
+	private String testId;
 
 	@JsonProperty("tenantId")
 	private String tenantId;
@@ -47,7 +47,7 @@ public class Test {
 	private String wfStatus;
 
 	@JsonProperty("testType")
-	private TestType testType;
+	private SourceType sourceType;
 
 	@JsonProperty("scheduledDate")
 	private Long scheduledDate;

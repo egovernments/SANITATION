@@ -33,7 +33,7 @@ public class PqmAnomalyFinderConsumer {
 		} catch (final Exception e) {
 			log.error("Error while listening to value: " + record + " on topic: " + topic + ": " + e);
 		}
-		log.debug("FSM Received: " + testRequest.getTests().get(0).getId());
+		log.debug("FSM Received: " + testRequest.getTests().get(0).getTestId());
 		anomalyFinderService.anomalyCreate(testRequest);
 		
 	}
