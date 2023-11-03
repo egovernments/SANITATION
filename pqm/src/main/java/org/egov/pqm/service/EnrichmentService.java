@@ -43,6 +43,9 @@ public class EnrichmentService {
 
   public void enrichPQMCreateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
+    Test test = testRequest.getTests().get(0);
+    UUID uuid = UUID.randomUUID();
+    test.setId(uuid.toString());
     setIdgenIds(testRequest);
     setAuditDetails(testRequest, true);
     setWorkflowStatus(testRequest);
