@@ -8,23 +8,20 @@ import {
 } from '@egovernments/digit-ui-react-components';
 import React, { useEffect, useContext, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useHistory } from 'react-router-dom';
 
 import { TourSteps } from '../utils/TourSteps';
 
 
 const TqmHeader = () => {
+  const history = useHistory()
   const { tourState, setTourState } = useTourState();
   // const { tutorial, updateTutorial } = useContext(TutorialContext);
   const { t } = useTranslation();
   //using location.pathname we can update the stepIndex accordingly when help is clicked from any other screen(other than home screen)
   const { pathname } = useLocation();
   const startTour = () => {
-    setTourState({
-      run: true,
-      steps: TourSteps[pathname],
-      tourActive: true,
-    });
+    history.push(`/${window.contextPath}/citizen/tqm-how-it-works`)
   };
 
   return (

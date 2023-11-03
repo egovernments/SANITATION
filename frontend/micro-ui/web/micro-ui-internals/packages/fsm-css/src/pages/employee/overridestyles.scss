@@ -11,3 +11,37 @@
   display: flex;
   row-gap:1.5rem !important;
 }
+
+.how-it-works-video-play{
+  .close-button {
+    position: fixed;
+    right: 15px;
+    top: 10%;
+    z-index: 1;
+  }
+  video {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.how-it-works-page {
+  margin-top:-1rem !important;
+  .language-selector {
+    margin-left:0px !important;
+  }
+  .back-btn2 {
+    margin-left: 0px !important;
+  }
+  .how-it-works-page-header {
+    .h1 {
+      margin-left:5px !important;
+    }
+  }
+}
+
+
