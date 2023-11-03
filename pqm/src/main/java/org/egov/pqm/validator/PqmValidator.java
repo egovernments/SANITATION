@@ -9,8 +9,8 @@ import static org.egov.pqm.util.ErrorConstants.TEST_TYPE_CAN_ONLY_BE_LAB;
 
 import java.util.List;
 import org.egov.pqm.web.model.Document;
+import org.egov.pqm.web.model.SourceType;
 import org.egov.pqm.web.model.TestRequest;
-import org.egov.pqm.web.model.TestType;
 import org.egov.tracer.model.CustomException;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +24,8 @@ public class PqmValidator {
   }
 
   private void validateTestType(TestRequest testRequest) {
-    if (testRequest.getTests().get(0).getTestType() == null
-        || testRequest.getTests().get(0).getTestType() == TestType.IOT) {
+    if (testRequest.getTests().get(0).getSourceType() == null
+        || testRequest.getTests().get(0).getSourceType() == SourceType.IOT) {
       throw new CustomException(TEST_TYPE_CAN_ONLY_BE_LAB, "test type can only be lab");
     }
   }

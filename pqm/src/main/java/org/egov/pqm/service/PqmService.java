@@ -1,29 +1,47 @@
 package org.egov.pqm.service;
 
-import static org.egov.pqm.util.Constants.*;
+import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
+import static org.egov.pqm.util.Constants.SCHEMA_CODE_TEST_STANDARD;
+import static org.egov.pqm.util.Constants.UPDATE_RESULT;
+import static org.egov.pqm.util.Constants.WFSTATUS_PENDINGRESULTS;
+import static org.egov.pqm.util.Constants.WFSTATUS_SCHEDULED;
 import static org.egov.pqm.util.ErrorConstants.TEST_NOT_IN_DB;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 import static org.egov.pqm.util.MDMSUtils.parseJsonToTestList;
 import static org.egov.pqm.web.model.Pagination.SortOrder.DESC;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.egov.common.contract.request.RequestInfo;
-import org.egov.pqm.util.ErrorConstants;
-import org.egov.pqm.util.MDMSUtils;
 import org.egov.common.contract.request.Role;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
+import org.egov.pqm.util.ErrorConstants;
+import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.validator.MDMSValidator;
-import org.egov.pqm.web.model.*;
-import org.egov.pqm.web.model.Pagination.SortBy;
-import org.egov.pqm.web.model.mdms.MdmsTest;
 import org.egov.pqm.validator.PqmValidator;
+import org.egov.pqm.web.model.Document;
+import org.egov.pqm.web.model.DocumentResponse;
+import org.egov.pqm.web.model.Pagination;
+import org.egov.pqm.web.model.Pagination.SortBy;
+import org.egov.pqm.web.model.QualityCriteria;
+import org.egov.pqm.web.model.SourceType;
+import org.egov.pqm.web.model.Test;
+import org.egov.pqm.web.model.TestRequest;
+import org.egov.pqm.web.model.TestResponse;
+import org.egov.pqm.web.model.TestResultStatus;
+import org.egov.pqm.web.model.TestSearchCriteria;
+import org.egov.pqm.web.model.TestSearchRequest;
+import org.egov.pqm.web.model.mdms.MdmsTest;
 import org.egov.pqm.web.model.workflow.BusinessService;
 import org.egov.pqm.workflow.ActionValidator;
 import org.egov.pqm.workflow.WorkflowIntegrator;
@@ -31,10 +49,11 @@ import org.egov.pqm.workflow.WorkflowService;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.egov.pqm.validator.PqmValidator;
+import org.springframework.util.CollectionUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.CollectionUtils;
 
 @Service
 @Slf4j
@@ -82,14 +101,14 @@ public class PqmService {
       checkRoleInValidateSearch(criteria, requestInfo);
     }
     TestResponse testResponse = repository.getPqmData(criteria);
-    List<String> idList = testResponse.getTests().stream().map(Test::getId)
+    List<String> idList = testResponse.getTests().stream().map(Test::getTestId)
         .collect(Collectors.toList());
 
     List<QualityCriteria> qualityCriteriaList = repository.getQualityCriteriaData(idList);
 
     testList = testResponse.getTests().stream().map(test -> {
       List<QualityCriteria> QualityCriterias = qualityCriteriaList.stream()
-          .filter(qualityCriteria -> test.getId().equalsIgnoreCase(qualityCriteria.getTestId()))
+          .filter(qualityCriteria -> test.getTestId().equalsIgnoreCase(qualityCriteria.getTestId()))
           .collect(Collectors.toList());
       test.setQualityCriteria(QualityCriterias);
       return test;
@@ -100,7 +119,7 @@ public class PqmService {
 
     testList = testResponse.getTests().stream().map(test -> {
       List<Document> documents = documentList.stream()
-          .filter(document -> test.getId().equalsIgnoreCase(document.getTestId()))
+          .filter(document -> test.getTestId().equalsIgnoreCase(document.getTestId()))
           .collect(Collectors.toList());
       test.setDocuments(documents);
       return test;
@@ -159,10 +178,10 @@ public class PqmService {
   
       List<Test> tests = testRequest.getTests();
     Test test = tests.get(0);
-    if (test.getId() == null) { // validate if application exists
+    if (test.getTestId() == null) { // validate if application exists
       throw new CustomException(UPDATE_ERROR, "Application Not found in the System" + test);
     }
-    if (test.getTestType().equals(TestType.LAB)) {
+    if (test.getTestId().equals(SourceType.LAB)) {
       if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
         throw new CustomException(UPDATE_ERROR,
             "Workflow action cannot be null." + String.format("{Workflow:%s}", test.getWorkflow()));
@@ -216,8 +235,8 @@ public class PqmService {
 
     for(MdmsTest mdmsTest: mdmsTestList)
     {
-      TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().testType(
-          String.valueOf(TestType.LAB)).wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED)).testCode(Collections.singletonList(mdmsTest.getCode())).build();
+      TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().sourceType(
+          String.valueOf(SourceType.LAB)).wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED)).testCode(Collections.singletonList(mdmsTest.getCode())).build();
       Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.scheduledDate)
           .sortOrder(DESC).build();
       TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
@@ -252,7 +271,7 @@ public class PqmService {
             .stageCode(mdmsTest.getStage())
             .materialCode(mdmsTest.getMaterial())
             .qualityCriteria(qualityCriteriaList)
-            .testType(TestType.LAB)
+            .sourceType(SourceType.LAB)
             .isActive(Boolean.TRUE)
             .scheduledDate(instant.toEpochMilli())
             .build();
@@ -278,7 +297,7 @@ public class PqmService {
               .stageCode(testFromDb.getStageCode())
               .materialCode(testFromDb.getMaterialCode())
               .qualityCriteria(qualityCriteriaList)
-              .testType(TestType.LAB)
+              .sourceType(SourceType.LAB)
               .isActive(Boolean.TRUE)
               .scheduledDate(instant.toEpochMilli())
               .build();

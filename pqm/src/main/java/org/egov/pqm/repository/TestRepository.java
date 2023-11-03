@@ -90,11 +90,11 @@ public class TestRepository {
 
   public List<Test> fetchFromDB(TestRequest testRequest) {
     Test test = testRequest.getTests().get(0);
-    List<String> ids = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
-    ids.add(test.getId());
+    List<String> testIds = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
+    testIds.add(test.getTestId());
 
     TestSearchCriteria criteria = TestSearchCriteria.builder()
-        .ids(ids).tenantId(test.getTenantId())
+        .testIds(testIds).tenantId(test.getTenantId())
         .build();
     Pagination Pagination = new Pagination();
     TestSearchRequest request = TestSearchRequest.builder()
