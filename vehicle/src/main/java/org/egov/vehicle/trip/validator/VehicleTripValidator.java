@@ -274,20 +274,22 @@ public class VehicleTripValidator {
 		}
 
 //		validateTripInOutTime(vehicleTrip, vehicleTrip.getTripDetails().get(0));
-
-		if (VehicleTripConstants.FSM_VEHICLE_TRIP_BUSINESSSERVICE.equalsIgnoreCase(vehicleTrip.getBusinessService())) {
-			PlantMapping plantMapping = vehicleTripFSMService.getPlantMapping(request.getRequestInfo(),
-					vehicleTrip.getTenantId(), request.getRequestInfo().getUserInfo().getUuid());
-			if (null != plantMapping && StringUtils.isNotEmpty(plantMapping.getPlantCode())) {
-
-				validatePlantCode(vehicleTrip, plantMapping);
-
-			} else {
-				log.error("Logged user to FSTP mapping doesn't exists. ");
-				throw new CustomException(VehicleTripConstants.EMPLOYEE_FSTP_MAP_NOT_EXISTS,
-						"Logged user to FSTP mapping doesn't exists.");
-			}
-		}
+/**
+ * commented for SM-3121 
+ */
+//		if (VehicleTripConstants.FSM_VEHICLE_TRIP_BUSINESSSERVICE.equalsIgnoreCase(vehicleTrip.getBusinessService())) {
+//			PlantMapping plantMapping = vehicleTripFSMService.getPlantMapping(request.getRequestInfo(),
+//					vehicleTrip.getTenantId(), request.getRequestInfo().getUserInfo().getUuid());
+//			if (null != plantMapping && StringUtils.isNotEmpty(plantMapping.getPlantCode())) {
+//
+//				validatePlantCode(vehicleTrip, plantMapping);
+//
+//			} else {
+//				log.error("Logged user to FSTP mapping doesn't exists. ");
+//				throw new CustomException(VehicleTripConstants.EMPLOYEE_FSTP_MAP_NOT_EXISTS,
+//						"Logged user to FSTP mapping doesn't exists.");
+//			}
+//		}
 
 	}
 
