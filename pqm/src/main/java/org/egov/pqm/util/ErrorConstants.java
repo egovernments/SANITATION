@@ -8,6 +8,9 @@ public class ErrorConstants {
   public static final String CREATE_ERROR = "CREATE_ERROR";
   public static final String UPDATE_ERROR = "UPDATE_ERROR";
   public static final String ID_CHANGED_ERROR = "ID_CHANGED_ERROR";
+  public static final String ID_CHANGED_MESSAGE = "id_cannot_be_changed";
+
+
 
   public static final String PARSING_ERROR = "PARSING_ERROR";
   public static final String IDGEN_ERROR = "IDGEN_ERROR";

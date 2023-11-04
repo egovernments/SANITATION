@@ -3,29 +3,10 @@ package org.egov.pqm.validator;
 
 import static org.egov.pqm.util.Constants.REGEX_METACHARACTER_PATTERN;
 import static org.egov.pqm.util.Constants.UPDATE_RESULT;
-import static org.egov.pqm.util.ErrorConstants.CRITERIA_CODE_INVALID_CODE;
-import static org.egov.pqm.util.ErrorConstants.CRITERIA_CODE_INVALID_MESSAGE;
-import static org.egov.pqm.util.ErrorConstants.FILE_STORE_ID_INVALID_CODE;
-import static org.egov.pqm.util.ErrorConstants.FILE_STORE_ID_INVALID_MESSAGE;
-import static org.egov.pqm.util.ErrorConstants.MATERIAL_CODE_INVALID_CODE;
-import static org.egov.pqm.util.ErrorConstants.MATERIAL_CODE_INVALID_MESSAGE;
-import static org.egov.pqm.util.ErrorConstants.PLANT_CODE_INVALID_CODE;
-import static org.egov.pqm.util.ErrorConstants.PLANT_CODE_INVALID_MESSAGE;
-import static org.egov.pqm.util.ErrorConstants.PROCESS_CODE_INVALID_CODE;
-import static org.egov.pqm.util.ErrorConstants.PROCESS_CODE_INVALID_MESSAGE;
-import static org.egov.pqm.util.ErrorConstants.STAGE_CODE_INVALID_CODE;
-import static org.egov.pqm.util.ErrorConstants.STAGE_CODE_INVALID_MESSAGE;
-import static org.egov.pqm.util.ErrorConstants.STATUS_ERROR_CODE;
-import static org.egov.pqm.util.ErrorConstants.STATUS_ERROR_MESSAGE;
-import static org.egov.pqm.util.ErrorConstants.TEST_CRITERIA_NOT_PRESENT;
-import static org.egov.pqm.util.ErrorConstants.TEST_TYPE_CAN_ONLY_BE_LAB;
-import static org.egov.pqm.util.ErrorConstants.TEST_TYPE_INVALID_CODE;
-import static org.egov.pqm.util.ErrorConstants.TEST_TYPE_INVALID_MESSAGE;
+import static org.egov.pqm.util.ErrorConstants.*;
 
 import java.util.List;
 import java.util.Objects;
-
-import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.SourceType;
 import org.egov.pqm.web.model.Test;
@@ -100,6 +81,9 @@ public class PqmValidator {
       if (test.getStatus() != TestResultStatus.PENDING) {
         throw new CustomException(STATUS_ERROR_CODE, STATUS_ERROR_MESSAGE);
       }
+    }
+    if(!test.getId().equals(oldTest.getId())){
+      throw new CustomException(ID_CHANGED_ERROR, ID_CHANGED_MESSAGE);
     }
   }
 }
