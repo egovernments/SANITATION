@@ -77,9 +77,6 @@ public class PqmValidator {
   public void validateTestRequestFieldsWhileupdate(List<Test> testList, List<Test> oldTestList) {
     Test test = testList.get(0);
     Test oldTest = oldTestList.get(0);
-    if(test.getId() != oldTest.getId()){
-      throw new CustomException(ErrorConstants.ID_CHANGED_ERROR, "id cannot be changed");
-    }
     if (test.getSourceType() != oldTest.getSourceType()) {
       throw new CustomException(TEST_TYPE_INVALID_CODE, TEST_TYPE_INVALID_MESSAGE);
     }

@@ -81,7 +81,6 @@ public class EnrichmentService {
 
   public void enrichPQMUpdateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
-
     setAuditDetails(testRequest, false);
     enrichDocument(testRequest, false);
   }
