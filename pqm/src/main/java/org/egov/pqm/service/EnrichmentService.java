@@ -4,8 +4,11 @@ package org.egov.pqm.service;
 import static org.egov.pqm.util.Constants.WFSTATUS_SUBMITTED;
 import static org.egov.pqm.web.model.TestResultStatus.PENDING;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
@@ -56,8 +59,7 @@ public class EnrichmentService {
     setScheduledDate(testRequest);
   }
 
-  private void setScheduledDate(TestRequest testRequest)
-  {
+  private void setScheduledDate(TestRequest testRequest) {
     Long time = System.currentTimeMillis();
     testRequest.getTests().get(0).setScheduledDate(time);
   }
@@ -85,11 +87,31 @@ public class EnrichmentService {
     enrichDocument(testRequest, false);
   }
 
+  public void updateDocumentLists(TestRequest testRequest, List<Test> oldTests) {
+    List<Document> requestDocumentList = testRequest.getTests().get(0).getDocuments();
+    List<Document> createDocumentList = new ArrayList<>();
+    Set<String> docIdsSetFromOldTests = new HashSet<>();
+    for (Test oldTest : oldTests) {
+      for (Document doc : oldTest.getDocuments()) {
+        docIdsSetFromOldTests.add(doc.getId());
+      }
+    }
+    for (Document doc : requestDocumentList) {
+      if (!docIdsSetFromOldTests.contains(doc.getId())) {
+        createDocumentList.add(doc);
+      }
+    }
+    List<Test> newTests = testRequest.getTests();
+    newTests.get(0).setDocuments(createDocumentList);
+    TestRequest.builder().tests(newTests).requestInfo(testRequest.getRequestInfo()).build();
+  }
+
+
   private void enrichDocument(TestRequest testRequest, boolean isCreate) {
     List<Document> documentList = testRequest.getTests().get(0).getDocuments();
     if (!documentList.isEmpty()) {
       for (Document document : documentList) {
-        if (document.getFileStoreId() != null) {
+        if (document.getId() == null && document.getFileStoreId() != null) {
           AuditDetails auditDetails = setAuditDetails(testRequest, isCreate);
           document.setTestId(testRequest.getTests().get(0).getTestId());
           document.setId(String.valueOf(UUID.randomUUID()));
@@ -149,8 +171,7 @@ public class EnrichmentService {
     testRequest.getTests().get(0).setAuditDetails(auditDetails);
 
     //setting quality criteria AuditDetails
-    for(QualityCriteria criteria: testRequest.getTests().get(0).getQualityCriteria())
-    {
+    for (QualityCriteria criteria : testRequest.getTests().get(0).getQualityCriteria()) {
       criteria.setAuditDetails(auditDetails);
     }
     return auditDetails;

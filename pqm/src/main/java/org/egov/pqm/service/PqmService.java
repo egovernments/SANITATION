@@ -41,6 +41,7 @@ import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestResultStatus;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
+
 import org.egov.pqm.web.model.mdms.MdmsTest;
 import org.egov.pqm.web.model.workflow.BusinessService;
 import org.egov.pqm.workflow.ActionValidator;
@@ -140,7 +141,7 @@ public class PqmService {
 
   }
 
-  
+
   /**
    * Creates Test
    *
@@ -157,14 +158,14 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
-  
-   public Test createTestViaScheduler(TestRequest testRequest) {
+
+  public Test createTestViaScheduler(TestRequest testRequest) {
     mdmsValidator.validateMdmsData(testRequest);
     enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
     workflowIntegrator.callWorkFlow(testRequest);
     repository.save(testRequest);
     return testRequest.getTests().get(0);
-    }
+  }
 
 
   public TestResponse fetchFromDb(TestRequest testRequest) {
@@ -188,6 +189,7 @@ public class PqmService {
    */
   @SuppressWarnings("unchecked")
   public Test update(TestRequest testRequest) {
+
       List<Test> tests = testRequest.getTests();
     Test test = tests.get(0);
     if (test.getTestId() == null) { // validate if application exists
@@ -219,15 +221,16 @@ public class PqmService {
       enrichmentService.setTestResultStatus(testRequest);
       enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     }
-    enrichmentService.enrichPQMUpdateRequest(testRequest); // enrich update request
+    enrichmentService.enrichPQMUpdateRequest(testRequest);// enrich update request
+    enrichmentService.updateDocumentLists(testRequest, oldTests);
     workflowIntegrator.callWorkFlow(testRequest);// updating workflow during update
     repository.update(testRequest);
     return testRequest.getTests().get(0);
   }
 
+
   /**
    * Schedules Test
-   *
    */
   public void scheduleTest(RequestInfo requestInfo) {
 
@@ -265,17 +268,16 @@ public class PqmService {
       LocalDate calculatedDate = currentDate.plusDays(frequency);
       Instant instant = calculatedDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
 
-
       List<QualityCriteria> qualityCriteriaList = new ArrayList<>();
 
-      for(String mdmsQualityCriteria : mdmsTest.getQualityCriteria())
-      {
-        QualityCriteria qualityCriteria = QualityCriteria.builder().criteriaCode(mdmsQualityCriteria).resultStatus(TestResultStatus.PENDING).isActive(Boolean.TRUE).build();
+      for (String mdmsQualityCriteria : mdmsTest.getQualityCriteria()) {
+        QualityCriteria qualityCriteria = QualityCriteria.builder()
+            .criteriaCode(mdmsQualityCriteria).resultStatus(TestResultStatus.PENDING)
+            .isActive(Boolean.TRUE).build();
         qualityCriteriaList.add(qualityCriteria);
       }
 
-      if(CollectionUtils.isEmpty(testListFromDb))
-      {
+      if (CollectionUtils.isEmpty(testListFromDb)) {
         //case 1: when no pending tests exist in DB
         Test createTest = Test.builder()
             .testCode(mdmsTest.getCode())
@@ -290,19 +292,18 @@ public class PqmService {
             .scheduledDate(instant.toEpochMilli())
             .build();
 
-        TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest)).requestInfo(requestInfo).build();
+        TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest))
+            .requestInfo(requestInfo).build();
 
         //send to create function
         createTestViaScheduler(testRequest);
-      }
-      else {
+      } else {
         //case 2: when pending test exist in DB
         Test testFromDb = testListFromDb.get(0);
 
         Long scheduleDate = testFromDb.getScheduledDate();
 
-        if(isPastScheduledDate(scheduleDate))
-        {
+        if (isPastScheduledDate(scheduleDate)) {
           Test createTest = Test.builder()
               .tenantId(testFromDb.getTenantId())
               .testCode(mdmsTest.getCode())
@@ -316,7 +317,8 @@ public class PqmService {
               .scheduledDate(instant.toEpochMilli())
               .build();
 
-          TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest)).requestInfo(requestInfo)
+          TestRequest testRequest = TestRequest.builder()
+              .tests(Collections.singletonList(createTest)).requestInfo(requestInfo)
               .build();
 
           //send to create function
