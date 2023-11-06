@@ -1,4 +1,4 @@
-import { Loader } from "@egovernments/digit-ui-react-components";
+import { Loader,TourProvider } from "@egovernments/digit-ui-react-components";
 import React, { useEffect } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import TqmCard from "./components/TqmCard";
@@ -23,6 +23,7 @@ import QualityParameter from "./pages/employee/add-test-results/QualityComponent
 import SensorScreen from "./pages/employee/sensor-monitoring/SensorScreen";
 import TqmAdminNotification from "./pages/employee/TqmAdminNotification";
 
+
 const TQMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = ["TQM", "mdms"];
   const { path, url } = useRouteMatch();
@@ -36,7 +37,9 @@ const TQMModule = ({ stateCode, userType, tenants }) => {
   if (userType === "citizen") {
     return <CitizenApp path={path} />;
   } else {
-    return <EmployeeApp path={path} url={url} userType={userType} />;
+    return <TourProvider>
+      <EmployeeApp path={path} url={url} userType={userType} />;
+    </TourProvider>
   }
 };
 

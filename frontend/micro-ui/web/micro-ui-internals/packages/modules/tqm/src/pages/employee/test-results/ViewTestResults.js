@@ -25,15 +25,15 @@ function ViewTestResults() {
               {
                 type: "DATA",
                 cardHeader: { value: "Test Details", inlineStyles: { marginTop: 0 } },
-                values: data.details,
+                values: data?.details,
               },
-              data.tableData
+              data?.tableData
                 ? {
                     type: "COMPONENT",
                     component: "TqmDetailsTable",
                     props: {
                       cardHeader: { value: "Test Result", inlineStyles: {} },
-                      rowsData: data.tableData.map((i, index) => {
+                      rowsData: data?.tableData.map((i, index) => {
                         return {
                           slno: index + 1,
                           qp: i.qparameter,
@@ -68,17 +68,17 @@ function ViewTestResults() {
                           },
                         },
                       ],
-                      summaryRows: data.testSummary,
+                      summaryRows: data?.testSummary,
                     },
                   }
                 : {},
-              data.documents?.[0]?.value
+              data?.documents?.[0]?.value
                 ? {
                     cardHeader: { value: "Documents", inlineStyles: {} },
                     type: "COMPONENT",
                     component: "TqmDocumentsPreview",
                     props: {
-                      documents: data.documents,
+                      documents: data?.documents,
                     },
                   }
                 : {},

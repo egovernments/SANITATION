@@ -15,9 +15,9 @@ const ULBHomeCard = (props) => {
       <Card className="home-card-tiles-container">
         <CardHeader> {t(props.title)} </CardHeader>
         <div className="tiles-card-container">
-          {props.module.map((i) => {
+          {props.module.map((i,idx) => {
             return (
-              <Card className="tiles-card" onClick={() => (i.hyperlink ? location.assign(i.link) : history.push(i.link))}>
+              <Card className={`tiles-card tiles-card-${idx}`} onClick={() => (i.hyperlink ? location.assign(i.link) : history.push(i.link))}>
                 {i.icon}
                 <p> {t(i.name)} </p>
               </Card>

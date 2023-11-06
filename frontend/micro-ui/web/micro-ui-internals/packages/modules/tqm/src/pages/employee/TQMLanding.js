@@ -47,7 +47,7 @@ const TQMLanding = () => {
     },
     {
       name: "ES_TQM_VIEW_DASHBOARD",
-      // link: ``,
+      link: `/${window?.contextPath}/employee/dss/dashboard/pqm`,
       icon: <DashboardIcon />,
     },
   ];
