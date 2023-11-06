@@ -96,11 +96,14 @@ public class EnrichmentService {
         docIdsSetFromOldTests.add(doc.getId());
       }
     }
-    for (Document doc : requestDocumentList) {
-      if (!docIdsSetFromOldTests.contains(doc.getId())) {
-        createDocumentList.add(doc);
+    if(requestDocumentList != null){
+      for (Document doc : requestDocumentList) {
+        if (!docIdsSetFromOldTests.contains(doc.getId())) {
+          createDocumentList.add(doc);
+        }
       }
     }
+
     List<Test> newTests = testRequest.getTests();
     newTests.get(0).setDocuments(createDocumentList);
     TestRequest.builder().tests(newTests).requestInfo(testRequest.getRequestInfo()).build();
