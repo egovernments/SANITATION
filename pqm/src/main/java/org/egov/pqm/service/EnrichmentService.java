@@ -44,8 +44,12 @@ public class EnrichmentService {
   @Autowired
   private TestRepository testRepository;
 
+
   public void enrichPQMCreateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
+    Test test = testRequest.getTests().get(0);
+    UUID uuid = UUID.randomUUID();
+    test.setId(uuid.toString());
     setIdgenIds(testRequest);
     setAuditDetails(testRequest, true);
     setWorkflowStatus(testRequest);
@@ -66,6 +70,9 @@ public class EnrichmentService {
 
   public void enrichPQMCreateRequestForLabTest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
+    Test test = testRequest.getTests().get(0);
+    UUID uuid = UUID.randomUUID();
+    test.setId(uuid.toString());
     setIdgenIds(testRequest);
     setAuditDetails(testRequest, true);
     testRequest.getTests().get(0).setStatus(PENDING);
@@ -106,7 +113,7 @@ public class EnrichmentService {
       for (Document document : documentList) {
         if (document.getId() == null && document.getFileStoreId() != null) {
           AuditDetails auditDetails = setAuditDetails(testRequest, isCreate);
-          document.setTestId(testRequest.getTests().get(0).getId());
+          document.setTestId(testRequest.getTests().get(0).getTestId());
           document.setId(String.valueOf(UUID.randomUUID()));
           document.setTenantId(testRequest.getTests().get(0).getTenantId());
           document.setAuditDetails(auditDetails);
@@ -118,7 +125,7 @@ public class EnrichmentService {
   private void setTestCriteriaDetails(TestRequest testRequest) {
     List<QualityCriteria> qualityCriteriaList = testRequest.getTests().get(0).getQualityCriteria();
     for (QualityCriteria qualityCriteria : qualityCriteriaList) {
-      qualityCriteria.setTestId(testRequest.getTests().get(0).getId());
+      qualityCriteria.setTestId(testRequest.getTests().get(0).getTestId());
       qualityCriteria.setId(String.valueOf(UUID.randomUUID()));
       qualityCriteria.setResultStatus(PENDING);
     }
@@ -174,7 +181,7 @@ public class EnrichmentService {
   private void setIdgenIds(TestRequest testRequest) {
     String id = getId(testRequest.getRequestInfo(), testRequest.getTests().get(0).getTenantId(),
         config.getIdName(), config.getIdFormat());
-    testRequest.getTests().get(0).setId(id);
+    testRequest.getTests().get(0).setTestId(id);
   }
 
 

@@ -57,7 +57,7 @@ public class PqmController {
       Test test = pqmService.update(testRequest);
       List<Test> testList = new ArrayList<>();
       testList.add(test);
-      TestResponse response = TestResponse.builder().tests(testList).responseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(testRequest.getRequestInfo(),true)).build();
+    TestResponse response = TestResponse.builder().tests(testList).responseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(testRequest.getRequestInfo(),true)).build();
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
   }
 

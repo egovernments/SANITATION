@@ -91,7 +91,7 @@ public class ActionValidator {
 		Map<String, String> errorMap = new HashMap<>();
 		Test test = request.getTests().get(0);
 		
-		if( !workflowService.isStateUpdatable(String.valueOf(test.getStatus()), businessService)&& test.getId() == null) {
+		if( !workflowService.isStateUpdatable(String.valueOf(test.getStatus()), businessService)&& test.getTestId() == null) {
 				errorMap.put(ErrorConstants.UPDATE_ERROR, "Id of Application cannot be null");
 		}
 		if (!errorMap.isEmpty())

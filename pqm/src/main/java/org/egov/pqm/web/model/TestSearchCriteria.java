@@ -17,8 +17,11 @@ import lombok.NoArgsConstructor;
 public class TestSearchCriteria {
 
   @JsonProperty("ids")
-  @Valid
   private List<String> ids = null;
+
+  @JsonProperty("testIds")
+  @Valid
+  private List<String> testIds = null;
 
   @JsonProperty("tenantId")
   private String tenantId = null;
@@ -53,7 +56,7 @@ public class TestSearchCriteria {
   private String status = null;
 
   @JsonProperty("testType")
-  private String testType = null;
+  private String sourceType = null;
 
   @JsonProperty("fromDate")
   private Long fromDate = null;

@@ -44,14 +44,18 @@ public class TestQueryBuilder {
 				preparedStmtList.add(criteria.getTenantId());
 			}
 		}
-		/*
-		 * Enable part search by application number of fsm application
-		 */
 		List<String> ids = criteria.getIds();
 		if (!CollectionUtils.isEmpty(ids)) {
 			addClauseIfRequired(preparedStmtList, builder);
 			builder.append(" test.id IN (").append(createQuery(ids)).append(")");
 			addToPreparedStatement(preparedStmtList, ids);
+		}
+
+		List<String> testIds = criteria.getTestIds();
+		if (!CollectionUtils.isEmpty(testIds)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" test.testId IN (").append(createQuery(testIds)).append(")");
+			addToPreparedStatement(preparedStmtList, testIds);
 		}
 
 		List<String> testCodes = criteria.getTestCode();
@@ -112,10 +116,10 @@ public class TestQueryBuilder {
 
 		}
 		
-		if (criteria.getTestType() != null) {
+		if (criteria.getSourceType() != null) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" test.testType=? ");
-			preparedStmtList.add(criteria.getTestType());
+			builder.append(" test.sourceType=? ");
+			preparedStmtList.add(criteria.getSourceType());
 
 		}
 
@@ -223,8 +227,8 @@ public class TestQueryBuilder {
 		else if (criteria.getSortBy() == Pagination.SortBy.wfStatus)
 			builder.append(" ORDER BY test.wfStatus ");
 
-		else if (criteria.getSortBy() == Pagination.SortBy.id)
-			builder.append(" ORDER BY test.id ");
+		else if (criteria.getSortBy() == Pagination.SortBy.testId)
+			builder.append(" ORDER BY test.testId ");
 
 		else if (criteria.getSortBy() == Pagination.SortBy.scheduledDate)
 			builder.append(" ORDER BY test.scheduledDate ");
