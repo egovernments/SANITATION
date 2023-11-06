@@ -87,7 +87,7 @@ const QualityParameter = ({onSelect,formData }) => {
         <div>
             {!showComponent && (
                 <React.Fragment>
-                    <h1>{t("ES_TQM_CHOOSE_SUITABLE_OPTION")}</h1>
+                    <div className="suitableOption">{t("ES_TQM_CHOOSE_OPTION")}</div>
                 </React.Fragment>
             )
             }
