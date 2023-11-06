@@ -77,7 +77,7 @@ public class EnrichmentService {
     setAuditDetails(testRequest, true);
     testRequest.getTests().get(0).setStatus(PENDING);
     setInitialWorkflowAction(testRequest.getTests().get(0));
-    enrichDocument(testRequest, true);
+//    enrichDocument(testRequest, true);
     setTestCriteriaDetails(testRequest);
   }
 
@@ -109,7 +109,7 @@ public class EnrichmentService {
 
   private void enrichDocument(TestRequest testRequest, boolean isCreate) {
     List<Document> documentList = testRequest.getTests().get(0).getDocuments();
-    if (!documentList.isEmpty()) {
+    if (documentList!= null && !documentList.isEmpty()) {
       for (Document document : documentList) {
         if (document.getId() == null && document.getFileStoreId() != null) {
           AuditDetails auditDetails = setAuditDetails(testRequest, isCreate);
