@@ -1,64 +1,63 @@
-import React, {useMemo} from "react";
+import React, { useMemo,useState,useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Header, InboxSearchComposer,Loader } from "@egovernments/digit-ui-react-components";
-import { tqmSearchConfigPlantOperator } from "./configPlantOperator";
-import { tqmSearchConfigUlbAdmin } from "./configUlbAdmin";
+import { Header, InboxSearchComposer, Loader } from "@egovernments/digit-ui-react-components";
+// import { tqmSearchConfigPlantOperator } from "./configPlantOperator";
+// import { tqmSearchConfigUlbAdmin } from "./configUlbAdmin";
 const TqmSearch = () => {
-    const { t } = useTranslation();
-
-    const configModuleName = Digit.Utils.getConfigModuleName()
-    const tenant = Digit.ULBService.getStateId();
+  const { t } = useTranslation();
+  const configModuleName = Digit.Utils.getConfigModuleName()
+  const tenant = Digit.ULBService.getStateId();
+  const [config, setConfig] = useState();
+  if (Digit.Utils.tqm.isPlantOperatorLoggedIn()) {
     const { isLoading, data } = Digit.Hooks.useCustomMDMS(
-        tenant,
-        configModuleName,
-        [
-            {
-                "name": "SearchEstimateWMSConfig"
-            }
-        ],
+      tenant,
+      "commonSanitationUiConfig",
+      [
         {
-          select: (data) => {
-              if(Digit.Utils.tqm.isPlantOperatorLoggedIn()){
-                return tqmSearchConfigPlantOperator?.tqmSearchConfig?.[0]
-              }
-              if(Digit.Utils.tqm.isUlbAdminLoggedIn()){
-                return tqmSearchConfigUlbAdmin?.tqmSearchConfig?.[0]
-              }
-              // return tqmSearchConfigPlantOperator?.tqmSearchConfig?.[0]
-              return {
-                
-              }
-            },
+          "name": "SearchPlantOperatorConfig"
         }
+      ],
+      {
+        select: (data) => {
+          return data?.commonSanitationUiConfig?.SearchPlantOperatorConfig?.[0];
+        }
+      }
     );
-    // const configs = Digit.Utils.configUpdater(searchConfigMuktaFuzzy())
-    
-    // const configs = data?.[configModuleName].SearchEstimateWMSConfig?.[0]
-    let configs = useMemo(
-        () => Digit.Utils.preProcessMDMSConfigInboxSearch(t, data, "sections.search.uiConfig.fields",{
-          updateDependent : [
-            {
-              key : "fromProposalDate",
-              value : [new Date().toISOString().split("T")[0]]
-            },
-            {
-              key : "toProposalDate",
-              value : [new Date().toISOString().split("T")[0]]
-            }
-          ]
-        }
-        ),[data]);
-    
-
+    useEffect(() => {
+      setConfig(data);
+    }, data)
     if (isLoading) return <Loader />
-    return (
-        <React.Fragment>
-        <Header className="works-header-search">{t(configs?.label)}</Header>
-            <div className="inbox-search-wrapper">
-                <InboxSearchComposer configs={configs}></InboxSearchComposer>
-            </div>
-        </React.Fragment>
-    )
+  }
+  if (Digit.Utils.tqm.isUlbAdminLoggedIn()) {
+    const { isLoading, data } = Digit.Hooks.useCustomMDMS(
+
+      tenant,
+      "commonSanitationUiConfig",
+      [
+        {
+          "name": "SearchUlbAdminConfig"
+        }
+      ],
+      {
+        select: (data) => {
+          return data?.commonSanitationUiConfig?.SearchUlbAdminConfig?.[0];
+        }
+      }
+    );
+    useEffect(() => {
+      setConfig(data);
+    }, data)
+    if (isLoading) return <Loader />
+  }
+
+  return (
+    <React.Fragment>
+      <Header className="works-header-search">{t(config?.label)}</Header>
+      <div className="inbox-search-wrapper">
+        <InboxSearchComposer configs={config}></InboxSearchComposer>
+      </div>
+    </React.Fragment>
+  )
 }
 
 export default TqmSearch;
