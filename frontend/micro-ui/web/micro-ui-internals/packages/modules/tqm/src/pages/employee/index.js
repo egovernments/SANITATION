@@ -26,6 +26,11 @@ const TqmBreadCrumb = ({ location, defaultPath }) => {
       content: t("TQM_HOME"),
       show: true,
     },
+    {
+      path: `/${window?.contextPath}/employee/tqm/view-test-results`,
+      content: t("TQM_TEST_INBOX"),
+      show: true,
+    },
   ];
   return <BreadCrumb className="workbench-bredcrumb" crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} />;
 };

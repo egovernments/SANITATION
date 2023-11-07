@@ -43,6 +43,7 @@ const TQMSummary = () => {
                   component: "TqmParameterReadings",
                   props: {
                     reading: data?.reading,
+                    responseData: data?.testResponse
                   },
                 },
               ],

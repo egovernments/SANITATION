@@ -48,19 +48,23 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
   let sla = 0;
 
   if (type !== "adhoc") {
-    try{
-      workflowData = await Digit.WorkflowService.getDetailsByIdWorks({ tenantId, id, moduleCode: "PQM" });
-      sla = Math.round(workflowData?.processInstances?.[0]?.businesssServiceSla / (24 * 60 * 60 * 1000));
-    }catch(err){
-      console.error("error fetching workflow data")
+    try {
+      const currentDate = new Date();
+      const targetTimestamp = testResponse?.scheduledDate;
+      const targetDate = new Date(targetTimestamp);
+      const remainingSLA = targetDate - currentDate;
+      sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
+    } catch (err) {
+      console.error("error fetching workflow data");
     }
   }
 
+  console.log("testRESPONSE", testResponse);
   return {
     details: [
       {
         key: t("ES_TQM_LABEL_TEST_ID"),
-        value: testResponse?.id || "N/A",
+        value: testResponse?.testId || "N/A",
       },
       {
         key: t("ES_TQM_LABEL_PLANT_NAME"),
@@ -93,7 +97,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
         key: t("ES_TQM_LABEL_SLA"),
         isSla: true,
         isSuccess: Math.sign(sla) === -1 ? false : true,
-        value: sla ? sla : "0",
+        value: sla ? `${sla} ${t("COMMON_DAYS")}` : `0 ${t("COMMON_DAYS")}`,
       },
     ],
     documents: testResponse?.documents?.map((i) => {
@@ -102,7 +106,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
     tableData: combinedData.length !== 0 ? combinedData : null,
     testSummary:
       combinedData.length !== 0
-        ? ["", "", "", t("ES_TQM_LABEL_RESULT_SUMMARY"), !!combinedData.find((i) => i.status !== "PASS") === false ? t("ES_TQM_LABEL_RESULT_PASS") : t("ES_TQM_LABEL_RESULT_FAIL")]
+        ? ["", "", "", t("ES_TQM_LABEL_RESULT_SUMMARY"), testResponse.status === "PASS" ? t("ES_TQM_LABEL_RESULT_PASS") : testResponse.status === "FAIL" ? t("ES_TQM_LABEL_RESULT_FAIL") : t("TQM_TEST_STATUS_PENDING") ]
         : null,
     wfStatus: testResponse?.wfStatus,
     testResponse,

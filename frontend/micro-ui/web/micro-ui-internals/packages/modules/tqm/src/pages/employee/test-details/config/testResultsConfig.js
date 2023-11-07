@@ -12,7 +12,6 @@ export const testResultsConfig = ({ t, testDetailsData, testCriteriaData }) => {
       populators: {
         name: i?.code,
         error: t("ES_TQM_TEST_PARAM_ERROR_MESSAGE"),
-        validation: { min: 0, max: 10 },
       },
     };
   });

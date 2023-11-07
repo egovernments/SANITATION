@@ -12,7 +12,7 @@ import { CustomisedHooks } from "./hooks";
 // TQM specific components
 import TqmInbox from "./pages/employee/inbox/TqmInbox";
 import TestDetails from "./pages/employee/test-details/TestDetails";
-import CardReading from "./components/CardReadings";
+import { MultiCardReading } from "./components/CardReadings";
 import Response from "./pages/employee/Response";
 import ViewTestResults from "./pages/employee/test-results/ViewTestResults";
 import DetailsTable from "./components/DetailsTable";
@@ -53,7 +53,7 @@ const componentsToRegister = {
   TQMLanding,
   TqmInbox,
   TestDetails,
-  TqmCardReading: CardReading,
+  TqmCardReading: MultiCardReading,
   TqmResponse: Response,
   TqmViewTestResults: ViewTestResults,
   TqmDetailsTable: DetailsTable,
