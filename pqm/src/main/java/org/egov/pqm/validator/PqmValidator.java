@@ -19,31 +19,58 @@ import org.springframework.stereotype.Component;
 @Component
 public class PqmValidator {
 
-  public void validateTestRequestBody(TestRequest testRequest) {
+  public void validateTestCriteriaAndDocument(TestRequest testRequest) {
     validateTestCriteria(testRequest);
-    validateTestType(testRequest);
-    validateDocumentFields(testRequest);
+    if (Objects.equals(testRequest.getTests().get(0).getSourceType(), SourceType.LAB_ADHOC)
+        || (testRequest.getTests().get(0).getWorkflow() != null && Objects.equals(
+        testRequest.getTests().get(0).getWorkflow().getAction(), UPDATE_RESULT))
+    ) {
+      validateDocumentFields(testRequest);
+    } else {
+      validateDocumentPresence(testRequest);
+    }
   }
 
-  private void validateTestType(TestRequest testRequest) {
+  private void validateDocumentPresence(TestRequest testRequest) {
+    if (testRequest.getTests().get(0).getDocuments() != null) {
+      if (!testRequest.getTests().get(0).getDocuments().isEmpty()) {
+        throw new CustomException("DOCUMENT IS ONLY ATTACHED IN UPDATE_RESULT ACTION ",
+            "Document is only attached in update result action");
+      }
+    }
+  }
+
+  public void validateTestTypeAdhocCreate(TestRequest testRequest) {
     if (testRequest.getTests().get(0).getSourceType() == null
-        || testRequest.getTests().get(0).getSourceType() == SourceType.IOT) {
-      throw new CustomException(TEST_TYPE_CAN_ONLY_BE_LAB, "test type can only be lab");
+        || testRequest.getTests().get(0).getSourceType() == SourceType.IOT_SCHEDULED
+        || testRequest.getTests().get(0).getSourceType() == SourceType.LAB_SCHEDULED) {
+      throw new CustomException(TEST_TYPE_CAN_ONLY_BE_LAB_ADHOC_CODE,
+          TEST_TYPE_CAN_ONLY_BE_LAB_ADHOC_MESSAGE);
+    }
+  }
+
+  public void validateTestTypeScheduleCreateAndUpdate(TestRequest testRequest) {
+    if (testRequest.getTests().get(0).getSourceType() == null
+        || testRequest.getTests().get(0).getSourceType() == SourceType.IOT_SCHEDULED
+        || testRequest.getTests().get(0).getSourceType() == SourceType.LAB_ADHOC) {
+      throw new CustomException(TEST_TYPE_CAN_ONLY_BE_LAB_SCHEDULED_CODE,
+          TEST_TYPE_CAN_ONLY_BE_LAB_SCHEDULED_MESSAGE);
     }
   }
 
   private void validateTestCriteria(TestRequest testRequest) {
-    if (testRequest.getTests().get(0).getQualityCriteria() == null || testRequest.getTests().get(0)
+    if (testRequest.getTests().get(0).getQualityCriteria() == null || testRequest.getTests()
+        .get(0)
         .getQualityCriteria().isEmpty()) {
       throw new CustomException(TEST_CRITERIA_NOT_PRESENT, "test criteria not present");
     }
   }
 
   private void validateDocumentFields(TestRequest testRequest) {
-    List<Document> documentList = testRequest.getTests().get(0).getDocuments();
     boolean isValid = true;
-    if (!documentList.isEmpty()) {
-      for (Document document : documentList) {
+    if (testRequest.getTests().get(0).getDocuments() != null && !testRequest.getTests().get(0)
+        .getDocuments().isEmpty()) {
+      for (Document document : testRequest.getTests().get(0).getDocuments()) {
         if (document.getFileStoreId() != null) {
           if (!REGEX_METACHARACTER_PATTERN.matcher(document.getFileStoreId()).find()) {
             throw new CustomException(FILE_STORE_ID_INVALID_CODE, FILE_STORE_ID_INVALID_MESSAGE);
@@ -55,7 +82,8 @@ public class PqmValidator {
     }
   }
 
-  public void validateTestRequestFieldsWhileupdate(List<Test> testList, List<Test> oldTestList) {
+  public void validateTestRequestFieldsWhileupdate
+      (List<Test> testList, List<Test> oldTestList) {
     Test test = testList.get(0);
     Test oldTest = oldTestList.get(0);
     if (test.getSourceType() != oldTest.getSourceType()) {
@@ -82,7 +110,7 @@ public class PqmValidator {
         throw new CustomException(STATUS_ERROR_CODE, STATUS_ERROR_MESSAGE);
       }
     }
-    if(!test.getId().equals(oldTest.getId())){
+    if (!test.getId().equals(oldTest.getId())) {
       throw new CustomException(ID_CHANGED_ERROR, ID_CHANGED_MESSAGE);
     }
   }
