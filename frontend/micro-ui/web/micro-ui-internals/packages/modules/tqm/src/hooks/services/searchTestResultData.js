@@ -53,7 +53,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
       const targetTimestamp = testResponse?.scheduledDate;
       const targetDate = new Date(targetTimestamp);
       const remainingSLA = targetDate - currentDate;
-      sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
+      sla = targetTimestamp ? Math.round(remainingSLA / (24 * 60 * 60 * 1000)) : 0;
     } catch (err) {
       console.error("error fetching workflow data");
     }
