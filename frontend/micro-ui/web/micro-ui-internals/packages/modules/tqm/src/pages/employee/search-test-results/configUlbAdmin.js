@@ -82,7 +82,7 @@ export const tqmSearchConfigUlbAdmin = {
                   optionsKey: 'i18nKey',
                   allowMultiSelect: true,
                   mdmsv2:{
-                    schemaCode:"PQM.ProcessType",
+                    schemaCode:"PQM.Process",
                   }
                 },
               },
@@ -124,7 +124,7 @@ export const tqmSearchConfigUlbAdmin = {
             columns: [
               {
                 label: 'TQM_TEST_ID',
-                jsonPath: 'id',
+                jsonPath: 'testId',
                 additionalCustomization: true,
               },
               {

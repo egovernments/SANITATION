@@ -121,6 +121,7 @@ const DetailsCard = ({ data, serviceRequestIdKey, linkPrefix, handleSelect, sele
                   handleDetailCardClick(object)
                 }}
                 className={'header-btn'}
+                style={{width:"100%"}}
                 textStyles={{fontWeight:700}}
               />
             )}

@@ -37,7 +37,7 @@ const Notification = ({ actions }) => {
             <div className="headerContainer">
                 <NotificationBell height={25} width={25} fill="#F47738" className={"bell-icon"} />
                 <Header >{t("ES_TQM_NOTIFICATIONS")}</Header>
-                <div className="clear-all-link" onClick={handleClearAll}>{t("ES_COMMON_CLEAR_ALL")}</div>
+                <div className="clear-all-link" onClick={handleClearAll}>{t("ES_CLEAR_ALL")}</div>
             </div>
             {displayNotifications.length > 0 &&
                 <div className="NotificationItem">
@@ -55,7 +55,7 @@ const Notification = ({ actions }) => {
                                         <p>{item.timePastAfterEventCreation}</p>
                                     </div>
                                     <div className="button-container">
-                                    <Link to={`/${window.contextPath}/employee/tqm/view-test-results?id=${item.actionUrl.split('id=')[1]}`}>
+                                    <Link to={`/${window.contextPath}/employee/tqm/view-test-results?id=${item?.actionUrl?.split('id=')[1]}`}>
                                         <Button className={"header-btn viewDetailsButton"} label={t("VIEW_TEST_DETAILS")} variation="secondary" type="button"/>
                                     </Link>
                                     </div>
@@ -65,7 +65,7 @@ const Notification = ({ actions }) => {
                         {notifications.length > 5 && (
                             <div className="view-all-button-container" onClick={toggleShowAll}>
                                 <button className="view-all-button">
-                                    {showall ? t("ES_SHOW_LESS") : t("DASHBOARD_VIEW_ALL_LABEL")}
+                                    {showall ? t("ES_SHOW_LESS") : t("ES_VIEW_ALL")}
                                 </button>
                             </div>
                         )}

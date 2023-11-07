@@ -33,10 +33,10 @@ const TqmAdminNotification = () => {
 
   const mappedActions = data.events.map(event => {
     return {
-      header: event?.eventCategory,
-      eventNotificationText: event?.description,
-      actionUrl: event?.actions?.actionUrls?.[0].actionUrl,
-      code: event?.actions?.actionUrls?.[0].code,
+      header: event?.eventCategory || t("ES_DEFAULT_NOTIFICATION"),  
+      eventNotificationText: event?.description,  
+      actionUrl: event?.actions?.actionUrls?.[0].actionUrl, 
+      code: event?.actions?.actionUrls?.[0].code,  
       timePastAfterEventCreation: formatTimeAgo(event?.auditDetails?.createdTime),
 
     };

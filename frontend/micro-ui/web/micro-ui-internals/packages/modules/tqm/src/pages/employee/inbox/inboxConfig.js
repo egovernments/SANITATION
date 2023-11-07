@@ -89,7 +89,7 @@ export const tqmInboxConfig = {
             "columns": [
               {
                 "label": "TQM_TEST_ID",
-                "jsonPath": "businessObject.id",
+                "jsonPath": "businessObject.testId",
                 additionalCustomization:true
               },
               {
