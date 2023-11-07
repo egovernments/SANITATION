@@ -15,6 +15,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Test {
 
+	@JsonProperty("id")
+	private String id;
+
 	@JsonProperty("testId")
 	private String testId;
 
