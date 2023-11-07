@@ -15,7 +15,7 @@ function DocumentsPreview({ documents, svgStyles = {} }) {
 
   useEffect(() => {
     if (filesArray?.length) {
-      Digit.UploadServices.Filefetch(filesArray, Digit.ULBService.getStateId()).then((res) => {
+      Digit.UploadServices.Filefetch(filesArray, Digit.ULBService.getCurrentTenantId()).then((res) => {
         setPdfFiles(res?.data);
       });
     }
@@ -24,7 +24,7 @@ function DocumentsPreview({ documents, svgStyles = {} }) {
   return (
     <div>
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start" }}>
-        {documents.length > 0 ? (
+        {documents?.length > 0 ? (
           documents?.map((document, index) => (
             <React.Fragment key={index}>
               <a target="_" href={pdfFiles[document?.value]?.split(",")[0]} style={{ minWidth: "80px", marginRight: "10px", maxWidth: "100px", height: "auto" }} key={index}>

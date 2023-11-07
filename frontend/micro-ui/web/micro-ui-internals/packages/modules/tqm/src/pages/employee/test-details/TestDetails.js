@@ -39,21 +39,7 @@ function TestDetails() {
                   type: "COMPONENT",
                   component: "TqmCardReading",
                   props: {
-                    title: "Quality Parameter 1 (in UoM)",
-                  },
-                },
-                {
-                  type: "COMPONENT",
-                  component: "TqmCardReading",
-                  props: {
-                    title: "Quality Parameter 2 (in UoM)",
-                  },
-                },
-                {
-                  type: "COMPONENT",
-                  component: "TqmCardReading",
-                  props: {
-                    title: "Quality Parameter 3 (in UoM)",
+                    parameterData: data?.testResponse?.testCriteria || null,
                   },
                 },
               ],
@@ -62,6 +48,7 @@ function TestDetails() {
         },
         response: data.testResponse,
       }),
+      staleTime: 0,
     },
   });
 

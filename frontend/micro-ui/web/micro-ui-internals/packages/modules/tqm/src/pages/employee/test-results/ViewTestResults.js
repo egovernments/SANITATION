@@ -95,6 +95,7 @@ function ViewTestResults() {
           },
         ],
       }),
+      staleTime: 0,
     },
   });
 

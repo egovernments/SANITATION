@@ -11,14 +11,14 @@ export const viewTestSummary = async ({ t, id }) => {
       },
     },
   });
-  
+
   const testResponse = response?.tests?.[0];
 
   return {
     details: [
       {
         key: "ES_TQM_LABEL_TEST_ID",
-        value: testResponse?.id || "N/A",
+        value: testResponse?.testId || "N/A",
       },
       {
         key: "ES_TQM_LABEL_PLANT_NAME",
@@ -60,5 +60,6 @@ export const viewTestSummary = async ({ t, id }) => {
           readings: testResponse?.testCriteria,
         }
       : null,
+    testResponse: testResponse,
   };
 };
