@@ -3,11 +3,11 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
     url: "/pqm-service/v1/_search",
     body: {
       pagination: {
-        sortBy: "id",
+        sortBy: "testId",
         sortOrder: "ASC",
       },
       testSearchCriteria: {
-        ids: [id],
+        testIds: [id],
       },
     },
   });

@@ -30,8 +30,8 @@ function TQMPendingTask(props) {
         const tasks = items.map((i) => {
           return {
             icon: <TreatmentQualityIcon />,
-            id: i?.businessObject?.id,
-            title: i?.businessObject?.id,
+            id: i?.businessObject?.businessId,
+            title: i?.businessObject?.businessId,
             action: i?.ProcessInstance?.state?.actions?.[0]?.action,
             date: i?.businessObject?.serviceSla,
           };
