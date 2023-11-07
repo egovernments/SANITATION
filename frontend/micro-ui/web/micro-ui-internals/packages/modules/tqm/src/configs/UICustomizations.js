@@ -248,6 +248,7 @@ export const UICustomizations = {
     preProcess: (data,additionalDetails) => {
       
       const { id,plantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
+      
       //ids
       data.body.inbox.moduleSearchCriteria.testIds = id ?  [id] : null
 
@@ -257,11 +258,12 @@ export const UICustomizations = {
       //stage
       data.body.inbox.moduleSearchCriteria.stageCodes = stage?.map(st => st.code)
 
+      
       //materialcodes
-      data.body.inbox.moduleSearchCriteria.materialCodes = Object.keys(materialCodes?materialCodes:{})?.filter(key => materialCodes[key])
+      data.body.inbox.moduleSearchCriteria.materialCodes = materialCodes?.length > 0 ? materialCodes?.map(row => row?.code) : []
 
       //processcodes
-      data.body.inbox.moduleSearchCriteria.processCodes = Object.keys(processCodes?processCodes:{})?.filter(key => processCodes[key])
+      data.body.inbox.moduleSearchCriteria.processCodes = processCodes?.length > 0 ? processCodes?.map(row => row?.code) : []
 
       //status
       data.body.inbox.moduleSearchCriteria.status = status ? Object?.keys(status)?.filter(key=>status[key]) : null
