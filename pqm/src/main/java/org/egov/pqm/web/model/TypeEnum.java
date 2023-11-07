@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum TestType {
- LAB,
-  IOT
+public enum TypeEnum {
+  LAB, IOT
 }

@@ -10,9 +10,9 @@ import org.egov.pqm.anomaly.finder.web.model.AnomalyType;
 import org.egov.pqm.anomaly.finder.web.model.AuditDetails;
 import org.egov.pqm.anomaly.finder.web.model.PqmAnomaly;
 import org.egov.pqm.anomaly.finder.web.model.PqmAnomalyRequest;
+import org.egov.pqm.anomaly.finder.web.model.SourceType;
 import org.egov.pqm.anomaly.finder.web.model.Test;
 import org.egov.pqm.anomaly.finder.web.model.TestRequest;
-import org.egov.pqm.anomaly.finder.web.model.TestType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +44,9 @@ public class EnrichmentService {
 	        AuditDetails auditDetails = pqmAnomalyFinderUtil.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
 
 	        AnomalyType anomalyType = null;
-	        if (test.getTestType().equals(TestType.LAB))
+	        if (test.getSourceType().equals(SourceType.LAB))
 	            anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
-	        else if (test.getTestType().equals(TestType.IOT))
+	        else if (test.getSourceType().equals(SourceType.IOT))
 	            anomalyType = AnomalyType.IOT_DEVICE_RESULTS_NOT_AS_PER_BENCHMARK;
 	        else
 	            anomalyType = AnomalyType.LAB_RESULTS_AND_DEVICE_RESULTS_DO_NOT_MATCH;
@@ -54,7 +54,7 @@ public class EnrichmentService {
 	        pqmAnomalys.add(
 	            PqmAnomaly.builder()
 	                .id(UUID.randomUUID().toString())
-	                .testId(test.getId())
+	                .testId(test.getTestId())
 	                .tenantId(test.getTenantId())
 	                .referenceId("IotID")  // Replace with the actual referenceId logic
 	                .anomalyType(anomalyType)

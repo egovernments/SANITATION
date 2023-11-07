@@ -8,11 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.egov.pqm.web.model.AuditDetails;
-import org.egov.pqm.web.model.QualityCriteria;
-import org.egov.pqm.web.model.Test;
-import org.egov.pqm.web.model.TestResultStatus;
-import org.egov.pqm.web.model.TestType;
+import org.egov.pqm.web.model.*;
 import org.egov.tracer.model.CustomException;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +45,11 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 		Map<String, Test> testMap = new LinkedHashMap<>();
 		this.setFullCount(0);
 		while (rs.next()) {
-			String id = rs.getString("id");
-			Test currentTest = testMap.get(id);
+			String testId = rs.getString("testId");
+			Test currentTest = testMap.get(testId);
 
 			if (currentTest == null) {
+				String id = rs.getString("id");
 				String tenantId = rs.getString("tenantId");
 				String plantCode = rs.getString("plantCode");
 				String processCode = rs.getString("processCode");
@@ -62,8 +59,9 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 				String statusString = rs.getString("status");
 				TestResultStatus status = TestResultStatus.valueOf(statusString.toUpperCase());
 				String wfStatus = rs.getString("wfStatus");
-				String testTypeString = rs.getString("testType");
-				TestType testType = TestType.valueOf(testTypeString.toUpperCase());
+
+				String sourceTypeString = rs.getString("sourceType");
+				SourceType sourceType = SourceType.valueOf(sourceTypeString.toUpperCase());
 				Long scheduledDate = rs.getLong("scheduledDate");
 				Boolean isActive = rs.getBoolean("isActive");
 				this.setFullCount(rs.getInt("full_count"));
@@ -72,13 +70,14 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 						.createdTime(rs.getLong("createdtime")).lastModifiedBy(rs.getString("lastmodifiedby"))
 						.lastModifiedTime(rs.getLong("lastmodifiedtime")).build();
 
-				currentTest = Test.builder().id(id).tenantId(tenantId).plantCode(plantCode).processCode(processCode)
+
+				currentTest = Test.builder().id(id).testId(testId).tenantId(tenantId).plantCode(plantCode).processCode(processCode)
 						.stageCode(stageCode).materialCode(materialCode).deviceCode(deviceCode)
-						.status(status).wfStatus(wfStatus).testType(testType)
+						.status(status).wfStatus(wfStatus).sourceType(sourceType)
 						.scheduledDate(scheduledDate).isActive(isActive).additionalDetails(additionaldetails)
 						.auditDetails(auditdetails).build();
 
-				testMap.put(id, currentTest);
+				testMap.put(testId, currentTest);
 			}
 		}
 

@@ -1,9 +1,12 @@
 package org.egov.pqm.web.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +20,12 @@ public class Test {
 
   @JsonProperty("id")
   private String id;
+
+  @JsonProperty("testId")
+  private String testId;
+
+  @JsonProperty("testCode")
+  private String testCode;
 
   @JsonProperty("tenantId")
   private String tenantId;
@@ -38,6 +47,7 @@ public class Test {
 
   @JsonProperty("testCriteria")
   @Valid
+  @NotNull
   private List<QualityCriteria> qualityCriteria = new ArrayList<>();
 
   @JsonProperty("status")
@@ -47,13 +57,16 @@ public class Test {
   private String wfStatus;
 
   @JsonProperty("testType")
-  private TestType testType;
+  private SourceType sourceType;
 
   @JsonProperty("scheduledDate")
   private Long scheduledDate;
 
   @JsonProperty("isActive")
   private Boolean isActive;
+
+  @JsonProperty("type")
+  private TypeEnum type = null;
 
   @JsonProperty("documents")
   @Valid

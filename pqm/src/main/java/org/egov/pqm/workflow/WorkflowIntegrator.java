@@ -54,7 +54,7 @@ public class WorkflowIntegrator {
 		JSONArray array = new JSONArray();
 		Test test = testRequest.getTests().get(0);
 		JSONObject obj = new JSONObject();
-		obj.put(BUSINESS_ID_KEY, test.getId());
+		obj.put(BUSINESS_ID_KEY, test.getTestId());
 		obj.put(TENANT_ID_KEY, wfTenantId);
 
 		obj.put(BUSINESS_SERVICE_KEY, Constants.PQM_BUSINESS_SERVICE);
@@ -117,7 +117,7 @@ public class WorkflowIntegrator {
 			idStatusMap.put(instanceContext.read(BUSINESS_ID_JOSN_KEY), instanceContext.read(STATUS_JSON_KEY));
 		});
 		// setting the status back to pqm object from wf response
-		test.setWfStatus(idStatusMap.get(test.getId()));
+		test.setWfStatus(idStatusMap.get(test.getTestId()));
 
 	}
 

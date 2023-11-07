@@ -6,6 +6,7 @@ import java.util.TimeZone;
 
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.Pagination;
+import org.egov.pqm.web.model.Pagination.SortBy;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +44,25 @@ public class TestQueryBuilder {
 				preparedStmtList.add(criteria.getTenantId());
 			}
 		}
-		/*
-		 * Enable part search by application number of fsm application
-		 */
 		List<String> ids = criteria.getIds();
 		if (!CollectionUtils.isEmpty(ids)) {
 			addClauseIfRequired(preparedStmtList, builder);
 			builder.append(" test.id IN (").append(createQuery(ids)).append(")");
 			addToPreparedStatement(preparedStmtList, ids);
+		}
+
+		List<String> testIds = criteria.getTestIds();
+		if (!CollectionUtils.isEmpty(testIds)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" test.testId IN (").append(createQuery(testIds)).append(")");
+			addToPreparedStatement(preparedStmtList, testIds);
+		}
+
+		List<String> testCodes = criteria.getTestCode();
+		if (!CollectionUtils.isEmpty(testCodes)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" test.testCode IN (").append(createQuery(testCodes)).append(")");
+			addToPreparedStatement(preparedStmtList, testCodes);
 		}
 		
 		List<String> plantCodes = criteria.getPlantCodes();
@@ -90,11 +102,11 @@ public class TestQueryBuilder {
 
 		}
 
-		if (criteria.getWfStatus() != null) {
+		List<String> wfStatuses = criteria.getWfStatus();
+		if (!CollectionUtils.isEmpty(wfStatuses)) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" test.wfStatus=? ");
-			preparedStmtList.add(criteria.getWfStatus());
-
+			builder.append(" test.wfStatus IN (").append(createQuery(wfStatuses)).append(")");
+			addToPreparedStatement(preparedStmtList, wfStatuses);
 		}
 		
 		if (criteria.getStatus() != null) {
@@ -104,10 +116,10 @@ public class TestQueryBuilder {
 
 		}
 		
-		if (criteria.getTestType() != null) {
+		if (criteria.getSourceType() != null) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" test.testType=? ");
-			preparedStmtList.add(criteria.getTestType());
+			builder.append(" test.sourceType=? ");
+			preparedStmtList.add(criteria.getSourceType());
 
 		}
 
@@ -139,7 +151,7 @@ public class TestQueryBuilder {
 	 * 
 	 * @param query            prepared Query
 	 * @param preparedStmtList values to be replaced on the query
-	 * @param criteria         test search criteria
+	 * @param testSearchRequest         test search criteria
 	 * @return the query by replacing the placeholders with preparedStmtList
 	 */
 	private String addPaginationWrapper(String query, List<Object> preparedStmtList, TestSearchRequest testSearchRequest) {
@@ -215,8 +227,11 @@ public class TestQueryBuilder {
 		else if (criteria.getSortBy() == Pagination.SortBy.wfStatus)
 			builder.append(" ORDER BY test.wfStatus ");
 
-		else if (criteria.getSortBy() == Pagination.SortBy.id)
-			builder.append(" ORDER BY test.id ");
+		else if (criteria.getSortBy() == Pagination.SortBy.testId)
+			builder.append(" ORDER BY test.testId ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.scheduledDate)
+			builder.append(" ORDER BY test.scheduledDate ");
 
 		else if (criteria.getSortBy() == Pagination.SortBy.plantCode)
 			builder.append(" ORDER BY test.plantCode ");

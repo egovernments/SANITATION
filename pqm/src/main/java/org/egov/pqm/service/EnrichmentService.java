@@ -1,10 +1,14 @@
 package org.egov.pqm.service;
 
 
-import static org.egov.pqm.util.Constants.SUBMITTED;
+import static org.egov.pqm.util.Constants.WFSTATUS_SUBMITTED;
 import static org.egov.pqm.web.model.TestResultStatus.PENDING;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +29,7 @@ import org.egov.pqm.web.model.idgen.IdResponse;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.util.CollectionUtils;
 
 
 @Service
@@ -40,53 +44,94 @@ public class EnrichmentService {
   @Autowired
   private TestRepository testRepository;
 
+
   public void enrichPQMCreateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
+    Test test = testRequest.getTests().get(0);
+    UUID uuid = UUID.randomUUID();
+    test.setId(uuid.toString());
     setIdgenIds(testRequest);
     setAuditDetails(testRequest, true);
     setWorkflowStatus(testRequest);
     setTestResultStatus(testRequest);
-    setDocumentsIdAndTestId(testRequest);
-    setTestCriteriaIdAndTestID(testRequest);
+    enrichDocument(testRequest, true);
+    setTestCriteriaDetails(testRequest);
+    setScheduledDate(testRequest);
+  }
+
+  private void setScheduledDate(TestRequest testRequest) {
+    Long time = System.currentTimeMillis();
+    testRequest.getTests().get(0).setScheduledDate(time);
   }
 
   private void setWorkflowStatus(TestRequest testRequest) {
-    testRequest.getTests().get(0).setWfStatus(SUBMITTED);
+    testRequest.getTests().get(0).setWfStatus(WFSTATUS_SUBMITTED);
   }
 
   public void enrichPQMCreateRequestForLabTest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
+    Test test = testRequest.getTests().get(0);
+    UUID uuid = UUID.randomUUID();
+    test.setId(uuid.toString());
     setIdgenIds(testRequest);
     setAuditDetails(testRequest, true);
     testRequest.getTests().get(0).setStatus(PENDING);
     setInitialWorkflowAction(testRequest.getTests().get(0));
-    setDocumentsIdAndTestId(testRequest);
-    setTestCriteriaIdAndTestID(testRequest);
+    enrichDocument(testRequest, true);
+    setTestCriteriaDetails(testRequest);
   }
 
   public void enrichPQMUpdateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setAuditDetails(testRequest, false);
-    setDocumentsIdAndTestId(testRequest);
+    enrichDocument(testRequest, false);
   }
 
-  private void setDocumentsIdAndTestId(TestRequest testRequest) {
+  public void updateDocumentLists(TestRequest testRequest, List<Test> oldTests) {
+    List<Document> requestDocumentList = testRequest.getTests().get(0).getDocuments();
+    List<Document> createDocumentList = new ArrayList<>();
+    Set<String> docIdsSetFromOldTests = new HashSet<>();
+    for (Test oldTest : oldTests) {
+      for (Document doc : oldTest.getDocuments()) {
+        docIdsSetFromOldTests.add(doc.getId());
+      }
+    }
+    for (Document doc : requestDocumentList) {
+      if (!docIdsSetFromOldTests.contains(doc.getId())) {
+        createDocumentList.add(doc);
+      }
+    }
+    List<Test> newTests = testRequest.getTests();
+    newTests.get(0).setDocuments(createDocumentList);
+    TestRequest.builder().tests(newTests).requestInfo(testRequest.getRequestInfo()).build();
+  }
+
+
+  private void enrichDocument(TestRequest testRequest, boolean isCreate) {
     List<Document> documentList = testRequest.getTests().get(0).getDocuments();
-    for (Document doc : documentList) {
-      doc.setTestId(testRequest.getTests().get(0).getId());
-      doc.setId(String.valueOf(UUID.randomUUID()));
+    if (!documentList.isEmpty()) {
+      for (Document document : documentList) {
+        if (document.getId() == null && document.getFileStoreId() != null) {
+          AuditDetails auditDetails = setAuditDetails(testRequest, isCreate);
+          document.setTestId(testRequest.getTests().get(0).getTestId());
+          document.setId(String.valueOf(UUID.randomUUID()));
+          document.setTenantId(testRequest.getTests().get(0).getTenantId());
+          document.setAuditDetails(auditDetails);
+        }
+      }
     }
   }
 
-  private void setTestCriteriaIdAndTestID(TestRequest testRequest) {
+  private void setTestCriteriaDetails(TestRequest testRequest) {
     List<QualityCriteria> qualityCriteriaList = testRequest.getTests().get(0).getQualityCriteria();
     for (QualityCriteria qualityCriteria : qualityCriteriaList) {
-      qualityCriteria.setTestId(testRequest.getTests().get(0).getId());
+      qualityCriteria.setTestId(testRequest.getTests().get(0).getTestId());
       qualityCriteria.setId(String.valueOf(UUID.randomUUID()));
+      qualityCriteria.setResultStatus(PENDING);
     }
   }
 
-  void setTestResultStatus(TestRequest testRequest) {
+  public void setTestResultStatus(TestRequest testRequest) {
     boolean pass = true;
     for (QualityCriteria criteria : testRequest.getTests().get(0).getQualityCriteria()) {
       if (criteria.getResultStatus() == TestResultStatus.FAIL) {
@@ -107,7 +152,7 @@ public class EnrichmentService {
     }
   }
 
-  private void setAuditDetails(TestRequest testRequest, boolean isCreate) {
+  private AuditDetails setAuditDetails(TestRequest testRequest, boolean isCreate) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     AuditDetails auditDetails = null;
     String createdBy = requestInfo.getUserInfo().getUuid();
@@ -126,17 +171,17 @@ public class EnrichmentService {
     testRequest.getTests().get(0).setAuditDetails(auditDetails);
 
     //setting quality criteria AuditDetails
-    for(QualityCriteria criteria: testRequest.getTests().get(0).getQualityCriteria())
-    {
+    for (QualityCriteria criteria : testRequest.getTests().get(0).getQualityCriteria()) {
       criteria.setAuditDetails(auditDetails);
     }
+    return auditDetails;
   }
 
 
   private void setIdgenIds(TestRequest testRequest) {
     String id = getId(testRequest.getRequestInfo(), testRequest.getTests().get(0).getTenantId(),
         config.getIdName(), config.getIdFormat());
-    testRequest.getTests().get(0).setId(id);
+    testRequest.getTests().get(0).setTestId(id);
   }
 
 
