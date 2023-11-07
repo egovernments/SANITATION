@@ -96,7 +96,7 @@ public class NotificationService {
 				Action action = null;
 				List<ActionItem> items = new ArrayList<>();
 
-				String actionLink = pqmAnomalyConfiguration.getTestLink().replace("$id", test.getTestId());
+				String actionLink = pqmAnomalyConfiguration.getTestLink().replace("$testId", test.getTestId());
 				actionLink = pqmAnomalyConfiguration.getUiAppHost() + actionLink;
 				ActionItem item = ActionItem.builder().actionUrl(actionLink).code(pqmAnomalyConfiguration.getViewCode())
 						.build();
