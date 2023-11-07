@@ -1,9 +1,12 @@
 package org.egov.pqm.anomaly.finder.web.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,59 +18,65 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Test {
 
-	@JsonProperty("id")
-	private String id;
+	  @JsonProperty("id")
+	  private String id;
 
-	@JsonProperty("testId")
-	private String testId;
+	  @JsonProperty("testId")
+	  private String testId;
 
-	@JsonProperty("tenantId")
-	private String tenantId;
+	  @JsonProperty("testCode")
+	  private String testCode;
 
-	@JsonProperty("plantCode")
-	private String plantCode;
+	  @JsonProperty("tenantId")
+	  private String tenantId;
 
-	@JsonProperty("processCode")
-	private String processCode;
+	  @JsonProperty("plantCode")
+	  private String plantCode;
 
-	@JsonProperty("stageCode")
-	private String stageCode;
+	  @JsonProperty("processCode")
+	  private String processCode;
 
-	@JsonProperty("materialCode")
-	private String materialCode;
+	  @JsonProperty("stageCode")
+	  private String stageCode;
 
-	@JsonProperty("deviceCode")
-	private String deviceCode;
+	  @JsonProperty("materialCode")
+	  private String materialCode;
 
-	@JsonProperty("testCriteria")
-	@Valid
-	private List<QualityCriteria> qualityCriteria = new ArrayList<>();
+	  @JsonProperty("deviceCode")
+	  private String deviceCode;
 
-	@JsonProperty("status")
-	private TestResultStatus status;
+	  @JsonProperty("testCriteria")
+	  @Valid
+	  private List<QualityCriteria> qualityCriteria = new ArrayList<>();
 
-	@JsonProperty("wfStatus")
-	private String wfStatus;
+	  @JsonProperty("status")
+	  private TestResultStatus status;
 
-	@JsonProperty("testType")
-	private SourceType sourceType;
+	  @JsonProperty("wfStatus")
+	  private String wfStatus;
 
-	@JsonProperty("scheduledDate")
-	private Long scheduledDate;
+	  @JsonProperty("testType")
+	  private SourceType sourceType;
 
-	@JsonProperty("isActive")
-	private Boolean isActive;
+	  @JsonProperty("scheduledDate")
+	  private Long scheduledDate;
 
-	@JsonProperty("documents")
-	@Valid
-	private List<Document> documents;
+	  @JsonProperty("isActive")
+	  private Boolean isActive;
 
-	@JsonProperty("additionalDetails")
-	private Object additionalDetails;
+	  @JsonProperty("type")
+	  private TypeEnum type = null;
 
-	@JsonProperty("auditDetails")
-	private AuditDetails auditDetails;
+	  @JsonProperty("documents")
+	  @Valid
+	  private List<Document> documents;
 
-	@JsonProperty("workflow")
-	private Workflow workflow;
-}
+	  @JsonProperty("additionalDetails")
+	  private Object additionalDetails;
+
+	  @JsonProperty("auditDetails")
+	  private AuditDetails auditDetails;
+
+	  @JsonProperty("workflow")
+	  private Workflow workflow;
+	}

@@ -43,23 +43,24 @@ public class EnrichmentService {
 	        PqmAnomaly pqmAnomaly = new PqmAnomaly();
 	        AuditDetails auditDetails = pqmAnomalyFinderUtil.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
 
-	        AnomalyType anomalyType = null;
-	        if (test.getSourceType().equals(SourceType.LAB))
-	            anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
-	        else if (test.getSourceType().equals(SourceType.IOT))
-	            anomalyType = AnomalyType.IOT_DEVICE_RESULTS_NOT_AS_PER_BENCHMARK;
-	        else
-	            anomalyType = AnomalyType.LAB_RESULTS_AND_DEVICE_RESULTS_DO_NOT_MATCH;
+//	        AnomalyType anomalyType = null;
+//	        if (test.getSourceType().equals(SourceType.LAB))
+//	            anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
+//	        else if (test.getSourceType().equals(SourceType.IOT))
+//	            anomalyType = AnomalyType.IOT_DEVICE_RESULTS_NOT_AS_PER_BENCHMARK;
+//	        else
+//	            anomalyType = AnomalyType.LAB_RESULTS_AND_DEVICE_RESULTS_DO_NOT_MATCH;
+	        AnomalyType anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
 
 	        pqmAnomalys.add(
 	            PqmAnomaly.builder()
 	                .id(UUID.randomUUID().toString())
 	                .testId(test.getTestId())
 	                .tenantId(test.getTenantId())
-	                .referenceId("IotID")  // Replace with the actual referenceId logic
+//	                .referenceId("IotID")  // Replace with the actual referenceId logic
 	                .anomalyType(anomalyType)
-	                .description("Description")
-	                .resolutionStatus("resolutionStatus")
+//	                .description("Description")
+//	                .resolutionStatus("resolutionStatus")
 	                .isActive(test.getIsActive())
 	                .additionalDetails(test.getAdditionalDetails())
 	                .auditDetails(auditDetails)
