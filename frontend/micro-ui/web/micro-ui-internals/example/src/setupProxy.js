@@ -66,6 +66,7 @@ module.exports = function (app) {
     "/mdms-v2/",
     "/pqm/",
     "/pqm-service/",
+    "/trackingservice/",
   ].forEach((location) => app.use(location, createProxy));
   ["/pb-egov-assets"].forEach((location) => app.use(location, assetsProxy));
 };

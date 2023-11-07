@@ -7,7 +7,6 @@ const WorkflowFilter = ({ props, t, populators, formData, responseData }) => {
   const [statusMap, setStatusMap] = useState(null);
 
   function mergeObjects(jsonArray) {
-    console.log("JSON", jsonArray)
     const mergedMap = new Map();
 
     jsonArray?.forEach((obj) => {
@@ -28,7 +27,6 @@ const WorkflowFilter = ({ props, t, populators, formData, responseData }) => {
 
   useEffect(() => {
     if (responseData) {
-      console.log("RESPONSE", responseData)
       setStatusMap(mergeObjects(responseData.statusMap));
     }
   }, [responseData]);

@@ -1,6 +1,6 @@
 const Urls = {
-  mdms_v2:{
-    search:"/mdms-v2/v2/_search"
+  mdms_v2: {
+    search: "/mdms-v2/v2/_search",
   },
   MDMS: `/egov-mdms-service/v1/_search`,
   WorkFlow: `/egov-workflow-v2/egov-wf/businessservice/_search`,
@@ -54,6 +54,7 @@ const Urls = {
     updateDriver: "/vendor/driver/v1/_update",
     vehicleTripCreate: "/vehicle/trip/v1/_create",
     advanceBalanceCalculate: "/fsm-calculator/v1/_advancebalancecalculate",
+    vehicleTripAlertsDetails: "/trackingservice/api/v3/trip/_searchfsm",
   },
 
   payment: {

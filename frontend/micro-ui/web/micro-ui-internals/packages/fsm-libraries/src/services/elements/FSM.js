@@ -1,5 +1,5 @@
-import Urls from '@egovernments/digit-ui-libraries/src/services/atoms/urls';
-import { Request } from '@egovernments/digit-ui-libraries/src/services/atoms/Utils/Request';
+import Urls from "@egovernments/digit-ui-libraries/src/services/atoms/urls";
+import { Request } from "@egovernments/digit-ui-libraries/src/services/atoms/Utils/Request";
 
 export const FSMService = {
   search: (tenantId, filters = {}) =>
@@ -168,6 +168,15 @@ export const FSMService = {
   advanceBalanceCalculate: (tenantId, details) =>
     Request({
       url: Urls.fsm.advanceBalanceCalculate,
+      useCache: false,
+      userService: true,
+      method: "POST",
+      params: { tenantId, ...details },
+      auth: true,
+    }),
+  vehicleTripAlertsDetails: (tenantId, details) =>
+    Request({
+      url: Urls.fsm.vehicleTripAlertsDetails,
       useCache: false,
       userService: true,
       method: "POST",

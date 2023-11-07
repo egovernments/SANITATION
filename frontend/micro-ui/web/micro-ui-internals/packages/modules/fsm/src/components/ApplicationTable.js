@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import { Button, CloseSvg, Modal } from "@egovernments/digit-ui-react-components";
+import React, { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 function formatDate(dateString) {
@@ -21,8 +22,10 @@ function formatTime(dateString) {
 
 export const ApplicationTable = ({ detail }) => {
   const { t } = useTranslation();
-  console.log("detail", detail);
-  // const tripData = detail?.flatMap((i) => i?.tripDetails);
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const userInfo = Digit.UserService.getUser();
+  const userid = userInfo?.info?.id;
+  const [showModal, setShowModal] = useState(null);
   const filterData = detail?.map((i) => ({
     tripid: i?.id || "N/A",
     tripstatus: i?.status || "N/A",
@@ -47,6 +50,13 @@ export const ApplicationTable = ({ detail }) => {
 
   let rowData = [];
 
+  const onButtonClick = ({ id }) => {
+    setShowModal(id);
+  };
+
+  const closeModal = () => {
+    setShowModal(null);
+  };
   return (
     <div className="fsm-table-alerts-container">
       {/* Here Render the table for adjustment amount details detail.isTable is true for that table*/}
@@ -82,15 +92,36 @@ export const ApplicationTable = ({ detail }) => {
                   {Object.keys(row).map((key, colIndex) => (
                     <td className="data">
                       {key === "tripstatus" ? (
-                        <span className={row[key] === "Completed" ? "sla-cell-success" : row[key] === "Ongoing" ? "sla-cell-warning" : "sla-cell-error"}>{t(row[key] || "NA")}</span>
+                        <span className={row[key] === "Completed" ? "sla-cell-success" : row[key] === "Ongoing" ? "sla-cell-warning" : "sla-cell-error"}>
+                          {t(row[key] || "NA")}
+                        </span>
+                      ) : key === "route" ? (
+                        <Button variation="secondary" label="View Route" onButtonClick={() => onButtonClick({ id: row.tripid })} />
                       ) : (
                         row[key]
                       )}
-                      {console.log("row[key]", row[key])}
                     </td>
                   ))}
                 </tr>
-                {/* <hr className="underline" /> */}
+                {showModal && (
+                  <Modal
+                    popupStyles={{ width: "70%" }}
+                    hideSubmit={true}
+                    headerBarEnd={
+                      <div className="icon-bg-secondary" onClick={closeModal}>
+                        <CloseSvg />
+                      </div>
+                    }
+                    children={
+                      <iframe
+                        src={`https://unified-dev.digit.org/route_map/#/viewroute?tripid=${showModal}&userid=${userid}&tenantid=${tenantId}`}
+                        title={"title"}
+                        className="app-iframe"
+                        style={{ position: "relative" }}
+                      />
+                    }
+                  />
+                )}
               </>
             );
           })}

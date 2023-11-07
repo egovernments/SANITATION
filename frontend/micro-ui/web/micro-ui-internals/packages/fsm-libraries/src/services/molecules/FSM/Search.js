@@ -54,6 +54,11 @@ export const Search = {
     return response.fsm[0];
   },
 
+  getVehicleTripAlertsDetails: async ({tenantId, filters = {}}) => {
+    const response = await FSMService.vehicleTripAlertsDetails(tenantId, { ...filters });
+    return response;
+  },
+
   applicationDetails: async (t, tenantId, applicationNos, userType) => {
     const checkvehicletrack = await MdmsService.getVehicleTrackingCheck(tenantId, "FSM", "VehicleTracking");
     const getTripData = checkvehicletrack?.FSM?.VehicleTracking?.[0]?.vehicleTrackingStatus;
@@ -82,7 +87,7 @@ export const Search = {
         tenantId: tenantId,
         referenceNos: applicationNos,
       };
-      const data = await useTripTrack({tenantId: tenantId, filters: filters});
+      const data = await Search.getVehicleTripAlertsDetails({tenantId: tenantId, filters: filters});
       tripList = data;
     }
 

@@ -328,10 +328,9 @@ const DesktopInbox = (props) => {
             Header: t("Alerts"),
             disableSortBy: true,
             Cell: ({ row }) => {
-              const rowTripId = row.original["tripDetails"]?.[0]?.id;
-              const allTrips = props?.alertsData.filter((i) => i.applicationNo === row.original["tripDetails"]?.[0]?.referenceNo)?.[0]?.trips;
-              const alert = allTrips?.filter((i) => i.tripid === rowTripId)?.[0];
-              const noOfAlerts = alert?.length;
+              const allTrips = props?.alertsData?.filter((i) => i?.applicationNo === row.original["tripDetails"]?.[0]?.referenceNo)?.[0];
+              const alert = allTrips?.alert;
+              const noOfAlerts = alert.map ? alert?.length : alert;
               return (
                 <div>
                   <span>{noOfAlerts || "N/A"}</span>
@@ -523,9 +522,9 @@ const DesktopInbox = (props) => {
         {props.userRole !== "FSM_EMP_FSTPO" && !props.isSearch && (
           <div className="filters-container">
             {props.userRole !== "FSM_EMP_FSTPO_REQUEST" ? (
-              <FSMLink parentRoute={props.parentRoute} />
+              <FSMLink parentRoute={props.parentRoute} cardStyle={{marginTop: "unset"}}/>
             ) : null}
-            <div
+            { !window.location.href.includes("vehicle-tracking") && <div
               style={
                 props.userRole !== "FSM_EMP_FSTPO_REQUEST"
                   ? { marginTop: "24px" }
@@ -539,7 +538,7 @@ const DesktopInbox = (props) => {
                 onFilterChange={props.onFilterChange}
                 type="desktop"
               />
-            </div>
+            </div>}
           </div>
         )}
         <div style={{ flex: 1, marginLeft: "24px" }}>
