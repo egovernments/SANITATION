@@ -70,7 +70,7 @@ const TqmCard = ({reRoute=true}) => {
     },
     {
       label: t("TQM_DASHBOARD"),
-      link: `/${window?.contextPath}/employee/tqm/dashboard`,
+      link: `/${window?.contextPath}/employee/dss/dashboard/pqm`,
       roles: [...ROLES.plant,ROLES.ulb],
     }
   ];
