@@ -21,8 +21,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
+import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
@@ -41,7 +44,6 @@ import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestResultStatus;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
-
 import org.egov.pqm.web.model.mdms.MdmsTest;
 import org.egov.pqm.web.model.workflow.BusinessService;
 import org.egov.pqm.workflow.ActionValidator;
@@ -81,6 +83,9 @@ public class PqmService {
   @Autowired
   private MDMSUtils mdmsUtils;
 
+  @Autowired
+  private ServiceConfiguration config;
+  
   @Autowired
   private QualityCriteriaEvaluationService qualityCriteriaEvaluation;
 
@@ -356,5 +361,21 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
+	public TestResponse searchTestPlainSearch( @Valid TestSearchRequest testSearchRequest) {
+		if (testSearchRequest.getPagination().getLimit() != null && testSearchRequest.getPagination().getLimit() > config.getMaxSearchLimit())
+			testSearchRequest.getPagination().setLimit(config.getMaxSearchLimit());
+
+		List<String> ids = null;
+
+		if (testSearchRequest.getTestSearchCriteria().getIds() != null && !testSearchRequest.getTestSearchCriteria().getIds().isEmpty())
+			ids = testSearchRequest.getTestSearchCriteria().getIds();
+		else
+			ids = repository.fetchTestIds(testSearchRequest);
+
+//		if (ids.isEmpty())
+//			return Collections.emptyList();
+		TestSearchCriteria testSearchCriteria=TestSearchCriteria.builder().ids(ids).build();
+		return  testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).build(),testSearchRequest.getRequestInfo());
+	}
 
 }

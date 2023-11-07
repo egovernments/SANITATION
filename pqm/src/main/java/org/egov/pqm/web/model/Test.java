@@ -1,12 +1,13 @@
 package org.egov.pqm.web.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -64,9 +65,6 @@ public class Test {
 
   @JsonProperty("isActive")
   private Boolean isActive;
-
-  @JsonProperty("type")
-  private TypeEnum type = null;
 
   @JsonProperty("documents")
   @Valid
