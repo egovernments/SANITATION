@@ -61,7 +61,7 @@ export const tqmInboxConfigPlantOperator = {
                   optionsKey: 'i18nKey',
                   allowMultiSelect: true,
                   mdmsv2:{
-                    schemaCode:"PQM.ProcessType",
+                    schemaCode:"PQM.Process",
                   }
                 },
               },

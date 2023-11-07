@@ -64,7 +64,7 @@ export const tqmSearchConfigPlantOperator = {
                   optionsKey: 'i18nKey',
                   allowMultiSelect: true,
                   mdmsv2:{
-                    schemaCode:"PQM.ProcessType",
+                    schemaCode:"PQM.Process",
                   }
                 },
               },
