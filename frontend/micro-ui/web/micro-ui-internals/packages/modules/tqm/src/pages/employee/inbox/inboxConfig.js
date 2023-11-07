@@ -11,7 +11,9 @@ export const tqmInboxConfig = {
         "requestBody": {
           "inbox": {
             "processSearchCriteria": {
-              "businessService": ["PQM"],
+              "businessService": [
+                "PQM"
+              ],
               "moduleName": "pqm"
             },
             "moduleSearchCriteria": {}
@@ -28,12 +30,12 @@ export const tqmInboxConfig = {
       "sections": {
         "search": {
           "uiConfig": {
-            "searchWrapperStyles":{
-              flexDirection:"column-reverse",
-              marginTop:"1.4rem",
-              alignItems:"center",
-              justifyContent:"end",
-              gridColumn:"3"
+            "searchWrapperStyles": {
+              "flexDirection": "column-reverse",
+              "marginTop": "1.4rem",
+              "alignItems": "center",
+              "justifyContent": "end",
+              "gridColumn": "3"
             },
             "headerStyle": null,
             "primaryLabel": "Search",
@@ -41,7 +43,7 @@ export const tqmInboxConfig = {
             "minReqFields": 0,
             "defaultValues": {
               "id": "",
-              "plantCodes": "",
+              "plantCodes": ""
             },
             "fields": [
               {
@@ -49,35 +51,26 @@ export const tqmInboxConfig = {
                 "type": "text",
                 "isMandatory": false,
                 "disable": false,
-                // "preProcess": {
-                //   "convertStringToRegEx": ["populators.validation.pattern"]
-                // },
                 "populators": {
                   "name": "id",
-                  "error": "TQM_ERR_VALID_TEST_ID",
-                  // "validation": {
-                  //   "pattern": "ES\/[0-9]+-[0-9]+\/[0-9]+",
-                  //   "minlength": 2
-                  // }
+                  "error": "TQM_ERR_VALID_TEST_ID"
                 }
               },
               {
-                label: 'TQM_PLANT_NAME',
-                type: 'dropdown',
-                isMandatory: false,
-                disable: false,
-                populators: {
-                  optionsCustomStyle: {
-                    // top: '2.3rem',
-                  },
-                  name: 'plantCodes',
-                  optionsKey: 'i18nKey',
-                  allowMultiSelect: false,
-                  mdmsv2:{
-                    schemaCode:"PQM.Plant",
+                "label": "TQM_PLANT_NAME",
+                "type": "dropdown",
+                "isMandatory": false,
+                "disable": false,
+                "populators": {
+                  "optionsCustomStyle": {},
+                  "name": "plantCodes",
+                  "optionsKey": "i18nKey",
+                  "allowMultiSelect": false,
+                  "mdmsv2": {
+                    "schemaCode": "PQM.Plant"
                   }
-                },
-              },
+                }
+              }
             ]
           },
           "label": "",
@@ -90,35 +83,35 @@ export const tqmInboxConfig = {
               {
                 "label": "TQM_TEST_ID",
                 "jsonPath": "businessObject.testId",
-                additionalCustomization:true
+                "additionalCustomization": true
               },
               {
                 "label": "TQM_PLANT_NAME",
                 "jsonPath": "businessObject.plantCode",
-                prefix:"PQM.Plant_",
-                translate:true
+                "prefix": "PQM.Plant_",
+                "translate": true
               },
               {
                 "label": "TQM_PENDING_DATE",
                 "jsonPath": "businessObject.scheduledDate",
-                additionalCustomization:true
+                "additionalCustomization": true
               },
               {
                 "label": "TQM_TREATMENT_PROCESS",
                 "jsonPath": "businessObject.processCode",
-                prefix:"PQM.Process_",
-                translate:true
+                "prefix": "PQM.Process_",
+                "translate": true
               },
               {
                 "label": "TQM_INBOX_STATUS",
                 "jsonPath": "ProcessInstance.state.applicationStatus",
-                prefix:"WF_STATUS_",
-                translate:true
+                "prefix": "WF_STATUS_",
+                "translate": true
               },
               {
                 "label": "TQM_INBOX_SLA",
                 "jsonPath": "businessObject.serviceSla",
-                "additionalCustomization": true,
+                "additionalCustomization": true
               }
             ],
             "enableGlobalSearch": false,
@@ -134,23 +127,31 @@ export const tqmInboxConfig = {
               {
                 "text": "TQM_VIEW_PAST_RESULTS",
                 "url": "/employee/tqm/search-test-results",
-                "roles":["PQM_ADMIN"]
+                "roles": [
+                  "PQM_ADMIN"
+                ]
               },
               {
                 "text": "TQM_VIEW_IOT_RESULTS",
                 "url": "/employee/tqm/search-test-results",
-                "roles": ["PQM_ADMIN"]
+                "roles": [
+                  "PQM_ADMIN"
+                ]
               },
               {
                 "text": "TQM_SENSOR_MON",
                 "url": "/employee/tqm/search-devices",
-                "roles": ["PQM_ADMIN"]
+                "roles": [
+                  "PQM_ADMIN"
+                ]
               },
               {
                 "text": "TQM_VIEW_DASHBOARD",
                 "url": "/employee/tqm/dashboard",
-                "roles": ["PQM_ADMIN"]
-              },
+                "roles": [
+                  "PQM_ADMIN"
+                ]
+              }
             ],
             "label": "TQM_QUALITY_TESTING",
             "logoIcon": {
@@ -163,17 +164,16 @@ export const tqmInboxConfig = {
         },
         "filter": {
           "uiConfig": {
-            "formClassName":"filter",
+            "formClassName": "filter",
             "type": "filter",
             "headerStyle": null,
             "primaryLabel": "Filter",
-            // "secondaryLabel": "",
             "minReqFields": 0,
             "defaultValues": {
-              "processCodes":[],
-              "stage":[],
-              "materialCodes":[],
-              "status":[]
+              "processCodes": [],
+              "stage": [],
+              "materialCodes": [],
+              "status": []
             },
             "fields": [
               {
@@ -182,34 +182,31 @@ export const tqmInboxConfig = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  allowMultiSelect: true,
+                  "allowMultiSelect": true,
                   "name": "processCodes",
                   "optionsKey": "i18nKey",
-                  "labelKey":"i18nKey",
+                  "labelKey": "i18nKey",
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfigUlbAdmin",
                   "customfn": "populateMdmsv2SearchReqCriteria",
-                  mdmsv2:{
-                    "schemaCode":"PQM.Process"
+                  "mdmsv2": {
+                    "schemaCode": "PQM.Process"
                   }
-                  }
-              },   
+                }
+              },
               {
-                label: 'TQM_PROCESS_STAGE',
-                type: 'dropdown',
-                isMandatory: false,
-                disable: false,
-                populators: {
-                  // optionsCustomStyle: {
-                  //   top: '2.3rem',
-                  // },
-                  name: 'stage',
-                  optionsKey: 'i18nKey',
-                  allowMultiSelect: true,
-                  mdmsv2:{
-                    schemaCode:"PQM.Stage",
+                "label": "TQM_PROCESS_STAGE",
+                "type": "dropdown",
+                "isMandatory": false,
+                "disable": false,
+                "populators": {
+                  "name": "stage",
+                  "optionsKey": "i18nKey",
+                  "allowMultiSelect": true,
+                  "mdmsv2": {
+                    "schemaCode": "PQM.Stage"
                   }
-                },
+                }
               },
               {
                 "label": "TQM_OUTPUT_TYPE",
@@ -217,15 +214,15 @@ export const tqmInboxConfig = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  allowMultiSelect: true,
+                  "allowMultiSelect": true,
                   "name": "materialCodes",
                   "optionsKey": "i18nKey",
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfigUlbAdmin",
                   "customfn": "populateMdmsv2SearchReqCriteria",
-                  "labelKey":"i18nKey",
-                  mdmsv2:{
-                  "schemaCode":"PQM.Material"
+                  "labelKey": "i18nKey",
+                  "mdmsv2": {
+                    "schemaCode": "PQM.Material"
                   }
                 }
               },
@@ -239,8 +236,7 @@ export const tqmInboxConfig = {
                   "labelPrefix": "WF_STATUS_",
                   "businessService": "PQM"
                 }
-              },
-              
+              }
             ]
           },
           "label": "Filter",
