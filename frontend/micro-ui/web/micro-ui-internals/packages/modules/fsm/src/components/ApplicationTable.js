@@ -114,7 +114,7 @@ export const ApplicationTable = ({ detail }) => {
                     }
                     children={
                       <iframe
-                        src={`https://unified-dev.digit.org/route_map/#/viewroute?tripid=${showModal}&userid=${userid}&tenantid=${tenantId}`}
+                        src={`${document.location.origin}/route_map/#/viewroute?tripid=${showModal}&userid=${userid}&tenantid=${tenantId}`}
                         title={"title"}
                         className="app-iframe"
                         style={{ position: "relative" }}

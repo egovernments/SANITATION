@@ -9,7 +9,7 @@ const IllegalDumpingSites = () => {
     <React.Fragment>
       <Header>{"Illegal Dumping Sites"}</Header>
       <div className="app-iframe-wrapper">
-        <iframe src={`https://unified-dev.digit.org/route_map/#/vehicledumpingsites?userid=${userid}&tenantid=${tenantId}`} title={"title"} className="app-iframe" />
+        <iframe src={`${document.location.origin}/route_map/#/vehicledumpingsites?userid=${userid}&tenantid=${tenantId}`} title={"title"} className="app-iframe" />
       </div>
     </React.Fragment>
   );
