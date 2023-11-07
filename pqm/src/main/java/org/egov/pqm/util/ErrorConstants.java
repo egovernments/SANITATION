@@ -35,8 +35,8 @@ public class ErrorConstants {
   public static final String STAGE_CODE_INVALID_MESSAGE = "Stage code did not match";
   public static final String CRITERIA_CODE_INVALID_CODE = "CRITERIA_CODE_DIFFERENT";
   public static final String CRITERIA_CODE_INVALID_MESSAGE = "Criteria code did not match";
-  public static final String STATUS_ERROR_CODE = "STATUS CAN ONLY BE PENDING IF WORKFLOW STATUS IS ANYHTING OTHER THAN UPDATE_RESULT ";
-  public static final String STATUS_ERROR_MESSAGE = "Status can only be pending if workflow status is anything other than update result";
+  public static final String STATUS_ERROR_CODE = "RESULT STATUS CAN ONLY BE PENDING IF WORKFLOW STATUS IS ANYHTING OTHER THAN SUBMITTED ";
+  public static final String STATUS_ERROR_MESSAGE = "Result status can only be pending if workflow status is anything other than submitted";
 
 
 }

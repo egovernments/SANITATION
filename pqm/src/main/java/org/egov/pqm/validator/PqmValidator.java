@@ -105,11 +105,11 @@ public class PqmValidator {
         oldTest.getQualityCriteria().get(0).getCriteriaCode())) {
       throw new CustomException(CRITERIA_CODE_INVALID_CODE, CRITERIA_CODE_INVALID_MESSAGE);
     }
-    if (!Objects.equals(test.getWorkflow().getAction(), UPDATE_RESULT)) {
-      if (test.getStatus() != TestResultStatus.PENDING) {
-        throw new CustomException(STATUS_ERROR_CODE, STATUS_ERROR_MESSAGE);
-      }
+
+    if (test.getStatus() != TestResultStatus.PENDING) {
+      throw new CustomException(STATUS_ERROR_CODE, STATUS_ERROR_MESSAGE);
     }
+
     if (!test.getId().equals(oldTest.getId())) {
       throw new CustomException(ID_CHANGED_ERROR, ID_CHANGED_MESSAGE);
     }
