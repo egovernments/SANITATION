@@ -102,17 +102,17 @@ public class NotificationService {
 						.build();
 				items.add(item);
 				action = Action.builder().actionUrls(items).build();
-				String eventCategory = null;
-				switch (test.getSourceType()) {
-				case LAB:
-					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
-					break;
-				case IOT:
-					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT;
-					break;
-				default:
-					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
-				}
+				String eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;;
+//				switch (test.getSourceType()) {
+//				case LAB:
+//					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
+//					break;
+//				case IOT:
+//					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT;
+//					break;
+//				default:
+//					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
+//				}
 
 				events.add(Event.builder().tenantId(test.getTenantId()).description(mobileNumberToMsg.get(mobile))
 						.eventType(AnomalyFinderConstants.USREVENTS_EVENT_TYPE).eventCategory(eventCategory)
