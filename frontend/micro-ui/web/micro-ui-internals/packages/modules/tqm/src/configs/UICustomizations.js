@@ -249,7 +249,7 @@ export const UICustomizations = {
       
       const { id,plantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
       //ids
-      data.body.inbox.moduleSearchCriteria.ids = id ?  [id] : null
+      data.body.inbox.moduleSearchCriteria.testIds = id ?  [id] : null
 
       //plantCodes 
       data.body.inbox.moduleSearchCriteria.plantCodes = plantCodes?.code
@@ -374,10 +374,10 @@ export const UICustomizations = {
       return ""
     },
     onCardClick:(obj)=> {
-      return `summary?id=${obj?.apiResponse?.id}`
+      return `summary?id=${obj?.apiResponse?.testId}`
     },
     onCardActionClick:(obj)=> {
-      return `summary?id=${obj?.apiResponse?.id}`
+      return `summary?id=${obj?.apiResponse?.testId}`
     },
     getCustomActionLabel:(obj,row) => {
       return ""
@@ -385,7 +385,7 @@ export const UICustomizations = {
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
         case "TQM_TEST_RESULTS":
-          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          return value?.includes("PASS") ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
@@ -404,7 +404,7 @@ export const UICustomizations = {
       //update testSearchCriteria
 
       //test id
-      data.body.testSearchCriteria.ids = id ? [id] : []
+      data.body.testSearchCriteria.testIds = id ? [id] : []
       //plantcodes
       data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
       data.body.testSearchCriteria.wfStatus = ["SUBMITTED"];
@@ -442,7 +442,7 @@ export const UICustomizations = {
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
         case "TQM_TEST_RESULTS":
-          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          return value?.includes("PASS")  ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
           
         case "TQM_TEST_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)

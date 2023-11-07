@@ -124,7 +124,7 @@ export const tqmSearchConfigUlbAdmin = {
             columns: [
               {
                 label: 'TQM_TEST_ID',
-                jsonPath: 'id',
+                jsonPath: 'testId',
                 additionalCustomization: true,
               },
               {

@@ -123,7 +123,7 @@ export const tqmSearchConfigPlantOperator = {
             columns: [
               {
                 label: 'TQM_TEST_ID',
-                jsonPath: 'id',
+                jsonPath: 'testId',
                 additionalCustomization: false,
               },
               {
