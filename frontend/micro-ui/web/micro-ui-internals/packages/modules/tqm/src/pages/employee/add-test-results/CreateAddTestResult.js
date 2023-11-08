@@ -2,31 +2,14 @@ import { Loader, FormComposerV2, Header, Toast } from "@egovernments/digit-ui-re
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-// import { addTestConfig } from "./config";
+import { addTestConfig } from "./config";
 import { createModifiedData } from "./createModifiedData";
 const Create = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const tenant = Digit.ULBService.getStateId();
   const { t } = useTranslation();
   const history = useHistory();
   const [showToast, setShowToast] = useState(false);
   const { mutate } = Digit.Hooks.tqm.useCreateTest(tenantId);
-
-  const { isLoading, data:addTestConfig } = Digit.Hooks.useCustomMDMS(
-      tenant,
-      "commonSanitationUiConfig",
-      [
-          {
-              "name": "CreateUlbAdminConfig"
-          }
-      ],
-      {
-        select:(data) =>{
-          return data?.commonSanitationUiConfig?.CreateUlbAdminConfig;
-        }
-      }
-  );
-
   const closeToast = () => {
     setTimeout(() => {
       setShowToast(false);
@@ -90,7 +73,7 @@ const Create = () => {
       <FormComposerV2
         showMultipleCardsWithoutNavs={true}
         label="ES_TQM_SUBMIT_TEST_RESULTS_BUTTON"
-        config={addTestConfig?.map((config) => {
+        config={addTestConfig.map((config) => {
           return {
             ...config,
 

@@ -5,10 +5,10 @@ import CardMessage from "./CardMessage";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-function ParameterReadings({ reading }) {
+function ParameterReadings({ reading, responseData }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const isTestPassed = reading?.readings?.map((i) => i.resultStatus).includes("FAIL") ? false : true;
+  const isTestPassed = responseData?.status.includes("PASS") ? true : false;
   return reading ? (
     <>
       {reading?.title ? <CardSubHeader>{t(reading?.title)}</CardSubHeader> : null}

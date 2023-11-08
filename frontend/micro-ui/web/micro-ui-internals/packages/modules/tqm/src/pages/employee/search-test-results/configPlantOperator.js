@@ -3,227 +3,223 @@ export const tqmSearchConfigPlantOperator = {
   moduleName: 'commonSanitationUiConfig',
   tqmSearchConfig: [
     {
-      label: 'TQM_VIEW_PAST_RESULTS',
-      type: 'search',
-      apiDetails: {
-        serviceName: '/pqm-service/v1/_search',
-        requestParam: {},
-        requestBody: {},
-        minParametersForSearchForm: 0,
-        masterName: 'commonUiConfig',
-        moduleName: 'SearchTestResults',
-        tableFormJsonPath: 'requestBody.custom',
-        filterFormJsonPath: 'requestBody.custom',
-        searchFormJsonPath: 'requestBody.custom',
+      "label": "TQM_VIEW_PAST_RESULTS",
+      "type": "search",
+      "apiDetails": {
+        "serviceName": "/pqm-service/v1/_search",
+        "requestParam": {},
+        "requestBody": {},
+        "minParametersForSearchForm": 0,
+        "masterName": "commonUiConfig",
+        "moduleName": "SearchTestResults",
+        "tableFormJsonPath": "requestBody.custom",
+        "filterFormJsonPath": "requestBody.custom",
+        "searchFormJsonPath": "requestBody.custom"
       },
-      sections: {
-        search: {
-          uiConfig: {
-            type: 'filter',
-            headerLabel: 'TQM_INBOX_FILTERS',
-            headerStyle: null,
-            primaryLabel: 'ES_COMMON_SEARCH',
-            secondaryLabel: 'ES_COMMON_CLEAR_SEARCH',
-            minReqFields: 0,
-            showFormInstruction: 'TQM_SEARCH_HINT',
-            defaultValues: {
-              plantCodes: [],
-              processCodes: [],
-              materialCodes: [],
-              testType: '',
-              dateRange: {},
+      "sections": {
+        "search": {
+          "uiConfig": {
+            "type": "filter",
+            "headerLabel": "TQM_INBOX_FILTERS",
+            "headerStyle": null,
+            "primaryLabel": "ES_COMMON_SEARCH",
+            "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
+            "minReqFields": 0,
+            "showFormInstruction": "TQM_SEARCH_HINT",
+            "defaultValues": {
+              "plantCodes": [],
+              "processCodes": [],
+              "materialCodes": [],
+              "testType": "",
+              "dateRange": {}
             },
-            fields: [
+            "fields": [
               {
-                label: 'TQM_PLANT_NAME',
-                type: 'dropdown',
-                isMandatory: false,
-                disable: false,
-                populators: {
-                  optionsCustomStyle: {
-                    top: '2.3rem',
+                "label": "TQM_PLANT_NAME",
+                "type": "dropdown",
+                "isMandatory": false,
+                "disable": false,
+                "populators": {
+                  "optionsCustomStyle": {
+                    "top": "2.3rem"
                   },
-                  name: 'plantCodes',
-                  optionsKey: 'i18nKey',
-                  allowMultiSelect: true,
-                  mdmsv2:{
-                    schemaCode:"PQM.Plant",
+                  "name": "plantCodes",
+                  "optionsKey": "i18nKey",
+                  "allowMultiSelect": true,
+                  "mdmsv2": {
+                    "schemaCode": "PQM.Plant"
                   }
-                },
+                }
               },
               {
-                label: 'TQM_TREATMENT_PROCESS',
-                type: 'dropdown',
-                isMandatory: false,
-                disable: false,
-                populators: {
-                  optionsCustomStyle: {
-                    top: '2.3rem',
+                "label": "TQM_TREATMENT_PROCESS",
+                "type": "dropdown",
+                "isMandatory": false,
+                "disable": false,
+                "populators": {
+                  "optionsCustomStyle": {
+                    "top": "2.3rem"
                   },
-                  name: 'processCodes',
-                  optionsKey: 'i18nKey',
-                  allowMultiSelect: true,
-                  mdmsv2:{
-                    schemaCode:"PQM.Process",
+                  "name": "processCodes",
+                  "optionsKey": "i18nKey",
+                  "allowMultiSelect": true,
+                  "mdmsv2": {
+                    "schemaCode": "PQM.Process"
                   }
-                },
+                }
               },
               {
-                label: 'TQM_OUTPUT_TYPE',
-                type: 'dropdown',
-                isMandatory: false,
-                disable: false,
-                populators: {
-                  optionsCustomStyle: {
-                    top: '2.3rem',
+                "label": "TQM_OUTPUT_TYPE",
+                "type": "dropdown",
+                "isMandatory": false,
+                "disable": false,
+                "populators": {
+                  "optionsCustomStyle": {
+                    "top": "2.3rem"
                   },
-                  name: 'materialCodes',
-                  optionsKey: 'i18nKey',
-                  allowMultiSelect: true,
-                  mdmsv2:{
-                    schemaCode:"PQM.Material",
+                  "name": "materialCodes",
+                  "optionsKey": "i18nKey",
+                  "allowMultiSelect": true,
+                  "mdmsv2": {
+                    "schemaCode": "PQM.Material"
                   }
-                },
+                }
               },
               {
-                label: 'TQM_TEST_TYPE',
-                type: 'dropdown',
-                isMandatory: false,
-                disable: false,
-                populators: {
-                  // optionsCustomStyle: {
-                  //   top: '2.3rem',
-                  // },
-                  name: 'testType',
-                  optionsKey: 'i18nKey',
-                  allowMultiSelect: false,
-                  mdmsv2:{
-                    schemaCode:"PQM.TestType",
+                "label": "TQM_TEST_TYPE",
+                "type": "dropdown",
+                "isMandatory": false,
+                "disable": false,
+                "populators": {
+                  "name": "testType",
+                  "optionsKey": "i18nKey",
+                  "allowMultiSelect": false,
+                  "mdmsv2": {
+                    "schemaCode": "PQM.TestType"
                   }
-                },
+                }
               },
               {
-                label: 'TQM_INBOX_DATE_RANGE',
-                type: 'dateRange',
-                isMandatory: false,
-                disable: false,
-                populators: {
-                  name: 'dateRange',
-                },
-              },
-            ],
+                "label": "TQM_INBOX_DATE_RANGE",
+                "type": "dateRange",
+                "isMandatory": false,
+                "disable": false,
+                "populators": {
+                  "name": "dateRange"
+                }
+              }
+            ]
           },
-          label: '',
-          children: {},
-          show: true,
-          labelMobile: 'TQM_INBOX_FILTER',
+          "label": "",
+          "children": {},
+          "show": true,
+          "labelMobile": "TQM_INBOX_FILTER"
         },
-        searchResult: {
-          uiConfig: {
-            columns: [
+        "searchResult": {
+          "uiConfig": {
+            "columns": [
               {
-                label: 'TQM_TEST_ID',
-                jsonPath: 'testId',
-                additionalCustomization: false,
+                "label": "TQM_TEST_ID",
+                "jsonPath": "testId",
+                "additionalCustomization": false
               },
               {
-                label: 'TQM_TREATMENT_PROCESS',
-                jsonPath: 'processCode',
-                additionalCustomization: false,
-                prefix:"PQM.ProcessType_",
-                translate:true
+                "label": "TQM_TREATMENT_PROCESS",
+                "jsonPath": "processCode",
+                "additionalCustomization": false,
+                "prefix": "PQM.ProcessType_",
+                "translate": true
               },
               {
-                label: 'TQM_PROCESS_STAGE',
-                jsonPath: 'stageCode',
-                additionalCustomization: false,
-                prefix:"PQM.STAGE_",
-                translate:true
+                "label": "TQM_PROCESS_STAGE",
+                "jsonPath": "stageCode",
+                "additionalCustomization": false,
+                "prefix": "PQM.STAGE_",
+                "translate": true
               },
               {
-                label: 'TQM_OUTPUT_TYPE',
-                jsonPath: 'materialCode',
-                additionalCustomization: false,
-                prefix:"PQM.MATERIAL_",
-                translate:true
+                "label": "TQM_OUTPUT_TYPE",
+                "jsonPath": "materialCode",
+                "additionalCustomization": false,
+                "prefix": "PQM.MATERIAL_",
+                "translate": true
               },
               {
-                label: 'TQM_TEST_TYPE',
-                jsonPath: 'testType',
-                additionalCustomization: false,
-                prefix:"PQM.TESTTYPE_",
-                translate:true
+                "label": "TQM_TEST_TYPE",
+                "jsonPath": "testType",
+                "additionalCustomization": false,
+                "prefix": "PQM.TESTTYPE_",
+                "translate": true
               },
               {
-                label: 'TQM_PENDING_DATE',
-                jsonPath: 'scheduledDate',
-                additionalCustomization: true,
+                "label": "TQM_PENDING_DATE",
+                "jsonPath": "scheduledDate",
+                "additionalCustomization": true
               },
               {
-                label: 'TQM_TEST_RESULTS',
-                jsonPath: 'status',
-                additionalCustomization: true,
-                
-              },
+                "label": "TQM_TEST_RESULTS",
+                "jsonPath": "status",
+                "additionalCustomization": true
+              }
             ],
-            showActionBarMobileCard: true,
-            actionButtonLabelMobileCard: 'TQM_VIEW_RESULTS',
-            enableGlobalSearch: false,
-            enableColumnSort: true,
-            resultsJsonPath: 'tests',
+            "showActionBarMobileCard": true,
+            "actionButtonLabelMobileCard": "TQM_VIEW_RESULTS",
+            "enableGlobalSearch": false,
+            "enableColumnSort": true,
+            "resultsJsonPath": "tests"
           },
-          children: {},
-          show: true,
+          "children": {},
+          "show": true
         },
-        filter: {
-          uiConfig: {
-            type: 'sort',
-            headerStyle: null,
-            headerLabel: 'TQM_INBOX_SORTBY',
-            primaryLabel: 'TQM_INBOX_SORT',
-            secondaryLabel: 'TQM_CLEAR_SEARCH',
-            minReqFields: 0,
-            defaultValues: {
-              sortOrder: '',
+        "filter": {
+          "uiConfig": {
+            "type": "sort",
+            "headerStyle": null,
+            "headerLabel": "TQM_INBOX_SORTBY",
+            "primaryLabel": "TQM_INBOX_SORT",
+            "secondaryLabel": "TQM_CLEAR_SEARCH",
+            "minReqFields": 0,
+            "defaultValues": {
+              "sortOrder": ""
             },
-            fields: [
+            "fields": [
               {
-                label: '',
-                type: 'radio',
-                isMandatory: false,
-                disable: false,
-                populators: {
-                  name: 'sortOrder',
-                  options: [
+                "label": "",
+                "type": "radio",
+                "isMandatory": false,
+                "disable": false,
+                "populators": {
+                  "name": "sortOrder",
+                  "options": [
                     {
-                      code: 'LATEST_FIRST',
-                      name: 'TQM_INBOX_LATEST_FIRST',
-                      value:"ASC"
+                      "code": "LATEST_FIRST",
+                      "name": "TQM_INBOX_LATEST_FIRST",
+                      "value": "ASC"
                     },
                     {
-                      code: 'LATEST_LAST',
-                      name: 'TQM_INBOX_LATEST_LAST',
-                      value:"DESC"
-                    },
+                      "code": "LATEST_LAST",
+                      "name": "TQM_INBOX_LATEST_LAST",
+                      "value": "DESC"
+                    }
                   ],
-                  optionsKey: 'name',
-                  styles: {
-                    gap: '1rem',
-                    flexDirection: 'column',
+                  "optionsKey": "name",
+                  "styles": {
+                    "gap": "1rem",
+                    "flexDirection": "column"
                   },
-                  innerStyles: {
-                    display: 'flex',
-                  },
-                },
-              },
-            ],
+                  "innerStyles": {
+                    "display": "flex"
+                  }
+                }
+              }
+            ]
           },
-          label: 'Filter',
-          labelMobile: 'TQM_INBOX_SORT',
-          show: true,
-        },
+          "label": "Filter",
+          "labelMobile": "TQM_INBOX_SORT",
+          "show": true
+        }
       },
-      additionalSections: {},
+      "additionalSections": {}
     },
   ],
 };

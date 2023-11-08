@@ -198,7 +198,14 @@ export const UICustomizations = {
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
         case "TQM_INBOX_SLA":
-          return value > 0 ? <span className="sla-cell-success">{value} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{value} {t("COMMON_DAYS")}</span>;
+          let sla = 0
+          const currentDate = new Date();
+          const targetTimestamp = row?.businessObject?.scheduledDate ;
+          const targetDate = new Date(targetTimestamp);
+          const remainingSLA = targetDate - currentDate;
+          sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
+          if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
+          return sla > 0 ? <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{sla} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
@@ -248,6 +255,7 @@ export const UICustomizations = {
     preProcess: (data,additionalDetails) => {
       
       const { id,plantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
+      
       //ids
       data.body.inbox.moduleSearchCriteria.testIds = id ?  [id] : null
 
@@ -257,11 +265,12 @@ export const UICustomizations = {
       //stage
       data.body.inbox.moduleSearchCriteria.stageCodes = stage?.map(st => st.code)
 
+      
       //materialcodes
-      data.body.inbox.moduleSearchCriteria.materialCodes = Object.keys(materialCodes?materialCodes:{})?.filter(key => materialCodes[key])
+      data.body.inbox.moduleSearchCriteria.materialCodes = materialCodes?.length > 0 ? materialCodes?.map(row => row?.code) : []
 
       //processcodes
-      data.body.inbox.moduleSearchCriteria.processCodes = Object.keys(processCodes?processCodes:{})?.filter(key => processCodes[key])
+      data.body.inbox.moduleSearchCriteria.processCodes = processCodes?.length > 0 ? processCodes?.map(row => row?.code) : []
 
       //status
       data.body.inbox.moduleSearchCriteria.status = status ? Object?.keys(status)?.filter(key=>status[key]) : null
@@ -309,7 +318,14 @@ export const UICustomizations = {
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
         case "TQM_INBOX_SLA":
-          return value > 0 ? <span className="sla-cell-success">{value} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{value} {t("COMMON_DAYS")}</span>;
+          let sla = 0
+          const currentDate = new Date();
+          const targetTimestamp = row?.businessObject?.scheduledDate ;
+          const targetDate = new Date(targetTimestamp);
+          const remainingSLA = targetDate - currentDate;
+          sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
+          if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
+          return sla > 0 ? <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{sla} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)

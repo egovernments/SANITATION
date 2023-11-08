@@ -52,7 +52,7 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
     });
     if (showPopUp?.documents?.length > 0) {
       const fileStoreIds = showPopUp.documents.map(([, obj]) => obj.fileStoreId.fileStoreId);
-      testDetailsData.documents[0].fileStoreId = fileStoreIds[0];
+      testDetailsData.documents.push({ fileStoreId: fileStoreIds[0] });
     }
     const { action: workflow } = actionData;
     testDetailsData.workflow = { action: workflow };
