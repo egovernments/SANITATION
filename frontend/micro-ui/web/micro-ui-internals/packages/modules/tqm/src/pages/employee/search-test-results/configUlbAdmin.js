@@ -128,7 +128,7 @@ export const tqmSearchConfigUlbAdmin = {
                 "label": "TQM_TREATMENT_PROCESS",
                 "jsonPath": "processCode",
                 "additionalCustomization": false,
-                "prefix": "PQM.ProcessType_",
+                "prefix": "PQM.Process_",
                 "translate": true
               },
               {

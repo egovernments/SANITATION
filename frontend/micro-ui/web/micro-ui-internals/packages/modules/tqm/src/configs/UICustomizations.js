@@ -401,7 +401,7 @@ export const UICustomizations = {
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
         case "TQM_TEST_RESULTS":
-          return value?.includes("PASS") ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          return value?.includes("PASS") ? <span className="sla-cell-success">{t(`TQM_TEST_RESULT_${value}`)}</span> : <span className="sla-cell-error">{t(`TQM_TEST_RESULT_${value}`)}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
@@ -458,7 +458,7 @@ export const UICustomizations = {
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
         case "TQM_TEST_RESULTS":
-          return value?.includes("PASS")  ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          return value?.includes("PASS")  ? <span className="sla-cell-success">{t(`TQM_TEST_RESULT_${value}`)}</span> : <span className="sla-cell-error">{t(`TQM_TEST_RESULT_${value}`)}</span>;
           
         case "TQM_TEST_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
