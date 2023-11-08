@@ -198,7 +198,14 @@ export const UICustomizations = {
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
         case "TQM_INBOX_SLA":
-          return value > 0 ? <span className="sla-cell-success">{value} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{value} {t("COMMON_DAYS")}</span>;
+          let sla = 0
+          const currentDate = new Date();
+          const targetTimestamp = row?.businessObject?.scheduledDate ;
+          const targetDate = new Date(targetTimestamp);
+          const remainingSLA = targetDate - currentDate;
+          sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
+          if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
+          return sla > 0 ? <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{sla} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
@@ -311,7 +318,14 @@ export const UICustomizations = {
     additionalCustomizations:(row, key, column, value, t, searchResult) => {
       switch (key) {
         case "TQM_INBOX_SLA":
-          return value > 0 ? <span className="sla-cell-success">{value} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{value} {t("COMMON_DAYS")}</span>;
+          let sla = 0
+          const currentDate = new Date();
+          const targetTimestamp = row?.businessObject?.scheduledDate ;
+          const targetDate = new Date(targetTimestamp);
+          const remainingSLA = targetDate - currentDate;
+          sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
+          if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
+          return sla > 0 ? <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{sla} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
