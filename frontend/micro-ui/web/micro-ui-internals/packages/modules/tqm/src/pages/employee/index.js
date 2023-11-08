@@ -17,20 +17,44 @@ import TqmAdminNotification from "./TqmAdminNotification";
 
 
 const TqmBreadCrumb = ({ location, defaultPath }) => {
+  const pathVar=location.pathname.replace(defaultPath+'/',"").split("?")?.[0];
   const { t } = useTranslation();
   const search = useLocation().search;
 
   const crumbs = [
     {
       path: `/${window?.contextPath}/employee`,
-      content: t("TQM_HOME"),
+      content: t("TQM_BREAD_HOME"),
       show: true,
     },
     {
-      path: `/${window?.contextPath}/employee/tqm/view-test-results`,
-      content: t("TQM_TEST_INBOX"),
-      show: true,
+      // path: `/${window.contextPath}/employee/tqm/inbox`,
+      content:  t(`TQM_BREAD_INBOX`) ,
+      show: pathVar.includes("inbox")?true: false,
+      
     },
+    {
+      // path: `/${window.contextPath}/employee/tqm/search-test-results`,
+      content:  t(`TQM_BREAD_PAST_TESTS`) ,
+      show: pathVar.includes("search-test-results")?true: false,
+    },
+    {
+      // path: `/${window.contextPath}/employee/tqm/add-test-result`,
+      content:  t(`TQM_BREAD_CREATE_TEST`) ,
+      show: pathVar.includes("add-test-result")?true: false,
+    },
+    {
+      // path: `/${window.contextPath}/employee/tqm/add-test-result`,
+      content:  t(`TQM_BREAD_SENSOR`) ,
+      show: pathVar.includes("search-devices")?true: false,
+    },
+    {
+      // path: `/${window.contextPath}/employee/tqm/add-test-result`,
+      content:  t(`TQM_BREAD_VIEW_TEST_RESULTS`) ,
+      show: pathVar.includes("view-test-results")?true: false,
+    },
+
+    
   ];
   return <BreadCrumb className="workbench-bredcrumb" crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} />;
 };
