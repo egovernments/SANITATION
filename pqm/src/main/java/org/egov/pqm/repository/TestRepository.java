@@ -63,6 +63,7 @@ public class TestRepository {
 
   public void update(TestRequest testRequest) {
     producer.push(config.getTestUpdateTopic(), testRequest);
+    producer.push(config.getTestUpdateEventTopic(), testRequest);
   }
 
   public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {
