@@ -7,48 +7,28 @@ const TqmSearch = () => {
   const { t } = useTranslation();
   const configModuleName = Digit.Utils.getConfigModuleName()
   const tenant = Digit.ULBService.getStateId();
-  const [config, setConfig] = useState();
-  if (Digit.Utils.tqm.isPlantOperatorLoggedIn()) {
-    const { isLoading, data } = Digit.Hooks.useCustomMDMS(
-      tenant,
-      "commonSanitationUiConfig",
-      [
-        {
-          "name": "SearchPlantOperatorConfig"
-        }
-      ],
-      {
-        select: (data) => {
-          return data?.commonSanitationUiConfig?.SearchPlantOperatorConfig?.[0];
-        }
-      }
-    );
-    useEffect(() => {
-      setConfig(data);
-    }, data)
-    if (isLoading) return <Loader />
-  }
-  if (Digit.Utils.tqm.isUlbAdminLoggedIn()) {
-    const { isLoading, data } = Digit.Hooks.useCustomMDMS(
 
-      tenant,
-      "commonSanitationUiConfig",
-      [
-        {
-          "name": "SearchUlbAdminConfig"
-        }
-      ],
+  const { isLoading, data: config } = Digit.Hooks.useCustomMDMS(
+    tenant,
+    "commonSanitationUiConfig",
+    [
       {
-        select: (data) => {
+        "name": "SearchPlantOperatorConfig"
+      },
+      {
+        "name": "SearchUlbAdminConfig"
+      },
+    ],
+    {
+      select: (data) => {
+        if (Digit.Utils.tqm.isPlantOperatorLoggedIn())
+          return data?.commonSanitationUiConfig?.SearchPlantOperatorConfig?.[0];
+        if (Digit.Utils.tqm.isUlbAdminLoggedIn())
           return data?.commonSanitationUiConfig?.SearchUlbAdminConfig?.[0];
-        }
       }
-    );
-    useEffect(() => {
-      setConfig(data);
-    }, data)
-    if (isLoading) return <Loader />
-  }
+    }
+  );
+  if (isLoading) return <Loader />
 
   return (
     <React.Fragment>

@@ -76,7 +76,7 @@ const Create = () => {
         }, 5000);
       },
       onSuccess: async (data) => {
-        history.push(`/sanitation-ui/employee/tqm/view-test-results?id=${data.tests[0].id}&type=adhoc`
+        history.push(`/sanitation-ui/employee/tqm/view-test-results?id=${data.tests[0].testId}&type=adhoc`
         );
       }
     });

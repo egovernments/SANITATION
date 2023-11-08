@@ -12,49 +12,28 @@ const TqmInbox = () => {
   const isUlbAdminLoggedIn = Digit.Utils.tqm.isUlbAdminLoggedIn()
   const moduleName = "commonSanitationUiConfig"
   const tenant = Digit.ULBService.getStateId();
-  
-  const [config, setConfig] = useState();
-  if (isPlantOperatorLoggedIn) {
-    const { isLoading, data } = Digit.Hooks.useCustomMDMS(
-      tenant,
-      moduleName,
-      [
-        {
-          "name": "InboxPlantOperatorConfig"
-        }
-      ],
-      {
-        select: (data) => {
-          return data?.commonSanitationUiConfig?.InboxPlantOperatorConfig?.[0];
-        }
-      }
-    );
-    useEffect(() => {
-      setConfig(data);
-    }, data)
-    if (isLoading) return <Loader />
 
-  }
-  if (isUlbAdminLoggedIn) {
-    const { isLoading, data } = Digit.Hooks.useCustomMDMS(
-      tenant,
-      "commonSanitationUiConfig",
-      [
-        {
-          "name": "InboxUlbAdminConfig"
-        }
-      ],
+  const { isLoading, data: config } = Digit.Hooks.useCustomMDMS(
+    tenant,
+    moduleName,
+    [
       {
-        select: (data) => {
+        "name": "InboxPlantOperatorConfig"
+      },
+      {
+        "name": "InboxUlbAdminConfig"
+      },
+    ],
+    {
+      select: (data) => {
+        if (isPlantOperatorLoggedIn)
+          return data?.commonSanitationUiConfig?.InboxPlantOperatorConfig?.[0];
+        if (isUlbAdminLoggedIn)
           return data?.commonSanitationUiConfig?.InboxUlbAdminConfig?.[0];
-        }
       }
-    );
-    useEffect(() => {
-      setConfig(data);
-    }, data)
-    if (isLoading) return <Loader />
-  }
+    }
+  );
+  if (isLoading) return <Loader />
 
   return (
     <React.Fragment>

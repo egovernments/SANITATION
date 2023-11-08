@@ -55,7 +55,7 @@ const Notification = ({ actions }) => {
                                         <p>{item.timePastAfterEventCreation}</p>
                                     </div>
                                     <div className="button-container">
-                                    <Link to={`/${window.contextPath}/employee/tqm/view-test-results?id=${item?.actionUrl?.split('id=')[1]}`}>
+                                    <Link to={`/${window.contextPath}/employee/tqm/view-test-results?id=${item?.actionUrl?.split('testId=')[1]}`}>
                                         <Button className={"header-btn viewDetailsButton"} label={t("VIEW_TEST_DETAILS")} variation="secondary" type="button"/>
                                     </Link>
                                     </div>

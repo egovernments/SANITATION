@@ -13,18 +13,16 @@ export const createModifiedData = (data) => {
                     resultValue: data?.QualityParameter[criteriaCode],
                     isActive: true
                 })),
-            "testType": "LAB",
+            "testType": "LAB_ADHOC",
             "scheduledDate": null,
             "isActive": null,
-            "documents": [
-                {
-                    "id": null,
-                    "documentType": null,
-                    "fileStore": null,
-                    "documentUid": data?.QualityParameter?.document,
-                    "additionalDetails": {}
-                }
-            ],
+            "documents": data?.QualityParameter?.document
+                ? [
+                    {
+                        "fileStoreId": data?.QualityParameter?.document,
+                    }
+                ]
+                : [],
             "additionalDetails": {},
             "workflow": null
         }
