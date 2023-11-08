@@ -152,8 +152,8 @@ public class PqmService {
     pqmValidator.validateTestTypeAdhocCreate(testRequest);
     pqmValidator.validateTestCriteriaAndDocument(testRequest);
     mdmsValidator.validateMdmsData(testRequest);
-    qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
     enrichmentService.enrichPQMCreateRequest(testRequest);
+    qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
     enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     repository.save(testRequest);
     return testRequest.getTests().get(0);
