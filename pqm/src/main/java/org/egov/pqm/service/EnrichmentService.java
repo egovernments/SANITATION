@@ -55,7 +55,6 @@ public class EnrichmentService {
     setIdgenIds(testRequest);
     setAuditDetails(testRequest, true);
     setWorkflowStatus(testRequest);
-    setTestResultStatus(testRequest);
     enrichDocument(testRequest, true);
     setTestCriteriaDetails(testRequest);
     setScheduledDate(testRequest);
