@@ -18,7 +18,12 @@ export function MultiCardReading(props) {
     ? props?.parameterData?.map((i) => (
         <Card className="tqm-card-reading">
           <InfoIcon fill="#F47738" />
-          <Row textStyle={{ color: props?.success ? "#00703C" : "#D4351C" }} className="tqm-readings-info" label={t(i?.criteriaCode)} text={t(props?.value)} />
+          <Row
+            textStyle={{ color: props?.success ? "#00703C" : "#D4351C" }}
+            className="tqm-readings-info"
+            label={t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityCriteria_${i?.criteriaCode}`))}
+            text={t(props?.value)}
+          />
         </Card>
       ))
     : null;

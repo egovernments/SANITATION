@@ -19,7 +19,14 @@ function ParameterReadings({ reading, responseData }) {
         </CardCaption>
       ) : null}
       {reading?.readings && reading?.readings?.length > 0
-        ? reading?.readings?.map(({ criteriaCode, resultValue, resultStatus }) => <CardReading showInfo={true} success={resultStatus === "PASS"} title={criteriaCode} value={resultValue} />)
+        ? reading?.readings?.map(({ criteriaCode, resultValue, resultStatus }) => (
+            <CardReading
+              showInfo={true}
+              success={resultStatus === "PASS"}
+              title={t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityCriteria_${criteriaCode}`))}
+              value={resultValue}
+            />
+          ))
         : null}
       {reading?.readings?.length > 0 ? (
         <CardMessage
