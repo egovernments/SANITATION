@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.MDMSUtils;
+import org.egov.pqm.validator.PqmValidator;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
@@ -33,6 +34,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Slf4j
 public class QualityCriteriaEvaluationService {
 
+  @Autowired
+  private PqmValidator pqmValidator;
   @Autowired
   private MDMSUtils mdmsUtil;
 
@@ -66,6 +69,9 @@ public class QualityCriteriaEvaluationService {
     //evaluate Quality Criteria
     List<QualityCriteria> evaluatedqualityCriteriaList = new ArrayList<>();
     for (QualityCriteria qualityCriteria : test.getQualityCriteria()) {
+      if (qualityCriteria.getResultValue() == null) {
+        throw new CustomException("RESULT_VALUE_INVALID", "result value invalid");
+      }
       QualityCriteria evaluatedqualityCriteria = enrichQualityCriteriaFields(
           codeToQualityCriteriaMap.get(qualityCriteria.getCriteriaCode()),
           qualityCriteria);
@@ -78,7 +84,7 @@ public class QualityCriteriaEvaluationService {
   /**
    * returns a qualityCriteria with enriched status and allowedDeviation
    *
-   * @param mdmsQualityCriteria MDMS Quality Criteria
+   * @param mdmsQualityCriteria     MDMS Quality Criteria
    * @param incomingQualityCriteria Quality Criteria from request
    * @return QualityCriteria
    */

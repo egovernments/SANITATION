@@ -81,8 +81,10 @@ public class PqmController {
   }
   
 	@PostMapping(value = "/_plainsearch")
-	public ResponseEntity<TestResponse> plainsearch(@Valid @RequestBody TestSearchRequest testSearchRequest) {
-		TestResponse response = pqmService.searchTestPlainSearch(testSearchRequest);
+	public ResponseEntity<TestResponse> plainsearch(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
+		      @Valid @RequestBody TestSearchRequest testSearchRequest) {
+		TestResponse response = pqmService.searchTestPlainSearch(testSearchRequest,
+		        requestInfoWrapper.getRequestInfo());
 		response.setResponseInfo(
 		        responseInfoFactory.createResponseInfoFromRequestInfo(testSearchRequest.getRequestInfo(),
 		            true));

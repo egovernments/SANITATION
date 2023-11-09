@@ -103,7 +103,7 @@ public class PqmService {
 
     List<Test> testList = new LinkedList<>();
 
-    if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
+    if (requestInfo.getUserInfo()!=null &&requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
       checkRoleInValidateSearch(criteria, requestInfo);
     }
     TestResponse testResponse = repository.getPqmData(criteria);
@@ -154,10 +154,12 @@ public class PqmService {
    * @return New Test
    */
   public Test create(TestRequest testRequest) {
-    pqmValidator.validateTestRequestBody(testRequest);
+    pqmValidator.validateTestTypeAdhocCreate(testRequest);
+    pqmValidator.validateTestCriteriaAndDocument(testRequest);
     mdmsValidator.validateMdmsData(testRequest);
-    qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
     enrichmentService.enrichPQMCreateRequest(testRequest);
+    qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+    enrichmentService.setTestResultStatus(testRequest);
     enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     repository.save(testRequest);
     return testRequest.getTests().get(0);
@@ -165,6 +167,8 @@ public class PqmService {
 
 
   public Test createTestViaScheduler(TestRequest testRequest) {
+    pqmValidator.validateTestTypeScheduleCreateAndUpdate(testRequest);
+    pqmValidator.validateTestCriteriaAndDocument(testRequest);
     mdmsValidator.validateMdmsData(testRequest);
     enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
     workflowIntegrator.callWorkFlow(testRequest);
@@ -195,12 +199,12 @@ public class PqmService {
   @SuppressWarnings("unchecked")
   public Test update(TestRequest testRequest) {
 
-      List<Test> tests = testRequest.getTests();
+    List<Test> tests = testRequest.getTests();
     Test test = tests.get(0);
     if (test.getTestId() == null) { // validate if application exists
       throw new CustomException(UPDATE_ERROR, "Application Not found in the System" + test);
     }
-    if (test.getTestId().equals(SourceType.LAB)) {
+    if (test.getSourceType().equals(SourceType.LAB_SCHEDULED)) {
       if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
         throw new CustomException(UPDATE_ERROR,
             "Workflow action cannot be null." + String.format("{Workflow:%s}", test.getWorkflow()));
@@ -213,6 +217,8 @@ public class PqmService {
       throw new CustomException(TEST_NOT_IN_DB,
           "test not present in database which we want to update ");
     }
+    pqmValidator.validateTestTypeScheduleCreateAndUpdate(testRequest);
+    pqmValidator.validateTestCriteriaAndDocument(testRequest);
     mdmsValidator.validateMdmsData(testRequest);
     pqmValidator.validateTestRequestFieldsWhileupdate(tests, oldTests);
     // Fetching actions from businessService
@@ -220,14 +226,13 @@ public class PqmService {
         PQM_BUSINESS_SERVICE,
         null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
-    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) { 
+    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {
       // calculate test result
-			qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+      qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
       enrichmentService.setTestResultStatus(testRequest);
       enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     }
     enrichmentService.enrichPQMUpdateRequest(testRequest);// enrich update request
-    enrichmentService.updateDocumentLists(testRequest, oldTests);
     workflowIntegrator.callWorkFlow(testRequest);// updating workflow during update
     repository.update(testRequest);
     return testRequest.getTests().get(0);
@@ -255,10 +260,11 @@ public class PqmService {
 
     List<MdmsTest> mdmsTestList = parseJsonToTestList(jsonString);
 
-    for(MdmsTest mdmsTest: mdmsTestList)
-    {
+    for (MdmsTest mdmsTest : mdmsTestList) {
       TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().sourceType(
-          String.valueOf(SourceType.LAB)).wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED)).testCode(Collections.singletonList(mdmsTest.getCode())).build();
+              String.valueOf(SourceType.LAB_SCHEDULED))
+          .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED))
+          .testCode(Collections.singletonList(mdmsTest.getCode())).build();
       Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.scheduledDate)
           .sortOrder(DESC).build();
       TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
@@ -292,7 +298,7 @@ public class PqmService {
             .stageCode(mdmsTest.getStage())
             .materialCode(mdmsTest.getMaterial())
             .qualityCriteria(qualityCriteriaList)
-            .sourceType(SourceType.LAB)
+            .sourceType(SourceType.LAB_SCHEDULED)
             .isActive(Boolean.TRUE)
             .scheduledDate(instant.toEpochMilli())
             .build();
@@ -317,7 +323,7 @@ public class PqmService {
               .stageCode(testFromDb.getStageCode())
               .materialCode(testFromDb.getMaterialCode())
               .qualityCriteria(qualityCriteriaList)
-              .sourceType(SourceType.LAB)
+              .sourceType(SourceType.LAB_SCHEDULED)
               .isActive(Boolean.TRUE)
               .scheduledDate(instant.toEpochMilli())
               .build();
@@ -361,21 +367,23 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
-	public TestResponse searchTestPlainSearch( @Valid TestSearchRequest testSearchRequest) {
-		if (testSearchRequest.getPagination().getLimit() != null && testSearchRequest.getPagination().getLimit() > config.getMaxSearchLimit())
+	public TestResponse searchTestPlainSearch(TestSearchRequest testSearchRequest, RequestInfo requestInfo) {
+		if (testSearchRequest.getPagination().getLimit() != null
+				&& testSearchRequest.getPagination().getLimit() > config.getMaxSearchLimit())
 			testSearchRequest.getPagination().setLimit(config.getMaxSearchLimit());
 
 		List<String> ids = null;
 
-		if (testSearchRequest.getTestSearchCriteria().getIds() != null && !testSearchRequest.getTestSearchCriteria().getIds().isEmpty())
+		if (testSearchRequest.getTestSearchCriteria().getIds() != null
+				&& !testSearchRequest.getTestSearchCriteria().getIds().isEmpty())
 			ids = testSearchRequest.getTestSearchCriteria().getIds();
 		else
 			ids = repository.fetchTestIds(testSearchRequest);
 
-//		if (ids.isEmpty())
-//			return Collections.emptyList();
-		TestSearchCriteria testSearchCriteria=TestSearchCriteria.builder().ids(ids).build();
-		return  testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).build(),testSearchRequest.getRequestInfo());
+		if (ids.isEmpty())
+			return TestResponse.builder().build();
+		TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().ids(ids).build();
+		return testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).build(), requestInfo);
 	}
 
 }

@@ -44,9 +44,9 @@ public class AnomalyRepository {
 		pqmAnomalyFinderProducer.push("create-pqm-anomaly-finder", testRequest);
 	}
 
-	public List<PqmAnomaly> getAnomalyFinderData(List<String> idLists) {
+	public List<PqmAnomaly> getAnomalyFinderData(List<String> testIdLists) {
 		List<Object> preparedStmtList = new ArrayList<>();
-		String query = anomalyFinderQueryBuilder.anomalySearchQuery(idLists, preparedStmtList);
+		String query = anomalyFinderQueryBuilder.anomalySearchQuery(testIdLists, preparedStmtList);
 		List<PqmAnomaly> pqmAnomalys = jdbcTemplate.query(query, preparedStmtList.toArray(), anomalyFinderRowMapper);
 		return pqmAnomalys;
 	}
