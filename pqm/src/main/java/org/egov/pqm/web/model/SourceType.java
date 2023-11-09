@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum SourceType {
-	LAB_SCHEDULED, 
-	IOT_SCHEDULED, 
-	LAB_ADHOC
+  LAB_SCHEDULED,
+  IOT_SCHEDULED,
+  LAB_ADHOC
 }

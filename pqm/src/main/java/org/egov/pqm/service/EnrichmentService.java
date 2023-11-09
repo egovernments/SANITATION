@@ -1,6 +1,7 @@
 package org.egov.pqm.service;
 
 
+import static org.egov.pqm.util.Constants.UPDATE_RESULT;
 import static org.egov.pqm.util.Constants.WFSTATUS_SUBMITTED;
 import static org.egov.pqm.web.model.TestResultStatus.PENDING;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -53,7 +55,6 @@ public class EnrichmentService {
     setIdgenIds(testRequest);
     setAuditDetails(testRequest, true);
     setWorkflowStatus(testRequest);
-    setTestResultStatus(testRequest);
     enrichDocument(testRequest, true);
     setTestCriteriaDetails(testRequest);
     setScheduledDate(testRequest);
@@ -77,41 +78,22 @@ public class EnrichmentService {
     setAuditDetails(testRequest, true);
     testRequest.getTests().get(0).setStatus(PENDING);
     setInitialWorkflowAction(testRequest.getTests().get(0));
-    enrichDocument(testRequest, true);
     setTestCriteriaDetails(testRequest);
   }
 
   public void enrichPQMUpdateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setAuditDetails(testRequest, false);
-    enrichDocument(testRequest, false);
-  }
-
-  public void updateDocumentLists(TestRequest testRequest, List<Test> oldTests) {
-    List<Document> requestDocumentList = testRequest.getTests().get(0).getDocuments();
-    List<Document> createDocumentList = new ArrayList<>();
-    Set<String> docIdsSetFromOldTests = new HashSet<>();
-    for (Test oldTest : oldTests) {
-      for (Document doc : oldTest.getDocuments()) {
-        docIdsSetFromOldTests.add(doc.getId());
-      }
+    if (Objects.equals(testRequest.getTests().get(0).getWorkflow().getAction(), UPDATE_RESULT)) {
+      enrichDocument(testRequest, false);
     }
-    for (Document doc : requestDocumentList) {
-      if (!docIdsSetFromOldTests.contains(doc.getId())) {
-        createDocumentList.add(doc);
-      }
-    }
-    List<Test> newTests = testRequest.getTests();
-    newTests.get(0).setDocuments(createDocumentList);
-    TestRequest.builder().tests(newTests).requestInfo(testRequest.getRequestInfo()).build();
   }
-
 
   private void enrichDocument(TestRequest testRequest, boolean isCreate) {
-    List<Document> documentList = testRequest.getTests().get(0).getDocuments();
-    if (!documentList.isEmpty()) {
-      for (Document document : documentList) {
-        if (document.getId() == null && document.getFileStoreId() != null) {
+    if (testRequest.getTests().get(0).getDocuments() != null && !testRequest.getTests().get(0)
+        .getDocuments().isEmpty()) {
+      for (Document document : testRequest.getTests().get(0).getDocuments()) {
+        if (document.getFileStoreId() != null) {
           AuditDetails auditDetails = setAuditDetails(testRequest, isCreate);
           document.setTestId(testRequest.getTests().get(0).getTestId());
           document.setId(String.valueOf(UUID.randomUUID()));

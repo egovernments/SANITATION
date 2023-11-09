@@ -63,6 +63,7 @@ public class TestRepository {
 
   public void update(TestRequest testRequest) {
     producer.push(config.getTestUpdateTopic(), testRequest);
+    producer.push(config.getTestUpdateEventTopic(), testRequest);
   }
 
   public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {
@@ -81,28 +82,10 @@ public class TestRepository {
   }
 
   public List<QualityCriteria> getQualityCriteriaData(List<String> idList) {
-	    List<Object> preparedStmtList = new ArrayList<>();
-	    String query = pqmQueryBuilder.getQualityCriteriaQuery(idList, preparedStmtList);
-	    List<QualityCriteria> qualityCriterias = jdbcTemplate.query(query, preparedStmtList.toArray(),
-	    		qualityCriteriaRowMapper);
-	    return qualityCriterias;
-	  }
-
-  public List<Test> fetchFromDB(TestRequest testRequest) {
-    Test test = testRequest.getTests().get(0);
-    List<String> testIds = new ArrayList<>();  //fetching  the test response with given id and tenantId from database
-    testIds.add(test.getTestId());
-
-    TestSearchCriteria criteria = TestSearchCriteria.builder()
-        .testIds(testIds).tenantId(test.getTenantId())
-        .build();
-    Pagination Pagination = new Pagination();
-    TestSearchRequest request = TestSearchRequest.builder()
-        .testSearchCriteria(criteria).pagination(Pagination)
-        .build();
-
-    TestResponse testResponse = getPqmData(request);
-    List<Test> tests = testResponse.getTests();
-    return tests;
+    List<Object> preparedStmtList = new ArrayList<>();
+    String query = pqmQueryBuilder.getQualityCriteriaQuery(idList, preparedStmtList);
+    List<QualityCriteria> qualityCriterias = jdbcTemplate.query(query, preparedStmtList.toArray(),
+        qualityCriteriaRowMapper);
+    return qualityCriterias;
   }
 }
