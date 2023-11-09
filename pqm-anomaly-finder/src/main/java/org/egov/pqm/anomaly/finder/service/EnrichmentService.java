@@ -61,8 +61,10 @@ public class EnrichmentService {
 			pqmAnomalys.add(PqmAnomaly.builder().id(UUID.randomUUID().toString()).testId(test.getTestId())
 					.tenantId(test.getTenantId())
 					.anomalyType(anomalyType)
-					.isActive(test.getIsActive()).additionalDetails(test.getAdditionalDetails())
-					.auditDetails(auditDetails).build());
+					.isActive(test.getIsActive())
+					.additionalDetails(test.getAdditionalDetails())
+					.auditDetails(auditDetails)
+					.build());
 		}
 
 	    PqmAnomalyRequest pqmAnomalyRequest =
