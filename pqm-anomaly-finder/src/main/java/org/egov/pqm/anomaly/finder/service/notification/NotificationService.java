@@ -55,7 +55,6 @@ public class NotificationService {
 			EventRequest request = getEvents(testRequest);
 			if (null != request)
 				notificationUtil.sendEventNotification(request);
-//  Recepient(toRoles=null, toUsers=[f207b8c0-c213-4bc1-9f6f-c2d2c4672dda])
 		}
 	}
 
@@ -96,19 +95,23 @@ public class NotificationService {
 				Action action = null;
 				List<ActionItem> items = new ArrayList<>();
 
-				String actionLink = pqmAnomalyConfiguration.getTestLink().replace("$id", test.getTestId());
+				String actionLink = pqmAnomalyConfiguration.getTestLink().replace("$testId", test.getTestId());
 				actionLink = pqmAnomalyConfiguration.getUiAppHost() + actionLink;
 				ActionItem item = ActionItem.builder().actionUrl(actionLink).code(pqmAnomalyConfiguration.getViewCode())
 						.build();
 				items.add(item);
 				action = Action.builder().actionUrls(items).build();
+				
 				String eventCategory = null;
 				switch (test.getSourceType()) {
-				case LAB:
+				case LAB_SCHEDULED:
 					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
 					break;
-				case IOT:
+				case IOT_SCHEDULED:
 					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT;
+					break;
+				case LAB_ADHOC:
+					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
 					break;
 				default:
 					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;

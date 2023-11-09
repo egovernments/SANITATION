@@ -11,13 +11,13 @@ public class AnomalyFinderQueryBuilder {
 
 	private static final String ANOMALYFINDER_QUERY = "select * from eg_pqm_anomaly_details anomaly";
 
-	public String anomalySearchQuery(List<String> idLists, List<Object> preparedStmtList) {
+	public String anomalySearchQuery(List<String> testIdLists, List<Object> preparedStmtList) {
 		StringBuilder builder = new StringBuilder(ANOMALYFINDER_QUERY);
 
-		if (!CollectionUtils.isEmpty(idLists)) {
+		if (!CollectionUtils.isEmpty(testIdLists)) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" anomaly.testid IN (").append(createQuery(idLists)).append(")");
-			addToPreparedStatement(preparedStmtList, idLists);
+			builder.append(" anomaly.testid IN (").append(createQuery(testIdLists)).append(")");
+			addToPreparedStatement(preparedStmtList, testIdLists);
 		}
 		return builder.toString();
 	}
