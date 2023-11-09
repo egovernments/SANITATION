@@ -60,10 +60,7 @@ public class EnrichmentService {
 			}
 			pqmAnomalys.add(PqmAnomaly.builder().id(UUID.randomUUID().toString()).testId(test.getTestId())
 					.tenantId(test.getTenantId())
-//	                .referenceId("IotID")  // Replace with the actual referenceId logic
 					.anomalyType(anomalyType)
-//	                .description("Description")
-//	                .resolutionStatus("resolutionStatus") // Replace with the actual resolutionStatus logic
 					.isActive(test.getIsActive()).additionalDetails(test.getAdditionalDetails())
 					.auditDetails(auditDetails).build());
 		}
