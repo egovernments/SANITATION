@@ -92,10 +92,10 @@ public class TestRepository {
     return qualityCriterias;
   }
 
-	public List<String> fetchTestIds(TestSearchRequest testSearchRequest) {
+	public List<String> fetchTestIds(TestSearchCriteria testSearchCriteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
-		preparedStmtList.add(testSearchRequest.getPagination().getOffset());
-		preparedStmtList.add(testSearchRequest.getPagination().getLimit());
+		preparedStmtList.add(testSearchCriteria.getOffset());
+		preparedStmtList.add(testSearchCriteria.getLimit());
 		return jdbcTemplate.query("SELECT id from eg_pqm_tests ORDER BY createdtime offset " + " ? " + "limit ? ",
 				preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
 	}

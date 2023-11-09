@@ -11,10 +11,12 @@ import org.egov.pqm.web.model.RequestInfoWrapper;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
+import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,11 +84,11 @@ public class PqmController {
   
 	@PostMapping(value = "/_plainsearch")
 	public ResponseEntity<TestResponse> plainsearch(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
-		      @Valid @RequestBody TestSearchRequest testSearchRequest) {
-		TestResponse response = pqmService.searchTestPlainSearch(testSearchRequest,
+			@Valid @ModelAttribute TestSearchCriteria criteria) {
+		TestResponse response = pqmService.searchTestPlainSearch(criteria,
 		        requestInfoWrapper.getRequestInfo());
 		response.setResponseInfo(
-		        responseInfoFactory.createResponseInfoFromRequestInfo(testSearchRequest.getRequestInfo(),
+		        responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(),
 		            true));
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

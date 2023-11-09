@@ -64,4 +64,10 @@ public class TestSearchCriteria {
   @JsonProperty("toDate")
   private Long toDate = null;
   
+  @JsonProperty("offset")
+  private Integer offset;
+
+  @JsonProperty("limit")
+  private Integer limit;
+  
 }

@@ -367,22 +367,22 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
-	public TestResponse searchTestPlainSearch(TestSearchRequest testSearchRequest, RequestInfo requestInfo) {
-		if (testSearchRequest.getPagination().getLimit() != null
-				&& testSearchRequest.getPagination().getLimit() > config.getMaxSearchLimit())
-			testSearchRequest.getPagination().setLimit(config.getMaxSearchLimit());
+	public TestResponse searchTestPlainSearch(TestSearchCriteria testSearchCriteria, RequestInfo requestInfo) {
+		if (testSearchCriteria.getLimit() != null
+				&& testSearchCriteria.getLimit() > config.getMaxSearchLimit())
+			testSearchCriteria.setLimit(config.getMaxSearchLimit());
 
 		List<String> ids = null;
 
-		if (testSearchRequest.getTestSearchCriteria().getIds() != null
-				&& !testSearchRequest.getTestSearchCriteria().getIds().isEmpty())
-			ids = testSearchRequest.getTestSearchCriteria().getIds();
+		if (testSearchCriteria.getIds() != null
+				&& !testSearchCriteria.getIds().isEmpty())
+			ids = testSearchCriteria.getIds();
 		else
-			ids = repository.fetchTestIds(testSearchRequest);
+			ids = repository.fetchTestIds(testSearchCriteria);
 
 		if (ids.isEmpty())
 			return TestResponse.builder().build();
-		TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().ids(ids).build();
+		 TestSearchCriteria.builder().ids(ids).build();
 		return testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).build(), requestInfo);
 	}
 
