@@ -29,18 +29,7 @@ import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.validator.PqmValidator;
-import org.egov.pqm.web.model.Document;
-import org.egov.pqm.web.model.DocumentResponse;
-import org.egov.pqm.web.model.Pagination;
-import org.egov.pqm.web.model.Pagination.SortBy;
-import org.egov.pqm.web.model.QualityCriteria;
-import org.egov.pqm.web.model.SourceType;
-import org.egov.pqm.web.model.Test;
-import org.egov.pqm.web.model.TestRequest;
-import org.egov.pqm.web.model.TestResponse;
-import org.egov.pqm.web.model.TestResultStatus;
-import org.egov.pqm.web.model.TestSearchCriteria;
-import org.egov.pqm.web.model.TestSearchRequest;
+import org.egov.pqm.web.model.*;
 
 import org.egov.pqm.web.model.mdms.MdmsTest;
 import org.egov.pqm.web.model.workflow.BusinessService;
@@ -260,7 +249,7 @@ public class PqmService {
               String.valueOf(SourceType.LAB_SCHEDULED))
           .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED))
           .testCode(Collections.singletonList(mdmsTest.getCode())).build();
-      Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.scheduledDate)
+      Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.SCHEDULED_DATE)
           .sortOrder(DESC).build();
       TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
           .testSearchCriteria(testSearchCriteria).pagination(pagination).build();

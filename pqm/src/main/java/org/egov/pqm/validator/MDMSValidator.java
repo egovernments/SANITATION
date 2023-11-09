@@ -29,9 +29,9 @@ public class MDMSValidator {
   @Autowired
   private MDMSUtils mdmsUtils;
 
-  private void validateIfMasterPresent(TestRequest testRequest, String tenantId,
+  public void validateIfMasterPresent(RequestInfo requestInfo, String tenantId,
       String schemaCode, String uniqueId) {
-    Object mdmsData = mdmsUtils.mdmsCallV2(testRequest.getRequestInfo(), tenantId, schemaCode);
+    Object mdmsData = mdmsUtils.mdmsCallV2(requestInfo, tenantId, schemaCode);
     List<Object> result = JsonPath.read(mdmsData,
         "$.mdms[?(@.uniqueIdentifier == '" + uniqueId + "')]");
     if (result.isEmpty()) {
@@ -43,19 +43,18 @@ public class MDMSValidator {
   }
 
   public void validateMdmsData(TestRequest testRequest) {
-    RequestInfo requestInfo = testRequest.getRequestInfo();
     String tenantId = testRequest.getTests().get(0).getTenantId();
-    validateIfMasterPresent(testRequest, tenantId, PQM_SCHEMA_CODE_PLANT,
+    validateIfMasterPresent(testRequest.getRequestInfo(), tenantId, PQM_SCHEMA_CODE_PLANT,
         testRequest.getTests().get(0).getPlantCode());
-    validateIfMasterPresent(testRequest, tenantId, PQM_SCHEMA_CODE_PROCESS,
+    validateIfMasterPresent(testRequest.getRequestInfo(), tenantId, PQM_SCHEMA_CODE_PROCESS,
         testRequest.getTests().get(0).getProcessCode());
-    validateIfMasterPresent(testRequest, tenantId, PQM_SCHEMA_CODE_STAGE,
+    validateIfMasterPresent(testRequest.getRequestInfo(), tenantId, PQM_SCHEMA_CODE_STAGE,
         testRequest.getTests().get(0).getStageCode());
-    validateIfMasterPresent(testRequest, tenantId, PQM_SCHEMA_CODE_MATERIAL,
+    validateIfMasterPresent(testRequest.getRequestInfo(), tenantId, PQM_SCHEMA_CODE_MATERIAL,
         testRequest.getTests().get(0).getMaterialCode());
     List<QualityCriteria> criteriaList = testRequest.getTests().get(0).getQualityCriteria();
     for (QualityCriteria criteria : criteriaList) {
-      validateIfMasterPresent(testRequest, tenantId, PQM_SCHEMA_CODE_CRITERIA,
+      validateIfMasterPresent(testRequest.getRequestInfo(), tenantId, PQM_SCHEMA_CODE_CRITERIA,
           criteria.getCriteriaCode());
     }
   }

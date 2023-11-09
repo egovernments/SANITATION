@@ -6,7 +6,7 @@ import java.util.TimeZone;
 
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.Pagination;
-import org.egov.pqm.web.model.Pagination.SortBy;
+import org.egov.pqm.web.model.SortBy;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,7 @@ public class TestQueryBuilder {
 			builder.append(" test.testCode IN (").append(createQuery(testCodes)).append(")");
 			addToPreparedStatement(preparedStmtList, testCodes);
 		}
-		
+
 		List<String> plantCodes = criteria.getPlantCodes();
 		if (!CollectionUtils.isEmpty(plantCodes)) {
 			addClauseIfRequired(preparedStmtList, builder);
@@ -221,41 +221,46 @@ public class TestQueryBuilder {
 	 */
 	private void addOrderByClause(StringBuilder builder, Pagination criteria) {
 
-		if (StringUtils.isEmpty(criteria.getSortBy()))
+		if (StringUtils.isEmpty(criteria.getSortBy())) {
 			builder.append(" ORDER BY test.lastmodifiedtime ");
-
-		else if (criteria.getSortBy() == Pagination.SortBy.wfStatus)
+		}
+		else if (criteria.getSortBy() == SortBy.WORKFLOW_STATUS) {
 			builder.append(" ORDER BY test.wfStatus ");
-
-		else if (criteria.getSortBy() == Pagination.SortBy.testId)
+		}
+		else if (criteria.getSortBy() == SortBy.TEST_ID) {
 			builder.append(" ORDER BY test.testId ");
-
-		else if (criteria.getSortBy() == Pagination.SortBy.scheduledDate)
+		}
+		else if (criteria.getSortBy() == SortBy.SCHEDULED_DATE) {
 			builder.append(" ORDER BY test.scheduledDate ");
-
-		else if (criteria.getSortBy() == Pagination.SortBy.plantCode)
+		}
+		else if (criteria.getSortBy() == SortBy.ID) {
+			builder.append(" ORDER BY test.id ");
+		}
+		else if (criteria.getSortBy() == SortBy.PLANT_CODE) {
 			builder.append(" ORDER BY test.plantCode ");
-
-		else if (criteria.getSortBy() == Pagination.SortBy.processCode)
+		}
+		else if (criteria.getSortBy() == SortBy.PROCESS_CODE) {
 			builder.append(" ORDER BY test.processCode ");
-
-		else if (criteria.getSortBy() == Pagination.SortBy.stageCode)
+		}
+		else if (criteria.getSortBy() == SortBy.STAGE_CODE) {
 			builder.append(" ORDER BY test.stageCode ");
-
-		else if (criteria.getSortBy() == Pagination.SortBy.materialCode)
+		}
+		else if (criteria.getSortBy() == SortBy.MATERIAL_CODE) {
 			builder.append(" ORDER BY test.materialCode ");
-
-		else if (criteria.getSortBy() == Pagination.SortBy.deviceCode)
+		}
+		else if (criteria.getSortBy() == SortBy.DEVICE_CODE) {
 			builder.append(" ORDER BY test.deviceCode ");
-
-		else if (criteria.getSortBy() == Pagination.SortBy.createdTime)
+		}
+		else if (criteria.getSortBy() == SortBy.CREATED_TIME) {
 			builder.append(" ORDER BY test.createdtime ");
+		}
 
-		if (criteria.getSortOrder() == Pagination.SortOrder.ASC)
+		if (criteria.getSortOrder() == Pagination.SortOrder.ASC){
 			builder.append(" ASC ");
-		else
+		}
+		else {
 			builder.append(" DESC ");
-
+		}
 	}
 
 
