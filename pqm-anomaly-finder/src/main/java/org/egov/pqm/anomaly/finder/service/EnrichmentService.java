@@ -58,7 +58,9 @@ public class EnrichmentService {
 			default:
 				anomalyType = AnomalyType.LAB_RESULTS_AND_DEVICE_RESULTS_DO_NOT_MATCH;
 			}
-			pqmAnomalys.add(PqmAnomaly.builder().id(UUID.randomUUID().toString()).testId(test.getTestId())
+			pqmAnomalys.add(PqmAnomaly.builder()
+					.id(UUID.randomUUID().toString())
+					.testId(test.getTestId())
 					.tenantId(test.getTenantId())
 					.anomalyType(anomalyType)
 					.isActive(test.getIsActive())
