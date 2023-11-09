@@ -55,7 +55,6 @@ public class NotificationService {
 			EventRequest request = getEvents(testRequest);
 			if (null != request)
 				notificationUtil.sendEventNotification(request);
-//  Recepient(toRoles=null, toUsers=[f207b8c0-c213-4bc1-9f6f-c2d2c4672dda])
 		}
 	}
 
@@ -102,17 +101,21 @@ public class NotificationService {
 						.build();
 				items.add(item);
 				action = Action.builder().actionUrls(items).build();
-				String eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;;
-//				switch (test.getSourceType()) {
-//				case LAB:
-//					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
-//					break;
-//				case IOT:
-//					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT;
-//					break;
-//				default:
-//					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
-//				}
+				
+				String eventCategory = null;
+				switch (test.getSourceType()) {
+				case LAB_SCHEDULED:
+					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
+					break;
+				case IOT_SCHEDULED:
+					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT;
+					break;
+				case LAB_ADHOC:
+					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
+					break;
+				default:
+					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
+				}
 
 				events.add(Event.builder().tenantId(test.getTenantId()).description(mobileNumberToMsg.get(mobile))
 						.eventType(AnomalyFinderConstants.USREVENTS_EVENT_TYPE).eventCategory(eventCategory)

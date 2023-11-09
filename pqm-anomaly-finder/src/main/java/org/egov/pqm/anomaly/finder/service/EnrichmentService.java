@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.pqm.anomaly.finder.util.AnomalyFinderConstants;
 import org.egov.pqm.anomaly.finder.util.PqmAnomalyFinderUtil;
 import org.egov.pqm.anomaly.finder.web.model.AnomalyType;
 import org.egov.pqm.anomaly.finder.web.model.AuditDetails;
@@ -39,34 +40,33 @@ public class EnrichmentService {
 	    List<Test> tests = testRequest.getTests();
 	    List<PqmAnomaly> pqmAnomalys = new ArrayList<>();
 
-	    for (Test test : tests) {
-	        PqmAnomaly pqmAnomaly = new PqmAnomaly();
-	        AuditDetails auditDetails = pqmAnomalyFinderUtil.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
+		for (Test test : tests) {
+			PqmAnomaly pqmAnomaly = new PqmAnomaly();
+			AuditDetails auditDetails = pqmAnomalyFinderUtil.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
 
-//	        AnomalyType anomalyType = null;
-//	        if (test.getSourceType().equals(SourceType.LAB))
-//	            anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
-//	        else if (test.getSourceType().equals(SourceType.IOT))
-//	            anomalyType = AnomalyType.IOT_DEVICE_RESULTS_NOT_AS_PER_BENCHMARK;
-//	        else
-//	            anomalyType = AnomalyType.LAB_RESULTS_AND_DEVICE_RESULTS_DO_NOT_MATCH;
-	        AnomalyType anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
-
-	        pqmAnomalys.add(
-	            PqmAnomaly.builder()
-	                .id(UUID.randomUUID().toString())
-	                .testId(test.getTestId())
-	                .tenantId(test.getTenantId())
+			AnomalyType anomalyType = null;
+			switch (test.getSourceType()) {
+			case LAB_SCHEDULED:
+				anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
+				break;
+			case IOT_SCHEDULED:
+				anomalyType = AnomalyType.IOT_DEVICE_RESULTS_NOT_AS_PER_BENCHMARK;
+				break;
+			case LAB_ADHOC:
+				anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
+				break;
+			default:
+				anomalyType = AnomalyType.LAB_RESULTS_AND_DEVICE_RESULTS_DO_NOT_MATCH;
+			}
+			pqmAnomalys.add(PqmAnomaly.builder().id(UUID.randomUUID().toString()).testId(test.getTestId())
+					.tenantId(test.getTenantId())
 //	                .referenceId("IotID")  // Replace with the actual referenceId logic
-	                .anomalyType(anomalyType)
+					.anomalyType(anomalyType)
 //	                .description("Description")
-//	                .resolutionStatus("resolutionStatus")
-	                .isActive(test.getIsActive())
-	                .additionalDetails(test.getAdditionalDetails())
-	                .auditDetails(auditDetails)
-	                .build()
-	        );
-	    }
+//	                .resolutionStatus("resolutionStatus") // Replace with the actual resolutionStatus logic
+					.isActive(test.getIsActive()).additionalDetails(test.getAdditionalDetails())
+					.auditDetails(auditDetails).build());
+		}
 
 	    PqmAnomalyRequest pqmAnomalyRequest =
 	        PqmAnomalyRequest.builder()
