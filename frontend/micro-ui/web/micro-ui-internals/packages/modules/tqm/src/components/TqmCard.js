@@ -53,16 +53,16 @@ const TqmCard = ({reRoute=true}) => {
       link: `/${window?.contextPath}/employee/tqm/search-test-results`,
       roles: [...ROLES.plant,ROLES.ulb],
     },
-    {
-      label: t("TQM_VIEW_IOT_READING"),
-      link: `/${window?.contextPath}/employee/tqm/search-test-results`,
-      roles: [...ROLES.plant,ROLES.ulb],
-    },
-    {
-      label: t("TQM_SENSOR_MON"),
-      link: `/${window?.contextPath}/employee/tqm/search-devices`,
-      roles: [...ROLES.plant,ROLES.ulb],
-    },
+    // {
+    //   label: t("TQM_VIEW_IOT_READING"),
+    //   link: `/${window?.contextPath}/employee/tqm/search-test-results`,
+    //   roles: [...ROLES.plant,ROLES.ulb],
+    // },
+    // {
+    //   label: t("TQM_SENSOR_MON"),
+    //   link: `/${window?.contextPath}/employee/tqm/search-devices`,
+    //   roles: [...ROLES.plant,ROLES.ulb],
+    // },
     {
       label: t("TQM_ADD_TEST_RESULT"),
       link: `/${window?.contextPath}/employee/tqm/add-test-result`,

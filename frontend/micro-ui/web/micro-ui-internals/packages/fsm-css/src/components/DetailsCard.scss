@@ -17,8 +17,8 @@
       }
       th:first-child {
         border: 0.5px solid #a6a6a6;
-        min-width: 265px;
-        width: 265px;
+        min-width: fit-content;
+        width: fit-content;
       }
       .underline {
         width: 370%;

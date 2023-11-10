@@ -41,11 +41,6 @@ const TQMLanding = () => {
       icon: <TreatmentQualityIcon />,
     },
     {
-      name: "ES_TQM_ISSUE_MANAGEMENT",
-      // link: ``,
-      icon: <IssueIcon />,
-    },
-    {
       name: "ES_TQM_VIEW_DASHBOARD",
       link: `/${window?.contextPath}/employee/dss/dashboard/pqm`,
       icon: <DashboardIcon />,

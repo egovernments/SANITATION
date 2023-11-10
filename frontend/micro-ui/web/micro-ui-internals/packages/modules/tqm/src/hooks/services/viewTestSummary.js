@@ -13,6 +13,7 @@ export const viewTestSummary = async ({ t, id }) => {
   });
 
   const testResponse = response?.tests?.[0];
+  const updatedTime = testResponse?.auditDetails?.lastModifiedTime;
 
   return {
     details: [
@@ -56,7 +57,7 @@ export const viewTestSummary = async ({ t, id }) => {
     reading: testResponse?.testCriteria
       ? {
           title: "ES_TQM_TEST_PARAMS_HEADING",
-          date: `${new Date(testResponse?.scheduledDate).getDate()}/${new Date(testResponse?.scheduledDate).getMonth() + 1}/${new Date(testResponse?.scheduledDate).getFullYear()}`,
+          date: updatedTime ? `${new Date(updatedTime).getDate()}/${new Date(updatedTime).getMonth() + 1}/${new Date(updatedTime).getFullYear()}` : `N/A`,
           readings: testResponse?.testCriteria,
         }
       : null,
