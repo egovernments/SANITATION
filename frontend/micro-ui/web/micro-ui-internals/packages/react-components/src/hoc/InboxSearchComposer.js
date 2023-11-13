@@ -37,7 +37,7 @@ function isFalsyOrEmpty(input) {
 const InboxSearchComposer = ({configs}) => {
     const {t} = useTranslation()
     const presets = Digit.Hooks.useQueryParams();
-    if(Object.keys(presets).length > 0) configs = Digit.Utils.configUpdater(configs)
+    // if(Object.keys(presets).length > 0) configs = Digit.Utils.configUpdater(configs)
 
     const [enable, setEnable] = useState(false);
     const [state, dispatch] = useReducer(reducer, initialInboxState);

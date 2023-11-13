@@ -20,7 +20,8 @@ const TqmBreadCrumb = ({ location, defaultPath }) => {
   const pathVar=location.pathname.replace(defaultPath+'/',"").split("?")?.[0];
   const { t } = useTranslation();
   const search = useLocation().search;
-
+  const fromScreen = new URLSearchParams(search).get("from") || null;
+  
   const crumbs = [
     {
       path: `/${window?.contextPath}/employee`,
@@ -35,8 +36,10 @@ const TqmBreadCrumb = ({ location, defaultPath }) => {
     },
     {
       // path: `/${window.contextPath}/employee/tqm/search-test-results`,
-      content:  t(`TQM_BREAD_PAST_TESTS`) ,
+      // content:  t(`TQM_BREAD_PAST_TESTS`) ,
       show: pathVar.includes("search-test-results")?true: false,
+      content: fromScreen ? `${t(fromScreen)} / ${t("TQM_BREAD_PAST_TESTS")}` : t("TQM_BREAD_PAST_TESTS"),
+      isBack:fromScreen ? true : false
     },
     {
       // path: `/${window.contextPath}/employee/tqm/add-test-result`,
@@ -45,13 +48,16 @@ const TqmBreadCrumb = ({ location, defaultPath }) => {
     },
     {
       // path: `/${window.contextPath}/employee/tqm/add-test-result`,
-      content:  t(`TQM_BREAD_SENSOR`) ,
+      // content:  t(`TQM_BREAD_SENSOR`) ,
       show: pathVar.includes("search-devices")?true: false,
+      content: fromScreen ? `${t(fromScreen)} / ${t("TQM_BREAD_SENSOR")}` : t("TQM_BREAD_SENSOR"),
+      isBack:fromScreen ? true: false
     },
     {
       // path: `/${window.contextPath}/employee/tqm/add-test-result`,
-      content:  t(`TQM_BREAD_VIEW_TEST_RESULTS`) ,
+      // content:  t(`TQM_BREAD_VIEW_TEST_RESULTS`) ,
       show: pathVar.includes("view-test-results")?true: false,
+      content:fromScreen ? `${t(fromScreen)} / ${t("TQM_BREAD_VIEW_TEST_RESULTS")}` : t("TQM_BREAD_VIEW_TEST_RESULTS"),
     },
 
     
