@@ -109,6 +109,7 @@ public class MDMSUtils {
 
   public Object mdmsCallV2(RequestInfo requestInfo, String tenantId, String schemaCode){
     MdmsCriteriaRequest mdmsCriteriaRequest = getMDMSRequestV2(requestInfo, tenantId, schemaCode);
+    log.info(" mdms criteria request{} ", mdmsCriteriaRequest);
     StringBuilder uri = getMdmsSearchUrl2();
     Object result = serviceRequestRepository.fetchResult(uri, mdmsCriteriaRequest);
     return result;

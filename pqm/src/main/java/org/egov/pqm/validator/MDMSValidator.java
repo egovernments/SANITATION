@@ -31,10 +31,10 @@ public class MDMSValidator {
 
   private void validateIfMasterPresent(TestRequest testRequest, String tenantId,
       String schemaCode, String uniqueId) {
-    log.info(" tenantId "  ,tenantId);
-    log.info("  uniqueId "  ,uniqueId);
+    log.info("tenantId: {}", tenantId);
+    log.info("uniqueId: {}", uniqueId);
     Object mdmsData = mdmsUtils.mdmsCallV2(testRequest.getRequestInfo(), tenantId, schemaCode);
-    log.info(" mdms data object ",mdmsData);
+    log.info("mdms data object: {}", mdmsData);
     List<Object> result = JsonPath.read(mdmsData,
         "$.mdms[?(@.uniqueIdentifier == '" + uniqueId + "')]");
     if (result.isEmpty()) {
