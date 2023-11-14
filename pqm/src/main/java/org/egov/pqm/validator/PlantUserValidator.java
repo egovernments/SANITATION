@@ -21,22 +21,23 @@ public class PlantUserValidator {
   private PlantUserRepository plantUserRepository;
 
   public void validateCreateRequest(PlantUserRequest plantUserRequest) {
-    if (Objects.isNull(plantUserRequest.getPlantUsers()) || CollectionUtils.isEmpty(
+   /* if (Objects.isNull(plantUserRequest.getPlantUsers()) || CollectionUtils.isEmpty(
         plantUserRequest.getPlantUsers())) {
+
       plantUserRepository.search(PlantUserSearchRequest.builder().plantUserSearchCriteria(
           PlantUserSearchCriteria.builder().build()).build());
       throw Error.mandatory_field_missing.getBuilder(PlantUserRequest.class.getName(),
           PlantUser.class.getName()).build();
-    }
+    }*/
 
-    plantUserRequest.getPlantUsers().forEach(
+   /* plantUserRequest.getPlantUsers().forEach(
         plantUser -> mdmsValidator.validateIfMasterPresent(plantUserRequest.getRequestInfo(),
             plantUser.getTenantId(), "", plantUser.getPlantCode()));
-
+*/
   }
 
   public void validateUpdateRequest(PlantUserRequest plantUserRequest){
-    if (Objects.isNull(plantUserRequest.getPlantUsers()) || CollectionUtils.isEmpty(
+    /*if (Objects.isNull(plantUserRequest.getPlantUsers()) || CollectionUtils.isEmpty(
         plantUserRequest.getPlantUsers())) {
       throw Error.mandatory_field_missing.getBuilder(PlantUserRequest.class.getName(),
           PlantUser.class.getName()).build();
@@ -44,7 +45,7 @@ public class PlantUserValidator {
 
     plantUserRequest.getPlantUsers().forEach(
         plantUser -> mdmsValidator.validateIfMasterPresent(plantUserRequest.getRequestInfo(),
-            plantUser.getTenantId(), "", plantUser.getPlantCode()));
+            plantUser.getTenantId(), "", plantUser.getPlantCode()));*/
   }
 
 }
