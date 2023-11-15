@@ -5,9 +5,14 @@ import static org.egov.pqm.util.Constants.REGEX_METACHARACTER_PATTERN;
 import static org.egov.pqm.util.Constants.UPDATE_RESULT;
 import static org.egov.pqm.util.ErrorConstants.*;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import org.egov.pqm.web.model.Document;
+import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.SourceType;
 import org.egov.pqm.web.model.Test;
 
@@ -101,8 +106,20 @@ public class PqmValidator {
     if (!Objects.equals(test.getStageCode(), oldTest.getStageCode())) {
       throw new CustomException(STAGE_CODE_INVALID_CODE, STAGE_CODE_INVALID_MESSAGE);
     }
-    if (!Objects.equals(test.getQualityCriteria().get(0).getCriteriaCode(),
-        oldTest.getQualityCriteria().get(0).getCriteriaCode())) {
+
+    Map<String, String> criteriaMap = new HashMap<>();
+    for (QualityCriteria oldCriteria : oldTest.getQualityCriteria()) {  // Populate the criteriaMap with criteria codes and associated IDs from oldTest
+      criteriaMap.put(oldCriteria.getCriteriaCode(), oldCriteria.getId());
+    }
+    for (QualityCriteria criteria : test.getQualityCriteria()) {        // Check criteria codes and associated IDs in test against the criteriaMap
+      String associatedId = criteriaMap.get(criteria.getCriteriaCode());
+      if (associatedId == null || !associatedId.equals(criteria.getId())) {
+        throw new CustomException(CRITERIA_CODE_INVALID_CODE, CRITERIA_CODE_INVALID_MESSAGE);
+      } else {
+        criteriaMap.remove(criteria.getCriteriaCode());    // Remove the criteria code from the map to mark it as processed
+      }
+    }
+    if (!criteriaMap.isEmpty()) {        // Check if there are any remaining criteria codes in the map
       throw new CustomException(CRITERIA_CODE_INVALID_CODE, CRITERIA_CODE_INVALID_MESSAGE);
     }
 
