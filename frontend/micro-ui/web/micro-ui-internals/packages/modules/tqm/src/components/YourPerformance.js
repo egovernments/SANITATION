@@ -1,5 +1,6 @@
-import React,{Fragment} from 'react'
-import { Card,Header,CardSubHeader,CardHeader,MultiLink,ShareIcon,ArrowDownward,ArrowUpward } from '@egovernments/digit-ui-react-components'
+import React, { Fragment } from 'react'
+import { Card, Header, CardSubHeader, CardHeader, MultiLink, ShareIcon, ArrowDownward, ArrowUpward } from '@egovernments/digit-ui-react-components'
+import { useTranslation } from "react-i18next"
 
 
 const VerticalLine = () => {
@@ -8,44 +9,49 @@ const VerticalLine = () => {
   );
 }
 
-const Compliance = ({t}) => {
-
-  return(
+const Compliance = ({ performance }) => {
+  const { t } = useTranslation();
+  
+  return (
     <div className='performance-item'>
-      <div className='performance-item-percentage'>3%</div>
-      <div className='performance-item-label'>Test Comdivliance</div>
-      <div className='performance-item-label-caption performance-item-label-caption__fail'> <ArrowDownward />10% than State average</div>
+      <div className='performance-item-percentage'>{performance?.[0]?.responseData?.data?.[0]?.headerValue}%</div>
+      <div className='performance-item-label'>{t("PQM_TEST_COMPLIANCE")}</div>
+      {/* <div className='performance-item-label-caption performance-item-label-caption__fail'> <ArrowDownward />10% than State average</div> */}
     </div>
   );
 }
 
-const Output = ({t}) => {
-
+const Output = ({ performance }) => {
+  const { t } = useTranslation();
+  
   return (
     <div className='performance-item'>
-      <span className='performance-item-sla performance-item-sla__pass'>Pass</span>
-      <div className='performance-item-label'>Last Output Quality</div>
-      <div className='performance-item-label-caption'>as on 17/04/2023(Lab)</div>
+      {/* <span className='performance-item-sla performance-item-sla__pass'>Pass</span> */}
+      <div className='performance-item-percentage'>{performance?.[1]?.responseData?.data?.[0]?.headerValue}%</div>
+      <div className='performance-item-label'>{t("PQM_QUALITY_TEST_PASSED")}</div>
+      {/* <div className='performance-item-label-caption'>{formatDate(startDate)}</div> */}
     </div>
   )
 }
 
-const YourPerformance = ({t}) => {
+const YourPerformance = ({ performance }) => {
+  const { t } = useTranslation();
+  
   return (
     <div>
       <div className='performance-header'>
-        <Header styles={{fontSize:"26px",marginBottom:"0px",marginLeft:"0px"}}>Your Performance</Header>
+        <Header styles={{ fontSize: "26px", marginBottom: "0px", marginLeft: "0px" }}>{t("PQM_YOUR_PERFORMANCE")}</Header>
         <MultiLink
           className="multilink-block-wrapper multilink-label "
           label={t(`TQM_SHARE`)}
           icon={<ShareIcon className="mrsm" fill="#f18f5e" />}
-          onHeadClick={()=>{}}
+          onHeadClick={() => { }}
         />
       </div>
       <Card className="performance-container">
-        <Compliance t={t} />
+        <Compliance performance={performance} />
         <VerticalLine />
-        <Output t={t}/>
+        <Output performance={performance} />
       </Card>
     </div>
   )
