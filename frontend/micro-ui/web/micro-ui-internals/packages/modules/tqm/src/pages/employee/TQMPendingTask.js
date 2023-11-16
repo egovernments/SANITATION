@@ -28,12 +28,17 @@ function TQMPendingTask(props) {
         const items = data?.items;
 
         const tasks = items.map((i) => {
+          const currentDate = new Date();
+          const targetTimestamp = i?.businessObject?.scheduledDate;
+          const targetDate = new Date(targetTimestamp);
+          const remainingSLA = targetDate - currentDate;
+          const dueDate = targetTimestamp ? Math.round(remainingSLA / (24 * 60 * 60 * 1000)) : 0;
           return {
             icon: <TreatmentQualityIcon />,
             id: i?.ProcessInstance?.businessId,
             title: i?.ProcessInstance?.businessId,
             action: i?.ProcessInstance?.state?.actions?.[0]?.action,
-            date: i?.businessObject?.serviceSla,
+            date: dueDate,
           };
         });
         return tasks;
