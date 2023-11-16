@@ -97,7 +97,6 @@ public class EnrichmentService {
           AuditDetails auditDetails = setAuditDetails(testRequest, isCreate);
           document.setTestId(testRequest.getTests().get(0).getTestId());
           document.setId(String.valueOf(UUID.randomUUID()));
-          document.setTenantId(testRequest.getTests().get(0).getTenantId());
           document.setAuditDetails(auditDetails);
         }
       }
@@ -181,6 +180,4 @@ public class EnrichmentService {
       testRepository.saveAnomaly(config.getAnomalyCreateTopic(), testRequest);
     }
   }
-
-
 }

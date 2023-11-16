@@ -37,6 +37,9 @@ public class ErrorConstants {
   public static final String CRITERIA_CODE_INVALID_MESSAGE = "Criteria code did not match";
   public static final String STATUS_ERROR_CODE = "RESULT STATUS CAN ONLY BE PENDING IF WORKFLOW STATUS IS ANYHTING OTHER THAN SUBMITTED ";
   public static final String STATUS_ERROR_MESSAGE = "Result status can only be pending if workflow status is anything other than submitted";
+  public static final String TEST_NOT_PRESENT_CODE= "TEST NOT PRESENT";
+  public static final String TEST_NOT_PRESENT_MESSAGE= "test not present";
+
 
 
 }
