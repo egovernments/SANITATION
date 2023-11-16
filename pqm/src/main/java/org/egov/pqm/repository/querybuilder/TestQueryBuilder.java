@@ -1,5 +1,6 @@
 package org.egov.pqm.repository.querybuilder;
 
+import com.google.common.base.Strings;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -58,6 +59,12 @@ public class TestQueryBuilder {
 			addToPreparedStatement(preparedStmtList, testIds);
 		}
 
+		if (!Strings.isNullOrEmpty(criteria.getTestId() )) {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" test.testId like ?");
+				preparedStmtList.add('%' + criteria.getTestId() + '%');
+		}
+
 		List<String> testCodes = criteria.getTestCode();
 		if (!CollectionUtils.isEmpty(testCodes)) {
 			addClauseIfRequired(preparedStmtList, builder);
@@ -108,19 +115,19 @@ public class TestQueryBuilder {
 			builder.append(" test.wfStatus IN (").append(createQuery(wfStatuses)).append(")");
 			addToPreparedStatement(preparedStmtList, wfStatuses);
 		}
-		
-		if (criteria.getStatus() != null) {
-			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" test.status=? ");
-			preparedStmtList.add(criteria.getStatus());
 
+		List<String> sourceTypes = criteria.getSourceType();
+		if (!CollectionUtils.isEmpty(sourceTypes)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" test.sourceType IN (").append(createQuery(sourceTypes)).append(")");
+			addToPreparedStatement(preparedStmtList, sourceTypes);
 		}
-		
-		if (criteria.getSourceType() != null) {
-			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" test.sourceType=? ");
-			preparedStmtList.add(criteria.getSourceType());
 
+		List<String> statuses = criteria.getStatus();
+		if (!CollectionUtils.isEmpty(statuses)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" test.status IN (").append(createQuery(statuses)).append(")");
+			addToPreparedStatement(preparedStmtList, statuses);
 		}
 
 		if (criteria.getFromDate() != null && criteria.getToDate() != null) {

@@ -262,7 +262,7 @@ public class PqmService {
 
     for (MdmsTest mdmsTest : mdmsTestList) {
       TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().sourceType(
-              String.valueOf(SourceType.LAB_SCHEDULED))
+              Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED)))
           .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED))
           .testCode(Collections.singletonList(mdmsTest.getCode())).build();
       Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.scheduledDate)
