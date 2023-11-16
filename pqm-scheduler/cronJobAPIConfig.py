@@ -47,19 +47,17 @@ def triggerCronjob(requestInfo):
     success = 0
     failed = 0
     try:
-        # logging.info("Service Id = {}".format(status))
         pqm_host = os.getenv('PQM_SERVICE_HOST')
         pqm_scheduler = os.getenv('PQM_SCHEDULER')
-        # serviceid_status = "?serviceId={}".format(status)
-        url = "{}{}{}".format(pqm_host,pqm_scheduler)
+        url = "{}{}".format(pqm_host,pqm_scheduler)
         payload = {}
         payload["RequestInfo"] = requestInfo
         headers = {'Content-Type': 'application/json'}
         requestData = json.dumps(payload)
+        logging.info("Request URL -> " + url)
         try:
             response = requests.request("POST", url, headers=headers, data = requestData)
             logging.info("Response: {}".format(response.status_code))
-            resp = response.json()
         except Exception as ex:
             logging.info("Exception while scheduling for tenant id")
             
