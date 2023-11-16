@@ -1,5 +1,6 @@
 package org.egov.pqm.repository.querybuilder;
 
+import com.google.common.base.Strings;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -58,7 +59,7 @@ public class TestQueryBuilder {
 			addToPreparedStatement(preparedStmtList, testIds);
 		}
 
-		if (criteria.getTestId() != null) {
+		if (!Strings.isNullOrEmpty(criteria.getTestId() )) {
 				addClauseIfRequired(preparedStmtList, builder);
 				builder.append(" test.testId like ?");
 				preparedStmtList.add('%' + criteria.getTestId() + '%');
