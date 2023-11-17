@@ -43,7 +43,7 @@
       }
 
       .alerts-container-item-count {
-        
+        padding-left: 30px;
       }
     }
   }
@@ -119,6 +119,66 @@
       width: 1px; /* Adjust the width of your vertical line */
       background-color: #D6D5D4; /* Adjust the color of your vertical line */
       /* You can also add other styles like margin, padding, or positioning as needed */
+    }
+  }
+  .dashboard-container{
+    @media (min-width: 780px) {
+      display: flex;
+    }
+  }
+  .alert{
+    @media (min-width: 780px) {
+      display: none;
+      padding-left: 0.6rem;
+    }
+  }
+  .alert-word{
+      padding-left: 0.6rem;
+    
+  }
+  .alerts-container-count1{
+    padding-top: 35px;
+    padding-left: 90px;
+  }
+  .alerts-container1 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    color:#0B0C0C;
+    .alerts-container-header {
+      padding: 16px;
+      @apply bg-white shadow-card p-md mb-xl;
+      border-radius: 4px;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      .alerts-container-count {
+        color:#505A5F;
+      }
+    }
+
+    .alerts-container-subheader {
+      font-size:16px;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+
+    .alerts-container-item {
+      display: flex !important;
+      justify-content: space-between;
+      color:#505A5F;
+      font-weight: 700;
+      padding: 0 16px 0px 16px;
+      margin-bottom: 0.81rem;
+      height: 100%;
+      box-shadow: none;
+      .alerts-container-item-label {
+        
+      }
+
+      .alerts-container-item-count {
+        padding-left: 30px;
+      }
     }
   }
 }
