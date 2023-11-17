@@ -23,45 +23,45 @@ CREATE TABLE IF NOT EXISTS eg_pqm_tests
     CONSTRAINT pk_pqm_tests PRIMARY KEY (id)
 );
 
-  CREATE INDEX  IF NOT EXISTS  index_id_eg_pqm  ON eg_pqm_tests
-(    id
-);
+CREATE INDEX  IF NOT EXISTS  index_id_eg_pqm  ON eg_pqm_tests
+    (    id
+        );
 
-  CREATE INDEX  IF NOT EXISTS  index_tenantId_eg_pqm  ON eg_pqm_tests
-(    tenantId
-);
+CREATE INDEX  IF NOT EXISTS  index_tenantId_eg_pqm  ON eg_pqm_tests
+    (    tenantId
+        );
 
-  CREATE INDEX  IF NOT EXISTS  index_plantCode_eg_pqm  ON eg_pqm_tests
-(    plantCode
-);
+CREATE INDEX  IF NOT EXISTS  index_plantCode_eg_pqm  ON eg_pqm_tests
+    (    plantCode
+        );
 
-  CREATE INDEX  IF NOT EXISTS  index_processCode_eg_pqm  ON eg_pqm_tests
-(    processCode
-);
+CREATE INDEX  IF NOT EXISTS  index_processCode_eg_pqm  ON eg_pqm_tests
+    (    processCode
+        );
 
-  CREATE INDEX  IF NOT EXISTS  index_stageCode_eg_pqm  ON eg_pqm_tests
-(    stageCode
-);
+CREATE INDEX  IF NOT EXISTS  index_stageCode_eg_pqm  ON eg_pqm_tests
+    (    stageCode
+        );
 
-  CREATE INDEX  IF NOT EXISTS  index_materialCode_eg_pqm  ON eg_pqm_tests
-(    materialCode
-);
+CREATE INDEX  IF NOT EXISTS  index_materialCode_eg_pqm  ON eg_pqm_tests
+    (    materialCode
+        );
 
-  CREATE INDEX  IF NOT EXISTS  index_deviceCode_eg_pqm  ON eg_pqm_tests
-(    deviceCode
-);
+CREATE INDEX  IF NOT EXISTS  index_deviceCode_eg_pqm  ON eg_pqm_tests
+    (    deviceCode
+        );
 
-  CREATE INDEX  IF NOT EXISTS  index_testType_eg_pqm  ON eg_pqm_tests
-(    testType
-);
+CREATE INDEX  IF NOT EXISTS  index_testType_eg_pqm  ON eg_pqm_tests
+    (    testType
+        );
 
-  CREATE INDEX  IF NOT EXISTS  index_status_eg_pqm  ON eg_pqm_tests
-(    status
-);
+CREATE INDEX  IF NOT EXISTS  index_status_eg_pqm  ON eg_pqm_tests
+    (    status
+        );
 
-  CREATE INDEX  IF NOT EXISTS  index_wfStatus_eg_pqm  ON eg_pqm_tests
-(    wfStatus
-);
+CREATE INDEX  IF NOT EXISTS  index_wfStatus_eg_pqm  ON eg_pqm_tests
+    (    wfStatus
+        );
 
 CREATE TABLE IF NOT EXISTS eg_pqm_test_result_documents
 (
@@ -83,12 +83,12 @@ CREATE TABLE IF NOT EXISTS eg_pqm_test_result_documents
 );
 
 CREATE INDEX  IF NOT EXISTS  index_id_eg_pqm_test_result_documents  ON eg_pqm_test_result_documents
-(    id
-);
+    (    id
+        );
 
 CREATE INDEX  IF NOT EXISTS  index_testId_eg_pqm_test_result_documents  ON eg_pqm_test_result_documents
-(    testId
-);
+    (    testId
+        );
 
 CREATE TABLE IF NOT EXISTS eg_pqm_tests_auditlog
 (
@@ -113,10 +113,10 @@ CREATE TABLE IF NOT EXISTS eg_pqm_tests_auditlog
 );
 
 CREATE INDEX  IF NOT EXISTS  index_id_eg_pqm_tests_auditlog  ON eg_pqm_tests_auditlog
-(
-  id
+    (
+     id
 
-);
+        );
 
 CREATE TABLE IF NOT EXISTS eg_pqm_test_result_documents_auditlog
 (
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS eg_pqm_test_result_documents_auditlog
 );
 
 CREATE INDEX  IF NOT EXISTS  index_id_eg_pqm_test_result_documents_auditlog  ON eg_pqm_test_result_documents_auditlog
-(
-  id
+    (
+     id
 
-);
+        );
