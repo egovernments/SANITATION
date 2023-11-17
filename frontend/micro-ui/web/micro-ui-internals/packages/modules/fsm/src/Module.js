@@ -56,6 +56,7 @@ import PlusMinusInput from "./pageComponents/PlusMinusInput";
 import ConfirmationBox from "./components/Confirmation";
 import WorkflowFilter from "./components/WorkflowFilter";
 import Search from "./pages/employee/Search";
+import AddWorker from "./pages/employee/FSMRegistry/Worker/AddWorker";
 
 const FSMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "FSM";
@@ -123,6 +124,7 @@ const FSMLinks = ({ matchPath, userType }) => {
 };
 
 const componentsToRegister = {
+  AddWorker,
   SelectPropertySubtype,
   SelectPropertyType,
   SelectAddress,

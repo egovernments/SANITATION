@@ -210,6 +210,7 @@ const EmployeeApp = ({ path, url, userType }) => {
   const EditDriver = Digit.ComponentRegistryService.getComponent("EditDriver");
   const BreadCrumbComp = Digit.ComponentRegistryService.getComponent("FsmBreadCrumb");
   const FSMSearch = Digit.ComponentRegistryService.getComponent("FSMSearch");
+  const AddWorker = Digit.ComponentRegistryService.getComponent("AddWorker");
 
   const locationCheck =
     window.location.href.includes("/employee/fsm/inbox") ||
@@ -265,6 +266,7 @@ const EmployeeApp = ({ path, url, userType }) => {
           {/* <PrivateRoute exact path={`${path}/home`} component={() => <ULBHomeCard module={module} />} /> */}
           <PrivateRoute exact path={`${path}/fstp/new-vehicle-entry`} component={FstpOperatorDetails} />
           <PrivateRoute exact path={`${path}/fstp/new-vehicle-entry/:id`} component={FstpOperatorDetails} />
+          <PrivateRoute path={`${path}/registry/new-worker`} component={() => <AddWorker parentRoute={path} />} />
         </div>
       </React.Fragment>
     </Switch>
