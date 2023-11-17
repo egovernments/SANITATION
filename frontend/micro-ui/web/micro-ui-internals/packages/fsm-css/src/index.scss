@@ -20,6 +20,7 @@
 @import "./components/Notification.scss";
 @import "./components/tqmHeader.scss";
 @import "./pages/employee/create.scss";
+@import "./pages/employee/registry.scss";
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
@@ -246,12 +247,6 @@ input::-webkit-calendar-picker-indicator {
   .options-card {
     max-height: 200px;
     overflow-y: scroll;
-  }
-}
-
-.action-bar-wrap-registry {
-  .menu-wrap {
-    position: relative;
   }
 }
 

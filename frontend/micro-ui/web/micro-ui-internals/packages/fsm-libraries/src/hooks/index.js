@@ -32,6 +32,7 @@ import useDriverDetails from './fsm/useDriverDetails';
 import useVendorSearch from './fsm/useVendorSearch';
 import useAdvanceBalanceCalulation from './fsm/useAdvanceBalanceCalculation';
 import useRouteSubscription from './useRouteSubscription';
+import useWorkerSearch from './fsm/useWorkerSearch';
 
 const fsm = {
   useTenants: useTenantsFSM,
@@ -72,6 +73,7 @@ const fsm = {
   useVendorSearch,
   useAdvanceBalanceCalulation,
   useRouteSubscription,
+  useWorkerSearch,
 };
 const Hooks = {
   fsm,
