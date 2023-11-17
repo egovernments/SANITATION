@@ -63,5 +63,8 @@ public class TestSearchCriteria {
 
   @JsonProperty("toDate")
   private Long toDate = null;
-  
+
+  @JsonProperty("labAssignedTo")
+  private String labAssignedTo = null;
+
 }
