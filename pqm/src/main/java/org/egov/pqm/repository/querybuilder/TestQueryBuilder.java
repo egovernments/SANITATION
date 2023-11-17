@@ -1,12 +1,13 @@
 package org.egov.pqm.repository.querybuilder;
 
+import com.google.common.base.Strings;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.Pagination;
-import org.egov.pqm.web.model.Pagination.SortBy;
+import org.egov.pqm.web.model.SortBy;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -287,5 +288,6 @@ public class TestQueryBuilder {
     }
     return builder.toString();
   }
+
 
 }

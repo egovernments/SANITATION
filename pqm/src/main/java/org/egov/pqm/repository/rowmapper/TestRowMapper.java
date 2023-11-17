@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TestRowMapper implements ResultSetExtractor<List<Test>> {
 
+
   @Autowired
   private ObjectMapper mapper;
 
