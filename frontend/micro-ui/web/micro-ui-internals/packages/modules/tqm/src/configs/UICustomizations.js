@@ -154,6 +154,10 @@ export const UICustomizations = {
       //delete custom
       delete data.body.custom;
 
+      const activePlantCode = Digit.SessionStorage.get("active_plant") ? Digit.SessionStorage.get("active_plant")?.plantCode:null
+      if(activePlantCode){
+        data.body.inbox.moduleSearchCriteria.plantCodes = [activePlantCode]
+      }
       return data
     },
     populateStatusReqCriteria:() => {
@@ -348,7 +352,7 @@ export const UICustomizations = {
   SearchTestResults: {
     preProcess: (data,additionalDetails) => {
       
-      const { plantCodes, processCodes, materialCodes, testType, dateRange,sortOrder,limit,offset } = data.body.custom || {};
+      const { processCodes, materialCodes, testType, dateRange,sortOrder,limit,offset } = data.body.custom || {};
 
       data.body.testSearchCriteria={}
       data.body.pagination={}
@@ -356,7 +360,7 @@ export const UICustomizations = {
       //update testSearchCriteria
 
       //plantcodes
-      data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
+      // data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
 
       //processcodes
       data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
@@ -384,6 +388,12 @@ export const UICustomizations = {
 
       //delete custom
       delete data.body.custom;
+
+      const activePlantCode = Digit.SessionStorage.get("active_plant") ? Digit.SessionStorage.get("active_plant")?.plantCode:null
+      if(activePlantCode){
+        data.body.testSearchCriteria.plantCodes = [activePlantCode]
+      }
+
       return data
     },
     MobileDetailsOnClick:() => {

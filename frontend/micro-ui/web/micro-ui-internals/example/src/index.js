@@ -7,7 +7,7 @@ import { PaymentModule, PaymentLinks, paymentConfigs } from "@egovernments/digit
 import { initDSSComponents } from "@egovernments/digit-ui-module-dss";
 import { initFSMComponents } from "@egovernments/digit-ui-module-fsm";
 import { initEngagementComponents } from "@egovernments/digit-ui-module-engagement";
-import { DigitUI } from "@egovernments/digit-ui-module-core";
+import { DigitUI,initCoreComponents } from "@egovernments/digit-ui-module-core";
 import { HRMSModule, initHRMSComponents } from "@egovernments/digit-ui-module-hrms";
 import { initUtilitiesComponents } from "@egovernments/digit-ui-module-utilities";
 import { initTQMComponents } from '@egovernments/digit-ui-module-tqm'
@@ -67,6 +67,7 @@ const initDigitUI = () => {
   });
 
   // initPGRComponents();
+  initCoreComponents();
   initDSSComponents();
   initEngagementComponents();
   // initWorksComponents();

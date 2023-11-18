@@ -55,3 +55,25 @@
 }
 
 
+.bread-crumb{
+  a {
+  color: #505A5F !important;
+  }  
+}
+
+.topbar-custom-tqm-container{
+  display: flex;
+  flex-direction: row;
+  span {
+    justify-content: flex-end;
+    .options-card {
+      margin-left:-2rem;
+    }
+    svg{
+      fill:#FFFFFF ;
+    }
+    label {
+      color: #FFFFFF;
+    }
+  }
+}
