@@ -82,7 +82,7 @@ const App = ({ path }) => {
     <>
       {isUlbAdminLoggedIn && <TqmBreadCrumb location={location} defaultPath={path} />}
       {/* {isPlantOperatorLoggedIn && (location.pathname.includes("/response") ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>)} */}
-      {isPlantOperatorLoggedIn && <TqmHeader />}
+      {isPlantOperatorLoggedIn && <TqmHeader location={location} defaultPath={path}/>}
       
       <Switch>
         <AppContainer className="tqm">

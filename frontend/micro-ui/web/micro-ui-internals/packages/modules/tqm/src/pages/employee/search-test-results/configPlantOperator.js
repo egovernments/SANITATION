@@ -91,6 +91,9 @@ export const tqmSearchConfigPlantOperator = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
+                  "optionsCustomStyle": {
+                    "top": "2.3rem"
+                  },
                   "name": "testType",
                   "optionsKey": "i18nKey",
                   "allowMultiSelect": false,
