@@ -173,7 +173,7 @@ export const UICustomizations = {
         config: {
           enabled: true,
           select: (data) => {
-           const wfStates = data?.BusinessServices?.[0]?.states?.filter(state=>state.applicationStatus
+           const wfStates = data?.BusinessServices?.[0]?.states?.filter(state=>state.applicationStatus && !state.isTerminateState
             )?.map(state => {
               return {
                 i18nKey:`WF_STATUS_${businessServiceMap?.tqm}_${state?.applicationStatus}`,
@@ -368,7 +368,7 @@ export const UICustomizations = {
       //materialcodes
       data.body.testSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.code)
       //testType
-      data.body.testSearchCriteria.testType = testType?.code
+      data.body.testSearchCriteria.sourceType = testType?.map(sourceType => sourceType.code)
       //dataRange //fromDate //toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
       data.body.testSearchCriteria.fromDate = fromDate
@@ -437,7 +437,7 @@ export const UICustomizations = {
       //processcodes
       data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
       //testType
-      data.body.testSearchCriteria.testType = testType?.code
+      data.body.testSearchCriteria.sourceType = testType?.map(sourceType => sourceType.code)
       //dataRange //fromDate //toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
       data.body.testSearchCriteria.fromDate = fromDate
