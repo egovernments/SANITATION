@@ -96,7 +96,7 @@ export const tqmSearchConfigPlantOperator = {
                   },
                   "name": "testType",
                   "optionsKey": "i18nKey",
-                  "allowMultiSelect": false,
+                  "allowMultiSelect": true,
                   "mdmsv2": {
                     "schemaCode": "PQM.SourceType"
                   }
