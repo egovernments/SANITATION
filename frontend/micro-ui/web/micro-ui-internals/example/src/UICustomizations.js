@@ -177,4 +177,21 @@ export const UICustomizations = {
       return false;
     },
   },
+  SearchVendor: {
+    populateReqCriteria: () => {
+      const tenantId = Digit.ULBService.getCurrentTenantId();
+
+      return {
+        url: "/vendor/v1/_search",
+        params: { tenantId, sortBy: "name", status: "ACTIVE" },
+        body: {},
+        config: {
+          enabled: true,
+          select: (data) => {
+            return data?.vendor;
+          },
+        },
+      };
+    },
+  },
 };

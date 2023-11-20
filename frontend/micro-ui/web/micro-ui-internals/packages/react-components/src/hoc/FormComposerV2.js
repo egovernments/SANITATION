@@ -28,6 +28,7 @@ import CheckBox from "../atoms/CheckBox";
 import MultiSelectDropdown from "../atoms/MultiSelectDropdown";
 import Paragraph from "../atoms/Paragraph";
 import InputTextAmount from "../atoms/InputTextAmount";
+import ApiDropdown from "../molecules/ApiDropdown";
 
 const wrapperStyles = {
   // "display":"flex",
@@ -346,14 +347,14 @@ export const FormComposerV2 = (props) => {
                 t={t}
                 label={config?.label}
                 type={type}
-                onBlur={props.onBlur}
-                value={props.value}
-                inputRef={props.ref}
-                onChange={props.onChange}
+                onBlur={props?.onBlur}
+                value={props?.value}
+                inputRef={props?.ref}
+                onChange={props?.onChange}
                 config={populators}
                 disable={config?.disable}
                 errorStyle={errors?.[populators.name]}
-                mdmsv2={populators.mdmsv2 ? populators.mdmsv2 : false }
+                mdmsv2={populators?.mdmsv2 ? populators.mdmsv2 : false}
               />
             )}
             rules={!disableFormValidation ? { required: isMandatory, ...populators.validation } : {}}
@@ -428,6 +429,39 @@ export const FormComposerV2 = (props) => {
             />
           </form>
         );
+
+      case "apidropdown":
+        return (
+          <Controller
+            name={`${populators.name}`}
+            control={control}
+            defaultValue={formData?.[populators.name]}
+            rules={{ required: populators?.isMandatory, ...populators.validation }}
+            render={(props) => {
+              return (
+                <div style={{ display: "grid", gridAutoFlow: "row" }}>
+                  <ApiDropdown
+                    props={props}
+                    populators={populators}
+                    formData={formData}
+                    inputRef={props.ref}
+                    errors={errors}
+                    t={t}
+                    label={config?.label}
+                    type={type}
+                    onBlur={props.onBlur}
+                    value={props.value}
+                    onChange={props.onChange}
+                    config={populators}
+                    disable={config?.disable}
+                    errorStyle={errors?.[populators.name]}
+                  />
+                </div>
+              );
+            }}
+          />
+        );
+
       case "multiselectdropdown":
         return (
           <Controller
@@ -711,7 +745,7 @@ export const FormComposerV2 = (props) => {
   const checkKeyDown = (e) => {
     const keyCode = e.keyCode ? e.keyCode : e.key ? e.key : e.which;
     if (keyCode === 13) {
-      // e.preventDefault();
+      e.preventDefault();
     }
   };
 

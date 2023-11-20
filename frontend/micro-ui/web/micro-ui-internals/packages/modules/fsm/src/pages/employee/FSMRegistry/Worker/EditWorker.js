@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import WorkerConfig from "../../configs/WorkerConfig";
 import { useQueryClient } from "react-query";
 
-const AddWorker = ({ parentUrl, heading }) => {
+const EditWorker = ({ parentUrl, heading }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
   const [showToast, setShowToast] = useState(null);
@@ -13,11 +13,44 @@ const AddWorker = ({ parentUrl, heading }) => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const [canSubmit, setSubmitValve] = useState(false);
+  const [workerinfo, setWorkerinfo] = useState(null);
   const Config = WorkerConfig({ t });
 
-  const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useWorkerCreate(tenantId);
+  const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useWorkerUpdate(tenantId);
+  const { data: workerData, isLoading: WorkerLoading } = Digit.Hooks.fsm.useWorkerSearch({
+    tenantId,
+    params: {
+      offset: 0,
+      limit: 100,
+    },
+    details: {
+      Individual: {
+        IndividualId: id,
+      },
+    },
+  });
 
-  const defaultValues = {};
+  useEffect(() => {
+    if (workerData && workerData?.Individual) {
+      let workerDetails = dsoData?.Individual;
+      setWorkerinfo(workerDetails);
+      let values = {
+        name: workerinfo?.name,
+        doorNo: workerinfo?.address?.[0]?.doorNo,
+        landmark: workerinfo?.address?.[0]?.landmark,
+        pincode: workerinfo?.workerinfo?.address?.[0]?.pincode,
+        address: {
+          locality: {
+            ...workerinfo?.address?.[0]?.locality,
+          },
+        },
+        mobileNumber: workerinfo?.mobileNumber,
+        selectGender: workerinfo?.gender,
+        dob: workerinfo?.dob && Digit.DateUtils.ConvertTimestampToDate(workerinfo?.dob, "yyyy-MM-dd"),
+      };
+      setDefaultValues(values);
+    }
+  }, [workerData, WorkerLoading]);
 
   const onFormValueChange = (setValue, formData) => {
     if (
@@ -162,4 +195,4 @@ const AddWorker = ({ parentUrl, heading }) => {
   );
 };
 
-export default AddWorker;
+export default EditWorker;

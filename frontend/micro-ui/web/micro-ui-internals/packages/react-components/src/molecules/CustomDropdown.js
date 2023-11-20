@@ -109,7 +109,7 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
           props={props} //these are props from Controller
           isPropsNeeded={true}
           onSelect={(e) => {
-            props.onChange(
+            onChange(
               e
                 ?.map((row) => {
                   return row?.[1] ? row[1] : null;
