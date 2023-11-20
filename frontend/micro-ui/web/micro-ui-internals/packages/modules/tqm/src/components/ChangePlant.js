@@ -58,10 +58,11 @@ const ChangePlant = ({mobileView}) => {
       select:(data)=> {
         let userPlants =  data?.plantUsers?.map(row => {
           row.i18nKey = `PQM_PLANT_${row?.plantCode}`
+          return row
         })
 
         //remove this line when api works fine
-        userPlants = sampleResp
+        // userPlants = sampleResp
 
         Digit.SessionStorage.set("user_plants",userPlants );
         Digit.SessionStorage.set("active_plant",userPlants?.[0] ? userPlants?.[0] : {} )
