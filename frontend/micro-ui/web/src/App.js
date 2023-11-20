@@ -1,7 +1,7 @@
 import React from "react";
 
 import { initDSSComponents } from "@egovernments/digit-ui-module-dss";
-import { DigitUI } from "@egovernments/digit-ui-module-core";
+import { DigitUI,initCoreComponents } from "@egovernments/digit-ui-module-core";
 import { initLibraries } from "@egovernments/digit-ui-libraries";
 import { initEngagementComponents } from "@egovernments/digit-ui-module-engagement";
 import { initFSMLibraries } from "@egovernments/digit-ui-fsm-libraries";
@@ -27,7 +27,7 @@ window.Digit.ComponentRegistryService.setupRegistry({
   PaymentModule,
   PaymentLinks,
 });
-
+initCoreComponents();
 initDSSComponents();
 initEngagementComponents();
 initFSMComponents();

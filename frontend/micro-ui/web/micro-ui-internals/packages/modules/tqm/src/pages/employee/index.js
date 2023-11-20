@@ -29,35 +29,36 @@ const TqmBreadCrumb = ({ location, defaultPath }) => {
       show: true,
     },
     {
-      // path: `/${window.contextPath}/employee/tqm/inbox`,
+      path: `/${window.contextPath}/employee/tqm/inbox`,
       content:  t(`TQM_BREAD_INBOX`) ,
       show: pathVar.includes("inbox")?true: false,
       
     },
     {
-      // path: `/${window.contextPath}/employee/tqm/search-test-results`,
+      path: `/${window.contextPath}/employee/tqm/search-test-results`,
       // content:  t(`TQM_BREAD_PAST_TESTS`) ,
       show: pathVar.includes("search-test-results")?true: false,
       content: fromScreen ? `${t(fromScreen)} / ${t("TQM_BREAD_PAST_TESTS")}` : t("TQM_BREAD_PAST_TESTS"),
       isBack:fromScreen ? true : false
     },
     {
-      // path: `/${window.contextPath}/employee/tqm/add-test-result`,
+      path: `/${window.contextPath}/employee/tqm/add-test-result`,
       content:  t(`TQM_BREAD_CREATE_TEST`) ,
       show: pathVar.includes("add-test-result")?true: false,
     },
     {
-      // path: `/${window.contextPath}/employee/tqm/add-test-result`,
+      path: `/${window.contextPath}/employee/tqm/add-test-result`,
       // content:  t(`TQM_BREAD_SENSOR`) ,
       show: pathVar.includes("search-devices")?true: false,
       content: fromScreen ? `${t(fromScreen)} / ${t("TQM_BREAD_SENSOR")}` : t("TQM_BREAD_SENSOR"),
       isBack:fromScreen ? true: false
     },
     {
-      // path: `/${window.contextPath}/employee/tqm/add-test-result`,
+      path: `/${window.contextPath}/employee/tqm/search-test-results`,
       // content:  t(`TQM_BREAD_VIEW_TEST_RESULTS`) ,
       show: pathVar.includes("view-test-results")?true: false,
       content:fromScreen ? `${t(fromScreen)} / ${t("TQM_BREAD_VIEW_TEST_RESULTS")}` : t("TQM_BREAD_VIEW_TEST_RESULTS"),
+      isBack:fromScreen ? true: false
     },
 
     
