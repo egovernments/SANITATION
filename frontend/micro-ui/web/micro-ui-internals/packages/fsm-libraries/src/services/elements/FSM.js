@@ -194,4 +194,14 @@ export const FSMService = {
       params: { tenantId },
       auth: true,
     }),
+  updateWorker: ({ details, tenantId }) =>
+    Request({
+      url: Urls.fsm.workerUpdate,
+      data: details,
+      useCache: true,
+      userService: true,
+      method: "POST",
+      params: { tenantId },
+      auth: true,
+    }),
 };

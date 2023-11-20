@@ -34,6 +34,7 @@ import useAdvanceBalanceCalulation from "./fsm/useAdvanceBalanceCalculation";
 import useRouteSubscription from "./useRouteSubscription";
 import useWorkerSearch from "./fsm/useWorkerSearch";
 import useWorkerCreate from "./fsm/useWorkerCreate";
+import useWorkerUpdate from "./fsm/useWorkerUpdate";
 
 const fsm = {
   useTenants: useTenantsFSM,
@@ -76,6 +77,7 @@ const fsm = {
   useRouteSubscription,
   useWorkerSearch,
   useWorkerCreate,
+  useWorkerUpdate,
 };
 const Hooks = {
   fsm,
