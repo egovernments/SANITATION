@@ -29,7 +29,7 @@ export const tqmSearchConfigUlbAdmin = {
               "id": "",
               "plantCodes": [],
               "processCodes": [],
-              "testType": "",
+              "testType": [],
               "dateRange": {}
             },
             "fields": [
@@ -87,9 +87,9 @@ export const tqmSearchConfigUlbAdmin = {
                   },
                   "name": "testType",
                   "optionsKey": "i18nKey",
-                  "allowMultiSelect": false,
+                  "allowMultiSelect": true,
                   "mdmsv2": {
-                    "schemaCode": "PQM.TestType"
+                    "schemaCode": "PQM.SourceType"
                   }
                 }
               },

@@ -93,6 +93,7 @@ const TqmCard = ({reRoute=true}) => {
 
   if(isPlantOperatorLoggedIn) {
     delete propsForModuleCard.kpis
+    delete propsForModuleCard.links[2]
   }
   if(reRoute && isPlantOperatorLoggedIn){
     history.push( `/${window?.contextPath}/employee/tqm/landing`)

@@ -12,10 +12,15 @@ import { useLocation,useHistory } from 'react-router-dom';
 
 import { TourSteps } from '../utils/TourSteps';
 
+const excludeBackBtn = [
+  'home'
+]
 
-const TqmHeader = () => {
+const TqmHeader = ({location,defaultPath}) => {
   const history = useHistory()
   const { tourState, setTourState } = useTourState();
+  const pathVar=location.pathname.replace(defaultPath+'/',"").split("?")?.[0];
+  
   // const { tutorial, updateTutorial } = useContext(TutorialContext);
   const { t } = useTranslation();
   //using location.pathname we can update the stepIndex accordingly when help is clicked from any other screen(other than home screen)
@@ -29,7 +34,7 @@ const TqmHeader = () => {
       <Tutorial tutorial={tourState} updateTutorial={setTourState} />
 
       <div className="tqm-header">
-        <BackButton>{t('CS_COMMON_BACK')}</BackButton>
+        {!pathVar?.includes(excludeBackBtn) ?  <BackButton>{t('CS_COMMON_BACK')}</BackButton> : <div></div>}
 
         <Help startTour={startTour} />
       </div>

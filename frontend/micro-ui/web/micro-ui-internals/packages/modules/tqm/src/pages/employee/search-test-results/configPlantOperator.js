@@ -27,30 +27,30 @@ export const tqmSearchConfigPlantOperator = {
             "minReqFields": 0,
             "showFormInstruction": "TQM_SEARCH_HINT",
             "defaultValues": {
-              "plantCodes": [],
+              // "plantCodes": [],
               "processCodes": [],
               "materialCodes": [],
-              "testType": "",
+              "testType": [],
               "dateRange": {}
             },
             "fields": [
-              {
-                "label": "TQM_PLANT_NAME",
-                "type": "dropdown",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "optionsCustomStyle": {
-                    "top": "2.3rem"
-                  },
-                  "name": "plantCodes",
-                  "optionsKey": "i18nKey",
-                  "allowMultiSelect": true,
-                  "mdmsv2": {
-                    "schemaCode": "PQM.Plant"
-                  }
-                }
-              },
+              // {
+              //   "label": "TQM_PLANT_NAME",
+              //   "type": "dropdown",
+              //   "isMandatory": false,
+              //   "disable": false,
+              //   "populators": {
+              //     "optionsCustomStyle": {
+              //       "top": "2.3rem"
+              //     },
+              //     "name": "plantCodes",
+              //     "optionsKey": "i18nKey",
+              //     "allowMultiSelect": true,
+              //     "mdmsv2": {
+              //       "schemaCode": "PQM.Plant"
+              //     }
+              //   }
+              // },
               {
                 "label": "TQM_TREATMENT_PROCESS",
                 "type": "dropdown",
@@ -91,11 +91,14 @@ export const tqmSearchConfigPlantOperator = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
+                  "optionsCustomStyle": {
+                    "top": "2.3rem"
+                  },
                   "name": "testType",
                   "optionsKey": "i18nKey",
-                  "allowMultiSelect": false,
+                  "allowMultiSelect": true,
                   "mdmsv2": {
-                    "schemaCode": "PQM.TestType"
+                    "schemaCode": "PQM.SourceType"
                   }
                 }
               },

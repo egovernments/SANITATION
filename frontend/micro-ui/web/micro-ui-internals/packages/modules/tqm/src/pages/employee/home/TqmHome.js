@@ -83,9 +83,9 @@ const TqmHome = (props) => {
     staletime: 0
   };
   const { data: data3 } = Digit.Hooks.useCustomAPIHook(requestCriteria3);
-
-  const combinedData = [...(data1 || []), ...(data2 || [])];
   
+  // const combinedData = [...(data1 || []), ...(data2 || [])];
+  const combinedData = {}
   return (
     <div className='tqm-home-container'>
       <TqmCard t={t} reRoute={false} />
