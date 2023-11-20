@@ -30,7 +30,7 @@ export const tqmSearchConfigPlantOperator = {
               // "plantCodes": [],
               "processCodes": [],
               "materialCodes": [],
-              "testType": "",
+              "testType": [],
               "dateRange": {}
             },
             "fields": [
@@ -95,7 +95,7 @@ export const tqmSearchConfigPlantOperator = {
                   "optionsKey": "i18nKey",
                   "allowMultiSelect": false,
                   "mdmsv2": {
-                    "schemaCode": "PQM.TestType"
+                    "schemaCode": "PQM.SourceType"
                   }
                 }
               },

@@ -368,7 +368,7 @@ export const UICustomizations = {
       //materialcodes
       data.body.testSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.code)
       //testType
-      data.body.testSearchCriteria.testType = testType?.code
+      data.body.testSearchCriteria.sourceType = testType?.map(materialCode => materialCode.code)
       //dataRange //fromDate //toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
       data.body.testSearchCriteria.fromDate = fromDate
@@ -437,7 +437,7 @@ export const UICustomizations = {
       //processcodes
       data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
       //testType
-      data.body.testSearchCriteria.testType = testType?.code
+      data.body.testSearchCriteria.sourceType = testType?.map(processCode => processCode.code)
       //dataRange //fromDate //toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
       data.body.testSearchCriteria.fromDate = fromDate
