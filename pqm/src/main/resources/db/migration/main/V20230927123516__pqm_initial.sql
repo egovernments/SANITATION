@@ -132,6 +132,7 @@ CREATE TABLE IF NOT EXISTS eg_pqm_test_result_documents_auditlog
     lastModifiedBy   character varying(64),
     createdTime      bigint,
     lastModifiedTime bigint
+
 );
 
 CREATE INDEX  IF NOT EXISTS  index_id_eg_pqm_test_result_documents_auditlog  ON eg_pqm_test_result_documents_auditlog
