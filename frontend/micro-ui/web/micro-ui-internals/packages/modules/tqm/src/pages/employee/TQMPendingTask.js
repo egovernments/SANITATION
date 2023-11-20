@@ -3,7 +3,7 @@ import { Loader, NotificationComponent, TreatmentQualityIcon } from "@egovernmen
 
 function TQMPendingTask(props) {
   const tenantId = Digit.ULBService.getCurrentTenantId();
-
+  
   const requestCriteria = {
     url: "/inbox/v2/_search",
     body: {
@@ -45,6 +45,12 @@ function TQMPendingTask(props) {
       },
     },
   };
+
+  const activePlantCode = Digit.SessionStorage.get("active_plant")?.plantCode ? [Digit.SessionStorage.get("active_plant")?.plantCode]:Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.map(row => row.plantCode)
+
+  if(activePlantCode?.length>0){
+    requestCriteria.body.inbox.moduleSearchCriteria.plantCodes = [...activePlantCode]
+  }
 
   const { isLoading, data: tqm, revalidate, isFetching } = Digit.Hooks.useCustomAPIHook(requestCriteria);
 

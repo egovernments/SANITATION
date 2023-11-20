@@ -154,9 +154,9 @@ export const UICustomizations = {
       //delete custom
       delete data.body.custom;
 
-      const activePlantCode = Digit.SessionStorage.get("active_plant") ? Digit.SessionStorage.get("active_plant")?.plantCode:null
-      if(activePlantCode){
-        data.body.inbox.moduleSearchCriteria.plantCodes = [activePlantCode]
+      const activePlantCode = Digit.SessionStorage.get("active_plant")?.plantCode ? [Digit.SessionStorage.get("active_plant")?.plantCode]:Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.map(row => row.plantCode)
+      if(activePlantCode.length>0){
+        data.body.inbox.moduleSearchCriteria.plantCodes = [...activePlantCode]
       }
       return data
     },
@@ -389,9 +389,9 @@ export const UICustomizations = {
       //delete custom
       delete data.body.custom;
 
-      const activePlantCode = Digit.SessionStorage.get("active_plant") ? Digit.SessionStorage.get("active_plant")?.plantCode:null
-      if(activePlantCode){
-        data.body.testSearchCriteria.plantCodes = [activePlantCode]
+      const activePlantCode = Digit.SessionStorage.get("active_plant")?.plantCode ? [Digit.SessionStorage.get("active_plant")?.plantCode]:Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.map(row => row.plantCode)
+      if(activePlantCode?.length>0){
+        data.body.testSearchCriteria.plantCodes = [...activePlantCode]
       }
 
       return data

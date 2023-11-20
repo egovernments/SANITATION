@@ -23,6 +23,8 @@ import QualityParameter from "./pages/employee/add-test-results/QualityComponent
 import SensorScreen from "./pages/employee/sensor-monitoring/SensorScreen";
 import TqmAdminNotification from "./pages/employee/TqmAdminNotification";
 import TqmTopBar from "./components/TqmTopBar";
+import ChangePlant from "./components/ChangePlant";
+
 const TQMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = ["TQM", "mdms"];
   const { path, url } = useRouteMatch();
@@ -61,7 +63,8 @@ const componentsToRegister = {
   TQMSummary,
   TqmParameterReadings: ParameterReadings,
   TqmAdminNotification,
-  CustomEmployeeTopBar:TqmTopBar
+  CustomEmployeeTopBar:TqmTopBar,
+  ChangePlant
 };
 
 const overrideHooks = () => {

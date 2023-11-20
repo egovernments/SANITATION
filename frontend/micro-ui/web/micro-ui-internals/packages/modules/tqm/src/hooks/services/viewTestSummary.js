@@ -3,8 +3,8 @@ export const viewTestSummary = async ({ t, id }) => {
     url: "/pqm-service/v1/_search",
     body: {
       pagination: {
-        sortBy: "testId",
-        sortOrder: "ASC",
+        // sortBy: "testId",
+        // sortOrder: "ASC",
       },
       testSearchCriteria: {
         testIds: [id],

@@ -131,6 +131,12 @@ export const tqmInboxConfigPlantOperator = {
                 "translate": true
               },
               {
+                "label": "TQM_PLANT_NAME",
+                "jsonPath": "businessObject.plantCode",
+                "prefix": "PQM.Plant_",
+                "translate": true
+              },
+              {
                 "label": "TQM_PROCESS_STAGE",
                 "jsonPath": "businessObject.stageCode",
                 "prefix": "PQM.Stage_",
