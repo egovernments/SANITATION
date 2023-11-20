@@ -173,7 +173,7 @@ export const UICustomizations = {
         config: {
           enabled: true,
           select: (data) => {
-           const wfStates = data?.BusinessServices?.[0]?.states?.filter(state=>state.applicationStatus
+           const wfStates = data?.BusinessServices?.[0]?.states?.filter(state=>state.applicationStatus && !state.isTerminateState
             )?.map(state => {
               return {
                 i18nKey:`WF_STATUS_${businessServiceMap?.tqm}_${state?.applicationStatus}`,
