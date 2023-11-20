@@ -14,7 +14,7 @@ import org.egov.pqm.web.model.Pagination;
 @Builder
 public class PlantUserSearchRequest {
 
-  @JsonProperty("requestInfo")
+  @JsonProperty("RequestInfo")
   private RequestInfo requestInfo;
 
   @JsonProperty("plantUserSearchCriteria")
