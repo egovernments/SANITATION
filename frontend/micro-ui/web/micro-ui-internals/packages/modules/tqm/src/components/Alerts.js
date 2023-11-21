@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 const alerts = ({ ale }) => {
   const { t } = useTranslation();
 
+
   return [
     {
       label: "No reading from Sensor",
