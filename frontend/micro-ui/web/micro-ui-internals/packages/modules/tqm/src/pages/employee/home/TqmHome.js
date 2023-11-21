@@ -65,7 +65,7 @@ const TqmHome = (props) => {
     body: {
       "aggregationRequestDto": {
         "visualizationType": "xtable",
-        "visualizationCode": "pqmAlertsTest2",
+        "visualizationCode": "pqmAlerts",
         "queryType": "",
         "filters": {},
         "moduleLevel": "",
