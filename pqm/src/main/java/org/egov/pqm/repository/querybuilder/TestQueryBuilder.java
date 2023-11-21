@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.google.common.base.Strings;
+
 @Component
 public class TestQueryBuilder {
 
@@ -53,19 +55,25 @@ public class TestQueryBuilder {
       addToPreparedStatement(preparedStmtList, ids);
     }
 
-    List<String> testIds = criteria.getTestIds();
-    if (!CollectionUtils.isEmpty(testIds)) {
-      addClauseIfRequired(preparedStmtList, builder);
-      builder.append(" test.testId IN (").append(createQuery(testIds)).append(")");
-      addToPreparedStatement(preparedStmtList, testIds);
-    }
+	List<String> testIds = criteria.getTestIds();
+	if (!CollectionUtils.isEmpty(testIds)) {
+		addClauseIfRequired(preparedStmtList, builder);
+		builder.append(" test.testId IN (").append(createQuery(testIds)).append(")");
+		addToPreparedStatement(preparedStmtList, testIds);
+	}
 
-    List<String> testCodes = criteria.getTestCode();
-    if (!CollectionUtils.isEmpty(testCodes)) {
-      addClauseIfRequired(preparedStmtList, builder);
-      builder.append(" test.testCode IN (").append(createQuery(testCodes)).append(")");
-      addToPreparedStatement(preparedStmtList, testCodes);
-    }
+	if (!Strings.isNullOrEmpty(criteria.getTestId())) {
+		addClauseIfRequired(preparedStmtList, builder);
+		builder.append(" test.testId like ?");
+		preparedStmtList.add('%' + criteria.getTestId() + '%');
+	}
+	
+	List<String> testCodes = criteria.getTestCode();
+	if (!CollectionUtils.isEmpty(testCodes)) {
+		addClauseIfRequired(preparedStmtList, builder);
+		builder.append(" test.testCode IN (").append(createQuery(testCodes)).append(")");
+		addToPreparedStatement(preparedStmtList, testCodes);
+	}
 
     List<String> plantCodes = criteria.getPlantCodes();
     if (!CollectionUtils.isEmpty(plantCodes)) {
@@ -111,20 +119,21 @@ public class TestQueryBuilder {
       addToPreparedStatement(preparedStmtList, wfStatuses);
     }
 
-    if (criteria.getStatus() != null) {
+    List<String> sourceTypes = criteria.getSourceType();
+	if (!CollectionUtils.isEmpty(sourceTypes)) {
       addClauseIfRequired(preparedStmtList, builder);
-      builder.append(" test.status=? ");
-      preparedStmtList.add(criteria.getStatus());
+      builder.append(" test.sourceType IN (").append(createQuery(sourceTypes)).append(")");
+		addToPreparedStatement(preparedStmtList, sourceTypes);
 
     }
-
-    if (criteria.getSourceType() != null) {
-      addClauseIfRequired(preparedStmtList, builder);
-      builder.append(" test.sourceType=? ");
-      preparedStmtList.add(criteria.getSourceType());
-
-    }
-
+	
+	List<String> statuses = criteria.getStatus();
+	if (!CollectionUtils.isEmpty(statuses)) {
+		addClauseIfRequired(preparedStmtList, builder);
+		builder.append(" test.status IN (").append(createQuery(statuses)).append(")");
+		addToPreparedStatement(preparedStmtList, statuses);
+	}
+	 
     if (criteria.getLabAssignedTo() != null) {
       addClauseIfRequired(preparedStmtList, builder);
       builder.append(" test.labAssignedTo=? ");
