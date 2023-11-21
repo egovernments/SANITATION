@@ -3,8 +3,8 @@ export const searchTest = async ({ id }) => {
     url: "/pqm-service/v1/_search",
     body: {
       pagination: {
-        sortBy: "id",
-        sortOrder: "ASC",
+        // sortBy: "id",
+        // sortOrder: "ASC",
       },
       testSearchCriteria: {
         ids: [id],

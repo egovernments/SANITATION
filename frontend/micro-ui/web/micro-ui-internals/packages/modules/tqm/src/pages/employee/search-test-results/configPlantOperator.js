@@ -134,6 +134,12 @@ export const tqmSearchConfigPlantOperator = {
                 "translate": true
               },
               {
+                "label": "TQM_PLANT_NAME",
+                "jsonPath": "plantCode",
+                "prefix": "PQM.Plant_",
+                "translate": true
+              },
+              {
                 "label": "TQM_PROCESS_STAGE",
                 "jsonPath": "stageCode",
                 "additionalCustomization": false,
