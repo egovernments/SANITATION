@@ -130,12 +130,13 @@ public class MDMSUtils {
    */
   public static Map<String, MDMSQualityCriteria> parseJsonToMap(String jsonData) {
     Map<String, MDMSQualityCriteria> codeToQualityCriteriaMap = new HashMap<>();
-
+    log.info("jsonData -> "+jsonData);
     try {
       ObjectMapper objectMapper = new ObjectMapper();
       JsonNode jsonNode = objectMapper.readTree(jsonData);
+      log.info("jsonNode-> "+jsonNode);
       JsonNode qualityCriteriaArray = jsonNode.get("mdms");
-
+      log.info("qualityCriteriaArray -> "+ qualityCriteriaArray);
       for (JsonNode criteriaNode : qualityCriteriaArray) {
         String code = criteriaNode.get("data").get("code").asText();
         MDMSQualityCriteria qualityCriteria = objectMapper.convertValue(criteriaNode.get("data"),
