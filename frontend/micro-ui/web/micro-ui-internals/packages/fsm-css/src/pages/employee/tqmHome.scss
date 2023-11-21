@@ -63,6 +63,7 @@
     gap:0.5rem;
     justify-content: space-between;
     padding: 1rem;
+    height: 70%;
     .performance-item {
       display: flex !important;
       flex-direction: column;
@@ -124,7 +125,8 @@
 }
 .dashboard-container{
   @media (min-width: 780px) {
-    display: flex;
+    display: grid;
+    grid-template-columns: 50% 50%;
   }
 }
 .alert{
@@ -134,7 +136,7 @@
   }
 }
 .alert-word{
-    padding-left: 0.6rem;
+    padding-left: 3rem;
 
 }
 .alerts-container-count1{
@@ -143,9 +145,14 @@
 }
 .alerts-container1 {
   display: flex;
+  margin-left: 50px;
+  padding-top: 0px;
   flex-direction: column;
+  justify-content: space-between;
   gap: 0.8rem;
   color:#0B0C0C;
+  height: 70%;
+  margin-top: 1.5rem;
   .alerts-container-header {
     padding: 16px;
     @apply bg-white shadow-card p-md mb-xl;
@@ -166,6 +173,7 @@
 
   .alerts-container-item {
     display: flex !important;
+    padding-top: 1.7rem;
     justify-content: space-between;
     color:#505A5F;
     font-weight: 700;
