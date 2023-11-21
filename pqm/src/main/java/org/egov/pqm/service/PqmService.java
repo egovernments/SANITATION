@@ -25,14 +25,25 @@ import java.util.stream.Collectors;
 
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
+import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.validator.PqmValidator;
-import org.egov.pqm.web.model.*;
-
+import org.egov.pqm.web.model.Document;
+import org.egov.pqm.web.model.DocumentResponse;
+import org.egov.pqm.web.model.Pagination;
+import org.egov.pqm.web.model.QualityCriteria;
+import org.egov.pqm.web.model.SortBy;
+import org.egov.pqm.web.model.SourceType;
+import org.egov.pqm.web.model.Test;
+import org.egov.pqm.web.model.TestRequest;
+import org.egov.pqm.web.model.TestResponse;
+import org.egov.pqm.web.model.TestResultStatus;
+import org.egov.pqm.web.model.TestSearchCriteria;
+import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.mdms.MdmsTest;
 import org.egov.pqm.web.model.workflow.BusinessService;
 import org.egov.pqm.workflow.ActionValidator;
@@ -73,6 +84,9 @@ public class PqmService {
   private MDMSUtils mdmsUtils;
 
   @Autowired
+  private ServiceConfiguration config;
+  
+  @Autowired
   private QualityCriteriaEvaluationService qualityCriteriaEvaluation;
 
   @Autowired
@@ -89,7 +103,7 @@ public class PqmService {
 
     List<Test> testList = new LinkedList<>();
 
-    if (requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
+    if (requestInfo.getUserInfo()!=null &&requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
       checkRoleInValidateSearch(criteria, requestInfo);
     }
     TestResponse testResponse = repository.getPqmData(criteria);
@@ -254,7 +268,7 @@ public class PqmService {
               Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED)))
           .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED))
           .testCode(Collections.singletonList(mdmsTest.getCode())).build();
-      Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.SCHEDULED_DATE)
+      Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.scheduledDate)
           .sortOrder(DESC).build();
       TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
           .testSearchCriteria(testSearchCriteria).pagination(pagination).build();
@@ -356,5 +370,23 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
+	public TestResponse searchTestPlainSearch(TestSearchCriteria testSearchCriteria, RequestInfo requestInfo) {
+		if (testSearchCriteria.getLimit() != null
+				&& testSearchCriteria.getLimit() > config.getMaxSearchLimit())
+			testSearchCriteria.setLimit(config.getMaxSearchLimit());
+
+		List<String> ids = null;
+
+		if (testSearchCriteria.getIds() != null
+				&& !testSearchCriteria.getIds().isEmpty())
+			ids = testSearchCriteria.getIds();
+		else
+			ids = repository.fetchTestIds(testSearchCriteria);
+
+		if (ids.isEmpty())
+			return TestResponse.builder().build();
+		 TestSearchCriteria.builder().ids(ids).build();
+		return testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).build(), requestInfo);
+	}
 
 }

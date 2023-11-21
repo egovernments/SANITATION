@@ -20,9 +20,12 @@ import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
+import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -88,4 +91,14 @@ public class TestRepository {
         qualityCriteriaRowMapper);
     return qualityCriterias;
   }
+
+	public List<String> fetchTestIds(TestSearchCriteria testSearchCriteria) {
+		List<Object> preparedStmtList = new ArrayList<>();
+		preparedStmtList.add(testSearchCriteria.getOffset());
+		preparedStmtList.add(testSearchCriteria.getLimit());
+		return jdbcTemplate.query("SELECT id from eg_pqm_tests ORDER BY createdtime offset " + " ? " + "limit ? ",
+				preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
+	}
+
+	
 }
