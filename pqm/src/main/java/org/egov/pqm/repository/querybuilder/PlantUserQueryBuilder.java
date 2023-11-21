@@ -113,13 +113,13 @@ public class PlantUserQueryBuilder {
 
         if (StringUtils.isEmpty(pagination.getSortBy())) {
             queryBuilder.append(" ORDER BY plant_user.lastmodifiedtime ");
-        } else if (pagination.getSortBy() == SortBy.ID) {
+        } else if (pagination.getSortBy() == SortBy.id) {
             queryBuilder.append(" ORDER BY plant_user.id ");
-        } else if (pagination.getSortBy() == SortBy.PLANT_CODE) {
+        } else if (pagination.getSortBy() == SortBy.plantCode) {
             queryBuilder.append(" ORDER BY plant_user.plantCode ");
-        } else if (pagination.getSortBy() == SortBy.INDIVIDUAL_ID) {
+        } else if (pagination.getSortBy() == SortBy.individualId) {
             queryBuilder.append(" ORDER BY plant_user.individualId ");
-        } else if (pagination.getSortBy() == SortBy.CREATED_TIME) {
+        } else if (pagination.getSortBy() == SortBy.createdTime) {
             queryBuilder.append(" ORDER BY plant_user.createdtime ");
         }
 
