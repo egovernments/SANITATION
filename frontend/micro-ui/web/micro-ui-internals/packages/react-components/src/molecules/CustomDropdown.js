@@ -69,16 +69,16 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
     master["filter"] = config?.mdmsConfig?.filter;
   }
   const { isLoading, data } = Digit.Hooks.useCustomMDMS(Digit.ULBService.getStateId(), config?.mdmsConfig?.moduleName, [master], {
-    select: config?.mdmsConfig?.select
-      ? Digit.Utils.createFunction(config?.mdmsConfig?.select)
-      : (data) => {
-          const optionsData = _.get(data, `${config?.mdmsConfig?.moduleName}.${config?.mdmsConfig?.masterName}`, []);
-          return optionsData
-            .filter((opt) => (opt?.hasOwnProperty("active") ? opt.active : true))
-            .map((opt) => ({ ...opt, name: `${config?.mdmsConfig?.localePrefix}_${Digit.Utils.locale.getTransformedLocale(opt.code)}` }));
-        },
-    enabled: (config?.mdmsConfig || config?.mdmsv2) ? true : false,
-  },mdmsv2);
+      select: config?.mdmsConfig?.select
+        ? Digit.Utils.createFunction(config?.mdmsConfig?.select)
+        : (data) => {
+            const optionsData = _.get(data, `${config?.mdmsConfig?.moduleName}.${config?.mdmsConfig?.masterName}`, []);
+            return optionsData
+              .filter((opt) => (opt?.hasOwnProperty("active") ? opt.active : true))
+              .map((opt) => ({ ...opt, name: `${config?.mdmsConfig?.localePrefix}_${Digit.Utils.locale.getTransformedLocale(opt.code)}` }));
+          },
+      enabled: (config?.mdmsConfig || config?.mdmsv2) ? true : false,
+    },mdmsv2);
   if (isLoading) {
     return <Loader />;
   }
@@ -92,7 +92,7 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
   //   }
   //   return selectedValue
   // }
-  
+
   return (
     <React.Fragment key={config.name}>
       {/* <LabelFieldPair>
@@ -103,27 +103,35 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
 
       { (config.allowMultiSelect && type==="dropdown") ?
         <div style={{ display: "grid", gridAutoFlow: "row" }}>
-        <MultiSelectDropdown
-          options={data || config?.options || []}
-          optionsKey={config?.optionsKey}
-          props={props} //these are props from Controller
-          isPropsNeeded={true}
-          onSelect={(e) => {
-            onChange(
-              e
-                ?.map((row) => {
-                  return row?.[1] ? row[1] : null;
-                })
-                .filter((e) => e)
-            );
-          }}
-          selected={props?.value}
-          defaultLabel={t(config?.defaultText) }
-          defaultUnit={t(config?.selectedText) || t("TQM_DROPDOWN_SELECTED")}
-          config={config}
-          
-        />
-      </div> : type === "radio" ? (
+          <MultiSelectDropdown
+            options={data || config?.options || []}
+            optionsKey={config?.optionsKey}
+            props={props} //these are props from Controller
+            isPropsNeeded={true}
+            onSelect={(e) => {
+              props?.onChange
+                ? props.onChange(
+                    e
+                      ?.map((row) => {
+                        return row?.[1] ? row[1] : null;
+                      })
+                      .filter((e) => e)
+                  )
+                : onChange(
+                    e
+                      ?.map((row) => {
+                        return row?.[1] ? row[1] : null;
+                      })
+                      .filter((e) => e)
+                  );
+            }}
+            selected={props?.value}
+            defaultLabel={t(config?.defaultText) }
+            defaultUnit={t(config?.selectedText) || t("TQM_DROPDOWN_SELECTED")}
+            config={config}
+
+          />
+        </div> : type === "radio" ? (
         <RadioButtons
           inputRef={inputRef}
           style={{ display: "flex", justifyContent: "flex-start", gap: "3rem", ...config.styles }}
@@ -161,8 +169,8 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
           optionCardStyles={config?.optionsCustomStyle}
         />
       )
-      } 
-      </React.Fragment>
+      }
+    </React.Fragment>
   );
 };
 
