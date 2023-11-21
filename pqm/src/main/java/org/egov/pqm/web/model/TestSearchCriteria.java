@@ -23,6 +23,9 @@ public class TestSearchCriteria {
   @Valid
   private List<String> testIds = null;
 
+  @JsonProperty("testId")
+  private String testId = null;
+
   @JsonProperty("tenantId")
   private String tenantId = null;
 
@@ -53,10 +56,10 @@ public class TestSearchCriteria {
   private List<String> wfStatus = null;
 
   @JsonProperty("status")
-  private String status = null;
+  private List<String> status = null;
 
   @JsonProperty("testType")
-  private String sourceType = null;
+  private List<String> sourceType = null;
 
   @JsonProperty("fromDate")
   private Long fromDate = null;
@@ -69,5 +72,8 @@ public class TestSearchCriteria {
 
   @JsonProperty("limit")
   private Integer limit;
-  
+
+  @JsonProperty("labAssignedTo")
+  private String labAssignedTo = null;
+
 }

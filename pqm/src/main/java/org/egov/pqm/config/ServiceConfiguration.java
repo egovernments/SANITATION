@@ -65,6 +65,12 @@ public class ServiceConfiguration {
   @Value("${egov.pqm.anomaly.create.kafka.topic}")
   private String anomalyCreateTopic;
 
+  @Value("${egov.plant.user.create.kafka.topic}")
+  private String plantUserSaveTopic;
+
+  @Value("${egov.plant.user.update.kafka.topic}")
+  private String plantUserUpdateTopic;
+
   //workflow
   @Value("${create.pqm.workflow.name}")
   private String businessServiceValue;
@@ -94,5 +100,12 @@ public class ServiceConfiguration {
 
   @Value("${egov.idgen.pqm.id.format}")
   private String idFormat;
+
+  //Individual servcie
+  @Value("${egov.individual.host}")
+  private String individualHost;
+
+  @Value("${egov.individual.search.endpoint}")
+  private String individualSearchEndpoint;
 
 }

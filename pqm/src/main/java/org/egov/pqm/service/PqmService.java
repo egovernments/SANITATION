@@ -6,6 +6,8 @@ import static org.egov.pqm.util.Constants.UPDATE_RESULT;
 import static org.egov.pqm.util.Constants.WFSTATUS_PENDINGRESULTS;
 import static org.egov.pqm.util.Constants.WFSTATUS_SCHEDULED;
 import static org.egov.pqm.util.ErrorConstants.TEST_NOT_IN_DB;
+import static org.egov.pqm.util.ErrorConstants.TEST_NOT_PRESENT_CODE;
+import static org.egov.pqm.util.ErrorConstants.TEST_NOT_PRESENT_MESSAGE;
 import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 import static org.egov.pqm.util.MDMSUtils.parseJsonToTestList;
 import static org.egov.pqm.web.model.Pagination.SortOrder.DESC;
@@ -33,8 +35,8 @@ import org.egov.pqm.validator.PqmValidator;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.Pagination;
-import org.egov.pqm.web.model.Pagination.SortBy;
 import org.egov.pqm.web.model.QualityCriteria;
+import org.egov.pqm.web.model.SortBy;
 import org.egov.pqm.web.model.SourceType;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
@@ -152,6 +154,8 @@ public class PqmService {
    * @return New Test
    */
   public Test create(TestRequest testRequest) {
+    if(Objects.isNull(testRequest.getTests()) || testRequest.getTests().isEmpty() )
+      throw new CustomException(TEST_NOT_PRESENT_CODE, TEST_NOT_PRESENT_MESSAGE);
     pqmValidator.validateTestTypeAdhocCreate(testRequest);
     pqmValidator.validateTestCriteriaAndDocument(testRequest);
     mdmsValidator.validateMdmsData(testRequest);
@@ -196,7 +200,8 @@ public class PqmService {
    */
   @SuppressWarnings("unchecked")
   public Test update(TestRequest testRequest) {
-
+    if(Objects.isNull(testRequest.getTests()) || testRequest.getTests().isEmpty() )
+      throw new CustomException(TEST_NOT_PRESENT_CODE, TEST_NOT_PRESENT_MESSAGE);
     List<Test> tests = testRequest.getTests();
     Test test = tests.get(0);
     if (test.getTestId() == null) { // validate if application exists
@@ -215,9 +220,9 @@ public class PqmService {
       throw new CustomException(TEST_NOT_IN_DB,
           "test not present in database which we want to update ");
     }
+    mdmsValidator.validateMdmsData(testRequest);
     pqmValidator.validateTestTypeScheduleCreateAndUpdate(testRequest);
     pqmValidator.validateTestCriteriaAndDocument(testRequest);
-    mdmsValidator.validateMdmsData(testRequest);
     pqmValidator.validateTestRequestFieldsWhileupdate(tests, oldTests);
     // Fetching actions from businessService
     BusinessService businessService = workflowService.getBusinessService(test, testRequest,
@@ -260,7 +265,7 @@ public class PqmService {
 
     for (MdmsTest mdmsTest : mdmsTestList) {
       TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().sourceType(
-              String.valueOf(SourceType.LAB_SCHEDULED))
+              Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED)))
           .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED))
           .testCode(Collections.singletonList(mdmsTest.getCode())).build();
       Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.scheduledDate)

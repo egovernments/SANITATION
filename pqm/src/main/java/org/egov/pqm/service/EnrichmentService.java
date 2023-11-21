@@ -28,6 +28,7 @@ import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResultStatus;
 import org.egov.pqm.web.model.Workflow;
 import org.egov.pqm.web.model.idgen.IdResponse;
+import org.egov.pqm.web.model.plant.user.PlantUserRequest;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,11 +98,33 @@ public class EnrichmentService {
           AuditDetails auditDetails = setAuditDetails(testRequest, isCreate);
           document.setTestId(testRequest.getTests().get(0).getTestId());
           document.setId(String.valueOf(UUID.randomUUID()));
-          document.setTenantId(testRequest.getTests().get(0).getTenantId());
           document.setAuditDetails(auditDetails);
         }
       }
     }
+  }
+
+  public void enrichCreatePlanUserRequest(PlantUserRequest plantUserRequest) {
+    Long time = System.currentTimeMillis();
+    AuditDetails auditDetails = AuditDetails.builder()
+        .createdBy(plantUserRequest.getRequestInfo().getUserInfo().getUuid())
+        .lastModifiedBy(plantUserRequest.getRequestInfo().getUserInfo().getUuid())
+        .createdTime(time)
+        .lastModifiedTime(time)
+        .build();
+
+    plantUserRequest.getPlantUsers().forEach(plantUser -> {
+      plantUser.setAuditDetails(auditDetails);
+      plantUser.setId(UUID.randomUUID().toString());
+    });
+  }
+
+  public void enrichUpdatePlanUserRequest(PlantUserRequest plantUserRequest) {
+    Long time = System.currentTimeMillis();
+    plantUserRequest.getPlantUsers().forEach(plantUser -> {
+      plantUser.getAuditDetails().setLastModifiedBy(plantUserRequest.getRequestInfo().getUserInfo().getUuid());
+      plantUser.getAuditDetails().setLastModifiedTime(time);
+    });
   }
 
   private void setTestCriteriaDetails(TestRequest testRequest) {
@@ -181,6 +204,4 @@ public class EnrichmentService {
       testRepository.saveAnomaly(config.getAnomalyCreateTopic(), testRequest);
     }
   }
-
-
 }

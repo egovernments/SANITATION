@@ -22,5 +22,4 @@ public class ResponseInfoFactory {
 		return ResponseInfo.builder().apiId(apiId).ver(ver).ts(ts).resMsgId(resMsgId).msgId(msgId).resMsgId(resMsgId)
 				.status(responseStatus).build();
 	}
-
 }
