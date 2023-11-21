@@ -79,4 +79,7 @@ public class Test {
 
 	  @JsonProperty("workflow")
 	  private Workflow workflow;
+	  
+	  @JsonProperty("labAssignedTo")
+	  private String labAssignedTo;
 	}
