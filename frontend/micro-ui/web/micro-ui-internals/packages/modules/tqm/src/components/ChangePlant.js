@@ -41,7 +41,7 @@ const ChangePlant = ({mobileView}) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const userInfo = Digit.UserService.getUser();
-  const [activePlant,setActivePlant] = useState(null)
+  const [activePlant,setActivePlant] = useState(Digit.SessionStorage.get("active_plant")?.plantCode?Digit.SessionStorage.get("active_plant"): {i18nKey:"PQM_PLANT_DEFAULT_ALL"})
   const requestCriteria = {
     params:{},
     url:'/pqm-service/plant/user/v1/_search',
@@ -60,13 +60,15 @@ const ChangePlant = ({mobileView}) => {
           row.i18nKey = `PQM_PLANT_${row?.plantCode}`
           return row
         })
-
+        userPlants.push({i18nKey:"PQM_PLANT_DEFAULT_ALL"})
         //remove this line when api works fine
         // userPlants = sampleResp
 
         Digit.SessionStorage.set("user_plants",userPlants );
-        Digit.SessionStorage.set("active_plant",userPlants?.[0] ? userPlants?.[0] : {} )
-        setActivePlant(userPlants?.[0] ? userPlants?.[0] : {})
+        // Digit.SessionStorage.set("active_plant",userPlants?.[0] ? userPlants?.[0] : {} )
+        // Digit.SessionStorage.set("active_plant", null )
+        
+        // setActivePlant(userPlants?.[0] ? userPlants?.[0] : {})
         return userPlants
       }
     }

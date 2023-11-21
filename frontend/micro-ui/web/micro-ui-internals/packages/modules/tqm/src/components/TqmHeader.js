@@ -13,7 +13,7 @@ import { useLocation,useHistory } from 'react-router-dom';
 import { TourSteps } from '../utils/TourSteps';
 
 const excludeBackBtn = [
-  'home'
+  'landing'
 ]
 
 const TqmHeader = ({location,defaultPath}) => {
