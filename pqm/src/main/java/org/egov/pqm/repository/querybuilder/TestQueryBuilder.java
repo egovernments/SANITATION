@@ -154,26 +154,32 @@ public class TestQueryBuilder {
 	 * @param testSearchRequest         test search criteria
 	 * @return the query by replacing the placeholders with preparedStmtList
 	 */
-	private String addPaginationWrapper(String query, List<Object> preparedStmtList, TestSearchRequest testSearchRequest) {
-		
+	private String addPaginationWrapper(String query, List<Object> preparedStmtList,
+			TestSearchRequest testSearchRequest) {
+
 		Pagination criteria = testSearchRequest.getPagination();
 
 		int limit = config.getDefaultLimit();
 		int offset = config.getDefaultOffset();
 		String finalQuery = PAGINATION_WRAPPER.replace("{}", query);
 
-//		if (criteria.getLimit() != null && criteria.getLimit() <= config.getMaxSearchLimit())
-//			limit = criteria.getLimit();
-//
-//		if (criteria.getLimit() != null && criteria.getLimit() > config.getMaxSearchLimit()) {
-//			limit = config.getMaxSearchLimit();
-//		}
-//
-//		if (criteria.getOffset() != null)
-//			offset = criteria.getOffset();
+		if (criteria != null) {
+			if (criteria.getLimit() != null && criteria.getLimit() <= config.getMaxSearchLimit())
+				limit = criteria.getLimit();
+
+			if (criteria.getLimit() != null && criteria.getLimit() > config.getMaxSearchLimit()) {
+				limit = config.getMaxSearchLimit();
+			}
+
+			if (criteria.getOffset() != null)
+				offset = criteria.getOffset();
+		}
 
 		StringBuilder orderQuery = new StringBuilder();
-		addOrderByClause(orderQuery, criteria);
+		
+		if (criteria != null) {
+			addOrderByClause(orderQuery, criteria);
+		}
 		finalQuery = finalQuery.replace("{orderby}", orderQuery.toString());
 
 		if (limit == -1) {
@@ -221,40 +227,40 @@ public class TestQueryBuilder {
 	 */
 	private void addOrderByClause(StringBuilder builder, Pagination criteria) {
 
-//		if (StringUtils.isEmpty(criteria.getSortBy()))
-//			builder.append(" ORDER BY test.lastmodifiedtime ");
-//
-//		else if (criteria.getSortBy() == Pagination.SortBy.wfStatus)
-//			builder.append(" ORDER BY test.wfStatus ");
-//
-//		else if (criteria.getSortBy() == Pagination.SortBy.testId)
-//			builder.append(" ORDER BY test.testId ");
-//
-//		else if (criteria.getSortBy() == Pagination.SortBy.scheduledDate)
-//			builder.append(" ORDER BY test.scheduledDate ");
-//
-//		else if (criteria.getSortBy() == Pagination.SortBy.plantCode)
-//			builder.append(" ORDER BY test.plantCode ");
-//
-//		else if (criteria.getSortBy() == Pagination.SortBy.processCode)
-//			builder.append(" ORDER BY test.processCode ");
-//
-//		else if (criteria.getSortBy() == Pagination.SortBy.stageCode)
-//			builder.append(" ORDER BY test.stageCode ");
-//
-//		else if (criteria.getSortBy() == Pagination.SortBy.materialCode)
-//			builder.append(" ORDER BY test.materialCode ");
-//
-//		else if (criteria.getSortBy() == Pagination.SortBy.deviceCode)
-//			builder.append(" ORDER BY test.deviceCode ");
-//
-//		else if (criteria.getSortBy() == Pagination.SortBy.createdTime)
-//			builder.append(" ORDER BY test.createdtime ");
-//
-//		if (criteria.getSortOrder() == Pagination.SortOrder.ASC)
-//			builder.append(" ASC ");
-//		else
-//			builder.append(" DESC ");
+		if (StringUtils.isEmpty(criteria.getSortBy()))
+			builder.append(" ORDER BY test.lastmodifiedtime ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.wfStatus)
+			builder.append(" ORDER BY test.wfStatus ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.testId)
+			builder.append(" ORDER BY test.testId ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.scheduledDate)
+			builder.append(" ORDER BY test.scheduledDate ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.plantCode)
+			builder.append(" ORDER BY test.plantCode ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.processCode)
+			builder.append(" ORDER BY test.processCode ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.stageCode)
+			builder.append(" ORDER BY test.stageCode ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.materialCode)
+			builder.append(" ORDER BY test.materialCode ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.deviceCode)
+			builder.append(" ORDER BY test.deviceCode ");
+
+		else if (criteria.getSortBy() == Pagination.SortBy.createdTime)
+			builder.append(" ORDER BY test.createdtime ");
+
+		if (criteria.getSortOrder() == Pagination.SortOrder.ASC)
+			builder.append(" ASC ");
+		else
+			builder.append(" DESC ");
 
 	}
 
