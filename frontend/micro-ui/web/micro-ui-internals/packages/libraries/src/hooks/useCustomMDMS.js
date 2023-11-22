@@ -37,7 +37,8 @@ const useCustomMDMS = (tenantId, moduleName, masterDetails = [], config = {},mdm
       body:{
         MdmsCriteria:{
           tenantId,
-          schemaCode:mdmsv2?.schemaCode
+          schemaCode:mdmsv2?.schemaCode,
+          isActive:true
         }
       },
       config:{
