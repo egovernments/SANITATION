@@ -69,11 +69,11 @@ const TqmCard = ({reRoute=true}) => {
       link: `/${window?.contextPath}/employee/tqm/add-test-result`,
       roles: [...ROLES.ulb],
     },
-    {
-      label: t("TQM_DASHBOARD"),
-      link: `/${window?.contextPath}/employee/dss/dashboard/pqm`,
-      roles: [...ROLES.plant,ROLES.ulb],
-    }
+    // {
+    //   label: t("TQM_DASHBOARD"),
+    //   link: `/${window?.contextPath}/employee/dss/dashboard/pqm`,
+    //   roles: [...ROLES.plant,ROLES.ulb],
+    // }
   ];
   links = links.filter((link) =>
     link.roles ? checkForEmployee(link.roles) : true

@@ -58,7 +58,7 @@ const Alerts = ({ ale }) => {
   return (
     <div>
       <div className='alert-word'>
-        <Header>{t("PQM_TEST_ALERTS")}</Header>
+        <Header styles={{fontSize:"26px"}}>{t("PQM_TEST_ALERTS")}</Header>
       </div>
       <Card className={'alerts-container1'} style={{ paddingLeft: "0px", paddingRight: "0px", display: "flex", flexDirection: "row" }}>
         <div className='alerts-container-header alerts-container-item'>
@@ -75,7 +75,7 @@ const Alerts = ({ ale }) => {
             return (
               <div className='alerts-container-item'>
                 <p className='alerts-container-item-label'> {alert.label} </p>
-                <p className='alerts-container-item-count'>{alert.count} </p>
+                <p className={`alerts-container-item-count-${alertIdx}`}>{alert.count} </p>
               </div>
             )
           })}

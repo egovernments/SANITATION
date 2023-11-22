@@ -128,6 +128,24 @@
   @media (min-width: 780px) {
     display: grid;
     grid-template-columns: 50% 50%;
+    .performance-container {
+      justify-content: space-around;
+      align-items: center;
+      .performance-item {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2rem;
+      }
+    }
+    .alerts-container1{
+      .alerts-container-item-count-2{
+        color: #D4351C;
+        padding-left:30px ;
+      }
+      .kk{
+        margin-top:1rem;
+      }
+    }
   }
 }
 .alert{
