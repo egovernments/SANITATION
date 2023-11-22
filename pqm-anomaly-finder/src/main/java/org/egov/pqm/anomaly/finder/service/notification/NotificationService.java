@@ -166,7 +166,7 @@ public class NotificationService {
 		userSearchRequest.put("tenantId", tenantId);
 //		userSearchRequest.put("userType", "CITIZEN");
 		for (String mobileNo : mobileNumbers) {
-			userSearchRequest.put("userName", "PQMADMIN");
+			userSearchRequest.put("userName", requestInfo.getUserInfo().getUserName() );
 			try {
 				Object user = serviceRequestRepository.fetchResult(uri, userSearchRequest);
 				if (null != user) {
