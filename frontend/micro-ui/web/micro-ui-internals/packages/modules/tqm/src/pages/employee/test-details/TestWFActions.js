@@ -27,6 +27,8 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
     }
     const { action: workflow } = actionData;
     testDetailsData.workflow = { action: workflow };
+    //here add lab as well
+    testDetailsData.labAssignedTo = data?.status?.code
     submitAction(testDetailsData);
   };
 

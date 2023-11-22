@@ -9,7 +9,7 @@ export const tqmSearchConfigUlbAdmin = {
         "serviceName": "/pqm-service/v1/_search",
         "requestParam": {},
         "requestBody": {},
-        "minParametersForSearchForm": 1,
+        "minParametersForSearchForm": 0,
         "masterName": "commonUiConfig",
         "moduleName": "SearchTestResultsUlbAdmin",
         "tableFormJsonPath": "requestBody.pagination",

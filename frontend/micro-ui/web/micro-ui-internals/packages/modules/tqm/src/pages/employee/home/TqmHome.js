@@ -29,7 +29,7 @@ const TqmHome = (props) => {
         "tenantId": "pg.citya"
       }
     },
-    changeQueryName: "data1",
+    changeQueryName: "testCompliance",
     staletime: 0
   };
   const { isLoading, data: data1 } = Digit.Hooks.useCustomAPIHook(requestCriteria1);
@@ -54,7 +54,7 @@ const TqmHome = (props) => {
         "tenantId": "pg.citya"
       }
     },
-    changeQueryName: "data2",
+    changeQueryName: "percentage",
     staletime: 0
   };
   const { data: data2 } = Digit.Hooks.useCustomAPIHook(requestCriteria2);
@@ -65,7 +65,7 @@ const TqmHome = (props) => {
     body: {
       "aggregationRequestDto": {
         "visualizationType": "xtable",
-        "visualizationCode": "pqmAlertsTest2",
+        "visualizationCode": "pqmAlerts",
         "queryType": "",
         "filters": {},
         "moduleLevel": "",
@@ -79,18 +79,18 @@ const TqmHome = (props) => {
         "tenantId": "pg.citya"
       }
     },
-    changeQueryName: "data3",
+    changeQueryName: "alerts",
     staletime: 0
   };
-  const { data: data3 } = Digit.Hooks.useCustomAPIHook(requestCriteria3);
+  const { data: alerts } = Digit.Hooks.useCustomAPIHook(requestCriteria3);
   
-  // const combinedData = [...(data1 || []), ...(data2 || [])];
-  const combinedData = {}
   return (
     <div className='tqm-home-container'>
       <TqmCard t={t} reRoute={false} />
-      <YourPerformance performance={combinedData} />
-      <Alerts ale={data3} />
+      <div className='dashboard-container'>
+      <YourPerformance performance={[data1, data2]}  />
+      <Alerts ale={alerts} />
+      </div>
     </div>
   )
 }

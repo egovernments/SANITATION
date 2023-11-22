@@ -174,14 +174,34 @@ export const FSMService = {
       params: { tenantId, ...details },
       auth: true,
     }),
-  individualSearch: ({ tenantId, filters, params }) =>
+  workerSearch: ({ tenantId, details, params }) =>
     Request({
-      url: Urls.fsm.individual,
+      url: Urls.fsm.workerSearch,
+      data: details,
       useCache: false,
       userService: true,
       method: "POST",
-      data: filters,
       params: { tenantId, ...params },
+      auth: true,
+    }),
+  createWorker: ({ details, tenantId }) =>
+    Request({
+      url: Urls.fsm.workerCreate,
+      data: details,
+      useCache: true,
+      userService: true,
+      method: "POST",
+      params: { tenantId },
+      auth: true,
+    }),
+  updateWorker: ({ details, tenantId }) =>
+    Request({
+      url: Urls.fsm.workerUpdate,
+      data: details,
+      useCache: true,
+      userService: true,
+      method: "POST",
+      params: { tenantId },
       auth: true,
     }),
 };

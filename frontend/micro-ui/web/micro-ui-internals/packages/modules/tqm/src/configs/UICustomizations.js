@@ -155,7 +155,7 @@ export const UICustomizations = {
       delete data.body.custom;
 
       const activePlantCode = Digit.SessionStorage.get("active_plant")?.plantCode ? [Digit.SessionStorage.get("active_plant")?.plantCode]:Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.map(row => row.plantCode)
-      if(activePlantCode.length>0){
+      if(activePlantCode?.length>0){
         data.body.inbox.moduleSearchCriteria.plantCodes = [...activePlantCode]
       }
       return data
@@ -430,7 +430,9 @@ export const UICustomizations = {
       //update testSearchCriteria
 
       //test id
-      data.body.testSearchCriteria.testIds = id ? [id] : []
+      // data.body.testSearchCriteria.testIds = id ? [id] : []
+      //test id with part search enabled 
+      data.body.testSearchCriteria.testId = id ? id : ""
       //plantcodes
       data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
       data.body.testSearchCriteria.wfStatus = ["SUBMITTED"];

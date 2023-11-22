@@ -131,27 +131,27 @@ export const tqmInboxConfig = {
                   "PQM_ADMIN"
                 ]
               },
-              {
-                "text": "TQM_VIEW_IOT_RESULTS",
-                "url": "/employee/tqm/search-test-results?from=TQM_BREAD_INBOX",
-                "roles": [
-                  "PQM_ADMIN"
-                ]
-              },
-              {
-                "text": "TQM_SENSOR_MON",
-                "url": "/employee/tqm/search-devices?from=TQM_BREAD_INBOX",
-                "roles": [
-                  "PQM_ADMIN"
-                ]
-              },
-              {
-                "text": "TQM_VIEW_DASHBOARD",
-                "url": "/employee/dss/dashboard/pqm",
-                "roles": [
-                  "PQM_ADMIN"
-                ]
-              }
+              // {
+              //   "text": "TQM_VIEW_IOT_RESULTS",
+              //   "url": "/employee/tqm/search-test-results?from=TQM_BREAD_INBOX",
+              //   "roles": [
+              //     "PQM_ADMIN"
+              //   ]
+              // },
+              // {
+              //   "text": "TQM_SENSOR_MON",
+              //   "url": "/employee/tqm/search-devices?from=TQM_BREAD_INBOX",
+              //   "roles": [
+              //     "PQM_ADMIN"
+              //   ]
+              // },
+              // {
+              //   "text": "TQM_VIEW_DASHBOARD",
+              //   "url": "/employee/dss/dashboard/pqm",
+              //   "roles": [
+              //     "PQM_ADMIN"
+              //   ]
+              // }
             ],
             "label": "TQM_QUALITY_TESTING",
             "logoIcon": {

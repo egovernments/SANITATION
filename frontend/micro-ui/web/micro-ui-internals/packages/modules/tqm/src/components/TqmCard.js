@@ -2,6 +2,7 @@ import { EmployeeModuleCard, ArrowRightInbox, TqmHomePageCardIcon } from "@egove
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import { checkForEmployee } from "../utils";
 
 const ROLES = {
   plant:["PQM_TP_OPERATOR"],
@@ -68,13 +69,15 @@ const TqmCard = ({reRoute=true}) => {
       link: `/${window?.contextPath}/employee/tqm/add-test-result`,
       roles: [...ROLES.ulb],
     },
-    {
-      label: t("TQM_DASHBOARD"),
-      link: `/${window?.contextPath}/employee/dss/dashboard/pqm`,
-      roles: [...ROLES.plant,ROLES.ulb],
-    }
+    // {
+    //   label: t("TQM_DASHBOARD"),
+    //   link: `/${window?.contextPath}/employee/dss/dashboard/pqm`,
+    //   roles: [...ROLES.plant,ROLES.ulb],
+    // }
   ];
-
+  links = links.filter((link) =>
+    link.roles ? checkForEmployee(link.roles) : true
+  );
   // links = links.filter((link) => (link?.roles && link?.roles?.length > 0 ? Digit.Utils.didEmployeeHasAtleastOneRole(link?.roles) : true));
   
 
