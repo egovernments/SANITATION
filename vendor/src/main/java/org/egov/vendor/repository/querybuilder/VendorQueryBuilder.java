@@ -95,7 +95,7 @@ public class VendorQueryBuilder {
 			List<Object> preparedStmtList) {
 		StringBuilder builder = new StringBuilder(WORKER_EXISTS);
 		builder.append("(").append(createQuery(vendorSearchCriteria.getIndividualIds())).append(")");
-		addToPreparedStatement(preparedStmtList, vendorSearchCriteria.getVehicleIds());
+		addToPreparedStatement(preparedStmtList, vendorSearchCriteria.getIndividualIds());
 
 		List<String> status = vendorSearchCriteria.getStatus();
 		if (!CollectionUtils.isEmpty(status)) {
