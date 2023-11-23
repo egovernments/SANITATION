@@ -43,7 +43,7 @@ public class MDMSValidator {
   }
 
   public void validateMdmsData(TestRequest testRequest) {
-    String tenantId = testRequest.getTests().get(0).getTenantId();
+    String tenantId = testRequest.getTests().get(0).getTenantId().split("\\.")[0];
     validateIfMasterPresent(testRequest.getRequestInfo(), tenantId, PQM_SCHEMA_CODE_PLANT,
         testRequest.getTests().get(0).getPlantCode());
     validateIfMasterPresent(testRequest.getRequestInfo(), tenantId, PQM_SCHEMA_CODE_PROCESS,

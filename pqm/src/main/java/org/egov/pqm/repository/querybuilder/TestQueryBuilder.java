@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.google.common.base.Strings;
+
 @Component
 public class TestQueryBuilder {
 
@@ -53,19 +55,25 @@ public class TestQueryBuilder {
       addToPreparedStatement(preparedStmtList, ids);
     }
 
-    List<String> testIds = criteria.getTestIds();
-    if (!CollectionUtils.isEmpty(testIds)) {
-      addClauseIfRequired(preparedStmtList, builder);
-      builder.append(" test.testId IN (").append(createQuery(testIds)).append(")");
-      addToPreparedStatement(preparedStmtList, testIds);
-    }
+	List<String> testIds = criteria.getTestIds();
+	if (!CollectionUtils.isEmpty(testIds)) {
+		addClauseIfRequired(preparedStmtList, builder);
+		builder.append(" test.testId IN (").append(createQuery(testIds)).append(")");
+		addToPreparedStatement(preparedStmtList, testIds);
+	}
 
-    List<String> testCodes = criteria.getTestCode();
-    if (!CollectionUtils.isEmpty(testCodes)) {
-      addClauseIfRequired(preparedStmtList, builder);
-      builder.append(" test.testCode IN (").append(createQuery(testCodes)).append(")");
-      addToPreparedStatement(preparedStmtList, testCodes);
-    }
+	if (!Strings.isNullOrEmpty(criteria.getTestId())) {
+		addClauseIfRequired(preparedStmtList, builder);
+		builder.append(" test.testId like ?");
+		preparedStmtList.add('%' + criteria.getTestId() + '%');
+	}
+	
+	List<String> testCodes = criteria.getTestCode();
+	if (!CollectionUtils.isEmpty(testCodes)) {
+		addClauseIfRequired(preparedStmtList, builder);
+		builder.append(" test.testCode IN (").append(createQuery(testCodes)).append(")");
+		addToPreparedStatement(preparedStmtList, testCodes);
+	}
 
     List<String> plantCodes = criteria.getPlantCodes();
     if (!CollectionUtils.isEmpty(plantCodes)) {
@@ -111,20 +119,21 @@ public class TestQueryBuilder {
       addToPreparedStatement(preparedStmtList, wfStatuses);
     }
 
-    if (criteria.getStatus() != null) {
+    List<String> sourceTypes = criteria.getSourceType();
+	if (!CollectionUtils.isEmpty(sourceTypes)) {
       addClauseIfRequired(preparedStmtList, builder);
-      builder.append(" test.status=? ");
-      preparedStmtList.add(criteria.getStatus());
+      builder.append(" test.sourceType IN (").append(createQuery(sourceTypes)).append(")");
+		addToPreparedStatement(preparedStmtList, sourceTypes);
 
     }
-
-    if (criteria.getSourceType() != null) {
-      addClauseIfRequired(preparedStmtList, builder);
-      builder.append(" test.sourceType=? ");
-      preparedStmtList.add(criteria.getSourceType());
-
-    }
-
+	
+	List<String> statuses = criteria.getStatus();
+	if (!CollectionUtils.isEmpty(statuses)) {
+		addClauseIfRequired(preparedStmtList, builder);
+		builder.append(" test.status IN (").append(createQuery(statuses)).append(")");
+		addToPreparedStatement(preparedStmtList, statuses);
+	}
+	 
     if (criteria.getLabAssignedTo() != null) {
       addClauseIfRequired(preparedStmtList, builder);
       builder.append(" test.labAssignedTo=? ");
@@ -164,41 +173,46 @@ public class TestQueryBuilder {
    * @return the query by replacing the placeholders with preparedStmtList
    */
   private String addPaginationWrapper(String query, List<Object> preparedStmtList,
-      TestSearchRequest testSearchRequest) {
+			TestSearchRequest testSearchRequest) {
 
-    Pagination criteria = testSearchRequest.getPagination();
+		Pagination criteria = testSearchRequest.getPagination();
 
-    int limit = config.getDefaultLimit();
-    int offset = config.getDefaultOffset();
-    String finalQuery = PAGINATION_WRAPPER.replace("{}", query);
+		int limit = config.getDefaultLimit();
+		int offset = config.getDefaultOffset();
+		String finalQuery = PAGINATION_WRAPPER.replace("{}", query);
 
-    if (criteria.getLimit() != null && criteria.getLimit() <= config.getMaxSearchLimit()) {
-      limit = criteria.getLimit();
-    }
+		if (criteria != null) {
+			if (criteria.getLimit() != null && criteria.getLimit() <= config.getMaxSearchLimit()) {
+				limit = criteria.getLimit();
+			}
 
-    if (criteria.getLimit() != null && criteria.getLimit() > config.getMaxSearchLimit()) {
-      limit = config.getMaxSearchLimit();
-    }
+			if (criteria.getLimit() != null && criteria.getLimit() > config.getMaxSearchLimit()) {
+				limit = config.getMaxSearchLimit();
+			}
 
-    if (criteria.getOffset() != null) {
-      offset = criteria.getOffset();
-    }
+			if (criteria.getOffset() != null) {
+				offset = criteria.getOffset();
+			}
+		}
 
-    StringBuilder orderQuery = new StringBuilder();
-    addOrderByClause(orderQuery, criteria);
-    finalQuery = finalQuery.replace("{orderby}", orderQuery.toString());
+		StringBuilder orderQuery = new StringBuilder();
+		if (criteria != null) {
+			addOrderByClause(orderQuery, criteria);
+		}
 
-    if (limit == -1) {
-      finalQuery = finalQuery.replace("{pagination}", "");
-    } else {
-      finalQuery = finalQuery.replace("{pagination}", " offset ?  limit ?  ");
-      preparedStmtList.add(offset);
-      preparedStmtList.add(limit);
-    }
+		finalQuery = finalQuery.replace("{orderby}", orderQuery.toString());
 
-    return finalQuery;
+		if (limit == -1) {
+			finalQuery = finalQuery.replace("{pagination}", "");
+		} else {
+			finalQuery = finalQuery.replace("{pagination}", " offset ?  limit ?  ");
+			preparedStmtList.add(offset);
+			preparedStmtList.add(limit);
+		}
 
-  }
+		return finalQuery;
+
+	}
 
   private void addClauseIfRequired(List<Object> values, StringBuilder queryString) {
     if (values.isEmpty()) {
@@ -231,37 +245,45 @@ public class TestQueryBuilder {
    * @param builder
    * @param criteria
    */
-  private void addOrderByClause(StringBuilder builder, Pagination criteria) {
+	private void addOrderByClause(StringBuilder builder, Pagination criteria) {
+		
+		if (StringUtils.isEmpty(criteria.getSortBy()))
+			builder.append(" ORDER BY test.lastmodifiedtime ");
 
-    if (StringUtils.isEmpty(criteria.getSortBy())) {
-      builder.append(" ORDER BY test.lastmodifiedtime ");
-    } else if (criteria.getSortBy() == SortBy.WORKFLOW_STATUS) {
-      builder.append(" ORDER BY test.wfStatus ");
-    } else if (criteria.getSortBy() == SortBy.TEST_ID) {
-      builder.append(" ORDER BY test.testId ");
-    } else if (criteria.getSortBy() == SortBy.SCHEDULED_DATE) {
-      builder.append(" ORDER BY test.scheduledDate ");
-    } else if (criteria.getSortBy() == SortBy.PLANT_CODE) {
-      builder.append(" ORDER BY test.plantCode ");
-    } else if (criteria.getSortBy() == SortBy.PROCESS_CODE) {
-      builder.append(" ORDER BY test.processCode ");
-    } else if (criteria.getSortBy() == SortBy.STAGE_CODE) {
-      builder.append(" ORDER BY test.stageCode ");
-    } else if (criteria.getSortBy() == SortBy.MATERIAL_CODE) {
-      builder.append(" ORDER BY test.materialCode ");
-    } else if (criteria.getSortBy() == SortBy.DEVICE_CODE) {
-      builder.append(" ORDER BY test.deviceCode ");
-    } else if (criteria.getSortBy() == SortBy.CREATED_TIME) {
-      builder.append(" ORDER BY test.createdtime ");
-    }
+		else if (criteria.getSortBy() == SortBy.wfStatus)
+			builder.append(" ORDER BY test.wfStatus ");
 
-    if (criteria.getSortOrder() == Pagination.SortOrder.ASC) {
-      builder.append(" ASC ");
-    } else {
-      builder.append(" DESC ");
-    }
+		else if (criteria.getSortBy() == SortBy.testId)
+			builder.append(" ORDER BY test.testId ");
 
-  }
+		else if (criteria.getSortBy() == SortBy.scheduledDate)
+			builder.append(" ORDER BY test.scheduledDate ");
+
+		else if (criteria.getSortBy() == SortBy.plantCode)
+			builder.append(" ORDER BY test.plantCode ");
+
+		else if (criteria.getSortBy() == SortBy.processCode)
+			builder.append(" ORDER BY test.processCode ");
+
+		else if (criteria.getSortBy() == SortBy.stageCode)
+			builder.append(" ORDER BY test.stageCode ");
+
+		else if (criteria.getSortBy() == SortBy.materialCode)
+			builder.append(" ORDER BY test.materialCode ");
+
+		else if (criteria.getSortBy() == SortBy.deviceCode)
+			builder.append(" ORDER BY test.deviceCode ");
+
+		else if (criteria.getSortBy() == SortBy.createdTime)
+			builder.append(" ORDER BY test.createdtime ");
+		
+		else if (criteria.getSortBy() == SortBy.id)
+			builder.append(" ORDER BY test.id ");
+
+		if (criteria.getSortOrder() == Pagination.SortOrder.ASC)
+			builder.append(" ASC ");
+		else
+			builder.append(" DESC ");}
 
 
   public String getDocumentSearchQuery(List<String> idList, List<Object> preparedStmtList) {

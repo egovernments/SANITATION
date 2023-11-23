@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS eg_pqm_anomaly_details
     createdTime       bigint,
     lastModifiedTime  bigint,
     CONSTRAINT pk_pqm_anomaly_details PRIMARY KEY (id),
-    CONSTRAINT fk_pqm_anomaly_details_pqm_tests FOREIGN KEY (testId) REFERENCES eg_pqm_tests (id)
+    CONSTRAINT fk_pqm_anomaly_details_pqm_tests FOREIGN KEY (testId) REFERENCES eg_pqm_tests (testId)
         ON DELETE CASCADE
 );
 
