@@ -77,5 +77,8 @@ public class PqmAnomalyConfiguration {
 
 	@Value("${egov.usr.events.view.code}")
 	private String viewCode;
+	
+	@Value("${egov.pqmAnomaly.max.limit}")
+	private Integer maxSearchLimit;
 
 }
