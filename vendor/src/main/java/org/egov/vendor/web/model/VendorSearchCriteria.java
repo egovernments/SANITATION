@@ -57,6 +57,9 @@ public class VendorSearchCriteria {
 	@JsonProperty("driverIds")
 	private List<String> driverIds;
 
+	@JsonProperty("individualIds")
+	private List<String> individualIds;
+
 	@JsonProperty("sortBy")
 	private SortBy sortBy;
 

@@ -12,6 +12,8 @@ import org.egov.vendor.driver.web.model.Driver;
 import org.egov.vendor.driver.web.model.DriverRequest;
 import org.egov.vendor.driver.web.model.DriverResponse;
 import org.egov.vendor.driver.web.model.DriverSearchCriteria;
+import org.egov.vendor.driver.web.model.Worker;
+import org.egov.vendor.driver.web.model.WorkerSearchCriteria;
 import org.egov.vendor.web.model.user.User;
 import org.egov.vendor.web.model.user.UserDetailResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +100,10 @@ public class DriverService {
 		}
 		return getDriverResponse(criteria, requestInfo);
 
+	}
+
+	public List<Worker> workerSearch(WorkerSearchCriteria criteria, RequestInfo requestInfo) {
+		return driverRepository.getWorkersData(criteria);
 	}
 
 	private DriverResponse getDriverResponse(DriverSearchCriteria criteria, RequestInfo requestInfo) {

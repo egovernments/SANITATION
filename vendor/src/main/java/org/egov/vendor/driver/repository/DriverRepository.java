@@ -8,10 +8,13 @@ import javax.validation.Valid;
 import org.egov.vendor.config.VendorConfiguration;
 import org.egov.vendor.driver.repository.querybuilder.DriverQueryBuilder;
 import org.egov.vendor.driver.repository.rowmapper.DriverRowMapper;
+import org.egov.vendor.driver.repository.rowmapper.WorkerRowMapper;
 import org.egov.vendor.driver.web.model.Driver;
 import org.egov.vendor.driver.web.model.DriverRequest;
 import org.egov.vendor.driver.web.model.DriverResponse;
 import org.egov.vendor.driver.web.model.DriverSearchCriteria;
+import org.egov.vendor.driver.web.model.Worker;
+import org.egov.vendor.driver.web.model.WorkerSearchCriteria;
 import org.egov.vendor.producer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,6 +42,9 @@ public class DriverRepository {
 	@Autowired
 	private DriverRowMapper driverRowMapper;
 
+	@Autowired
+	private WorkerRowMapper workerRowMapper;
+
 	public void save(DriverRequest driverRequest) {
 		producer.push(configuration.getSaveDriverTopic(), driverRequest);
 	}
@@ -54,6 +60,13 @@ public class DriverRepository {
 		List<Driver> driverData = jdbcTemplate.query(query, preparedStmtList.toArray(), driverRowMapper);
 		return DriverResponse.builder().driver(driverData).totalCount(Integer.valueOf(driverRowMapper.getFullCount()))
 				.build();
+	}
+
+	public List<Worker> getWorkersData(WorkerSearchCriteria workerSearchCriteria) {
+		List<Object> preparedStmtList = new ArrayList<>();
+		String query = driverQueryBuilder.getWorkerSearchQuery(workerSearchCriteria, preparedStmtList);
+		log.info("Workers Search Query" + query);
+		return jdbcTemplate.query(query, preparedStmtList.toArray(), workerRowMapper);
 	}
 
 	public List<String> fetchDriverIdsWithNoVendor(@Valid DriverSearchCriteria criteria) {
