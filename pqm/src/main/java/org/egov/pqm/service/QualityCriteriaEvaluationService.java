@@ -86,13 +86,13 @@ public class QualityCriteriaEvaluationService {
     test.setQualityCriteria(evaluatedqualityCriteriaList);
   }
   
-  public void evaluateQualityCriteriaResult(TestRequest testRequest) {
+  public void validateQualityCriteriaResult(TestRequest testRequest) {
 	    testRequest.getTests().stream()
 	            .flatMap(test -> test.getQualityCriteria().stream())
 	            .filter(qualityCriteria -> qualityCriteria.getResultValue() != null)
 	            .findAny()
 	            .ifPresent(qualityCriteria -> {
-	                throw new CustomException("RESULT_VALUE_INVALID", "result value is not correct");
+	                throw new CustomException("RESULT_VALUE_INVALID", "Invalid state to submit qualityCriteria result value");
 	            });
 	}
   /**

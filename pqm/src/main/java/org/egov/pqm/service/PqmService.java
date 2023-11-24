@@ -174,7 +174,7 @@ public class PqmService {
     pqmValidator.validateTestCriteriaAndDocument(testRequest);
     mdmsValidator.validateMdmsData(testRequest);
     enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
-    qualityCriteriaEvaluation.evaluateQualityCriteriaResult(testRequest);
+    qualityCriteriaEvaluation.validateQualityCriteriaResult(testRequest);
     workflowIntegrator.callWorkFlow(testRequest);
     repository.save(testRequest);
     return testRequest.getTests().get(0);
@@ -239,7 +239,7 @@ public class PqmService {
     }
     if (test.getWorkflow().getAction().equals(SUBMIT_SAMPLE)) {
         // calculate test result
-        qualityCriteriaEvaluation.evaluateQualityCriteriaResult(testRequest);
+        qualityCriteriaEvaluation.validateQualityCriteriaResult(testRequest);
       }
     enrichmentService.enrichPQMUpdateRequest(testRequest);// enrich update request
     workflowIntegrator.callWorkFlow(testRequest);// updating workflow during update
