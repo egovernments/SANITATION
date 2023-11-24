@@ -88,31 +88,7 @@ public class AnomalyFinderQueryBuilder {
 	 * @param criteria
 	 */
 	private void addOrderByClause(StringBuilder builder, PqmAnomalySearchCriteria criteria) {
-
-//		if (StringUtils.isEmpty(criteria.getSortBy()))
-//			builder.append(" ORDER BY fsm_lastmodifiedtime ");
-//
-//		else if (criteria.getSortBy() == FSMSearchCriteria.SortBy.locality)
-//			builder.append(" ORDER BY fsm_address.locality ");
-//
-//		else if (criteria.getSortBy() == FSMSearchCriteria.SortBy.applicationStatus)
-//			builder.append(" ORDER BY fsm.applicationStatus ");
-//
-//		else if (criteria.getSortBy() == FSMSearchCriteria.SortBy.applicationNumber)
-//			builder.append(" ORDER BY fsm.applicationno ");
-//
-//		else if (criteria.getSortBy() == FSMSearchCriteria.SortBy.propertyUsage)
-//			builder.append(" ORDER BY fsm.propertyUsage ");
-//
-//		else if (criteria.getSortBy() == FSMSearchCriteria.SortBy.vehicle)
-//			builder.append(" ORDER BY fsm.vehicle_id ");
-//
-//		else if (criteria.getSortBy() == FSMSearchCriteria.SortBy.createdTime)
-//			builder.append(" ORDER BY fsm.createdtime ");
-//
-//		if (criteria.getSortOrder() == FSMSearchCriteria.SortOrder.ASC)
-//			builder.append(" ASC ");
-//		else
+		
 			builder.append(" ORDER BY anomaly.id DESC ");
 
 	}
