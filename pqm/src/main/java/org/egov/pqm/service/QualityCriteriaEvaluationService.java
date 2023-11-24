@@ -13,8 +13,11 @@ import static org.egov.pqm.util.Constants.OUTSIDE_RANGE;
 import static org.egov.pqm.util.MDMSUtils.parseJsonToMap;
 
 import java.math.BigDecimal;
-import java.util.*;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.MDMSUtils;
@@ -29,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -70,7 +75,7 @@ public class QualityCriteriaEvaluationService {
     List<QualityCriteria> evaluatedqualityCriteriaList = new ArrayList<>();
     for (QualityCriteria qualityCriteria : test.getQualityCriteria()) {
       if (qualityCriteria.getResultValue() == null) {
-        throw new CustomException("RESULT_VALUE_INVALID", "result value invalid");
+        throw new CustomException("RESULT_VALUE_INVALID", "result value should not be null");
       }
       QualityCriteria evaluatedqualityCriteria = enrichQualityCriteriaFields(
           codeToQualityCriteriaMap.get(qualityCriteria.getCriteriaCode()),
@@ -80,7 +85,16 @@ public class QualityCriteriaEvaluationService {
     }
     test.setQualityCriteria(evaluatedqualityCriteriaList);
   }
-
+  
+  public void validateQualityCriteriaResult(TestRequest testRequest) {
+	    testRequest.getTests().stream()
+	            .flatMap(test -> test.getQualityCriteria().stream())
+	            .filter(qualityCriteria -> qualityCriteria.getResultValue() != null)
+	            .findAny()
+	            .ifPresent(qualityCriteria -> {
+	                throw new CustomException("RESULT_VALUE_INVALID", "Invalid state to submit qualityCriteria result value");
+	            });
+	}
   /**
    * returns a qualityCriteria with enriched status and allowedDeviation
    *
