@@ -45,9 +45,7 @@ public class AnomalyFinderService {
 	
 	public List<PqmAnomaly> pqmAnomalyPlainSearch(@Valid PqmAnomalySearchCriteria criteria, RequestInfo requestInfo) {
 		List<PqmAnomaly> pqmAnomalyList = getPqmAnomalyPlainSearch(criteria);
-//		if (!pqmAnomalyList.isEmpty()) {
-//			enrichmentService.enrichFSMSearch(pqmAnomalyList, requestInfo, criteria.getTenantId());
-//		}
+//		
 		return pqmAnomalyList;
 	}
 	
