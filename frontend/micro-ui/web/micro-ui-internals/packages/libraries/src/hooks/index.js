@@ -4,6 +4,7 @@ import useSessionStorage from './useSessionStorage';
 import useQueryParams from './useQueryParams';
 import useDocumentSearch from './useDocumentSearch';
 import useClickOutside from './useClickOutside';
+import useLocation from "./useLocation";
 import {
   useFetchPayment,
   usePaymentUpdate,
@@ -15,6 +16,7 @@ import {
   usePaymentSearch,
   useBulkPdfDetails,
 } from './payment';
+import useWorkflowDetailsWorks from './workflowWorks.js';
 import { useUserSearch } from './userSearch';
 import { useApplicationsForBusinessServiceSearch } from './useApplicationForBillSearch';
 import useBoundaryLocalities from './useLocalities';
@@ -136,6 +138,7 @@ const Hooks = {
   useFetchBillsForBuissnessService,
   useGetPaymentRulesForBusinessServices,
   useWorkflowDetails,
+  useWorkflowDetailsWorks,
   useInitStore,
   useClickOutside,
   useUserSearch,
@@ -178,6 +181,7 @@ const Hooks = {
   useRouteSubscription,
   useDynamicData,
   useGenderMDMS,
+  useLocation
 };
 
 export default Hooks;

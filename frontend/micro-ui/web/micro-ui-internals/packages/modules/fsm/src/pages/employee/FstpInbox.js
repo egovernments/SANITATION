@@ -56,7 +56,7 @@ const FstpInbox = () => {
     refernceNos: applicationData !== undefined && searchParams?.refernceNos?.length > 0 ? applicationData?.applicationNo || "null" : "",
     vehicleIds: vehicles !== undefined && searchParams?.registrationNumber?.length > 0 ? vehicles?.vehicle?.[0]?.id || "null" : "",
     // vehicleIds: applicationData !== undefined && searchParams?.applicationNos?.length > 0 ? applicationData?.vehicleId || "null" : vehicles !== undefined && searchParams?.registrationNumber?.length > 0 ? vehicles?.vehicle?.[0]?.id || "null" : "",
-    tripOwnerIds: dsoData !== undefined && searchParams?.name?.length > 0 ? dsoData?.[0]?.ownerId || "null" : "",
+    tripOwnerIds: dsoData !== undefined && searchParams?.name?.length > 0 ? dsoData?.map((i) => i.ownerId).join(",") || "null" : "",
     applicationStatus: searchParams?.applicationStatus,
     ...paginationParams,
   };

@@ -25,12 +25,12 @@ const WrapUnMaskComponent = React.memo(({ privacy = {}, value, unmaskField, ...r
   const [privacyState, setPrivacyState] = useState(false);
   const { loadData = {} } = privacy;
   const { t } = useTranslation();
-  const aaa = [
-    loadData?.serviceName,
-    loadData?.requestParam,
-    loadData?.requestBody,
-    { recordId: privacy?.uuid, plainRequestFields: Array.isArray(privacy?.fieldName) ? privacy?.fieldName : [privacy?.fieldName] },
-    {
+  const aaa = {
+    url: loadData?.serviceName,
+    params: loadData?.requestParam,
+    body: loadData?.requestBody,
+    // { recordId: privacy?.uuid, plainRequestFields: Array.isArray(privacy?.fieldName) ? privacy?.fieldName : [privacy?.fieldName] },
+    config: {
       enabled: privacyState,
       select: (data) => {
         if (loadData?.d) {
@@ -39,11 +39,18 @@ const WrapUnMaskComponent = React.memo(({ privacy = {}, value, unmaskField, ...r
         return unmaskField ? unmaskField(_.get(data, loadData?.jsonPath, value)) : _.get(data, loadData?.jsonPath, value);
       },
     },
-  ];
-  const { isLoading, data, ...orr } = Digit.Hooks.useCustomAPIHook(...aaa);
+  };
+  const { isLoading, data, ...orr } = Digit.Hooks.useCustomAPIHook(aaa);
   if (isLoading) {
-    return !unmaskField ? <Loader /> : <span style={{ display: "inline-flex", width: "fit-content", marginLeft: "10px" }}><div className={`tooltip`}>
-    <PrivacyMaskIcon className="privacy-icon-2" style={{...rem?.style,cursor:"default"}}></PrivacyMaskIcon></div></span>;
+    return !unmaskField ? (
+      <Loader />
+    ) : (
+      <span style={{ display: "inline-flex", width: "fit-content", marginLeft: "10px" }}>
+        <div className={`tooltip`}>
+          <PrivacyMaskIcon className="privacy-icon-2" style={{ ...rem?.style, cursor: "default" }}></PrivacyMaskIcon>
+        </div>
+      </span>
+    );
   }
 
   return privacy?.uuid && data ? (

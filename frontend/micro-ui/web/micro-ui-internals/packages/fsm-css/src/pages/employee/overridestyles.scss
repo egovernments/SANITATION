@@ -1,0 +1,79 @@
+.employee-app-container {
+  margin:auto
+  
+}
+
+.multilink-label {
+  color:#F47738 !important;
+}
+
+.vertical-gap {
+  display: flex;
+  row-gap:1.5rem !important;
+}
+
+.how-it-works-video-play{
+  .close-button {
+    position: fixed;
+    right: 15px;
+    top: 10%;
+    z-index: 1;
+  }
+  video {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.how-it-works-page {
+  margin-top:-1rem !important;
+  .language-selector {
+    margin-left:0px !important;
+  }
+  .back-btn2 {
+    margin-left: 0px !important;
+  }
+  .how-it-works-page-header {
+    .h1 {
+      margin-left:5px !important;
+    }
+  }
+}
+
+.searchAction {
+  display: flex;
+  align-items: center;
+}
+
+.searchText{
+  font-size:18px;
+  font-weight: 500;
+}
+
+
+.bread-crumb{
+  a {
+  color: #505A5F !important;
+  }  
+}
+
+.topbar-custom-tqm-container{
+  display: flex;
+  flex-direction: row;
+  span {
+    justify-content: flex-end;
+    .options-card {
+      margin-left:-2rem;
+    }
+    svg{
+      fill:#FFFFFF ;
+    }
+    label {
+      color: #FFFFFF;
+    }
+  }
+}

@@ -1,18 +1,25 @@
 @import "tailwindcss/base";
-
 @import "tailwindcss/components";
-
 @import "tailwindcss/utilities";
-
 @import "react-date-range/dist/styles.css";
 @import "react-date-range/dist/theme/default.css";
-
 @import "./components/card.scss";
 @import "./components/toggleSwitch.scss";
 @import "./components/plusMinus.scss";
 @import "./components/table.scss";
 @import "./pages/employee/index.scss";
 @import "./pages/employee/login.scss";
+@import "./components/notificationComponent.scss";
+@import "./components/ulbHomeCard.scss";
+@import "./components/InboxSearchComposer.scss";
+@import "./pages/employee/overridestyles.scss";
+@import "./pages/employee/tqmHome.scss";
+@import "./pages/employee/tqmPopUp.scss";
+@import "./components/DetailsCard.scss";
+@import "./components/sla.scss";
+@import "./components/Notification.scss";
+@import "./components/tqmHeader.scss";
+@import "./pages/employee/create.scss";
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
@@ -47,6 +54,11 @@
 
 .employee-data-table .row h2 {
   width: 25%;
+}
+.employee-data-table .row {
+  @media (min-width: 1024px) {
+    justify-content: flex-start;
+  }
 }
 
 input::-webkit-calendar-picker-indicator {
@@ -85,8 +97,13 @@ input::-webkit-calendar-picker-indicator {
   border-radius: 4px;
 }
 .fsm-citizen-wrapper {
+  min-height: 100vh;
   .card {
+    padding-bottom: 16px;
     margin-bottom: 24px;
+  }
+  .card-text {
+    margin-bottom: 10px;
   }
 }
 
@@ -149,10 +166,11 @@ input::-webkit-calendar-picker-indicator {
 
 .gender-label-row {
   display: flex;
-  padding-bottom: 8px;
-  margin-bottom: 8px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
   h2 {
     width: 50%;
+    font-weight: bold;
   }
   .value {
     width: 50%;
@@ -172,7 +190,7 @@ input::-webkit-calendar-picker-indicator {
   border-color: #d6d5d4;
   margin-bottom: 16px;
   h2 {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 }
 
@@ -182,6 +200,7 @@ input::-webkit-calendar-picker-indicator {
   border-color: #d6d5d4;
   .key-note-pair {
     display: flex;
+    justify-content: space-between;
     h3 {
       width: 40%;
       word-break: unset;
@@ -219,6 +238,83 @@ input::-webkit-calendar-picker-indicator {
   }
 }
 
-.margin-unset{
+.margin-unset {
   margin: unset !important;
+}
+
+.select-wrap {
+  .options-card {
+    max-height: 200px;
+    overflow-y: scroll;
+  }
+}
+
+.action-bar-wrap-registry {
+  .menu-wrap {
+    position: relative;
+  }
+}
+
+.rating-star-wrap {
+  justify-content: center;
+}
+
+.fsm-citizen-reponse-page {
+  padding: 0;
+  .fsm-response-button-wrap {
+    padding: 12px;
+  }
+  p {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+.check-page-uploaded-images {
+  flex-direction: column;
+  h2 {
+    margin-bottom: 8px;
+  }
+  .value {
+    width: unset !important;
+  }
+  .multi-upload-wrap {
+    margin-bottom: unset;
+  }
+}
+
+.select-pit-wrapper {
+  .toast-success {
+    bottom: 111px;
+  }
+}
+
+.action-bar-wrap {
+  .card-link {
+    margin-top: 4px;
+  }
+}
+
+.employeeCard {
+  .card-section-header {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 639780px) {
+  .toast-success {
+    width: 100%;
+    bottom: 0;
+    border-radius: 0;
+    margin: 0;
+  }
+}
+
+.tqm-document-title {
+  text-align: left;
+  margin-top: 8px;
+  font-weight: 700;
+  line-height: 18.75px;
+  color: #505a5f;
+  font-size: 16px;
 }

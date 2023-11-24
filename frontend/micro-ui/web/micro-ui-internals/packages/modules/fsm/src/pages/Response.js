@@ -306,7 +306,7 @@ const Response = (props) => {
   const isSuccess = !successData ? mutation?.isSuccess : true;
   if (isCitizen) {
     return (
-      <Card>
+      <Card className='fsm-citizen-reponse-page'>
         <BannerPicker
           t={t}
           data={Data}
@@ -346,27 +346,31 @@ const Response = (props) => {
           <SubmitBar onSubmit={handleGeneratePdf()} />
         )}
         {ACTIONS.length === 1 ? (
-          <LinkButton
-            label={t(`ES_COMMON_${ACTIONS[0]}`)}
-            onClick={() => onActionSelect(ACTIONS[0])}
-          />
-        ) : null}
-        <ActionBar>
-          {displayMenu ? (
-            <Menu
-              localeKeyPrefix={'ES_COMMON'}
-              options={ACTIONS}
-              t={t}
-              onSelect={onActionSelect}
-            />
-          ) : null}
-          {ACTIONS.length !== 1 ? (
+          <div className='fsm-response-button-wrap'>
             <SubmitBar
-              label={t('ES_COMMON_TAKE_ACTION')}
-              onSubmit={() => setDisplayMenu(!displayMenu)}
+              label={t(`ES_COMMON_${ACTIONS[0]}`)}
+              onSubmit={() => onActionSelect(ACTIONS[0])}
             />
-          ) : null}
-        </ActionBar>
+          </div>
+        ) : null}
+        {ACTIONS.length === 1 ? null : (
+          <ActionBar>
+            {displayMenu ? (
+              <Menu
+                localeKeyPrefix={'ES_COMMON'}
+                options={ACTIONS}
+                t={t}
+                onSelect={onActionSelect}
+              />
+            ) : null}
+            {ACTIONS.length !== 1 ? (
+              <SubmitBar
+                label={t('ES_COMMON_TAKE_ACTION')}
+                onSubmit={() => setDisplayMenu(!displayMenu)}
+              />
+            ) : null}
+          </ActionBar>
+        )}
 
         {showToast && (
           <Toast
