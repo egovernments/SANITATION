@@ -54,7 +54,7 @@ public class PqmAnomalyFinderController {
 	public ResponseEntity<PqmAnomalyResponse> plainsearch(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
 			@Valid @ModelAttribute PqmAnomalySearchCriteria criteria) {
 		List<PqmAnomaly> pqmAnomalyList = anomalyFinderService.pqmAnomalyPlainSearch(criteria, requestInfoWrapper.getRequestInfo());
-		PqmAnomalyResponse response = PqmAnomalyResponse.builder().pqmAnomaly(pqmAnomalyList).responseInfo(
+		PqmAnomalyResponse response = PqmAnomalyResponse.builder().pqmAnomalys(pqmAnomalyList).responseInfo(
 				responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true))
 				.build();
 		return new ResponseEntity<>(response, HttpStatus.OK);
