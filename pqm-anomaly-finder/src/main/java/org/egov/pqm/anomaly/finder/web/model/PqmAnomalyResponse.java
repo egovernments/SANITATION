@@ -26,7 +26,7 @@ public class PqmAnomalyResponse {
 	  @JsonProperty("responseInfo")
 	  private ResponseInfo responseInfo = null;
 
-	  @JsonProperty("pqmAnomaly")
-	  private List<PqmAnomaly> pqmAnomaly = null;
+	  @JsonProperty("pqmAnomalys")
+	  private List<PqmAnomaly> pqmAnomalys = null;
 
 }
