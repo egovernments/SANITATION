@@ -113,7 +113,7 @@ public class AnomalyFinderQueryBuilder {
 //		if (criteria.getSortOrder() == FSMSearchCriteria.SortOrder.ASC)
 //			builder.append(" ASC ");
 //		else
-			builder.append(" DESC ");
+			builder.append("ORDER BY anomaly.id DESC ");
 
 	}
 
