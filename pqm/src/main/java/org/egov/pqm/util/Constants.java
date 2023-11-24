@@ -77,6 +77,7 @@ public class Constants {
   public static final String STATUS_JSON_KEY = "$.state.applicationStatus";
 
   public static final String UPDATE_RESULT = "UPDATE_RESULT";
+  public static final String SUBMIT_SAMPLE="SUBMIT_SAMPLE";
   public static final String WFSTATUS_SUBMITTED = "SUBMITTED";
   public static final String WFSTATUS_PENDINGRESULTS = "PENDINGRESULTS";
 

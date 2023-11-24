@@ -3,6 +3,7 @@ package org.egov.pqm.service;
 import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
 import static org.egov.pqm.util.Constants.SCHEMA_CODE_TEST_STANDARD;
 import static org.egov.pqm.util.Constants.UPDATE_RESULT;
+import static org.egov.pqm.util.Constants.SUBMIT_SAMPLE;
 import static org.egov.pqm.util.Constants.WFSTATUS_PENDINGRESULTS;
 import static org.egov.pqm.util.Constants.WFSTATUS_SCHEDULED;
 import static org.egov.pqm.util.ErrorConstants.TEST_NOT_IN_DB;
@@ -173,6 +174,7 @@ public class PqmService {
     pqmValidator.validateTestCriteriaAndDocument(testRequest);
     mdmsValidator.validateMdmsData(testRequest);
     enrichmentService.enrichPQMCreateRequestForLabTest(testRequest);
+    qualityCriteriaEvaluation.evaluateQualityCriteriaResult(testRequest);
     workflowIntegrator.callWorkFlow(testRequest);
     repository.save(testRequest);
     return testRequest.getTests().get(0);
@@ -235,6 +237,10 @@ public class PqmService {
       enrichmentService.setTestResultStatus(testRequest);
       enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
     }
+    if (test.getWorkflow().getAction().equals(SUBMIT_SAMPLE)) {
+        // calculate test result
+        qualityCriteriaEvaluation.evaluateQualityCriteriaResult(testRequest);
+      }
     enrichmentService.enrichPQMUpdateRequest(testRequest);// enrich update request
     workflowIntegrator.callWorkFlow(testRequest);// updating workflow during update
     repository.update(testRequest);
