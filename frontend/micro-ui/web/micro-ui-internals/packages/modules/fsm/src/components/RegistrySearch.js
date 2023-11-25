@@ -150,7 +150,7 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
               >
                 {t("ES_FSM_REGISTRY_INBOX_TAB_VEHICLE")}
               </button>
-              <button
+              {/* <button
                 className={selectedTab === "DRIVER" ? "search-tab-head-selected" : "search-tab-head"}
                 onClick={() => {
                   clearSearch({});
@@ -158,7 +158,7 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
                 }}
               >
                 {t("ES_FSM_REGISTRY_INBOX_TAB_DRIVER")}
-              </button>
+              </button> */}
               <button
                 className={selectedTab === "WORKER" ? "search-tab-head-selected" : "search-tab-head"}
                 onClick={() => {

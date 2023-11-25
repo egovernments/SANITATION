@@ -28,6 +28,19 @@ const RegisryInbox = (props) => {
   const [vendors, setVendors] = useState([]);
   const queryClient = useQueryClient();
 
+  const reqCriteriaIndividualUpdate = {
+    url: `/individual/v1/_update`,
+    params: {},
+    body: {
+      tenantId,
+    },
+    config: {
+      enabled: true,
+    },
+  };
+
+  const IndividualUpdateMutation = Digit.Hooks.useCustomAPIMutationHook(reqCriteriaIndividualUpdate);
+
   const {
     data: vendorData,
     isLoading: isVendorLoading,
@@ -37,15 +50,15 @@ const RegisryInbox = (props) => {
   } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: 'name', sortOrder: 'ASC', status: 'ACTIVE' },
-    { enabled: false }
+    { enabled: true }
   );
-
   const {
     isLoading: isUpdateVendorLoading,
     isError: vendorUpdateError,
     data: updateVendorResponse,
     error: updateVendorError,
     mutate: mutateVendor,
+    mutateAsync:mutateVendorAsync
   } = Digit.Hooks.fsm.useVendorUpdate(tenantId);
 
   const {
@@ -170,7 +183,140 @@ const RegisryInbox = (props) => {
     });
   };
 
+  const onSWUpdate = async (row) => {
+    // first we need to call the individual update and put isSystemUserActive to false
+    // then we need to call vendor update and put vendorWorkerStatus as INACTIVE
+    // if both are successfull show a toast
+    // Also if vendorWorkerStatus is INACTIVE && isSystemUserActive is false then vendor update should not be allowed i.e, dropdown should be disabled
+     
+    const individualObject = row?.original
+    const vendor = row?.original?.vendor
+    let vendorObject = {
+      
+    };
+    //untagging this individual
+    if(vendor?.workers) {
+      vendorObject = {
+        ...vendor,
+        workers:vendor?.workers?.map(worker => {
+          if(worker.individualId === individualObject.individualId){
+            return {...worker,vendorWorkerStatus:"INACTIVE"}
+          }else{
+            return worker
+          }
+        })
+      }
+    }
+    delete individualObject.vendor
+    
+    const promises = []
+
+    //push individual update promise
+    promises.push(
+      IndividualUpdateMutation.mutateAsync(
+        {
+          params: {},
+            body: {
+              Individual:{...individualObject,isSystemUserActive:!(individualObject?.isSystemUserActive) }
+            },
+        }
+      )
+    )
+
+    //push vendor update promise
+    if(vendorObject?.workers?.length > 0){
+      promises.push(
+        mutateVendorAsync(
+          {vendor:vendorObject}
+        )
+      )
+    }
+
+    const onSuccess = (res) => {
+      queryClient.invalidateQueries('DSO_SEARCH');
+      props.refetchVendor();
+      props.refetchData();
+      setShowToast({ key: 'SW_WORKER_UPDATE_SUCCESS', action: 'SW_WORKER_UPDATE_SUCCESS' });
+      setTimeout(closeToast, 3000);
+    }
+    const onError = (err) => {
+      setShowToast({ key: 'error', action: 'SW_WORKER_UPDATE_FAIL' });
+      setTimeout(closeToast, 3000);
+    }
+
+    try {
+      await Promise.all(promises);
+      onSuccess();
+    } catch (error) {
+      onError(error);
+    }
+    
+    
+    
+  }
+  const onVenderSelectForSanitationWorker = (row, selectedOption) => {
+    let driverData = row.original;
+    let formDetails = row.original.dsoDetails;
+
+    let existingVendor = driverData?.vendor;
+    let selectedVendor = selectedOption;
+    //if we select the same vendor don't do anything
+    if(selectedVendor?.id === existingVendor?.id){
+      return
+    }
+    delete driverData.vendor;
+    driverData.vendorDriverStatus = 'ACTIVE';
+    if (existingVendor) {
+      const drivers = existingVendor?.workers;
+      drivers.splice(
+        drivers.findIndex((ele) => ele.individualId === driverData.individualId),
+        1
+      );
+      const formData = {
+        vendor: {
+          ...formDetails,
+          drivers: drivers,
+        },
+      };
+    }
+    
+    const formData = {
+      vendor: {
+        ...selectedVendor,
+        workers: selectedVendor?.workers
+          ? [
+              ...selectedVendor.workers,
+              {
+                individualId: driverData?.individualId,
+                vendorWorkerStatus: 'ACTIVE',
+              },
+            ]
+          : [
+              {
+                individualId: driverData?.individualId,
+                vendorWorkerStatus: 'ACTIVE',
+              },
+            ],
+      },
+    };
+
+    mutateVendor(formData, {
+      onError: (error, variables) => {
+        setShowToast({ key: 'error', action: error });
+        setTimeout(closeToast, 5000);
+      },
+      onSuccess: (data, variables) => {
+        setShowToast({ key: 'success', action: 'VENDOR' });
+        queryClient.invalidateQueries('DSO_SEARCH');
+        props.refetchVendor();
+        props.refetchData();
+        setTimeout(closeToast, 3000);
+      },
+    });
+  };
+
   const onVendorDriverSelect = (row, selectedOption) => {
+    
     let driverData = row.original;
     let formDetails = row.original.dsoDetails;
 
@@ -692,12 +838,12 @@ const RegisryInbox = (props) => {
                     <span className='link'>
                       <Link
                         to={
-                          `/${window?.contextPath}/employee/fsm/registry/driver-details/` +
-                          row.original['id']
+                          `/${window?.contextPath}/employee/fsm/registry/sanitation-worker-details/` +
+                          row.original['individualId']
                         }
                       >
                         <div>
-                          {row.original.name}
+                          {row.original.individualId}
                           <br />
                         </div>
                       </Link>
@@ -713,19 +859,7 @@ const RegisryInbox = (props) => {
               Cell: ({ row }) => {
                 return (
                   <div>
-                    <span className='link'>
-                      <Link
-                        to={
-                          `/${window?.contextPath}/employee/fsm/registry/driver-details/` +
-                          row.original['id']
-                        }
-                      >
-                        <div>
-                          {row.original.name}
-                          <br />
-                        </div>
-                      </Link>
-                    </span>
+                    {row?.original?.name?.givenName ? row?.original?.name?.givenName : t("ES_COMMON_NA") }
                   </div>
                 );
               },
@@ -735,38 +869,28 @@ const RegisryInbox = (props) => {
               disableSortBy: true,
               accessor: 'role',
               Cell: ({ row }) => {
+                const functionalRole = row?.original?.additionalFields?.fields?.filter(row => row.key==="FUNCTIONAL_ROLE")?.[0]?.value
                 return (
                   <div>
-                    <span className='link'>
-                      <Link
-                        to={
-                          `/${window?.contextPath}/employee/fsm/registry/driver-details/` +
-                          row.original['id']
-                        }
-                      >
-                        <div>
-                          {row.original.name}
-                          <br />
-                        </div>
-                      </Link>
-                    </span>
+                    {functionalRole ? t(`SW_FUNCTIONAL_ROLE_${functionalRole}`) : t("ES_COMMON_NA") }
                   </div>
                 );
               },
             },
             {
               Header: t('ES_FSM_REGISTRY_INBOX_VENDOR_NAME'),
-              Cell: ({ row }) => {
+              Cell: ({ row }) => { 
                 return (
                   <Dropdown
                     className='fsm-registry-dropdown'
                     selected={row.original.vendor}
                     option={vendors}
-                    select={(value) => onVendorDriverSelect(row, value)}
+                    select={(value) => onVenderSelectForSanitationWorker(row, value)}
                     optionKey='name'
                     t={t}
                     style={{ position: "unset" }}
                     optionCardStyles={{ maxWidth: "14%", maxHeight: "200px" }}
+                    disable={row?.original?.isSystemUserActive ? false : true}
                   />
                 );
               },
@@ -778,8 +902,8 @@ const RegisryInbox = (props) => {
                 return (
                   <ToggleSwitch
                     style={{ display: 'flex', justifyContent: 'left' }}
-                    value={row.original?.status === 'DISABLED' ? false : true}
-                    onChange={() => onDriverUpdate(row)}
+                    value={row?.original?.isSystemUserActive ? true : false}
+                    onChange={() => onSWUpdate(row)}
                     name={`switch-${row.id}`}
                   />
                 );

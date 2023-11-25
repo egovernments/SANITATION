@@ -80,6 +80,7 @@ import useGetDSSAboutJSON from './useGetDSSAboutJSON';
 import useStaticData from './useStaticData';
 import { usePrivacyContext } from './usePrivacyContext';
 import useCustomAPIHook from './useCustomAPIHook';
+import useCustomAPIMutationHook from './useCustomAPIMutationHook.js';
 import useDynamicData from './useDynamicData';
 import useRouteSubscription from './useRouteSubscription';
 import useGenderMDMS from './useGenderMDMS';
@@ -178,6 +179,7 @@ const Hooks = {
   useStaticData,
   useBulkPdfDetails,
   useCustomAPIHook,
+  useCustomAPIMutationHook,
   useRouteSubscription,
   useDynamicData,
   useGenderMDMS,

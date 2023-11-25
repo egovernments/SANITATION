@@ -5,9 +5,25 @@ import { useParams, useHistory, useLocation } from "react-router-dom";
 
 import RegisryInbox from "../../../components/RegistryInbox";
 
+function cleanObject(obj) {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (Array.isArray(obj[key])) {
+        if (obj[key].length === 0) {
+          delete obj[key];
+        }
+      } else if (obj[key] === undefined || obj[key] === null || obj[key] === false || obj[key] === '' || (typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)) {
+        delete obj[key];
+      }
+    }
+  }
+  return obj;
+}
+
 const FSMRegistry = () => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  const tenant = Digit.ULBService.getStateId();
   const [searchParams, setSearchParams] = useState({});
   const [sortParams, setSortParams] = useState([{ id: "createdTime", desc: true }]);
   const [pageOffset, setPageOffset] = useState(0);
@@ -54,10 +70,11 @@ const FSMRegistry = () => {
       : selectedTabs === "WORKER"
       ? Digit.Hooks.fsm.useWorkerSearch({
           tenantId,
-          filters: {
+          details: {
             Individual: {
-              createdFrom: 0,
-              createdTo: 0,
+              roleCodes:["SANITATION_WORKER"],
+              ...searchParams,
+              tenantId
             },
           },
           params: {
@@ -85,6 +102,7 @@ const FSMRegistry = () => {
     },
     { enabled: false }
   );
+  
   const inboxTotalCount = dsoData?.totalCount || 50;
 
   useEffect(() => {
@@ -119,8 +137,8 @@ const FSMRegistry = () => {
     }
     if (dsoData?.driver && selectedTabs === "WORKER") {
       let driverIds = "";
-      dsoData.driver.map((data) => {
-        driverIds += `${data.id},`;
+      dsoData.Individual.map((data) => {
+        driverIds += `${data.individualId},`;
       });
       setDriverIds(driverIds);
       setTableData(dsoData?.driver);
@@ -180,8 +198,8 @@ const FSMRegistry = () => {
         setDriverIds("");
       }
       if (selectedTabs === "WORKER") {
-        const drivers = dsoData?.driver.map((data) => {
-          let vendor = vendorData.find((ele) => ele.dsoDetails?.drivers?.find((driver) => driver.id === data.id));
+        const drivers = dsoData?.Individual?.map((data) => {
+          let vendor = vendorData.find((ele) => ele.dsoDetails?.workers?.find((driver) => driver.individualId === data.individualId));
           if (vendor) {
             data.vendor = vendor.dsoDetails;
           }
@@ -194,6 +212,7 @@ const FSMRegistry = () => {
   }, [vendorData, dsoData]);
 
   const onSearch = (params = {}) => {
+    cleanObject(params)
     setSearchParams({ ...params });
   };
 
@@ -238,15 +257,15 @@ const FSMRegistry = () => {
       ? [
           {
             label: t("ES_FSM_REGISTRY_SEARCH_SW_ID"),
-            name: "id",
+            name: "individualId",
           },
           {
             label: t("ES_FSM_REGISTRY_SEARCH_SW_NAME"),
-            name: "name",
+            name: "individualName",
           },
           {
             label: t("ES_FSM_REGISTRY_SEARCH_SW_NUMBER"),
-            name: "number",
+            name: "mobileNumber",
           },
         ]
       : [
