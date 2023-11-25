@@ -194,9 +194,39 @@ export const FSMService = {
       params: { tenantId },
       auth: true,
     }),
-  updateWorker: ({ details, tenantId }) =>
+  updateWorker: (details, tenantId) =>
     Request({
       url: Urls.fsm.workerUpdate,
+      data: details,
+      useCache: true,
+      userService: true,
+      method: "POST",
+      params: { tenantId },
+      auth: true,
+    }),
+  deleteWorker: (details, tenantId) =>
+    Request({
+      url: Urls.fsm.workerDelete,
+      data: details,
+      useCache: true,
+      userService: true,
+      method: "POST",
+      params: { tenantId },
+      auth: true,
+    }),
+  createPlantUser: (details, tenantId) =>
+    Request({
+      url: Urls.fsm.plantUserCreate,
+      data: details,
+      useCache: true,
+      userService: true,
+      method: "POST",
+      params: { tenantId },
+      auth: true,
+    }),
+  updatePlantUser: (details, tenantId) =>
+    Request({
+      url: Urls.fsm.plantUserUpdate,
       data: details,
       useCache: true,
       userService: true,

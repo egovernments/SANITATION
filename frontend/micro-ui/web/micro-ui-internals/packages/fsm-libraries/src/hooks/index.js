@@ -35,6 +35,10 @@ import useRouteSubscription from "./useRouteSubscription";
 import useWorkerSearch from "./fsm/useWorkerSearch";
 import useWorkerCreate from "./fsm/useWorkerCreate";
 import useWorkerUpdate from "./fsm/useWorkerUpdate";
+import useWorkerDetails from "./fsm/useWorkerDetails";
+import useWorkerDelete from "./fsm/useWorkerDelete";
+import usePlantUserCreate from "./fsm/usePlantUserCreate";
+import usePlantUserUpdate from "./fsm/usePlantUserUpdate";
 
 const fsm = {
   useTenants: useTenantsFSM,
@@ -78,6 +82,10 @@ const fsm = {
   useWorkerSearch,
   useWorkerCreate,
   useWorkerUpdate,
+  useWorkerDetails,
+  useWorkerDelete,
+  usePlantUserCreate,
+  usePlantUserUpdate,
 };
 const Hooks = {
   fsm,

@@ -59,6 +59,9 @@ import Search from "./pages/employee/Search";
 import AddWorker from "./pages/employee/FSMRegistry/Worker/AddWorker";
 import AddWorkerRoles from "./pageComponents/addWorkerRole";
 import SelectEmployeePhoneNumber from "./pageComponents/EmployeePhoneNumber";
+import EditWorker from "./pages/employee/FSMRegistry/Worker/EditWorker";
+import WorkerDetails from "./pages/employee/FSMRegistry/Worker/WorkerDetails";
+import SelectSWEmploymentDetails from "./pageComponents/SelectSWEmploymentDetails";
 
 const FSMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "FSM";
@@ -183,6 +186,9 @@ const componentsToRegister = {
   FSMSearch: Search,
   AddWorkerRoles,
   SelectEmployeePhoneNumber,
+  EditWorker,
+  WorkerDetails,
+  SelectSWEmploymentDetails,
 };
 
 export const initFSMComponents = () => {
