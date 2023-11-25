@@ -214,6 +214,10 @@ public class VendorService {
 			vendorRequest.getVendor().setDrivers(beforeUpdateOrInsertDriver);
 		}
 
+		if (!CollectionUtils.isEmpty(beforeUpdateOrInsertWorker)) {
+			vendorRequest.getVendor().setWorkers(beforeUpdateOrInsertWorker);
+		}
+
 	}
 
 	private void getVehicleDriver(VendorRequest vendorRequest, List<Driver> vendorDriverToBeUpdated,
