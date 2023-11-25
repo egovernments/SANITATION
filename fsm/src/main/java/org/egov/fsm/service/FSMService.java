@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.TimeZone;
 import java.util.function.Function;
@@ -21,6 +20,7 @@ import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
 import org.egov.fsm.billing.models.BillResponse;
 import org.egov.fsm.config.FSMConfiguration;
+import org.egov.fsm.fsmProducer.FSMProducer;
 import org.egov.fsm.repository.FSMRepository;
 import org.egov.fsm.service.notification.NotificationService;
 import org.egov.fsm.util.FSMAuditUtil;
@@ -106,15 +106,21 @@ public class FSMService {
 
 	@Autowired
 	FSMRepository fsmRepository;
+	
+	@Autowired
+	private FSMProducer producer;
 
 	@Autowired
 	private FSMRepository repository;
 
 	@Autowired
 	private NotificationService notificationService;
-
+	
 	@Autowired
 	BillingService billingService;
+	
+	@Autowired
+	FSMInboxService fSMInboxService;
 
 	public FSM create(FSMRequest fsmRequest) {
 		RequestInfo requestInfo = fsmRequest.getRequestInfo();
@@ -133,7 +139,8 @@ public class FSMService {
 				|| tripAmount > 0) {
 			calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
 		}
-
+		
+		fSMInboxService.inboxEvent(fsmRequest);
 		return fsmRequest.getFsm();
 	}
 
@@ -205,9 +212,11 @@ public class FSMService {
 		notificationService.process(fsmRequest, oldFSM);
 
 		repository.update(fsmRequest, workflowService.isStateUpdatable(fsm.getApplicationStatus(), businessService));
-
+		fSMInboxService.inboxEvent( fsmRequest);
 		return fsmRequest.getFsm();
 	}
+
+
 
 	private void callDSORejectCompleteFeedBackPaySend(FSMRequest fsmRequest, Object mdmsData) {
 		if (fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_DSO_REJECT)) {
@@ -357,6 +366,11 @@ public class FSMService {
 		}
 		if (fsmRequest.getWorkflow().getAction().equalsIgnoreCase(FSMConstants.WF_ACTION_UPDATE)) {
 			Double tripAmount = wfIntegrator.getAdditionalDetails(fsmRequest.getFsm().getAdditionalDetails());
+			
+			if (fsmRequest.getFsm().getNoOfTrips() < oldFSM.getNoOfTrips()) {
+				vehicleTripService.ValidatedecreaseTripWhileUpdate(fsmRequest, oldFSM);
+			}
+				
 
 			if (fsmRequest.getFsm().getAdvanceAmount() != null || tripAmount > 0) {
 				calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);

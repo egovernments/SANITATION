@@ -68,37 +68,44 @@ public class UserService {
 		if (owner != null) {
 			userDetailResponse = userExists(owner);
 
-			/*
-			 * # SM-2729 Remove mobile number validation for vehicle creation
-			 * 
-			 * if (userDetailResponse != null &&
-			 * !CollectionUtils.isEmpty(userDetailResponse.getUser())) { owner =
-			 * userDetailResponse.getUser().get(0); Integer count =
-			 * repository.getVehicleCount(vehicleRequest, "ACTIVE");
-			 * 
-			 * for (int i = 0; i < userDetailResponse.getUser().size(); i++) { if (count > 0
-			 * && vehicleRequest.getVehicle().getOwner().getMobileNumber()
-			 * .equals(userDetailResponse.getUser().get(i).getMobileNumber()) &&
-			 * !userDetailResponse.getUser().get(i).getUuid()
-			 * .equals(vehicleRequest.getVehicle().getOwner().getUuid())) {
-			 * 
-			 * throw new CustomException(VehicleErrorConstants.ALREADY_DRIVER_EXIST,
-			 * VehicleErrorConstants.VEHICLE_ERROR_MESSAGE);
-			 * 
-			 * } } }
-			 */
+			if (userDetailResponse != null && !CollectionUtils.isEmpty(userDetailResponse.getUser()) && !isUpdate) {
 
-			if (!isUpdate) {
-				if (userDetailResponse != null && !CollectionUtils.isEmpty(userDetailResponse.getUser())) {
-					owner = userDetailResponse.getUser().get(0);
-				} else
+				Boolean notFoundUser = Boolean.FALSE;
+				for (int j = 0; j < userDetailResponse.getUser().size(); j++) {
+					User user = userDetailResponse.getUser().get(j);
+
+					if ((user.getUserName().equalsIgnoreCase(user.getMobileNumber())
+							&& user.getName().equalsIgnoreCase(owner.getName()))
+							|| user.getName().equalsIgnoreCase(owner.getName())) {
+						// found user with mobilenumber username not same and name as equal to the
+						// applicnat name provided by ui
+						// then consider that user as applicant
+						owner = user;
+						break;
+					} else
+						notFoundUser = Boolean.TRUE;
+
+				}
+				// users exists with mobile number but non of them have the same Name so create new
+				// user
+				if (notFoundUser) {
 					owner = createVehicleOwner(owner, vehicleRequest.getRequestInfo());
+
+				}
+
 			} else {
+				if (!isUpdate) {
+					// User with mobile number itself not found then create new user and consider
+					// the new user as applicant.
+					owner = createVehicleOwner(owner, vehicleRequest.getRequestInfo());
+				} else {
 
-				HashMap<String, String> errorMap = new HashMap<>();
-				updateUserDetails(owner, vehicleRequest.getRequestInfo(), errorMap);
+					HashMap<String, String> errorMap = new HashMap<>();
+					owner = updateUserDetails(owner, vehicleRequest.getRequestInfo(), errorMap);
 
+				}
 			}
+
 			vehicle.setOwner(owner);
 
 		} else {
@@ -154,7 +161,9 @@ public class UserService {
 		addUserDefaultFields(owner.getTenantId(), null, owner);
 		StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserContextPath())
 				.append(config.getUserCreateEndpoint());
+
 		setUserName(owner);
+
 		owner.setType(Constants.CITIZEN);
 		UserDetailResponse userDetailResponse = userCall(new UserRequest(requestInfo, owner), uri);
 		log.debug("owner created --> " + userDetailResponse.getUser().get(0).getUuid());
@@ -186,7 +195,7 @@ public class UserService {
 	 */
 	private void setUserName(User owner) {
 		String uuid = UUID.randomUUID().toString();
-		owner.setUserName(owner.getMobileNumber());
+		owner.setUserName(uuid);
 		owner.setUuid(uuid);
 
 	}
@@ -236,9 +245,7 @@ public class UserService {
 		if (!StringUtils.isEmpty(owner.getMobileNumber())) {
 			ownerSearchRequest.setMobileNumber(owner.getMobileNumber());
 		}
-		if (!StringUtils.isEmpty(owner.getName())) {
-			ownerSearchRequest.setName(owner.getName());
-		}
+	
 		StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
 		return ownerCall(ownerSearchRequest, uri);
 
