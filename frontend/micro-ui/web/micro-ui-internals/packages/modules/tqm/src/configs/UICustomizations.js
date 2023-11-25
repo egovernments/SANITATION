@@ -368,7 +368,7 @@ export const UICustomizations = {
       //materialcodes
       data.body.testSearchCriteria.materialCodes = materialCodes?.map(materialCode => materialCode.code)
       //testType
-      data.body.testSearchCriteria.sourceType = testType?.map(sourceType => sourceType.code)
+      data.body.testSearchCriteria.testType = testType?.map(sourceType => sourceType.code)
       //dataRange //fromDate //toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
       data.body.testSearchCriteria.fromDate = fromDate
@@ -439,7 +439,7 @@ export const UICustomizations = {
       //processcodes
       data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
       //testType
-      data.body.testSearchCriteria.sourceType = testType?.map(sourceType => sourceType.code)
+      data.body.testSearchCriteria.testType = testType?.map(sourceType => sourceType.code)
       //dataRange //fromDate //toDate
       const {fromDate,toDate} = Digit.Utils.tqm.convertDateRangeToEpochObj(dateRange) || {}
       data.body.testSearchCriteria.fromDate = fromDate
@@ -447,6 +447,12 @@ export const UICustomizations = {
 
       //tenantId
       data.body.testSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+
+      //sorting by scheduled date
+    //   if(data.body.pagination){
+    //   data.body.pagination.sortBy = "scheduledDate"
+    //   data.body.pagination.sortOrder = "DESC"
+    // }
 
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)
