@@ -16,6 +16,10 @@ const TqmCard = ({reRoute=true}) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
+  if (!Digit.Utils.tqm.tqmAccess()) {
+    return null;
+  }
+
   const requestCriteria = {
     url: "/inbox/v2/_search",
     body: {

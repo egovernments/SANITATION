@@ -19,6 +19,18 @@ export default {
       fromDate,
       toDate
     }
+  },
+  tqmAccess : () => {
+    const userInfo = Digit.UserService.getUser();
+    const userRoles = userInfo?.info?.roles?.map((roleData) => roleData?.code);
+    const tqmRoles = [
+      "PQM_TP_OPERATOR",
+      "PQM_ADMIN",
+    ];
+  
+    const TQM_ACCESS = userRoles?.filter((role) => tqmRoles?.includes(role));
+  
+    return TQM_ACCESS?.length > 0;
   }
 }
 

@@ -36,7 +36,8 @@ const useCustomMDMS = (tenantId, moduleName, masterDetails = [], config = {},mdm
       changeQueryName:`mdms-v2-dropdowns${mdmsv2?.schemaCode}`,
       body:{
         MdmsCriteria:{
-          tenantId,
+          // tenantId, //changing here to send user's tenantId always whether stateId or city
+          tenantId:Digit.ULBService.getCurrentTenantId(),
           schemaCode:mdmsv2?.schemaCode,
           isActive:true
         }

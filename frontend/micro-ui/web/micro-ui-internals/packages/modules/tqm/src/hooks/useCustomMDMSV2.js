@@ -5,7 +5,8 @@ export const useCustomMDMSV2 = ({ tenantId, schemaCode, select, changeQueryName 
     body: {
       tenantId,
       MdmsCriteria: {
-        tenantId: tenantId,
+        // tenantId, //changing here to send user's tenantId always whether stateId or city
+        tenantId: Digit.ULBService.getCurrentTenantId(),
         filters: filters,
         schemaCode: schemaCode,
         isActive: true
