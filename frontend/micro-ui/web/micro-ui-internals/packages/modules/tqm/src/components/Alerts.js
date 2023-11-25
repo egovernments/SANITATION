@@ -60,7 +60,7 @@ const Alerts = ({ ale }) => {
       <div className='alert-word'>
         <Header styles={{fontSize:"26px"}}>{t("PQM_TEST_ALERTS")}</Header>
       </div>
-      <Card className={'alerts-container1'} style={{ paddingLeft: "0px", paddingRight: "0px", display: "flex", flexDirection: "row" }}>
+      <Card className={'alerts-container1'} style={{ paddingLeft: "0px", paddingRight: "0px", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
         <div className='alerts-container-header alerts-container-item'>
           <div className='kk'>
             <div className='alerts-container-count1'>{ale?.responseData?.data?.[0]?.plots?.[3]?.value}</div>

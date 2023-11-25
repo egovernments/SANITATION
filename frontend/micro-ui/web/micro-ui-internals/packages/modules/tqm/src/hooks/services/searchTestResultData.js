@@ -15,7 +15,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
     },
   });
   const testResponse = response?.tests?.[0];
-
+  console.log("testResponse", testResponse);
   const testcriteraData = testResponse?.testCriteria;
 
   const mdmsCriteriaData = await Digit.CustomService.getResponse({
@@ -86,6 +86,10 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
             value: t(Digit.Utils.locale.getTransformedLocale(`PQM.TestType_${testResponse?.testType}`)) || "N/A",
           },
           {
+            key: t("ES_TQM_LABEL_TEST_TYPE"),
+            value: t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityTestLab_${testResponse?.labAssignedTo}`)) || "N/A",
+          },
+          {
             key: t("ES_TQM_LABEL_TEST_SCHEDULED_ON"),
             value:
               (testResponse?.scheduledDate &&
@@ -93,12 +97,6 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
                   testResponse?.scheduledDate
                 ).getFullYear()}`) ||
               "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_SLA"),
-            isSla: true,
-            isSuccess: Math.sign(sla) === -1 ? false : true,
-            value: sla ? `${sla} ${t("COMMON_DAYS")}` : `0 ${t("COMMON_DAYS")}`,
           },
         ]
       : [
