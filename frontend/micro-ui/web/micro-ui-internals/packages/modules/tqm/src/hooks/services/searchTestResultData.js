@@ -86,7 +86,11 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
             value: t(Digit.Utils.locale.getTransformedLocale(`PQM.TestType_${testResponse?.testType}`)) || "N/A",
           },
           {
-            key: t("ES_TQM_LABEL_TEST_TYPE"),
+            key: t("ES_TQM_LABEL_OUTPUT_TYPE"),
+            value: t(Digit.Utils.locale.getTransformedLocale(`PQM.Material_${testResponse?.materialCode}`)) || "N/A",
+          },
+          {
+            key: t("ES_TQM_LABEL_LAB_NAME"),
             value: t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityTestLab_${testResponse?.labAssignedTo}`)) || "N/A",
           },
           {
@@ -119,6 +123,14 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
           {
             key: t("ES_TQM_LABEL_TEST_TYPE"),
             value: t(Digit.Utils.locale.getTransformedLocale(`PQM.TestType_${testResponse?.testType}`)) || "N/A",
+          },
+          {
+            key: t("ES_TQM_LABEL_OUTPUT_TYPE"),
+            value: t(Digit.Utils.locale.getTransformedLocale(`PQM.Material_${testResponse?.materialCode}`)) || "N/A",
+          },
+          {
+            key: t("ES_TQM_LABEL_LAB_NAME"),
+            value: t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityTestLab_${testResponse?.labAssignedTo}`)) || "N/A",
           },
           {
             key: t("ES_TQM_LABEL_TEST_SCHEDULED_ON"),
