@@ -19,26 +19,45 @@ const makeDefaultValues = (sessionFormData) => {
 
 const AddWorkerRoles = ({ t, config, onSelect, userType, formData }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  const stateId = Digit.ULBService.getStateId();
   const [inactiveWorkerRole, setInactiveWorkerRole] = useState([]);
   const employeeCreateSession = Digit.Hooks.useSessionStorage("NEW_EMPLOYEE_CREATE", {});
   const [sessionFormData, setSessionFormData, clearSessionFormData] = employeeCreateSession;
   const isEdit = window.location.href.includes("edit");
-  const [functionalRole, setfunctionalRole] = useState([{ code: "Driver" }, { code: "Plant Operator" }]);
+  const [functionalRole, setFunctionalRole] = useState([]);
   const [jurisdictions, setjurisdictions] = useState(
     !isEdit && sessionFormData?.Jurisdictions?.length > 0
       ? makeDefaultValues(sessionFormData)
-      : formData?.Jurisdictions || [
-          {
-            id: undefined,
-            key: 1,
-            fn_role: null,
-            sys_role: null,
-            emp_Type: null,
-            licenseNo: null,
-            plant: null,
-          },
-        ]
+      : formData?.Jurisdictions || formData[config.key]?.map((i, index) => ({ ...i, key: index + 1 })) || []
   );
+
+  const { isLoading: ismdms, data: mdmsOptions } = Digit.Hooks.useCustomMDMS(
+    stateId,
+    "FSM",
+    [
+      {
+        name: "SanitationWorkerSkills",
+      },
+      {
+        name: "SanitationWorkerEmployer",
+      },
+      {
+        name: "SanitationWorkerEmploymentType",
+      },
+      {
+        name: "SanitationWorkerFunctionalRoles",
+      },
+    ],
+    {
+      select: (data) => {
+        return data?.FSM;
+      },
+    }
+  );
+
+  useEffect(() => {
+    setFunctionalRole(mdmsOptions?.SanitationWorkerFunctionalRoles);
+  }, [mdmsOptions]);
 
   useEffect(() => {
     const jurisdictionsData = jurisdictions?.map((jurisdiction) => {
@@ -60,10 +79,10 @@ const AddWorkerRoles = ({ t, config, onSelect, userType, formData }) => {
       return res;
     });
 
-    onSelect(
-      config.key,
-      [...jurisdictionsData, ...inactiveWorkerRole].filter((value) => Object.keys(value).length !== 0)
-    );
+      onSelect(
+        config.key,
+        [...jurisdictionsData, ...inactiveWorkerRole].filter((value) => Object.keys(value).length !== 0)
+      );
   }, [jurisdictions]);
 
   const reviseIndexKeys = () => {
@@ -148,9 +167,11 @@ const AddWorkerRoles = ({ t, config, onSelect, userType, formData }) => {
     </div>
   );
 };
+
 function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handleRemoveUnit, index, functionalRole }) {
-  const [Boundary, selectboundary] = useState([]);
   const tenant = Digit.ULBService.getCurrentTenantId();
+  const stateId = Digit.ULBService.getStateId();
+
   const { isLoading: isPlantLoading, data: plant } = Digit.Hooks.tqm.useCustomMDMSV2({
     tenantId: tenant,
     schemaCode: "PQM.Plant",
@@ -160,8 +181,48 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
     },
   });
 
+  const { isLoading: ismdms, data: mdmsOptions } = Digit.Hooks.useCustomMDMS(
+    stateId,
+    "FSM",
+    [
+      {
+        name: "SanitationWorkerSkills",
+      },
+      {
+        name: "SanitationWorkerEmployer",
+      },
+      {
+        name: "SanitationWorkerEmploymentType",
+      },
+      {
+        name: "SanitationWorkerFunctionalRoles",
+      },
+    ],
+    {
+      select: (data) => {
+        return data?.FSM;
+      },
+    }
+  );
+  const matchingMasterData = mdmsOptions?.SanitationWorkerFunctionalRoles.find((role) => role?.code === jurisdiction?.fn_role?.code);
+
+  // Extract allowedSystemRoles from the matching object
+  const allowedSysRoles = matchingMasterData ? matchingMasterData?.allowedSystemRoles : [];
+
+  const [fnRoleSelected, setFnRoleSelected] = useState(mdmsOptions?.SanitationWorkerFunctionalRoles?.allowedSystemRoles);
+
+  const [sysRole, setSysRole] = useState(allowedSysRoles);
+  const [defaultsysRole, setDefaultSysRole] = useState(jurisdiction?.sys_role?.[0]);
+
+  useEffect(() => {
+    if (fnRoleSelected) {
+      setSysRole(fnRoleSelected?.allowedSystemRoles);
+    }
+  }, [fnRoleSelected]);
+
   const selectFunctionalRole = (value) => {
     setjurisdictions((pre) => pre.map((item) => (item.key === jurisdiction.key ? { ...item, fn_role: value } : item)));
+    setFnRoleSelected(value);
   };
 
   const selectEmpType = (value) => {
@@ -222,7 +283,7 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
         {jurisdiction?.fn_role?.code && (
           <>
             {/* plant & license here */}
-            {jurisdiction?.fn_role?.code === "Driver" ? (
+            {jurisdiction?.fn_role?.code === "DRIVER" ? (
               <LabelFieldPair>
                 <CardLabel className="card-label-smaller">
                   {t("FSM_REGISTRY_WORKER_LABEL_LICENSE")}
@@ -230,16 +291,9 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
                 </CardLabel>
                 <div className="field" style={{ display: "flex" }}>
                   <TextInput className="" textInputStyle={{ width: "50%" }} value={jurisdiction?.licenseNo} onChange={selectLicenseNo} disable={false} />
-                  {/* <TextInput
-              key={"input.name"}
-              value={formData && formData[config.key] ? formData[config.key][input?.name] : null}
-              onChange={(e) => setValue(e.target.value, input?.name)}
-              disable={editScreen}
-              {...input.validation}
-            /> */}
                 </div>
               </LabelFieldPair>
-            ) : (
+            ) : jurisdiction?.fn_role?.code === "PLANT_OPERATOR" ? (
               <LabelFieldPair>
                 <CardLabel isMandatory={true} className="card-label-smaller">{`${t("FSM_REGISTRY_LABEL_PLANT")} * `}</CardLabel>
                 <Dropdown
@@ -249,11 +303,11 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
                   isMandatory={true}
                   option={plant}
                   select={selectPlant}
-                  optionKey="uniqueIdentifier"
+                  optionKey={"i18nKey"}
                   t={t}
                 />
               </LabelFieldPair>
-            )}
+            ) : null}
 
             <LabelFieldPair>
               <CardLabel className="card-label-smaller">{t("FSM_REGISTRY_LABEL_EMPLOYMENT")}</CardLabel>
@@ -263,27 +317,12 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
                   onSelect={selectEmpType}
                   style={{ display: "flex", marginBottom: 0 }}
                   innerStyles={{ marginLeft: "10px" }}
-                  options={[{ name: "Fixed" }, { name: "Contractual" }]}
+                  options={mdmsOptions?.SanitationWorkerEmploymentType}
                   optionsKey="name"
                   disabled={false}
                 />
               </div>
             </LabelFieldPair>
-
-            {/* plant name here mdms v2 use api dropdown */}
-            {/* <LabelFieldPair>
-          <CardLabel className="card-label-smaller">{`${t("HR_BOUNDARY_LABEL")} * `}</CardLabel>
-          <Dropdown
-            className="form-field"
-            isMandatory={true}
-            selected={jurisdiction?.boundary}
-            disable={Boundary?.length === 0}
-            option={Boundary}
-            select={selectedboundary}
-            optionKey="i18text"
-            t={t}
-          />
-        </LabelFieldPair> */}
 
             {/* system role here */}
             <LabelFieldPair>
@@ -291,12 +330,12 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
               <div className="form-field">
                 <Dropdown
                   className="form-field"
-                  selected={jurisdiction?.roles}
+                  selected={jurisdiction?.roles || defaultsysRole}
                   disable={false}
                   isMandatory={true}
-                  option={[{ code: "Driver" }, { code: "Plant Operator" }]}
+                  option={sysRole}
                   select={selectrole}
-                  optionKey="code"
+                  optionKey="name"
                   t={t}
                 />
                 {/* <MultiSelectDropdown

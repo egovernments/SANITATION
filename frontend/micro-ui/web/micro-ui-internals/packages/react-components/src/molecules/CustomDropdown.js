@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React from "react";
+import React, { useEffect } from "react";
 import { Loader } from "../atoms/Loader";
 import RadioButtons from "../atoms/RadioButtons";
 import Dropdown from "../atoms/Dropdown";
@@ -125,7 +125,7 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
                       .filter((e) => e)
                   );
             }}
-            selected={props?.value}
+            selected={props?.value || value}
             defaultLabel={t(config?.defaultText) }
             defaultUnit={t(config?.selectedText) || t("TQM_DROPDOWN_SELECTED")}
             config={config}

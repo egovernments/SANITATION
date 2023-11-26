@@ -88,9 +88,9 @@ const SelectEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userTyp
                 <div>
                   {isMobilePresent && (
                     <CardLabelError style={{ width: "100%" }}>
-                      {t("FSM_REGISTRY_WORKER_MOBILE_EXIST_ERROR")}
-                      <Link to={`/${window?.contextPath}/employee/fsm/registry/worker/${checkWorker?.Individual?.individualId}`}>
-                        <ActionLinks>{t("FSM_REGISTRY_WORKER_LINK_VIEW_DETAILS")}</ActionLinks>
+                      {t("FSM_REGISTRY_WORKER_MOBILE_EXIST_ERROR")}{" "}
+                      <Link to={`/${window?.contextPath}/employee/fsm/registry/worker/${checkWorker?.Individual?.[0]?.individualId}`}>
+                        {t("FSM_REGISTRY_WORKER_LINK_VIEW_DETAILS")}
                       </Link>
                     </CardLabelError>
                   )}

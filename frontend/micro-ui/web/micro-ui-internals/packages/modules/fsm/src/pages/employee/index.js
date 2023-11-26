@@ -211,23 +211,21 @@ const EmployeeApp = ({ path, url, userType }) => {
   const BreadCrumbComp = Digit.ComponentRegistryService.getComponent("FsmBreadCrumb");
   const FSMSearch = Digit.ComponentRegistryService.getComponent("FSMSearch");
   const AddWorker = Digit.ComponentRegistryService.getComponent("AddWorker");
+  const EditWorker = Digit.ComponentRegistryService.getComponent("EditWorker");
+  const WorkerDetails = Digit.ComponentRegistryService.getComponent("WorkerDetails");
 
   const locationCheck =
     window.location.href.includes("/employee/fsm/inbox") ||
     window.location.href.includes("/employee/fsm/registry") ||
     window.location.href.includes("/employee/fsm/application-details/");
 
-  const desludgingApplicationCheck =
-    window.location.href.includes("/employee/fsm/new-application") || window.location.href.includes("/employee/fsm/modify-application");
+  const desludgingApplicationCheck = window.location.href.includes("/employee/fsm/new-application") || window.location.href.includes("/employee/fsm/modify-application");
   return (
     <Switch>
       <React.Fragment>
         <div className="ground-container fsm-ground-container">
           {FSTPO ? (
-            <BackButton
-              isCommonPTPropertyScreen={location.pathname.includes("new") ? true : false}
-              getBackPageNumber={location.pathname.includes("new") ? () => -2 : null}
-            >
+            <BackButton isCommonPTPropertyScreen={location.pathname.includes("new") ? true : false} getBackPageNumber={location.pathname.includes("new") ? () => -2 : null}>
               {t("CS_COMMON_BACK")}
             </BackButton>
           ) : (
@@ -240,10 +238,7 @@ const EmployeeApp = ({ path, url, userType }) => {
           <PrivateRoute path={`${path}/fstp-inbox`} component={() => <FstpInbox parentRoute={path} />} />
           <PrivateRoute path={`${path}/new-application`} component={() => <NewApplication parentUrl={url} />} />
           <PrivateRoute path={`${path}/modify-application/:id`} component={() => <EditApplication />} />
-          <PrivateRoute
-            path={`${path}/application-details/:id`}
-            component={() => <EmployeeApplicationDetails parentRoute={path} userType="EMPLOYEE" />}
-          />
+          <PrivateRoute path={`${path}/application-details/:id`} component={() => <EmployeeApplicationDetails parentRoute={path} userType="EMPLOYEE" />} />
           <PrivateRoute path={`${path}/fstp-operator-details/:id`} component={FstpOperatorDetails} />
           <PrivateRoute path={`${path}/response`} component={(props) => <Response {...props} parentRoute={path} />} />
           <PrivateRoute path={`${path}/application-audit/:id`} component={() => <ApplicationAudit parentRoute={path} />} />
@@ -267,6 +262,8 @@ const EmployeeApp = ({ path, url, userType }) => {
           <PrivateRoute exact path={`${path}/fstp/new-vehicle-entry`} component={FstpOperatorDetails} />
           <PrivateRoute exact path={`${path}/fstp/new-vehicle-entry/:id`} component={FstpOperatorDetails} />
           <PrivateRoute path={`${path}/registry/new-worker`} component={() => <AddWorker parentRoute={path} />} />
+          <PrivateRoute path={`${path}/registry/edit-worker`} component={() => <EditWorker parentRoute={path} />} />
+          <PrivateRoute path={`${path}/registry/worker-details`} component={() => <WorkerDetails parentRoute={path} />} />
         </div>
       </React.Fragment>
     </Switch>

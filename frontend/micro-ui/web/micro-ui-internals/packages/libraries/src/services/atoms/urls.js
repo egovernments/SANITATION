@@ -1,6 +1,6 @@
 const Urls = {
-  mdms_v2:{
-    search:"/mdms-v2/v2/_search"
+  mdms_v2: {
+    search: "/mdms-v2/v2/_search",
   },
   MDMS: `/egov-mdms-service/v1/_search`,
   WorkFlow: `/egov-workflow-v2/egov-wf/businessservice/_search`,
@@ -57,6 +57,9 @@ const Urls = {
     workerSearch: "/individual/v1/_search",
     workerCreate: "/individual/v1/_create",
     workerUpdate: "/individual/v1/_update",
+    workerDelete: "/individual/v1/_delete",
+    plantUserCreate: "/pqm-service/plant/user/v1/_create",
+    plantUserUpdate: "/pqm-service/plant/user/v1/_update",
   },
 
   payment: {

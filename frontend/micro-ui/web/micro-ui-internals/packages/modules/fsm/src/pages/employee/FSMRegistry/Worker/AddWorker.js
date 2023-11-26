@@ -13,13 +13,69 @@ const AddWorker = ({ parentUrl, heading }) => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const [canSubmit, setSubmitValve] = useState(false);
-  const Config = WorkerConfig({ t });
-
+  const [checkRoleField, setCheckRoleField] = useState(false);
+  const [Config, setConfig] = useState(WorkerConfig({ t }));
+  const [skillsOption, setSkillsOption] = useState([]);
+  const [employer, setEmployer] = useState([]);
   const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useWorkerCreate(tenantId);
+  const {
+    isLoading: isVendorUpdateLoading,
+    isError: isvendorUpdateError,
+    data: vendorUpdateResponse,
+    error: vendorUpdateError,
+    mutate: vendorMutate,
+  } = Digit.Hooks.fsm.useVendorUpdate(tenantId);
+
+  const { isLoading: isPlantUserLoading, isError: isPlantUserError, data: plantUserResponse, error: PlantUserError, mutate: PlantUserMutate } = Digit.Hooks.fsm.usePlantUserCreate(
+    tenantId
+  );
+
+  const { isLoading: ismdms, data: mdmsOptions } = Digit.Hooks.useCustomMDMS(
+    stateId,
+    "FSM",
+    [
+      {
+        name: "SanitationWorkerSkills",
+      },
+      {
+        name: "SanitationWorkerEmployer",
+      },
+      {
+        name: "SanitationWorkerEmploymentType",
+      },
+      {
+        name: "SanitationWorkerFunctionalRoles",
+      },
+    ],
+    {
+      select: (data) => {
+        return data?.FSM;
+      },
+    }
+  );
+
+  useEffect(() => {
+    setSkillsOption(mdmsOptions?.SanitationWorkerSkills);
+    setEmployer(mdmsOptions?.SanitationWorkerEmployer);
+  }, [mdmsOptions, ismdms]);
+
+  useEffect(() => {
+    setConfig(WorkerConfig({ t, skillsOption, employer }));
+  }, [skillsOption, employer]);
 
   const defaultValues = {};
 
   const onFormValueChange = (setValue, formData) => {
+    for (let i = 0; i < formData?.AddWorkerRoles?.length; i++) {
+      let key = formData?.AddWorkerRoles[i];
+      if (!(key?.emp_Type && key?.fn_role && key?.sys_role && ((key?.licenseNo && key?.fn_role?.code === "DRIVER") || (key?.fn_role?.code === "PLANT_OPERATOR" && key?.plant)))) {
+        setCheckRoleField(false);
+        break;
+      } else {
+        setCheckRoleField(true);
+      }
+    }
+
     if (
       !isNaN(formData?.SelectEmployeePhoneNumber?.mobileNumber?.length) &&
       formData?.SelectEmployeePhoneNumber?.mobileNumber?.length === 10 &&
@@ -29,8 +85,8 @@ const AddWorker = ({ parentUrl, heading }) => {
       formData?.address?.city &&
       formData?.address?.locality &&
       formData?.skills &&
-      formData?.employer &&
-      formData?.AddWorkerRoles?.length > 0
+      formData?.employementDetails?.employer &&
+      (!formData?.AddWorkerRoles || (formData?.AddWorkerRoles?.length > 0 && checkRoleField))
     ) {
       setSubmitValve(true);
     } else {
@@ -52,16 +108,16 @@ const AddWorker = ({ parentUrl, heading }) => {
     const city = data?.address?.city?.name;
     const locality = data?.address?.locality?.code;
     const doorNo = data?.doorNo;
+    const street = data?.street;
     const landmark = data?.landmark;
     const skills = data?.skills?.map((i) => {
       return { type: i?.name, level: "UNSKILLED" };
     });
-    const employer = data?.employer?.code;
-    const vendor = data?.vendor;
+    const employer = data?.employementDetails?.employer?.code;
+    const vendor = data?.employementDetails?.vendor;
     const roleDetails = data?.AddWorkerRoles;
     const restructuredData = [];
-
-    roleDetails.forEach((item) => {
+    roleDetails?.forEach((item) => {
       const restructuredItem = {};
       restructuredItem["FUNCTIONAL_ROLE"] = item.fn_role.code;
       restructuredItem["EMPLOYMENT_TYPE"] = item.emp_Type.name;
@@ -70,7 +126,30 @@ const AddWorker = ({ parentUrl, heading }) => {
       restructuredData.push(restructuredItem);
     });
 
-    const driverLicenses = roleDetails?.filter((entry) => entry.fn_role && entry.fn_role.code === "Driver" && entry.licenseNo).map((entry) => entry.licenseNo);
+    const driverLicenses = roleDetails?.filter((entry) => entry.fn_role && entry.fn_role.code === "DRIVER" && entry.licenseNo).map((entry) => entry.licenseNo);
+    const roleDetailsArray = [];
+
+    roleDetails?.forEach((item, index) => {
+      // Extracting functional role information
+      const fnRoleKey = `FUNCTIONAL_ROLE_${index + 1}`;
+      const fnRoleValue = item.fn_role.code;
+
+      // Extracting employment type information
+      const empTypeKey = `EMPLOYMENT_TYPE_${index + 1}`;
+      const empTypeValue = item.emp_Type.name.toUpperCase();
+
+      // Pushing the extracted information to the output array
+      roleDetailsArray.push({ key: fnRoleKey, value: fnRoleValue });
+      roleDetailsArray.push({ key: empTypeKey, value: empTypeValue });
+    });
+
+    // Adding the count of functional roles
+    if (roleDetails) {
+      roleDetailsArray.push({ key: "FUNCTIONAL_ROLE_COUNT", value: `${roleDetails?.length < 10 ? "0" : ""}${roleDetails?.length.toString()}` });
+    }
+
+    // Adding the employer information (assuming it's a constant value like "PRIVATE_VENDOR")
+    roleDetailsArray.push({ key: "EMPLOYER", value: employer });
 
     const formData = {
       Individual: {
@@ -86,26 +165,40 @@ const AddWorker = ({ parentUrl, heading }) => {
             tenantId: tenantId,
             pincode: pincode,
             city: tenantId,
-            street: null,
+            street: street,
             doorNo: doorNo,
             locality: {
               code: locality,
             },
             landmark: landmark,
+            type: "PERMANENT",
           },
         ],
-        identifiers: driverLicenses
-          ? [
-              {
-                identifierType: "DRIVING_LICENSE_NUMBER",
-                identifierId: driverLicenses?.[0],
-              },
-            ]
-          : null,
+        identifiers:
+          driverLicenses?.length > 0
+            ? [
+                {
+                  identifierType: "DRIVING_LICENSE_NUMBER",
+                  identifierId: driverLicenses?.[0],
+                },
+              ]
+            : null,
         skills: skills,
         photo: photograph,
         additionalFields: {
-          fields: restructuredData,
+          // fields: restructuredData,
+          fields: roleDetailsArray,
+        },
+        isSystemUser: false,
+        userDetails: {
+          username: name,
+          tenantId: tenantId,
+          roles: roleDetails
+            ? roleDetails?.map((entry) => {
+                return { code: entry.sys_role.code, tenantId };
+              })
+            : [{ code: "SANITATION_WORKER", tenantId }],
+          type: roleDetails?.map((entry) => entry.sys_role.code)?.includes("citizen") ? "CITIZEN" : "EMPLOYEE",
         },
       },
     };
@@ -115,10 +208,44 @@ const AddWorker = ({ parentUrl, heading }) => {
         setShowToast({ key: "error", action: error });
         setTimeout(closeToast, 5000);
       },
-      onSuccess: (data, variables) => {
+      onSuccess: async (data, variables) => {
         setShowToast({ key: "success", action: "ADD_WORKER" });
-        setTimeout(closeToast, 5000);
         queryClient.invalidateQueries("FSM_WORKER_SEARCH");
+        if (roleDetails?.some((entry) => entry.plant)) {
+          try {
+            const PlantCode = roleDetails
+              ?.map((entry) => ({
+                tenantId: tenantId,
+                plantCode: entry?.plant?.code,
+                individualId: data?.Individual?.individualId,
+                isActive: true,
+              }))
+              .filter((i) => i?.plantCode);
+            const plantFormData = {
+              plantUsers: PlantCode,
+            };
+            const plantresponse = await PlantUserMutate(plantFormData);
+          } catch (err) {
+            console.error("Plant user create", err);
+            setShowToast({ key: "error", action: err });
+          }
+        }
+        if (employer !== "CITIZEN" && vendor) {
+          try {
+            const vendorData = {
+              vendor: {
+                ...vendor,
+                workers: vendor.workers
+                  ? [...vendor.workers, { individualId: data?.Individual?.individualId, vendorWorkerStatus: "ACTIVE" }]
+                  : [{ individualId: data?.Individual?.individualId, vendorWorkerStatus: "ACTIVE" }],
+              },
+            };
+            const response = await vendorMutate(vendorData);
+          } catch (updateError) {
+            console.error("Error updating data:", updateError);
+            setShowToast({ key: "error", action: updateError });
+          }
+        }
         setTimeout(() => {
           closeToast();
           history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=WORKER`);

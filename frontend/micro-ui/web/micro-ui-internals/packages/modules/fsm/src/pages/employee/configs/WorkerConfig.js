@@ -2,7 +2,7 @@ import React from "react";
 import { DatePicker, Dropdown } from "@egovernments/digit-ui-react-components";
 import { convertEpochToDate } from "../../../utils";
 
-const WorkerConfig = ({ t, disabled = false }) => {
+const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] }) => {
   return [
     {
       head: "ES_FSM_REGISTRY_PERSONAL_DETAILS",
@@ -155,7 +155,7 @@ const WorkerConfig = ({ t, disabled = false }) => {
             optionsKey: "name",
             error: "ES_TQM_REQUIRED",
             required: true,
-            options: [{ name: "Driver" }, { name: "Lab Operations" }],
+            options: skillsOption,
             //   mdmsv2: {
             //     schemaCode: "PQM.Plant",
             //   }
@@ -167,45 +167,43 @@ const WorkerConfig = ({ t, disabled = false }) => {
       head: "FSM_REGISTRY_WORKER_EMPLOYEE_HEADING",
       body: [
         {
+          type: "component",
           isMandatory: true,
-          key: "employer",
-          type: "radio",
-          label: "Employer",
-          disable: false,
-          populators: {
-            name: "FSM_REGISTRY_WORKER_EMPLOYER",
-            optionsKey: "name",
-            error: "FSM_REGISTRY_WORKER_EMPLOYER_ERROR",
-            required: true,
-            options: [
-              {
-                code: "ULB",
-                name: "ULB",
-              },
-              {
-                code: "private",
-                name: "Private Vendor",
-              },
-            ],
-          },
+          component: "SelectSWEmploymentDetails",
+          key: "employementDetails",
+          withoutLabel: true,
         },
-        {
-          label: "FSM_REGISTRY_WORKER_SELECT_VENDOR",
-          type: "apidropdown",
-          isMandatory: false,
-          disable: false,
-          populators: {
-            optionsCustomStyle: {
-              top: "2.3rem",
-            },
-            name: "vendor",
-            optionsKey: "name",
-            allowMultiSelect: false,
-            masterName: "commonUiConfig",
-            moduleName: "SearchVendor",
-            customfn: "populateReqCriteria",
-          },
-        },
+        // {
+        //   isMandatory: true,
+        //   key: "employer",
+        //   type: "radio",
+        //   label: "Employer",
+        //   disable: false,
+        //   populators: {
+        //     name: "FSM_REGISTRY_WORKER_EMPLOYER",
+        //     optionsKey: "name",
+        //     error: "FSM_REGISTRY_WORKER_EMPLOYER_ERROR",
+        //     required: true,
+        //     options: employer,
+        //   },
+        // },
+        // {
+        //   label: "FSM_REGISTRY_WORKER_SELECT_VENDOR",
+        //   type: "apidropdown",
+        //   isMandatory: false,
+        //   disable: false,
+        //   populators: {
+        //     optionsCustomStyle: {
+        //       top: "2.3rem",
+        //     },
+        //     name: "vendor",
+        //     optionsKey: "name",
+        //     allowMultiSelect: false,
+        //     masterName: "commonUiConfig",
+        //     moduleName: "SearchVendor",
+        //     customfn: "populateReqCriteria",
+        //   },
+        // },
       ],
     },
     {

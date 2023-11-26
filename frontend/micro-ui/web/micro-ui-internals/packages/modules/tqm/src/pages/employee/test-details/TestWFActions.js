@@ -33,13 +33,15 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
   };
 
   useEffect(() => {
-    switch (actionState) {
-      case "SCHEDULED":
-        return setConfig(updateConfig({ t, testLabs }));
-      case "PENDINGRESULTS":
-        return setConfig(testResultsConfig({ t, testDetailsData, testCriteriaData }));
-      default:
-        return setConfig(null);
+    if (testLabs || (testDetailsData && testCriteriaData)) {
+      switch (actionState) {
+        case "SCHEDULED":
+          return setConfig(updateConfig({ t, testLabs }));
+        case "PENDINGRESULTS":
+          return setConfig(testResultsConfig({ t, testDetailsData, testCriteriaData }));
+        default:
+          return setConfig(null);
+      }
     }
   }, [actionState, testLabs, istestLabLoading, istestCriteriaLoading, testCriteriaData, testDetailsData, isDataLoading, WFData]);
 
