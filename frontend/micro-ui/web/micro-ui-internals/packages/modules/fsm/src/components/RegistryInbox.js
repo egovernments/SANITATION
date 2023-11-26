@@ -460,7 +460,7 @@ const RegisryInbox = (props) => {
         return history.push(
           `/${window?.contextPath}/employee/fsm/registry/new-driver`
         );
-        case 'WORKER':
+      case 'WORKER':
         return history.push(
           `/${window?.contextPath}/employee/fsm/registry/new-worker`
         );
