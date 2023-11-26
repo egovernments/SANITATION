@@ -5,11 +5,20 @@ import { useTranslation } from "react-i18next";
 const TqmAdminNotification = () => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  const userInfo = Digit.UserService.getUser();
+  const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
+
+  if(!userRoles.includes("PQM_ADMIN")){
+    return null
+  }
 
   const requestCriteria = {
     url: "/egov-user-event/v1/events/_search",
     params: {tenantId},
-    body: {}
+    body: {},
+    config:{
+      enabled: userRoles.includes("PQM_ADMIN") ? true : false
+    }
   };
 
   const { isLoading, data} = Digit.Hooks.useCustomAPIHook(requestCriteria);
