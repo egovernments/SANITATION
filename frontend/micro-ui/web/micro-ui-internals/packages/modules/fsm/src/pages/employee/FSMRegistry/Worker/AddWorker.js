@@ -86,8 +86,7 @@ const AddWorker = ({ parentUrl, heading }) => {
       formData?.address?.locality &&
       formData?.skills &&
       formData?.employementDetails?.employer &&
-      formData?.AddWorkerRoles?.length > 0 &&
-      checkRoleField
+      (!formData?.AddWorkerRoles || (formData?.AddWorkerRoles?.length > 0 && checkRoleField))
     ) {
       setSubmitValve(true);
     } else {
@@ -118,8 +117,7 @@ const AddWorker = ({ parentUrl, heading }) => {
     const vendor = data?.employementDetails?.vendor;
     const roleDetails = data?.AddWorkerRoles;
     const restructuredData = [];
-
-    roleDetails.forEach((item) => {
+    roleDetails?.forEach((item) => {
       const restructuredItem = {};
       restructuredItem["FUNCTIONAL_ROLE"] = item.fn_role.code;
       restructuredItem["EMPLOYMENT_TYPE"] = item.emp_Type.name;
@@ -131,7 +129,7 @@ const AddWorker = ({ parentUrl, heading }) => {
     const driverLicenses = roleDetails?.filter((entry) => entry.fn_role && entry.fn_role.code === "DRIVER" && entry.licenseNo).map((entry) => entry.licenseNo);
     const roleDetailsArray = [];
 
-    roleDetails.forEach((item, index) => {
+    roleDetails?.forEach((item, index) => {
       // Extracting functional role information
       const fnRoleKey = `FUNCTIONAL_ROLE_${index + 1}`;
       const fnRoleValue = item.fn_role.code;
@@ -146,7 +144,9 @@ const AddWorker = ({ parentUrl, heading }) => {
     });
 
     // Adding the count of functional roles
-    roleDetailsArray.push({ key: "FUNCTIONAL_ROLE_COUNT", value: `${roleDetails.length < 10 ? "0" : ""}${roleDetails.length.toString()}` });
+    if (roleDetails) {
+      roleDetailsArray.push({ key: "FUNCTIONAL_ROLE_COUNT", value: `${roleDetails?.length < 10 ? "0" : ""}${roleDetails?.length.toString()}` });
+    }
 
     // Adding the employer information (assuming it's a constant value like "PRIVATE_VENDOR")
     roleDetailsArray.push({ key: "EMPLOYER", value: employer });
@@ -175,7 +175,7 @@ const AddWorker = ({ parentUrl, heading }) => {
           },
         ],
         identifiers:
-          driverLicenses.length > 0
+          driverLicenses?.length > 0
             ? [
                 {
                   identifierType: "DRIVING_LICENSE_NUMBER",
@@ -193,9 +193,11 @@ const AddWorker = ({ parentUrl, heading }) => {
         userDetails: {
           username: name,
           tenantId: tenantId,
-          roles: roleDetails?.map((entry) => {
-            return { code: entry.sys_role.code, tenantId };
-          }),
+          roles: roleDetails
+            ? roleDetails?.map((entry) => {
+                return { code: entry.sys_role.code, tenantId };
+              })
+            : [{ code: "SANITATION_WORKER", tenantId }],
           type: roleDetails?.map((entry) => entry.sys_role.code)?.includes("citizen") ? "CITIZEN" : "EMPLOYEE",
         },
       },
@@ -209,7 +211,7 @@ const AddWorker = ({ parentUrl, heading }) => {
       onSuccess: async (data, variables) => {
         setShowToast({ key: "success", action: "ADD_WORKER" });
         queryClient.invalidateQueries("FSM_WORKER_SEARCH");
-        if (roleDetails.some((entry) => entry.plant)) {
+        if (roleDetails?.some((entry) => entry.plant)) {
           try {
             const PlantCode = roleDetails
               ?.map((entry) => ({

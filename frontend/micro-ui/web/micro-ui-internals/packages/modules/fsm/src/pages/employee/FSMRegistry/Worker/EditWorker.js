@@ -103,40 +103,42 @@ const EditWorker = ({ parentUrl, heading }) => {
 
   function transformData(rdata) {
     const data = rdata?.additionalFields?.fields;
-    const functionalRoleCount = parseInt(data.find((item) => item.key === "FUNCTIONAL_ROLE_COUNT").value, 10);
+    const functionalRoleCount = parseInt(data?.find((item) => item?.key === "FUNCTIONAL_ROLE_COUNT")?.value, 10) || null;
     const resultArray = [];
     const allowedRoles = mdmsOptions?.SanitationWorkerFunctionalRoles;
     const resproles = rdata?.userDetails?.roles;
-    for (let i = 1; i <= functionalRoleCount; i++) {
-      const functionalRoleKey = `FUNCTIONAL_ROLE_${i}`;
-      const functionalRoleValue = data.find((item) => item.key === functionalRoleKey).value;
+    if (functionalRoleCount) {
+      for (let i = 1; i <= functionalRoleCount; i++) {
+        const functionalRoleKey = `FUNCTIONAL_ROLE_${i}`;
+        const functionalRoleValue = data.find((item) => item.key === functionalRoleKey).value;
 
-      const transformedData = {
-        emp_Type: {
-          code: data.find((item) => item.key === `EMPLOYMENT_TYPE_${i}`).value,
-        },
-        fn_role: {
-          code: functionalRoleValue,
-        },
-      };
-
-      if (functionalRoleValue === "DRIVER") {
-        transformedData.licenseNo = rdata?.identifiers?.[0]?.identifierId;
-      }
-
-      if (functionalRoleValue === "PLANT_OPERATOR") {
-        transformedData.plant = {
-          ...plantUserData?.plantUsers?.[0],
-          name: plantUserData?.plantUsers?.[0]?.plantCode,
-          i18nKey: `PQM_PLANT_${plantUserData?.plantUsers?.[0]?.plantCode}`,
+        const transformedData = {
+          emp_Type: {
+            code: data.find((item) => item.key === `EMPLOYMENT_TYPE_${i}`).value,
+          },
+          fn_role: {
+            code: functionalRoleValue,
+          },
         };
-      }
 
-      const tempRoles = allowedRoles?.find((i) => i.code === functionalRoleValue)?.allowedSystemRoles;
-      const filterCodes = resproles.map((item) => item.code);
-      const filteredArray = tempRoles.filter((item) => filterCodes.includes(item.code));
-      transformedData.sys_role = filteredArray;
-      resultArray.push(transformedData);
+        if (functionalRoleValue === "DRIVER") {
+          transformedData.licenseNo = rdata?.identifiers?.[0]?.identifierId;
+        }
+
+        if (functionalRoleValue === "PLANT_OPERATOR") {
+          transformedData.plant = {
+            ...plantUserData?.plantUsers?.[0],
+            name: plantUserData?.plantUsers?.[0]?.plantCode,
+            i18nKey: `PQM_PLANT_${plantUserData?.plantUsers?.[0]?.plantCode}`,
+          };
+        }
+
+        const tempRoles = allowedRoles?.find((i) => i.code === functionalRoleValue)?.allowedSystemRoles;
+        const filterCodes = resproles.map((item) => item.code);
+        const filteredArray = tempRoles.filter((item) => filterCodes.includes(item.code));
+        transformedData.sys_role = filteredArray;
+        resultArray.push(transformedData);
+      }
     }
 
     return resultArray;
