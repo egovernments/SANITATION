@@ -15,7 +15,6 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
     },
   });
   const testResponse = response?.tests?.[0];
-  console.log("testResponse", testResponse);
   const testcriteraData = testResponse?.testCriteria;
 
   const mdmsCriteriaData = await Digit.CustomService.getResponse({
