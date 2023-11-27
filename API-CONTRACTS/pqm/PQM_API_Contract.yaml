@@ -1,0 +1,574 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Process Quality Monitor Service
+  description: The PQM services APIs are helps in create, update and search for quality monitoring tests and includes business logic such as Workflows
+paths:
+  /pqm/test/v1/_create:
+    post:
+      tags:
+        - PQM Service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestRequest'
+      responses:
+        '202':
+          description: Accepted create test request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TestResponse'
+        '400':
+          description: Invalid input.
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
+
+  /pqm/test/v1/_update:
+    post:
+      tags:
+        - PQM Service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestRequest'
+      responses:
+        '202':
+          description: Accepted update test request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TestResponse'
+        '400':
+          description: Invalid input.
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
+
+  /pqm/test/v1/_search:
+    post:
+      tags:
+        - PQM Service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestSearchRequest'
+      responses:
+        '200':
+          description: Search test response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TestResponse'
+        '400':
+          description: Invalid search parameters
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
+
+  /plant/user/v1/_create:
+    post:
+      tags:
+        - Plant User Mapping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlantUserRequest'
+      responses:
+        '202':
+          description: Accepted create test request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PlantUserResponse'
+        '400':
+          description: Invalid input.
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
+
+  /plant/user/v1/_update:
+    post:
+      tags:
+        - Plant User Mapping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlantUserRequest'
+      responses:
+        '202':
+          description: Accepted update test request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PlantUserResponse'
+        '400':
+          description: Invalid input.
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
+
+  /plant/user/v1/_search:
+    post:
+      tags:
+        - Plant User Mapping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlantUserSearchRequest'
+      responses:
+        '200':
+          description: Search test response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PlantUserResponse'
+        '400':
+          description: Invalid search parameters
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
+
+
+components:
+  schemas:
+    Test:
+      title: All data required for a quality test
+      description: Quality monitoring test details
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the test
+          readOnly: true
+          type: string
+          minLength: 2
+          maxLength: 64
+        tenantId:
+          description: Tenant Identifier
+          example: pb.amritsar
+          type: string
+          minLength: 2
+          maxLength: 1000
+        plantCode:
+          description: Unique identifier of the plant from MDMS data
+          example: FSTP_PLANT, WATER_TREATMENT_PLANT
+          type: string
+          minLength: 2
+          maxLength: 250
+        processCode:
+          description: Unique identifier of the process from MDMS data
+          example: WATER_TREATMENT, FSTP
+          type: string
+          minLength: 2
+          maxLength: 250
+        stageCode:
+          description: Unique identifier of the stage from MDMS data
+          example: WT_FILTRATION, FST_DISINFECTION
+          type: string
+          minLength: 2
+          maxLength: 250
+        materialCode:
+          description: Unique identifier of the material from MDMS data
+          example: WATER, SALT, ALUMINUM, CHLORINE, OXYGEN
+          type: string
+          minLength: 2
+          maxLength: 250
+        referenceType:
+          description: Type of test
+          example: LAB
+          type: string
+          readOnly: true
+          minLength: 2
+          maxLength: 32
+          enum:
+            - LAB
+            - IOT
+        referenceId:
+          description: Identifier of the device/lab generating this data. Correlates with referenceType.
+          example: LAB001, IOT_MACHINE_001
+          type: string
+          readOnly: true
+          minLength: 2
+          maxLength: 250
+        measurements:
+          description: Object to capture one or more individual quality criterion with results for a test
+          type: array
+          items:
+            $ref: '#/components/schemas/Measurement'
+        result:
+          description: The summary result status of this quality monitoring test, which gets calculated based on individual quality criterion result status
+          type: string
+          readOnly: true
+          minLength: 2
+          maxLength: 32
+          enum:
+            - PASS
+            - FAIL
+            - PENDING
+        wfStatus:
+          description: workflow status for the test
+          type: string
+          readOnly: true
+          minLength: 2
+          maxLength: 64
+        scheduledDate:
+          description: Date when this test should be submitted to the lab
+          type: string
+          readOnly: true
+          minLength: 2
+          maxLength: 64
+        isActive:
+          type: boolean
+        documents:
+          description: Reference to documents related to the test results that have been attached via file upload
+          type: array
+          items:
+            $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/Document'
+        additionalDetails:
+          description: Json object to capture any extra information which is not accommodated by model
+          type: object
+        auditDetails:
+          type: object
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/AuditDetails'
+            - description: Collection of audit related fields used by most models
+              readOnly: true
+        workflow:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/Workflow'
+      required:
+        - tenantId
+        - plantCode
+        - processCode
+        - stageCode
+        - materialCode
+        - testCriteria
+
+    Measurement:
+      title: QualityCriteria
+      description: Object to capture results for a quality criteria from MDMS data.
+      type: object
+      properties:
+        id:
+          description: Unique identifier of this measurement
+          type: string
+          minLength: 2
+          maxLength: 64
+          readOnly: true
+        code:
+          description: The unique identifier of a quality criteria from MDMS data.
+          example: PHGRT7, OXYGENGTR6, CONDUCTIVITYLST2250 etc..
+          type: string
+          minLength: 2
+          maxLength: 250
+        value:
+          description: Value measured for the criteria
+          type: number
+        result:
+          description: The result status of the individual quality criterial evaluated with respect to benchmark rules and standard values from MDMS data.
+          type: string
+          readOnly: true
+          minLength: 2
+          maxLength: 32
+          enum:
+            - PASS
+            - FAIL
+            - PENDING
+        isActive:
+          type: boolean
+          default: true
+        additionalDetails:
+          description: Json object to capture any extra information which is not accommodated by model
+          type: object
+        auditDetails:
+          type: object
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/AuditDetails'
+            - description: Collection of audit related fields used by most models
+              readOnly: true
+
+      required:
+        - code
+        - value
+
+    PlantUser:
+      title: PlantUser
+      description: Plant mapped with a user
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the test
+          readOnly: true
+          type: string
+          minLength: 2
+          maxLength: 64
+        tenantId:
+          description: Tenant Identifier
+          example: pb.amritsar
+          type: string
+          minLength: 2
+          maxLength: 1000
+        plantCode:
+          description: Unique identifier of the plant from MDMS data
+          example: FSTP_PLANT, WATER_TREATMENT_PLANT
+          type: string
+          minLength: 2
+          maxLength: 250
+        individualId:
+          description: Unique identifier of the individual from Individual service
+          type: string
+          minLength: 2
+          maxLength: 250
+        additionalDetails:
+          description: Json object to capture any extra information which is not accommodated by model
+          type: object
+        auditDetails:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/AuditDetails'
+        isActive:
+          type: boolean
+      required:
+        - tenantId
+        - plantCode
+        - individualId
+
+    TestRequest:
+      title: TestRequest
+      type: object
+      properties:
+        requestInfo:
+          type: object
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/RequestInfo'
+            - description: RequestInfo should be used to carry meta information about the requests to the server as described in the fields below. All eGov APIs will use requestinfo as a part of the request body to carry this meta information. Some of this information will be returned back from the server as part of the ResponseInfo in the response body to ensure correlation.
+        tests:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Test'
+            - description: Test request for create and update
+
+      required:
+        - requestInfo
+        - tests
+
+    TestResponse:
+      title: TestResponse
+      type: object
+      properties:
+        responseInfo:
+          type: object
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ResponseInfo'
+            - description: ResponseInfo should be used to carry metadata information about the response from the server. apiId, ver and msgId in ResponseInfo should always correspond to the same values in respective request's RequestInfo.
+              readOnly: true
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/Test'
+        pagination:
+          type: object
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/Pagination'
+            - description: Pagination details
+
+    TestSearchCriteria:
+      title: TestSearchCriteria
+      description: Test search attributes
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            minLength: 2
+            maxLength: 64
+        tenantId:
+          description: Unique tenant of the system
+          example: tenantA
+          type: string
+          minLength: 2
+          maxLength: 1000
+        plantCodes:
+          description: list of plant codes
+          type: array
+          items:
+            type: string
+            description: unique identifiers of the plants from MDMS data
+            example: FSTP_PLANT, WATER_TREATMENT_PLANT, etc..
+            minLength: 2
+            maxLength: 250
+        processCodes:
+          description: list of process codes
+          type: array
+          items:
+            description: Unique identifier of the process from MDMS data
+            example: WATER_TREATMENT, FSTP, etc..
+            type: string
+            minLength: 2
+            maxLength: 250
+        stageCodes:
+          description: list of stage codes
+          type: array
+          items:
+            description: Unique identifier of the stage from MDMS data
+            example: WT_FILTRATION, FST_DISINFECTION, etc..
+            type: string
+            minLength: 2
+            maxLength: 250
+        materialCodes:
+          description: list of material codes
+          type: array
+          items:
+            description: Unique identifier of the material from MDMS data
+            example: WATER, SALT, ALUMINUM, CHLORINE, OXYGEN, etc..
+            type: string
+            minLength: 2
+            maxLength: 250
+        deviceCodes:
+          description: list of device codes
+          type: array
+          items:
+            description: Unique identifier of the device from MDMS data
+            example: PH_READER_PL001, TEMP_READER_PL002, CONDUCTIVITY_RECORDER_PL009, etc..
+            type: string
+            minLength: 2
+            maxLength: 250
+        wfStatus:
+          description: status of the test
+          example: SCHEDULED, PENDING_FOR_RESULTS, RESULTS_SUBMITTED
+          type: string
+          minLength: 2
+          maxLength: 32
+        status:
+          description: status of the results
+          example: PASS, FAIL
+          type: string
+          minLength: 2
+          maxLength: 32
+          enum:
+            - PASS
+            - FAIL
+            - PENDING
+        testType:
+          description: type of test
+          example: IOT, LAB
+          type: string
+          minLength: 2
+          maxLength: 64
+        fromDate:
+          description: from date of test scheduled
+          type: integer
+          format: int64
+        toDate:
+          description: to date of test scheduled
+          type: integer
+          format: int64
+
+    TestSearchRequest:
+      type: object
+      properties:
+        requestInfo:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/RequestInfo'
+        testSearchCriteria:
+          $ref: '#/components/schemas/TestSearchCriteria'
+        pagination:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/Pagination'
+      required:
+        - requestInfo
+        - testSearchCriteria
+        - pagination
+
+    PlantUserRequest:
+      title: PlantUserRequest
+      type: object
+      properties:
+        requestInfo:
+          type: object
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/RequestInfo'
+            - description: RequestInfo should be used to carry meta information about the requests to the server as described in the fields below. All eGov APIs will use requestinfo as a part of the request body to carry this meta information. Some of this information will be returned back from the server as part of the ResponseInfo in the response body to ensure correlation.
+        plantUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlantUser'
+
+      required:
+        - requestInfo
+        - tests
+
+    PlantUserResponse:
+      title: PlantUserResponse
+      type: object
+      properties:
+        responseInfo:
+          type: object
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ResponseInfo'
+            - description: ResponseInfo should be used to carry metadata information about the response from the server. apiId, ver and msgId in ResponseInfo should always correspond to the same values in respective request's RequestInfo.
+              readOnly: true
+        plantUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlantUser'
+        pagination:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/Pagination'
+
+
+    PlantUserSearchCriteria:
+      title: PlantUserSearchCriteria
+      description: Plant user search attributes
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            minLength: 2
+            maxLength: 64
+        tenantId:
+          description: Unique tenant of the system
+          example: tenantA
+          type: string
+          minLength: 2
+          maxLength: 1000
+        plantCodes:
+          description: list of plant codes
+          type: array
+          items:
+            type: string
+            description: unique identifiers of the plants from MDMS data
+            example: FSTP_PLANT, WATER_TREATMENT_PLANT, etc..
+            minLength: 2
+            maxLength: 250
+        individualIds:
+          description: list of individualIds
+          type: array
+          items:
+            description: Unique identifier of the individual from individual registry
+            type: string
+            minLength: 2
+
+    PlantUserSearchRequest:
+      type: object
+      properties:
+        requestInfo:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/RequestInfo'
+        plantUserSearchCriteria:
+          $ref: '#/components/schemas/PlantUserSearchCriteria'
+        pagination:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/Pagination'
+      required:
+        - requestInfo
+        - plantUserSearchCriteria
+        - pagination
