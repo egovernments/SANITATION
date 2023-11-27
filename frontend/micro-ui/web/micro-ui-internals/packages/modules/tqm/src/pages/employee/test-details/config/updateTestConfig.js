@@ -1,4 +1,5 @@
 export const updateConfig = ({ t, testLabs }) => {
+  debugger
   return [
     {
       head: t("ES_TQM_SELECT_SAMPLE_TO_LAB_LABEL"),
@@ -14,7 +15,7 @@ export const updateConfig = ({ t, testLabs }) => {
             optionsKey: "i18nKey",
             error: t("ES_TQM_SELECT_LAB_LABEL_ERROR"),
             required: true,
-            options: testLabs,
+            options: testLabs?.length >=0 ? testLabs:[],
             optionsCustomStyle: { marginTop: "40px" },
           },
         },

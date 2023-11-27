@@ -38,7 +38,9 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
         case "SCHEDULED":
           return setConfig(updateConfig({ t, testLabs }));
         case "PENDINGRESULTS":
-          return setConfig(testResultsConfig({ t, testDetailsData, testCriteriaData }));
+          if(testDetailsData && testCriteriaData)
+            return setConfig(testResultsConfig({ t, testDetailsData, testCriteriaData }));
+          return setConfig(null);
         default:
           return setConfig(null);
       }
@@ -64,8 +66,11 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
     setshowPopUp(null);
   };
 
-  if (istestCriteriaLoading || isDataLoading || istestLabLoading) {
+  if (istestCriteriaLoading || isDataLoading || istestLabLoading ) {
     return <Loader />;
+  }
+  if(!config) {
+    return <Loader />
   }
 
   return (
