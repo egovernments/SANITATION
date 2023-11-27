@@ -1,5 +1,4 @@
 export const updateConfig = ({ t, testLabs }) => {
-  debugger
   return [
     {
       head: t("ES_TQM_SELECT_SAMPLE_TO_LAB_LABEL"),
