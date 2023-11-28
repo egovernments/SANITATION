@@ -92,7 +92,7 @@ public class UserIndividualMigrationUtil {
 
             if(!existingindividualList.isEmpty())
             {
-                log.error("Individual already exists with the ownerId ->"+ owner_id);
+                log.error("Individual already exists with the ownerId -> "+ owner_id);
                 continue;
             }
 
@@ -105,6 +105,7 @@ public class UserIndividualMigrationUtil {
 
             String decryptedName = decryptedValues.get("name");
             String decryptedMobileNumber = decryptedValues.get("mobilenumber");
+            log.info("decryptedMobileNumber -> "+ decryptedMobileNumber);
 
             Individual individual = Individual.builder().tenantId(tenant_id).name(Name.builder().givenName(decryptedName).build())
                     .mobileNumber(decryptedMobileNumber).dateOfBirth(javaDate).gender(getGender(numericGender))
