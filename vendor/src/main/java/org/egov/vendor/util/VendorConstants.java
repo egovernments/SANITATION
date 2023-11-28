@@ -70,5 +70,21 @@ public class VendorConstants {
 	public static final String SKILL_DRIVER = "DRIVER";
 	public static final String SKILL_LEVEL_UNSKILLED = "Unskilled";
 
+	//Functional Roles
+
+	public static final String FUNCTIONAL_ROLE = "FUNCTIONAL_ROLE";
+	public static final String FUNCTIONAL_ROLE_DRIVER = "DRIVER";
+
+	//System Roles
+	public static final String SYSTEM_ROLE_CODE_SANITATION_WORKER = "SANITATION_WORKER";
+	public static final String SYSTEM_ROLE_NAME_SANITATION_WORKER = "Sanitation Worker";
+	public static final String SYSTEM_ROLE_CODE_FSM_DRIVER = "FSM_DRIVER";
+	public static final String SYSTEM_ROLE_NAME_FSM_DRIVER = "FSM_DRIVER";
+
+	//Identifiers
+
+	public static final String DRIVING_LICENSE_NUMBER_IDENTIFIER = "DRIVING_LICENSE_NUMBER";
+
+
 
 }
