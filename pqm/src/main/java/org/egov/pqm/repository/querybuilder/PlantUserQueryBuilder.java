@@ -78,17 +78,19 @@ public class PlantUserQueryBuilder {
         int offset = serviceConfiguration.getDefaultOffset();
         String finalQuery = PAGINATION_WRAPPER.replace("{}", query);
 
-        if (pagination.getLimit() != null && pagination.getLimit() <= serviceConfiguration.getMaxSearchLimit())
+        if (pagination != null && pagination.getLimit() != null && pagination.getLimit() <= serviceConfiguration.getMaxSearchLimit())
             limit = pagination.getLimit();
 
-        if (pagination.getLimit() != null && pagination.getLimit() > serviceConfiguration.getMaxSearchLimit()) {
+        if (pagination != null && pagination.getLimit() != null && pagination.getLimit() > serviceConfiguration.getMaxSearchLimit()) {
             limit = serviceConfiguration.getMaxSearchLimit();
         }
 
-        if (pagination.getOffset() != null) offset = pagination.getOffset();
+        if (pagination != null && pagination.getOffset() != null) offset = pagination.getOffset();
 
         StringBuilder orderQuery = new StringBuilder();
-        addOrderByClause(orderQuery, pagination);
+        if (pagination != null) {
+        	addOrderByClause(orderQuery, pagination);
+        }
         finalQuery = finalQuery.replace("{order_by}", orderQuery.toString());
 
         if (limit == -1) {

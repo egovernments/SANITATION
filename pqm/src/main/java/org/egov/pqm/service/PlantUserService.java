@@ -25,14 +25,14 @@ public class PlantUserService {
   private EnrichmentService enrichmentService;
 
   public List<PlantUser> create(PlantUserRequest plantUserRequest) {
-	plantUserValidator.validateCreateRequest(plantUserRequest);
+	plantUserValidator.validatePlantUserMappingRequest(plantUserRequest);
 	plantUserValidator.validatePlantMappingExists(plantUserRequest);
     enrichmentService.enrichCreatePlanUserRequest(plantUserRequest);
     return plantUserRepository.save(plantUserRequest);
   }
 
   public List<PlantUser> update(PlantUserRequest plantUserRequest) {
-	plantUserValidator.validateCreateRequest(plantUserRequest);
+	plantUserValidator.validatePlantUserMappingRequest(plantUserRequest);
 	plantUserValidator.validatePlantMappingExists(plantUserRequest);
     enrichmentService.enrichUpdatePlanUserRequest(plantUserRequest);
     return plantUserRepository.update(plantUserRequest);

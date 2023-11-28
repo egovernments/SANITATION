@@ -7,13 +7,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.egov.pqm.repository.ServiceRequestRepository;
-import org.egov.pqm.web.model.user.UserDetailResponse;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import digit.models.coremodels.UserDetailResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
