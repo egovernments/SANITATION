@@ -114,17 +114,6 @@ public class PlantUserValidator {
 		}
 
 	}
-  public void validateUpdateRequest(PlantUserRequest plantUserRequest){
-    /*if (Objects.isNull(plantUserRequest.getPlantUsers()) || CollectionUtils.isEmpty(
-        plantUserRequest.getPlantUsers())) {
-      throw Error.mandatory_field_missing.getBuilder(PlantUserRequest.class.getName(),
-          PlantUser.class.getName()).build();
-    }
-
-    plantUserRequest.getPlantUsers().forEach(
-        plantUser -> mdmsValidator.validateIfMasterPresent(plantUserRequest.getRequestInfo(),
-            plantUser.getTenantId(), "", plantUser.getPlantCode()));*/
-  }
   
   public UserDetailResponse userExists(PlantUserRequest plantUserRequest) {
 	  List<PlantUser> plantUsers=plantUserRequest.getPlantUsers();
