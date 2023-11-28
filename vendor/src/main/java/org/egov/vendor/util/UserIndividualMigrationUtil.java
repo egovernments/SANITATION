@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
-import org.egov.common.contract.request.Role;
 
+import org.egov.common.models.core.Role;
 import org.egov.tracer.model.CustomException;
 import org.egov.tracer.model.ServiceCallException;
 import org.egov.vendor.config.VendorConfiguration;
@@ -57,6 +57,7 @@ public class UserIndividualMigrationUtil {
 
             String driverId = (String) driver.get("id");
             String owner_id = (String) driver.get("owner_id");
+            String licenseNumber = (String) driver.get("licensenumber");
             String tenant_id = (String) driver.get("tenantid");
 
             //fetching user details for a driverId
@@ -86,8 +87,8 @@ public class UserIndividualMigrationUtil {
             Date javaDate = new Date(sqlTimestamp.getDate());
 
             //validating whether individual already exists with the mobile number
-            String individualSearchQuery = "Select * from individual where mobilenumber = ''"+mobileNumber;
-            List<Map<String,Object>> existingindividualList  = jdbcTemplate.queryForList(userDetailsQuery);
+            String individualSearchQuery = "Select * from individual where mobilenumber = '"+mobileNumber+"';";
+            List<Map<String,Object>> existingindividualList  = jdbcTemplate.queryForList(individualSearchQuery);
 
             if(!existingindividualList.isEmpty())
             {
@@ -110,6 +111,11 @@ public class UserIndividualMigrationUtil {
                     .mobileNumber(decryptedMobileNumber).dateOfBirth(javaDate).gender(getGender(numericGender)).isSystemUser(Boolean.FALSE).build();
 
             addDriverRelatedSkills(individual);
+            addDriverRelatedAdditionalFields(individual);
+            addDriverRelatedUserDetails(individual, decryptedMobileNumber);
+
+            if(licenseNumber!=null && !licenseNumber.isEmpty())
+                addDriverRelatedIdentifiers(individual,licenseNumber);
 
             IndividualRequest createIndividual = createIndividual(new IndividualRequest(requestInfo, individual));
             log.info("Successfully created individual with Individual Id = "+createIndividual.getIndividual().getIndividualId());
@@ -197,6 +203,52 @@ public class UserIndividualMigrationUtil {
         individual.addSkillsItem(skill);
     }
 
+    /**
+     * adds driver related additional fields to individual object
+     * @param individual
+     */
+    private void addDriverRelatedAdditionalFields(Individual individual)
+    {
+        List<Field> fieldList = new ArrayList<>();
+        fieldList.add(Field.builder().key(FUNCTIONAL_ROLE).value(FUNCTIONAL_ROLE_DRIVER).build());
+        AdditionalFields additionalFields = AdditionalFields.builder().fields(fieldList).build();
+        individual.setAdditionalFields(additionalFields);
+    }
+
+    /**
+     * adds driver related user details to individual object
+     * @param individual
+     */
+    private void addDriverRelatedUserDetails(Individual individual, String username)
+    {
+        String tenantId = individual.getTenantId();
+
+        Role sanitationWorkerRole = Role.builder().code(SYSTEM_ROLE_CODE_SANITATION_WORKER).name(SYSTEM_ROLE_NAME_SANITATION_WORKER).tenantId(tenantId).build();
+        Role driverRole = Role.builder().code(SYSTEM_ROLE_CODE_FSM_DRIVER).name(SYSTEM_ROLE_NAME_FSM_DRIVER).tenantId(tenantId).build();
+        List<Role> roleList = new ArrayList<>(Arrays.asList(sanitationWorkerRole, driverRole));
+
+        UserDetails userDetails = UserDetails.builder().username(username).roles(roleList)
+                .tenantId(tenantId).build();
+        individual.setUserDetails(userDetails);
+
+    }
+
+    /**
+     * adds driver related identifiers to individual object
+     * @param individual
+     */
+    private void addDriverRelatedIdentifiers(Individual individual, String licenseNumber) {
+
+        Identifier licenseNumberIdentifier = Identifier.builder().identifierType(DRIVING_LICENSE_NUMBER_IDENTIFIER).identifierId(licenseNumber).build();
+        List<Identifier> identifierList = new ArrayList<>(Collections.singletonList(licenseNumberIdentifier));
+        individual.setIdentifiers(identifierList);
+    }
+
+//    "identifiers": [
+//    {
+//        "identifierType": "DRIVING_LICENSE_NUMBER",
+//            "identifierId": "12312312312333"
+//    }
     /**
      *
      * @param numericGender
