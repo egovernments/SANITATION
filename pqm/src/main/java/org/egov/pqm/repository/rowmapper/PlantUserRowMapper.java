@@ -43,7 +43,7 @@ public class PlantUserRowMapper implements ResultSetExtractor<List<PlantUser>> {
                 plantUserMap.put(id, PlantUser.builder()
                         .id(id).tenantId(resultSet.getString("tenantId"))
                         .plantCode(resultSet.getString("plantCode"))
-                        .individualId(resultSet.getString("individualId"))
+                        .plantOperatorUuid(resultSet.getString("plantOperatorUuid"))
                         .isActive(resultSet.getBoolean("isActive"))
                         .additionalDetails(getAdditionalDetail("additionaldetails", resultSet, mapper))
                         .auditDetails(getAuditDetails(resultSet))

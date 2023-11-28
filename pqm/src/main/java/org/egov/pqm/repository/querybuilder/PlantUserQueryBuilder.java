@@ -55,11 +55,11 @@ public class PlantUserQueryBuilder {
             addToPreparedStatement(preparedStmtList, plantCodes);
         }
 
-        List<String> individualIds = plantUserSearchCriteria.getIndividualIds();
-        if (!CollectionUtils.isEmpty(individualIds)) {
+        List<String> plantOperatorUuids = plantUserSearchCriteria.getPlantOperatorUuids();
+        if (!CollectionUtils.isEmpty(plantOperatorUuids)) {
             addToWhereClause(preparedStmtList, queryBuilder);
-            queryBuilder.append(" plant_user.individualId IN (").append(addParamsToQuery(individualIds)).append(")");
-            addToPreparedStatement(preparedStmtList, individualIds);
+            queryBuilder.append(" plant_user.plantOperatorUuid IN (").append(addParamsToQuery(plantOperatorUuids)).append(")");
+            addToPreparedStatement(preparedStmtList, plantOperatorUuids);
         }
 
         return addPaginationWrapper(queryBuilder.toString(), preparedStmtList, plantUserSearchRequest.getPagination());
@@ -117,7 +117,7 @@ public class PlantUserQueryBuilder {
             queryBuilder.append(" ORDER BY plant_user.id ");
         } else if (pagination.getSortBy() == SortBy.plantCode) {
             queryBuilder.append(" ORDER BY plant_user.plantCode ");
-        } else if (pagination.getSortBy() == SortBy.individualId) {
+        } else if (pagination.getSortBy() == SortBy.plantOperatorUuid) {
             queryBuilder.append(" ORDER BY plant_user.individualId ");
         } else if (pagination.getSortBy() == SortBy.createdTime) {
             queryBuilder.append(" ORDER BY plant_user.createdtime ");
