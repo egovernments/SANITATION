@@ -11,6 +11,7 @@ import org.egov.common.contract.request.Role;
 import org.egov.tracer.model.CustomException;
 import org.egov.tracer.model.ServiceCallException;
 import org.egov.vendor.config.VendorConfiguration;
+import org.egov.vendor.repository.ServiceRequestRepository;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,16 +24,15 @@ import org.egov.common.models.individual.*;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
+
+import static org.egov.vendor.util.VendorConstants.*;
 
 @Component
 @Slf4j
 public class UserIndividualMigrationUtil {
-
-//    @Autowired
-//    private Configuration config;
-//    @Autowired
-//    private ServiceRequestRepository restRepo;
 
     @Autowired
     private VendorConfiguration config;
@@ -41,15 +41,12 @@ public class UserIndividualMigrationUtil {
     @Autowired
     private ObjectMapper mapper;
     @Autowired
-    private RestTemplate restTemplate;
+    private ServiceRequestRepository serviceRequestRepository;
+
 
     @Transactional
     public void migrate(RequestInfo requestInfo) {
         log.info("Starting migration");
-
-        //fetch driver details
-        //fetch data from user tables
-        //insert into individual table
 
 
         String driverDetailsQuery = "SELECT * from eg_driver;";
@@ -58,28 +55,17 @@ public class UserIndividualMigrationUtil {
         log.info("Fetched Driver details");
         for (Map<String,Object> driver : driverDetails) {
 
-            String individualUuid = (String) driver.get("id");
+            String driverId = (String) driver.get("id");
             String owner_id = (String) driver.get("owner_id");
             String tenant_id = (String) driver.get("tenantid");
-            if (tenant_id.contains("."))
-                tenant_id = tenant_id.split("\\.")[0];
 
-//            Map<String, String> encryptRequestMap = new HashMap<>();
-//            encryptRequestMap.put("contact_mobile_number", contact_mobile_number);
-//            encryptRequestMap.put("tenant_id", tenant_id);
-//            log.info("Calling for encryption");
-//            Map<String, String> encryptedValues = encryptionDecryptionUtil(encryptRequestMap, true);
-//            String encryptedMobileNumber = encryptedValues.get("contact_mobile_number");
-//
-//            log.info("Encrypted response :: " + encryptedMobileNumber);
+            //fetching user details for a driverId
             String userDetailsQuery =  "SELECT userdata.title, userdata.salutation, userdata.dob, userdata.locale, userdata.username, userdata" +
                     ".password, userdata.pwdexpirydate,  userdata.mobilenumber, userdata.altcontactnumber, userdata.emailid, userdata.createddate, userdata" +
                     ".lastmodifieddate,  userdata.createdby, userdata.lastmodifiedby, userdata.active, userdata.name, userdata.gender, userdata.pan, userdata.aadhaarnumber, userdata" +
                     ".type,  userdata.version, userdata.guardian, userdata.guardianrelation, userdata.signature, userdata.accountlocked, userdata.accountlockeddate, userdata" +
                     ".bloodgroup, userdata.photo, userdata.identificationmark,  userdata.tenantid, userdata.id, userdata.uuid, userdata.alternatemobilenumber, ur.role_code as role_code, ur.role_tenantid as role_tenantid \n" +
                     "\tFROM eg_user userdata LEFT OUTER JOIN eg_userrole_v1 ur ON userdata.id = ur.user_id AND userdata.tenantid = ur.user_tenantid WHERE userdata.uuid = '"+owner_id+"' AND userdata.type = 'CITIZEN';";
-
-            log.info("Fetching user details");
 
             List<Map<String,Object>> userDetails = jdbcTemplate.queryForList(userDetailsQuery);
 
@@ -93,57 +79,52 @@ public class UserIndividualMigrationUtil {
             Map<String, String> decrypt = new HashMap<>();
 
             String userName = (String) userDetail.get("username");
-
             String mobileNumber = (String) userDetail.get("mobilenumber");
-            String emailId = (String) userDetail.get("emailid");
-            Timestamp sqlTimestamp = (Timestamp) userDetail.get("dob");
-
-            // Convert SQL Timestamp to Java Date
-            Date javaDate = new Date(sqlTimestamp.getTime());
-            String dob = (String) userDetail.get("dob");
-            Boolean isSystemUserActive = (Boolean) userDetail.get("active");
             String name = (String) userDetail.get("name");
-            String type = (String) userDetail.get("type");
-            String tenantId = (String) userDetail.get("tenantid");
-            Long userId = (Long) userDetail.get("id");
-            String userUuid = (String) userDetail.get("uuid");
-            log.info("Generating user roles");
-            Role role = populateRole(userDetail);
-            log.info("Generated user roles");
+            Integer numericGender = (Integer) userDetail.get("gender");
+            Timestamp sqlTimestamp = (Timestamp) userDetail.get("dob");
+            Date javaDate = new Date(sqlTimestamp.getDate());
+
+            //validating whether individual already exists with the mobile number
+            String individualSearchQuery = "Select * from individual where mobilenumber = ''"+mobileNumber;
+            List<Map<String,Object>> existingindividualList  = jdbcTemplate.queryForList(userDetailsQuery);
+
+            if(!existingindividualList.isEmpty())
+            {
+                log.error("Individual already exists with the given mobile number");
+                continue;
+            }
+
+
+            //decrypting encrypted fields
             decrypt.put("username", userName);
             decrypt.put("mobilenumber", mobileNumber);
-            decrypt.put("emailid", emailId);
             decrypt.put("name", name);
             log.info("Calling for decryption");
             Map<String, String> decryptedValues = encryptionDecryptionUtil(decrypt, false);
 
-            String decryptedUsername = decryptedValues.get("username");
+            String decryptedName = decryptedValues.get("name");
             String decryptedMobileNumber = decryptedValues.get("mobilenumber");
 
-            List<Role> roles = Collections.singletonList(role);
-            PGobject roleJson = getPGObject(roles);
-            String lastModifiedBy = requestInfo.getUserInfo().getUuid();
+            Individual individual = Individual.builder().tenantId(tenant_id).name(Name.builder().givenName(decryptedName).build())
+                    .mobileNumber(decryptedMobileNumber).dateOfBirth(javaDate).gender(getGender(numericGender)).isSystemUser(Boolean.FALSE).build();
 
-            Long lastModifiedTime = System.currentTimeMillis();
-            String individualInsertQuery = null;
+            addDriverRelatedSkills(individual);
 
-            Individual individual = Individual.builder().tenantId(tenantId).name(Name.builder().givenName(name).build())
-                    .dateOfBirth(javaDate).mobileNumber(decryptedMobileNumber).build();
+            IndividualRequest createIndividual = createIndividual(new IndividualRequest(requestInfo, individual));
+            log.info("Successfully created individual with Individual Id = "+createIndividual.getIndividual().getIndividualId());
+
+            String vendorIDQuery = "SELECT vendor_id FROM eg_vendor_driver WHERE driver_id = ?";
+            String vendorId =  jdbcTemplate.queryForObject(vendorIDQuery, String.class, driverId);
+
+            //insert into vendor-sanitation worker mapping table
+            String insertQuery = "INSERT INTO eg_vendor_sanitation_worker (vendor_id, individual_id, vendor_sw_status) VALUES (?, ?, ?)";
+            jdbcTemplate.update(insertQuery, vendorId, createIndividual.getIndividual().getIndividualId(), "ACTIVE");
 
         }
         log.info("Ending migration....");
     }
-    private Role populateRole(Map<String, Object> userDetail)  {
-        String code = (String) userDetail.get("role_code");
-        if (code == null) {
-            return null;
-        }
-        return Role.builder()
-                .tenantId((String) userDetail.get("role_tenantid"))
-                .name("Organization admin")
-                .code(code)
-                .build();
-    }
+
     private Map<String, String> encryptionDecryptionUtil(Map<String, String> encryptionDecryptionMap, Boolean isEncryption) {
         JsonNode request = null;
         StringBuilder uri = new StringBuilder();
@@ -171,7 +152,7 @@ public class UserIndividualMigrationUtil {
                     .put("username",encryptionDecryptionMap.get("username"));
             requestMap = mapper.convertValue(request,Map.class);
         }
-        Object response = fetchResult(uri, requestMap);
+        Object response = serviceRequestRepository.fetchResult(uri, requestMap);
         log.info("Got response from encryption service");
         JsonNode responseMap = mapper.valueToTree(response);
         JsonNode encryptedOrDecryptedValue = null;
@@ -184,41 +165,65 @@ public class UserIndividualMigrationUtil {
         log.info("Successfully mapped encryption service");
         return encryptedOrDecryptedMap;
     }
-    public Object fetchResult(StringBuilder uri, Object request) {
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        Object response = null;
-        try {
-            response = restTemplate.postForObject(uri.toString(), request, Object.class);
-        } catch (HttpClientErrorException e) {
-            log.error("External Service threw an Exception: ", e);
-            throw new ServiceCallException(e.getResponseBodyAsString());
-        } catch (Exception e) {
-            log.error("Exception while fetching from searcher: ", e);
-        }
-        return response;
-    }
 
-    public PGobject getPGObject(Object role) {
-        String value = null;
-        try {
-            value = mapper.writeValueAsString(role);
-        } catch (JsonProcessingException e) {
-            throw new CustomException();
-        }
-
-        PGobject json = new PGobject();
-        json.setType("jsonb");
-        try {
-            json.setValue(value);
-        } catch (SQLException e) {
-            throw new CustomException("", "");
-        }
-        return json;
-    }
-
-    private void addVendorRelatedSkills(Individual individual)
+    /**
+     * creates individual
+     * @param individualRequest
+     */
+    public IndividualRequest createIndividual(IndividualRequest individualRequest)
     {
+        StringBuilder uri = new StringBuilder(config.getIndividualHost() + config.getIndividualCreateEndpoint());
+        IndividualRequest individual=null;
+        try {
+            Object resp = serviceRequestRepository.fetchResult(uri, individualRequest);
+            individual = mapper.convertValue(resp,IndividualRequest.class);
+        }
+        catch (Exception e)
+        {
+            throw new CustomException("UNABLE TO CREATE INDIVIUAL", " Unable to create individual with id "+String.format("{Workflow:%s}", individualRequest.getIndividual().getIndividualId()));
+        }
 
+        return individual;
+    }
+
+
+    /**
+     * adds driver related skills to individual object
+     * @param individual
+     */
+    private void addDriverRelatedSkills(Individual individual)
+    {
+        Skill skill = Skill.builder().type(SKILL_DRIVER).level(SKILL_LEVEL_UNSKILLED).build();
+        individual.addSkillsItem(skill);
+    }
+
+    /**
+     *
+     * @param numericGender
+     * @return gender mapped to the specific number
+     */
+    private static Gender getGender(int numericGender) {
+        Gender gender;
+
+        switch (numericGender) {
+            case 0:
+                gender = Gender.FEMALE;
+                break;
+            case 1:
+                gender = Gender.MALE;
+                break;
+            case 2:
+                gender = Gender.OTHER;
+                break;
+            case 3:
+                gender = Gender.TRANSGENDER;
+                break;
+            default:
+                gender = Gender.OTHER;
+                break;
+        }
+
+        return gender;
     }
 
 }

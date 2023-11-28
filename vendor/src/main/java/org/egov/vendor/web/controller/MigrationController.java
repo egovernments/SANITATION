@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/organisation/v1")
+@RequestMapping("/v1")
 public class MigrationController {
 
     @Autowired
