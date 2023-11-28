@@ -107,5 +107,12 @@ public class ServiceConfiguration {
 
   @Value("${egov.individual.search.endpoint}")
   private String individualSearchEndpoint;
+  
+  //User Config
+  @Value("${egov.user.host}")
+  private String userHost;
+
+  @Value("${egov.user.search.path}")
+  private String userSearchEndpoint;
 
 }

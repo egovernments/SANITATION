@@ -27,12 +27,12 @@ public class PlantUser {
     @JsonProperty("plantCode")
     private String plantCode;
 
-    @JsonProperty("individualId")
+    @JsonProperty("plantOperatorUuid")
     @Size(
             min = 2,
             max = 64
     )
-    private String individualId;
+    private String plantOperatorUuid;
 
     @JsonProperty("isActive")
     private Boolean isActive;
