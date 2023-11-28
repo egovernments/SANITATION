@@ -43,9 +43,14 @@ public class VendorConstants {
 
 	public static final String VENDOR_AGENCY_TYPE = "AgencyType";
 
+	public static final String SW_FUNCTIONAL_ROLES = "SanitationWorkerFunctionalRoles";
+
+	public static final String SW_SKILLS = "SanitationWorkerSkills";
+
 	public static final String VENDOR_PAYMENT_PREFERENCE = "PaymentPreference";
 
 	public static final String VENDOR_MODULE = "Vendor";
+	public static final String FSM_MODULE = "FSM";
 
 	public static final String UPDATE_ERROR = "Update Error";
 
@@ -60,6 +65,10 @@ public class VendorConstants {
 	public static final String FSM_DRIVER = "FSM_DRIVER";
 	public static final String DuplicateUserNameException = "DuplicateUserNameException";
 	public static final String ROLE_FSM_DSO = "FSM_DSO";
+
+	//Skills
+	public static final String SKILL_DRIVER = "DRIVER";
+	public static final String SKILL_LEVEL_UNSKILLED = "Unskilled";
 
 
 }
