@@ -87,15 +87,14 @@ public class UserIndividualMigrationUtil {
             Date javaDate = new Date(sqlTimestamp.getDate());
 
             //validating whether individual already exists with the mobile number
-            String individualSearchQuery = "Select * from individual where mobilenumber = '"+mobileNumber+"';";
+            String individualSearchQuery = "Select * from individual where userid = '"+owner_id+"';";
             List<Map<String,Object>> existingindividualList  = jdbcTemplate.queryForList(individualSearchQuery);
 
             if(!existingindividualList.isEmpty())
             {
-                log.error("Individual already exists with the given mobile number");
+                log.error("Individual already exists with the ownerId ->"+ owner_id);
                 continue;
             }
-
 
             //decrypting encrypted fields
             decrypt.put("username", userName);
@@ -108,7 +107,8 @@ public class UserIndividualMigrationUtil {
             String decryptedMobileNumber = decryptedValues.get("mobilenumber");
 
             Individual individual = Individual.builder().tenantId(tenant_id).name(Name.builder().givenName(decryptedName).build())
-                    .mobileNumber(decryptedMobileNumber).dateOfBirth(javaDate).gender(getGender(numericGender)).isSystemUser(Boolean.FALSE).build();
+                    .mobileNumber(decryptedMobileNumber).dateOfBirth(javaDate).gender(getGender(numericGender))
+                    .userId(owner_id).isSystemUser(Boolean.FALSE).build();
 
             addDriverRelatedSkills(individual);
             addDriverRelatedAdditionalFields(individual);
@@ -186,7 +186,7 @@ public class UserIndividualMigrationUtil {
         }
         catch (Exception e)
         {
-            throw new CustomException("UNABLE TO CREATE INDIVIUAL", " Unable to create individual with id "+String.format("{Workflow:%s}", individualRequest.getIndividual().getIndividualId()));
+            throw new CustomException("UNABLE TO CREATE INDIVIUAL", " Unable to create individual with driverid "+String.format("{%s}", individualRequest.getIndividual().getIndividualId()));
         }
 
         return individual;
@@ -277,5 +277,11 @@ public class UserIndividualMigrationUtil {
 
         return gender;
     }
+//
+//    private void validateWhetherIndividualExists()
+//    {
+//        fetch vendor for driver id
+//            look whether indiv
+//    }
 
 }
