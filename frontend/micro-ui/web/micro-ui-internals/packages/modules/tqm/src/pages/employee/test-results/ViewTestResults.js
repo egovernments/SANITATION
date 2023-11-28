@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { ViewComposer, Header } from "@egovernments/digit-ui-react-components";
+import { ViewComposer, Header, Loader } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
@@ -96,8 +96,13 @@ function ViewTestResults() {
         ],
       }),
       staleTime: 0,
+      cacheTime: 0,
     },
   });
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <>

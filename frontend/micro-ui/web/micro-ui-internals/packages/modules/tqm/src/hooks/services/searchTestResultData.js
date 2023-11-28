@@ -46,7 +46,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
     }
   });
 
-  let workflowData;
+  const workflowData = await Digit.WorkflowService.getDetailsByIdWorks({ tenantId, id, moduleCode: "PQM" });
   let sla = 0;
 
   if (type !== "adhoc") {
@@ -62,95 +62,150 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
   }
 
   return {
-    details: userRoles.includes("PQM_ADMIN")
-      ? [
-          {
-            key: t("ES_TQM_LABEL_TEST_ID"),
-            value: testResponse?.testId || "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_PLANT_NAME"),
-            value: testResponse?.plantCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Plant_${testResponse?.plantCode}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_TREATMENT_PROCESS"),
-            value: testResponse?.processCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Process_${testResponse?.processCode}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_STAGE"),
-            value: testResponse?.stageCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Stage_${testResponse?.stageCode}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_TEST_TYPE"),
-            value: testResponse?.testType ? t(Digit.Utils.locale.getTransformedLocale(`PQM.TestType_${testResponse?.testType}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_OUTPUT_TYPE"),
-            value: testResponse?.materialCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Material_${testResponse?.materialCode}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_LAB_NAME"),
-            value: testResponse?.labAssignedTo ? t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityTestLab_${testResponse?.labAssignedTo}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_TEST_SCHEDULED_ON"),
-            value:
-              (testResponse?.scheduledDate &&
-                `${new Date(testResponse?.scheduledDate).getDate()}/${new Date(testResponse?.scheduledDate).getMonth() + 1}/${new Date(
-                  testResponse?.scheduledDate
-                ).getFullYear()}`) ||
-              "N/A",
-          },
-        ]
-      : [
-          {
-            key: t("ES_TQM_LABEL_TEST_ID"),
-            value: testResponse?.testId || "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_PLANT_NAME"),
-            value: testResponse?.plantCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Plant_${testResponse?.plantCode}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_TREATMENT_PROCESS"),
-            value: testResponse?.processCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Process_${testResponse?.processCode}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_STAGE"),
-            value: testResponse?.stageCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Stage_${testResponse?.stageCode}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_TEST_TYPE"),
-            value: testResponse?.testType ? t(Digit.Utils.locale.getTransformedLocale(`PQM.TestType_${testResponse?.testType}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_OUTPUT_TYPE"),
-            value: testResponse?.materialCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Material_${testResponse?.materialCode}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_LAB_NAME"),
-            value: testResponse?.labAssignedTo ? t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityTestLab_${testResponse?.labAssignedTo}`)) : "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_TEST_SCHEDULED_ON"),
-            value:
-              (testResponse?.scheduledDate &&
-                `${new Date(testResponse?.scheduledDate).getDate()}/${new Date(testResponse?.scheduledDate).getMonth() + 1}/${new Date(
-                  testResponse?.scheduledDate
-                ).getFullYear()}`) ||
-              "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_STATUS"),
-            value: t(`TQM_TEST_STATUS_${testResponse?.status}`) || "N/A",
-          },
-          {
-            key: t("ES_TQM_LABEL_SLA"),
-            isSla: true,
-            isSuccess: Math.sign(sla) === -1 ? false : true,
-            value: sla ? `${sla} ${t("COMMON_DAYS")}` : `0 ${t("COMMON_DAYS")}`,
-          },
-        ],
+    details:
+      userRoles.includes("PQM_ADMIN") && type !== "adhoc"
+        ? [
+            {
+              key: t("ES_TQM_LABEL_TEST_ID"),
+              value: testResponse?.testId || "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_PLANT_NAME"),
+              value: testResponse?.plantCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Plant_${testResponse?.plantCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_TREATMENT_PROCESS"),
+              value: testResponse?.processCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Process_${testResponse?.processCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_STAGE"),
+              value: testResponse?.stageCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Stage_${testResponse?.stageCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_TEST_TYPE"),
+              value: testResponse?.testType ? t(Digit.Utils.locale.getTransformedLocale(`PQM.TestType_${testResponse?.testType}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_OUTPUT_TYPE"),
+              value: testResponse?.materialCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Material_${testResponse?.materialCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_LAB_NAME"),
+              value: testResponse?.labAssignedTo ? t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityTestLab_${testResponse?.labAssignedTo}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_STATUS"),
+              value: t(`TQM_TEST_STATUS_${testResponse?.status}`) || "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_TEST_SUBMITTED_BY"),
+              value: workflowData?.processInstances?.[0]?.assigner?.name || "N/A",
+            },
+            workflowData?.processInstances?.[0]?.state?.isTerminateState === true
+              ? {
+                  key: t("ES_TQM_LABEL_TEST_SUBMITTED_DATE"),
+                  value: workflowData?.processInstances?.[0]?.auditDetails?.lastModifiedTime
+                    ? `${new Date(workflowData?.processInstances?.[0]?.auditDetails?.lastModifiedTime).getDate()}/${
+                        new Date(workflowData?.processInstances?.[0]?.auditDetails?.lastModifiedTime).getMonth() + 1
+                      }/${new Date(workflowData?.processInstances?.[0]?.auditDetails?.lastModifiedTime).getFullYear()}`
+                    : "N/A",
+                }
+              : {
+                  key: t("ES_TQM_LABEL_SLA"),
+                  isSla: true,
+                  isSuccess: Math.sign(sla) === -1 ? false : true,
+                  value: sla ? `${sla} ${t("COMMON_DAYS")}` : `0 ${t("COMMON_DAYS")}`,
+                },
+          ]
+        : userRoles.includes("PQM_ADMIN") && type === "adhoc"
+        ? [
+            {
+              key: t("ES_TQM_LABEL_TEST_ID"),
+              value: testResponse?.testId || "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_PLANT_NAME"),
+              value: testResponse?.plantCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Plant_${testResponse?.plantCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_TREATMENT_PROCESS"),
+              value: testResponse?.processCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Process_${testResponse?.processCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_STAGE"),
+              value: testResponse?.stageCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Stage_${testResponse?.stageCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_TEST_TYPE"),
+              value: testResponse?.testType ? t(Digit.Utils.locale.getTransformedLocale(`PQM.TestType_${testResponse?.testType}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_OUTPUT_TYPE"),
+              value: testResponse?.materialCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Material_${testResponse?.materialCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_TEST_RESULT_DATE"),
+              value:
+                (testResponse?.scheduledDate &&
+                  `${new Date(testResponse?.scheduledDate).getDate()}/${new Date(testResponse?.scheduledDate).getMonth() + 1}/${new Date(
+                    testResponse?.scheduledDate
+                  ).getFullYear()}`) ||
+                "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_STATUS"),
+              value: t(`TQM_TEST_STATUS_${testResponse?.status}`) || "N/A",
+            },
+          ]
+        : [
+            {
+              key: t("ES_TQM_LABEL_TEST_ID"),
+              value: testResponse?.testId || "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_PLANT_NAME"),
+              value: testResponse?.plantCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Plant_${testResponse?.plantCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_TREATMENT_PROCESS"),
+              value: testResponse?.processCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Process_${testResponse?.processCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_STAGE"),
+              value: testResponse?.stageCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Stage_${testResponse?.stageCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_TEST_TYPE"),
+              value: testResponse?.testType ? t(Digit.Utils.locale.getTransformedLocale(`PQM.TestType_${testResponse?.testType}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_OUTPUT_TYPE"),
+              value: testResponse?.materialCode ? t(Digit.Utils.locale.getTransformedLocale(`PQM.Material_${testResponse?.materialCode}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_LAB_NAME"),
+              value: testResponse?.labAssignedTo ? t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityTestLab_${testResponse?.labAssignedTo}`)) : "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_TEST_SCHEDULED_ON"),
+              value:
+                (testResponse?.scheduledDate &&
+                  `${new Date(testResponse?.scheduledDate).getDate()}/${new Date(testResponse?.scheduledDate).getMonth() + 1}/${new Date(
+                    testResponse?.scheduledDate
+                  ).getFullYear()}`) ||
+                "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_STATUS"),
+              value: t(`TQM_TEST_STATUS_${testResponse?.status}`) || "N/A",
+            },
+            {
+              key: t("ES_TQM_LABEL_SLA"),
+              isSla: true,
+              isSuccess: Math.sign(sla) === -1 ? false : true,
+              value: sla ? `${sla} ${t("COMMON_DAYS")}` : `0 ${t("COMMON_DAYS")}`,
+            },
+          ],
     documents: testResponse?.documents?.map((i) => {
       return { title: i?.documentUid, value: i?.fileStoreId };
     }),
