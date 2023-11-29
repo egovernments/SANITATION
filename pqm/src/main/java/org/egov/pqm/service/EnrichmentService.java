@@ -104,11 +104,11 @@ public class EnrichmentService {
     }
   }
 
-  public void enrichCreatePlanUserRequest(PlantUserRequest plantUserRequest,RequestInfo requestInfo) {
+  public void enrichCreatePlanUserRequest(PlantUserRequest plantUserRequest) {
     Long time = System.currentTimeMillis();
     AuditDetails auditDetails = AuditDetails.builder()
-        .createdBy(requestInfo.getUserInfo().getUuid())
-        .lastModifiedBy(requestInfo.getUserInfo().getUuid())
+        .createdBy(plantUserRequest.getRequestInfo().getUserInfo().getUuid())
+        .lastModifiedBy(plantUserRequest.getRequestInfo().getUserInfo().getUuid())
         .createdTime(time)
         .lastModifiedTime(time)
         .build();
