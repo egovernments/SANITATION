@@ -92,12 +92,10 @@ public class PlantUserValidator {
 		tenantId = plantUsers.get(0).getTenantId();
 
 		for (PlantUser plantUser : plantUsers) {
-			plantOperatorUuids.add(plantUser.getPlantOperatorUuid());
 			plantCodes.add(plantUser.getPlantCode());
 		}
 
 		PlantUserSearchCriteria plantUserSearchCriteria = new PlantUserSearchCriteria();
-		plantUserSearchCriteria.setPlantOperatorUuids(plantOperatorUuids);
 		plantUserSearchCriteria.setPlantCodes(plantCodes);
 		plantUserSearchCriteria.setTenantId(tenantId);
 
@@ -108,7 +106,7 @@ public class PlantUserValidator {
 		    for (PlantUser plantUser : plantUserResponse.getPlantUsers()) {
 		        if (StringUtils.isNotBlank(plantUser.getId())) {
 		            throw new CustomException(ErrorConstants.PLANT_EMPLOYEE_MAP_EXISTS_ERROR,
-		                    "Plant and employee mapping already exist for PlantUser with ID: " + plantUser.getId());
+		                    "Plant and employee mapping already exist for PlantUser with PlantCode: " + plantUser.getPlantCode());
 		        }
 		    }
 		}
