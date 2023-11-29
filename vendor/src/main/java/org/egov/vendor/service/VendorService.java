@@ -13,6 +13,7 @@ import org.egov.common.contract.request.RequestInfo;
 import org.egov.tracer.model.CustomException;
 import org.egov.vendor.config.VendorConfiguration;
 import org.egov.vendor.driver.web.model.Driver;
+import org.egov.vendor.driver.web.model.Worker;
 import org.egov.vendor.repository.VendorRepository;
 import org.egov.vendor.util.VendorConstants;
 import org.egov.vendor.util.VendorErrorConstants;
@@ -143,9 +144,16 @@ public class VendorService {
 		List<Vehicle> vendorVehicleToBeUpdated = new ArrayList<>();
 		List<Vehicle> vendorVehicleToBeInserted = new ArrayList<>();
 
+		List<Worker> vendorWorkerToBeUpdated = new ArrayList<>();
+		List<Worker> vendorWorkerToBeInserted = new ArrayList<>();
+
+
 		List<Vehicle> beforeUpdateOrInsertVehicle = new ArrayList<>();
 		List<Driver> beforeUpdateOrInsertDriver = new ArrayList<>();
+		List<Worker> beforeUpdateOrInsertWorker = new ArrayList<>();
 		getVehicleDriver(vendorRequest, vendorDriverToBeUpdated, vendorDriverToBeInserted, beforeUpdateOrInsertDriver,
+				tenantId);
+		getVendorWorker(vendorRequest, vendorWorkerToBeUpdated, vendorWorkerToBeInserted, beforeUpdateOrInsertWorker,
 				tenantId);
 		getVendorVehicle(vendorRequest, vendorVehicleToBeUpdated, beforeUpdateOrInsertVehicle,
 				vendorVehicleToBeInserted, tenantId);
@@ -157,6 +165,11 @@ public class VendorService {
 		if (!CollectionUtils.isEmpty(vendorDriverToBeUpdated)) {
 			vendorRequest.getVendor().getDrivers().clear();
 			vendorRequest.getVendor().setDrivers(vendorDriverToBeUpdated);
+
+		}
+		if (!CollectionUtils.isEmpty(vendorWorkerToBeUpdated)) {
+			vendorRequest.getVendor().getWorkers().clear();
+			vendorRequest.getVendor().setWorkers(vendorWorkerToBeUpdated);
 
 		}
 		vendorRepository.update(vendorRequest);
@@ -171,12 +184,21 @@ public class VendorService {
 			vendorRequest.getVendor().getVehicles().clear();
 		}
 
+		if (vendorRequest.getVendor().getWorkers() != null && !vendorRequest.getVendor().getWorkers().isEmpty()) {
+			vendorRequest.getVendor().getWorkers().clear();
+		}
+
 		if (!CollectionUtils.isEmpty(vendorVehicleToBeInserted)) {
 			vendorRequest.getVendor().setVehicles(vendorVehicleToBeInserted);
 			callInsert = true;
 		}
 		if (!CollectionUtils.isEmpty(vendorDriverToBeInserted)) {
 			vendorRequest.getVendor().setDrivers(vendorDriverToBeInserted);
+			callInsert = true;
+		}
+
+		if (!CollectionUtils.isEmpty(vendorWorkerToBeInserted)) {
+			vendorRequest.getVendor().setWorkers(vendorWorkerToBeInserted);
 			callInsert = true;
 		}
 
@@ -190,6 +212,10 @@ public class VendorService {
 
 		if (!CollectionUtils.isEmpty(beforeUpdateOrInsertDriver)) {
 			vendorRequest.getVendor().setDrivers(beforeUpdateOrInsertDriver);
+		}
+
+		if (!CollectionUtils.isEmpty(beforeUpdateOrInsertWorker)) {
+			vendorRequest.getVendor().setWorkers(beforeUpdateOrInsertWorker);
 		}
 
 	}
@@ -207,6 +233,29 @@ public class VendorService {
 					vendorDriverToBeInserted.add(driver);
 				}
 				beforeUpdateOrInsertDriver.add(driver);
+			});
+		}
+
+	}
+
+	private void getVendorWorker(VendorRequest vendorRequest, List<Worker> vendorWorkerToBeUpdated,
+			List<Worker> vendorWorkerToBeInserted, List<Worker> beforeUpdateOrInsertWorker,
+			String tenantId) {
+		if (vendorRequest.getVendor().getWorkers() != null && !vendorRequest.getVendor().getWorkers()
+				.isEmpty()) {
+
+			vendorRequest.getVendor().getWorkers().forEach(worker -> {
+				List<String> workerIds = vendorRepository.getVendorWithWorker(
+						VendorSearchCriteria.builder()
+								.individualIds(Arrays.asList(worker.getIndividualId()))
+								.tenantId(tenantId)
+								.build());
+				if (!CollectionUtils.isEmpty(workerIds)) {
+					vendorWorkerToBeUpdated.add(worker);
+				} else {
+					vendorWorkerToBeInserted.add(worker);
+				}
+				beforeUpdateOrInsertWorker.add(worker);
 			});
 		}
 
@@ -259,12 +308,13 @@ public class VendorService {
 
 		VendorSearchCriteria vendorCriteria = getCriteria(criteria, requestInfo);
 		VendorResponse vendorResponse = new VendorResponse();
-		if ((CollectionUtils.isEmpty(criteria.getDriverIds()) && CollectionUtils.isEmpty(criteria.getVehicleIds()))
+		if ((CollectionUtils.isEmpty(criteria.getDriverIds()) && CollectionUtils.isEmpty(
+				criteria.getIndividualIds()) && CollectionUtils.isEmpty(criteria.getVehicleIds()))
 				|| !CollectionUtils.isEmpty(vendorCriteria.getIds())) {
-
 			vendorResponse = repository.getVendorData(criteria);
 			if (vendorResponse != null && !vendorResponse.getVendor().isEmpty()) {
-				enrichmentService.enrichVendorSearch(vendorResponse.getVendor(), requestInfo, criteria.getTenantId());
+				enrichmentService.enrichVendorSearch(vendorResponse.getVendor(), requestInfo,
+						criteria.getTenantId());
 			}
 			if (vendorResponse != null && vendorResponse.getVendor().isEmpty()) {
 				vendorIsEmpty();
@@ -306,12 +356,31 @@ public class VendorService {
 			}
 		}
 
-		return getDriversCriteria(criteria);
+		getDriversCriteria(criteria);
+		return getWorkersCriteria(criteria);
 	}
 
 	private VendorSearchCriteria getDriversCriteria(VendorSearchCriteria criteria) {
 		if (!CollectionUtils.isEmpty(criteria.getDriverIds())) {
 			List<String> vendorIds = repository.getVendorWithDrivers(criteria);
+			if (CollectionUtils.isEmpty(vendorIds)) {
+				vendorIsEmpty();
+
+			} else {
+				if (CollectionUtils.isEmpty(criteria.getIds())) {
+					criteria.setIds(vendorIds);
+				} else {
+					criteria.getIds().addAll(vendorIds);
+				}
+			}
+
+		}
+		return criteria;
+	}
+
+	private VendorSearchCriteria getWorkersCriteria(VendorSearchCriteria criteria) {
+		if (!CollectionUtils.isEmpty(criteria.getIndividualIds())) {
+			List<String> vendorIds = repository.getVendorWithWorker(criteria);
 			if (CollectionUtils.isEmpty(vendorIds)) {
 				vendorIsEmpty();
 

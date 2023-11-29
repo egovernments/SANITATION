@@ -11,6 +11,8 @@ import org.egov.vendor.config.VendorConfiguration;
 import org.egov.vendor.driver.service.DriverService;
 import org.egov.vendor.driver.web.model.DriverResponse;
 import org.egov.vendor.driver.web.model.DriverSearchCriteria;
+import org.egov.vendor.driver.web.model.Worker;
+import org.egov.vendor.driver.web.model.WorkerSearchCriteria;
 import org.egov.vendor.repository.VendorRepository;
 import org.egov.vendor.util.VendorConstants;
 import org.egov.vendor.util.VendorErrorConstants;
@@ -146,7 +148,20 @@ public class EnrichmentService {
 			});
 		}
 		enruchVendorRequest(vendorRequest, auditDetails);
+		enrichWorkerDetails(vendorRequest, auditDetails);
+	}
 
+	private void enrichWorkerDetails(VendorRequest vendorRequest, AuditDetails auditDetails){
+		if (vendorRequest.getVendor().getWorkers() != null && !vendorRequest.getVendor().getWorkers().isEmpty()) {
+			vendorRequest.getVendor().getWorkers().forEach(worker -> {
+				if (StringUtils.isEmpty(worker.getId())) {
+					worker.setId(UUID.randomUUID().toString());
+					worker.setVendorId(vendorRequest.getVendor().getId());
+					worker.setTenantId(vendorRequest.getVendor().getTenantId());
+					worker.setAuditDetails(auditDetails);
+				}
+			});
+		}
 	}
 
 	private void enruchVendorRequest(VendorRequest vendorRequest, AuditDetails auditDetails) {
@@ -177,6 +192,7 @@ public class EnrichmentService {
 
 			addDrivers(requestInfo, vendor, tenantId);
 			addVehicles(requestInfo, vendor, tenantId);
+			addWorkers(requestInfo, vendor, tenantId);
 			boundaryService.getAreaType(VendorRequest.builder().vendor(vendor).build(), config.getHierarchyTypeCode());
 		});
 	}
@@ -208,6 +224,20 @@ public class EnrichmentService {
 
 		}
 
+	}
+
+	private void addWorkers(RequestInfo requestInfo, Vendor vendor, String tenantId) {
+		List<String> individualIds = vendorRepository.getWorkers(vendor.getId(), VendorConstants.ACTIVE);
+
+		if (!CollectionUtils.isEmpty(individualIds)) {
+			List<String> statusData = new ArrayList<>();
+			statusData.add(VendorConstants.ACTIVE);
+			statusData.add(VendorConstants.DISABLED);
+			WorkerSearchCriteria workerSearchCriteria = WorkerSearchCriteria.builder().individualIds(individualIds)
+					.vendorWorkerStatus(statusData).tenantId(tenantId).build();
+			List<Worker> workers = driverService.workerSearch(workerSearchCriteria, requestInfo);
+			vendor.setWorkers(workers);
+		}
 	}
 
 	private void addVehicles(RequestInfo requestInfo, Vendor vendor, String tenantId) {

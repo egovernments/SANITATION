@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.vendor.config.VendorConfiguration;
 import org.egov.vendor.driver.web.model.DriverSearchCriteria;
+import org.egov.vendor.driver.web.model.WorkerSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -18,6 +19,8 @@ public class DriverQueryBuilder {
 	private VendorConfiguration config;
 
 	private static final String QUERY = "SELECT count(*) OVER() AS full_count, driver.* FROM eg_driver driver";
+
+	private static final String WORKER_SEARCH_QUERY = "SELECT count(*) OVER() AS full_count, worker.* FROM eg_vendor_sanitation_worker worker";
 
 	private static final String PAGINATION_WRAPPER = "SELECT * FROM "
 			+ "(SELECT *, DENSE_RANK() OVER (ORDER BY SORT_BY SORT_ORDER) offset_ FROM " + "({})"
@@ -86,6 +89,53 @@ public class DriverQueryBuilder {
 		return addPaginationWrapper(builder.toString(), preparedStmtList, criteria);
 	}
 
+	public String getWorkerSearchQuery(WorkerSearchCriteria criteria, List<Object> preparedStmtList) {
+		StringBuilder builder = new StringBuilder(WORKER_SEARCH_QUERY);
+		if (criteria.getTenantId() != null) {
+
+			if (criteria.getTenantId().split("\\.").length == 1) {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" worker.tenantid like ?");
+				preparedStmtList.add('%' + criteria.getTenantId() + '%');
+			} else {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" worker.tenantid=? ");
+				preparedStmtList.add(criteria.getTenantId());
+			}
+
+			List<String> ids = criteria.getIds();
+			if (!CollectionUtils.isEmpty(ids)) {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" worker.id IN (").append(createQuery(ids)).append(")");
+				addToPreparedStatement(preparedStmtList, ids);
+			}
+
+			List<String> individualIds = criteria.getIndividualIds();
+			if (!CollectionUtils.isEmpty(individualIds)) {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" worker.individual_id IN (").append(createQuery(individualIds)).append(")");
+				addToPreparedStatement(preparedStmtList, individualIds);
+			}
+
+			List<String> vendorIds = criteria.getVendorIds();
+			if (!CollectionUtils.isEmpty(vendorIds)) {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" worker.vendor_id IN (").append(createQuery(vendorIds)).append(")");
+				addToPreparedStatement(preparedStmtList, vendorIds);
+			}
+
+
+			List<String> status = criteria.getVendorWorkerStatus();
+			if (!CollectionUtils.isEmpty(status)) {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" worker.vendor_sw_status IN (").append(createQuery(status)).append(")");
+				addToPreparedStatement(preparedStmtList, status);
+			}
+
+		}
+		return addPaginationWrapper(builder.toString(), preparedStmtList, criteria);
+	}
+
 	private String addPaginationWrapper(String query, List<Object> preparedStmtList, DriverSearchCriteria criteria) {
 		int limit = config.getDefaultLimit();
 		int offset = config.getDefaultOffset();
@@ -124,6 +174,43 @@ public class DriverQueryBuilder {
 
 	}
 
+	private String addPaginationWrapper(String query, List<Object> preparedStmtList, WorkerSearchCriteria criteria) {
+		int limit = config.getDefaultLimit();
+		int offset = config.getDefaultOffset();
+		String finalQuery = PAGINATION_WRAPPER.replace("{}", query);
+
+		if (criteria.getSortBy() != null) {
+			finalQuery = finalQuery.replace("SORT_BY", criteria.getSortBy().toString());
+		} else {
+			finalQuery = finalQuery.replace("SORT_BY", "createdTime");
+		}
+
+		if (criteria.getSortOrder() != null) {
+			finalQuery = finalQuery.replace("SORT_ORDER", criteria.getSortOrder().toString());
+		} else {
+			finalQuery = finalQuery.replace("SORT_ORDER", " DESC ");
+		}
+
+		if (criteria.getLimit() != null && criteria.getLimit() <= config.getMaxSearchLimit())
+			limit = criteria.getLimit();
+
+		if (criteria.getLimit() != null && criteria.getLimit() > config.getMaxSearchLimit()) {
+			limit = config.getMaxSearchLimit();
+		}
+
+		if (criteria.getOffset() != null)
+			offset = criteria.getOffset();
+
+		if (limit == -1) {
+			finalQuery = finalQuery.replace("limit ? offset ?", "");
+		} else {
+			preparedStmtList.add(limit);
+			preparedStmtList.add(offset);
+		}
+
+		return finalQuery;
+
+	}
 	private void addClauseIfRequired(List<Object> values, StringBuilder queryString) {
 		if (values.isEmpty())
 			queryString.append(" WHERE ");
