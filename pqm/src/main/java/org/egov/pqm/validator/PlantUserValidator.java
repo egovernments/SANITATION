@@ -92,12 +92,10 @@ public class PlantUserValidator {
 		tenantId = plantUsers.get(0).getTenantId();
 
 		for (PlantUser plantUser : plantUsers) {
-			plantOperatorUuids.add(plantUser.getPlantOperatorUuid());
 			plantCodes.add(plantUser.getPlantCode());
 		}
 
 		PlantUserSearchCriteria plantUserSearchCriteria = new PlantUserSearchCriteria();
-		plantUserSearchCriteria.setPlantOperatorUuids(plantOperatorUuids);
 		plantUserSearchCriteria.setPlantCodes(plantCodes);
 		plantUserSearchCriteria.setTenantId(tenantId);
 
