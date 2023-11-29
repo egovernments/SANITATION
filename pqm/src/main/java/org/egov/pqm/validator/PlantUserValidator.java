@@ -106,7 +106,7 @@ public class PlantUserValidator {
 		    for (PlantUser plantUser : plantUserResponse.getPlantUsers()) {
 		        if (StringUtils.isNotBlank(plantUser.getId())) {
 		            throw new CustomException(ErrorConstants.PLANT_EMPLOYEE_MAP_EXISTS_ERROR,
-		                    "Plant and employee mapping already exist for PlantUser with PlantCode: " + plantUser.getPlantCode());
+		                    "Plant and employee mapping already exist for PlantUser with ID: " + plantUser.getId());
 		        }
 		    }
 		}
