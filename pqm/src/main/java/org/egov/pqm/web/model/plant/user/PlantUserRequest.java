@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class PlantUserRequest {
 
-  @JsonProperty("RequestInfo")
+  @JsonProperty("requestInfo")
   private RequestInfo requestInfo;
 
   @JsonProperty("plantUsers")
