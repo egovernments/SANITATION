@@ -15,7 +15,6 @@ import org.egov.fsm.web.model.AuditDetails;
 import org.egov.fsm.web.model.location.Address;
 import org.egov.fsm.web.model.user.User;
 import org.egov.fsm.web.model.vehicle.Vehicle;
-import org.egov.fsm.web.model.worker.Worker;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.validation.annotation.Validated;
 
@@ -59,7 +58,7 @@ public class Vendor {
 
 	@JsonProperty("workers")
 	@Valid
-	private List<Worker> workers;
+	private List<VendorWorker> workers;
 
 	@JsonProperty("additionalDetails")
 	private Object additionalDetails;
