@@ -27,7 +27,7 @@ public class PlantUserService {
   public List<PlantUser> create(PlantUserRequest plantUserRequest) {
 	plantUserValidator.validatePlantUserMappingRequest(plantUserRequest);
 	plantUserValidator.validatePlantMappingExists(plantUserRequest);
-    enrichmentService.enrichCreatePlanUserRequest(plantUserRequest);
+    enrichmentService.enrichCreatePlanUserRequest(plantUserRequest,plantUserRequest.getRequestInfo());
     return plantUserRepository.save(plantUserRequest);
   }
 
