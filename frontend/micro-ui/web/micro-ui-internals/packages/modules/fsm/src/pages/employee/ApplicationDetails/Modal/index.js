@@ -374,7 +374,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       submitAction({ fsm: {...applicationData,workers:workerPayload}, workflow });
       return
     }
-    debugger
+    
     submitAction({ fsm: applicationData, workflow });
   }
 
