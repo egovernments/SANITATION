@@ -66,7 +66,7 @@ public class UserIndividualMigrationUtil {
                     ".lastmodifieddate,  userdata.createdby, userdata.lastmodifiedby, userdata.active, userdata.name, userdata.gender, userdata.pan, userdata.aadhaarnumber, userdata" +
                     ".type,  userdata.version, userdata.guardian, userdata.guardianrelation, userdata.signature, userdata.accountlocked, userdata.accountlockeddate, userdata" +
                     ".bloodgroup, userdata.photo, userdata.identificationmark,  userdata.tenantid, userdata.id, userdata.uuid, userdata.alternatemobilenumber, ur.role_code as role_code, ur.role_tenantid as role_tenantid \n" +
-                    "\tFROM eg_user userdata LEFT OUTER JOIN eg_userrole_v1 ur ON userdata.id = ur.user_id AND userdata.tenantid = ur.user_tenantid WHERE userdata.uuid = '"+owner_id+"' AND userdata.type = 'CITIZEN';";
+                    "\tFROM eg_user userdata LEFT OUTER JOIN eg_userrole_v1 ur ON userdata.id = ur.user_id AND userdata.tenantid = ur.user_tenantid WHERE userdata.uuid = '"+owner_id+"';";
 
             List<Map<String,Object>> userDetails = jdbcTemplate.queryForList(userDetailsQuery);
 
@@ -121,12 +121,17 @@ public class UserIndividualMigrationUtil {
             IndividualRequest createIndividual = createIndividual(new IndividualRequest(requestInfo, individual));
             log.info("Successfully created individual with Individual Id = "+createIndividual.getIndividual().getIndividualId());
 
-            String vendorIDQuery = "SELECT vendor_id FROM eg_vendor_driver WHERE driver_id = ?";
-            String vendorId =  jdbcTemplate.queryForObject(vendorIDQuery, String.class, driverId);
+            try {
+                String vendorIDQuery = "SELECT vendor_id FROM eg_vendor_driver WHERE driver_id = ?";
+                String vendorId =  jdbcTemplate.queryForObject(vendorIDQuery, String.class, driverId);
 
-            //insert into vendor-sanitation worker mapping table
-            String insertQuery = "INSERT INTO eg_vendor_sanitation_worker (vendor_id, individual_id, vendor_sw_status) VALUES (?, ?, ?)";
-            jdbcTemplate.update(insertQuery, vendorId, createIndividual.getIndividual().getIndividualId(), "ACTIVE");
+                //insert into vendor-sanitation worker mapping table
+                String insertQuery = "INSERT INTO eg_vendor_sanitation_worker (vendor_id, individual_id, vendor_sw_status) VALUES (?, ?, ?)";
+                jdbcTemplate.update(insertQuery, vendorId, createIndividual.getIndividual().getIndividualId(), "ACTIVE");
+
+            } catch (Exception e) {
+               log.info("Vendor-Driver mapping not present for driverId "+driverId);
+            }
 
         }
         log.info("Ending migration....");
@@ -187,7 +192,7 @@ public class UserIndividualMigrationUtil {
         }
         catch (Exception e)
         {
-            throw new CustomException("UNABLE TO CREATE INDIVIUAL", " Unable to create individual with driverid "+String.format("{%s}", individualRequest.getIndividual().getIndividualId()));
+            throw new CustomException("UNABLE TO CREATE INDIVIUAL", " Unable to create individual with driverid "+String.format("{%s}", individualRequest.getIndividual().getUserId()));
         }
 
         return individual;
