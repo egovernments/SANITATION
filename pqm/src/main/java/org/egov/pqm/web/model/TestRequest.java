@@ -13,7 +13,7 @@ import org.egov.common.contract.request.RequestInfo;
 @Builder
 public class TestRequest {
 
-  @JsonProperty("RequestInfo")
+  @JsonProperty("requestInfo")
   private RequestInfo requestInfo;
 
   @JsonProperty("tests")
