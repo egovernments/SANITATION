@@ -115,7 +115,7 @@ public class UserIndividualMigrationUtil {
 
             Individual individual = Individual.builder().tenantId(tenant_id).name(Name.builder().givenName(decryptedName).build())
                     .mobileNumber(decryptedMobileNumber).dateOfBirth(javaDate).gender(getGender(numericGender))
-                    .userId(owner_id).isSystemUser(Boolean.FALSE).build();
+                    .userId(owner_id).isSystemUser(Boolean.TRUE).build();
 
             addDriverRelatedSkills(individual);
             addDriverRelatedAdditionalFields(individual);
