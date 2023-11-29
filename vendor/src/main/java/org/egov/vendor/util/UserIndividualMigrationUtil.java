@@ -1,5 +1,6 @@
 package org.egov.vendor.util;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 import org.egov.common.models.individual.*;
 
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -59,6 +61,10 @@ public class UserIndividualMigrationUtil {
             String owner_id = (String) driver.get("owner_id");
             String licenseNumber = (String) driver.get("licensenumber");
             String tenant_id = (String) driver.get("tenantid");
+            String createdBy = (String) driver.get("createdBy");
+            String lastModifiedBy = (String) driver.get("lastModifiedBy");
+            Long createdTime = (Long) driver.get("createdTime");
+            Long lastModifiedTime = (Long) driver.get("lastModifiedTime");
 
             //fetching user details for a driverId
             String userDetailsQuery =  "SELECT userdata.title, userdata.salutation, userdata.dob, userdata.locale, userdata.username, userdata" +
@@ -118,17 +124,17 @@ public class UserIndividualMigrationUtil {
             if(licenseNumber!=null && !licenseNumber.isEmpty())
                 addDriverRelatedIdentifiers(individual,licenseNumber);
 
-            IndividualRequest createIndividual = createIndividual(new IndividualRequest(requestInfo, individual));
-            log.info("Successfully created individual with Individual Id = "+createIndividual.getIndividual().getIndividualId());
+            IndividualRequest individualRequest = createIndividual(new IndividualRequest(requestInfo, individual));
+            log.info("Successfully created individual with Individual Id = "+individualRequest.getIndividual().getIndividualId());
 
             try {
                 String vendorIDQuery = "SELECT vendor_id FROM eg_vendor_driver WHERE driver_id = ?";
                 String vendorId =  jdbcTemplate.queryForObject(vendorIDQuery, String.class, driverId);
 
                 //insert into vendor-sanitation worker mapping table
-                String insertQuery = "INSERT INTO eg_vendor_sanitation_worker (vendor_id, individual_id, vendor_sw_status) VALUES (?, ?, ?)";
-                jdbcTemplate.update(insertQuery, vendorId, createIndividual.getIndividual().getIndividualId(), "ACTIVE");
-
+                Individual createdIndividual = individualRequest.getIndividual();
+                String insertQuery = "INSERT INTO eg_vendor_sanitation_worker (id, tenantid, vendor_id, individual_id, vendor_sw_status, createdby, lastmodifiedby, createdtime, lastmodifiedtime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                jdbcTemplate.update(insertQuery, UUID.randomUUID().toString(), createdIndividual.getTenantId(), vendorId, createdIndividual.getIndividualId(),  "ACTIVE", createdBy, lastModifiedBy, createdTime, lastModifiedTime);
             } catch (Exception e) {
                log.info("Vendor-Driver mapping not present for driverId "+driverId);
             }
