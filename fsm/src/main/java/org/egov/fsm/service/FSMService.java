@@ -389,8 +389,8 @@ public class FSMService {
 				throw new CustomException(FSMErrorConstants.INVALID_DSO_WORKERS, " Worker(s) Does not belong to DSO!");
 			}
 
-			List<Worker> filteredList = vendor.getWorkers().stream()
-					.filter(worker -> fsm.getWorkers().stream()
+			List<Worker> filteredList = fsm.getWorkers().stream()
+					.filter(worker -> vendor.getWorkers().stream()
 							.anyMatch(w -> w.getIndividualId().equals(worker.getIndividualId())))
 					.collect(Collectors.toList());
 
