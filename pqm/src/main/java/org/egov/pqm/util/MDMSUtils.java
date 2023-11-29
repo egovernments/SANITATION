@@ -159,6 +159,7 @@ public class MDMSUtils {
    */
   public static List<MdmsTest> parseJsonToTestList(String jsonData) {
     List<MdmsTest> testList = new ArrayList<>();
+    List<JsonNode> errorMap = new ArrayList<>();
 
     try {
       ObjectMapper objectMapper = new ObjectMapper();
@@ -166,14 +167,19 @@ public class MDMSUtils {
       JsonNode testArray = jsonNode.get("mdms");
 
       for (JsonNode criteriaNode : testArray) {
-        MdmsTest test = objectMapper.convertValue(criteriaNode.get("data"),
-            MdmsTest.class);
+        MdmsTest test = null;
+        try {
+          test = objectMapper.convertValue(criteriaNode.get("data"),
+                  MdmsTest.class);
+        } catch (Exception e) {
+          errorMap.add(criteriaNode);
+        }
 
-        testList.add(test);
+        if (test != null)
+          testList.add(test);
       }
     } catch (Exception e) {
-      throw new CustomException(ErrorConstants.PARSING_ERROR,
-          "Unable to parse Test Standard List");
+      log.error(ErrorConstants.PARSING_ERROR, errorMap);
     }
 
     return testList;

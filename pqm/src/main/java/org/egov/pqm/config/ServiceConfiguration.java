@@ -65,6 +65,9 @@ public class ServiceConfiguration {
   @Value("${egov.pqm.anomaly.create.kafka.topic}")
   private String anomalyCreateTopic;
 
+  @Value("${egov.pqm.anomaly.testResultNotSubmitted.kafka.topic}")
+  private String testResultNotSubmittedKafkaTopic;
+
   @Value("${egov.plant.user.create.kafka.topic}")
   private String plantUserSaveTopic;
 
