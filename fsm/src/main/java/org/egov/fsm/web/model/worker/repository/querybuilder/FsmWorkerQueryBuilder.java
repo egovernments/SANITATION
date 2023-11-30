@@ -67,7 +67,8 @@ public class FsmWorkerQueryBuilder {
       }
 
     }
-    return addPaginationWrapper(builder.toString(), preparedStmtList, criteria);
+    return builder.toString();
+    //addPaginationWrapper(builder.toString(), preparedStmtList, criteria);
   }
 
   private String addPaginationWrapper(String query, List<Object> preparedStmtList,
