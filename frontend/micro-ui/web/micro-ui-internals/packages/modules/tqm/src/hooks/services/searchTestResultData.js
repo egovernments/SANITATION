@@ -108,7 +108,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
             },
             {
               key: t("ES_TQM_LABEL_STATUS"),
-              value: t(`TQM_TEST_STATUS_${testResponse?.status}`) || "N/A",
+              value: t(`TQM_TEST_STATUS_${testResponse?.wfStatus}`) || "N/A",
             },
             {
               key: t("ES_TQM_LABEL_SAMPLE_SUBMITTED_ON"),
@@ -176,7 +176,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
             },
             {
               key: t("ES_TQM_LABEL_STATUS"),
-              value: t(`TQM_TEST_STATUS_${testResponse?.status}`) || "N/A",
+              value: t(`TQM_TEST_STATUS_${testResponse?.wfStatus}`) || "N/A",
             },
           ]
         : [
@@ -219,7 +219,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
             },
             {
               key: t("ES_TQM_LABEL_STATUS"),
-              value: t(`TQM_TEST_STATUS_${testResponse?.status}`) || "N/A",
+              value: t(`TQM_TEST_STATUS_${testResponse?.wfStatus}`) || "N/A",
             },
             {
               key: t("ES_TQM_LABEL_SLA"),
