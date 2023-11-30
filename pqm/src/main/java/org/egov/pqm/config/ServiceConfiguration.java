@@ -118,4 +118,8 @@ public class ServiceConfiguration {
   @Value("${egov.user.search.path}")
   private String userSearchEndpoint;
 
+  //tenantId
+  @Value("${egov.state.level.tenantid}")
+  private String egovStateLevelTenantId;
+
 }

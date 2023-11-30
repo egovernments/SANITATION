@@ -44,4 +44,7 @@ public class ErrorConstants {
   public static final String PQM_TP_OPERATOR_EMPLOYEE_INVALID_ERROR = "PQM_TP_OPERATOR_EMPLOYEE_INVALID_ERROR";
   public static final String PLANT_EMPLOYEE_MAP_EXISTS_ERROR = "PLANT_EMPLOYEE_MAP_EXISTS_ERROR";
 
+  public static final String NO_TENANT_PRESENT_ERROR = "NO_TENANT_PRESENT_ERROR";
+  public static final String NO_TENANT_PRESENT_ERROR_DESC = "No tenant found in MDMS for Scheduling of tests";
+
 }

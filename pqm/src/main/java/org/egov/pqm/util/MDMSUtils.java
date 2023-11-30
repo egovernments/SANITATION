@@ -2,8 +2,9 @@ package org.egov.pqm.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
+
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import org.egov.common.contract.request.RequestInfo;
@@ -19,9 +20,6 @@ import org.egov.pqm.web.model.mdms.MdmsTest;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Component
@@ -39,20 +37,18 @@ public class MDMSUtils {
 
   public static final String filterCode = "$.*.code";
 
-  public Map<String, Map<String, JSONArray>> fetchMdmsData(RequestInfo requestInfo, String tenantId, String moduleName,
+  public Object fetchMdmsData(RequestInfo requestInfo, String tenantId, String moduleName,
       List<String> masterNameList) {
     org.egov.mdms.model.MdmsCriteriaReq mdmsCriteriaReq = getMdmsRequest(requestInfo, tenantId, moduleName, masterNameList);
     Object response = new HashMap<>();
-    Integer rate = 0;
     MdmsResponse mdmsResponse = new MdmsResponse();
     try {
-      Object result = serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
-      mdmsResponse = objectMapper.convertValue(result, MdmsResponse.class);
+       response = serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
     } catch (Exception e) {
       log.error("Exception occurred while fetching category lists from mdms: ", e);
     }
 
-    return mdmsResponse.getMdmsRes();
+    return response;
 
   }
 
@@ -183,6 +179,30 @@ public class MDMSUtils {
     }
 
     return testList;
+  }
+
+  public List<String> extractTenantCode(String jsonString) {
+    List<String> codes = new ArrayList<>();
+
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      JsonNode rootNode = objectMapper.readTree(jsonString);
+
+      JsonNode tenantsNode = rootNode.path("MdmsRes").path("tenant").path("tenants");
+
+      for (JsonNode tenantNode : tenantsNode) {
+        JsonNode codeNode = tenantNode.path("code");
+        String code = codeNode.asText();
+
+        if (code.contains(".")) {
+          codes.add(code);
+        }
+      }
+    } catch (Exception e) {
+      log.error(ErrorConstants.PARSING_ERROR, "Cannot parse tenants master");
+    }
+
+    return codes;
   }
 
 }
