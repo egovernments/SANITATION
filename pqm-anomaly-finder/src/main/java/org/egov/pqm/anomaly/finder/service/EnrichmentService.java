@@ -49,6 +49,9 @@ public class EnrichmentService {
 			case LAB_SCHEDULED:
 				anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
 				break;
+			case TEST_RESULT_NOT_SUBMITTED:
+				anomalyType = AnomalyType.TEST_RESULT_NOT_SUBMITTED;
+				break;
 			case IOT_SCHEDULED:
 				anomalyType = AnomalyType.IOT_DEVICE_RESULTS_NOT_AS_PER_BENCHMARK;
 				break;

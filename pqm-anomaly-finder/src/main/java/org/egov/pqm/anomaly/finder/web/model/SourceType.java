@@ -8,5 +8,6 @@ import lombok.Getter;
 public enum SourceType {
 	LAB_SCHEDULED,
 	  IOT_SCHEDULED,
-	  LAB_ADHOC
+	  LAB_ADHOC,
+	  TEST_RESULT_NOT_SUBMITTED
 }

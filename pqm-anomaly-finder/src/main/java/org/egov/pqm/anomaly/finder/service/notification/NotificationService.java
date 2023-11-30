@@ -113,6 +113,9 @@ public class NotificationService {
 				case LAB_ADHOC:
 					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
 					break;
+				case TEST_RESULT_NOT_SUBMITTED:
+					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_SUBMITTED;
+					break;
 				default:
 					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
 				}
