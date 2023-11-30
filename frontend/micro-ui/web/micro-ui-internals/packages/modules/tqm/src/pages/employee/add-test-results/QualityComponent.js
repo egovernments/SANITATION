@@ -99,7 +99,7 @@ const QualityParameter = ({onSelect,formData }) => {
                         <div key={index}>
                             {criterionList.map((criteria, subindex) => (
                                 <LabelFieldPair key={subindex}>
-                                    <CardLabel style={CardLabelStyle}>{t(Digit.Utils.locale.getTransformedLocale(`${"PQM.TestStandard"}_${criteria}`))}</CardLabel>
+                                    <CardLabel style={CardLabelStyle}>{t(Digit.Utils.locale.getTransformedLocale(`${"PQM.TestStandard"}_${criteria}`))} {criterionList?.length === 1 ? "*" : ""}</CardLabel>
                                     
                                     <div className="field">
                                         <Controller
