@@ -14,6 +14,7 @@
   font-weight: 700;
   text-wrap: wrap;
   text-align: center;
+  margin: 0;
   &.success {
     border: 1px solid #00703c;
     color: #00703c;
@@ -21,6 +22,9 @@
   &.error {
     border: 1px solid #d4351c;
     color: #d4351c;
+  }
+  p {
+    font-size: 1rem;
   }
 }
 
@@ -69,6 +73,7 @@
 .employeeCard {
   .employeeCard.tqm-card-reading {
     margin-left: unset;
+    margin-top: 1rem;
   }
 }
 .employeeCard {

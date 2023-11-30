@@ -1,4 +1,4 @@
-export const viewTestSummary = async ({ t, id }) => {
+export const viewTestSummary = async ({ tenantId, t, id }) => {
   const response = await Digit.CustomService.getResponse({
     url: "/pqm-service/v1/_search",
     body: {
@@ -12,6 +12,9 @@ export const viewTestSummary = async ({ t, id }) => {
     },
   });
 
+  const workflowData = await Digit.WorkflowService.getDetailsByIdWorks({ tenantId, id, moduleCode: "PQM" });
+  const workflowActionMap = Digit?.Customizations?.commonUiConfig?.workflowActionMap;
+  const testProcess = workflowData?.processInstances?.find((i) => i.action === workflowActionMap.update);
   const testResponse = response?.tests?.[0];
   const updatedTime = testResponse?.auditDetails?.lastModifiedTime;
 
@@ -65,7 +68,14 @@ export const viewTestSummary = async ({ t, id }) => {
     reading: testResponse?.testCriteria
       ? {
           title: "ES_TQM_TEST_PARAMS_HEADING",
-          date: updatedTime ? `${new Date(updatedTime).getDate()}/${new Date(updatedTime).getMonth() + 1}/${new Date(updatedTime).getFullYear()}` : `N/A`,
+          date:
+            testResponse?.testType === "LAB_ADHOC"
+              ? `${new Date(updatedTime).getDate()}/${new Date(updatedTime).getMonth() + 1}/${new Date(updatedTime).getFullYear()}`
+              : testProcess?.auditDetails?.lastModifiedTime
+              ? `${new Date(testProcess?.auditDetails?.lastModifiedTime).getDate()}/${new Date(testProcess?.auditDetails?.lastModifiedTime).getMonth() + 1}/${new Date(
+                  testProcess?.auditDetails?.lastModifiedTime
+                ).getFullYear()}`
+              : `N/A`,
           readings: testResponse?.testCriteria,
         }
       : null,

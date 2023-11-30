@@ -382,10 +382,10 @@ export const UICustomizations = {
       return ""
     },
     onCardClick:(obj)=> {
-      return `summary?id=${obj?.apiResponse?.testId}`
+      return `summary?id=${obj?.apiResponse?.testId}&type=past`
     },
     onCardActionClick:(obj)=> {
-      return `summary?id=${obj?.apiResponse?.testId}`
+      return `summary?id=${obj?.apiResponse?.testId}&type=past`
     },
     getCustomActionLabel:(obj,row) => {
       return ""

@@ -509,10 +509,11 @@
 .card-label-error.custom-formcomposer {
   width: 70%;
   margin-left: 30%;
-  font-size: 12px;
+  font-size: 14px;
   margin-top: -21px;
   @media (max-width: 639px) {
     margin-left: unset;
+    width: 100%;
   }
 }
 
@@ -563,5 +564,11 @@
   }
   .searchBox {
     margin-bottom: 0;
+  }
+}
+
+.field {
+  .error-msg {
+    margin-bottom: 1rem;
   }
 }

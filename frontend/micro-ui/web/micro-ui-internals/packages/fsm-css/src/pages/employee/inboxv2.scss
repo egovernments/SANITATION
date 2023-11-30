@@ -37,3 +37,20 @@
   padding: unset;
   border: unset;
 }
+
+.popup-module {
+  .search-wrapper {
+    .search-field-wrapper {
+      .label-field-pair {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+.multi-select-dropdown-wrap{
+  .server{
+    overflow: auto;
+    max-height: 7rem;
+  }
+}
