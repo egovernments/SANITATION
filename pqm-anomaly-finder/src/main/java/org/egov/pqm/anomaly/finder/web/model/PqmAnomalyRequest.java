@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PqmAnomalyRequest {
 
-	  @JsonProperty("requestInfo")
+	  @JsonProperty("RequestInfo")
 	  private RequestInfo requestInfo = null;
 
 	  @JsonProperty("pqmAnomalys")
