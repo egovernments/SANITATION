@@ -9,6 +9,13 @@ const TqmHome = (props) => {
   const startDate = new Date(endDate);
   startDate.setMonth(startDate.getMonth() - 1);
   
+  const activePlantCode = Digit.SessionStorage.get('active_plant')?.plantCode
+    ? [Digit.SessionStorage.get('active_plant')?.plantCode]
+    : Digit.SessionStorage.get('user_plants')
+        ?.filter((row) => row.plantCode)
+        ?.map((row) => row.plantCode);
+  
+
   const requestCriteria1 = {
     url: "/dashboard-analytics/dashboard/getChartV2",
     params: {},
@@ -17,7 +24,9 @@ const TqmHome = (props) => {
         "visualizationType": "METRIC",
         "visualizationCode": "pqmTestCompliance",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : []
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
@@ -42,7 +51,9 @@ const TqmHome = (props) => {
         "visualizationType": "METRIC",
         "visualizationCode": "pqmPercentageOfTestResultsMeetingBenchmarks",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : []
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
