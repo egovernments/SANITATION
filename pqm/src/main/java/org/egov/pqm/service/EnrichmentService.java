@@ -205,4 +205,9 @@ public class EnrichmentService {
       testRepository.saveAnomaly(config.getAnomalyCreateTopic(), testRequest);
     }
   }
+
+  public void pushToAnomalyDetectorIfTestResultNotSubmitted(TestRequest testRequest) {
+      testRepository.saveAnomaly(config.getTestResultNotSubmittedKafkaTopic(), testRequest);
+  }
+
 }
