@@ -297,14 +297,7 @@ public class PqmService {
 
       //search from DB for any pending tests
       List<Test> testListFromDb = testSearch(testSearchRequest, requestInfo).getTests();
-      if (testListFromDb.size() >= 2) {
-        // Access the second element (index 1) and check if it's not empty
-        Test secondTest = testListFromDb.get(1);
-        Long scheduleDate = secondTest.getScheduledDate();
-          if (secondTest.getStatus() == TestResultStatus.PENDING && isPastScheduledDate(scheduleDate)) {
-              enrichmentService.pushToAnomalyDetectorIfTestResultNotSubmitted(TestRequest.builder().requestInfo(requestInfo).tests(Collections.singletonList(secondTest)).build());
-          }
-      }
+
 
       int frequency = Integer.parseInt(mdmsTest.getFrequency().split("_")[0]);
 
