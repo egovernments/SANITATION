@@ -26,7 +26,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": "pg.citya"
+        "tenantId": Digit.ULBService.getCurrentTenantId()
       }
     },
     changeQueryName: "testCompliance",
@@ -51,7 +51,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": "pg.citya"
+        "tenantId": Digit.ULBService.getCurrentTenantId()
       }
     },
     changeQueryName: "percentage",
@@ -76,7 +76,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": "pg.citya"
+        "tenantId": Digit.ULBService.getCurrentTenantId()
       }
     },
     changeQueryName: "alerts",

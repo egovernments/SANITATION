@@ -80,7 +80,8 @@ const App = ({ path }) => {
   
   return (
     <>
-      {isUlbAdminLoggedIn && isMobile  ? <BackButton>{t('CS_COMMON_BACK')}</BackButton>  :  <TqmBreadCrumb location={location} defaultPath={path} />}
+      
+      {isUlbAdminLoggedIn &&  isMobile  ? <BackButton>{t('CS_COMMON_BACK')}</BackButton>  :  !isPlantOperatorLoggedIn ?<TqmBreadCrumb location={location} defaultPath={path} />:null}
       {/* {isPlantOperatorLoggedIn && (location.pathname.includes("/response") ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>)} */}
       {isPlantOperatorLoggedIn && <TqmHeader location={location} defaultPath={path}/>}
       

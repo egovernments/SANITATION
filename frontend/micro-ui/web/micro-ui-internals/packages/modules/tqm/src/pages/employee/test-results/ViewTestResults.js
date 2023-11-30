@@ -45,23 +45,23 @@ function ViewTestResults() {
                       }),
                       columnsData: [
                         {
-                          Header: "SL. No.",
+                          Header: t("ES_TQM_SNO"),
                           accessor: "slno",
                         },
                         {
-                          Header: "Quality Parameter",
+                          Header: t("ES_TQM_QUALITY_PARAMETER"),
                           accessor: "qp",
                         },
                         {
-                          Header: "UOM",
+                          Header: t("ES_TQM_UOM"),
                           accessor: "uom",
                         },
                         {
-                          Header: "Benchmark",
+                          Header: t("ES_TQM_BENCHMARK"),
                           accessor: "bench",
                         },
                         {
-                          Header: "Results",
+                          Header: t("ES_TQM_RESULTS"),
                           accessor: "results",
                           Cell: ({ row }) => {
                             return <span className={row?.original?.status === "PASS" ? "sla-cell-success" : "sla-cell-error"}>{row?.original?.results}</span>;
