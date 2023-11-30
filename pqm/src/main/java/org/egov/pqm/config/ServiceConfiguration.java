@@ -119,7 +119,7 @@ public class ServiceConfiguration {
   private String userSearchEndpoint;
 
   //tenantId
-  @Value("${egov.state.level.tenantid}")
+  @Value("${egov.statelevel.tenantid}")
   private String egovStateLevelTenantId;
 
 }
