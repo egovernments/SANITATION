@@ -17,7 +17,7 @@ function ParameterReadings({ reading, responseData }) {
       {reading?.title ? <CardSubHeader>{t(reading?.title)}</CardSubHeader> : null}
       {reading?.date ? (
         <CardCaption style={{ display: "flex" }}>
-          <p>{t("ES_TQM_TEST_RESULTS_DATE_LABEL")}: </p>
+          <p style={{ marginRight: "0.5rem" }}>{t("ES_TQM_TEST_RESULTS_DATE_LABEL")}: </p>
           <p> {reading?.date}</p>
         </CardCaption>
       ) : null}
