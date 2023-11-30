@@ -77,3 +77,14 @@
     }
   }
 }
+
+.pqm-table {
+  td {
+    vertical-align: top !important;
+  }
+}
+
+.multi-select-dropdown-wrap .server {
+  overflow-x:auto !important;
+  overflow-y: scroll !important;
+}

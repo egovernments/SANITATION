@@ -116,7 +116,8 @@ export const tqmInboxConfig = {
             ],
             "enableGlobalSearch": false,
             "enableColumnSort": true,
-            "resultsJsonPath": "items"
+            "resultsJsonPath": "items",
+            "tableClassName":"table pqm-table"
           },
           "children": {},
           "show": true

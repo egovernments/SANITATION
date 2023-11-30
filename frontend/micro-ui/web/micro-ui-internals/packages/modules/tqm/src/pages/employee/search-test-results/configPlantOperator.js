@@ -175,7 +175,8 @@ export const tqmSearchConfigPlantOperator = {
             "actionButtonLabelMobileCard": "TQM_VIEW_RESULTS",
             "enableGlobalSearch": false,
             "enableColumnSort": true,
-            "resultsJsonPath": "tests"
+            "resultsJsonPath": "tests",
+            "tableClassName":"table pqm-table"
           },
           "children": {},
           "show": true

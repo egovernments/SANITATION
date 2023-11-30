@@ -76,11 +76,11 @@ const App = ({ path }) => {
   const TqmViewTestResults = Digit?.ComponentRegistryService?.getComponent("TqmViewTestResults");
   const TQMSummary = Digit?.ComponentRegistryService?.getComponent("TQMSummary");
   const SensorScreen = Digit?.ComponentRegistryService?.getComponent("SensorScreen");
+  let isMobile = window.Digit.Utils.browser.isMobile();
   
-
   return (
     <>
-      {isUlbAdminLoggedIn && <TqmBreadCrumb location={location} defaultPath={path} />}
+      {isUlbAdminLoggedIn && isMobile  ? <BackButton>{t('CS_COMMON_BACK')}</BackButton>  :  <TqmBreadCrumb location={location} defaultPath={path} />}
       {/* {isPlantOperatorLoggedIn && (location.pathname.includes("/response") ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>)} */}
       {isPlantOperatorLoggedIn && <TqmHeader location={location} defaultPath={path}/>}
       
