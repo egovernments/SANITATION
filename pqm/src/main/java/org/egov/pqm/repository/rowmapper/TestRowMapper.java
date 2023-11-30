@@ -60,6 +60,7 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
         String statusString = rs.getString("status");
         TestResultStatus status = TestResultStatus.valueOf(statusString.toUpperCase());
         String wfStatus = rs.getString("wfStatus");
+        String testCode = rs.getString("testCode");
 
         String sourceTypeString = rs.getString("sourceType");
         SourceType sourceType = SourceType.valueOf(sourceTypeString.toUpperCase());
@@ -73,7 +74,7 @@ public class TestRowMapper implements ResultSetExtractor<List<Test>> {
             .lastModifiedTime(rs.getLong("lastmodifiedtime")).build();
 
         currentTest = Test.builder().id(id).testId(testId).tenantId(tenantId).plantCode(plantCode)
-            .processCode(processCode)
+            .processCode(processCode).testCode(testCode)
             .stageCode(stageCode).materialCode(materialCode).deviceCode(deviceCode)
             .status(status).wfStatus(wfStatus).sourceType(sourceType).labAssignedTo(labAssignedTo)
             .scheduledDate(scheduledDate).isActive(isActive).additionalDetails(additionaldetails)
