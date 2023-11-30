@@ -78,7 +78,7 @@ function TestDetails() {
   const submitAction = (data) => {
     mutate(data, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: error });
+        setShowToast({ key: "error", action: nextAction === "SCHEDULED" ? "ES_TQM_SCHEDULE_UPDATED_FAILED" : "ES_TQM_TEST_UPDATED_FAILED" });
         setTimeout(closeToast, 5000);
       },
       onSuccess: (data, variables) => {

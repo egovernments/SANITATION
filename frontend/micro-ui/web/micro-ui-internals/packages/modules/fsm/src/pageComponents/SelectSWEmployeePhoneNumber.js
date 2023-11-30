@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { LabelFieldPair, CardLabel, TextInput, CardLabelError, LinkButton, ActionLinks } from "@egovernments/digit-ui-react-components";
 import { useLocation, Link } from "react-router-dom";
 
-const SelectEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userType, register, errors }) => {
+const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userType, register, errors }) => {
   const { pathname: url } = useLocation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [iserror, setError] = useState(false);
@@ -104,4 +104,4 @@ const SelectEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userTyp
   );
 };
 
-export default SelectEmployeePhoneNumber;
+export default SelectSWEmployeePhoneNumber;

@@ -71,3 +71,12 @@
     margin-left: unset;
   }
 }
+.employeeCard {
+  .complaint-links-container {
+    .body {
+      .links-wrapper > .link {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
