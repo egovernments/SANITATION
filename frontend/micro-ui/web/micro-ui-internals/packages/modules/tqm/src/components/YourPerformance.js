@@ -34,7 +34,7 @@ const Output = ({ performance }) => {
   )
 }
 
-const YourPerformance = ({ performance }) => {
+const YourPerformance = ({ performance, dateRange }) => {
   const { t } = useTranslation();
   
   return (
@@ -48,6 +48,7 @@ const YourPerformance = ({ performance }) => {
           onHeadClick={() => { }}
         />
       </div>
+      <span style={{padding: "8px"}}>{`${dateRange?.startDate} - ${dateRange?.lastMonthEnd}`}</span>
       <Card className="performance-container">
         <Compliance performance={performance} />
         <VerticalLine />

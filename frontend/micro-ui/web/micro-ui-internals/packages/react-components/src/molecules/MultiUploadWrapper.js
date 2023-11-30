@@ -133,7 +133,7 @@ const MultiUploadWrapper = ({ t, module = "PGR", tenantId = Digit.ULBService.get
                 customClass={customClass}
                 enableButton={enableButton}
             />
-            <span style={{ display: 'flex' }}>
+            <span className="error-msg" style={{ display: 'flex' }}>
                 {fileErrors.length ? fileErrors.map(({ valid, name, type, size, error }) => (
                     valid ? null : displayError({ t, error, name }, customErrorMsg)
                 )) : null}

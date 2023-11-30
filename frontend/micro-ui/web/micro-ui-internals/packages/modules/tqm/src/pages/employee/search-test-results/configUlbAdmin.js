@@ -139,7 +139,7 @@ export const tqmSearchConfigUlbAdmin = {
                 "translate": true
               },
               {
-                "label": "TQM_TEST_DATE",
+                "label": "ES_TQM_TEST_DATE",
                 "jsonPath": "scheduledDate",
                 "additionalCustomization": true
               },

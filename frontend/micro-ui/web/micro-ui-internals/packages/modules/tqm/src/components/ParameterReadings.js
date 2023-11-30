@@ -9,6 +9,9 @@ function ParameterReadings({ reading, responseData }) {
   const { t } = useTranslation();
   const history = useHistory();
   const isTestPassed = responseData?.status.includes("PASS") ? true : false;
+  const searchParams = new URLSearchParams(location.search);
+  const type = searchParams.get("type");
+
   return reading ? (
     <>
       {reading?.title ? <CardSubHeader>{t(reading?.title)}</CardSubHeader> : null}
@@ -35,19 +38,17 @@ function ParameterReadings({ reading, responseData }) {
           message={
             isTestPassed ? (
               <>
-                <p>{t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE_PRI")}</p>
-                <p>{t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE_SECND")}</p>
+                {t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE")}
               </>
             ) : (
               <>
-                <p>{t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE_PRI")}</p>
-                <p>{t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE_SECND")}</p>
+                {t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE")}
               </>
             )
           }
         />
       ) : null}
-      <SubmitBar label={t("ES_TQM_TEST_BACK_BUTTON")} onSubmit={() => history.goBack()} style={{ marginBottom: "12px" }} />
+      <SubmitBar label={type === "past" ? t("ES_TQM_TEST_BACK_TO_PAST_TEST") : t("ES_TQM_TEST_BACK_TO_INBOX")} onSubmit={() => type === "past" ? history.push(`/${window?.contextPath}/employee/tqm/search-test-results`) : history.push(`/${window?.contextPath}/employee/tqm/inbox`)} style={{ marginBottom: "12px" }} />
     </>
   ) : null;
 }
