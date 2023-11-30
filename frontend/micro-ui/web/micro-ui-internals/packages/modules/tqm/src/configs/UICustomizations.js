@@ -70,6 +70,12 @@ const workflowStatusMap = {
   submit: "SUBMITTED"
  };
 
+const workflowActionMap = {
+  update:"UPDATE_RESULT",
+  submit: "SUBMIT_SAMPLE",
+  schedule: "SCHEDULE"
+ };
+
 const tqmRoleMapping = {
   plant:["PQM_TP_OPERATOR"],
   ulb:["PQM_ADMIN"]
@@ -84,6 +90,7 @@ export const UICustomizations = {
   tqmRoleMapping,
   businessServiceMap,
   workflowStatusMap,
+  workflowActionMap,
   SearchAttendanceConfig:{
     populateReqCriteria: () => {
       const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -209,7 +216,7 @@ export const UICustomizations = {
           const remainingSLA = targetDate - currentDate;
           sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
           if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
-          return sla > 0 ? <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{sla} {t("COMMON_DAYS")}</span>;
+          return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.abs(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
@@ -329,7 +336,7 @@ export const UICustomizations = {
           const remainingSLA = targetDate - currentDate;
           sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
           if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
-          return sla > 0 ? <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{sla} {t("COMMON_DAYS")}</span>;
+          return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.abs(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)

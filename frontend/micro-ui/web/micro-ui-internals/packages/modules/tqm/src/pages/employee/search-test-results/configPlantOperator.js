@@ -203,12 +203,12 @@ export const tqmSearchConfigPlantOperator = {
                     {
                       "code": "LATEST_FIRST",
                       "name": "TQM_INBOX_LATEST_FIRST",
-                      "value": "ASC"
+                      "value": "DESC"
                     },
                     {
                       "code": "LATEST_LAST",
                       "name": "TQM_INBOX_LATEST_LAST",
-                      "value": "DESC"
+                      "value": "ASC"
                     }
                   ],
                   "optionsKey": "name",

@@ -9,7 +9,7 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] })
       body: [
         {
           type: "component",
-          component: "SelectEmployeePhoneNumber",
+          component: "SelectSWEmployeePhoneNumber",
           key: "SelectEmployeePhoneNumber",
           withoutLabel: true,
         },

@@ -58,7 +58,7 @@ import WorkflowFilter from "./components/WorkflowFilter";
 import Search from "./pages/employee/Search";
 import AddWorker from "./pages/employee/FSMRegistry/Worker/AddWorker";
 import AddWorkerRoles from "./pageComponents/addWorkerRole";
-import SelectEmployeePhoneNumber from "./pageComponents/EmployeePhoneNumber";
+import SelectSWEmployeePhoneNumber from "./pageComponents/SelectSWEmployeePhoneNumber";
 import EditWorker from "./pages/employee/FSMRegistry/Worker/EditWorker";
 import WorkerDetails from "./pages/employee/FSMRegistry/Worker/WorkerDetails";
 import SelectSWEmploymentDetails from "./pageComponents/SelectSWEmploymentDetails";
@@ -185,7 +185,7 @@ const componentsToRegister = {
   WorkflowFilter,
   FSMSearch: Search,
   AddWorkerRoles,
-  SelectEmployeePhoneNumber,
+  SelectSWEmployeePhoneNumber,
   EditWorker,
   WorkerDetails,
   SelectSWEmploymentDetails,

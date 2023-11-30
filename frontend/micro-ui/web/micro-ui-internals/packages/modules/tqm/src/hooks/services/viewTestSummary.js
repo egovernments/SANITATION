@@ -46,14 +46,14 @@ export const viewTestSummary = async ({ t, id }) => {
         value: testResponse?.labAssignedTo ? t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityTestLab_${testResponse?.labAssignedTo}`)) : "N/A",
       },
       {
-        key: "ES_TQM_LABEL_TEST_SCHEDULED_ON",
+        key: "ES_TQM_LABEL_TEST_SUBMITTED_ON",
         value:
           (testResponse?.scheduledDate &&
             `${new Date(testResponse?.scheduledDate).getDate()}/${new Date(testResponse?.scheduledDate).getMonth() + 1}/${new Date(testResponse?.scheduledDate).getFullYear()}`) ||
           "N/A",
       },
       {
-        key: "ES_TQM_LABEL_STATUS",
+        key: "ES_TQM_LABEL_TEST_RESULTS",
         isSla: true,
         isSuccess: testResponse?.status === "PASS" ? true : false,
         value: t(`TQM_TEST_STATUS_${testResponse?.status}`) || "N/A",

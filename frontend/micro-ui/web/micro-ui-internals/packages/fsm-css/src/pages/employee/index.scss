@@ -18,7 +18,7 @@
   }
   .home-action-cards {
     height: auto !important;
-    min-height: 263px;
+    min-height: auto;
   }
   .topbar {
     position: fixed;
@@ -541,8 +541,27 @@
   }
 }
 
-.label-field-pair{
-  .card-label{
+.label-field-pair {
+  .card-label {
     margin-bottom: 0.5rem;
+  }
+}
+
+.drawer-list {
+  .sidebar-list {
+    .submenu-container {
+      .sidebar-link {
+        padding: unset !important;
+      }
+    }
+  }
+}
+.sections-parent.inbox {
+  .details-container {
+    margin-bottom: 1rem;
+    margin-top: 0;
+  }
+  .searchBox {
+    margin-bottom: 0;
   }
 }

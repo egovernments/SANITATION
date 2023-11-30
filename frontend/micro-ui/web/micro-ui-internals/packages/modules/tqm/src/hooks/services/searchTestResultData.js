@@ -61,6 +61,10 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
     }
   }
 
+  const workflowActionMap = Digit?.Customizations?.commonUiConfig?.workflowActionMap;
+  const sampleProcess = workflowData?.processInstances?.find((i) => i.action === workflowActionMap.submit);
+  const testProcess = workflowData?.processInstances?.find((i) => i.action === workflowActionMap.update);
+
   return {
     details:
       userRoles.includes("PQM_ADMIN") && type !== "adhoc"
@@ -94,12 +98,30 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
               value: testResponse?.labAssignedTo ? t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityTestLab_${testResponse?.labAssignedTo}`)) : "N/A",
             },
             {
+              key: t("ES_TQM_LABEL_TEST_SCHEDULED_DATE"),
+              value:
+                (testResponse?.scheduledDate &&
+                  `${new Date(testResponse?.scheduledDate).getDate()}/${new Date(testResponse?.scheduledDate).getMonth() + 1}/${new Date(
+                    testResponse?.scheduledDate
+                  ).getFullYear()}`) ||
+                "N/A",
+            },
+            {
               key: t("ES_TQM_LABEL_STATUS"),
               value: t(`TQM_TEST_STATUS_${testResponse?.status}`) || "N/A",
             },
             {
+              key: t("ES_TQM_LABEL_SAMPLE_SUBMITTED_ON"),
+              value:
+                sampleProcess && sampleProcess?.auditDetails?.lastModifiedTime
+                  ? `${new Date(sampleProcess && sampleProcess?.auditDetails?.lastModifiedTime).getDate()}/${
+                      new Date(sampleProcess && sampleProcess?.auditDetails?.lastModifiedTime).getMonth() + 1
+                    }/${new Date(sampleProcess && sampleProcess?.auditDetails?.lastModifiedTime).getFullYear()}`
+                  : "N/A",
+            },
+            {
               key: t("ES_TQM_LABEL_TEST_SUBMITTED_BY"),
-              value: workflowData?.processInstances?.[0]?.assigner?.name || "N/A",
+              value: testProcess?.assigner?.name || "N/A",
             },
             workflowData?.processInstances?.[0]?.state?.isTerminateState === true
               ? {
@@ -114,7 +136,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
                   key: t("ES_TQM_LABEL_SLA"),
                   isSla: true,
                   isSuccess: Math.sign(sla) === -1 ? false : true,
-                  value: sla ? `${sla} ${t("COMMON_DAYS")}` : `0 ${t("COMMON_DAYS")}`,
+                  value: Math.sign(sla) === -1 ? `${Math.abs(sla)} ${t("COMMON_DAYS_OVERDUE")}` : `${sla} ${t("COMMON_DAYS")}`,
                 },
           ]
         : userRoles.includes("PQM_ADMIN") && type === "adhoc"
@@ -203,7 +225,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
               key: t("ES_TQM_LABEL_SLA"),
               isSla: true,
               isSuccess: Math.sign(sla) === -1 ? false : true,
-              value: sla ? `${sla} ${t("COMMON_DAYS")}` : `0 ${t("COMMON_DAYS")}`,
+              value: Math.sign(sla) === -1 ? `${Math.abs(sla)} ${t("COMMON_DAYS_OVERDUE")}` : `${sla} ${t("COMMON_DAYS")}`,
             },
           ],
     documents: testResponse?.documents?.map((i) => {
