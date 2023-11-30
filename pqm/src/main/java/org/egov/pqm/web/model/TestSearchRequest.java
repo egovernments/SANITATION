@@ -14,7 +14,7 @@ import org.egov.common.contract.request.RequestInfo;
 @Builder
 public class TestSearchRequest {
 
-  @JsonProperty("requestInfo")
+  @JsonProperty("RequestInfo")
   private RequestInfo requestInfo = null;
 
   @JsonProperty("testSearchCriteria")
