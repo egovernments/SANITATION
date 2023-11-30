@@ -58,7 +58,7 @@ const WorkflowTimeline = ({ businessService, tenantId,applicationNo, timelineSta
         
     };
 
-    let workflowDetails = Digit.Hooks.useWorkflowDetailsWorks(
+    let workflowDetails = Digit.Hooks.useWorkflowDetailsFSM(
         {
             tenantId: tenantId,
             id: applicationNo,

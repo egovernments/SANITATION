@@ -1,7 +1,7 @@
 export const createModifiedData = (data) => {
     const modifiedData = [
         {
-            "tenantId": "pg.citya",
+            "tenantId": Digit.ULBService.getCurrentTenantId(),
             "plantCode": data?.plantCode?.code,
             "processCode": data?.processCode?.code,
             "stageCode": data?.stageCode?.code,
