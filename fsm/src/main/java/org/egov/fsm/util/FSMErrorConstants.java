@@ -80,6 +80,7 @@ public class FSMErrorConstants {
 	public static final String COMPLETED_DATE_NOT_NULL = "COMPLETED_DATE_NOT_NULL";
 	public static final String VEHICLE_NOT_FOUND = "VEHICLE_NOT_FOUND";
 	public static final String INVALID_DSO_VEHICLE = "INVALID_DSO_VEHICLE";
+	public static final String INVALID_DSO_WORKERS = "INVALID_DSO_WORKERS";
 	public static final String INVALID_CHECKLIST = "INVALID_CHECKLIST";
 	public static final String INVALID_SLUM = "INVALID_SLUM";
 	public static final String INVALID_NO_OF_TRIPS = "INVALID_NO_OF_TRIPS";

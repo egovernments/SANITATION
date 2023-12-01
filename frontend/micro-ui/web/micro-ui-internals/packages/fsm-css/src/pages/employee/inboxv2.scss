@@ -23,3 +23,34 @@
     fill: none;
   }
 }
+
+.search-wrapper .search-button-wrapper.inbox.sort button {
+  width: 100%;
+}
+.popup-label {
+  .header {
+    display: flex;
+    align-items: center;
+  }
+}
+.clear-search.refresh-icon-container {
+  padding: unset;
+  border: unset;
+}
+
+.popup-module {
+  .search-wrapper {
+    .search-field-wrapper {
+      .label-field-pair {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+.multi-select-dropdown-wrap{
+  .server{
+    overflow: auto;
+    max-height: 7rem;
+  }
+}

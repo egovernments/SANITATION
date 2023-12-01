@@ -16,7 +16,7 @@ import {
   usePaymentSearch,
   useBulkPdfDetails,
 } from './payment';
-import useWorkflowDetailsWorks from './workflowWorks.js';
+import useWorkflowDetailsFSM from './workflowWorks.js';
 import { useUserSearch } from './userSearch';
 import { useApplicationsForBusinessServiceSearch } from './useApplicationForBillSearch';
 import useBoundaryLocalities from './useLocalities';
@@ -139,7 +139,7 @@ const Hooks = {
   useFetchBillsForBuissnessService,
   useGetPaymentRulesForBusinessServices,
   useWorkflowDetails,
-  useWorkflowDetailsWorks,
+  useWorkflowDetailsFSM,
   useInitStore,
   useClickOutside,
   useUserSearch,

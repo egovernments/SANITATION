@@ -1060,8 +1060,8 @@ const EventCalendar = () => {
   );
 };
 
-const NotificationBell = ({height=20,width=16,fill="white",className,style}) => (
-  <svg className={className }width={width} height={height} viewBox="0 0 16 20" fill={fill} xmlns="http://www.w3.org/2000/svg">
+const NotificationBell = ({ height = 20, width = 16, fill = "white", className, style }) => (
+  <svg className={className} width={width} height={height} viewBox="0 0 16 20" fill={fill} xmlns="http://www.w3.org/2000/svg">
     <path
       d="M8 20C9.1 20 10 19.1 10 18H6C6 19.1 6.89 20 8 20ZM14 14V9C14 5.93 12.36 3.36 9.5 2.68V2C9.5 1.17 8.83 0.5 8 0.5C7.17 0.5 6.5 1.17 6.5 2V2.68C3.63 3.36 2 5.92 2 9V14L0 16V17H16V16L14 14Z"
       fill={fill}
@@ -1362,14 +1362,16 @@ const InboxIcon = () => (
 const TqmHomePageCardIcon = ({ className = "", fill = "", style = {} }) => (
   <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} style={style}>
     <rect width="56" height="56" rx="2" fill="#F47738" />
-    <g clip-path="url(#clip0_53234_119512)">
+    <g clip-path="url(#clip0_52400_116661)">
       <path
-        d="M28.0007 19.6667V13H11.334V43H44.6673V19.6667H28.0007ZM18.0007 39.6667H14.6673V36.3333H18.0007V39.6667ZM18.0007 33H14.6673V29.6667H18.0007V33ZM18.0007 26.3333H14.6673V23H18.0007V26.3333ZM18.0007 19.6667H14.6673V16.3333H18.0007V19.6667ZM24.6673 39.6667H21.334V36.3333H24.6673V39.6667ZM24.6673 33H21.334V29.6667H24.6673V33ZM24.6673 26.3333H21.334V23H24.6673V26.3333ZM24.6673 19.6667H21.334V16.3333H24.6673V19.6667ZM41.334 39.6667H28.0007V36.3333H31.334V33H28.0007V29.6667H31.334V26.3333H28.0007V23H41.334V39.6667ZM38.0007 26.3333H34.6673V29.6667H38.0007V26.3333ZM38.0007 33H34.6673V36.3333H38.0007V33Z"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M41.332 13H14.6654C12.832 13 11.332 14.5 11.332 16.3333V39.6667C11.332 41.5 12.832 43 14.6654 43H41.332C43.1654 43 44.6654 41.5 44.6654 39.6667V16.3333C44.6654 14.5 43.1654 13 41.332 13ZM24.6654 36.3333H16.332V33H24.6654V36.3333ZM24.6654 29.6667H16.332V26.3333H24.6654V29.6667ZM24.6654 23H16.332V19.6667H24.6654V23ZM32.6987 33L27.9987 28.2667L30.3487 25.9167L32.6987 28.2833L37.982 23L40.3487 25.3667L32.6987 33Z"
         fill="white"
       />
     </g>
     <defs>
-      <clipPath id="clip0_53234_119512">
+      <clipPath id="clip0_52400_116661">
         <rect width="40" height="40" fill="white" transform="translate(8 8)" />
       </clipPath>
     </defs>

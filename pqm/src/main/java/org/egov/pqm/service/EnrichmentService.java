@@ -23,6 +23,7 @@ import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.AuditDetails;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.QualityCriteria;
+import org.egov.pqm.web.model.SourceType;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResultStatus;
@@ -200,8 +201,13 @@ public class EnrichmentService {
   }
 
   public void pushToAnomalyDetectorIfTestResultStatusFail(TestRequest testRequest) {
-    if (testRequest.getTests().get(0).getStatus() == TestResultStatus.FAIL) {
+    if (testRequest.getTests().get(0).getStatus() == TestResultStatus.FAIL && testRequest.getTests().get(0).getSourceType() != SourceType.LAB_ADHOC ) {
       testRepository.saveAnomaly(config.getAnomalyCreateTopic(), testRequest);
     }
   }
+
+  public void pushToAnomalyDetectorIfTestResultNotSubmitted(TestRequest testRequest) {
+      testRepository.saveAnomaly(config.getTestResultNotSubmittedKafkaTopic(), testRequest);
+  }
+
 }

@@ -1,14 +1,24 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import TqmCard from '../../../components/TqmCard'
 import Alerts from '../../../components/Alerts'
 import YourPerformance from '../../../components/YourPerformance'
 import { useTranslation } from "react-i18next";
+import getDateRange from '../../../utils/formatDate';
+
 const TqmHome = (props) => {
   const { t } = useTranslation();
   const endDate = Date.now();
   const startDate = new Date(endDate);
   startDate.setMonth(startDate.getMonth() - 1);
+  const [dateRange, setDateRange] = useState(getDateRange(new Date()));  
   
+  const activePlantCode = Digit.SessionStorage.get('active_plant')?.plantCode
+    ? [Digit.SessionStorage.get('active_plant')?.plantCode]
+    : Digit.SessionStorage.get('user_plants')
+        ?.filter((row) => row.plantCode)
+        ?.map((row) => row.plantCode);
+  
+
   const requestCriteria1 = {
     url: "/dashboard-analytics/dashboard/getChartV2",
     params: {},
@@ -17,7 +27,9 @@ const TqmHome = (props) => {
         "visualizationType": "METRIC",
         "visualizationCode": "pqmTestCompliance",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : []
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
@@ -26,7 +38,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": "pg.citya"
+        "tenantId": Digit.ULBService.getCurrentTenantId()
       }
     },
     changeQueryName: "testCompliance",
@@ -42,7 +54,9 @@ const TqmHome = (props) => {
         "visualizationType": "METRIC",
         "visualizationCode": "pqmPercentageOfTestResultsMeetingBenchmarks",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : []
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
@@ -51,7 +65,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": "pg.citya"
+        "tenantId": Digit.ULBService.getCurrentTenantId()
       }
     },
     changeQueryName: "percentage",
@@ -76,7 +90,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": "pg.citya"
+        "tenantId": Digit.ULBService.getCurrentTenantId()
       }
     },
     changeQueryName: "alerts",
@@ -88,7 +102,7 @@ const TqmHome = (props) => {
     <div className='tqm-home-container'>
       <TqmCard t={t} reRoute={false} />
       <div className='dashboard-container'>
-      <YourPerformance performance={[data1, data2]}  />
+      <YourPerformance performance={[data1, data2]} dateRange={dateRange} />
       <Alerts ale={alerts} />
       </div>
     </div>

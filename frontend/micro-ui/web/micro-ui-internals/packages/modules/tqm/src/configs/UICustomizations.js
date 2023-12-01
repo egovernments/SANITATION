@@ -70,6 +70,12 @@ const workflowStatusMap = {
   submit: "SUBMITTED",
  };
 
+const workflowActionMap = {
+  update:"UPDATE_RESULT",
+  submit: "SUBMIT_SAMPLE",
+  schedule: "SCHEDULE"
+ };
+
 const tqmRoleMapping = {
   plant:["PQM_TP_OPERATOR"],
   ulb:["PQM_ADMIN"]
@@ -84,31 +90,7 @@ export const UICustomizations = {
   tqmRoleMapping,
   businessServiceMap,
   workflowStatusMap,
-  SearchAttendanceConfig:{
-    populateReqCriteria: () => {
-      const tenantId = Digit.ULBService.getCurrentTenantId();
-
-      return {
-        url: "/egov-workflow-v2/egov-wf/businessservice/_search",
-        params: { tenantId, businessServices: "MR" },
-        body: {
-         
-        },
-        config: {
-          enabled: true,
-          select: (data) => {
-            const states =  data?.BusinessServices?.[0]?.states?.filter(state=> state.state)?.map(state=> {
-              return {
-                "i18nKey":`WF_${Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("muster roll")}_STATUS_${state?.state}`,
-                "wfStatus":state?.state
-              }
-            })
-            return states  
-          },
-        },
-      };
-    }
-  },
+  workflowActionMap,
   TqmInboxConfig:{
     preProcess: (data,additionalDetails) => {
       
@@ -207,9 +189,9 @@ export const UICustomizations = {
           const targetTimestamp = row?.businessObject?.scheduledDate ;
           const targetDate = new Date(targetTimestamp);
           const remainingSLA = targetDate - currentDate;
-          sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
+          sla = Math.floor(remainingSLA / (24 * 60 * 60 * 1000));
           if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
-          return sla > 0 ? <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{sla} {t("COMMON_DAYS")}</span>;
+          return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.abs(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
@@ -327,9 +309,9 @@ export const UICustomizations = {
           const targetTimestamp = row?.businessObject?.scheduledDate ;
           const targetDate = new Date(targetTimestamp);
           const remainingSLA = targetDate - currentDate;
-          sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
+          sla = Math.floor(remainingSLA / (24 * 60 * 60 * 1000));
           if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
-          return sla > 0 ? <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span> : <span className="sla-cell-error">{sla} {t("COMMON_DAYS")}</span>;
+          return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.abs(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
@@ -376,6 +358,9 @@ export const UICustomizations = {
       data.body.testSearchCriteria.wfStatus = ["SUBMITTED"];
       //sortOrder
       data.body.pagination.sortOrder = sortOrder?.value
+      if(data.body.pagination.sortOrder){
+        data.body.pagination.sortBy = "scheduledDate"
+      }
 
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)
@@ -400,10 +385,10 @@ export const UICustomizations = {
       return ""
     },
     onCardClick:(obj)=> {
-      return `summary?id=${obj?.apiResponse?.testId}`
+      return `summary?id=${obj?.apiResponse?.testId}&type=past`
     },
     onCardActionClick:(obj)=> {
-      return `summary?id=${obj?.apiResponse?.testId}`
+      return `summary?id=${obj?.apiResponse?.testId}&type=past`
     },
     getCustomActionLabel:(obj,row) => {
       return ""
@@ -478,13 +463,13 @@ export const UICustomizations = {
         case "TQM_TEST_RESULTS":
           return value?.includes("PASS")  ? <span className="sla-cell-success">{t(`TQM_TEST_RESULT_${value}`)}</span> : <span className="sla-cell-error">{t(`TQM_TEST_RESULT_${value}`)}</span>;
           
-        case "TQM_TEST_DATE":
+        case "ES_TQM_TEST_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
         
         case "TQM_TEST_ID":
           return <span className="link">
             <Link
-              to={`/${window.contextPath}/employee/tqm/view-test-results?tenantId=${Digit.ULBService.getCurrentTenantId()}&id=${value}&from=TQM_BREAD_PAST_TESTS`}
+              to={`/${window.contextPath}/employee/tqm/view-test-results?tenantId=${Digit.ULBService.getCurrentTenantId()}&id=${value}&from=TQM_BREAD_PAST_TESTS&type=${row?.testType === "LAB_ADHOC" ? "adhoc" : ""}`}
             >
               {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
             </Link>

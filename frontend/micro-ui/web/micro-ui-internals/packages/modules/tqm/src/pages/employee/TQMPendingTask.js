@@ -36,7 +36,7 @@ function TQMPendingTask(props) {
           return {
             icon: <TreatmentQualityIcon />,
             id: i?.ProcessInstance?.businessId,
-            title: i?.ProcessInstance?.businessId,
+            title: `ES_ACTION_MESSAGE_${i?.ProcessInstance?.state?.actions?.[0]?.action}`,
             action: i?.ProcessInstance?.state?.actions?.[0]?.action,
             date: dueDate,
           };

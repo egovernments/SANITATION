@@ -1,29 +1,17 @@
 package org.egov.pqm.service;
 
-import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
-import static org.egov.pqm.util.Constants.SCHEMA_CODE_TEST_STANDARD;
-import static org.egov.pqm.util.Constants.UPDATE_RESULT;
-import static org.egov.pqm.util.Constants.SUBMIT_SAMPLE;
-import static org.egov.pqm.util.Constants.WFSTATUS_PENDINGRESULTS;
-import static org.egov.pqm.util.Constants.WFSTATUS_SCHEDULED;
-import static org.egov.pqm.util.ErrorConstants.TEST_NOT_IN_DB;
-import static org.egov.pqm.util.ErrorConstants.TEST_NOT_PRESENT_CODE;
-import static org.egov.pqm.util.ErrorConstants.TEST_NOT_PRESENT_MESSAGE;
-import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
+import static org.egov.pqm.util.Constants.*;
+import static org.egov.pqm.util.ErrorConstants.*;
 import static org.egov.pqm.util.MDMSUtils.parseJsonToTestList;
 import static org.egov.pqm.web.model.Pagination.SortOrder.DESC;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import net.minidev.json.JSONArray;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
 import org.egov.pqm.config.ServiceConfiguration;
@@ -247,16 +235,44 @@ public class PqmService {
     return testRequest.getTests().get(0);
   }
 
-
   /**
-   * Schedules Test
+   * Schedules Test for a tenant
    */
   public void scheduleTest(RequestInfo requestInfo) {
+    String stateLevelTenantId = config.getEgovStateLevelTenantId();
+    Object mdmsRes = mdmsUtils.fetchMdmsData(requestInfo, stateLevelTenantId, MDMS_MODULE_TENANT, Collections.singletonList(MDMS_MASTER_TENANTS));
+
+    String jsonString = "";
+
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      jsonString = objectMapper.writeValueAsString(mdmsRes);
+    } catch (Exception e) {
+      throw new CustomException(ErrorConstants.PARSING_ERROR,
+              "Unable to parse Tenant mdms data ");
+    }
+
+    List<String> tenantList = mdmsUtils.extractTenantCode(jsonString);
+    log.info("tenantList -> " + tenantList.toString());
+    if (tenantList != null && tenantList.isEmpty()) {
+      throw new CustomException(ErrorConstants.NO_TENANT_PRESENT_ERROR,
+              NO_TENANT_PRESENT_ERROR_DESC);
+    }
+    for (String tenantId : tenantList) {
+      scheduleTestForTenant(requestInfo, tenantId);
+    }
+  }
+
+    /**
+     * Schedules Test for a tenant
+     */
+  public void scheduleTestForTenant(RequestInfo requestInfo, String tenantId) {
 
     // get mdms TestStandardData
     //fetch mdms data for TestStandard Master
+    log.info("Scheduler Starts for Tenant -> "+ tenantId);
     Object jsondata = mdmsUtils.mdmsCallV2(requestInfo,
-        "pg", SCHEMA_CODE_TEST_STANDARD);
+            tenantId, SCHEMA_CODE_TEST_STANDARD);
     String jsonString = "";
 
     try {
@@ -272,15 +288,16 @@ public class PqmService {
     for (MdmsTest mdmsTest : mdmsTestList) {
       TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().sourceType(
               Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED)))
-          .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED))
+          .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED)).tenantId(tenantId)
           .testCode(Collections.singletonList(mdmsTest.getCode())).build();
-      Pagination pagination = Pagination.builder().limit(1).sortBy(SortBy.scheduledDate)
+      Pagination pagination = Pagination.builder().limit(2).sortBy(SortBy.scheduledDate)
           .sortOrder(DESC).build();
       TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
           .testSearchCriteria(testSearchCriteria).pagination(pagination).build();
 
       //search from DB for any pending tests
       List<Test> testListFromDb = testSearch(testSearchRequest, requestInfo).getTests();
+
 
       int frequency = Integer.parseInt(mdmsTest.getFrequency().split("_")[0]);
 
@@ -301,7 +318,7 @@ public class PqmService {
         //case 1: when no pending tests exist in DB
         Test createTest = Test.builder()
             .testCode(mdmsTest.getCode())
-            .tenantId("pg.citya")
+            .tenantId(tenantId)
             .plantCode(mdmsTest.getPlant())
             .processCode(mdmsTest.getProcess())
             .stageCode(mdmsTest.getStage())

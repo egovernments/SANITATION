@@ -23,7 +23,7 @@ public class PqmAnomalyResponse {
 	  @JsonProperty("totalCount")
 	  private Integer totalCount =0;
 	  
-	  @JsonProperty("responseInfo")
+	  @JsonProperty("ResponseInfo")
 	  private ResponseInfo responseInfo = null;
 
 	  @JsonProperty("pqmAnomalys")

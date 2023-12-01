@@ -20,12 +20,14 @@ const Response = () => {
   };
 
   return (
-    <Card>
+    <Card style={{ padding: 0 }}>
       <Banner successful={isResponseSuccess} message={t(state?.message)} multipleResponseIDs={testId} whichSvg={`${isResponseSuccess ? "tick" : null}`} />
-      <div style={{ display: "flex" }}> {t(state?.text, { TEST_ID: testId })} </div>
-      <Link to={`/${window.contextPath}/employee/tqm/summary?id=${testId}`}>
-        <SubmitBar label={t("ES_TQM_SEE_SUMMARY_TITLE")} />
-      </Link>
+      <Card style={{ border: "none", boxShadow: "none", padding: "0", paddingBottom: "1rem" }}>
+        <div style={{ display: "flex", marginBottom: "0.75rem" }}> {t(state?.text, { TEST_ID: testId })} </div>
+        <Link to={`/${window.contextPath}/employee/tqm/summary?id=${testId}`}>
+          <SubmitBar label={t("ES_TQM_SEE_SUMMARY_TITLE")} />
+        </Link>
+      </Card>
     </Card>
   );
 };

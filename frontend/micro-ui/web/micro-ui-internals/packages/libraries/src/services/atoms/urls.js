@@ -27,7 +27,7 @@ const Urls = {
   ChangePassword1: "/user/password/_update",
   UserProfileUpdate: "/user/profile/_update",
   EmployeeSearch: "/egov-hrms/employees/_search",
-
+  InboxSearchv1:"/inbox/v2/_search",
   InboxSearch: "/inbox/v2/_search",
 
   UserSearch: "/user/_search",

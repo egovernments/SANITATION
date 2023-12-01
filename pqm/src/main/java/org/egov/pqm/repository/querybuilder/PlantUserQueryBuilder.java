@@ -55,11 +55,11 @@ public class PlantUserQueryBuilder {
             addToPreparedStatement(preparedStmtList, plantCodes);
         }
 
-        List<String> individualIds = plantUserSearchCriteria.getIndividualIds();
-        if (!CollectionUtils.isEmpty(individualIds)) {
+        List<String> plantOperatorUuids = plantUserSearchCriteria.getPlantOperatorUuids();
+        if (!CollectionUtils.isEmpty(plantOperatorUuids)) {
             addToWhereClause(preparedStmtList, queryBuilder);
-            queryBuilder.append(" plant_user.individualId IN (").append(addParamsToQuery(individualIds)).append(")");
-            addToPreparedStatement(preparedStmtList, individualIds);
+            queryBuilder.append(" plant_user.plantOperatorUuid IN (").append(addParamsToQuery(plantOperatorUuids)).append(")");
+            addToPreparedStatement(preparedStmtList, plantOperatorUuids);
         }
 
         return addPaginationWrapper(queryBuilder.toString(), preparedStmtList, plantUserSearchRequest.getPagination());
@@ -78,17 +78,19 @@ public class PlantUserQueryBuilder {
         int offset = serviceConfiguration.getDefaultOffset();
         String finalQuery = PAGINATION_WRAPPER.replace("{}", query);
 
-        if (pagination.getLimit() != null && pagination.getLimit() <= serviceConfiguration.getMaxSearchLimit())
+        if (pagination != null && pagination.getLimit() != null && pagination.getLimit() <= serviceConfiguration.getMaxSearchLimit())
             limit = pagination.getLimit();
 
-        if (pagination.getLimit() != null && pagination.getLimit() > serviceConfiguration.getMaxSearchLimit()) {
+        if (pagination != null && pagination.getLimit() != null && pagination.getLimit() > serviceConfiguration.getMaxSearchLimit()) {
             limit = serviceConfiguration.getMaxSearchLimit();
         }
 
-        if (pagination.getOffset() != null) offset = pagination.getOffset();
+        if (pagination != null && pagination.getOffset() != null) offset = pagination.getOffset();
 
         StringBuilder orderQuery = new StringBuilder();
-        addOrderByClause(orderQuery, pagination);
+        if (pagination != null) {
+        	addOrderByClause(orderQuery, pagination);
+        }
         finalQuery = finalQuery.replace("{order_by}", orderQuery.toString());
 
         if (limit == -1) {
@@ -117,7 +119,7 @@ public class PlantUserQueryBuilder {
             queryBuilder.append(" ORDER BY plant_user.id ");
         } else if (pagination.getSortBy() == SortBy.plantCode) {
             queryBuilder.append(" ORDER BY plant_user.plantCode ");
-        } else if (pagination.getSortBy() == SortBy.individualId) {
+        } else if (pagination.getSortBy() == SortBy.plantOperatorUuid) {
             queryBuilder.append(" ORDER BY plant_user.individualId ");
         } else if (pagination.getSortBy() == SortBy.createdTime) {
             queryBuilder.append(" ORDER BY plant_user.createdtime ");
