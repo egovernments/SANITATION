@@ -34,7 +34,7 @@ public class UserService {
 	 */
 	@SuppressWarnings("rawtypes")
 	public UserDetailResponse userCall(Object userRequest, StringBuilder uri) {
-		String dobFormat = null;
+		String dobFormat = "dd/MM/yyyy";
 		try {
 			LinkedHashMap responseMap = (LinkedHashMap) serviceRequestRepository.fetchResult(uri, userRequest);
 			parseResponse(responseMap, dobFormat);
