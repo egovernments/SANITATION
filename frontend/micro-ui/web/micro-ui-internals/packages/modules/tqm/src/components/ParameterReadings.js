@@ -48,7 +48,7 @@ function ParameterReadings({ reading, responseData }) {
           }
         />
       ) : null}
-      <SubmitBar label={type === "past" ? t("ES_TQM_TEST_BACK_TO_PAST_TEST") : t("ES_TQM_TEST_BACK_TO_INBOX")} onSubmit={() => type === "past" ? history.push(`/${window?.contextPath}/employee/tqm/search-test-results`) : history.push(`/${window?.contextPath}/employee/tqm/inbox`)} style={{ marginBottom: "12px" }} />
+      <SubmitBar label={type === "past" ? t("ES_TQM_TEST_BACK_TO_PAST_TEST") : t("ES_TQM_TEST_BACK_TO_INBOX")} onSubmit={() => type === "past" ? history.goBack() : history.go(-3)} style={{ marginBottom: "12px" }} />
     </>
   ) : null;
 }
