@@ -67,7 +67,7 @@ const businessServiceMap = {
 
 const workflowStatusMap = {
   pendingResults:"PENDINGRESULTS",
-  submit: "SUBMITTED"
+  submit: "SUBMITTED",
  };
 
 const workflowActionMap = {

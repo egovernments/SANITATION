@@ -199,7 +199,7 @@ const RegisryInbox = (props) => {
       vendorObject = {
         ...vendor,
         workers:vendor?.workers?.map(worker => {
-          if(worker.individualId === individualObject.individualId){
+          if(worker.individualId === individualObject.id){
             return {...worker,vendorWorkerStatus:"INACTIVE"}
           }else{
             return worker
@@ -269,7 +269,7 @@ const RegisryInbox = (props) => {
     if (existingVendor) {
       const drivers = existingVendor?.workers;
       drivers.splice(
-        drivers.findIndex((ele) => ele.individualId === driverData.individualId),
+        drivers.findIndex((ele) => ele.individualId === driverData.id),
         1
       );
       const formData = {
@@ -287,13 +287,13 @@ const RegisryInbox = (props) => {
           ? [
               ...selectedVendor.workers,
               {
-                individualId: driverData?.individualId,
+                individualId: driverData?.id,
                 vendorWorkerStatus: 'ACTIVE',
               },
             ]
           : [
               {
-                individualId: driverData?.individualId,
+                individualId: driverData?.id,
                 vendorWorkerStatus: 'ACTIVE',
               },
             ],

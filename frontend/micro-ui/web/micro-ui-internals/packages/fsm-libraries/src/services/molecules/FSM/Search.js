@@ -344,6 +344,7 @@ export const Search = {
         additionalDetails: response?.additionalDetails,
         totalAmount: totalAmount,
         applicationDetailsResponse: { ...response },
+        dsoDetails
       };
 
     // const citizenResp = employeeResponse.reduce((arr, curr) => {

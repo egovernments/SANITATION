@@ -49,7 +49,7 @@ const ChangePlant = ({mobileView}) => {
       "plantUserSearchCriteria": {
         tenantId,
         // "plantCodes": [],
-        "individualIds": userInfo?.info?.uuid ?  [userInfo?.info?.uuid]: [],
+        "plantOperatorUuid": userInfo?.info?.uuid ?  [userInfo?.info?.uuid]: [],
         "additionalDetails": {}
       },
       "pagination": {}
