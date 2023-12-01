@@ -358,6 +358,9 @@ export const UICustomizations = {
       data.body.testSearchCriteria.wfStatus = ["SUBMITTED"];
       //sortOrder
       data.body.pagination.sortOrder = sortOrder?.value
+      if(data.body.pagination.sortOrder){
+        data.body.pagination.sortBy = "scheduledDate"
+      }
 
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)
