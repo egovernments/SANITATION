@@ -1,5 +1,6 @@
 package org.egov.vendor.repository.querybuilder;
 
+import com.google.common.base.Strings;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -173,6 +174,12 @@ public class VendorQueryBuilder {
 				addToPreparedStatement(preparedStmtList, status);
 			}
 
+			// search by agency type
+			if (!Strings.isNullOrEmpty(criteria.getAgencyType())) {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" vendor.agencyType=? ");
+				preparedStmtList.add(criteria.getAgencyType());
+			}
 		}
 		return addPaginationWrapper(builder.toString(), preparedStmtList, criteria);
 	}
