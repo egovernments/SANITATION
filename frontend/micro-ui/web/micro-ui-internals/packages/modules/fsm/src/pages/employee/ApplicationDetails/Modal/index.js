@@ -137,7 +137,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       offset: 0,
     },
     config: {
-      enabled: individualIds.length > 0 ? true : false,
+      enabled: individualIds?.length > 0 ? true : false,
       select: (data) => {
         const result = data?.Individual?.map(ind => {return {givenName:ind?.name?.givenName,optionsKey:`${ind?.name?.givenName} / ${ind?.individualId}`,...ind}})
         setWorkers(result)
@@ -361,7 +361,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         return
       }
       const workersList = [selectedDriver,...selectedWorkers]
-      workerList?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER"))
+      // workerList?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER"))
       const workerPayload = workersList?.map(worker=> {
         return {
           tenantId:worker?.tenantId,
