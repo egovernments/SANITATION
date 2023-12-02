@@ -189,7 +189,7 @@ export const UICustomizations = {
           const targetTimestamp = row?.businessObject?.scheduledDate ;
           const targetDate = new Date(targetTimestamp);
           const remainingSLA = targetDate - currentDate;
-          sla = Math.floor(remainingSLA / (24 * 60 * 60 * 1000));
+          sla = Math.ceil(remainingSLA / (24 * 60 * 60 * 1000));
           if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
           return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.abs(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
           
@@ -309,7 +309,7 @@ export const UICustomizations = {
           const targetTimestamp = row?.businessObject?.scheduledDate ;
           const targetDate = new Date(targetTimestamp);
           const remainingSLA = targetDate - currentDate;
-          sla = Math.floor(remainingSLA / (24 * 60 * 60 * 1000));
+          sla = Math.ceil(remainingSLA / (24 * 60 * 60 * 1000));
           if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
           return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.abs(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
           
