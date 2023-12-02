@@ -8,6 +8,13 @@ import {
 } from '../../../utils/fsm';
 import { MdmsService } from '@egovernments/digit-ui-libraries/src/services/elements/MDMS';
 
+function mergeArraysByUniqueKey(array1, array2, key1, key2) {
+  return array1.map(obj1 => ({
+    ...obj1,
+    ...array2.find(obj2 => obj2[key2] === obj1[key1]) || {} // Default to an empty object if no match is found
+  }));
+}
+
 const displayPitDimension = (pitDeminsion) => {
   const result = [];
   if (pitDeminsion.length) {
@@ -74,6 +81,79 @@ export const Search = {
     }
 
     let paymentPreference = response?.paymentPreference;
+
+    //fetch workers
+    let workers = response?.workers;
+    //dummy data
+    // workers = [
+    //   {
+    //     tenantId: 'pg.citya',
+    //     applicationId: '1013-FSM-2023-11-24-000356',
+    //     individualId: 'eb446b2b-c79b-4b36-ac86-cc1a12d4b7e4',
+    //     workerType: 'DRIVER',
+    //     status: 'ACTIVE',
+    //   },
+    //   {
+    //     tenantId: 'pg.citya',
+    //     applicationId: '1013-FSM-2023-11-24-000356',
+    //     individualId: 'b00a79bc-4574-4749-a371-e706a404588f',
+    //     workerType: 'HELPER',
+    //     status: 'ACTIVE',
+    //   },
+    //   {
+    //     tenantId: 'pg.citya',
+    //     applicationId: '1013-FSM-2023-11-24-000356',
+    //     individualId: '9a43e3d9-2499-4272-b316-3f10a1458d29',
+    //     workerType: 'HELPER',
+    //     status: 'ACTIVE',
+    //   },
+    // ];
+    let individualServResponse = null;
+    
+    if (workers?.length > 0) {
+      individualServResponse = await FSMService.workerSearch({
+        tenantId,
+        details: {
+          Individual: {
+            id: [...workers?.map((row) => row?.individualId)],
+          },
+        },
+        params:{
+          limit:100,
+          offset:0
+        }
+      });
+    }
+    
+    //create a driver object and SW object
+    let objectToPushInDSODetails = []
+    if(individualServResponse){
+      let manualIdx = 0;
+      const combinedObject = mergeArraysByUniqueKey(workers,individualServResponse?.Individual,'individualId','id')
+      combinedObject?.map((worker,idx)=>{
+        // if(worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER")){
+        //   objectToPushInDSODetails.push({
+        //     title: 'ES_APPLICATION_DETAILS_ASSIGNED_DRIVER',
+        //     value: `${worker?.name?.givenName} | ${worker?.individualId}`,
+        //   })
+        // }
+        if(worker?.workerType==="DRIVER"){
+          objectToPushInDSODetails.push({
+            title: 'ES_APPLICATION_DETAILS_ASSIGNED_DRIVER',
+            value: `${worker?.name?.givenName} | ${worker?.individualId}`,
+          })
+        }
+        else if(worker?.workerType==="HELPER"){
+          manualIdx += 1
+          objectToPushInDSODetails.push({
+            title: `ES_APPLICATION_DETAILS_ASSIGNED_SW_${manualIdx}`,
+            value: `${worker?.name?.givenName} | ${worker?.individualId}`,
+          })
+        }
+      })
+    }
+    
+    
 
     let slumLabel = '';
     if (
@@ -302,7 +382,6 @@ export const Search = {
             title: 'ES_APPLICATION_DETAILS_ASSIGNED_DSO',
             value: dsoDetails?.displayName || 'N/A',
           },
-          // { title: "ES_APPLICATION_DETAILS_VEHICLE_MAKE", value: vehicleMake || "N/A" },
           {
             title: 'ES_APPLICATION_DETAILS_VEHICLE_NO',
             value: vehicle?.registrationNumber || 'N/A',
@@ -318,6 +397,31 @@ export const Search = {
         ],
       },
     ];
+
+    if(objectToPushInDSODetails?.length > 0) {
+      employeeResponse[employeeResponse?.length -1 ] = {
+        title: 'ES_APPLICATION_DETAILS_DSO_DETAILS',
+        values: [
+          {
+            title: 'ES_APPLICATION_DETAILS_ASSIGNED_DSO',
+            value: dsoDetails?.displayName || 'N/A',
+          },
+          ...objectToPushInDSODetails,
+          {
+            title: 'ES_APPLICATION_DETAILS_VEHICLE_NO',
+            value: vehicle?.registrationNumber || 'N/A',
+          },
+          {
+            title: 'ES_APPLICATION_DETAILS_VEHICLE_CAPACITY',
+            value: response?.vehicleCapacity || 'N/A',
+          },
+          {
+            title: 'ES_APPLICATION_DETAILS_POSSIBLE_SERVICE_DATE',
+            value: displayServiceDate(response?.possibleServiceDate) || 'N/A',
+          },
+        ],
+      }
+    }
 
     employeeResponse.map(({ values }) =>
       values.map((i) => (i === null ? values.pop(i) : i))
