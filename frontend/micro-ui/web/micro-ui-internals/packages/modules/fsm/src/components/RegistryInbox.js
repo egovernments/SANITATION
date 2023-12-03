@@ -880,11 +880,13 @@ const RegisryInbox = (props) => {
             {
               Header: t('ES_FSM_REGISTRY_INBOX_VENDOR_NAME'),
               Cell: ({ row }) => { 
+                const employer = row?.original?.additionalFields?.fields?.filter(row => row?.key==="EMPLOYER")?.[0]?.value
+                const vendorOptions = vendors?.filter(row => row?.agencyType===employer)
                 return (
                   <Dropdown
                     className='fsm-registry-dropdown'
                     selected={row.original.vendor}
-                    option={vendors}
+                    option={employer ? vendorOptions : vendors}
                     select={(value) => onVenderSelectForSanitationWorker(row, value)}
                     optionKey='name'
                     t={t}
