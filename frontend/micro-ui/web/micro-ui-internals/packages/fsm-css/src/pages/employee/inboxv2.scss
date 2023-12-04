@@ -38,6 +38,13 @@
 .search-wrapper .search-button-wrapper.inbox.sort button {
   width: 100%;
 }
+@media (max-width: 649px) {
+  .search-wrapper {
+    .search-button-wrapper {
+      padding-bottom: 8px;
+    }
+  }
+}
 .popup-label {
   .header {
     display: flex;
@@ -63,8 +70,4 @@
   .server {
     overflow: auto;
   }
-}
-
-.submit-bar {
-  width: 100%;
 }

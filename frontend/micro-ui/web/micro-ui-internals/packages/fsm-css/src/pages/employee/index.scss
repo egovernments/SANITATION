@@ -573,3 +573,12 @@
     margin-bottom: 1rem;
   }
 }
+.validation-error {
+  margin-top: -12px;
+}
+.tag-container{
+  .text{
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+  }
+}

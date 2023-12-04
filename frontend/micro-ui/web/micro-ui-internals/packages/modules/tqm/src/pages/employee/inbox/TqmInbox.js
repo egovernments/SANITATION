@@ -43,7 +43,7 @@ const TqmInbox = () => {
     
     return (
         <React.Fragment>
-            <Header styles={{ fontSize: "32px" }}>{t(config?.label)}{location?.state?.count ? <span className="inbox-count">{location?.state?.count}</span> : null}</Header>
+            <Header styles={{ fontSize: "32px" }}>{t(config?.label)}{<span className="inbox-count">{location?.state?.count ? location?.state?.count : 0}</span>}</Header>
             <div className="inbox-search-wrapper">
               <InboxSearchComposer configs={config}></InboxSearchComposer>
             </div>
