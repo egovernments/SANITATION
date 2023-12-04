@@ -112,7 +112,7 @@ export const UICustomizations = {
 
       //sortOrder sortBy 
 
-      data.body.inbox.moduleSearchCriteria.sortBy = "createdTime"
+      data.body.inbox.moduleSearchCriteria.sortBy = "scheduledDate"
       data.body.inbox.moduleSearchCriteria.sortOrder = sortOrder?.value
 
       //limit offset
