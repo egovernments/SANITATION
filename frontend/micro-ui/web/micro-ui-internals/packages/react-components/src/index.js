@@ -189,6 +189,7 @@ import {
   ArrowDownward,
   ArrowUpward,
   WarningIcon,
+  DocumentRect,
 } from "./atoms/svgindex";
 import Table from "./atoms/Table";
 import TelePhone from "./atoms/TelePhone";
@@ -254,7 +255,7 @@ import ResultsTable from "./hoc/ResultsTable";
 import InboxSearchLinks from "./atoms/InboxSearchLinks";
 import Notification from "./atoms/Notification";
 import Tutorial from "./hoc/Tutorial/Tutorial";
-import { useTourState,TourProvider } from "./hoc/Tutorial/TourProvider";
+import { useTourState, TourProvider } from "./hoc/Tutorial/TourProvider";
 import Help from "./hoc/Tutorial/Help";
 export {
   Help,
@@ -520,4 +521,5 @@ export {
   ArrowDownward,
   ArrowUpward,
   WarningIcon,
+  DocumentRect,
 };
