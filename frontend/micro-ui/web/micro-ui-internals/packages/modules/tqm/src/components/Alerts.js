@@ -7,18 +7,9 @@ const alerts = ({ ale }) => {
 
   return [
     {
-      label: "No reading from Sensor",
-      count: ale?.responseData?.data?.[0]?.plots?.[5]?.value || 0
-    },
-    {
-      label: "Device & lab result mismatch",
-      count: ale?.responseData?.data?.[0]?.plots?.[4]?.value || 0
-    },
-    {
       label: t("PQM_RESULTS_NOT_UPTO_BENCHMARK"),
       count: ale?.responseData?.data?.[0]?.plots?.[2]?.value || 0
     },
-
   ]
 }
 

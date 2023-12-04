@@ -79,10 +79,13 @@
 .employeeCard {
   .complaint-links-container {
     .body {
+      .links-wrapper > .link:first-child {
+        margin-bottom: 0.75rem;
+        margin-top: 0.75rem;
+      }
       .links-wrapper > .link {
         margin-bottom: 0.75rem;
       }
     }
   }
-  padding-bottom: 0;
 }
