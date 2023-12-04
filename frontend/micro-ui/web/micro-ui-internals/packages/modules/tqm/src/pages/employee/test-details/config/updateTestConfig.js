@@ -15,7 +15,6 @@ export const updateConfig = ({ t, testLabs }) => {
             error: t("ES_TQM_SELECT_LAB_LABEL_ERROR"),
             required: true,
             options: testLabs?.length >=0 ? testLabs:[],
-            optionsCustomStyle: { marginTop: "40px" },
           },
         },
       ],
