@@ -55,11 +55,11 @@ public class PlantUserQueryBuilder {
             addToPreparedStatement(preparedStmtList, plantCodes);
         }
 
-        List<String> plantOperatorUuids = plantUserSearchCriteria.getPlantOperatorUuids();
-        if (!CollectionUtils.isEmpty(plantOperatorUuids)) {
+        List<String> plantUserUuids = plantUserSearchCriteria.getPlantUserUuids();
+        if (!CollectionUtils.isEmpty(plantUserUuids)) {
             addToWhereClause(preparedStmtList, queryBuilder);
-            queryBuilder.append(" plant_user.plantOperatorUuid IN (").append(addParamsToQuery(plantOperatorUuids)).append(")");
-            addToPreparedStatement(preparedStmtList, plantOperatorUuids);
+            queryBuilder.append(" plant_user.plantOperatorUuid IN (").append(addParamsToQuery(plantUserUuids)).append(")");
+            addToPreparedStatement(preparedStmtList, plantUserUuids);
         }
 
         return addPaginationWrapper(queryBuilder.toString(), preparedStmtList, plantUserSearchRequest.getPagination());

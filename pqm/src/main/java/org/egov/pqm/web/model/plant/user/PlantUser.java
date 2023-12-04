@@ -1,13 +1,16 @@
 package org.egov.pqm.web.model.plant.user;
 
+import javax.validation.constraints.Size;
+
+import org.egov.pqm.web.model.AuditDetails;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.egov.pqm.web.model.AuditDetails;
-
-import javax.validation.constraints.Size;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,12 +30,16 @@ public class PlantUser {
     @JsonProperty("plantCode")
     private String plantCode;
 
-    @JsonProperty("plantOperatorUuid")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("plantUserType")
+    private PlantUserType plantUserType;
+    
+    @JsonProperty("plantUserUuid")
     @Size(
             min = 2,
             max = 64
     )
-    private String plantOperatorUuid;
+    private String plantUserUuid;
 
     @JsonProperty("isActive")
     private Boolean isActive;
