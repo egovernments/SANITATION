@@ -12,7 +12,7 @@ export const testResultsConfig = ({ t, testDetailsData, testCriteriaData }) => {
       populators: {
         validation: {
           required: true,
-          pattern: /^-?[0-9]+(\.[0-9]{1,2})?$/,
+          pattern: /^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$/,
         },
         name: i?.code,
         error: t("ES_TQM_TEST_PARAM_ERROR_MESSAGE"),

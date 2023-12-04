@@ -107,13 +107,13 @@ const QualityParameter = ({onSelect,formData }) => {
                                             name={`QualityParameter.${criteria}`}
                                             rules={{
                                                 validate: {
-                                                    pattern: (v) => (/^$|^[a-zA-Z0-9]+$/.test(v) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")),
+                                                    pattern: (v) => (/^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$/.test(v) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")),
                                                 }
                                             }}
                                             render={(props) => (
                                                 <TextInput
                                                     value={props.value}
-                                                    type={"number"}
+                                                    type={"text"}
                                                     onChange={(e) => {
                                                         const newValue = e.target.value;
                                                         displayValue(newValue, criteria, subindex);
