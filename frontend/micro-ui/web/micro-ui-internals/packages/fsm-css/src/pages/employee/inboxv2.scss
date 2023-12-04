@@ -24,6 +24,17 @@
   }
 }
 
+.inbox-search-wrapper {
+  .sections-parent.search {
+    .searchBox {
+      margin-bottom: 0;
+    }
+    .details-container {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+  }
+}
 .search-wrapper .search-button-wrapper.inbox.sort button {
   width: 100%;
 }
@@ -48,9 +59,12 @@
   }
 }
 
-.multi-select-dropdown-wrap{
-  .server{
+.multi-select-dropdown-wrap {
+  .server {
     overflow: auto;
-    max-height: 7rem;
   }
+}
+
+.submit-bar {
+  width: 100%;
 }

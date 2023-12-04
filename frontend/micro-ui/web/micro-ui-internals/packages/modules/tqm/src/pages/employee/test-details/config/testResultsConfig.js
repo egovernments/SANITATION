@@ -7,9 +7,13 @@ export const testResultsConfig = ({ t, testDetailsData, testCriteriaData }) => {
     return {
       label: `${t(i?.i18nKey)} ${i?.unit !== "NA" || i?.unit === null ? t(i?.unit) : ""}` || "N/A",
       isMandatory: true,
-      type: "number",
+      type: "text",
       disable: false,
       populators: {
+        validation: {
+          required: true,
+          pattern: /^-?[0-9]+(\.[0-9]{1,2})?$/,
+        },
         name: i?.code,
         error: t("ES_TQM_TEST_PARAM_ERROR_MESSAGE"),
       },
