@@ -41,7 +41,7 @@ public class FsmWorkerRepository {
   }
 
   public List<Worker> update(List<Worker> workers) {
-    producer.push(config.getCreateFsmWorkerTopic(), WorkerRequest.builder()
+    producer.push(config.getUpdateFsmWorkerTopic(), WorkerRequest.builder()
         .workers(workers)
         .build());
     return workers;
