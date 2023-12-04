@@ -581,6 +581,7 @@ public class FSMService {
 	 */
 	public FSMResponse fsmSearch(FSMSearchCriteria criteria, RequestInfo requestInfo) {
 
+		log.info("fsmSearch : {}", criteria.toString());
 		List<FSM> fsmList = new LinkedList<>();
 		FSMResponse fsmResponse = null;
 		UserDetailResponse usersRespnse;
@@ -602,16 +603,21 @@ public class FSMService {
 				}
 
 			} else {
+				log.info("FSMResponse.builder() 1 : {}", fsmList);
 				return FSMResponse.builder().fsm(fsmList).build();
 			}
 		}
 
+		log.info("fsmSearch 1 : {}", criteria.toString());
 		fsmResponse = repository.getFSMData(criteria, dsoId);
 		fsmList = fsmResponse.getFsm();
 		if (!fsmList.isEmpty()) {
+
+			log.info("fsmList.isEmpty() 1 : {}", fsmList.size());
 			enrichmentService.enrichFSMSearch(fsmList, requestInfo, criteria.getTenantId());
 		}
 
+		log.info("fsmResponse 1 : {}", fsmResponse);
 		return fsmResponse;
 	}
 

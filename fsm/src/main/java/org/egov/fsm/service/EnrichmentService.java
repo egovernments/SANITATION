@@ -238,6 +238,7 @@ public class EnrichmentService {
 		fsmsearch.setOwnerIds(accountIds);
 		UserDetailResponse userDetailResponse = userService.getUser(fsmsearch, requestInfo);
 		encrichApplicant(userDetailResponse, fsms);
+		log.info("enrichFsmWorkersSearch : {}", fsms.size());
 		enrichFsmWorkersSearch(fsms);
 	}
 
@@ -287,6 +288,7 @@ public class EnrichmentService {
 					.status(Arrays.asList(WorkerStatus.ACTIVE.toString(), WorkerStatus.INACTIVE.toString()))
 					.build());
 			fsm.setWorkers(workers);
+			log.info("enrichFsmWorkersSearch : {}", workers);
 		});
 	}
 }
