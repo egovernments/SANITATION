@@ -12,6 +12,13 @@ const TqmHome = (props) => {
   startDate.setMonth(startDate.getMonth() - 1);
   const [dateRange, setDateRange] = useState(getDateRange(new Date()));  
   
+  const activePlantCode = Digit.SessionStorage.get('active_plant')?.plantCode
+    ? [Digit.SessionStorage.get('active_plant')?.plantCode]
+    : Digit.SessionStorage.get('user_plants')
+        ?.filter((row) => row.plantCode)
+        ?.map((row) => row.plantCode);
+  
+
   const requestCriteria1 = {
     url: "/dashboard-analytics/dashboard/getChartV2",
     params: {},
@@ -20,7 +27,9 @@ const TqmHome = (props) => {
         "visualizationType": "METRIC",
         "visualizationCode": "pqmTestCompliance",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : []
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
@@ -29,7 +38,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": "pg.citya"
+        "tenantId": Digit.ULBService.getCurrentTenantId()
       }
     },
     changeQueryName: "testCompliance",
@@ -45,7 +54,9 @@ const TqmHome = (props) => {
         "visualizationType": "METRIC",
         "visualizationCode": "pqmPercentageOfTestResultsMeetingBenchmarks",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : []
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
@@ -54,7 +65,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": "pg.citya"
+        "tenantId": Digit.ULBService.getCurrentTenantId()
       }
     },
     changeQueryName: "percentage",
@@ -79,7 +90,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": "pg.citya"
+        "tenantId": Digit.ULBService.getCurrentTenantId()
       }
     },
     changeQueryName: "alerts",

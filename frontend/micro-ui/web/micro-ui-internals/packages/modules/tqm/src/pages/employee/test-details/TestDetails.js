@@ -52,7 +52,7 @@ function TestDetails() {
     },
   });
 
-  let { isLoading: isWFLoading, isError: isWFError, data: WFData } = Digit.Hooks.useWorkflowDetailsWorks({
+  let { isLoading: isWFLoading, isError: isWFError, data: WFData } = Digit.Hooks.useWorkflowDetailsFSM({
     tenantId: tenantId,
     id: id,
     moduleCode: businessService,

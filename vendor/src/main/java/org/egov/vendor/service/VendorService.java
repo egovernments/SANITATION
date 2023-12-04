@@ -34,6 +34,8 @@ import org.springframework.util.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
+import static org.egov.vendor.util.VendorConstants.VENDOR_MODULE;
+
 @Service
 @Slf4j
 public class VendorService {
@@ -68,7 +70,7 @@ public class VendorService {
 		if (vendorRequest.getVendor().getTenantId().split("\\.").length == 1) {
 			throw new CustomException("Invalid TenantId", " Application cannot be create at StateLevel");
 		}
-		Object mdmsData = util.mDMSCall(requestInfo, tenantId);
+		Object mdmsData = util.mDMSCall(requestInfo, tenantId, VENDOR_MODULE);
 		vendorValidator.validateCreateOrUpdateRequest(vendorRequest, mdmsData, true, requestInfo);
 		enrichmentService.enrichCreate(vendorRequest);
 		vendorRepository.save(vendorRequest);
@@ -122,7 +124,7 @@ public class VendorService {
 					"OwnerId mismatch between the update request and existing vendor record"
 							+ vendorRequest.getVendor().getName());
 		}
-		Object mdmsData = util.mDMSCall(requestInfo, tenantId);
+		Object mdmsData = util.mDMSCall(requestInfo, tenantId, VENDOR_MODULE);
 		
 		// Comparing with username with mobile number because username is same as mobilenumber and it is unique
 		if (!oldVendor.getOwner().getUserName().equalsIgnoreCase(vendorRequest.getVendor().getOwner().getMobileNumber())) {

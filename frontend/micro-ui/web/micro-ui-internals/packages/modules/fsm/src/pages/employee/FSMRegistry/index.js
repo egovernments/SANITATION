@@ -199,7 +199,7 @@ const FSMRegistry = () => {
       }
       if (selectedTabs === "WORKER") {
         const drivers = dsoData?.Individual?.map((data) => {
-          let vendor = vendorData.find((ele) => ele.dsoDetails?.workers?.find((driver) => driver.individualId === data.individualId));
+          let vendor = vendorData.find((ele) => ele.dsoDetails?.workers?.find((driver) => driver.individualId === data.id));
           if (vendor) {
             data.vendor = vendor.dsoDetails;
           }

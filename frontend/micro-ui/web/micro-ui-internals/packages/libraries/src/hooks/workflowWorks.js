@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "react-query";
 
-const useWorkflowDetailsWorks = ({ tenantId, id, moduleCode, role = "CITIZEN", serviceData = {}, getStaleData, getTripData = false, config }) => {
+const useWorkflowDetailsFSM = ({ tenantId, id, moduleCode, role = "CITIZEN", serviceData = {}, getStaleData, getTripData = false, config }) => {
     const queryClient = useQueryClient();
 
     const staleDataConfig = { staleTime: Infinity };
@@ -16,4 +16,4 @@ const useWorkflowDetailsWorks = ({ tenantId, id, moduleCode, role = "CITIZEN", s
     return { isLoading, error, isError, data, revalidate: () => queryClient.invalidateQueries(["workFlowDetailsWorks", tenantId, id, moduleCode, role]) };
 };
 
-export default useWorkflowDetailsWorks;
+export default useWorkflowDetailsFSM;

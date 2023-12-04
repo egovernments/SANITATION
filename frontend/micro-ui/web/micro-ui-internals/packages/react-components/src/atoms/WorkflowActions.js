@@ -26,7 +26,7 @@ const WorkflowActions = ({ businessService, tenantId, applicationNo, forcedActio
   const { t } = useTranslation();
   let user = Digit.UserService.getUser();
 
-  let workflowDetails = Digit.Hooks.useWorkflowDetailsWorks(
+  let workflowDetails = Digit.Hooks.useWorkflowDetailsFSM(
     {
       tenantId: tenantId,
       id: applicationNo,

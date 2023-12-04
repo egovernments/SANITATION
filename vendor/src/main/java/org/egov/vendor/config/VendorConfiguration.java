@@ -140,4 +140,27 @@ public class VendorConfiguration {
 	@Value("${vendor.driver.mobile.number}")
 	private String driverMobileNumberIncrement;
 
+	// Individual config
+	@Value("${egov.individual.host}")
+	private String individualHost;
+
+	@Value("${egov.individual.create.endpoint}")
+	private String individualCreateEndpoint;
+
+	@Value("${egov.individual.search.endpoint}")
+	private String individualSearchEndpoint;
+
+	@Value("${egov.individual.update.endpoint}")
+	private String individualUpdateEndpoint;
+
+	// Encryption Config
+	@Value("${egov.enc.host}")
+	private String encryptionHost;
+
+	@Value("${egov.enc.encrypt.endpoint}")
+	private String encryptionEndpoint;
+
+	@Value("${egov.enc.decrypt.endpoint}")
+	private String decryptionEndpoint;
+
 }
