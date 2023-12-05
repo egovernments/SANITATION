@@ -35,14 +35,16 @@ const Download = {
         window.open(uri);
       }
     };
+  changeClasses("get-this-class",'hide-class');
 
     const element = ReactDOM.findDOMNode(node.current);
     html2canvas(element, {
       scrollY: -window.scrollY,
       scrollX: 0,
       useCORS: true,
-      scale: 1.5,
+      scale: 2,
     }).then((canvas) => {
+      changeClasses('hide-class',"get-this-class");
       return share
         ? canvas.toBlob((blob) => resolve(new File([blob], `${fileName}.jpeg`, { type: "image/jpeg" })), "image/jpeg", 1)
         : saveAs(canvas.toDataURL("image/jpeg", 1), `${fileName}.jpeg`);
