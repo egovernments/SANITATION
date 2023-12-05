@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlantUserConstants {
 
-	public static final CharSequence PQM_TP_OPERATOR = "PQM_TP_OPERATOR";
+	public static final String PQM_TP_OPERATOR = "PQM_TP_OPERATOR";
 	
-	public static final CharSequence PQM_ADMIN = "PQM_ADMIN";
+	public static final String PQM_ADMIN = "PQM_ADMIN";
 
 
 	public static final String INVALID_TENANT = "INVALID TENANT";
