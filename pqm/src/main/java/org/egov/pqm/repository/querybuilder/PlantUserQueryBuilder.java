@@ -58,7 +58,7 @@ public class PlantUserQueryBuilder {
         List<String> plantUserUuids = plantUserSearchCriteria.getPlantUserUuids();
         if (!CollectionUtils.isEmpty(plantUserUuids)) {
             addToWhereClause(preparedStmtList, queryBuilder);
-            queryBuilder.append(" plant_user.plantOperatorUuid IN (").append(addParamsToQuery(plantUserUuids)).append(")");
+            queryBuilder.append(" plant_user.plantUserUuid IN (").append(addParamsToQuery(plantUserUuids)).append(")");
             addToPreparedStatement(preparedStmtList, plantUserUuids);
         }
 

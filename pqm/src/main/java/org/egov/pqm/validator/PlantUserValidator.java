@@ -66,7 +66,7 @@ public class PlantUserValidator {
 	            userDetailResponse.getUser().get(0).getRoles().forEach(role -> {
 	                code.add("" + role.getCode());
 	            });
-	            if (!code.contains(PlantUserConstants.PQM_TP_OPERATOR) || !code.contains(PlantUserConstants.PQM_ADMIN)) {
+	            if (!code.contains(PlantUserConstants.PQM_TP_OPERATOR) && !code.contains(PlantUserConstants.PQM_ADMIN)) {
 	                throw new CustomException(ErrorConstants.INVALID_APPLICANT_ERROR,
 	                        "Only PQM_TP_OPERATOR or PQM_ADMIN Employee Can do this creation.");
 	            }

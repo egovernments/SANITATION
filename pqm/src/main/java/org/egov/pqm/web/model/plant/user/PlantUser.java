@@ -1,5 +1,7 @@
 package org.egov.pqm.web.model.plant.user;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.egov.pqm.web.model.AuditDetails;
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
+@Valid
 public class PlantUser {
     @JsonProperty("id")
     @Size(
@@ -32,6 +35,7 @@ public class PlantUser {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("plantUserType")
+    @NotNull(message = "PlantUserType cannot be null")
     private PlantUserType plantUserType;
     
     @JsonProperty("plantUserUuid")
