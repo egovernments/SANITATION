@@ -102,6 +102,7 @@ public class PqmService {
 
     List<Test> testList = new LinkedList<>();
     if(Boolean.TRUE.equals(validate)) {
+      testSearchRequest.setRequestInfo(requestInfo);
       pqmValidator.validateSearchRequest(testSearchRequest, requestInfo);
       enrichmentService.enrichPqmSearch(testSearchRequest, requestInfo);
     }
