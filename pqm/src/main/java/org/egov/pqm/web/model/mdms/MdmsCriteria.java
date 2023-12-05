@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,6 +35,9 @@ public class MdmsCriteria {
   @JsonProperty("uniqueIdentifier")
   @Size(min = 1, max = 64)
   private String uniqueIdentifier;
+
+  @JsonProperty("uniqueIdentifiers")
+  private List<String> uniqueIdentifiers;
 
   @JsonProperty("schemaCode")
   private String schemaCode;

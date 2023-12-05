@@ -103,16 +103,20 @@ public class MDMSUtils {
     return tenantModuleDetail;
   }
 
-  public Object mdmsCallV2(RequestInfo requestInfo, String tenantId, String schemaCode){
-    MdmsCriteriaRequest mdmsCriteriaRequest = getMDMSRequestV2(requestInfo, tenantId, schemaCode);
+  public Object mdmsCallV2(RequestInfo requestInfo, String tenantId, String schemaCode, List<String> uniqueIdentifiers){
+    MdmsCriteriaRequest mdmsCriteriaRequest = getMDMSRequestV2(requestInfo, tenantId, schemaCode, uniqueIdentifiers);
     StringBuilder uri = getMdmsSearchUrl2();
     Object result = serviceRequestRepository.fetchResult(uri, mdmsCriteriaRequest);
     return result;
   }
 
   public MdmsCriteriaRequest getMDMSRequestV2(RequestInfo requestInfo , String  tenantId ,
-      String schemaCode){
+      String schemaCode, List<String> uniqueIdentifiers){
     org.egov.pqm.web.model.mdms.MdmsCriteria mdmsCriteria = org.egov.pqm.web.model.mdms.MdmsCriteria.builder().tenantId(tenantId).schemaCode(schemaCode).isActive(true).build();
+
+    if(!uniqueIdentifiers.isEmpty())
+      mdmsCriteria.setUniqueIdentifiers(uniqueIdentifiers);
+
     MdmsCriteriaRequest mdmsCriteriaRequest =
         MdmsCriteriaRequest.builder().mdmsCriteria(mdmsCriteria).requestInfo(requestInfo).build();
     return mdmsCriteriaRequest;
@@ -181,28 +185,74 @@ public class MDMSUtils {
     return testList;
   }
 
-  public List<String> extractTenantCode(String jsonString) {
-    List<String> codes = new ArrayList<>();
+    public List<String> extractTenantCode(String jsonString) {
+        List<String> codes = new ArrayList<>();
 
-    try {
-      ObjectMapper objectMapper = new ObjectMapper();
-      JsonNode rootNode = objectMapper.readTree(jsonString);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(jsonString);
 
-      JsonNode tenantsNode = rootNode.path("MdmsRes").path("tenant").path("tenants");
+            JsonNode tenantsNode = rootNode.path("MdmsRes").path("tenant").path("tenants");
 
-      for (JsonNode tenantNode : tenantsNode) {
-        JsonNode codeNode = tenantNode.path("code");
-        String code = codeNode.asText();
+            for (JsonNode tenantNode : tenantsNode) {
+                JsonNode codeNode = tenantNode.path("code");
+                String code = codeNode.asText();
 
-        if (code.contains(".")) {
-          codes.add(code);
+                if (code.contains(".")) {
+                    codes.add(code);
+                }
+            }
+        } catch (Exception e) {
+            log.error(ErrorConstants.PARSING_ERROR, "Cannot parse tenants master");
         }
-      }
-    } catch (Exception e) {
-      log.error(ErrorConstants.PARSING_ERROR, "Cannot parse tenants master");
+
+        return codes;
     }
 
-    return codes;
+    public static Integer extractManualTestDays(String jsonString, String plantConfigCode) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(jsonString);
+
+            JsonNode mdmsNode = rootNode.path("mdms");
+            if (mdmsNode.isArray() && mdmsNode.size() > 0) {
+                JsonNode firstMdmsEntry = mdmsNode.get(0);
+                JsonNode dataNode = firstMdmsEntry.path("data");
+
+                if (dataNode.has("manualTestPendingEscalationDays")) {
+                    return dataNode.get("manualTestPendingEscalationDays").asInt();
+                }
+            }
+        } catch (Exception e) {
+            throw new CustomException(ErrorConstants.PARSING_ERROR,
+                    "Unable to fetch manualTestPendingEscalationDays from Plant Config Data");    }
+
+        // Default value if extraction fails
+        return 0;
+    }
+
+
+  public static Integer extractPlantConfigCode(String jsonString, String plantData) {
+//    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+//      JsonNode rootNode = objectMapper.readTree(jsonString);
+
+      log.info("plantData ->"+ plantData);
+//      JsonNode mdmsNode = rootNode.path("mdms");
+//      if (mdmsNode.isArray() && mdmsNode.size() > 0) {
+//        JsonNode firstMdmsEntry = mdmsNode.get(0);
+//        JsonNode dataNode = firstMdmsEntry.path("data");
+//
+//        if (dataNode.has("manualTestPendingEscalationDays")) {
+//          return dataNode.get("manualTestPendingEscalationDays").asInt();
+//        }
+//      }
+//    } catch (Exception e) {
+//      throw new CustomException(ErrorConstants.PARSING_ERROR,
+//              "Unable to fetch manualTestPendingEscalationDays from Plant Config Data");    }
+
+    // Default value if extraction fails
+    return 0;
   }
 
 }
