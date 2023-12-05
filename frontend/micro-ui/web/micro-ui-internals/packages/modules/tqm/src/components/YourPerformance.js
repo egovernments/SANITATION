@@ -45,7 +45,7 @@ const YourPerformance = ({ performance, dateRange }) => {
       onClick: () => {
         setShowOptions(!showOptions);
         setTimeout(() => {
-          return Digit.ShareFiles.DownloadImage(Digit.ULBService.getCurrentTenantId(), fullPageRef, t("ES_PERFORMANCE"), "mail");
+          return Digit.ShareFiles.Image(Digit.ULBService.getCurrentTenantId(), fullPageRef, t("ES_PERFORMANCE"), "mail");
         }, 500);
       },
     },
@@ -55,14 +55,14 @@ const YourPerformance = ({ performance, dateRange }) => {
       onClick: () => {
         setShowOptions(!showOptions);
         setTimeout(() => {
-          return Digit.ShareFiles.DownloadImage(Digit.ULBService.getCurrentTenantId(), fullPageRef, t("ES_PERFORMANCE"), "whatsapp");
+          return Digit.ShareFiles.Image(Digit.ULBService.getCurrentTenantId(), fullPageRef, t("ES_PERFORMANCE"), "whatsapp");
         }, 500);
       },
     },
   ]
 
   return (
-    <div ref={fullPageRef}>
+    <div className='get-this-class' ref={fullPageRef}>
       <div className="performance-header">
         <Header
           styles={{ fontSize: '26px', marginBottom: '0px', marginLeft: '0px' }}
