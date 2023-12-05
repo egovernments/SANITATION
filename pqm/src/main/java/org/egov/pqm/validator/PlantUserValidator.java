@@ -51,6 +51,10 @@ public class PlantUserValidator {
 	        if (plantUser.getPlantUserUuid() == null || plantUser.getPlantUserUuid().isEmpty()) {
 	            throw new CustomException(PlantUserConstants.INVALID_UUID, "At least one employee uuid is required");
 	        }
+		    
+	        if (plantUser.getPlantUserType() == null ) {
+	            throw new CustomException(PlantUserConstants.INVALID_UUID, "Plant user type is required");
+	        }
 
 	        if (plantUser.getPlantCode() == null || plantUser.getPlantCode().isEmpty()) {
 	            throw new CustomException(PlantUserConstants.INVALID_PLANT_CODE, "Plant code is required");
