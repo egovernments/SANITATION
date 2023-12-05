@@ -273,7 +273,7 @@ public class PqmService {
     //fetch mdms data for TestStandard Master
     log.info("Scheduler Starts for Tenant -> "+ tenantId);
     Object jsondata = mdmsUtils.mdmsCallV2(requestInfo,
-            tenantId, SCHEMA_CODE_TEST_STANDARD);
+            tenantId, SCHEMA_CODE_TEST_STANDARD, new ArrayList<>());
     String jsonString = "";
 
     try {
@@ -299,6 +299,19 @@ public class PqmService {
       //search from DB for any pending tests
       List<Test> testListFromDb = testSearch(testSearchRequest, requestInfo, false).getTests();
 
+
+      if (testListFromDb.size() >= 2) {
+        // Access the second element (index 1) and check if it's not empty
+        String plantConfigCode = getPlantConfigCode(requestInfo, tenantId.split("\\.")[0], mdmsTest.getPlant());
+        int manualTestPendingEscalationDays = getManualTestPendingDays(requestInfo, tenantId.split("\\.")[0], plantConfigCode);
+        Test secondTest = testListFromDb.get(1);
+        Long scheduleDate = secondTest.getScheduledDate();
+        Long escalationDate = addDaysToEpoch(scheduleDate, manualTestPendingEscalationDays);
+
+        if (secondTest.getStatus() == TestResultStatus.PENDING && isPastScheduledDate(escalationDate)) {
+          enrichmentService.pushToAnomalyDetectorIfTestResultNotSubmitted(TestRequest.builder().requestInfo(requestInfo).tests(Collections.singletonList(secondTest)).build());
+        }
+      }
 
       int frequency = Integer.parseInt(mdmsTest.getFrequency().split("_")[0]);
 
@@ -413,5 +426,66 @@ public class PqmService {
 		 Pagination pagination=	Pagination.builder().limit(testSearchCriteria.getLimit()).offset(testSearchCriteria.getOffset()).build();
 		return testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).pagination(pagination).build(), requestInfo, false);
 	}
+
+  /**
+   * Creates Scheduled Tests
+   *
+   * @param requestInfo The Create Request
+   * @return New Test
+   */
+    public Integer getManualTestPendingDays(RequestInfo requestInfo, String stateLevelTenantId, String plantConfigCode)
+    {
+      Object jsondata = mdmsUtils.mdmsCallV2(requestInfo,
+              stateLevelTenantId, SCHEMA_CODE_PLANTCONFIG, Collections.singletonList(plantConfigCode));
+      String jsonString = "";
+
+      try {
+        ObjectMapper objectMapper = new ObjectMapper();
+        jsonString = objectMapper.writeValueAsString(jsondata);
+      } catch (Exception e) {
+        throw new CustomException(ErrorConstants.PARSING_ERROR,
+                "Unable to parse Plant Config MDMS data ");
+      }
+
+      return mdmsUtils.extractManualTestDays(jsonString, plantConfigCode);
+
+    }
+
+  /**
+   * Creates Scheduled Tests
+   *
+   * @param requestInfo The Create Request
+   * @return New Test
+   */
+  public String getPlantConfigCode(RequestInfo requestInfo, String stateLevelTenantId, String plantCode)
+  {
+    Object jsondata = mdmsUtils.mdmsCallV2(requestInfo,
+            stateLevelTenantId, PQM_SCHEMA_CODE_PLANT,Collections.singletonList(plantCode));
+    String jsonString = "";
+
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      jsonString = objectMapper.writeValueAsString(jsondata);
+    } catch (Exception e) {
+      throw new CustomException(ErrorConstants.PARSING_ERROR,
+              "Unable to parse Plant MDMS data ");
+    }
+
+    return jsonString;
+
+//    return mdmsUtils.extractPlantConfigCodeFromMDMS(jsonString, plantCode);
+
+  }
+
+  private static Long addDaysToEpoch(Long epochDate, int daysToAdd) {
+    // Convert epoch to milliseconds
+    long epochMillis = epochDate;
+
+    // Convert days to milliseconds
+    long daysInMillis = daysToAdd * 24L * 60 * 60 * 1000;
+
+    // Add days to epoch
+    return epochMillis + daysInMillis;
+  }
 
 }
