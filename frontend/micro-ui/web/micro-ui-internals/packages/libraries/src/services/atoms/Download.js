@@ -35,14 +35,16 @@ const Download = {
         window.open(uri);
       }
     };
+  changeClasses("get-this-class",'hide-class');
 
     const element = ReactDOM.findDOMNode(node.current);
     html2canvas(element, {
       scrollY: -window.scrollY,
       scrollX: 0,
       useCORS: true,
-      scale: 1.5,
+      scale: 2,
     }).then((canvas) => {
+      changeClasses('hide-class',"get-this-class");
       return share
         ? canvas.toBlob((blob) => resolve(new File([blob], `${fileName}.jpeg`, { type: "image/jpeg" })), "image/jpeg", 1)
         : saveAs(canvas.toDataURL("image/jpeg", 1), `${fileName}.jpeg`);
@@ -84,18 +86,23 @@ const Download = {
       }
       return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
     };
-        changeClasses('dss-white-pre-line',"dss-white-pre-temp");
+    
+    changeClasses('dss-white-pre-line',"dss-white-pre-temp");
 
-  applyCss();
+    applyCss();
     const element = ReactDOM.findDOMNode(node.current);
 
 
     return domtoimage.toJpeg(element, {
-      quality: 1,
+      // quality: 1,
       bgcolor: 'white',
-      filter:node=>!node?.className?.includes?.("divToBeHidden"),
+      // filter:node=>!node?.className?.includes?.("divToBeHidden"),
       style:{
-        margin:'25px'
+        // marginTop:'-1rem',
+        // padding:"2rem",
+        // height:"10rem",
+        // width:"10rem",
+        // width:"500px"
       }
      }).then(function (dataUrl) {
 /*  to enable pdf

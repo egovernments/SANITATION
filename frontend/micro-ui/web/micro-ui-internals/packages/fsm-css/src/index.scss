@@ -319,6 +319,11 @@ input::-webkit-calendar-picker-indicator {
     top: 100%;
   }
 }
+.employee-select-wrap.fsm-registry-dropdown {
+  .options-card {
+    top: unset !important;
+  }
+}
 .inbox-search-links-container {
   .header {
     grid-template-columns: 12% 1fr;
