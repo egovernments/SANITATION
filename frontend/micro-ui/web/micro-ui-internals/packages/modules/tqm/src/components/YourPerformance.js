@@ -41,7 +41,7 @@ const YourPerformance = ({ performance, dateRange }) => {
   const shareOptions = [
     {
       icon: <EmailIcon />,
-      label: t("IMAGE"),
+      label: t("SHARE_IMG_EMAIL"),
       onClick: () => {
         setShowOptions(!showOptions);
         setTimeout(() => {
@@ -51,7 +51,7 @@ const YourPerformance = ({ performance, dateRange }) => {
     },
     {
       icon: <WhatsappIcon />,
-      label: t("IMAGE"),
+      label: t("SHARE_IMG_WHATSAPP"),
       onClick: () => {
         setShowOptions(!showOptions);
         setTimeout(() => {
