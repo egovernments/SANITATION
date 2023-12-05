@@ -19,23 +19,11 @@ import LinkButton from "../atoms/LinkButton";
 import { useTranslation } from "react-i18next";
 import MobileNumber from "../atoms/MobileNumber";
 import _ from "lodash";
+import ApiDropdown from "../molecules/ApiDropdown";
+import MultiSelectDropdown from "../atoms/MultiSelectDropdown";
 
 export const FormComposer = (props) => {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    reset,
-    watch,
-    trigger,
-    control,
-    formState,
-    errors,
-    setError,
-    clearErrors,
-    unregister,
-  } = useForm({
+  const { register, handleSubmit, setValue, getValues, reset, watch, trigger, control, formState, errors, setError, clearErrors, unregister } = useForm({
     defaultValues: props.defaultValues,
   });
   const { t } = useTranslation();
@@ -43,7 +31,13 @@ export const FormComposer = (props) => {
 
   useEffect(() => {
     const iseyeIconClicked = sessionStorage.getItem("eyeIconClicked");
-    if (props?.appData && !(props?.appData?.ConnectionHolderDetails?.[0]?.sameAsOwnerDetails) && iseyeIconClicked && Object.keys(props?.appData)?.length > 0 && (!(_.isEqual(props?.appData?.ConnectionHolderDetails?.[0],formData?.ConnectionHolderDetails?.[0] ))) ) {
+    if (
+      props?.appData &&
+      !props?.appData?.ConnectionHolderDetails?.[0]?.sameAsOwnerDetails &&
+      iseyeIconClicked &&
+      Object.keys(props?.appData)?.length > 0 &&
+      !_.isEqual(props?.appData?.ConnectionHolderDetails?.[0], formData?.ConnectionHolderDetails?.[0])
+    ) {
       reset({ ...props?.appData });
     }
   }, [props?.appData, formData, props?.appData?.ConnectionHolderDetails]);
@@ -76,29 +70,19 @@ export const FormComposer = (props) => {
         // if (populators.defaultValue) setTimeout(setValue(populators?.name, populators.defaultValue));
         return (
           <div className="field-container">
-            {populators?.componentInFront ? (
-              <span className={`component-in-front ${disable && "disabled"}`}>{populators.componentInFront}</span>
-            ) : null}
-            <TextInput
-              className="field"
-              {...populators}
-              inputRef={register(populators.validation)}
-              isRequired={isMandatory}
-              type={type}
-              disable={disable}
-              watch={watch}
-            />
+            {populators?.componentInFront ? <span className={`component-in-front ${disable && "disabled"}`}>{populators.componentInFront}</span> : null}
+            <TextInput className="field" {...populators} inputRef={register(populators.validation)} isRequired={isMandatory} type={type} disable={disable} watch={watch} />
           </div>
         );
       case "textarea":
         // if (populators.defaultValue) setTimeout(setValue(populators?.name, populators.defaultValue));
-        return (
-          <TextArea className="field" name={populators?.name || ""} {...populators} inputRef={register(populators.validation)} disable={disable} />
-        );
+        return <TextArea className="field" name={populators?.name || ""} {...populators} inputRef={register(populators.validation)} disable={disable} />;
       case "mobileNumber":
         return (
           <Controller
-            render={(props) => <MobileNumber className={populators?.className || "field"} onChange={props.onChange} value={props.value} disable={disable} labelStyle={populators?.labelStyle} />}
+            render={(props) => (
+              <MobileNumber className={populators?.className || "field"} onChange={props.onChange} value={props.value} disable={disable} labelStyle={populators?.labelStyle} />
+            )}
             defaultValue={populators.defaultValue}
             name={populators?.name}
             control={control}
@@ -158,6 +142,40 @@ export const FormComposer = (props) => {
               control={control}
             />
           </form>
+        );
+      case "multiselectdropdown":
+        return (
+          <Controller
+            name={`${populators.name}`}
+            control={control}
+            defaultValue={formData?.[populators.name]}
+            rules={{ required: isMandatory }}
+            render={(props) => {
+              return (
+                <div style={{ display: "grid", gridAutoFlow: "row" }}>
+                  <MultiSelectDropdown
+                    options={populators?.options}
+                    optionsKey={populators?.optionsKey}
+                    props={props}
+                    isPropsNeeded={true}
+                    onSelect={(e) => {
+                      props.onChange(
+                        e
+                          ?.map((row) => {
+                            return row?.[1] ? row[1] : null;
+                          })
+                          .filter((e) => e)
+                      );
+                    }}
+                    selected={props?.value || []}
+                    defaultLabel={t(populators?.defaultText)}
+                    defaultUnit={t(populators?.selectedText)}
+                    config={populators}
+                  />
+                </div>
+              );
+            }}
+          />
         );
       default:
         return populators?.dependency !== false ? populators : null;
@@ -291,9 +309,7 @@ export const FormComposer = (props) => {
                     </div>
                   </LabelFieldPair>
                   {field?.populators?.name && errors && errors[field?.populators?.name] && Object.keys(errors[field?.populators?.name]).length ? (
-                    <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>
-                      {t(field?.populators?.error)}
-                    </CardLabelError>
+                    <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>{t(field?.populators?.error)}</CardLabelError>
                   ) : null}
                 </Fragment>
               );
@@ -320,7 +336,7 @@ export const FormComposer = (props) => {
                 if (props.fms_inline)
                   return (
                     <Fragment>
-                      <LabelFieldPair key={index} style={field?.component === "SelectTankSize" ? {alignItems: "baseline"} : {}}>
+                      <LabelFieldPair key={index} style={field?.component === "SelectTankSize" ? { alignItems: "baseline" } : {}}>
                         {!field.withoutLabel && (
                           <CardLabel style={{ color: field.isSectionText ? "#505A5F" : "", marginBottom: props.inline ? "8px" : "revert" }}>
                             {t(field.label)}
@@ -333,9 +349,7 @@ export const FormComposer = (props) => {
                         </div>
                       </LabelFieldPair>
                       {field?.populators?.name && errors && errors[field?.populators?.name] && Object.keys(errors[field?.populators?.name]).length ? (
-                        <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>
-                          {t(field?.populators?.error)}
-                        </CardLabelError>
+                        <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>{t(field?.populators?.error)}</CardLabelError>
                       ) : null}
                     </Fragment>
                   );
@@ -363,16 +377,14 @@ export const FormComposer = (props) => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => checkKeyDown(e)} id={props.formId} className={props.className}>
-    <Card style={getCardStyles()} className={props?.cardClassName ? props.cardClassName : ""}>
+      <Card style={getCardStyles()} className={props?.cardClassName ? props.cardClassName : ""}>
         {!props.childrenAtTheBottom && props.children}
         {props.heading && <CardSubHeader style={{ ...props.headingStyle }}> {props.heading} </CardSubHeader>}
         {props.description && <CardLabelDesc className={"repos"}> {props.description} </CardLabelDesc>}
         {props.text && <CardText>{props.text}</CardText>}
         {props?.formCardStyle ? formFieldsFSM : formFields}
         {props.childrenAtTheBottom && props.children}
-        {props.submitInForm && (
-          <SubmitBar label={t(props.label)} style={{ ...props?.buttonStyle }} submit="submit" disabled={isDisabled} className="w-full" />
-        )}
+        {props.submitInForm && <SubmitBar label={t(props.label)} style={{ ...props?.buttonStyle }} submit="submit" disabled={isDisabled} className="w-full" />}
         {props.secondaryActionLabel && (
           <div className="primary-label-btn" style={{ margin: "20px auto 0 auto" }} onClick={onSecondayActionClick}>
             {props.secondaryActionLabel}

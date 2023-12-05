@@ -47,7 +47,7 @@ const useCustomAPIHook = ({ url, params, body, config = {}, plainAccessRequest,c
     isFetching,
     data,
     revalidate: () => {
-      data && client.invalidateQueries({ queryKey: [url].filter((e) => e) });
+      data && client.invalidateQueries({ queryKey: [url]?.filter((e) => e) });
     },
   };
 };
