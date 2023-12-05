@@ -32,11 +32,11 @@ export const testResultsConfig = ({ t, testDetailsData, testCriteriaData }) => {
               label: t("ES_TQM_TEST_PARAM_ATTACH_DOCUMENTS"),
               populators: {
                 name: "documents",
-                allowedMaxSizeInMB: 5,
+                allowedMaxSizeInMB: 10,
                 maxFilesAllowed: 1,
                 customClass: "upload-margin-bottom",
                 errorMessage: t("ES_TQM_TEST_PARAM_ATTACH_DOCUMENTS_ERROR_MSG"),
-                allowedFileTypes: /(.*?)(pdf|jpg|png)$/i,
+                allowedFileTypes: /(.*?)(pdf|jpg|png|jpeg|png|webp|image)$/i,
               },
             },
           ],
