@@ -33,7 +33,7 @@ const Urls = {
   UserSearch: "/user/_search",
   UserLogout: "/user/_logout",
 
-  Shortener: "/egov-url-shortening/shortener",
+  Shortener: "/eus/shortener",
 
   fsm: {
     search: "/fsm/v1/_search",
