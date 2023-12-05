@@ -84,18 +84,23 @@ const Download = {
       }
       return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
     };
-        changeClasses('dss-white-pre-line',"dss-white-pre-temp");
+    
+    changeClasses('dss-white-pre-line',"dss-white-pre-temp");
 
-  applyCss();
+    applyCss();
     const element = ReactDOM.findDOMNode(node.current);
 
 
     return domtoimage.toJpeg(element, {
-      quality: 1,
+      // quality: 1,
       bgcolor: 'white',
-      filter:node=>!node?.className?.includes?.("divToBeHidden"),
+      // filter:node=>!node?.className?.includes?.("divToBeHidden"),
       style:{
-        margin:'25px'
+        // marginTop:'-1rem',
+        // padding:"2rem",
+        // height:"10rem",
+        // width:"10rem",
+        // width:"500px"
       }
      }).then(function (dataUrl) {
 /*  to enable pdf
