@@ -676,7 +676,92 @@ const RegisryInbox = (props) => {
             },
           },
         ];
-      default:
+        case 'WORKER':
+          return [
+            {
+              Header: t('ES_FSM_REGISTRY_INBOX_SW_ID'),
+              disableSortBy: true,
+              accessor: 'id',
+              Cell: ({ row }) => {
+                return (
+                  <div>
+                    <span className='link'>
+                      <Link
+                        to={
+                          `/${window?.contextPath}/employee/fsm/registry/worker-details?id=${row.original['individualId']}`
+                        }
+                      >
+                        <div>
+                          {row.original.individualId}
+                          <br />
+                        </div>
+                      </Link>
+                    </span>
+                  </div>
+                );
+              },
+            },
+            {
+              Header: t('ES_FSM_REGISTRY_INBOX_SW_NAME'),
+              disableSortBy: true,
+              accessor: 'name',
+              Cell: ({ row }) => {
+                return (
+                  <div>
+                    {row?.original?.name?.givenName ? row?.original?.name?.givenName : t("ES_COMMON_NA") }
+                  </div>
+                );
+              },
+            },
+            {
+              Header: t('ES_FSM_REGISTRY_INBOX_SW_ROLE'),
+              disableSortBy: true,
+              accessor: 'role',
+              Cell: ({ row }) => {
+                const functionalRole = row?.original?.additionalFields?.fields?.filter(row => row.key==="FUNCTIONAL_ROLE")?.[0]?.value
+                return (
+                  <div>
+                    {functionalRole ? t(`SW_FUNCTIONAL_ROLE_${functionalRole}`) : t("ES_COMMON_NA") }
+                  </div>
+                );
+              },
+            },
+            {
+              Header: t('ES_FSM_REGISTRY_INBOX_VENDOR_NAME'),
+              Cell: ({ row }) => { 
+                const employer = row?.original?.additionalFields?.fields?.filter(row => row?.key==="EMPLOYER")?.[0]?.value
+                const vendorOptions = vendors?.filter(row => row?.agencyType===employer)
+                return (
+                  <Dropdown
+                    className='fsm-registry-dropdown'
+                    selected={row.original.vendor}
+                    option={employer ? vendorOptions : vendors}
+                    select={(value) => onVenderSelectForSanitationWorker(row, value)}
+                    optionKey='name'
+                    t={t}
+                    style={{ position: "unset" }}
+                    optionCardStyles={{ maxWidth: "14%", maxHeight: "200px" }}
+                    disable={row?.original?.isSystemUserActive ? false : true}
+                  />
+                );
+              },
+            },
+            {
+              Header: t('ES_FSM_REGISTRY_INBOX_ENABLED'),
+              disableSortBy: true,
+              Cell: ({ row }) => {
+                return (
+                  <ToggleSwitch
+                    style={{ display: 'flex', justifyContent: 'left' }}
+                    value={row?.original?.isSystemUserActive ? true : false}
+                    onChange={() => onSWUpdate(row)}
+                    name={`switch-${row.id}`}
+                  />
+                );
+              },
+            },
+          ];
+        default:
         return [];
     }
   }, [props.selectedTab, vendors]);
