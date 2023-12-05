@@ -48,7 +48,7 @@ public class PlantUserValidator {
 	            throw new CustomException("PlantMappingConstants.INVALID_TENANT", "TenantId is mandatory");
 	        }
 
-	        if (plantUser.getPlantOperatorUuid() == null || plantUser.getPlantOperatorUuid().isEmpty()) {
+	        if (plantUser.getPlantUserUuid() == null || plantUser.getPlantUserUuid().isEmpty()) {
 	            throw new CustomException(PlantUserConstants.INVALID_UUID, "At least one employee uuid is required");
 	        }
 
@@ -66,9 +66,9 @@ public class PlantUserValidator {
 	            userDetailResponse.getUser().get(0).getRoles().forEach(role -> {
 	                code.add("" + role.getCode());
 	            });
-	            if (!code.contains(PlantUserConstants.PQM_TP_OPERATOR)) {
+	            if (!code.contains(PlantUserConstants.PQM_TP_OPERATOR) && !code.contains(PlantUserConstants.PQM_ADMIN)) {
 	                throw new CustomException(ErrorConstants.INVALID_APPLICANT_ERROR,
-	                        "Only PQM_TP_OPERATOR Employee Can do this creation.");
+	                        "Only PQM_TP_OPERATOR or PQM_ADMIN Employee Can do this creation.");
 	            }
 	        } else {
 	            throw new CustomException(ErrorConstants.PQM_TP_OPERATOR_EMPLOYEE_INVALID_ERROR,
@@ -93,9 +93,12 @@ public class PlantUserValidator {
 
 		for (PlantUser plantUser : plantUsers) {
 			plantCodes.add(plantUser.getPlantCode());
+			plantOperatorUuids.add(plantUser.getPlantUserUuid());
+
 		}
 
 		PlantUserSearchCriteria plantUserSearchCriteria = new PlantUserSearchCriteria();
+		plantUserSearchCriteria.setPlantUserUuids(plantOperatorUuids);
 		plantUserSearchCriteria.setPlantCodes(plantCodes);
 		plantUserSearchCriteria.setTenantId(tenantId);
 
@@ -106,7 +109,7 @@ public class PlantUserValidator {
 		    for (PlantUser plantUser : plantUserResponse.getPlantUsers()) {
 		        if (StringUtils.isNotBlank(plantUser.getId())) {
 		            throw new CustomException(ErrorConstants.PLANT_EMPLOYEE_MAP_EXISTS_ERROR,
-		                    "Plant and employee mapping already exist for PlantUser with ID: " + plantUser.getId());
+		                    "Plant and employee mapping already exist for Plant" + plantUser.getPlantCode()+ " with ID: " + plantUser.getId());
 		        }
 		    }
 		}
@@ -123,8 +126,8 @@ public class PlantUserValidator {
 	    List<String> uuids = new ArrayList<>();
 
 	    for (PlantUser plantUser : plantUsers) {
-	        if (plantUser.getPlantOperatorUuid() != null && !plantUser.getPlantOperatorUuid().isEmpty()) {
-	            uuids.add(plantUser.getPlantOperatorUuid());
+	        if (plantUser.getPlantUserUuid() != null && !plantUser.getPlantUserUuid().isEmpty()) {
+	            uuids.add(plantUser.getPlantUserUuid());
 	        }
 	    }
 
