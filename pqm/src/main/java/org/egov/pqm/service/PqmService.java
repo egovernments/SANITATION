@@ -1,37 +1,22 @@
 package org.egov.pqm.service;
 
-import static org.egov.pqm.util.Constants.MDMS_MASTER_TENANTS;
-import static org.egov.pqm.util.Constants.MDMS_MODULE_TENANT;
-import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
-import static org.egov.pqm.util.Constants.SCHEMA_CODE_TEST_STANDARD;
-import static org.egov.pqm.util.Constants.SUBMIT_SAMPLE;
-import static org.egov.pqm.util.Constants.UPDATE_RESULT;
-import static org.egov.pqm.util.Constants.WFSTATUS_PENDINGRESULTS;
-import static org.egov.pqm.util.Constants.WFSTATUS_SCHEDULED;
-import static org.egov.pqm.util.ErrorConstants.NO_TENANT_PRESENT_ERROR_DESC;
-import static org.egov.pqm.util.ErrorConstants.TEST_NOT_IN_DB;
-import static org.egov.pqm.util.ErrorConstants.TEST_NOT_PRESENT_CODE;
-import static org.egov.pqm.util.ErrorConstants.TEST_NOT_PRESENT_MESSAGE;
-import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
-import static org.egov.pqm.util.MDMSUtils.parseJsonToTestList;
+import static org.egov.pqm.util.Constants.*;
+import static org.egov.pqm.util.ErrorConstants.*;
+import static org.egov.pqm.util.MDMSUtils.*;
 import static org.egov.pqm.web.model.Pagination.SortOrder.DESC;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.ErrorConstants;
+import org.egov.pqm.util.JsonParser;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.validator.PqmValidator;
@@ -48,6 +33,8 @@ import org.egov.pqm.web.model.TestResultStatus;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.mdms.MdmsTest;
+import org.egov.pqm.web.model.mdms.Plant;
+import org.egov.pqm.web.model.mdms.PlantConfig;
 import org.egov.pqm.web.model.workflow.BusinessService;
 import org.egov.pqm.workflow.ActionValidator;
 import org.egov.pqm.workflow.WorkflowIntegrator;
@@ -244,7 +231,6 @@ public class PqmService {
     Object mdmsRes = mdmsUtils.fetchMdmsData(requestInfo, stateLevelTenantId, MDMS_MODULE_TENANT, Collections.singletonList(MDMS_MASTER_TENANTS));
 
     String jsonString = "";
-
     try {
       ObjectMapper objectMapper = new ObjectMapper();
       jsonString = objectMapper.writeValueAsString(mdmsRes);
@@ -259,15 +245,35 @@ public class PqmService {
       throw new CustomException(ErrorConstants.NO_TENANT_PRESENT_ERROR,
               NO_TENANT_PRESENT_ERROR_DESC);
     }
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    String plantData = mdmsUtils.fetchParsedMDMSData(requestInfo, stateLevelTenantId, PQM_SCHEMA_CODE_PLANT);
+    JsonParser<Plant> jsonParser = new JsonParser<>(objectMapper);
+    Map<String, Plant> codeToPlantMap = jsonParser.parseJsonToMap(plantData, Plant.class);
+
+    String plantConfigData = mdmsUtils.fetchParsedMDMSData(requestInfo, stateLevelTenantId, SCHEMA_CODE_PLANTCONFIG);
+    JsonParser<PlantConfig> jsonParserPlantConfig = new JsonParser<>(objectMapper);
+    Map<String, PlantConfig> codetoPlantConfigMap = jsonParserPlantConfig.parseJsonToMap(plantConfigData, PlantConfig.class);
+
+    if(codeToPlantMap.isEmpty() || codetoPlantConfigMap.isEmpty())
+    {
+      throw new CustomException(ErrorConstants.PLANT_PLANT_CONFIG_DATA_NOT_PRESENT_ERROR,
+              PLANT_PLANT_CONFIG_DATA_NOT_PRESENT_ERROR_DESC);
+    }
+
+    log.info("codeToPlantMap -> "+codeToPlantMap.toString());
+    log.info("codetoPlantConfigMap -> "+codetoPlantConfigMap.toString());
+
     for (String tenantId : tenantList) {
-      scheduleTestForTenant(requestInfo, tenantId);
+      scheduleTestForTenant(requestInfo, tenantId, codeToPlantMap,codetoPlantConfigMap);
     }
   }
 
     /**
      * Schedules Test for a tenant
      */
-  public void scheduleTestForTenant(RequestInfo requestInfo, String tenantId) {
+  public void scheduleTestForTenant(RequestInfo requestInfo, String tenantId, Map<String, Plant> codeToPlantMap , Map<String, PlantConfig> codeToPlantConfigMap) {
 
     // get mdms TestStandardData
     //fetch mdms data for TestStandard Master
@@ -301,9 +307,10 @@ public class PqmService {
 
 
       if (testListFromDb.size() >= 2) {
+        log.info("Anomaly Detected = ");
         // Access the second element (index 1) and check if it's not empty
-        String plantConfigCode = getPlantConfigCode(requestInfo, tenantId.split("\\.")[0], mdmsTest.getPlant());
-        int manualTestPendingEscalationDays = getManualTestPendingDays(requestInfo, tenantId.split("\\.")[0], plantConfigCode);
+        String plantConfigCode = codeToPlantMap.get(mdmsTest.getPlant()).getPlantConfig();
+        int manualTestPendingEscalationDays = codeToPlantConfigMap.get(plantConfigCode).getManualTestPendingEscalationDays();
         Test secondTest = testListFromDb.get(1);
         Long scheduleDate = secondTest.getScheduledDate();
         Long escalationDate = addDaysToEpoch(scheduleDate, manualTestPendingEscalationDays);
@@ -427,55 +434,6 @@ public class PqmService {
 		return testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).pagination(pagination).build(), requestInfo, false);
 	}
 
-  /**
-   * Creates Scheduled Tests
-   *
-   * @param requestInfo The Create Request
-   * @return New Test
-   */
-    public Integer getManualTestPendingDays(RequestInfo requestInfo, String stateLevelTenantId, String plantConfigCode)
-    {
-      Object jsondata = mdmsUtils.mdmsCallV2(requestInfo,
-              stateLevelTenantId, SCHEMA_CODE_PLANTCONFIG, Collections.singletonList(plantConfigCode));
-      String jsonString = "";
-
-      try {
-        ObjectMapper objectMapper = new ObjectMapper();
-        jsonString = objectMapper.writeValueAsString(jsondata);
-      } catch (Exception e) {
-        throw new CustomException(ErrorConstants.PARSING_ERROR,
-                "Unable to parse Plant Config MDMS data ");
-      }
-
-      return mdmsUtils.extractManualTestDays(jsonString, plantConfigCode);
-
-    }
-
-  /**
-   * Creates Scheduled Tests
-   *
-   * @param requestInfo The Create Request
-   * @return New Test
-   */
-  public String getPlantConfigCode(RequestInfo requestInfo, String stateLevelTenantId, String plantCode)
-  {
-    Object jsondata = mdmsUtils.mdmsCallV2(requestInfo,
-            stateLevelTenantId, PQM_SCHEMA_CODE_PLANT,Collections.singletonList(plantCode));
-    String jsonString = "";
-
-    try {
-      ObjectMapper objectMapper = new ObjectMapper();
-      jsonString = objectMapper.writeValueAsString(jsondata);
-    } catch (Exception e) {
-      throw new CustomException(ErrorConstants.PARSING_ERROR,
-              "Unable to parse Plant MDMS data ");
-    }
-
-    return jsonString;
-
-//    return mdmsUtils.extractPlantConfigCodeFromMDMS(jsonString, plantCode);
-
-  }
 
   private static Long addDaysToEpoch(Long epochDate, int daysToAdd) {
     // Convert epoch to milliseconds
