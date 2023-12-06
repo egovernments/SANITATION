@@ -47,4 +47,7 @@ public class ErrorConstants {
   public static final String NO_TENANT_PRESENT_ERROR = "NO_TENANT_PRESENT_ERROR";
   public static final String NO_TENANT_PRESENT_ERROR_DESC = "No tenant found in MDMS for Scheduling of tests";
 
+  public static final String PLANT_PLANT_CONFIG_DATA_NOT_PRESENT_ERROR = "PLANT_PLANT_CONFIG_DATA_NOT_PRESENT_ERROR";
+  public static final String PLANT_PLANT_CONFIG_DATA_NOT_PRESENT_ERROR_DESC = "Plant or Plant Config Data not found in MDMS";
+
 }
