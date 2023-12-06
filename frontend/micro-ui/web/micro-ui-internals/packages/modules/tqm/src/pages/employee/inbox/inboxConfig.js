@@ -111,7 +111,8 @@ export const tqmInboxConfig = {
               {
                 "label": "TQM_INBOX_SLA",
                 "jsonPath": "businessObject.serviceSla",
-                "additionalCustomization": true
+                "additionalCustomization": true,
+                "disableSortBy":true
               }
             ],
             "enableGlobalSearch": false,

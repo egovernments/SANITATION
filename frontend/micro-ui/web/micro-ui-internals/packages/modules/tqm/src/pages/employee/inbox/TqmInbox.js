@@ -25,12 +25,12 @@ const TqmInbox = () => {
         {
           select:(data) => {
             if(isPlantOperatorLoggedIn){
-              // return tqmInboxConfigPlantOperator?.tqmInboxConfig?.[0];
-              return data?.commonSanitationUiConfig?.InboxPlantOperatorConfig?.[0]
+              return tqmInboxConfigPlantOperator?.tqmInboxConfig?.[0];
+              // return data?.commonSanitationUiConfig?.InboxPlantOperatorConfig?.[0]
             }
             else if(isUlbAdminLoggedIn) {
-              // return tqmInboxConfig?.tqmInboxConfig?.[0];
-              return data?.commonSanitationUiConfig?.InboxUlbAdminConfig?.[0]
+              return tqmInboxConfig?.tqmInboxConfig?.[0];
+              // return data?.commonSanitationUiConfig?.InboxUlbAdminConfig?.[0]
               
             }
             return tqmInboxConfigPlantOperator?.tqmInboxConfig?.[0];
