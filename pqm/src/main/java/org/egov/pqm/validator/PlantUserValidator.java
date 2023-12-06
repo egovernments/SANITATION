@@ -1,8 +1,10 @@
 package org.egov.pqm.validator;
 
+import static org.egov.pqm.util.Constants.PQM_SCHEMA_CODE_PLANT;
+
 import java.util.ArrayList;
 import java.util.List;
-import static org.egov.pqm.util.Constants.PQM_SCHEMA_CODE_PLANT;
+
 import org.apache.commons.lang3.StringUtils;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.PlantUserRepository;
@@ -14,6 +16,7 @@ import org.egov.pqm.web.model.plant.user.PlantUserRequest;
 import org.egov.pqm.web.model.plant.user.PlantUserResponse;
 import org.egov.pqm.web.model.plant.user.PlantUserSearchCriteria;
 import org.egov.pqm.web.model.plant.user.PlantUserSearchRequest;
+import org.egov.pqm.web.model.plant.user.PlantUserType;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -77,6 +80,16 @@ public class PlantUserValidator {
 	        } else {
 	            throw new CustomException(ErrorConstants.PQM_TP_OPERATOR_EMPLOYEE_INVALID_ERROR,
 	                    "In PQM_TP_OPERATOR plant-to-employee mapping, employee doesn't exist");
+	        }
+	        PlantUserType plantUserType = plantUser.getPlantUserType();
+	
+	        if (PlantUserType.PLANT_OPERATOR.equals(plantUserType) && !code.contains(PlantUserConstants.PQM_TP_OPERATOR)) {
+	            throw new CustomException(ErrorConstants.PLANT_USER_TYPE_INVALID_ERROR,
+	                    "PlantUserType doesn't match with employee role");
+	        }
+	        if (PlantUserType.ULB.equals(plantUserType) && !code.contains(PlantUserConstants.PQM_ADMIN)) {
+	            throw new CustomException(ErrorConstants.PLANT_USER_TYPE_INVALID_ERROR,
+	                    "PlantUserType doesn't match with employee role");
 	        }
 	    }
 	}
