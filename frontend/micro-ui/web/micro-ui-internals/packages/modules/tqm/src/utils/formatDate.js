@@ -1,4 +1,5 @@
-const formatDate = (date) => {
+const formatDate = (dat) => {
+  const date = new Date(dat);
   const day = date.getDate();
   const month = date.toLocaleString("default", { month: "short" });
   const year = date.getFullYear();
@@ -22,18 +23,12 @@ const ordinalSuffix = (day) => {
   }
 };
 
-const getDateRange = (startDate) => {
-  const today = new Date();
-  const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
-  const lastMonthStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-
-  const formattedToday = formatDate(today);
-  const formattedLastMonthEnd = formatDate(lastMonthEnd);
+const getDateRange = ({ startDate, endDate }) => {
+  const formattedEndDate = formatDate(endDate);
   const formattedStartDate = formatDate(startDate);
 
   return {
-    today: formattedToday,
-    lastMonthEnd: formattedLastMonthEnd,
+    endDate: formattedEndDate,
     startDate: formattedStartDate,
   };
 };

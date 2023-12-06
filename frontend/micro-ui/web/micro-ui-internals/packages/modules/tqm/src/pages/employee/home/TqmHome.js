@@ -10,7 +10,7 @@ const TqmHome = (props) => {
   const endDate = Date.now();
   const startDate = new Date(endDate);
   startDate.setMonth(startDate.getMonth() - 1);
-  const [dateRange, setDateRange] = useState(getDateRange(new Date()));  
+  const [dateRange, setDateRange] = useState(getDateRange({ startDate: startDate.getTime(), endDate: endDate }));
   
   const activePlantCode = Digit.SessionStorage.get('active_plant')?.plantCode
     ? [Digit.SessionStorage.get('active_plant')?.plantCode]
