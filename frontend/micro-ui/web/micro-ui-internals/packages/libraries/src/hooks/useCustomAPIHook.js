@@ -30,7 +30,10 @@ import { CustomService } from "../services/elements/CustomService";
  */
 
 
-const useCustomAPIHook = ({ url, params, body, config = {}, plainAccessRequest,changeQueryName="Random" }) => {
+const useCustomAPIHook = (props) => {
+  
+  const { url="", params, body, config = {}, plainAccessRequest,changeQueryName="Random" } = props 
+  
   const client = useQueryClient();
 
   const { isLoading, data, isFetching } = useQuery(
