@@ -24,7 +24,7 @@ const TqmBreadCrumb = ({ location, defaultPath }) => {
   const isViewTestResults = location?.pathname?.includes("view-test-results");
   const isSearchTest = location?.pathname?.includes("search-test-results");
   const isaddTest = location?.pathname?.includes("add-test-result");
-  console.log("HUGG", fromScreen);
+
   const crumbs = [
     {
       path: `/${window?.contextPath}/employee`,
