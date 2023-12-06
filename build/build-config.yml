@@ -69,7 +69,7 @@ config:
     build:
       - work-dir: 'pqm-scheduler'
         image-name: 'pqm-scheduler'
-        dockerfile: '/pqm-scheduler/Dockerfile'
+        dockerfile: 'pqm-scheduler/Dockerfile'
 
   - name: 'builds/SANITATION/pqm-anomaly-finder'
     build:
