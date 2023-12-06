@@ -175,36 +175,29 @@ public class TestQueryBuilder {
   private String addPaginationWrapper(String query, List<Object> preparedStmtList,
 			TestSearchRequest testSearchRequest) {
 
-		Pagination criteria = testSearchRequest.getPagination();
+		Pagination pagination = testSearchRequest.getPagination();
 
 		int limit = config.getDefaultLimit();
 		int offset = config.getDefaultOffset();
 		String finalQuery = PAGINATION_WRAPPER.replace("{}", query);
-
-		if (criteria != null) {
-			if (criteria.getLimit() != null && criteria.getLimit() <= config.getMaxSearchLimit()) {
-				limit = criteria.getLimit();
+		
+			if (pagination.getLimit() != null && pagination.getLimit() <= config.getMaxSearchLimit()) {
+				limit = pagination.getLimit();
 			}
 
-			if (criteria.getLimit() != null && criteria.getLimit() > config.getMaxSearchLimit()) {
+			if (pagination.getLimit() != null && pagination.getLimit() > config.getMaxSearchLimit()) {
 				limit = config.getMaxSearchLimit();
 			}
 
-			if (criteria.getOffset() != null) {
-				offset = criteria.getOffset();
+			if (pagination.getOffset() != null) {
+				offset = pagination.getOffset();
 			}
-		} else {
-			if (testSearchRequest.getTestSearchCriteria().getLimit() != null)
-				limit = testSearchRequest.getTestSearchCriteria().getLimit();
-			if (testSearchRequest.getTestSearchCriteria().getOffset() != null) {
-				offset = testSearchRequest.getTestSearchCriteria().getOffset();
-			}
-		}
+		
 
 		StringBuilder orderQuery = new StringBuilder();
-		if (criteria != null) {
-			addOrderByClause(orderQuery, criteria);
-		}
+		
+			addOrderByClause(orderQuery, pagination);
+		
 
 		finalQuery = finalQuery.replace("{orderby}", orderQuery.toString());
 

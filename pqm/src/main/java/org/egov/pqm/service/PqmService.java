@@ -410,7 +410,8 @@ public class PqmService {
 		if (ids.isEmpty())
 			return TestResponse.builder().build();
 		 TestSearchCriteria.builder().ids(ids).build();
-		return testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).build(), requestInfo, false);
+		 Pagination pagination=	Pagination.builder().limit(testSearchCriteria.getLimit()).offset(testSearchCriteria.getOffset()).build();
+		return testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).pagination(pagination).build(), requestInfo, false);
 	}
 
 }
