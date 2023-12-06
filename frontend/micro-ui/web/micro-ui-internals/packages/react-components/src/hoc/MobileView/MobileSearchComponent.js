@@ -13,6 +13,7 @@ import Button from "../../atoms/Button"
 
 
 const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = "search", fullConfig, data, onClose, defaultValues }) => {
+  
   const { t } = useTranslation();
   const { state, dispatch } = useContext(InboxContext)
   const [showToast,setShowToast] = useState(null)
@@ -42,7 +43,7 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
     setError,
     clearErrors,
   } = useForm({
-    defaultValues: sessionFormData,
+    defaultValues: defaultValues,
   });
   const formData = watch();
   const checkKeyDown = (e) => {
