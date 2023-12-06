@@ -1,5 +1,11 @@
 package org.egov.pqm.repository.querybuilder;
 
+import static org.egov.pqm.util.QueryBuilderUtil.addParamsToQuery;
+import static org.egov.pqm.util.QueryBuilderUtil.addToPreparedStatement;
+import static org.egov.pqm.util.QueryBuilderUtil.addToWhereClause;
+
+import java.util.List;
+
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.SortBy;
@@ -9,10 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
-import java.util.List;
-
-import static org.egov.pqm.util.QueryBuilderUtil.*;
 
 @Component
 public class PlantUserQueryBuilder {
@@ -119,7 +121,7 @@ public class PlantUserQueryBuilder {
             queryBuilder.append(" ORDER BY plant_user.id ");
         } else if (pagination.getSortBy() == SortBy.plantCode) {
             queryBuilder.append(" ORDER BY plant_user.plantCode ");
-        } else if (pagination.getSortBy() == SortBy.plantOperatorUuid) {
+        } else if (pagination.getSortBy() == SortBy.plantUserUuid) {
             queryBuilder.append(" ORDER BY plant_user.individualId ");
         } else if (pagination.getSortBy() == SortBy.createdTime) {
             queryBuilder.append(" ORDER BY plant_user.createdtime ");
