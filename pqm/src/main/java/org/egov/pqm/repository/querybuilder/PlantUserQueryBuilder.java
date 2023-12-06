@@ -62,6 +62,12 @@ public class PlantUserQueryBuilder {
             queryBuilder.append(" plant_user.plantUserUuid IN (").append(addParamsToQuery(plantUserUuids)).append(")");
             addToPreparedStatement(preparedStmtList, plantUserUuids);
         }
+		if (plantUserSearchCriteria.getIsActive() != null) {
+			addToWhereClause(preparedStmtList, queryBuilder);
+			queryBuilder.append(" plant_user.isActive=? ");
+			preparedStmtList.add(plantUserSearchCriteria.getIsActive());
+
+		} 
 
         List<String> plantUserTypes = plantUserSearchCriteria.getPlantUserTypes();
         if (!CollectionUtils.isEmpty(plantUserTypes)) {
@@ -127,7 +133,7 @@ public class PlantUserQueryBuilder {
             queryBuilder.append(" ORDER BY plant_user.id ");
         } else if (pagination.getSortBy() == SortBy.plantCode) {
             queryBuilder.append(" ORDER BY plant_user.plantCode ");
-        } else if (pagination.getSortBy() == SortBy.plantOperatorUuid) {
+        } else if (pagination.getSortBy() == SortBy.plantUserUuid) {
             queryBuilder.append(" ORDER BY plant_user.individualId ");
         } else if (pagination.getSortBy() == SortBy.createdTime) {
             queryBuilder.append(" ORDER BY plant_user.createdtime ");

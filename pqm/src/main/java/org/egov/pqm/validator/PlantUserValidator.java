@@ -119,6 +119,44 @@ public class PlantUserValidator {
 		}
 
 	}
+	
+	public void validateUpdatePlantMappingExists(PlantUserRequest plantUserRequest) {
+		List<PlantUser> plantUsers = plantUserRequest.getPlantUsers();
+		if (plantUsers == null || plantUsers.isEmpty()) {
+			throw new IllegalArgumentException("PlantUsers list cannot be null or empty");
+		}
+
+		List<String> plantOperatorUuids = new ArrayList<>();
+		List<String> plantCodes = new ArrayList<>();
+		String tenantId = null;
+
+		// Assuming all PlantUser objects in the list have the same tenantId
+		tenantId = plantUsers.get(0).getTenantId();
+
+		for (PlantUser plantUser : plantUsers) {
+			plantCodes.add(plantUser.getPlantCode());
+			plantOperatorUuids.add(plantUser.getPlantUserUuid());
+
+		}
+
+		PlantUserSearchCriteria plantUserSearchCriteria = new PlantUserSearchCriteria();
+		plantUserSearchCriteria.setPlantUserUuids(plantOperatorUuids);
+		plantUserSearchCriteria.setPlantCodes(plantCodes);
+		plantUserSearchCriteria.setTenantId(tenantId);
+
+		PlantUserResponse plantUserResponse = plantUserRepository
+				.search(PlantUserSearchRequest.builder().plantUserSearchCriteria(plantUserSearchCriteria).build());
+
+		if (plantUserResponse != null && plantUserResponse.getPlantUsers() != null) {
+		    for (PlantUser plantUser : plantUserResponse.getPlantUsers()) {
+		        if (!StringUtils.isNotBlank(plantUser.getId())) {
+		            throw new CustomException(ErrorConstants.PLANT_EMPLOYEE_MAP_EXISTS_ERROR,
+		                    "Plant and employee mapping is not exist for Plant" + plantUser.getPlantCode()+ " with ID: " + plantUser.getId());
+		        }
+		    }
+		}
+
+	}
   
   public UserDetailResponse userExists(PlantUserRequest plantUserRequest) {
 	  List<PlantUser> plantUsers=plantUserRequest.getPlantUsers();

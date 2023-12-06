@@ -33,7 +33,7 @@ public class PlantUserService {
 
   public List<PlantUser> update(PlantUserRequest plantUserRequest) {
 	plantUserValidator.validatePlantUserMappingRequest(plantUserRequest);
-	plantUserValidator.validatePlantMappingExists(plantUserRequest);
+	plantUserValidator.validateUpdatePlantMappingExists(plantUserRequest);
     enrichmentService.enrichUpdatePlanUserRequest(plantUserRequest);
     return plantUserRepository.update(plantUserRequest);
   }
