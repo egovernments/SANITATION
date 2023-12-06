@@ -1,5 +1,10 @@
 package org.egov.pqm.repository.querybuilder;
 
+import static org.egov.pqm.util.QueryBuilderUtil.addParamsToQuery;
+import static org.egov.pqm.util.QueryBuilderUtil.addToPreparedStatement;
+import static org.egov.pqm.util.QueryBuilderUtil.addToWhereClause;
+
+import java.util.List;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.SortBy;
@@ -9,10 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
-import java.util.List;
-
-import static org.egov.pqm.util.QueryBuilderUtil.*;
 
 @Component
 public class PlantUserQueryBuilder {
@@ -60,6 +61,13 @@ public class PlantUserQueryBuilder {
             addToWhereClause(preparedStmtList, queryBuilder);
             queryBuilder.append(" plant_user.plantUserUuid IN (").append(addParamsToQuery(plantUserUuids)).append(")");
             addToPreparedStatement(preparedStmtList, plantUserUuids);
+        }
+
+        List<String> plantUserTypes = plantUserSearchCriteria.getPlantUserTypes();
+        if (!CollectionUtils.isEmpty(plantUserTypes)) {
+            addToWhereClause(preparedStmtList, queryBuilder);
+            queryBuilder.append(" plant_user.plantUserType IN (").append(addParamsToQuery(plantUserTypes)).append(")");
+            addToPreparedStatement(preparedStmtList, plantUserTypes);
         }
 
         return addPaginationWrapper(queryBuilder.toString(), preparedStmtList, plantUserSearchRequest.getPagination());

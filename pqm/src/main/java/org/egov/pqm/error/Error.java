@@ -3,6 +3,7 @@ package org.egov.pqm.error;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.EXPECTATION_FAILED;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.PRECONDITION_FAILED;
 import static org.springframework.http.HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS;
 
@@ -14,7 +15,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Error implements IError {
-  //Data store related error handlers
   record_not_found(CustomException.builder()
       .code(BAD_REQUEST.name()), "Record {0} is not found with identifier ::: {1}", 2001),
   record_creation_failed(CustomException.builder()
@@ -31,7 +31,10 @@ public enum Error implements IError {
       "with identifier name:::{1} & value ::: {2}", 2005),
   mandatory_field_missing(CustomException.builder()
       .code(PRECONDITION_FAILED.name()),
-      "Mandatory Field(s) are missing in {0} name ::: {1}, Type ::: {2}", 3001);
+      "Mandatory Field(s) are missing in {0} name ::: {1}, Type ::: {2}", 3001),
+  invalid_applicant_error(CustomException.builder()
+      .code(FORBIDDEN.name()),
+      "Operation {0} is not allowed for the current user ::: {1}, because of missing data ::: {2}", 4003);
 
 
   private final CustomException.CustomExceptionBuilder builder;

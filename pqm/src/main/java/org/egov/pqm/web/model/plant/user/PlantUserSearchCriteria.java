@@ -29,6 +29,10 @@ public class PlantUserSearchCriteria {
   @Valid
   private List<String> plantUserUuids;
 
+  @JsonProperty("plantUserTypes")
+  @Valid
+  private List<String> plantUserTypes;
+
   @JsonProperty("fromDate")
   private Long fromDate;
 
