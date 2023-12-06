@@ -134,7 +134,7 @@ public class PlantUserQueryBuilder {
         } else if (pagination.getSortBy() == SortBy.plantCode) {
             queryBuilder.append(" ORDER BY plant_user.plantCode ");
         } else if (pagination.getSortBy() == SortBy.plantUserUuid) {
-            queryBuilder.append(" ORDER BY plant_user.individualId ");
+            queryBuilder.append(" ORDER BY plant_user.plantUserUuid ");
         } else if (pagination.getSortBy() == SortBy.createdTime) {
             queryBuilder.append(" ORDER BY plant_user.createdtime ");
         }
