@@ -32,6 +32,10 @@ public class PlantUserSearchCriteria {
   @JsonProperty("isActive")
   private Boolean isActive;
 
+  @JsonProperty("plantUserTypes")
+  @Valid
+  private List<String> plantUserTypes;
+
   @JsonProperty("fromDate")
   private Long fromDate;
 

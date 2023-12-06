@@ -83,7 +83,8 @@ export const Search = {
     let paymentPreference = response?.paymentPreference;
 
     //fetch workers
-    let workers = response?.workers;
+    let workers = response?.workers?.filter(worker => worker?.status === "ACTIVE")
+    
     //dummy data
     // workers = [
     //   {
@@ -130,6 +131,7 @@ export const Search = {
     if(individualServResponse){
       let manualIdx = 0;
       const combinedObject = mergeArraysByUniqueKey(workers,individualServResponse?.Individual,'individualId','id')
+      
       combinedObject?.map((worker,idx)=>{
         // if(worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER")){
         //   objectToPushInDSODetails.push({
@@ -137,13 +139,13 @@ export const Search = {
         //     value: `${worker?.name?.givenName} | ${worker?.individualId}`,
         //   })
         // }
-        if(worker?.workerType==="DRIVER"){
+        if(worker?.workerType==="DRIVER" && worker?.status==="ACTIVE"){
           objectToPushInDSODetails.push({
             title: 'ES_APPLICATION_DETAILS_ASSIGNED_DRIVER',
             value: `${worker?.name?.givenName} | ${worker?.individualId}`,
           })
         }
-        else if(worker?.workerType==="HELPER"){
+        else if(worker?.workerType==="HELPER" && worker?.status==="ACTIVE"){
           manualIdx += 1
           objectToPushInDSODetails.push({
             title: `ES_APPLICATION_DETAILS_ASSIGNED_SW_${manualIdx}`,

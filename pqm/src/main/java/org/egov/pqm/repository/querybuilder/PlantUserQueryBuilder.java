@@ -5,7 +5,6 @@ import static org.egov.pqm.util.QueryBuilderUtil.addToPreparedStatement;
 import static org.egov.pqm.util.QueryBuilderUtil.addToWhereClause;
 
 import java.util.List;
-
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.SortBy;
@@ -69,6 +68,13 @@ public class PlantUserQueryBuilder {
 			preparedStmtList.add(plantUserSearchCriteria.getIsActive());
 
 		} 
+
+        List<String> plantUserTypes = plantUserSearchCriteria.getPlantUserTypes();
+        if (!CollectionUtils.isEmpty(plantUserTypes)) {
+            addToWhereClause(preparedStmtList, queryBuilder);
+            queryBuilder.append(" plant_user.plantUserType IN (").append(addParamsToQuery(plantUserTypes)).append(")");
+            addToPreparedStatement(preparedStmtList, plantUserTypes);
+        }
 
         return addPaginationWrapper(queryBuilder.toString(), preparedStmtList, plantUserSearchRequest.getPagination());
     }
