@@ -193,6 +193,12 @@ public class TestQueryBuilder {
 			if (criteria.getOffset() != null) {
 				offset = criteria.getOffset();
 			}
+		} else {
+			if (testSearchRequest.getTestSearchCriteria().getLimit() != null)
+				limit = testSearchRequest.getTestSearchCriteria().getLimit();
+			if (testSearchRequest.getTestSearchCriteria().getOffset() != null) {
+				offset = testSearchRequest.getTestSearchCriteria().getOffset();
+			}
 		}
 
 		StringBuilder orderQuery = new StringBuilder();
