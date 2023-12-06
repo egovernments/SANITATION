@@ -63,6 +63,9 @@ public class PlantUserQueryBuilder {
             queryBuilder.append(" plant_user.plantUserUuid IN (").append(addParamsToQuery(plantUserUuids)).append(")");
             addToPreparedStatement(preparedStmtList, plantUserUuids);
         }
+        addToWhereClause(preparedStmtList, queryBuilder);
+        queryBuilder.append(" plant_user.isActive=? ");
+        preparedStmtList.add((plantUserSearchCriteria.getIsActive() != null) ? plantUserSearchCriteria.getIsActive() : true);
 
         return addPaginationWrapper(queryBuilder.toString(), preparedStmtList, plantUserSearchRequest.getPagination());
     }
