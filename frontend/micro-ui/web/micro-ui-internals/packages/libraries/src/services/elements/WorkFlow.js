@@ -129,6 +129,108 @@ export const WorkflowService = {
     });
   },
 
+  getDetailsByIdWorks: async ({ tenantId, id, moduleCode }) => {
+    
+    //process instance search
+    const workflow = await Digit.WorkflowService.getByBusinessId(tenantId, id);
+    const applicationProcessInstance = cloneDeep(workflow?.ProcessInstances);
+    //business service search
+    const businessServiceResponse = (await Digit.WorkflowService.init(tenantId, moduleCode))?.BusinessServices[0]?.states;
+
+    if (workflow && workflow.ProcessInstances) {
+      const processInstances = workflow.ProcessInstances;
+      const nextStates = processInstances[0]?.nextActions?.map((action) => ({ action: action?.action, nextState: processInstances[0]?.state.uuid }));
+      const nextActions = nextStates?.map((id) => ({
+        action: id.action,
+        state: businessServiceResponse?.find((state) => state.uuid === id.nextState),
+      }));
+
+      /* To check state is updatable and provide edit option*/
+      const currentState = businessServiceResponse?.find((state) => state.uuid === processInstances[0]?.state.uuid);
+      
+      // if current state is editable then we manually append an edit action
+      //(doing only for muster)
+      //beacuse in other module edit action is defined in workflow
+      
+      // if (currentState && currentState?.isStateUpdatable && moduleCode==="muster-roll-approval" ) {
+      //   nextActions.push({ action: "EDIT", state: currentState });
+      //  }
+      // Check when to add Edit action(In Estimate only when send back to originator action is taken)
+
+      const getStateForUUID = (uuid) => businessServiceResponse?.find((state) => state.uuid === uuid);
+
+      //this actionState is used in WorkflowActions component
+      const actionState = businessServiceResponse
+        ?.filter((state) => state.uuid === processInstances[0]?.state.uuid)
+        .map((state) => {
+          let _nextActions = state.actions?.map?.((ac) => {
+            let actionResultantState = getStateForUUID(ac.nextState);
+            let assignees = actionResultantState?.actions?.reduce?.((acc, act) => {
+              return [...acc, ...act.roles];
+            }, []);
+            return { ...actionResultantState, assigneeRoles: assignees, action: ac.action, roles: ac.roles };
+          });
+          // if (state?.isStateUpdatable && moduleCode==="MR") {
+          //   _nextActions.push({ action: "RE-SUBMIT", ...state, roles: state?.actions?.[0]?.roles })
+          // }
+          //CHECK WHEN EDIT ACTION TO BE SHOWN
+          return { ...state, nextActions: _nextActions, roles: state?.action, roles: state?.actions?.reduce((acc, el) => [...acc, ...el.roles], []) };
+        })?.[0];
+
+
+        //mapping nextActions with suitable roles
+      const actionRolePair = nextActions?.map((action) => ({
+        action: action?.action,
+        roles: action.state?.actions?.map((action) => action.roles).join(","),
+      }));
+
+
+      if (processInstances.length > 0) {
+        // const EnrichedWfData = await makeCommentsSubsidariesOfPreviousActions(processInstances)
+        //if any documents are there this fn will add thumbnails to show
+        
+        // await makeCommentsSubsidariesOfPreviousActionsWorks(processInstances)
+
+        let timeline = processInstances.map((instance, ind) => {
+          let checkPoint = {
+            performedAction: instance.action,
+            status: instance.state.applicationStatus,
+            state: instance.state.state,
+            assigner: instance?.assigner,
+            rating: instance?.rating,
+            // wfComment: instance?.wfComments?.map(e => e?.comment),
+            comment:instance?.comment,
+            wfDocuments: instance?.documents,
+            thumbnailsToShow: { thumbs: instance?.thumbnailsToShow?.thumbs, fullImage: instance?.thumbnailsToShow?.images },
+            assignes: instance.assignes,
+            caption: instance.assignes ? instance.assignes?.map((assignee) => ({ name: assignee.name, mobileNumber: assignee.mobileNumber })) : null,
+            auditDetails: {
+              created: Digit.DateUtils.ConvertEpochToDate(instance.auditDetails.createdTime),
+              lastModified: Digit.DateUtils.ConvertEpochToDate(instance.auditDetails.lastModifiedTime),
+              lastModifiedEpoch: instance.auditDetails.lastModifiedTime,
+            },
+            isTerminateState : instance?.state?.isTerminateState
+          };
+          return checkPoint;
+        });
+
+        
+        const details = {
+          timeline,
+          nextActions:actionRolePair,
+          actionState,
+          applicationBusinessService: workflow?.ProcessInstances?.[0]?.businessService,
+          processInstances: applicationProcessInstance,
+        };
+        
+
+        return details;
+      }
+    } else {
+      throw new Error("error fetching workflow services");
+    }
+    return {};
+  },
   getDetailsById: async ({ tenantId, id, moduleCode, role, getTripData }) => {
     const workflow = await Digit.WorkflowService.getByBusinessId(tenantId, id);
     const applicationProcessInstance = cloneDeep(workflow?.ProcessInstances);

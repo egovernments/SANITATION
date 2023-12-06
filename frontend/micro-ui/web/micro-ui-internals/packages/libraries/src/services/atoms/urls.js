@@ -1,4 +1,7 @@
 const Urls = {
+  mdms_v2: {
+    search: "/mdms-v2/v2/_search",
+  },
   MDMS: `/egov-mdms-service/v1/_search`,
   WorkFlow: `/egov-workflow-v2/egov-wf/businessservice/_search`,
   WorkFlowProcessSearch: `/egov-workflow-v2/egov-wf/process/_search`,
@@ -24,13 +27,13 @@ const Urls = {
   ChangePassword1: "/user/password/_update",
   UserProfileUpdate: "/user/profile/_update",
   EmployeeSearch: "/egov-hrms/employees/_search",
-
+  InboxSearchv1:"/inbox/v2/_search",
   InboxSearch: "/inbox/v2/_search",
 
   UserSearch: "/user/_search",
   UserLogout: "/user/_logout",
 
-  Shortener: "/egov-url-shortening/shortener",
+  Shortener: "/eus/shortener",
 
   fsm: {
     search: "/fsm/v1/_search",
@@ -51,6 +54,12 @@ const Urls = {
     updateDriver: "/vendor/driver/v1/_update",
     vehicleTripCreate: "/vehicle/trip/v1/_create",
     advanceBalanceCalculate: "/fsm-calculator/v1/_advancebalancecalculate",
+    workerSearch: "/individual/v1/_search",
+    workerCreate: "/individual/v1/_create",
+    workerUpdate: "/individual/v1/_update",
+    workerDelete: "/individual/v1/_delete",
+    plantUserCreate: "/pqm-service/plant/user/v1/_create",
+    plantUserUpdate: "/pqm-service/plant/user/v1/_update",
   },
 
   payment: {
