@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class CustomException extends org.egov.tracer.model.CustomException {
     @Builder
-    CustomException(String code, String message) {
+    public CustomException(String code, String message) {
         super(code, message);
     }
 }
