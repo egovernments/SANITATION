@@ -458,35 +458,36 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
 
   return action && config.form && !isDsoLoading && !isReasonLoading && isVehicleDataLoaded ? (
     <Modal
-      popupStyles={mobileView ? { height: 'fit-content', minHeight: '100vh' } : { height: "fit-content" }}
-      headerBarMain={<Heading label={t(config.label.heading)} />}
-      headerBarEnd={<CloseBtn onClick={closeModal} />}
-      actionCancelLabel={t(config.label.cancel)}
-      actionCancelOnSubmit={closeModal}
-      actionSaveLabel={t(config.label.submit)}
-      actionSaveOnSubmit={() => { }}
+    popupStyles={mobileView ? { height: 'fit-content', minHeight: '100vh' } : { height: "fit-content" }}
+    headerBarMain={<Heading label={t(config.label.heading)} />}
+    headerBarEnd={<CloseBtn onClick={closeModal} />}
+    actionCancelLabel={t(config.label.cancel)}
+    actionCancelOnSubmit={closeModal}
+    actionSaveLabel={t(config.label.submit)}
+    actionSaveOnSubmit={() => { }}
+    formId="modal-action"
+    isDisabled={!formValve}
+    popupModuleMianStyles={mobileView ? { paddingBottom: '60px' } : {}}
+    popupModuleActionBarStyles={mobileView ? popupActionBarStyles : {}}
+    popUpContainerClassName={'fsm-application-modal-popup'}
+  >
+    <FormComposer
+      config={config.form}
+      noBoxShadow
+      inline
+      childrenAtTheBottom
+      onSubmit={submit}
       formId="modal-action"
-      isDisabled={!formValve}
-      popupModuleMianStyles={mobileView ? { paddingBottom: '60px' } : {}}
-      popupModuleActionBarStyles={mobileView ? popupActionBarStyles : {}}
+      defaultValues={defaultValues}
     >
-      <FormComposer
-        config={config.form}
-        noBoxShadow
-        inline
-        childrenAtTheBottom
-        onSubmit={submit}
-        formId="modal-action"
-        defaultValues={defaultValues}
-      >
-      </FormComposer>
-      {action === "COMPLETED" ? <UploadPitPhoto
-        header=""
-        tenantId={tenantId}
-        cardText=""
-        onPhotoChange={handleUpload}
-        uploadedImages={null} /> : null
-      }
+    </FormComposer>
+    {action === "COMPLETED" ? <UploadPitPhoto
+      header=""
+      tenantId={tenantId}
+      cardText=""
+      onPhotoChange={handleUpload}
+      uploadedImages={null} /> : null
+    }
 
       {/* {toastError && <Toast {...toastError} />} */}
     </Modal>
