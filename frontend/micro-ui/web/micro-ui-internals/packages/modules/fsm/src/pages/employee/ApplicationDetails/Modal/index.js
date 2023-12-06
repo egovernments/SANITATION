@@ -564,6 +564,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         isDisabled={!formValve}
         popupModuleMianStyles={mobileView ? { paddingBottom: '60px' } : {}}
         popupModuleActionBarStyles={mobileView ? popupActionBarStyles : {}}
+        popUpContainerClassName={'fsm-application-modal-popup'}
       >
         <FormComposer
           config={config.form}
