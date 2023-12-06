@@ -59,7 +59,7 @@ const ChangePlant = ({mobileView}) => {
         let userPlants =  data?.plantUsers?.map(row => {
           row.i18nKey = `PQM_PLANT_${row?.plantCode}`
           return row
-        })
+        })?.filter(row=>row.isActive)
         userPlants.push({i18nKey:"PQM_PLANT_DEFAULT_ALL"})
         //remove this line when api works fine
         // userPlants = sampleResp
