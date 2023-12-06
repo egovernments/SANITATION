@@ -180,24 +180,22 @@ public class TestQueryBuilder {
 		int limit = config.getDefaultLimit();
 		int offset = config.getDefaultOffset();
 		String finalQuery = PAGINATION_WRAPPER.replace("{}", query);
-		
-			if (pagination.getLimit() != null && pagination.getLimit() <= config.getMaxSearchLimit()) {
-				limit = pagination.getLimit();
-			}
 
-			if (pagination.getLimit() != null && pagination.getLimit() > config.getMaxSearchLimit()) {
-				limit = config.getMaxSearchLimit();
-			}
+		if (pagination.getLimit() != null && pagination.getLimit() <= config.getMaxSearchLimit()) {
+			limit = pagination.getLimit();
+		}
 
-			if (pagination.getOffset() != null) {
-				offset = pagination.getOffset();
-			}
-		
+		if (pagination.getLimit() != null && pagination.getLimit() > config.getMaxSearchLimit()) {
+			limit = config.getMaxSearchLimit();
+		}
+
+		if (pagination.getOffset() != null) {
+			offset = pagination.getOffset();
+		}
 
 		StringBuilder orderQuery = new StringBuilder();
-		
-			addOrderByClause(orderQuery, pagination);
-		
+
+		addOrderByClause(orderQuery, pagination);
 
 		finalQuery = finalQuery.replace("{orderby}", orderQuery.toString());
 
