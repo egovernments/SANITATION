@@ -1,4 +1,4 @@
-import React, { useEffect,useReducer,Fragment } from "react";
+import React, { useEffect, useReducer, Fragment } from "react";
 import { Switch, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { PrivateRoute, AppContainer, BreadCrumb, BackButton } from "@egovernments/digit-ui-react-components";
@@ -15,13 +15,16 @@ import TqmAdminNotification from "./TqmAdminNotification";
 
 // import TQMSummary from "../../components/TQMSummary";
 
-
 const TqmBreadCrumb = ({ location, defaultPath }) => {
-  const pathVar=location.pathname.replace(defaultPath+'/',"").split("?")?.[0];
+  const pathVar = location.pathname.replace(defaultPath + "/", "").split("?")?.[0];
   const { t } = useTranslation();
   const search = useLocation().search;
   const fromScreen = new URLSearchParams(search).get("from") || null;
-  
+  const isInbox = location?.pathname?.includes("inbox");
+  const isViewTestResults = location?.pathname?.includes("view-test-results");
+  const isSearchTest = location?.pathname?.includes("search-test-results");
+  const isaddTest = location?.pathname?.includes("add-test-result");
+  console.log("HUGG", fromScreen);
   const crumbs = [
     {
       path: `/${window?.contextPath}/employee`,
@@ -29,39 +32,31 @@ const TqmBreadCrumb = ({ location, defaultPath }) => {
       show: true,
     },
     {
-      path: `/${window.contextPath}/employee/tqm/inbox`,
-      content:  t(`TQM_BREAD_INBOX`) ,
-      show: pathVar.includes("inbox")?true: false,
-      
+      path: pathVar.includes("inbox") ? "" : `/${window.contextPath}/employee/tqm/inbox`,
+      content: t(`TQM_BREAD_INBOX`),
+      show: isInbox || fromScreen === "TQM_BREAD_INBOX" ? true : false,
     },
     {
-      path: `/${window.contextPath}/employee/tqm/search-test-results`,
-      // content:  t(`TQM_BREAD_PAST_TESTS`) ,
-      show: pathVar.includes("search-test-results")?true: false,
-      content: fromScreen ? `${t(fromScreen)} / ${t("TQM_BREAD_PAST_TESTS")}` : t("TQM_BREAD_PAST_TESTS"),
-      isBack:fromScreen ? true : false
+      path: pathVar.includes("search-test-results") ? "" : `/${window.contextPath}/employee/tqm/search-test-results`,
+      show: isSearchTest || fromScreen === "TQM_BREAD_PAST_TESTS" ? true : false,
+      content: t("TQM_BREAD_PAST_TESTS"),
     },
     {
-      path: `/${window.contextPath}/employee/tqm/add-test-result`,
-      content:  t(`TQM_BREAD_CREATE_TEST`) ,
-      show: pathVar.includes("add-test-result")?true: false,
+      path: pathVar.includes("add-test-result") ? "" : `/${window.contextPath}/employee/tqm/add-test-result`,
+      content: t(`TQM_BREAD_CREATE_TEST`),
+      show: isaddTest ? true : false,
     },
     {
-      path: `/${window.contextPath}/employee/tqm/add-test-result`,
+      path: pathVar.includes("search-devices") ? "" : `/${window.contextPath}/employee/tqm/add-test-result`,
       // content:  t(`TQM_BREAD_SENSOR`) ,
-      show: pathVar.includes("search-devices")?true: false,
+      show: pathVar.includes("search-devices") ? true : false,
       content: fromScreen ? `${t(fromScreen)} / ${t("TQM_BREAD_SENSOR")}` : t("TQM_BREAD_SENSOR"),
-      isBack:fromScreen ? true: false
     },
     {
-      path: `/${window.contextPath}/employee/tqm/search-test-results`,
-      // content:  t(`TQM_BREAD_VIEW_TEST_RESULTS`) ,
-      show: pathVar.includes("view-test-results")?true: false,
-      content:fromScreen ? `${t(fromScreen)} / ${t("TQM_BREAD_VIEW_TEST_RESULTS")}` : t("TQM_BREAD_VIEW_TEST_RESULTS"),
-      isBack:fromScreen ? true: false
+      path: pathVar.includes("view-test-results") ? "" : `/${window.contextPath}/employee/tqm/view-test-results`,
+      show: isViewTestResults ? true : false,
+      content: isViewTestResults ? t("TQM_BREAD_VIEW_TEST_RESULTS") : t("TQM_BREAD_VIEW_TEST_RESULTS"),
     },
-
-    
   ];
   return <BreadCrumb className="workbench-bredcrumb" crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} />;
 };
@@ -77,14 +72,13 @@ const App = ({ path }) => {
   const TQMSummary = Digit?.ComponentRegistryService?.getComponent("TQMSummary");
   const SensorScreen = Digit?.ComponentRegistryService?.getComponent("SensorScreen");
   let isMobile = window.Digit.Utils.browser.isMobile();
-  
+
   return (
     <>
-      
-      {isUlbAdminLoggedIn &&  isMobile  ? <BackButton>{t('CS_COMMON_BACK')}</BackButton>  :  !isPlantOperatorLoggedIn ?<TqmBreadCrumb location={location} defaultPath={path} />:null}
+      {isUlbAdminLoggedIn && isMobile ? <BackButton>{t("CS_COMMON_BACK")}</BackButton> : !isPlantOperatorLoggedIn ? <TqmBreadCrumb location={location} defaultPath={path} /> : null}
       {/* {isPlantOperatorLoggedIn && (location.pathname.includes("/response") ? null : <BackButton>{t("CS_COMMON_BACK")}</BackButton>)} */}
-      {isPlantOperatorLoggedIn && <TqmHeader location={location} defaultPath={path}/>}
-      
+      {isPlantOperatorLoggedIn && <TqmHeader location={location} defaultPath={path} />}
+
       <Switch>
         <AppContainer className="tqm">
           <PrivateRoute path={`${path}/landing`} component={() => <TQMLanding />} />
@@ -98,12 +92,12 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/response`} component={() => <TqmResponse />} />
           <PrivateRoute path={`${path}/view-test-results`} component={() => <TqmViewTestResults />} />
           {/* for testing purpose */}
-          <PrivateRoute path={`${path}/notification`} component={() => <TqmAdminNotification />} /> 
+          <PrivateRoute path={`${path}/notification`} component={() => <TqmAdminNotification />} />
           <PrivateRoute path={`${path}/summary`} component={() => <TQMSummary />} />
           <PrivateRoute path={`${path}/search-devices`} component={() => <SensorScreen />} />
         </AppContainer>
       </Switch>
-      </>
+    </>
   );
 };
 
