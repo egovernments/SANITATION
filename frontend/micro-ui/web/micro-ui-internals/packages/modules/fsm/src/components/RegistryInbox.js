@@ -838,8 +838,7 @@ const RegisryInbox = (props) => {
                     <span className='link'>
                       <Link
                         to={
-                          `/${window?.contextPath}/employee/fsm/registry/sanitation-worker-details/` +
-                          row.original['individualId']
+                          `/${window?.contextPath}/employee/fsm/registry/worker-details?id=${row.original['individualId']}`
                         }
                       >
                         <div>

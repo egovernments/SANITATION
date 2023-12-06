@@ -89,7 +89,7 @@ const YourPerformance = ({ performance, dateRange }) => {
       </div>
       <span
         style={{ padding: '8px' }}
-      >{`${dateRange?.startDate} - ${dateRange?.lastMonthEnd}`}</span>
+      >{`${dateRange?.startDate} - ${dateRange?.endDate}`}</span>
       <Card className="performance-container">
         <Compliance performance={performance} />
         <VerticalLine />
