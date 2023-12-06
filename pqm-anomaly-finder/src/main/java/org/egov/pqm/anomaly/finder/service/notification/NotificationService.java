@@ -80,18 +80,20 @@ public class NotificationService {
 
 			Set<String> mobileNumbers = smsRequests.stream().map(SMSRequest::getMobileNumber)
 					.collect(Collectors.toSet());
-			Map<String, String> mapOfPhnoAndUUIDs = fetchUserUUIDs(mobileNumbers, requestInfo, test.getTenantId());
+//			Map<String, String> mapOfPhnoAndUUIDs = fetchUserUUIDs(mobileNumbers, requestInfo, test.getTenantId());
 
 			Map<String, String> mobileNumberToMsg = smsRequests.stream()
 					.collect(Collectors.toMap(SMSRequest::getMobileNumber, SMSRequest::getMessage));
 			for (String mobile : mobileNumbers) {
-				if (null == mapOfPhnoAndUUIDs.get(mobile) || null == mobileNumberToMsg.get(mobile)) {
-					log.error("No UUID/SMS for mobile {} skipping event", mobile);
-					continue;
-				}
+//				if (null == mapOfPhnoAndUUIDs.get(mobile) || null == mobileNumberToMsg.get(mobile)) {
+//					log.error("No UUID/SMS for mobile {} skipping event", mobile);
+//					continue;
+//				}
 				List<String> toUsers = new ArrayList<>();
-				toUsers.add(mapOfPhnoAndUUIDs.get(mobile));
-				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(null).build();
+//				toUsers.add(mapOfPhnoAndUUIDs.get(mobile));
+				List<String> toRoles = new ArrayList<>();
+				toRoles.add("PQM_ADMIN");
+				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(toRoles).build();
 				Action action = null;
 				List<ActionItem> items = new ArrayList<>();
 
