@@ -27,7 +27,6 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
       setSelectedEmployer(temp);
     }
   }, [mdmsOptions]);
-  console.log("selectedEmployer", selectedEmployer)
   const requestCriteria = {
     url: "/vendor/v1/_search",
     params: { tenantId, sortBy: "name", status: "ACTIVE" },
