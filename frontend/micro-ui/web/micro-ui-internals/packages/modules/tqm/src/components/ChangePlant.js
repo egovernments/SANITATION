@@ -74,7 +74,6 @@ const ChangePlant = ({mobileView}) => {
     }
   }
   const { isLoading, data} = Digit.Hooks.useCustomAPIHook(requestCriteria);
-
   const handlePlantChange = (plant) => {
     Digit.SessionStorage.set("active_plant",plant)
     setActivePlant(plant)
@@ -86,6 +85,10 @@ const ChangePlant = ({mobileView}) => {
 
   if(isLoading) {
     return <Loader />
+  }
+  // if user is not linked to any plant 
+  if(data?.filter(row => row?.plantCode)?.length === 0){
+    return null
   }
   return (
     <div style={mobileView ? { color: "#767676" } : {}}>

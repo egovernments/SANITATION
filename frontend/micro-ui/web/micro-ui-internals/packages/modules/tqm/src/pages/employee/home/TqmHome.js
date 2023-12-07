@@ -28,7 +28,8 @@ const TqmHome = (props) => {
         "visualizationCode": "pqmTestCompliance",
         "queryType": "",
         "filters": {
-          "plantCode":activePlantCode?.length > 0 ? activePlantCode : []
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
+          "tenantId": Digit.ULBService.getCurrentTenantId()
         },
         "moduleLevel": "",
         "aggregationFactors": null,
@@ -55,7 +56,8 @@ const TqmHome = (props) => {
         "visualizationCode": "pqmPercentageOfTestResultsMeetingBenchmarks",
         "queryType": "",
         "filters": {
-          "plantCode":activePlantCode?.length > 0 ? activePlantCode : []
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
+          "tenantId": Digit.ULBService.getCurrentTenantId()
         },
         "moduleLevel": "",
         "aggregationFactors": null,
