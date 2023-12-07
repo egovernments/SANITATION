@@ -57,7 +57,7 @@ const HowItWorks = () => {
   return (
     <Fragment>
       <div className="how-it-works-page">
-        <BackButton></BackButton>
+        {/* <BackButton></BackButton> */}
         <div className="how-it-works-page-header">
           <Header>{t(mdmsConfigResult.screenHeader ? mdmsConfigResult.screenHeader : "HOW_IT_WORKS")}</Header>
         </div>
