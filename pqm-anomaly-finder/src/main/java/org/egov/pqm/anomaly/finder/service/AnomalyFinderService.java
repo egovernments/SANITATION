@@ -2,6 +2,7 @@ package org.egov.pqm.anomaly.finder.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -10,10 +11,7 @@ import org.egov.pqm.anomaly.finder.config.PqmAnomalyConfiguration;
 import org.egov.pqm.anomaly.finder.repository.AnomalyRepository;
 import org.egov.pqm.anomaly.finder.service.notification.NotificationService;
 import org.egov.pqm.anomaly.finder.validator.TestAnomalyFinderValidator;
-import org.egov.pqm.anomaly.finder.web.model.PqmAnomaly;
-import org.egov.pqm.anomaly.finder.web.model.PqmAnomalyRequest;
-import org.egov.pqm.anomaly.finder.web.model.PqmAnomalySearchCriteria;
-import org.egov.pqm.anomaly.finder.web.model.TestRequest;
+import org.egov.pqm.anomaly.finder.web.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +45,12 @@ public class AnomalyFinderService {
 		List<PqmAnomaly> pqmAnomalyList = getPqmAnomalyPlainSearch(criteria);	
 		return pqmAnomalyList;
 	}
+
+	public List<PqmAnomaly> anomalySearch(@Valid PqmAnomalySearchCriteria criteria, RequestInfo requestInfo) {
+
+		List<String> testIdLists = criteria.getTestIds();
+        return anomalyRepository.getAnomalyFinderData(testIdLists);
+	}
 	
 	private List<PqmAnomaly> getPqmAnomalyPlainSearch(@Valid PqmAnomalySearchCriteria criteria) {
 		if (criteria.getLimit() != null && criteria.getLimit() > config.getMaxSearchLimit())
@@ -64,4 +68,6 @@ public class AnomalyFinderService {
 
 		return anomalyRepository.getPqmAnomalyPlainSearch(PqmAnomalySearchCriteria.builder().ids(ids).build());
 	}
+
+
 }
