@@ -268,9 +268,6 @@ public class PqmService {
               PLANT_PLANT_CONFIG_DATA_NOT_PRESENT_ERROR_DESC);
     }
 
-    log.info("codeToPlantMap -> "+codeToPlantMap.toString());
-    log.info("codetoPlantConfigMap -> "+codetoPlantConfigMap.toString());
-
     for (String tenantId : tenantList) {
       scheduleTestForTenant(requestInfo, tenantId, codeToPlantMap,codetoPlantConfigMap);
     }
@@ -311,10 +308,8 @@ public class PqmService {
       //search from DB for any pending tests
       List<Test> testListFromDb = testSearch(testSearchRequest, requestInfo, false).getTests();
 
-
+      //starting anomaly detection for tests with no results submitted
       if (testListFromDb.size() >= 2) {
-        log.info("Anomaly Detected = ");
-        // Access the second element (index 1) and check if it's not empty
         String plantConfigCode = codeToPlantMap.get(mdmsTest.getPlant()).getPlantConfig();
         int manualTestPendingEscalationDays = codeToPlantConfigMap.get(plantConfigCode).getManualTestPendingEscalationDays();
         Test secondTest = testListFromDb.get(1);
@@ -325,8 +320,7 @@ public class PqmService {
           PqmAnomalySearchCriteria pqmAnomalySearchCriteria = PqmAnomalySearchCriteria.builder().tenantId(tenantId).testIds(Collections.singletonList(secondTest.getTestId())).build();
           PqmAnomalySearchRequest pqmAnomalySearchRequest = PqmAnomalySearchRequest.builder().requestInfo(requestInfo).pqmAnomalySearchCriteria(pqmAnomalySearchCriteria).build();
           List<PqmAnomaly> pqmAnomalyList = pqmAnomalyService.search(requestInfo, pqmAnomalySearchRequest);
-          if (pqmAnomalyList==null)
-          {
+          if (pqmAnomalyList == null) {
             throw new CustomException(PQM_ANOMALY_SEARCH_ERROR, PQM_ANOMALY_SEARCH_ERROR_DESC);
           }
           if (pqmAnomalyList.isEmpty()) {
