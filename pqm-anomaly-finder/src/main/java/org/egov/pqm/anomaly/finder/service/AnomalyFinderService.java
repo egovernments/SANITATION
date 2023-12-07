@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.anomaly.finder.config.PqmAnomalyConfiguration;
 import org.egov.pqm.anomaly.finder.repository.AnomalyRepository;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class AnomalyFinderService {
 
 	@Autowired
@@ -46,10 +48,8 @@ public class AnomalyFinderService {
 		return pqmAnomalyList;
 	}
 
-	public List<PqmAnomaly> anomalySearch(@Valid PqmAnomalySearchCriteria criteria, RequestInfo requestInfo) {
-
-		List<String> testIdLists = criteria.getTestIds();
-        return anomalyRepository.getAnomalyFinderData(testIdLists);
+	public List<PqmAnomaly> anomalySearch(@Valid PqmAnomalySearchCriteria criteria) {
+        return anomalyRepository.getAnomalyDataForCriteria(criteria);
 	}
 	
 	private List<PqmAnomaly> getPqmAnomalyPlainSearch(@Valid PqmAnomalySearchCriteria criteria) {
