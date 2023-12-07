@@ -29,6 +29,7 @@ const Modal = ({
   isOBPSFlow = false,
   popupModuleActionBarStyles = {},
   popmoduleClassName = "",
+  popUpContainerClassName="",
   popupModuleActionBarClass = "",
   popupMainModuleClass = "",
   customTheme = "",
@@ -44,7 +45,7 @@ const Modal = ({
     };
   }, []);
   return (
-    <PopUp>
+    <PopUp className={popUpContainerClassName}>
       <div className={`popup-module ${popmoduleClassName}`} style={popupStyles}>
         <HeaderBar main={headerBarMain} end={headerBarEnd} style={headerBarMainStyle ? headerBarMainStyle : {}} />
         <div className={`popup-module-main ${popupMainModuleClass}`} style={popupModuleMianStyles ? popupModuleMianStyles : {}}>
