@@ -7,12 +7,7 @@ import javax.validation.Valid;
 import org.egov.pqm.anomaly.finder.repository.AnomalyRepository;
 import org.egov.pqm.anomaly.finder.service.AnomalyFinderService;
 import org.egov.pqm.anomaly.finder.util.ResponseInfoFactory;
-import org.egov.pqm.anomaly.finder.web.model.PqmAnomaly;
-import org.egov.pqm.anomaly.finder.web.model.PqmAnomalyResponse;
-import org.egov.pqm.anomaly.finder.web.model.PqmAnomalySearchCriteria;
-import org.egov.pqm.anomaly.finder.web.model.RequestInfoWrapper;
-import org.egov.pqm.anomaly.finder.web.model.TestRequest;
-import org.egov.pqm.anomaly.finder.web.model.TestResponse;
+import org.egov.pqm.anomaly.finder.web.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,11 +56,10 @@ public class PqmAnomalyFinderController {
 	}
 
 	@PostMapping(value = "/_search")
-	public ResponseEntity<PqmAnomalyResponse> search(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
-														  @Valid @ModelAttribute PqmAnomalySearchCriteria criteria) {
-		List<PqmAnomaly> pqmAnomalyList = anomalyFinderService.anomalySearch(criteria, requestInfoWrapper.getRequestInfo());
+	public ResponseEntity<PqmAnomalyResponse> search(@Valid @RequestBody PqmAnomalySearchRequest pqmAnomalySearchRequest) {
+		List<PqmAnomaly> pqmAnomalyList = anomalyFinderService.anomalySearch(pqmAnomalySearchRequest.getPqmAnomalySearchCriteria());
 		PqmAnomalyResponse response = PqmAnomalyResponse.builder().pqmAnomalys(pqmAnomalyList).responseInfo(
-						responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true))
+						responseInfoFactory.createResponseInfoFromRequestInfo(pqmAnomalySearchRequest.getRequestInfo(), true))
 				.build();
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

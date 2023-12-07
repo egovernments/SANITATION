@@ -6,6 +6,7 @@ import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.anomaly.PqmAnomaly;
 import org.egov.pqm.web.model.anomaly.PqmAnomalyResponse;
 import org.egov.pqm.web.model.anomaly.PqmAnomalySearchCriteria;
+import org.egov.pqm.web.model.anomaly.PqmAnomalySearchRequest;
 import org.egov.tracer.model.CustomException;
 import org.egov.tracer.model.ServiceCallException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,12 @@ public class AnomalyService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<PqmAnomaly> search(RequestInfo requestInfo, PqmAnomalySearchCriteria pqmAnomalySearchCriteria) {
+    public List<PqmAnomaly> search(RequestInfo requestInfo, PqmAnomalySearchRequest pqmAnomalySearchRequest) {
       String uri = config.getPqmAnomalyHost() + config.getPqmAnomalySearchEndpoint();
 
         PqmAnomalyResponse response;
         try {
-            response = restTemplate.postForObject(uri, pqmAnomalySearchCriteria,
+            response = restTemplate.postForObject(uri, pqmAnomalySearchRequest,
                     PqmAnomalyResponse.class);
         } catch (HttpClientErrorException e) {
             throw new ServiceCallException(e.getResponseBodyAsString());
