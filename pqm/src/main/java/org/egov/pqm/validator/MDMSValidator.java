@@ -6,6 +6,7 @@ import static org.egov.pqm.util.Constants.PQM_SCHEMA_CODE_PLANT;
 import static org.egov.pqm.util.Constants.PQM_SCHEMA_CODE_PROCESS;
 import static org.egov.pqm.util.Constants.PQM_SCHEMA_CODE_STAGE;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class MDMSValidator {
 
   public void validateIfMasterPresent(RequestInfo requestInfo, String tenantId,
       String schemaCode, String uniqueId) {
-    Object mdmsData = mdmsUtils.mdmsCallV2(requestInfo, tenantId, schemaCode);
+    Object mdmsData = mdmsUtils.mdmsCallV2(requestInfo, tenantId, schemaCode, new ArrayList<>() );
     List<Object> result = JsonPath.read(mdmsData,
         "$.mdms[?(@.uniqueIdentifier == '" + uniqueId + "')]");
     if (result.isEmpty()) {
