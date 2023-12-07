@@ -34,6 +34,8 @@ import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestResultStatus;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
+import org.egov.pqm.web.model.anomaly.PqmAnomaly;
+import org.egov.pqm.web.model.anomaly.PqmAnomalySearchCriteria;
 import org.egov.pqm.web.model.mdms.MdmsTest;
 import org.egov.pqm.web.model.mdms.Plant;
 import org.egov.pqm.web.model.mdms.PlantConfig;
@@ -83,6 +85,9 @@ public class PqmService {
 
   @Autowired
   private MDMSValidator mdmsValidator;
+
+  @Autowired
+  private AnomalyService pqmAnomalyService;
 
   /**
    * search the PQM applications based on the search criteria
@@ -333,7 +338,15 @@ public class PqmService {
         Long escalationDate = addDaysToEpoch(scheduleDate, manualTestPendingEscalationDays);
 
         if (secondTest.getStatus() == TestResultStatus.PENDING && isPastScheduledDate(escalationDate)) {
-          enrichmentService.pushToAnomalyDetectorIfTestResultNotSubmitted(TestRequest.builder().requestInfo(requestInfo).tests(Collections.singletonList(secondTest)).build());
+          PqmAnomalySearchCriteria pqmAnomalySearchCriteria = PqmAnomalySearchCriteria.builder().tenantId(tenantId).testIds(Collections.singletonList(secondTest.getTestId())).build();
+          List<PqmAnomaly> pqmAnomalyList = pqmAnomalyService.search(requestInfo, pqmAnomalySearchCriteria);
+          if (pqmAnomalyList==null)
+          {
+            throw new CustomException(PQM_ANOMALY_SEARCH_ERROR, PQM_ANOMALY_SEARCH_ERROR_DESC);
+          }
+          if (pqmAnomalyList.isEmpty()) {
+            enrichmentService.pushToAnomalyDetectorIfTestResultNotSubmitted(TestRequest.builder().requestInfo(requestInfo).tests(Collections.singletonList(secondTest)).build());
+          }
         }
       }
 

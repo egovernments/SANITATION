@@ -60,4 +60,14 @@ public class PqmAnomalyFinderController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	@PostMapping(value = "/_search")
+	public ResponseEntity<PqmAnomalyResponse> search(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
+														  @Valid @ModelAttribute PqmAnomalySearchCriteria criteria) {
+		List<PqmAnomaly> pqmAnomalyList = anomalyFinderService.anomalySearch(criteria, requestInfoWrapper.getRequestInfo());
+		PqmAnomalyResponse response = PqmAnomalyResponse.builder().pqmAnomalys(pqmAnomalyList).responseInfo(
+						responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true))
+				.build();
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
 }
