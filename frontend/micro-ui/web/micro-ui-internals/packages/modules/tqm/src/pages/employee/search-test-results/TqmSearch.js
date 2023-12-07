@@ -23,16 +23,16 @@ const TqmSearch = () => {
           select: (data) => {
               if(Digit.Utils.tqm.isPlantOperatorLoggedIn()){
                 //local
-                // return tqmSearchConfigPlantOperator?.tqmSearchConfig?.[0]
+                return tqmSearchConfigPlantOperator?.tqmSearchConfig?.[0]
                 //mdms
-                return data?.commonSanitationUiConfig?.SearchPlantOperatorConfig?.[0]
+                // return data?.commonSanitationUiConfig?.SearchPlantOperatorConfig?.[0]
 
               }
               if(Digit.Utils.tqm.isUlbAdminLoggedIn()){
                 //local
-                // return tqmSearchConfigUlbAdmin?.tqmSearchConfig?.[0]
+                return tqmSearchConfigUlbAdmin?.tqmSearchConfig?.[0]
                 //mdms
-                return data?.commonSanitationUiConfig?.SearchUlbAdminConfig?.[0]
+                // return data?.commonSanitationUiConfig?.SearchUlbAdminConfig?.[0]
 
               }
               // return tqmSearchConfigPlantOperator?.tqmSearchConfig?.[0]

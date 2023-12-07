@@ -6,7 +6,22 @@ function CardReading(props) {
   const { t } = useTranslation();
   return (
     <Card className="tqm-card-reading">
-      {props?.showInfo ? <InfoIcon fill="#F47738" /> : null}
+      {props?.showInfo ? (
+        <span className={`tooltip`}>
+          <InfoIcon fill="#F47738" />
+          <span
+            className="tooltiptext"
+            style={{
+              whiteSpace: "normal",
+              fontSize: "medium",
+              marginLeft: 0,
+              marginRight: "-200px",
+            }}
+          >
+            {t(`TIP_${props?.tip}`)}
+          </span>
+        </span>
+      ) : null}
       <Row textStyle={{ color: props?.success ? "#00703C" : "#D4351C" }} className="tqm-readings-info" label={t(props?.title)} text={t(props?.value)} />
     </Card>
   );
@@ -17,7 +32,20 @@ export function MultiCardReading(props) {
   return props?.parameterData?.map
     ? props?.parameterData?.map((i) => (
         <Card className="tqm-card-reading">
-          <InfoIcon fill="#F47738" />
+          <span className={`tooltip`}>
+            <InfoIcon fill="#F47738" />
+            <span
+              className="tooltiptext"
+              style={{
+                whiteSpace: "normal",
+                fontSize: "medium",
+                marginLeft: 0,
+                marginRight: "-200px",
+              }}
+            >
+              {t(`TIP_${Digit.Utils.locale.getTransformedLocale(`PQM.QualityCriteria_${i?.criteriaCode}`)}`)}
+            </span>
+          </span>
           <Row
             textStyle={{ color: props?.success ? "#00703C" : "#D4351C" }}
             className="tqm-readings-info"

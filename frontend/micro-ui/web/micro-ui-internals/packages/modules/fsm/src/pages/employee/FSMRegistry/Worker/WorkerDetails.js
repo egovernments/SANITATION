@@ -72,6 +72,7 @@ const WorkerDetails = (props) => {
       },
     },
   });
+
   // const { data: driverData, isLoading: isLoading, isSuccess: isDsoSuccess, error: dsoError, refetch } = Digit.Hooks.fsm.useDriverDetails(tenantId, { ids: id });
 
   const { data: vendorData, isLoading: isVendorLoading, isSuccess: isVendorSuccess, error: vendorError } = Digit.Hooks.fsm.useDsoSearch(

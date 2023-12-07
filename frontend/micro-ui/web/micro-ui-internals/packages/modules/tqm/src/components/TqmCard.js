@@ -20,6 +20,34 @@ const TqmCard = ({reRoute=true}) => {
     return null;
   }
 
+  //searching for plants linked to this user
+  const userInfo = Digit.UserService.getUser();
+  const requestCriteriaPlantUsers = {
+    params:{},
+    url:'/pqm-service/plant/user/v1/_search',
+    body:{
+      "plantUserSearchCriteria": {
+        tenantId,
+        // "plantCodes": [],
+        "plantUserUuids": userInfo?.info?.uuid ?  [userInfo?.info?.uuid]: [],
+        "additionalDetails": {}
+      },
+      "pagination": {}
+    },
+    config: {
+      select:(data)=> {
+        let userPlants =  data?.plantUsers?.map(row => {
+          row.i18nKey = `PQM_PLANT_${row?.plantCode}`
+          return row
+        })?.filter(row=>row.isActive)
+        // userPlants.push({i18nKey:"PQM_PLANT_DEFAULT_ALL"})
+        Digit.SessionStorage.set("user_plants",userPlants );
+        return userPlants
+      }
+    }
+  }
+  const { isLoading:isLoadingPlantUsers, data:dataPlantUsers} = Digit.Hooks.useCustomAPIHook(requestCriteriaPlantUsers);
+
   const requestCriteria = {
     url: "/inbox/v2/_search",
     body: {
@@ -40,9 +68,14 @@ const TqmCard = ({reRoute=true}) => {
       },
     },
     config: {
-      enabled: Digit.Utils.didEmployeeHasAtleastOneRole(ROLES.plant) || Digit.Utils.didEmployeeHasAtleastOneRole(ROLES.ulb),
+      enabled: dataPlantUsers?.length>=0 ? Digit.Utils.didEmployeeHasAtleastOneRole(ROLES.plant) || Digit.Utils.didEmployeeHasAtleastOneRole(ROLES.ulb):false,
     },
   };
+
+  const activePlantCode = Digit.SessionStorage.get("active_plant")?.plantCode ? [Digit.SessionStorage.get("active_plant")?.plantCode]:Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.map(row => row.plantCode)
+  if(activePlantCode?.length>0){
+    requestCriteria.body.inbox.moduleSearchCriteria.plantCodes = [...activePlantCode]
+  }
 
   const { isLoading, data:tqmInboxData } = Digit.Hooks.useCustomAPIHook(requestCriteria);
 
@@ -51,7 +84,7 @@ const TqmCard = ({reRoute=true}) => {
       label: t("TQM_INBOX"),
       link: `/${window?.contextPath}/employee/tqm/inbox`,
       roles: [...ROLES.plant,ROLES.ulb],
-      count:  isLoading ? '-' : tqmInboxData?.totalCount ? tqmInboxData?.totalCount : 0
+      count:  isLoading ? '-' : tqmInboxData?.totalCount ? String(tqmInboxData?.totalCount) : "0"
     },
     {
       label: t("TQM_VIEW_PAST_RESULTS"),

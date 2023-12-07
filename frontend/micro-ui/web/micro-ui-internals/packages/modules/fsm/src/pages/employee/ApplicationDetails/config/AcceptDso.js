@@ -105,6 +105,7 @@ export const configAcceptDso = ({
                   }}
                   selected={selectedDriver}
                   disable={drivers?.length > 0 ? false : true}
+                  placeholder={t("SW_SEARCH_BY_NAME_ID")}
                 />
               </React.Fragment>
             ),
@@ -116,6 +117,7 @@ export const configAcceptDso = ({
             populators: (
               <React.Fragment>
                 <MultiSelectDropdown
+                  placeholder={t("SW_SEARCH_BY_NAME_ID")}
                   className="form-field"
                   isMandatory={true}
                   defaultUnit="Selected"
@@ -130,6 +132,8 @@ export const configAcceptDso = ({
                   }}
                   optionsKey={"optionsKey"}
                   t={t}
+                  // defaultLabel={t("SW_SEARCH_BY_NAME_ID")}
+                  // defaultLabelClassName={"as-placeholder"}
                 />
                 <div className="tag-container">
                   {selectedWorkers?.map((value, index) => {

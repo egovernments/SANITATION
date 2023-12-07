@@ -365,7 +365,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       const workerPayload = workersList?.map(worker=> {
         return {
           tenantId:worker?.tenantId,
-          applicationId:applicationData?.applicationNo,
+          applicationId:applicationData?.id,
           individualId:worker?.id,
           workerType:worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER") ? "DRIVER":"HELPER",
           status:"ACTIVE"
@@ -564,6 +564,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         isDisabled={!formValve}
         popupModuleMianStyles={mobileView ? { paddingBottom: '60px' } : {}}
         popupModuleActionBarStyles={mobileView ? popupActionBarStyles : {}}
+        popUpContainerClassName={'fsm-application-modal-popup'}
       >
         <FormComposer
           config={config.form}

@@ -49,7 +49,7 @@ const ChangePlant = ({mobileView}) => {
       "plantUserSearchCriteria": {
         tenantId,
         // "plantCodes": [],
-        "plantOperatorUuid": userInfo?.info?.uuid ?  [userInfo?.info?.uuid]: [],
+        "plantUserUuids": userInfo?.info?.uuid ?  [userInfo?.info?.uuid]: [],
         "additionalDetails": {}
       },
       "pagination": {}
@@ -59,7 +59,7 @@ const ChangePlant = ({mobileView}) => {
         let userPlants =  data?.plantUsers?.map(row => {
           row.i18nKey = `PQM_PLANT_${row?.plantCode}`
           return row
-        })
+        })?.filter(row=>row.isActive)
         userPlants.push({i18nKey:"PQM_PLANT_DEFAULT_ALL"})
         //remove this line when api works fine
         // userPlants = sampleResp
@@ -74,7 +74,6 @@ const ChangePlant = ({mobileView}) => {
     }
   }
   const { isLoading, data} = Digit.Hooks.useCustomAPIHook(requestCriteria);
-
   const handlePlantChange = (plant) => {
     Digit.SessionStorage.set("active_plant",plant)
     setActivePlant(plant)
@@ -86,6 +85,10 @@ const ChangePlant = ({mobileView}) => {
 
   if(isLoading) {
     return <Loader />
+  }
+  // if user is not linked to any plant 
+  if(data?.filter(row => row?.plantCode)?.length === 0){
+    return null
   }
   return (
     <div style={mobileView ? { color: "#767676" } : {}}>
