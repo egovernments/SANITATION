@@ -295,6 +295,29 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     if (fstpoRejectionReason && data.comments) workflow.comments = data.comments;
     if (fstpoRejectionReason) workflow.fstpoRejectionReason = fstpoRejectionReason?.code;
 
+    
+    if(action==="DSO_ACCEPT" || action==="ACCEPT"){
+      //if driver selected is there in selectedworkers do early return and show toast
+      if(selectedWorkers?.some?.(worker => worker?.id === selectedDriver?.id)){
+        setShowToast({ label:"FSM_DRIVER_SW_ERR",error:true });
+        setTimeout(closeToast, 5000);
+        return
+      }
+      const workersList = [selectedDriver,...selectedWorkers]
+      // workerList?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER"))
+      const workerPayload = workersList?.map(worker=> {
+        return {
+          tenantId:worker?.tenantId,
+          applicationId:applicationData?.id,
+          individualId:worker?.id,
+          workerType:worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER") ? "DRIVER":"HELPER",
+          status:"ACTIVE"
+        }
+      })
+      submitAction({ fsm: {...applicationData,workers:workerPayload}, workflow });
+      return
+    }
+    
     submitAction({ fsm: applicationData, workflow });
   }
   useEffect(() => {

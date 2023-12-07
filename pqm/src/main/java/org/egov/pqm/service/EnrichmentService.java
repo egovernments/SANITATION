@@ -259,4 +259,41 @@ public class EnrichmentService {
     }
   }
 
+  public void enrichPqmSearch(TestSearchRequest testSearchRequest, RequestInfo requestInfo) {
+    if (requestInfo.getUserInfo().getRoles().stream().map(Role::getCode).anyMatch(s -> s.contentEquals(PQM_TP_OPERATOR))) {
+      addOrUpdatePlantCodes(testSearchRequest, PlantUserType.PLANT_OPERATOR);
+    } else if(requestInfo.getUserInfo().getRoles().stream().map(Role::getCode).anyMatch(s -> s.contentEquals(PQM_ADMIN))) {
+      addOrUpdatePlantCodes(testSearchRequest, PlantUserType.ULB);
+    } else {
+      throw Error.invalid_applicant_error.getBuilder("Search",
+          testSearchRequest.getRequestInfo().getUserInfo().getUuid(), "Roles: " + Arrays.asList(PQM_ADMIN, PQM_TP_OPERATOR)).build();
+    }
+  }
+
+  private void addOrUpdatePlantCodes(TestSearchRequest testSearchRequest, PlantUserType plantUserType){
+    PlantUserResponse plantUserResponse = plantUserService.search(PlantUserSearchRequest.builder()
+        .plantUserSearchCriteria(PlantUserSearchCriteria.builder()
+            .tenantId(testSearchRequest.getRequestInfo().getUserInfo().getTenantId())
+            .plantUserUuids(Collections.singletonList(testSearchRequest.getRequestInfo().getUserInfo().getUuid()))
+            .plantUserTypes(Collections.singletonList(plantUserType.toString()))
+            .build())
+        .requestInfo(testSearchRequest.getRequestInfo()).build());
+    if (Objects.isNull(plantUserResponse) || CollectionUtils.isEmpty(
+        plantUserResponse.getPlantUsers()) || plantUserResponse.getPlantUsers().stream()
+        .noneMatch(PlantUser::getIsActive)) {
+      throw Error.invalid_applicant_error.getBuilder("Search",
+          testSearchRequest.getRequestInfo().getUserInfo().getUuid(), "plant-user-mapping").build();
+    }
+
+    List<String> plantCodes = plantUserResponse.getPlantUsers().stream().map(
+        PlantUser::getPlantCode).collect(
+        Collectors.toList());
+
+    if(CollectionUtils.isEmpty(testSearchRequest.getTestSearchCriteria().getPlantCodes())){
+      testSearchRequest.getTestSearchCriteria().setPlantCodes(plantCodes);
+    } else {
+      testSearchRequest.getTestSearchCriteria().getPlantCodes().retainAll(plantCodes);
+    }
+  }
+
 }

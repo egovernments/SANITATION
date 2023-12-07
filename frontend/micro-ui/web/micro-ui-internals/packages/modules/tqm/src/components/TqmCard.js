@@ -84,7 +84,7 @@ const TqmCard = ({reRoute=true}) => {
       label: t("TQM_INBOX"),
       link: `/${window?.contextPath}/employee/tqm/inbox`,
       roles: [...ROLES.plant,ROLES.ulb],
-      count:  isLoading ? '-' : tqmInboxData?.totalCount ? tqmInboxData?.totalCount : 0
+      count:  isLoading ? '-' : tqmInboxData?.totalCount ? String(tqmInboxData?.totalCount) : "0"
     },
     {
       label: t("TQM_VIEW_PAST_RESULTS"),

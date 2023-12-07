@@ -93,7 +93,11 @@ export const UICustomizations = {
   workflowActionMap,
   TqmInboxConfig:{
     preProcess: (data,additionalDetails) => {
-      
+      //sample working code to stop calling inbox api if no plants are linked to this user
+      // if(Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.length===0){
+      //   data.config.enabled = false
+      //   return data
+      // }
       const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
       
       //processcodes
@@ -383,10 +387,12 @@ export const UICustomizations = {
       data.body.testSearchCriteria.wfStatus = ["SUBMITTED"];
       //sortOrder
       data.body.pagination.sortOrder = sortOrder?.value
+
       if(data.body.pagination.sortOrder){
         data.body.pagination.sortBy = "scheduledDate"
       }
 
+      data.body.testSearchCriteria.testType = ["LAB_SCHEDULED","IOT_SCHEDULED"]
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)
 
