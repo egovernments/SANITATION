@@ -48,6 +48,12 @@ public class AnomalyFinderService {
 		return pqmAnomalyList;
 	}
 	
+	public List<PqmAnomaly> anomalySearch(@Valid PqmAnomalySearchCriteria criteria, RequestInfo requestInfo) {
+
+		List<String> testIdLists = criteria.getTestIds();
+        return anomalyRepository.getAnomalyFinderData(testIdLists);
+	}
+	
 	private List<PqmAnomaly> getPqmAnomalyPlainSearch(@Valid PqmAnomalySearchCriteria criteria) {
 		if (criteria.getLimit() != null && criteria.getLimit() > config.getMaxSearchLimit())
 			criteria.setLimit(config.getMaxSearchLimit());
