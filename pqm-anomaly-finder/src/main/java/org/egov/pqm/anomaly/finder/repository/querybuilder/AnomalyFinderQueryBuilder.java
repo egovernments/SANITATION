@@ -21,6 +21,30 @@ public class AnomalyFinderQueryBuilder {
 		}
 		return builder.toString();
 	}
+	public String anomalySearchQueryWithCriteria(PqmAnomalySearchCriteria criteria, List<Object> preparedStmtList) {
+		StringBuilder builder = new StringBuilder(ANOMALYFINDER_QUERY);
+
+		List<String> testIds = criteria.getTestIds();
+		if (!CollectionUtils.isEmpty(testIds)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" anomaly.testid IN (").append(createQuery(testIds)).append(")");
+			addToPreparedStatement(preparedStmtList,testIds);
+		}
+
+		if (criteria.getTenantId() != null) {
+			if (criteria.getTenantId().split("\\.").length == 1) {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" anomaly.tenantid like ?");
+				preparedStmtList.add('%' + criteria.getTenantId() + '%');
+			} else {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" anomaly.tenantid=? ");
+				preparedStmtList.add(criteria.getTenantId());
+			}
+		}
+
+		return builder.toString();
+	}
 
 	private void addClauseIfRequired(List<Object> values, StringBuilder queryString) {
 		if (values.isEmpty())

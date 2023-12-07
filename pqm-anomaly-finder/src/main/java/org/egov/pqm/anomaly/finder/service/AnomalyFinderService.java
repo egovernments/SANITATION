@@ -48,10 +48,8 @@ public class AnomalyFinderService {
 		return pqmAnomalyList;
 	}
 	
-	public List<PqmAnomaly> anomalySearch(@Valid PqmAnomalySearchCriteria criteria, RequestInfo requestInfo) {
-
-		List<String> testIdLists = criteria.getTestIds();
-        return anomalyRepository.getAnomalyFinderData(testIdLists);
+	public List<PqmAnomaly> anomalySearch(@Valid PqmAnomalySearchCriteria criteria) {
+        return anomalyRepository.getAnomalyDataForCriteria(criteria);
 	}
 	
 	private List<PqmAnomaly> getPqmAnomalyPlainSearch(@Valid PqmAnomalySearchCriteria criteria) {
