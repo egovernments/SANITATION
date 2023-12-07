@@ -17,5 +17,5 @@ public enum SortBy {
 	deviceCode,
     createdTime,
     scheduledDate,
-    plantOperatorUuid
+    plantUserUuid
 }

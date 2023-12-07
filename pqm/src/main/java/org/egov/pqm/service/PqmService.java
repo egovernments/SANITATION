@@ -1,22 +1,36 @@
 package org.egov.pqm.service;
 
-import static org.egov.pqm.util.Constants.*;
-import static org.egov.pqm.util.ErrorConstants.*;
+import static org.egov.pqm.util.Constants.MDMS_MASTER_TENANTS;
+import static org.egov.pqm.util.Constants.MDMS_MODULE_TENANT;
+import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
+import static org.egov.pqm.util.Constants.SCHEMA_CODE_TEST_STANDARD;
+import static org.egov.pqm.util.Constants.SUBMIT_SAMPLE;
+import static org.egov.pqm.util.Constants.UPDATE_RESULT;
+import static org.egov.pqm.util.Constants.WFSTATUS_PENDINGRESULTS;
+import static org.egov.pqm.util.Constants.WFSTATUS_SCHEDULED;
+import static org.egov.pqm.util.ErrorConstants.NO_TENANT_PRESENT_ERROR_DESC;
+import static org.egov.pqm.util.ErrorConstants.TEST_NOT_IN_DB;
+import static org.egov.pqm.util.ErrorConstants.TEST_NOT_PRESENT_CODE;
+import static org.egov.pqm.util.ErrorConstants.TEST_NOT_PRESENT_MESSAGE;
+import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 import static org.egov.pqm.util.MDMSUtils.parseJsonToTestList;
 import static org.egov.pqm.web.model.Pagination.SortOrder.DESC;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
-
-import net.minidev.json.JSONArray;
+import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
-import org.egov.common.contract.request.Role;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.TestRepository;
-import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.validator.MDMSValidator;
@@ -42,10 +56,6 @@ import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -84,18 +94,20 @@ public class PqmService {
   /**
    * search the PQM applications based on the search criteria
    *
-   * @param criteria
-   * @param requestInfo
-   * @return
+   * @param testSearchRequest test search request
+   * @param requestInfo request info with user details
+   * @return TestResponse
    */
-  public TestResponse testSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
+  public TestResponse testSearch(TestSearchRequest testSearchRequest, RequestInfo requestInfo, Boolean validate) {
 
     List<Test> testList = new LinkedList<>();
-
-    if (requestInfo.getUserInfo()!=null &&requestInfo.getUserInfo().getType().equalsIgnoreCase("Employee")) {
-      checkRoleInValidateSearch(criteria, requestInfo);
+    if(Boolean.TRUE.equals(validate)) {
+      testSearchRequest.setRequestInfo(requestInfo);
+      pqmValidator.validateSearchRequest(testSearchRequest, requestInfo);
+      enrichmentService.enrichPqmSearch(testSearchRequest, requestInfo);
     }
-    TestResponse testResponse = repository.getPqmData(criteria);
+
+    TestResponse testResponse = repository.getPqmData(testSearchRequest);
     List<String> idList = testResponse.getTests().stream().map(Test::getTestId)
         .collect(Collectors.toList());
 
@@ -121,17 +133,6 @@ public class PqmService {
     }).collect(Collectors.toList());
 
     return testResponse;
-
-  }
-
-  private void checkRoleInValidateSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
-    List<Role> roles = requestInfo.getUserInfo().getRoles();
-    TestSearchCriteria testSearchCriteria = criteria.getTestSearchCriteria();
-    List<String> masterNameList = new ArrayList<>();
-    masterNameList.add(null);
-    if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
-
-    }
 
   }
 
@@ -179,7 +180,7 @@ public class PqmService {
     TestSearchRequest request = TestSearchRequest.builder()
         .testSearchCriteria(criteria).pagination(Pagination)
         .build();
-    return testSearch(request, testRequest.getRequestInfo());
+    return testSearch(request, testRequest.getRequestInfo(), true);
   }
 
   /**
@@ -296,7 +297,7 @@ public class PqmService {
           .testSearchCriteria(testSearchCriteria).pagination(pagination).build();
 
       //search from DB for any pending tests
-      List<Test> testListFromDb = testSearch(testSearchRequest, requestInfo).getTests();
+      List<Test> testListFromDb = testSearch(testSearchRequest, requestInfo, false).getTests();
 
 
       int frequency = Integer.parseInt(mdmsTest.getFrequency().split("_")[0]);
@@ -409,7 +410,8 @@ public class PqmService {
 		if (ids.isEmpty())
 			return TestResponse.builder().build();
 		 TestSearchCriteria.builder().ids(ids).build();
-		return testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).build(), requestInfo);
+		 Pagination pagination=	Pagination.builder().limit(testSearchCriteria.getLimit()).offset(testSearchCriteria.getOffset()).build();
+		return testSearch(TestSearchRequest.builder().testSearchCriteria(testSearchCriteria).pagination(pagination).build(), requestInfo, false);
 	}
 
 }
