@@ -85,6 +85,12 @@ const EditWorker = ({ parentUrl, heading }) => {
     },
   });
 
+  const { data: vendorData, isLoading: isVendorLoading, isSuccess: isVendorSuccess, error: vendorError, refetch: refetchVendor } = Digit.Hooks.fsm.useDsoSearch(
+    tenantId,
+    { sortBy: "name", sortOrder: "ASC", status: "ACTIVE", individualIds: workerData?.Individual?.[0]?.id },
+    { enabled: workerData && !WorkerLoading }
+  );
+
   const {
     isLoading: isPlantUpdateLoading,
     isError: isPlantUserError,
@@ -137,11 +143,15 @@ const EditWorker = ({ parentUrl, heading }) => {
         const filterCodes = resproles.map((item) => item.code);
         const filteredArray = tempRoles.filter((item) => filterCodes.includes(item.code));
         transformedData.sys_role = filteredArray;
+        // transformedData.sys_role = filteredArray?.reduce((result, item, index) => {
+        //   result[index] = item;
+        //   return result;
+        // }, {});
         resultArray.push(transformedData);
       }
     }
 
-    return resultArray;
+    return resultArray.length !== 0 ? resultArray : undefined;
   }
 
   useEffect(() => {
@@ -172,208 +182,24 @@ const EditWorker = ({ parentUrl, heading }) => {
         skills: workerDetails?.skills?.map((obj) => ({ ...obj, code: obj.type })),
         employementDetails: {
           employer: { name: workerDetails?.additionalFields?.fields?.find((i) => i.key === "EMPLOYER")?.value },
-          vendor: {
-            id: "ea138945-f35b-42a3-96af-9ded096fb809",
-            tenantId: "pg.citya",
-            name: "Raj",
-            address: {
-              tenantId: "pg.citya",
-              doorNo: "",
-              plotNo: "",
-              id: "894f60f2-0d27-4f24-b1ec-a0017920b51a",
-              landmark: "",
-              city: "CityA",
-              district: "CityA",
-              region: "CityA",
-              state: null,
-              country: "in",
-              pincode: "",
-              additionalDetails: '{"description": ""}',
-              buildingName: "",
-              street: "",
-              locality: {
-                code: "SUN01",
-                name: "Ajit Nagar - Area1",
-                label: "Locality",
-                latitude: "31.63089",
-                longitude: "74.871552",
-                children: [],
-                materializedPath: null,
-              },
-              geoLocation: null,
-              auditDetails: null,
-            },
-            owner: {
-              id: 861,
-              uuid: "31b14828-1c46-42bb-9364-8f456509c375",
-              userName: "6543217890",
-              password: null,
-              salutation: null,
-              name: "Raj",
-              gender: "MALE",
-              mobileNumber: "6543217890",
-              emailId: "abc@egov.com",
-              altContactNumber: null,
-              pan: null,
-              aadhaarNumber: null,
-              permanentAddress: null,
-              permanentCity: null,
-              permanentPinCode: null,
-              correspondenceCity: null,
-              correspondencePinCode: null,
-              correspondenceAddress: null,
-              active: true,
-              dob: 1700611200000,
-              pwdExpiryDate: 1708715718000,
-              locale: null,
-              type: "CITIZEN",
-              signature: null,
-              accountLocked: false,
-              roles: [
-                {
-                  id: null,
-                  name: "FSM Desluding Operator",
-                  code: "FSM_DSO",
-                  tenantId: "pg",
-                },
-                {
-                  id: null,
-                  name: "Citizen",
-                  code: "CITIZEN",
-                  tenantId: "pg",
-                },
-              ],
-              fatherOrHusbandName: "Raj",
-              relationship: "OTHER",
-              bloodGroup: null,
-              identificationMark: null,
-              photo: null,
-              createdBy: "715",
-              createdDate: 1700820918000,
-              lastModifiedBy: "715",
-              lastModifiedDate: 1700836672000,
-              otpReference: null,
-              tenantId: "pg",
-            },
-            vehicles: null,
-            drivers: [
-              {
-                id: "f24d113e-c163-4aa1-a1b3-b54807308a40",
-                tenantId: "pg.citya",
-                name: "pintu",
-                owner: {
-                  id: 820,
-                  uuid: "fc688f84-6b5c-4da5-ae69-3580d3d81fc6",
-                  userName: "1111111149",
-                  password: null,
-                  salutation: null,
-                  name: "pintu",
-                  gender: "MALE",
-                  mobileNumber: "1111111149",
-                  emailId: "abc@egov.com",
-                  altContactNumber: null,
-                  pan: null,
-                  aadhaarNumber: null,
-                  permanentAddress: null,
-                  permanentCity: null,
-                  permanentPinCode: null,
-                  correspondenceCity: null,
-                  correspondencePinCode: null,
-                  correspondenceAddress: null,
-                  active: true,
-                  dob: 0,
-                  pwdExpiryDate: 1706927828000,
-                  locale: null,
-                  type: "CITIZEN",
-                  signature: null,
-                  accountLocked: false,
-                  roles: [
-                    {
-                      id: null,
-                      name: "FSM Driver",
-                      code: "FSM_DRIVER",
-                      tenantId: "pg.citya",
-                    },
-                    {
-                      id: null,
-                      name: "FSM Driver",
-                      code: "FSM_DRIVER",
-                      tenantId: "pg",
-                    },
-                  ],
-                  fatherOrHusbandName: "pintu",
-                  relationship: "OTHER",
-                  bloodGroup: null,
-                  identificationMark: null,
-                  photo: null,
-                  createdBy: "715",
-                  createdDate: 1699013642000,
-                  lastModifiedBy: "715",
-                  lastModifiedDate: 1700836879000,
-                  otpReference: null,
-                  tenantId: "pg",
-                },
-                ownerId: "fc688f84-6b5c-4da5-ae69-3580d3d81fc6",
-                additionalDetails: null,
-                description: null,
-                licenseNumber: "12345678999995",
-                status: "DISABLED",
-                auditDetails: {
-                  createdBy: "4a747fc5-6a8c-4645-8748-fec35f1b9e17",
-                  lastModifiedBy: "4a747fc5-6a8c-4645-8748-fec35f1b9e17",
-                  createdTime: 1698993428899,
-                  lastModifiedTime: 1700817079094,
-                },
-                vendorDriverStatus: "ACTIVE",
-              },
-            ],
-            workers: [
-              {
-                id: "f3104f07-9b62-460d-8b9c-e16a4b6c740f",
-                tenantId: "pg.citya",
-                vendorId: "ea138945-f35b-42a3-96af-9ded096fb809",
-                individualId: "IND-2023-11-23-010844",
-                additionalDetails: null,
-                auditDetails: {
-                  createdBy: "4a747fc5-6a8c-4645-8748-fec35f1b9e17",
-                  lastModifiedBy: "4a747fc5-6a8c-4645-8748-fec35f1b9e17",
-                  createdTime: 1700801118082,
-                  lastModifiedTime: 1700803699721,
-                },
-                vendorWorkerStatus: "ACTIVE",
-              },
-            ],
-            additionalDetails: {
-              description: "",
-            },
-            source: "WhatsApp",
-            description: null,
-            ownerId: "31b14828-1c46-42bb-9364-8f456509c375",
-            agencyType: "ULB",
-            paymentPreference: "post-service",
-            status: "ACTIVE",
-            auditDetails: {
-              createdBy: "4a747fc5-6a8c-4645-8748-fec35f1b9e17",
-              lastModifiedBy: "4a747fc5-6a8c-4645-8748-fec35f1b9e17",
-              createdTime: 1700801118082,
-              lastModifiedTime: 1700816872520,
-            },
-          },
+          vendor: vendorData,
         },
         AddWorkerRoles: transformData(workerDetails),
         documents: {
-          img_photo: [
-            [
-              "SAMPLE",
-              {
-                file: { name: "sample" },
-                fileStoreId: {
-                  fileStoreId: workerDetails?.photo,
-                  tenantId: tenantId,
-                },
-              },
-            ],
-          ],
+          img_photo: workerDetails?.photo
+            ? [
+                [
+                  "Photo",
+                  {
+                    file: { name: "photo" },
+                    fileStoreId: {
+                      fileStoreId: workerDetails?.photo,
+                      tenantId: tenantId,
+                    },
+                  },
+                ],
+              ]
+            : null,
         },
       };
 
@@ -402,8 +228,7 @@ const EditWorker = ({ parentUrl, heading }) => {
       formData?.address?.locality &&
       formData?.skills &&
       formData?.employementDetails?.employer &&
-      formData?.AddWorkerRoles?.length > 0 &&
-      checkRoleField
+      (!formData?.AddWorkerRoles || (formData?.AddWorkerRoles?.length > 0 && checkRoleField))
     ) {
       setSubmitValve(true);
     } else {
@@ -516,9 +341,12 @@ const EditWorker = ({ parentUrl, heading }) => {
           ...workerinfo?.userDetails,
           username: name,
           tenantId: tenantId,
-          roles: roleDetails?.map((entry) => {
-            return { code: entry.sys_role.code, tenantId };
-          }),
+          roles: roleDetails
+            ? Object.values(roleDetails[0].sys_role).map((role) => ({
+                code: role.code,
+                tenantId: tenantId,
+              }))
+            : [{ code: "SANITATION_WORKER", tenantId }],
           type: roleDetails?.map((entry) => entry.sys_role.code)?.includes("citizen") ? "CITIZEN" : "EMPLOYEE",
         },
       },
@@ -557,8 +385,8 @@ const EditWorker = ({ parentUrl, heading }) => {
               vendor: {
                 ...vendor,
                 workers: vendor.workers
-                  ? [...vendor.workers, { individualId: data?.Individual?.individualId, vendorWorkerStatus: "ACTIVE" }]
-                  : [{ individualId: data?.Individual?.individualId, vendorWorkerStatus: "ACTIVE" }],
+                  ? [...vendor.workers, { individualId: data?.Individual?.id, vendorWorkerStatus: "ACTIVE" }]
+                  : [{ individualId: data?.Individual?.id, vendorWorkerStatus: "ACTIVE" }],
               },
             };
             const response = await vendorMutate(vendorData);

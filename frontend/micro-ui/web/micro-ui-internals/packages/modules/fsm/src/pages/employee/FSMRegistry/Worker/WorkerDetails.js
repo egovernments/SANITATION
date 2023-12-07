@@ -60,7 +60,7 @@ const WorkerDetails = (props) => {
 
   const [selectedOption, setSelectedOption] = useState({});
 
-  const { data: workerData, isLoading: isWorkerLoading } = Digit.Hooks.fsm.useWorkerDetails({
+  const { data: workerData, isLoading: isWorkerLoading, refetch } = Digit.Hooks.fsm.useWorkerDetails({
     tenantId,
     params: {
       offset: 0,
@@ -72,8 +72,7 @@ const WorkerDetails = (props) => {
       },
     },
   });
-  console.log("workedDARA", workerData, isWorkerLoading);
-  const { data: driverData, isLoading: isLoading, isSuccess: isDsoSuccess, error: dsoError, refetch } = Digit.Hooks.fsm.useDriverDetails(tenantId, { ids: id });
+  // const { data: driverData, isLoading: isLoading, isSuccess: isDsoSuccess, error: dsoError, refetch } = Digit.Hooks.fsm.useDriverDetails(tenantId, { ids: id });
 
   const { data: vendorData, isLoading: isVendorLoading, isSuccess: isVendorSuccess, error: vendorError } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
@@ -219,8 +218,8 @@ const WorkerDetails = (props) => {
       vendor: {
         ...dsoDetails,
         workers: dsoDetails.workers
-          ? [...dsoDetails.workers, { individualId: workerDetails?.individualId, vendorWorkerStatus: "ACTIVE" }]
-          : [{ individualId: workerDetails?.individualId, vendorWorkerStatus: "ACTIVE" }],
+          ? [...dsoDetails.workers, { individualId: workerDetails?.id, vendorWorkerStatus: "ACTIVE" }]
+          : [{ individualId: workerDetails?.id, vendorWorkerStatus: "ACTIVE" }],
       },
     };
     mutateVendor(formData, {
@@ -249,8 +248,8 @@ const WorkerDetails = (props) => {
       vendor: {
         ...dsoDetails,
         workers: dsoDetails.workers
-          ? [...dsoDetails.workers, { individualId: workerDetails?.individualId, vendorWorkerStatus: "ACTIVE" }]
-          : [{ individualId: workerDetails?.individualId, vendorWorkerStatus: "ACTIVE" }],
+          ? [...dsoDetails.workers, { individualId: workerDetails?.id, vendorWorkerStatus: "ACTIVE" }]
+          : [{ individualId: workerDetails?.id, vendorWorkerStatus: "ACTIVE" }],
       },
     };
 

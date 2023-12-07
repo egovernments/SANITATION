@@ -68,7 +68,7 @@ const AddWorker = ({ parentUrl, heading }) => {
   const onFormValueChange = (setValue, formData) => {
     for (let i = 0; i < formData?.AddWorkerRoles?.length; i++) {
       let key = formData?.AddWorkerRoles[i];
-      if (!(key?.emp_Type && key?.fn_role && key?.sys_role && ((key?.licenseNo && key?.fn_role?.code === "DRIVER") || (key?.fn_role?.code === "PLANT_OPERATOR" && key?.plant)))) {
+      if (!(key?.emp_Type && key?.fn_role && key?.sys_role && ((key?.fn_role?.code === "SANITATION_HELPER" || key?.licenseNo && key?.fn_role?.code === "DRIVER")))) {
         setCheckRoleField(false);
         break;
       } else {
@@ -111,7 +111,7 @@ const AddWorker = ({ parentUrl, heading }) => {
     const street = data?.street;
     const landmark = data?.landmark;
     const skills = data?.skills?.map((i) => {
-      return { type: i?.name, level: "UNSKILLED" };
+      return { type: i?.code, level: "UNSKILLED" };
     });
     const employer = data?.employementDetails?.employer?.code;
     const vendor = data?.employementDetails?.vendor;
@@ -194,9 +194,19 @@ const AddWorker = ({ parentUrl, heading }) => {
           username: name,
           tenantId: tenantId,
           roles: roleDetails
-            ? roleDetails?.map((entry) => {
-                return { code: entry.sys_role.code, tenantId };
-              })
+            ? // Object.values(roleDetails[0].sys_role).map((role) => ({
+              //     code: role.code,
+              //     tenantId: tenantId,
+              //   }))
+              roleDetails
+                .map((item) => Object.values(item.sys_role))
+                .flat()
+                .reduce((result, role) => {
+                  if (!result.some((entry) => entry.code === role.code)) {
+                    result.push({ code: role.code, tenantId });
+                  }
+                  return result;
+                }, [])
             : [{ code: "SANITATION_WORKER", tenantId }],
           type: roleDetails?.map((entry) => entry.sys_role.code)?.includes("citizen") ? "CITIZEN" : "EMPLOYEE",
         },
@@ -211,33 +221,33 @@ const AddWorker = ({ parentUrl, heading }) => {
       onSuccess: async (data, variables) => {
         setShowToast({ key: "success", action: "ADD_WORKER" });
         queryClient.invalidateQueries("FSM_WORKER_SEARCH");
-        if (roleDetails?.some((entry) => entry.plant)) {
-          try {
-            const PlantCode = roleDetails
-              ?.map((entry) => ({
-                tenantId: tenantId,
-                plantCode: entry?.plant?.code,
-                individualId: data?.Individual?.individualId,
-                isActive: true,
-              }))
-              .filter((i) => i?.plantCode);
-            const plantFormData = {
-              plantUsers: PlantCode,
-            };
-            const plantresponse = await PlantUserMutate(plantFormData);
-          } catch (err) {
-            console.error("Plant user create", err);
-            setShowToast({ key: "error", action: err });
-          }
-        }
+        // if (roleDetails?.some((entry) => entry.plant)) {
+        //   try {
+        //     const PlantCode = roleDetails
+        //       ?.map((entry) => ({
+        //         tenantId: tenantId,
+        //         plantCode: entry?.plant?.code,
+        //         individualId: data?.Individual?.individualId,
+        //         isActive: true,
+        //       }))
+        //       .filter((i) => i?.plantCode);
+        //     const plantFormData = {
+        //       plantUsers: PlantCode,
+        //     };
+        //     const plantresponse = await PlantUserMutate(plantFormData);
+        //   } catch (err) {
+        //     console.error("Plant user create", err);
+        //     setShowToast({ key: "error", action: err });
+        //   }
+        // }
         if (employer !== "CITIZEN" && vendor) {
           try {
             const vendorData = {
               vendor: {
                 ...vendor,
                 workers: vendor.workers
-                  ? [...vendor.workers, { individualId: data?.Individual?.individualId, vendorWorkerStatus: "ACTIVE" }]
-                  : [{ individualId: data?.Individual?.individualId, vendorWorkerStatus: "ACTIVE" }],
+                  ? [...vendor.workers, { individualId: data?.Individual?.id, vendorWorkerStatus: "ACTIVE" }]
+                  : [{ individualId: data?.Individual?.id, vendorWorkerStatus: "ACTIVE" }],
               },
             };
             const response = await vendorMutate(vendorData);
