@@ -592,6 +592,15 @@ video::-webkit-media-controls-panel {
 video::-webkit-media-controls-play-button {
   display: flex !important;
 }
-video::-webkit-media-controls-start-playback-button {
-  display: hidden;
+
+@media (max-width: 700px) {
+  video::-webkit-media-controls-panel {
+    position: unset;
+    width: 100%;
+    top: 0;
+    height: auto;
+  }
+  video::-webkit-media-controls-play-button {
+    display: flex !important;
+  }
 }
