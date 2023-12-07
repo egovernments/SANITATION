@@ -240,14 +240,15 @@ export const UICustomizations = {
     },
     preProcess: (data,additionalDetails) => {
       
-      const { id,plantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
-      
+      const { id,plantCodes:selectedPlantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
       //ids
       data.body.inbox.moduleSearchCriteria.testIds = id ?  [id] : null
 
+      data.body.inbox.moduleSearchCriteria.plantCodes = Digit.SessionStorage.get("user_plants")?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
       //plantCodes 
-      data.body.inbox.moduleSearchCriteria.plantCodes = plantCodes?.code
-
+      if(selectedPlantCodes?.length>0){
+        data.body.inbox.moduleSearchCriteria.plantCodes = selectedPlantCodes?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
+      }
       //stage
       data.body.inbox.moduleSearchCriteria.stageCodes = stage?.map(st => st.code)
 
@@ -327,6 +328,30 @@ export const UICustomizations = {
       
         default:
           return "case_not_found"
+      }
+    },
+    populatePlantUsersReqCriteria:(props) => {
+      const userInfo = Digit.UserService.getUser();
+      const tenantId = Digit.ULBService.getCurrentTenantId();
+
+      return {
+        params:{},
+        url:'/pqm-service/plant/user/v1/_search',
+        body:{
+          "plantUserSearchCriteria": {
+            tenantId,
+            // "plantCodes": [],
+            "plantUserUuids": userInfo?.info?.uuid ?  [userInfo?.info?.uuid]: [],
+            "additionalDetails": {}
+          },
+          "pagination": {}
+        },
+        config: {
+          select:(data)=> {
+            return Digit.SessionStorage.get("user_plants");
+          }
+        },
+        changeQueryName:"setPlantUsersInboxDropdown"
       }
     }
     
