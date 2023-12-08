@@ -25,6 +25,9 @@ function TQMPendingTask(props) {
     },
     config: {
       select: (data) => {
+        if(Digit.Utils.tqm.isUserNotLinkedToPlant()){
+          return []
+        }
         const items = data?.items;
 
         const tasks = items.map((i) => {

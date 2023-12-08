@@ -106,13 +106,13 @@ const QualityParameter = ({onSelect,formData }) => {
                                             control={control}
                                             name={`QualityParameter.${criteria}`}
                                             rules={{
-                                                validate: {
-                                                    pattern: (v) => (/^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$/.test(v) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")),
-                                                }
+                                                pattern: /^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$/,
                                             }}
                                             render={(props) => (
                                                 <TextInput
                                                     value={props.value}
+                                                    pattern="^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$"
+                                                    title={t("ES_TQM_TEST_FORMAT_TIP")}
                                                     type={"text"}
                                                     onChange={(e) => {
                                                         const newValue = e.target.value;

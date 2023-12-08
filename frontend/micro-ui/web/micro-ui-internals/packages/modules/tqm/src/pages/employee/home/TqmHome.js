@@ -7,6 +7,7 @@ import getDateRange from '../../../utils/formatDate';
 
 const TqmHome = (props) => {
   const { t } = useTranslation();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
   const endDate = Date.now();
   const startDate = new Date(endDate);
   startDate.setMonth(startDate.getMonth() - 1);
@@ -28,7 +29,8 @@ const TqmHome = (props) => {
         "visualizationCode": "pqmTestCompliance",
         "queryType": "",
         "filters": {
-          "plantCode":activePlantCode?.length > 0 ? activePlantCode : []
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
+          "tenantId": tenantId
         },
         "moduleLevel": "",
         "aggregationFactors": null,
@@ -38,7 +40,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": Digit.ULBService.getCurrentTenantId()
+        "tenantId": tenantId
       }
     },
     changeQueryName: "testCompliance",
@@ -55,7 +57,8 @@ const TqmHome = (props) => {
         "visualizationCode": "pqmPercentageOfTestResultsMeetingBenchmarks",
         "queryType": "",
         "filters": {
-          "plantCode":activePlantCode?.length > 0 ? activePlantCode : []
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
+          "tenantId": tenantId
         },
         "moduleLevel": "",
         "aggregationFactors": null,
@@ -65,7 +68,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": Digit.ULBService.getCurrentTenantId()
+        "tenantId": tenantId
       }
     },
     changeQueryName: "percentage",
@@ -81,7 +84,9 @@ const TqmHome = (props) => {
         "visualizationType": "xtable",
         "visualizationCode": "pqmAlerts",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "tenantId": [tenantId]
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
@@ -90,7 +95,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": Digit.ULBService.getCurrentTenantId()
+        "tenantId": tenantId
       }
     },
     changeQueryName: "alerts",
