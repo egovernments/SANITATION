@@ -111,7 +111,7 @@ const QualityParameter = ({onSelect,formData }) => {
                                             render={(props) => (
                                                 <TextInput
                                                     value={props.value}
-                                                    pattern={/^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$/}
+                                                    pattern="^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$"
                                                     title={t("ES_TQM_TEST_FORMAT_TIP")}
                                                     type={"text"}
                                                     onChange={(e) => {
