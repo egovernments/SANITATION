@@ -576,9 +576,31 @@
 .validation-error {
   margin-top: -12px;
 }
-.tag-container{
-  .text{
+.tag-container {
+  .text {
     text-overflow: ellipsis;
     text-wrap: nowrap;
+  }
+}
+
+video::-webkit-media-controls-panel {
+  position: absolute;
+  width: 100%;
+  top: 55%;
+  height: auto;
+}
+video::-webkit-media-controls-play-button {
+  display: flex !important;
+}
+
+@media (max-width: 700px) {
+  video::-webkit-media-controls-panel {
+    position: unset;
+    width: 100%;
+    top: 0;
+    height: auto;
+  }
+  video::-webkit-media-controls-play-button {
+    display: flex !important;
   }
 }

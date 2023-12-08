@@ -93,7 +93,11 @@ export const UICustomizations = {
   workflowActionMap,
   TqmInboxConfig:{
     preProcess: (data,additionalDetails) => {
-      
+      //sample working code to stop calling inbox api if no plants are linked to this user
+      if(Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.length===0 || !Digit.SessionStorage.get("user_plants")){
+        data.config.enabled = false
+        return data
+      }
       const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
       
       //processcodes
@@ -239,15 +243,19 @@ export const UICustomizations = {
       };
     },
     preProcess: (data,additionalDetails) => {
-      
-      const { id,plantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
-      
+      if(Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.length===0 || !Digit.SessionStorage.get("user_plants")){
+        data.config.enabled = false
+        return data
+      }
+      const { id,plantCodes:selectedPlantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
       //ids
       data.body.inbox.moduleSearchCriteria.testIds = id ?  [id] : null
 
+      data.body.inbox.moduleSearchCriteria.plantCodes = Digit.SessionStorage.get("user_plants")?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
       //plantCodes 
-      data.body.inbox.moduleSearchCriteria.plantCodes = plantCodes?.code
-
+      if(selectedPlantCodes?.length>0){
+        data.body.inbox.moduleSearchCriteria.plantCodes = selectedPlantCodes?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
+      }
       //stage
       data.body.inbox.moduleSearchCriteria.stageCodes = stage?.map(st => st.code)
 
@@ -328,6 +336,30 @@ export const UICustomizations = {
         default:
           return "case_not_found"
       }
+    },
+    populatePlantUsersReqCriteria:(props) => {
+      const userInfo = Digit.UserService.getUser();
+      const tenantId = Digit.ULBService.getCurrentTenantId();
+
+      return {
+        params:{},
+        url:'/pqm-service/plant/user/v1/_search',
+        body:{
+          "plantUserSearchCriteria": {
+            tenantId,
+            // "plantCodes": [],
+            "plantUserUuids": userInfo?.info?.uuid ?  [userInfo?.info?.uuid]: [],
+            "additionalDetails": {}
+          },
+          "pagination": {}
+        },
+        config: {
+          select:(data)=> {
+            return Digit.SessionStorage.get("user_plants");
+          }
+        },
+        changeQueryName:"setPlantUsersInboxDropdown"
+      }
     }
     
   },
@@ -358,10 +390,12 @@ export const UICustomizations = {
       data.body.testSearchCriteria.wfStatus = ["SUBMITTED"];
       //sortOrder
       data.body.pagination.sortOrder = sortOrder?.value
+
       if(data.body.pagination.sortOrder){
         data.body.pagination.sortBy = "scheduledDate"
       }
 
+      data.body.testSearchCriteria.testType = ["LAB_SCHEDULED","IOT_SCHEDULED"]
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)
 
@@ -409,7 +443,7 @@ export const UICustomizations = {
   SearchTestResultsUlbAdmin: {
     preProcess: (data,additionalDetails) => {
       
-      const { id,plantCodes, processCodes, testType, dateRange } = data.body.custom || {};
+      const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data.body.custom || {};
       data.body.testSearchCriteria={}
 
       //update testSearchCriteria
@@ -419,7 +453,13 @@ export const UICustomizations = {
       //test id with part search enabled 
       data.body.testSearchCriteria.testId = id ? id : ""
       //plantcodes
-      data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
+      // data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
+
+      data.body.testSearchCriteria.plantCodes = Digit.SessionStorage.get("user_plants")?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
+      //plantCodes 
+      if(selectedPlantCodes?.length>0){
+        data.body.testSearchCriteria.plantCodes = selectedPlantCodes?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
+      }
       data.body.testSearchCriteria.wfStatus = ["SUBMITTED"];
       //processcodes
       data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)

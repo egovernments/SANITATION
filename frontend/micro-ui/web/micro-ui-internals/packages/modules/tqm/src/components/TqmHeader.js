@@ -26,7 +26,7 @@ const TqmHeader = ({location,defaultPath}) => {
   //using location.pathname we can update the stepIndex accordingly when help is clicked from any other screen(other than home screen)
   const { pathname } = useLocation();
   const startTour = () => {
-    history.push(`/${window.contextPath}/citizen/tqm-how-it-works`)
+    history.push(`/${window.contextPath}/employee/tqm/how-it-works`)
   };
 
   return (

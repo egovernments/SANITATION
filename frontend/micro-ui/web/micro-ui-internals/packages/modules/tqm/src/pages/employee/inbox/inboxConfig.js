@@ -56,19 +56,36 @@ export const tqmInboxConfig = {
                   "error": "TQM_ERR_VALID_TEST_ID"
                 }
               },
+              // {
+              //   "label": "TQM_PLANT_NAME",
+              //   "type": "dropdown",
+              //   "isMandatory": false,
+              //   "disable": false,
+              //   "populators": {
+              //     "optionsCustomStyle": {},
+              //     "name": "plantCodes",
+              //     "optionsKey": "i18nKey",
+              //     "allowMultiSelect": false,
+              //     "mdmsv2": {
+              //       "schemaCode": "PQM.Plant"
+              //     }
+              //   }
+              // },
               {
                 "label": "TQM_PLANT_NAME",
-                "type": "dropdown",
+                "type": "apidropdown",
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  "optionsCustomStyle": {},
+                  "optionsCustomStyle": {
+                    "top": "2.3rem"
+                  },
                   "name": "plantCodes",
                   "optionsKey": "i18nKey",
                   "allowMultiSelect": false,
-                  "mdmsv2": {
-                    "schemaCode": "PQM.Plant"
-                  }
+                  "masterName": "commonUiConfig",
+                  "moduleName": "TqmInboxConfigUlbAdmin",
+                  "customfn": "populatePlantUsersReqCriteria"
                 }
               }
             ]

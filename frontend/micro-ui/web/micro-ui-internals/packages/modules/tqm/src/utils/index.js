@@ -31,6 +31,13 @@ export default {
     const TQM_ACCESS = userRoles?.filter((role) => tqmRoles?.includes(role));
   
     return TQM_ACCESS?.length > 0;
+  },
+  isUserNotLinkedToPlant: () => {
+    return Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.length===0 || !Digit.SessionStorage.get("user_plants")
+  },
+  
+  getMappedPlants:()=>{
+    return Digit.SessionStorage.get("user_plants")?.length>=0 ? Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode) : []
   }
 }
 

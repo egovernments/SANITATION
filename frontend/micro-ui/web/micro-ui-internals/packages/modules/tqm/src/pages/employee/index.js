@@ -12,6 +12,7 @@ import Create from "./add-test-results/CreateAddTestResult";
 import Test from "./test";
 import TqmHeader from "../../components/TqmHeader";
 import TqmAdminNotification from "./TqmAdminNotification";
+import HowItWorks from "./howItWorks";
 
 // import TQMSummary from "../../components/TQMSummary";
 
@@ -95,6 +96,7 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/notification`} component={() => <TqmAdminNotification />} />
           <PrivateRoute path={`${path}/summary`} component={() => <TQMSummary />} />
           <PrivateRoute path={`${path}/search-devices`} component={() => <SensorScreen />} />
+          <PrivateRoute path={`${path}/how-it-works`} component={() => <HowItWorks />} />
         </AppContainer>
       </Switch>
     </>
