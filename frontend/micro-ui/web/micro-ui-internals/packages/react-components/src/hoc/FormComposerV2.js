@@ -150,6 +150,7 @@ export const FormComposerV2 = (props) => {
                   style={type === "date" ? { paddingRight: "3px" } : ""}
                   maxlength={populators?.validation?.maxlength}
                   minlength={populators?.validation?.minlength}
+                  pattern={populators?.pattern}
                   customIcon={populators?.customIcon}
                   customClass={populators?.customClass}
                 />

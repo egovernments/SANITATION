@@ -99,21 +99,21 @@ const QualityParameter = ({onSelect,formData }) => {
                         <div key={index}>
                             {criterionList.map((criteria, subindex) => (
                                 <LabelFieldPair key={subindex}>
-                                    <CardLabel style={CardLabelStyle}>{t(Digit.Utils.locale.getTransformedLocale(`${"PQM.TestStandard"}_${criteria}`))}</CardLabel>
+                                    <CardLabel style={CardLabelStyle}>{t(Digit.Utils.locale.getTransformedLocale(`${"PQM.TestStandard"}_${criteria}`))} {criterionList?.length === 1 ? "*" : ""}</CardLabel>
                                     
                                     <div className="field">
                                         <Controller
                                             control={control}
                                             name={`QualityParameter.${criteria}`}
                                             rules={{
-                                                validate: {
-                                                    pattern: (v) => (/^$|^[a-zA-Z0-9]+$/.test(v) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")),
-                                                }
+                                                pattern: /^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$/,
                                             }}
                                             render={(props) => (
                                                 <TextInput
                                                     value={props.value}
-                                                    type={"number"}
+                                                    pattern="^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$"
+                                                    title={t("ES_TQM_TEST_FORMAT_TIP")}
+                                                    type={"text"}
                                                     onChange={(e) => {
                                                         const newValue = e.target.value;
                                                         displayValue(newValue, criteria, subindex);

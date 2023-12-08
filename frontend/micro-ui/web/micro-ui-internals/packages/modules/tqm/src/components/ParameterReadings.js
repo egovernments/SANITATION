@@ -9,12 +9,15 @@ function ParameterReadings({ reading, responseData }) {
   const { t } = useTranslation();
   const history = useHistory();
   const isTestPassed = responseData?.status.includes("PASS") ? true : false;
+  const searchParams = new URLSearchParams(location.search);
+  const type = searchParams.get("type");
+
   return reading ? (
     <>
       {reading?.title ? <CardSubHeader>{t(reading?.title)}</CardSubHeader> : null}
       {reading?.date ? (
         <CardCaption style={{ display: "flex" }}>
-          <p>{t("ES_TQM_TEST_RESULTS_DATE_LABEL")}: </p>
+          <p style={{ marginRight: "0.5rem" }}>{t("ES_TQM_TEST_RESULTS_DATE_LABEL")}: </p>
           <p> {reading?.date}</p>
         </CardCaption>
       ) : null}
@@ -24,6 +27,7 @@ function ParameterReadings({ reading, responseData }) {
               showInfo={true}
               success={resultStatus === "PASS"}
               title={t(Digit.Utils.locale.getTransformedLocale(`PQM.QualityCriteria_${criteriaCode}`))}
+              tip={Digit.Utils.locale.getTransformedLocale(`PQM.QualityCriteria_${criteriaCode}`)}
               value={resultValue}
             />
           ))
@@ -32,22 +36,14 @@ function ParameterReadings({ reading, responseData }) {
         <CardMessage
           success={isTestPassed}
           title={isTestPassed ? t("ES_TQM_TEST_PARAMS_SUCCESS_TITLE") : t("ES_TQM_TEST_PARAMS_FAIL_TITLE")}
-          message={
-            isTestPassed ? (
-              <>
-                <p>{t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE_PRI")}</p>
-                <p>{t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE_SECND")}</p>
-              </>
-            ) : (
-              <>
-                <p>{t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE_PRI")}</p>
-                <p>{t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE_SECND")}</p>
-              </>
-            )
-          }
+          message={isTestPassed ? <>{t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE")}</> : <>{t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE")}</>}
         />
       ) : null}
-      <SubmitBar label={t("ES_TQM_TEST_BACK_BUTTON")} onSubmit={() => history.goBack()} style={{ marginBottom: "12px" }} />
+      <SubmitBar
+        label={type === "past" ? t("ES_TQM_TEST_BACK_TO_PAST_TEST") : t("ES_TQM_TEST_BACK_TO_INBOX")}
+        onSubmit={() => (type === "past" ? history.goBack() : history.go(-3))}
+        style={{ marginBottom: "12px" }}
+      />
     </>
   ) : null;
 }

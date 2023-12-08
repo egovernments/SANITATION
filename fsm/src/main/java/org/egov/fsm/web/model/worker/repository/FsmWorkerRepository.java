@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.egov.fsm.config.FSMConfiguration;
 import org.egov.fsm.fsmProducer.FSMProducer;
 import org.egov.fsm.web.model.worker.Worker;
+import org.egov.fsm.web.model.worker.WorkerRequest;
 import org.egov.fsm.web.model.worker.WorkerSearchCriteria;
 import org.egov.fsm.web.model.worker.repository.querybuilder.FsmWorkerQueryBuilder;
 import org.egov.fsm.web.model.worker.repository.rowmapper.FsmWorkerRowMapper;
@@ -33,18 +34,23 @@ public class FsmWorkerRepository {
   private FSMConfiguration config;
 
   public List<Worker> create(List<Worker> workers) {
-      producer.push(config.getCreateFsmWorkerTopic(), workers);
-      return workers;
+    producer.push(config.getCreateFsmWorkerTopic(), WorkerRequest.builder()
+        .workers(workers)
+        .build());
+    return workers;
   }
 
   public List<Worker> update(List<Worker> workers) {
-    producer.push(config.getCreateFsmWorkerTopic(), workers);
+    producer.push(config.getUpdateFsmWorkerTopic(), WorkerRequest.builder()
+        .workers(workers)
+        .build());
     return workers;
   }
 
   public List<Worker> getWorkersData(WorkerSearchCriteria workerSearchCriteria) {
     List<Object> preparedStmtList = new ArrayList<>();
-    String query = fsmWorkerQueryBuilder.getWorkerSearchQuery(workerSearchCriteria, preparedStmtList);
+    String query = fsmWorkerQueryBuilder.getWorkerSearchQuery(workerSearchCriteria,
+        preparedStmtList);
     log.info("Workers Search Query" + query);
     return jdbcTemplate.query(query, preparedStmtList.toArray(), fsmWorkerRowMapper);
   }

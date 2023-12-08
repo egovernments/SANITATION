@@ -67,7 +67,7 @@ const businessServiceMap = {
 
 const workflowStatusMap = {
   pendingResults:"PENDINGRESULTS",
-  submit: "SUBMITTED"
+  submit: "SUBMITTED",
  };
 
 const workflowActionMap = {
@@ -93,7 +93,11 @@ export const UICustomizations = {
   workflowActionMap,
   TqmInboxConfig:{
     preProcess: (data,additionalDetails) => {
-      
+      //sample working code to stop calling inbox api if no plants are linked to this user
+      if(Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.length===0 || !Digit.SessionStorage.get("user_plants")){
+        data.config.enabled = false
+        return data
+      }
       const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
       
       //processcodes
@@ -112,7 +116,7 @@ export const UICustomizations = {
 
       //sortOrder sortBy 
 
-      data.body.inbox.moduleSearchCriteria.sortBy = "createdTime"
+      data.body.inbox.moduleSearchCriteria.sortBy = "scheduledDate"
       data.body.inbox.moduleSearchCriteria.sortOrder = sortOrder?.value
 
       //limit offset
@@ -189,7 +193,7 @@ export const UICustomizations = {
           const targetTimestamp = row?.businessObject?.scheduledDate ;
           const targetDate = new Date(targetTimestamp);
           const remainingSLA = targetDate - currentDate;
-          sla = Math.round(remainingSLA / (24 * 60 * 60 * 1000));
+          sla = Math.ceil(remainingSLA / (24 * 60 * 60 * 1000));
           if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
           return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.abs(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
           
@@ -239,15 +243,19 @@ export const UICustomizations = {
       };
     },
     preProcess: (data,additionalDetails) => {
-      
-      const { id,plantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
-      
+      if(Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.length===0 || !Digit.SessionStorage.get("user_plants")){
+        data.config.enabled = false
+        return data
+      }
+      const { id,plantCodes:selectedPlantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
       //ids
       data.body.inbox.moduleSearchCriteria.testIds = id ?  [id] : null
 
+      data.body.inbox.moduleSearchCriteria.plantCodes = Digit.SessionStorage.get("user_plants")?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
       //plantCodes 
-      data.body.inbox.moduleSearchCriteria.plantCodes = plantCodes?.code
-
+      if(selectedPlantCodes?.length>0){
+        data.body.inbox.moduleSearchCriteria.plantCodes = selectedPlantCodes?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
+      }
       //stage
       data.body.inbox.moduleSearchCriteria.stageCodes = stage?.map(st => st.code)
 
@@ -309,7 +317,7 @@ export const UICustomizations = {
           const targetTimestamp = row?.businessObject?.scheduledDate ;
           const targetDate = new Date(targetTimestamp);
           const remainingSLA = targetDate - currentDate;
-          sla = Math.floor(remainingSLA / (24 * 60 * 60 * 1000));
+          sla = Math.ceil(remainingSLA / (24 * 60 * 60 * 1000));
           if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
           return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.abs(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
           
@@ -327,6 +335,30 @@ export const UICustomizations = {
       
         default:
           return "case_not_found"
+      }
+    },
+    populatePlantUsersReqCriteria:(props) => {
+      const userInfo = Digit.UserService.getUser();
+      const tenantId = Digit.ULBService.getCurrentTenantId();
+
+      return {
+        params:{},
+        url:'/pqm-service/plant/user/v1/_search',
+        body:{
+          "plantUserSearchCriteria": {
+            tenantId,
+            // "plantCodes": [],
+            "plantUserUuids": userInfo?.info?.uuid ?  [userInfo?.info?.uuid]: [],
+            "additionalDetails": {}
+          },
+          "pagination": {}
+        },
+        config: {
+          select:(data)=> {
+            return Digit.SessionStorage.get("user_plants");
+          }
+        },
+        changeQueryName:"setPlantUsersInboxDropdown"
       }
     }
     
@@ -359,6 +391,11 @@ export const UICustomizations = {
       //sortOrder
       data.body.pagination.sortOrder = sortOrder?.value
 
+      if(data.body.pagination.sortOrder){
+        data.body.pagination.sortBy = "scheduledDate"
+      }
+
+      data.body.testSearchCriteria.testType = ["LAB_SCHEDULED","IOT_SCHEDULED"]
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)
 
@@ -382,10 +419,10 @@ export const UICustomizations = {
       return ""
     },
     onCardClick:(obj)=> {
-      return `summary?id=${obj?.apiResponse?.testId}`
+      return `summary?id=${obj?.apiResponse?.testId}&type=past`
     },
     onCardActionClick:(obj)=> {
-      return `summary?id=${obj?.apiResponse?.testId}`
+      return `summary?id=${obj?.apiResponse?.testId}&type=past`
     },
     getCustomActionLabel:(obj,row) => {
       return ""
@@ -406,7 +443,7 @@ export const UICustomizations = {
   SearchTestResultsUlbAdmin: {
     preProcess: (data,additionalDetails) => {
       
-      const { id,plantCodes, processCodes, testType, dateRange } = data.body.custom || {};
+      const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data.body.custom || {};
       data.body.testSearchCriteria={}
 
       //update testSearchCriteria
@@ -416,7 +453,13 @@ export const UICustomizations = {
       //test id with part search enabled 
       data.body.testSearchCriteria.testId = id ? id : ""
       //plantcodes
-      data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
+      // data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
+
+      data.body.testSearchCriteria.plantCodes = Digit.SessionStorage.get("user_plants")?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
+      //plantCodes 
+      if(selectedPlantCodes?.length>0){
+        data.body.testSearchCriteria.plantCodes = selectedPlantCodes?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
+      }
       data.body.testSearchCriteria.wfStatus = ["SUBMITTED"];
       //processcodes
       data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
@@ -460,7 +503,7 @@ export const UICustomizations = {
         case "TQM_TEST_RESULTS":
           return value?.includes("PASS")  ? <span className="sla-cell-success">{t(`TQM_TEST_RESULT_${value}`)}</span> : <span className="sla-cell-error">{t(`TQM_TEST_RESULT_${value}`)}</span>;
           
-        case "TQM_TEST_DATE":
+        case "ES_TQM_TEST_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
         
         case "TQM_TEST_ID":

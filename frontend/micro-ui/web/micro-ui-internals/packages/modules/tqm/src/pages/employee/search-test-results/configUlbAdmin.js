@@ -42,9 +42,26 @@ export const tqmSearchConfigUlbAdmin = {
                   "name": "id"
                 }
               },
+              // {
+              //   "label": "TQM_PLANT_NAME",
+              //   "type": "dropdown",
+              //   "isMandatory": false,
+              //   "disable": false,
+              //   "populators": {
+              //     "optionsCustomStyle": {
+              //       "top": "2.3rem"
+              //     },
+              //     "name": "plantCodes",
+              //     "optionsKey": "i18nKey",
+              //     "allowMultiSelect": true,
+              //     "mdmsv2": {
+              //       "schemaCode": "PQM.Plant"
+              //     }
+              //   }
+              // },
               {
                 "label": "TQM_PLANT_NAME",
-                "type": "dropdown",
+                "type": "apidropdown",
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
@@ -54,9 +71,9 @@ export const tqmSearchConfigUlbAdmin = {
                   "name": "plantCodes",
                   "optionsKey": "i18nKey",
                   "allowMultiSelect": true,
-                  "mdmsv2": {
-                    "schemaCode": "PQM.Plant"
-                  }
+                  "masterName": "commonUiConfig",
+                  "moduleName": "TqmInboxConfigUlbAdmin",
+                  "customfn": "populatePlantUsersReqCriteria"
                 }
               },
               {
@@ -139,7 +156,7 @@ export const tqmSearchConfigUlbAdmin = {
                 "translate": true
               },
               {
-                "label": "TQM_TEST_DATE",
+                "label": "ES_TQM_TEST_DATE",
                 "jsonPath": "scheduledDate",
                 "additionalCustomization": true
               },

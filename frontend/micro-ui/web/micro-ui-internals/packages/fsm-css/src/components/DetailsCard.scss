@@ -1,5 +1,6 @@
 .tqm-table-test-container {
   border: 0.5px solid #a6a6a6;
+  border-radius: 4px;
   background: #ffffff;
   margin-top: 0.75rem;
   .table {
@@ -50,6 +51,7 @@
       tr {
         td:first-child {
           font-weight: 700;
+          width: 1rem;
         }
       }
       .underline {

@@ -64,7 +64,7 @@ const AddWorkerRoles = ({ t, config, onSelect, userType, formData }) => {
       let res = {
         id: jurisdiction?.id,
         fn_role: jurisdiction?.fn_role,
-        sys_role: jurisdiction?.roles,
+        sys_role: jurisdiction?.roles ? jurisdiction?.roles : jurisdiction?.sys_role,
         emp_Type: jurisdiction?.emp_Type,
         licenseNo: jurisdiction?.licenseNo,
         plant: jurisdiction?.plant,
@@ -79,10 +79,10 @@ const AddWorkerRoles = ({ t, config, onSelect, userType, formData }) => {
       return res;
     });
 
-      onSelect(
-        config.key,
-        [...jurisdictionsData, ...inactiveWorkerRole].filter((value) => Object.keys(value).length !== 0)
-      );
+    onSelect(
+      config.key,
+      [...jurisdictionsData, ...inactiveWorkerRole].filter((value) => Object.keys(value).length !== 0)
+    );
   }, [jurisdictions]);
 
   const reviseIndexKeys = () => {
@@ -207,16 +207,18 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
   const matchingMasterData = mdmsOptions?.SanitationWorkerFunctionalRoles.find((role) => role?.code === jurisdiction?.fn_role?.code);
 
   // Extract allowedSystemRoles from the matching object
-  const allowedSysRoles = matchingMasterData ? matchingMasterData?.allowedSystemRoles : [];
+  const allowedSysRoles = matchingMasterData ? matchingMasterData?.allowedSystemRoles?.filter((i) => i.isDefault !== true) : [];
 
   const [fnRoleSelected, setFnRoleSelected] = useState(mdmsOptions?.SanitationWorkerFunctionalRoles?.allowedSystemRoles);
 
   const [sysRole, setSysRole] = useState(allowedSysRoles);
   const [defaultsysRole, setDefaultSysRole] = useState(jurisdiction?.sys_role?.[0]);
+  const [defaultSys, setDefaultSys] = useState(null);
 
   useEffect(() => {
     if (fnRoleSelected) {
-      setSysRole(fnRoleSelected?.allowedSystemRoles);
+      setSysRole(fnRoleSelected?.allowedSystemRoles?.filter((i) => i.isDefault !== true));
+      setDefaultSys(fnRoleSelected?.allowedSystemRoles?.filter((i) => i.isDefault === true));
     }
   }, [fnRoleSelected]);
 
@@ -234,7 +236,29 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
   };
 
   const selectrole = (e, data) => {
-    setjurisdictions((pre) => pre.map((item) => (item.key === jurisdiction.key ? { ...item, roles: e } : item)));
+    let res = [];
+    e &&
+      e?.map((ob) => {
+        res.push(ob?.[1]);
+      });
+
+    if (!res.some((role) => role?.code === "SANITATION_WORKER")) {
+      res.push({
+        code: "SANITATION_WORKER",
+        name: "Sanitation Worker",
+        isDefault: true,
+      });
+    }
+
+    if (!res.some((role) => role?.code === "CITIZEN")) {
+      res.push({
+        code: "CITIZEN",
+        name: "Citizen",
+        isDefault: true,
+      });
+    }
+
+    setjurisdictions((pre) => pre.map((item) => (item.key === jurisdiction.key ? { ...item, roles: res } : item)));
   };
 
   const selectPlant = (e, data) => {
@@ -258,11 +282,11 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
               {t("FSM_REGISTRY_ROLE")} {index + 1}
             </h2>
           </div>
-          {jurisdictions.length > 1 ? (
-            <div onClick={() => handleRemoveUnit(jurisdiction)} style={{ marginBottom: "16px", padding: "5px", cursor: "pointer", textAlign: "right" }}>
-              <DustbinIcon />
-            </div>
-          ) : null}
+          {/* {jurisdictions.length > 1 ? ( */}
+          <div onClick={() => handleRemoveUnit(jurisdiction)} style={{ marginBottom: "16px", padding: "5px", cursor: "pointer", textAlign: "right" }}>
+            <DustbinIcon />
+          </div>
+          {/* ) : null} */}
         </LabelFieldPair>
 
         {/* functional role here */}
@@ -328,7 +352,17 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
             <LabelFieldPair>
               <CardLabel className="card-label-smaller">{t("FSM_REGISTRY_LABEL_SYSTEM_ROLE")} *</CardLabel>
               <div className="form-field">
-                <Dropdown
+                <MultiSelectDropdown
+                  className="form-field"
+                  isMandatory={true}
+                  defaultUnit="Selected"
+                  selected={jurisdiction?.roles ? jurisdiction?.roles : jurisdiction?.sys_role ? jurisdiction?.sys_role : defaultsysRole}
+                  options={sysRole}
+                  onSelect={selectrole}
+                  optionsKey="name"
+                  t={t}
+                />
+                {/* <Dropdown
                   className="form-field"
                   selected={jurisdiction?.roles || defaultsysRole}
                   disable={false}
@@ -337,7 +371,7 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
                   select={selectrole}
                   optionKey="name"
                   t={t}
-                />
+                /> */}
                 {/* <MultiSelectDropdown
               className="form-field"
               isMandatory={true}

@@ -246,7 +246,7 @@ input::-webkit-calendar-picker-indicator {
 .select-wrap {
   .options-card {
     max-height: 200px;
-    overflow-y: scroll;
+    overflow: auto;
   }
 }
 
@@ -312,4 +312,29 @@ input::-webkit-calendar-picker-indicator {
   line-height: 18.75px;
   color: #505a5f;
   font-size: 16px;
+}
+
+.employee-select-wrap {
+  .options-card {
+    top: 100%;
+  }
+}
+.employee-select-wrap.fsm-registry-dropdown {
+  .options-card {
+    top: unset !important;
+  }
+}
+.inbox-search-links-container {
+  .header {
+    grid-template-columns: 12% 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .employee-select-wrap {
+    .options-card.date-range {
+      top: unset;
+      bottom: 100%;
+    }
+  }
 }

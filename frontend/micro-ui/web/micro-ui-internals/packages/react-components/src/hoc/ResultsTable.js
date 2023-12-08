@@ -59,12 +59,12 @@ const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fu
     const tableColumns = useMemo(() => {
         //test if accessor can take jsonPath value only and then check sort and global search work properly
         return config?.columns?.map(column => {
-            
             if (column.additionalCustomization){
                 return {
                     Header: t(column?.label) || t("ES_COMMON_NA"),
                     accessor:column.jsonPath,
                     headerAlign: column?.headerAlign,
+                    disableSortBy:column?.disableSortBy ? column?.disableSortBy :false,
                     Cell: ({ value, col, row }) => {
                         return  Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.additionalCustomizations(row.original,column?.label,column, value,t, searchResult);
                     }
@@ -74,6 +74,7 @@ const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fu
                 Header: t(column?.label) || t("ES_COMMON_NA"),
                 accessor: column.jsonPath,
                 headerAlign: column?.headerAlign,
+                disableSortBy:column?.disableSortBy ? column?.disableSortBy :false,
                 Cell: ({ value, col, row }) => {
                     return String(value ? column.translate? t(Digit.Utils.locale.getTransformedLocale(column.prefix?`${column.prefix}${value}`:value)) : value : t("ES_COMMON_NA"));
                 }

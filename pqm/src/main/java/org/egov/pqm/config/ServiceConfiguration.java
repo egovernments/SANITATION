@@ -45,6 +45,10 @@ public class ServiceConfiguration {
   @Value("${egov.mdms.search.v2.endpoint}")
   private String mdmsv2EndPoint;
 
+  @Value("${egov.mdms.search.v2.max.limit}")
+  private Integer mdmsv2MaxLimit;
+
+
 
   // Kafka Topic
   @Value("${egov.test.create.kafka.topic}")
@@ -64,6 +68,9 @@ public class ServiceConfiguration {
 
   @Value("${egov.pqm.anomaly.create.kafka.topic}")
   private String anomalyCreateTopic;
+
+  @Value("${egov.pqm.anomaly.testResultNotSubmitted.kafka.topic}")
+  private String testResultNotSubmittedKafkaTopic;
 
   @Value("${egov.plant.user.create.kafka.topic}")
   private String plantUserSaveTopic;
@@ -114,5 +121,17 @@ public class ServiceConfiguration {
 
   @Value("${egov.user.search.path}")
   private String userSearchEndpoint;
+
+  // PQM Anomaly Service Config
+  @Value("${egov.pqm.anomaly.host}")
+  private String pqmAnomalyHost;
+
+  @Value("${egov.pqm.anomaly.search.endpoint}")
+  private String pqmAnomalySearchEndpoint;
+
+
+  //tenantId
+  @Value("${egov.statelevel.tenantid}")
+  private String egovStateLevelTenantId;
 
 }

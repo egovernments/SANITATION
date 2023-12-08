@@ -1,14 +1,25 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import TqmCard from '../../../components/TqmCard'
 import Alerts from '../../../components/Alerts'
 import YourPerformance from '../../../components/YourPerformance'
 import { useTranslation } from "react-i18next";
+import getDateRange from '../../../utils/formatDate';
+
 const TqmHome = (props) => {
   const { t } = useTranslation();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
   const endDate = Date.now();
   const startDate = new Date(endDate);
   startDate.setMonth(startDate.getMonth() - 1);
+  const [dateRange, setDateRange] = useState(getDateRange({ startDate: startDate.getTime(), endDate: endDate }));
   
+  const activePlantCode = Digit.SessionStorage.get('active_plant')?.plantCode
+    ? [Digit.SessionStorage.get('active_plant')?.plantCode]
+    : Digit.SessionStorage.get('user_plants')
+        ?.filter((row) => row.plantCode)
+        ?.map((row) => row.plantCode);
+  
+
   const requestCriteria1 = {
     url: "/dashboard-analytics/dashboard/getChartV2",
     params: {},
@@ -17,7 +28,10 @@ const TqmHome = (props) => {
         "visualizationType": "METRIC",
         "visualizationCode": "pqmTestCompliance",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
+          "tenantId": tenantId
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
@@ -26,7 +40,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": Digit.ULBService.getCurrentTenantId()
+        "tenantId": tenantId
       }
     },
     changeQueryName: "testCompliance",
@@ -42,7 +56,10 @@ const TqmHome = (props) => {
         "visualizationType": "METRIC",
         "visualizationCode": "pqmPercentageOfTestResultsMeetingBenchmarks",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
+          "tenantId": tenantId
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
@@ -51,7 +68,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": Digit.ULBService.getCurrentTenantId()
+        "tenantId": tenantId
       }
     },
     changeQueryName: "percentage",
@@ -67,7 +84,9 @@ const TqmHome = (props) => {
         "visualizationType": "xtable",
         "visualizationCode": "pqmAlerts",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "tenantId": [tenantId]
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
@@ -76,7 +95,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": Digit.ULBService.getCurrentTenantId()
+        "tenantId": tenantId
       }
     },
     changeQueryName: "alerts",
@@ -88,7 +107,7 @@ const TqmHome = (props) => {
     <div className='tqm-home-container'>
       <TqmCard t={t} reRoute={false} />
       <div className='dashboard-container'>
-      <YourPerformance performance={[data1, data2]}  />
+      <YourPerformance performance={[data1, data2]} dateRange={dateRange} />
       <Alerts ale={alerts} />
       </div>
     </div>

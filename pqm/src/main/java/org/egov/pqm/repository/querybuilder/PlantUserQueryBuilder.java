@@ -1,5 +1,10 @@
 package org.egov.pqm.repository.querybuilder;
 
+import static org.egov.pqm.util.QueryBuilderUtil.addParamsToQuery;
+import static org.egov.pqm.util.QueryBuilderUtil.addToPreparedStatement;
+import static org.egov.pqm.util.QueryBuilderUtil.addToWhereClause;
+
+import java.util.List;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.SortBy;
@@ -9,10 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
-import java.util.List;
-
-import static org.egov.pqm.util.QueryBuilderUtil.*;
 
 @Component
 public class PlantUserQueryBuilder {
@@ -55,11 +56,24 @@ public class PlantUserQueryBuilder {
             addToPreparedStatement(preparedStmtList, plantCodes);
         }
 
-        List<String> plantOperatorUuids = plantUserSearchCriteria.getPlantOperatorUuids();
-        if (!CollectionUtils.isEmpty(plantOperatorUuids)) {
+        List<String> plantUserUuids = plantUserSearchCriteria.getPlantUserUuids();
+        if (!CollectionUtils.isEmpty(plantUserUuids)) {
             addToWhereClause(preparedStmtList, queryBuilder);
-            queryBuilder.append(" plant_user.plantOperatorUuid IN (").append(addParamsToQuery(plantOperatorUuids)).append(")");
-            addToPreparedStatement(preparedStmtList, plantOperatorUuids);
+            queryBuilder.append(" plant_user.plantUserUuid IN (").append(addParamsToQuery(plantUserUuids)).append(")");
+            addToPreparedStatement(preparedStmtList, plantUserUuids);
+        }
+		if (plantUserSearchCriteria.getIsActive() != null) {
+			addToWhereClause(preparedStmtList, queryBuilder);
+			queryBuilder.append(" plant_user.isActive=? ");
+			preparedStmtList.add(plantUserSearchCriteria.getIsActive());
+
+		} 
+
+        List<String> plantUserTypes = plantUserSearchCriteria.getPlantUserTypes();
+        if (!CollectionUtils.isEmpty(plantUserTypes)) {
+            addToWhereClause(preparedStmtList, queryBuilder);
+            queryBuilder.append(" plant_user.plantUserType IN (").append(addParamsToQuery(plantUserTypes)).append(")");
+            addToPreparedStatement(preparedStmtList, plantUserTypes);
         }
 
         return addPaginationWrapper(queryBuilder.toString(), preparedStmtList, plantUserSearchRequest.getPagination());
@@ -119,8 +133,8 @@ public class PlantUserQueryBuilder {
             queryBuilder.append(" ORDER BY plant_user.id ");
         } else if (pagination.getSortBy() == SortBy.plantCode) {
             queryBuilder.append(" ORDER BY plant_user.plantCode ");
-        } else if (pagination.getSortBy() == SortBy.plantOperatorUuid) {
-            queryBuilder.append(" ORDER BY plant_user.individualId ");
+        } else if (pagination.getSortBy() == SortBy.plantUserUuid) {
+            queryBuilder.append(" ORDER BY plant_user.plantUserUuid ");
         } else if (pagination.getSortBy() == SortBy.createdTime) {
             queryBuilder.append(" ORDER BY plant_user.createdtime ");
         }

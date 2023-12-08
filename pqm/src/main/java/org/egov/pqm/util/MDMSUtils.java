@@ -2,8 +2,9 @@ package org.egov.pqm.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
+
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import org.egov.common.contract.request.RequestInfo;
@@ -13,15 +14,10 @@ import org.egov.mdms.model.ModuleDetail;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.ServiceRequestRepository;
 import org.egov.pqm.web.model.Test;
-import org.egov.pqm.web.model.mdms.MDMSQualityCriteria;
-import org.egov.pqm.web.model.mdms.MdmsCriteriaRequest;
-import org.egov.pqm.web.model.mdms.MdmsTest;
+import org.egov.pqm.web.model.mdms.*;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Component
@@ -39,20 +35,18 @@ public class MDMSUtils {
 
   public static final String filterCode = "$.*.code";
 
-  public Map<String, Map<String, JSONArray>> fetchMdmsData(RequestInfo requestInfo, String tenantId, String moduleName,
+  public Object fetchMdmsData(RequestInfo requestInfo, String tenantId, String moduleName,
       List<String> masterNameList) {
     org.egov.mdms.model.MdmsCriteriaReq mdmsCriteriaReq = getMdmsRequest(requestInfo, tenantId, moduleName, masterNameList);
     Object response = new HashMap<>();
-    Integer rate = 0;
     MdmsResponse mdmsResponse = new MdmsResponse();
     try {
-      Object result = serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
-      mdmsResponse = objectMapper.convertValue(result, MdmsResponse.class);
+       response = serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
     } catch (Exception e) {
       log.error("Exception occurred while fetching category lists from mdms: ", e);
     }
 
-    return mdmsResponse.getMdmsRes();
+    return response;
 
   }
 
@@ -107,16 +101,20 @@ public class MDMSUtils {
     return tenantModuleDetail;
   }
 
-  public Object mdmsCallV2(RequestInfo requestInfo, String tenantId, String schemaCode){
-    MdmsCriteriaRequest mdmsCriteriaRequest = getMDMSRequestV2(requestInfo, tenantId, schemaCode);
+  public Object mdmsCallV2(RequestInfo requestInfo, String tenantId, String schemaCode, List<String> uniqueIdentifiers){
+    MdmsCriteriaRequest mdmsCriteriaRequest = getMDMSRequestV2(requestInfo, tenantId, schemaCode, uniqueIdentifiers);
     StringBuilder uri = getMdmsSearchUrl2();
     Object result = serviceRequestRepository.fetchResult(uri, mdmsCriteriaRequest);
     return result;
   }
 
   public MdmsCriteriaRequest getMDMSRequestV2(RequestInfo requestInfo , String  tenantId ,
-      String schemaCode){
-    org.egov.pqm.web.model.mdms.MdmsCriteria mdmsCriteria = org.egov.pqm.web.model.mdms.MdmsCriteria.builder().tenantId(tenantId).schemaCode(schemaCode).isActive(true).build();
+      String schemaCode, List<String> uniqueIdentifiers){
+    org.egov.pqm.web.model.mdms.MdmsCriteria mdmsCriteria = org.egov.pqm.web.model.mdms.MdmsCriteria.builder().tenantId(tenantId).schemaCode(schemaCode).limit(config.getMdmsv2MaxLimit()).isActive(true).build();
+
+    if(!uniqueIdentifiers.isEmpty())
+      mdmsCriteria.setUniqueIdentifiers(uniqueIdentifiers);
+
     MdmsCriteriaRequest mdmsCriteriaRequest =
         MdmsCriteriaRequest.builder().mdmsCriteria(mdmsCriteria).requestInfo(requestInfo).build();
     return mdmsCriteriaRequest;
@@ -159,6 +157,7 @@ public class MDMSUtils {
    */
   public static List<MdmsTest> parseJsonToTestList(String jsonData) {
     List<MdmsTest> testList = new ArrayList<>();
+    List<JsonNode> errorMap = new ArrayList<>();
 
     try {
       ObjectMapper objectMapper = new ObjectMapper();
@@ -166,17 +165,63 @@ public class MDMSUtils {
       JsonNode testArray = jsonNode.get("mdms");
 
       for (JsonNode criteriaNode : testArray) {
-        MdmsTest test = objectMapper.convertValue(criteriaNode.get("data"),
-            MdmsTest.class);
+        MdmsTest test = null;
+        try {
+          test = objectMapper.convertValue(criteriaNode.get("data"),
+                  MdmsTest.class);
+        } catch (Exception e) {
+          errorMap.add(criteriaNode);
+        }
 
-        testList.add(test);
+        if (test != null)
+          testList.add(test);
       }
     } catch (Exception e) {
-      throw new CustomException(ErrorConstants.PARSING_ERROR,
-          "Unable to parse Test Standard List");
+      log.error(ErrorConstants.PARSING_ERROR, errorMap);
     }
 
     return testList;
   }
+
+  public List<String> extractTenantCode(String jsonString) {
+    List<String> codes = new ArrayList<>();
+
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      JsonNode rootNode = objectMapper.readTree(jsonString);
+
+      JsonNode tenantsNode = rootNode.path("MdmsRes").path("tenant").path("tenants");
+
+      for (JsonNode tenantNode : tenantsNode) {
+        JsonNode codeNode = tenantNode.path("code");
+        String code = codeNode.asText();
+
+        if (code.contains(".")) {
+          codes.add(code);
+        }
+      }
+    } catch (Exception e) {
+      log.error(ErrorConstants.PARSING_ERROR, "Cannot parse tenants master");
+    }
+
+    return codes;
+  }
+
+    public String fetchParsedMDMSData(RequestInfo requestInfo, String tenantId, String schemaCode)
+    {
+        //fetch mdms data for QualityCriteria Master
+        Object jsondata = mdmsCallV2(requestInfo,
+                tenantId.split("\\.")[0], schemaCode, new ArrayList<>());
+        String jsonString = "";
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            jsonString = objectMapper.writeValueAsString(jsondata);
+        } catch (Exception e) {
+            throw new CustomException(ErrorConstants.PARSING_ERROR,
+                    "Unable to parse QualityCriteria mdms data ");
+        }
+        return jsonString;
+    }
 
 }

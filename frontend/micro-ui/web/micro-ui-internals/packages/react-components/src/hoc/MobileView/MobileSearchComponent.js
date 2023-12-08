@@ -13,6 +13,7 @@ import Button from "../../atoms/Button"
 
 
 const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = "search", fullConfig, data, onClose, defaultValues }) => {
+  
   const { t } = useTranslation();
   const { state, dispatch } = useContext(InboxContext)
   const [showToast,setShowToast] = useState(null)
@@ -42,7 +43,7 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
     setError,
     clearErrors,
   } = useForm({
-    defaultValues: sessionFormData,
+    defaultValues: defaultValues,
   });
   const formData = watch();
   const checkKeyDown = (e) => {
@@ -106,7 +107,7 @@ const renderHeader = () => {
         <div className="popup-label" style={{ display: "flex", paddingBottom: "20px" }}>
           <span className="header" style={{ display : "flex" }}>
             <span className="icon" style ={{ marginRight: "12px", marginTop: "5px",  paddingBottom: "3px" }}><FilterIcon/></span>
-            <span style ={{ fontSize: "large",marginRight: "12px" }}>{t(`${uiConfig?.headerLabel || "TQM_INBOX_SORTBY"}`)}</span>
+            <span style ={{ fontSize: "1.5rem", fontWeight:"700" ,marginRight: "12px" }}>{t(`${uiConfig?.headerLabel || "TQM_INBOX_SORTBY"}`)}</span>
             <span className="clear-search refresh-icon-container" onClick={clearSearch}><RefreshIcon/></span>
           </span>
           {/* <span className="clear-search" onClick={clearSearch}><RefreshIcon/></span> */}
@@ -121,7 +122,7 @@ const renderHeader = () => {
           <div className="popup-label" style={{ display: "flex", paddingBottom: "20px" }}>
             <span className="header" style={{ display : "flex" }}>
               <span className="icon" style ={{ marginRight: "12px", marginTop: "5px",  paddingBottom: "3px" }}><SortSvg/></span>
-              <span style ={{ fontSize: "large",marginRight: "12px" }}>{t(`${uiConfig?.headerLabel || "TQM_INBOX_SORTBY"}`)}</span>
+              <span style ={{ fontSize: "1.5rem", fontWeight:"700" ,marginRight: "12px" }}>{t(`${uiConfig?.headerLabel || "TQM_INBOX_SORTBY"}`)}</span>
               <span className="clear-search refresh-icon-container" onClick={clearSearch}><RefreshIcon/></span>
             </span>
             <span onClick={onClose}>

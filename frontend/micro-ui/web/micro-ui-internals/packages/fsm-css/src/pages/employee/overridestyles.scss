@@ -86,5 +86,39 @@
 
 .multi-select-dropdown-wrap .server {
   overflow-x:auto !important;
-  overflow-y: scroll !important;
+  overflow-y: auto !important;
+}
+
+.popup-module-action-bar{
+  h2 {
+    width: 105% !important;
+  }
+}
+
+.search-field-wrapper.inbox.filter {
+  grid-row-gap: 1.5rem;
+}
+
+.multilink-option{
+  display: flex !important;
+
+}
+
+.multilink-optionWrap {
+  top:0.8rem !important;
+  right: -40% !important;
+}
+
+.hide-class {
+  .multilink-block-wrapper{
+  display: none;
+  }
+}
+
+.fsm-application-modal-popup{
+  top:0rem !important;
+}
+
+.fsm-registry-dropdown {
+  margin-bottom: 0px ;
 }

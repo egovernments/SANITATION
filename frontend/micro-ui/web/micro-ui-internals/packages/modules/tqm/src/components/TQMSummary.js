@@ -6,6 +6,7 @@ import { Header, Loader, Toast, ViewComposer } from "@egovernments/digit-ui-reac
 const TQMSummary = () => {
   const { t } = useTranslation();
   const history = useHistory();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
 
@@ -53,7 +54,7 @@ const TQMSummary = () => {
     }),
   };
 
-  const { isLoading, data: testData, revalidate, isFetching } = Digit.Hooks.tqm.useViewTestSummary({ t, id: id, config });
+  const { isLoading, data: testData, revalidate, isFetching } = Digit.Hooks.tqm.useViewTestSummary({ tenantId, t, id: id, config });
 
   if (isLoading || !testData) {
     return <Loader />;

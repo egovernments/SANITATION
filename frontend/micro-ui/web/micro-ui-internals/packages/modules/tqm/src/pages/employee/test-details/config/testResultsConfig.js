@@ -7,9 +7,13 @@ export const testResultsConfig = ({ t, testDetailsData, testCriteriaData }) => {
     return {
       label: `${t(i?.i18nKey)} ${i?.unit !== "NA" || i?.unit === null ? t(i?.unit) : ""}` || "N/A",
       isMandatory: true,
-      type: "number",
+      type: "text",
       disable: false,
       populators: {
+        validation: {
+          required: true,
+          pattern: /^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$/,
+        },
         name: i?.code,
         error: t("ES_TQM_TEST_PARAM_ERROR_MESSAGE"),
       },
@@ -28,11 +32,11 @@ export const testResultsConfig = ({ t, testDetailsData, testCriteriaData }) => {
               label: t("ES_TQM_TEST_PARAM_ATTACH_DOCUMENTS"),
               populators: {
                 name: "documents",
-                allowedMaxSizeInMB: 5,
+                allowedMaxSizeInMB: 10,
                 maxFilesAllowed: 1,
                 customClass: "upload-margin-bottom",
                 errorMessage: t("ES_TQM_TEST_PARAM_ATTACH_DOCUMENTS_ERROR_MSG"),
-                allowedFileTypes: /(.*?)(pdf|jpg|png)$/i,
+                allowedFileTypes: /(.*?)(pdf|jpg|png|jpeg|png|webp|image)$/i,
               },
             },
           ],

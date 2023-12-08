@@ -81,11 +81,13 @@ public class NotificationService {
 			Set<String> mobileNumbers = smsRequests.stream().map(SMSRequest::getMobileNumber)
 					.collect(Collectors.toSet());
 
+
 			Map<String, String> mobileNumberToMsg = smsRequests.stream()
 					.collect(Collectors.toMap(SMSRequest::getMobileNumber, SMSRequest::getMessage));
 			for (String mobile : mobileNumbers) {
 
 				List<String> toUsers = new ArrayList<>();
+
 				List<String> toRoles = new ArrayList<>();
 				toRoles.add("PQM_ADMIN");
 				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(toRoles).build();

@@ -24,8 +24,26 @@
   }
 }
 
+.inbox-search-wrapper {
+  .sections-parent.search {
+    .searchBox {
+      margin-bottom: 0;
+    }
+    .details-container {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+  }
+}
 .search-wrapper .search-button-wrapper.inbox.sort button {
   width: 100%;
+}
+@media (max-width: 649px) {
+  .search-wrapper {
+    .search-button-wrapper {
+      padding-bottom: 8px;
+    }
+  }
 }
 .popup-label {
   .header {
@@ -36,4 +54,20 @@
 .clear-search.refresh-icon-container {
   padding: unset;
   border: unset;
+}
+
+.popup-module {
+  .search-wrapper {
+    .search-field-wrapper {
+      .label-field-pair {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+.multi-select-dropdown-wrap {
+  .server {
+    overflow: auto;
+  }
 }

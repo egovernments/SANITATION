@@ -57,7 +57,7 @@ public class QualityCriteriaEvaluationService {
 
     //fetch mdms data for QualityCriteria Master
     Object jsondata = mdmsUtil.mdmsCallV2(testRequest.getRequestInfo(),
-        testRequest.getTests().get(0).getTenantId().split("\\.")[0], MASTER_NAME_QUALITY_CRITERIA);
+        testRequest.getTests().get(0).getTenantId().split("\\.")[0], MASTER_NAME_QUALITY_CRITERIA, new ArrayList<>());
     String jsonString = "";
 
     try {

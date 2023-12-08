@@ -116,7 +116,7 @@ function TestDetails() {
         />
       )}
       {showToast && (
-        <Toast error={showToast.key === "error" ? true : false} label={t(showToast.key === "success" ? `ES_TQM_STATUS_UPDATE_SUCCESS` : showToast.action)} onClose={closeToast} />
+        <Toast error={showToast.key === "error" ? true : false} label={t(showToast.key === "success" ? `ES_TQM_STATUS_UPDATE_SUCCESS` : showToast.action)} onClose={closeToast} isDleteBtn={true} />
       )}
     </>
   );

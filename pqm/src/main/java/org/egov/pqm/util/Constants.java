@@ -90,7 +90,13 @@ public class Constants {
   public static final String PQM_SCHEMA_CODE_STAGE = "PQM.Stage";
   public static final String PQM_SCHEMA_CODE_MATERIAL = "PQM.Material";
   public static final String SCHEMA_CODE_TEST_STANDARD = "PQM.TestStandard";
+  public static final String SCHEMA_CODE_PLANTCONFIG = "PQM.PlantConfig";
+
   public static final String WF_ACTION_SCHEDULE = "SCHEDULE";
+
+  public static final String MDMS_MODULE_TENANT = "tenant";
+  public static final String MDMS_MASTER_TENANTS = "tenants";
+
   public static final Pattern REGEX_METACHARACTER_PATTERN = Pattern.compile(
       "^[a-z0-9]+(-[a-z0-9]+)*$");
 }

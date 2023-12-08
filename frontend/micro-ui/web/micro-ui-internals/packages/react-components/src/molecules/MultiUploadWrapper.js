@@ -4,7 +4,7 @@ import UploadFile from "../atoms/UploadFile"
 const displayError = ({ t, error, name }, customErrorMsg) => (
     <span style={{ display: 'flex', flexDirection: 'column' }}>
         <div className="validation-error">{customErrorMsg ? t(customErrorMsg) : t(error)}</div>
-        <div className="validation-error">{customErrorMsg ? '' : `${t('ES_COMMON_DOC_FILENAME')} : ${name} ...`}</div>
+        <div className="validation-error" style={{marginTop: 0}}>{customErrorMsg ? '' : `${t('ES_COMMON_DOC_FILENAME')} : ${name} ...`}</div>
     </span>
 )
 
@@ -133,7 +133,7 @@ const MultiUploadWrapper = ({ t, module = "PGR", tenantId = Digit.ULBService.get
                 customClass={customClass}
                 enableButton={enableButton}
             />
-            <span style={{ display: 'flex' }}>
+            <span className="error-msg" style={{ display: 'flex' }}>
                 {fileErrors.length ? fileErrors.map(({ valid, name, type, size, error }) => (
                     valid ? null : displayError({ t, error, name }, customErrorMsg)
                 )) : null}
