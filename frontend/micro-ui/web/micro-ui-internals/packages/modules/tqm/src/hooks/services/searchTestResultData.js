@@ -176,10 +176,10 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
                   ).getFullYear()}`) ||
                 t("ES_TQM_TBD"),
             },
-            {
-              key: t("ES_TQM_LABEL_STATUS"),
-              value: t(`TQM_TEST_STATUS_${testResponse?.wfStatus}`) || t("ES_TQM_TBD"),
-            },
+            // {
+            //   key: t("ES_TQM_LABEL_STATUS"),
+            //   value: t(`TQM_TEST_STATUS_${testResponse?.wfStatus}`) || t("ES_TQM_TBD"),
+            // },
           ]
         : [
             {
