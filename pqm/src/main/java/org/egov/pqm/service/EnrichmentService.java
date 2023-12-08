@@ -3,19 +3,21 @@ package org.egov.pqm.service;
 
 import static org.egov.pqm.util.Constants.UPDATE_RESULT;
 import static org.egov.pqm.util.Constants.WFSTATUS_SUBMITTED;
+import static org.egov.pqm.util.PlantUserConstants.PQM_ADMIN;
+import static org.egov.pqm.util.PlantUserConstants.PQM_TP_OPERATOR;
 import static org.egov.pqm.web.model.TestResultStatus.PENDING;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
-
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.common.contract.request.Role;
 import org.egov.pqm.config.ServiceConfiguration;
+import org.egov.pqm.error.Error;
 import org.egov.pqm.repository.IdGenRepository;
 import org.egov.pqm.repository.TestRepository;
 import org.egov.pqm.util.Constants;
@@ -27,9 +29,15 @@ import org.egov.pqm.web.model.SourceType;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResultStatus;
+import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.Workflow;
 import org.egov.pqm.web.model.idgen.IdResponse;
+import org.egov.pqm.web.model.plant.user.PlantUser;
 import org.egov.pqm.web.model.plant.user.PlantUserRequest;
+import org.egov.pqm.web.model.plant.user.PlantUserResponse;
+import org.egov.pqm.web.model.plant.user.PlantUserSearchCriteria;
+import org.egov.pqm.web.model.plant.user.PlantUserSearchRequest;
+import org.egov.pqm.web.model.plant.user.PlantUserType;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,8 +53,11 @@ public class EnrichmentService {
 
   @Autowired
   private IdGenRepository idGenRepository;
+
   @Autowired
   private TestRepository testRepository;
+
+  @Autowired PlantUserService plantUserService;
 
 
   public void enrichPQMCreateRequest(TestRequest testRequest) {
@@ -209,6 +220,43 @@ public class EnrichmentService {
   public void pushToAnomalyDetectorIfTestResultNotSubmitted(TestRequest testRequest) {
     log.info("pushing to - "+config.getTestResultNotSubmittedKafkaTopic());
     testRepository.saveAnomaly(config.getTestResultNotSubmittedKafkaTopic(), testRequest);
+  }
+
+  public void enrichPqmSearch(TestSearchRequest testSearchRequest, RequestInfo requestInfo) {
+    if (requestInfo.getUserInfo().getRoles().stream().map(Role::getCode).anyMatch(s -> s.contentEquals(PQM_TP_OPERATOR))) {
+      addOrUpdatePlantCodes(testSearchRequest, PlantUserType.PLANT_OPERATOR);
+    } else if(requestInfo.getUserInfo().getRoles().stream().map(Role::getCode).anyMatch(s -> s.contentEquals(PQM_ADMIN))) {
+      addOrUpdatePlantCodes(testSearchRequest, PlantUserType.ULB);
+    } else {
+      throw Error.invalid_applicant_error.getBuilder("Search",
+          testSearchRequest.getRequestInfo().getUserInfo().getUuid(), "Roles: " + Arrays.asList(PQM_ADMIN, PQM_TP_OPERATOR)).build();
+    }
+  }
+
+  private void addOrUpdatePlantCodes(TestSearchRequest testSearchRequest, PlantUserType plantUserType){
+    PlantUserResponse plantUserResponse = plantUserService.search(PlantUserSearchRequest.builder()
+        .plantUserSearchCriteria(PlantUserSearchCriteria.builder()
+            .tenantId(testSearchRequest.getRequestInfo().getUserInfo().getTenantId())
+            .plantUserUuids(Collections.singletonList(testSearchRequest.getRequestInfo().getUserInfo().getUuid()))
+            .plantUserTypes(Collections.singletonList(plantUserType.toString()))
+            .build())
+        .requestInfo(testSearchRequest.getRequestInfo()).build());
+    if (Objects.isNull(plantUserResponse) || CollectionUtils.isEmpty(
+        plantUserResponse.getPlantUsers()) || plantUserResponse.getPlantUsers().stream()
+        .noneMatch(PlantUser::getIsActive)) {
+      throw Error.invalid_applicant_error.getBuilder("Search",
+          testSearchRequest.getRequestInfo().getUserInfo().getUuid(), "plant-user-mapping").build();
+    }
+
+    List<String> plantCodes = plantUserResponse.getPlantUsers().stream().map(
+        PlantUser::getPlantCode).collect(
+        Collectors.toList());
+
+    if(CollectionUtils.isEmpty(testSearchRequest.getTestSearchCriteria().getPlantCodes())){
+      testSearchRequest.getTestSearchCriteria().setPlantCodes(plantCodes);
+    } else {
+      testSearchRequest.getTestSearchCriteria().getPlantCodes().retainAll(plantCodes);
+    }
   }
 
 }
