@@ -110,7 +110,7 @@ public class MDMSUtils {
 
   public MdmsCriteriaRequest getMDMSRequestV2(RequestInfo requestInfo , String  tenantId ,
       String schemaCode, List<String> uniqueIdentifiers){
-    org.egov.pqm.web.model.mdms.MdmsCriteria mdmsCriteria = org.egov.pqm.web.model.mdms.MdmsCriteria.builder().tenantId(tenantId).schemaCode(schemaCode).isActive(true).build();
+    org.egov.pqm.web.model.mdms.MdmsCriteria mdmsCriteria = org.egov.pqm.web.model.mdms.MdmsCriteria.builder().tenantId(tenantId).schemaCode(schemaCode).limit(config.getMdmsv2MaxLimit()).isActive(true).build();
 
     if(!uniqueIdentifiers.isEmpty())
       mdmsCriteria.setUniqueIdentifiers(uniqueIdentifiers);
