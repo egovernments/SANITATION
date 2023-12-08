@@ -218,7 +218,8 @@ public class EnrichmentService {
   }
 
   public void pushToAnomalyDetectorIfTestResultNotSubmitted(TestRequest testRequest) {
-      testRepository.saveAnomaly(config.getTestResultNotSubmittedKafkaTopic(), testRequest);
+    log.info("pushing to - "+config.getTestResultNotSubmittedKafkaTopic());
+    testRepository.saveAnomaly(config.getTestResultNotSubmittedKafkaTopic(), testRequest);
   }
 
   public void enrichPqmSearch(TestSearchRequest testSearchRequest, RequestInfo requestInfo) {

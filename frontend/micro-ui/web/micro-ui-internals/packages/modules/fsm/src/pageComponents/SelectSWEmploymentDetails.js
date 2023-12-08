@@ -6,6 +6,8 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [selectedEmployer, setSelectedEmployer] = useState(null);
   const [selectedVendor, setSelectedVendor] = useState(null);
+  const [vendorList, setVendorList] = useState(null);
+
   const { isLoading: ismdms, data: mdmsOptions } = Digit.Hooks.useCustomMDMS(
     stateId,
     "FSM",
@@ -27,19 +29,33 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
       setSelectedEmployer(temp);
     }
   }, [mdmsOptions]);
-  const requestCriteria = {
-    url: "/vendor/v1/_search",
-    params: { tenantId, sortBy: "name", status: "ACTIVE" },
-    body: {},
+
+  const { data: vendorData, isLoading: isVendorLoading, isSuccess: isVendorSuccess, error: vendorError, refetch: refetchVendor } = Digit.Hooks.fsm.useVendorSearch({
+    tenantId,
+    filters: {
+      sortBy: "name",
+      sortOrder: "ASC",
+      status: "ACTIVE",
+    },
     config: {
       enabled: true,
       select: (data) => {
-        return data?.vendor;
+        return data?.vendor ? data?.vendor : [];
       },
     },
-  };
+  });
 
-  const { isLoading: isVendorLoading, data } = Digit.Hooks.useCustomAPIHook(requestCriteria);
+  useEffect(() => {
+    if (selectedEmployer?.code === "ULB" && vendorData) {
+      const temp = vendorData.filter((i) => i.agencyType === "ULB");
+      setVendorList(temp);
+    }
+    if (selectedEmployer?.code === "PRIVATE_VENDOR" && vendorData) {
+      const temp = vendorData.filter((i) => i.agencyType === "Private");
+      setVendorList(temp);
+    }
+  }, [selectedEmployer]);
+
   const selectVendor = (type) => {
     setSelectedVendor(type);
     onSelect(config.key, { ...formData[config.key], vendor: type });
@@ -47,8 +63,18 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
 
   const selectEmployer = (type) => {
     setSelectedEmployer(type);
+    const updatedParams = {
+      tenantId,
+      sortBy: "name",
+      sortOrder: "ASC",
+      status: "ACTIVE",
+      agencyType: type?.code === "ULB" ? "ULB" : "",
+    };
+    refetchVendor(updatedParams);
     onSelect(config.key, { ...formData[config.key], employer: type });
   };
+
+  useEffect(() => {}, [selectedEmployer]);
 
   return (
     <div>
@@ -65,24 +91,22 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
           options={mdmsOptions?.SanitationWorkerEmployer}
         />
       </LabelFieldPair>
-      {selectedEmployer?.code !== "ULB" && (
-        <LabelFieldPair>
-          <CardLabel className="card-label-smaller">
-            {t("FSM_REGISTRY_WORKER_SELECT_VENDOR")}
-            {config.isMandatory ? " * " : null}
-          </CardLabel>
-          <Dropdown
-            className="form-field"
-            isMandatory
-            selected={selectedVendor || formData[config.key]?.vendor}
-            disable={false}
-            option={data}
-            select={selectVendor}
-            optionKey="name"
-            t={t}
-          />
-        </LabelFieldPair>
-      )}
+      <LabelFieldPair>
+        <CardLabel className="card-label-smaller">
+          {t("FSM_REGISTRY_WORKER_SELECT_VENDOR")}
+          {config.isMandatory ? " * " : null}
+        </CardLabel>
+        <Dropdown
+          className="form-field"
+          isMandatory
+          selected={selectedVendor || formData[config.key]?.vendor}
+          disable={false}
+          option={vendorList}
+          select={selectVendor}
+          optionKey="name"
+          t={t}
+        />
+      </LabelFieldPair>
     </div>
   );
 };

@@ -152,7 +152,7 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] })
           populators: {
             allowMultiSelect: true,
             name: "skills",
-            optionsKey: "name",
+            optionsKey: "code",
             error: "ES_TQM_REQUIRED",
             required: true,
             options: skillsOption,
