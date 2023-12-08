@@ -10,6 +10,7 @@ import org.egov.pqm.anomaly.finder.util.ResponseInfoFactory;
 import org.egov.pqm.anomaly.finder.web.model.PqmAnomaly;
 import org.egov.pqm.anomaly.finder.web.model.PqmAnomalyResponse;
 import org.egov.pqm.anomaly.finder.web.model.PqmAnomalySearchCriteria;
+import org.egov.pqm.anomaly.finder.web.model.PqmAnomalySearchRequest;
 import org.egov.pqm.anomaly.finder.web.model.RequestInfoWrapper;
 import org.egov.pqm.anomaly.finder.web.model.TestRequest;
 import org.egov.pqm.anomaly.finder.web.model.TestResponse;
@@ -56,6 +57,15 @@ public class PqmAnomalyFinderController {
 		List<PqmAnomaly> pqmAnomalyList = anomalyFinderService.pqmAnomalyPlainSearch(criteria, requestInfoWrapper.getRequestInfo());
 		PqmAnomalyResponse response = PqmAnomalyResponse.builder().pqmAnomalys(pqmAnomalyList).responseInfo(
 				responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true))
+				.build();
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/_search")
+	public ResponseEntity<PqmAnomalyResponse> search(@Valid @RequestBody PqmAnomalySearchRequest pqmAnomalySearchRequest) {
+		List<PqmAnomaly> pqmAnomalyList = anomalyFinderService.anomalySearch(pqmAnomalySearchRequest.getPqmAnomalySearchCriteria());
+		PqmAnomalyResponse response = PqmAnomalyResponse.builder().pqmAnomalys(pqmAnomalyList).responseInfo(
+						responseInfoFactory.createResponseInfoFromRequestInfo(pqmAnomalySearchRequest.getRequestInfo(), true))
 				.build();
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
