@@ -443,7 +443,7 @@ export const UICustomizations = {
   SearchTestResultsUlbAdmin: {
     preProcess: (data,additionalDetails) => {
       
-      const { id,plantCodes, processCodes, testType, dateRange } = data.body.custom || {};
+      const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data.body.custom || {};
       data.body.testSearchCriteria={}
 
       //update testSearchCriteria
@@ -453,7 +453,13 @@ export const UICustomizations = {
       //test id with part search enabled 
       data.body.testSearchCriteria.testId = id ? id : ""
       //plantcodes
-      data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
+      // data.body.testSearchCriteria.plantCodes = plantCodes?.map(plantCode => plantCode.code)
+
+      data.body.testSearchCriteria.plantCodes = Digit.SessionStorage.get("user_plants")?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
+      //plantCodes 
+      if(selectedPlantCodes?.length>0){
+        data.body.testSearchCriteria.plantCodes = selectedPlantCodes?.filter(row=>row?.plantCode)?.map(row => row?.plantCode)
+      }
       data.body.testSearchCriteria.wfStatus = ["SUBMITTED"];
       //processcodes
       data.body.testSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)

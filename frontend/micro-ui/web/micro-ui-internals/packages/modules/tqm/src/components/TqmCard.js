@@ -68,7 +68,7 @@ const TqmCard = ({reRoute=true}) => {
       },
     },
     config: {
-      enabled: dataPlantUsers?.length>=0 ? Digit.Utils.didEmployeeHasAtleastOneRole(ROLES.plant) || Digit.Utils.didEmployeeHasAtleastOneRole(ROLES.ulb):false,
+      enabled: dataPlantUsers?.length>0 ? Digit.Utils.didEmployeeHasAtleastOneRole(ROLES.plant) || Digit.Utils.didEmployeeHasAtleastOneRole(ROLES.ulb):false,
     },
   };
 
