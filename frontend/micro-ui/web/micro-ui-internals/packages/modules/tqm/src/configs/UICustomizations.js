@@ -94,10 +94,10 @@ export const UICustomizations = {
   TqmInboxConfig:{
     preProcess: (data,additionalDetails) => {
       //sample working code to stop calling inbox api if no plants are linked to this user
-      // if(Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.length===0){
-      //   data.config.enabled = false
-      //   return data
-      // }
+      if(Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.length===0 || !Digit.SessionStorage.get("user_plants")){
+        data.config.enabled = false
+        return data
+      }
       const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
       
       //processcodes
@@ -243,7 +243,10 @@ export const UICustomizations = {
       };
     },
     preProcess: (data,additionalDetails) => {
-      
+      if(Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode)?.length===0 || !Digit.SessionStorage.get("user_plants")){
+        data.config.enabled = false
+        return data
+      }
       const { id,plantCodes:selectedPlantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
       //ids
       data.body.inbox.moduleSearchCriteria.testIds = id ?  [id] : null
