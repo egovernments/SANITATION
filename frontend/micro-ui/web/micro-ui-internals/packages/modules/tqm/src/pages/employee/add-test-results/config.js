@@ -8,7 +8,7 @@ export const addTestConfig = [
         label: "TQM_PLANT_NAME",
         disable: false,
         populators: {
-          name: "plant_name",
+          name: "plantCode",
           optionsKey: "i18nKey",
           error: "ES_TQM_REQUIRED",
           required: true,
