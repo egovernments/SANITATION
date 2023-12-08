@@ -14,9 +14,7 @@ import org.egov.mdms.model.ModuleDetail;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.ServiceRequestRepository;
 import org.egov.pqm.web.model.Test;
-import org.egov.pqm.web.model.mdms.MDMSQualityCriteria;
-import org.egov.pqm.web.model.mdms.MdmsCriteriaRequest;
-import org.egov.pqm.web.model.mdms.MdmsTest;
+import org.egov.pqm.web.model.mdms.*;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -103,16 +101,20 @@ public class MDMSUtils {
     return tenantModuleDetail;
   }
 
-  public Object mdmsCallV2(RequestInfo requestInfo, String tenantId, String schemaCode){
-    MdmsCriteriaRequest mdmsCriteriaRequest = getMDMSRequestV2(requestInfo, tenantId, schemaCode);
+  public Object mdmsCallV2(RequestInfo requestInfo, String tenantId, String schemaCode, List<String> uniqueIdentifiers){
+    MdmsCriteriaRequest mdmsCriteriaRequest = getMDMSRequestV2(requestInfo, tenantId, schemaCode, uniqueIdentifiers);
     StringBuilder uri = getMdmsSearchUrl2();
     Object result = serviceRequestRepository.fetchResult(uri, mdmsCriteriaRequest);
     return result;
   }
 
   public MdmsCriteriaRequest getMDMSRequestV2(RequestInfo requestInfo , String  tenantId ,
-      String schemaCode){
+      String schemaCode, List<String> uniqueIdentifiers){
     org.egov.pqm.web.model.mdms.MdmsCriteria mdmsCriteria = org.egov.pqm.web.model.mdms.MdmsCriteria.builder().tenantId(tenantId).schemaCode(schemaCode).isActive(true).build();
+
+    if(!uniqueIdentifiers.isEmpty())
+      mdmsCriteria.setUniqueIdentifiers(uniqueIdentifiers);
+
     MdmsCriteriaRequest mdmsCriteriaRequest =
         MdmsCriteriaRequest.builder().mdmsCriteria(mdmsCriteria).requestInfo(requestInfo).build();
     return mdmsCriteriaRequest;
@@ -204,5 +206,22 @@ public class MDMSUtils {
 
     return codes;
   }
+
+    public String fetchParsedMDMSData(RequestInfo requestInfo, String tenantId, String schemaCode)
+    {
+        //fetch mdms data for QualityCriteria Master
+        Object jsondata = mdmsCallV2(requestInfo,
+                tenantId.split("\\.")[0], schemaCode, new ArrayList<>());
+        String jsonString = "";
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            jsonString = objectMapper.writeValueAsString(jsondata);
+        } catch (Exception e) {
+            throw new CustomException(ErrorConstants.PARSING_ERROR,
+                    "Unable to parse QualityCriteria mdms data ");
+        }
+        return jsonString;
+    }
 
 }

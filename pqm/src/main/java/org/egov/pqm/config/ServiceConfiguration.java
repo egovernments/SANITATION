@@ -118,6 +118,14 @@ public class ServiceConfiguration {
   @Value("${egov.user.search.path}")
   private String userSearchEndpoint;
 
+  // PQM Anomaly Service Config
+  @Value("${egov.pqm.anomaly.host}")
+  private String pqmAnomalyHost;
+
+  @Value("${egov.pqm.anomaly.search.endpoint}")
+  private String pqmAnomalySearchEndpoint;
+
+
   //tenantId
   @Value("${egov.statelevel.tenantid}")
   private String egovStateLevelTenantId;
