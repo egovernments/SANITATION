@@ -5,18 +5,16 @@ import static org.egov.pqm.util.ErrorConstants.*;
 import static org.egov.pqm.util.MDMSUtils.*;
 import static org.egov.pqm.web.model.Pagination.SortOrder.DESC;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import net.minidev.json.JSONArray;
+import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
-import org.egov.common.contract.request.Role;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.TestRepository;
-import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.JsonParser;
 import org.egov.pqm.util.MDMSUtils;
@@ -48,10 +46,6 @@ import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -132,17 +126,6 @@ public class PqmService {
     }).collect(Collectors.toList());
 
     return testResponse;
-
-  }
-
-  private void checkRoleInValidateSearch(TestSearchRequest criteria, RequestInfo requestInfo) {
-    List<Role> roles = requestInfo.getUserInfo().getRoles();
-    TestSearchCriteria testSearchCriteria = criteria.getTestSearchCriteria();
-    List<String> masterNameList = new ArrayList<>();
-    masterNameList.add(null);
-    if (roles.stream().anyMatch(role -> Objects.equals(role.getCode(), Constants.FSTPO_EMPLOYEE))) {
-
-    }
 
   }
 

@@ -2,10 +2,7 @@ package org.egov.pqm.web.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
 import javax.validation.Valid;
-
 import org.egov.pqm.service.PqmService;
 import org.egov.pqm.util.ResponseInfoFactory;
 import org.egov.pqm.web.model.RequestInfoWrapper;
