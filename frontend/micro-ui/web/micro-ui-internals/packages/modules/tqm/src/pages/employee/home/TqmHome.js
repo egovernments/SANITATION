@@ -7,6 +7,7 @@ import getDateRange from '../../../utils/formatDate';
 
 const TqmHome = (props) => {
   const { t } = useTranslation();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
   const endDate = Date.now();
   const startDate = new Date(endDate);
   startDate.setMonth(startDate.getMonth() - 1);
@@ -29,7 +30,7 @@ const TqmHome = (props) => {
         "queryType": "",
         "filters": {
           "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
-          "tenantId": Digit.ULBService.getCurrentTenantId()
+          "tenantId": tenantId
         },
         "moduleLevel": "",
         "aggregationFactors": null,
@@ -39,7 +40,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": Digit.ULBService.getCurrentTenantId()
+        "tenantId": tenantId
       }
     },
     changeQueryName: "testCompliance",
@@ -57,7 +58,7 @@ const TqmHome = (props) => {
         "queryType": "",
         "filters": {
           "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
-          "tenantId": Digit.ULBService.getCurrentTenantId()
+          "tenantId": tenantId
         },
         "moduleLevel": "",
         "aggregationFactors": null,
@@ -67,7 +68,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": Digit.ULBService.getCurrentTenantId()
+        "tenantId": tenantId
       }
     },
     changeQueryName: "percentage",
@@ -83,7 +84,9 @@ const TqmHome = (props) => {
         "visualizationType": "xtable",
         "visualizationCode": "pqmAlerts",
         "queryType": "",
-        "filters": {},
+        "filters": {
+          "tenantId": [tenantId]
+        },
         "moduleLevel": "",
         "aggregationFactors": null,
         "requestDate": {
@@ -92,7 +95,7 @@ const TqmHome = (props) => {
         }
       },
       "headers": {
-        "tenantId": Digit.ULBService.getCurrentTenantId()
+        "tenantId": tenantId
       }
     },
     changeQueryName: "alerts",
