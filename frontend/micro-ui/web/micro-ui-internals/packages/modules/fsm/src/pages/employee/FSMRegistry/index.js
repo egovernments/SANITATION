@@ -103,7 +103,7 @@ const FSMRegistry = () => {
     { enabled: false }
   );
   
-  const inboxTotalCount = dsoData?.totalCount || 50;
+  const inboxTotalCount = dsoData?.TotalCount || dsoData?.totalCount ;
 
   useEffect(() => {
     refetch();
