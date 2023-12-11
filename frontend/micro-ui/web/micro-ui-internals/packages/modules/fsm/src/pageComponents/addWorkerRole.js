@@ -314,7 +314,7 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
                   {/* {input.isMandatory ? " * " : null} */}
                 </CardLabel>
                 <div className="field" style={{ display: "flex" }}>
-                  <TextInput className="" textInputStyle={{ width: "50%" }} value={jurisdiction?.licenseNo} onChange={selectLicenseNo} disable={false} />
+                  <TextInput className="" textInputStyle={{ width: "100%" }} value={jurisdiction?.licenseNo} onChange={selectLicenseNo} disable={false} />
                 </div>
               </LabelFieldPair>
             ) : jurisdiction?.fn_role?.code === "PLANT_OPERATOR" ? (

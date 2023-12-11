@@ -890,7 +890,7 @@ const RegisryInbox = (props) => {
                     optionKey='name'
                     t={t}
                     style={{ position: "unset" }}
-                    optionCardStyles={{ maxWidth: "14%", maxHeight: "200px" }}
+                    optionCardStyles={{ maxWidth: "12.5%", maxHeight: "200px" }}
                     disable={row?.original?.isSystemUserActive ? false : true}
                   />
                 );

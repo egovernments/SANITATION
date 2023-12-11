@@ -62,8 +62,9 @@ const getResponse = (data, vendorDetails = {}, tenantId) => {
       ],
     },
     {
-      title: "ES_FSM_REGISTRY_PHOTO_DETAILS",
-      values: [{ title: "Photograph", value: data?.photo }],
+      titlee: "ES_FSM_REGISTRY_PHOTO_DETAILS",
+      photo:data?.photo ?  [data?.photo] : [],
+      isPhoto:data?.photo,
     },
     {
       title: "ES_FSM_REGISTRY_ROLE_DETAILS",
