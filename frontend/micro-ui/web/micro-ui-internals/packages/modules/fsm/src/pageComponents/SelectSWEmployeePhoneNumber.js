@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { LabelFieldPair, CardLabel, TextInput, CardLabelError, LinkButton, ActionLinks } from "@egovernments/digit-ui-react-components";
 import { useLocation, Link } from "react-router-dom";
 
-const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userType, register, errors }) => {
+const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userType, register, errors, setError: seterror, clearErrors }) => {
   const { pathname: url } = useLocation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [iserror, setError] = useState(false);
@@ -45,9 +45,11 @@ const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userT
   useEffect(() => {
     if (!isNaN(checkMobile) && checkMobile?.length === 10 && checkWorker?.Individual?.length > 0) {
       setIsMobilePresent(true);
+      seterror(config.key, { isMobilePresent: true });
       return;
     }
     setIsMobilePresent(false);
+    clearErrors(config.key)
   }, [checkMobile, checkWorker]);
 
   function setValue(value, input) {
@@ -56,6 +58,7 @@ const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userT
   }
   function validate(value, input) {
     setError(!input.populators.validation.pattern.test(value));
+    seterror(config.key, { isMobilePresent: true });
   }
 
   return (
@@ -89,7 +92,7 @@ const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userT
                   {isMobilePresent && (
                     <CardLabelError style={{ width: "100%" }}>
                       {t("FSM_REGISTRY_WORKER_MOBILE_EXIST_ERROR")}{" "}
-                      <Link to={`/${window?.contextPath}/employee/fsm/registry/worker/${checkWorker?.Individual?.[0]?.individualId}`}>
+                      <Link to={`/${window?.contextPath}/employee/fsm/registry/worker-details?id=${checkWorker?.Individual?.[0]?.individualId}`}>
                         {t("FSM_REGISTRY_WORKER_LINK_VIEW_DETAILS")}
                       </Link>
                     </CardLabelError>

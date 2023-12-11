@@ -56,7 +56,10 @@ const AddWorkerRoles = ({ t, config, onSelect, userType, formData }) => {
   );
 
   useEffect(() => {
-    setFunctionalRole(mdmsOptions?.SanitationWorkerFunctionalRoles);
+    if (mdmsOptions?.SanitationWorkerFunctionalRoles) {
+      const temp = mdmsOptions?.SanitationWorkerFunctionalRoles?.map((i) => ({ ...i, i18nKey: `ES_FSM_OPTION_${i.code}` }));
+      setFunctionalRole(temp);
+    }
   }, [mdmsOptions]);
 
   useEffect(() => {
@@ -200,7 +203,13 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
     ],
     {
       select: (data) => {
-        return data?.FSM;
+        const temp = {
+          SanitationWorkerSkills: data?.FSM?.SanitationWorkerSkills,
+          SanitationWorkerEmployer: data?.FSM?.SanitationWorkerEmployer,
+          SanitationWorkerEmploymentType: data?.FSM?.SanitationWorkerEmploymentType.map((i) => ({...i, i18nKey: `ES_FSM_OPTION_${i.code}`})),
+          SanitationWorkerFunctionalRoles: data?.FSM?.SanitationWorkerFunctionalRoles,
+        };
+        return temp;
       },
     }
   );
@@ -299,7 +308,7 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
             isMandatory={true}
             option={functionalRole}
             select={selectFunctionalRole}
-            optionKey="code"
+            optionKey="i18nKey"
             t={t}
           />
         </LabelFieldPair>
@@ -334,7 +343,7 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
             ) : null}
 
             <LabelFieldPair>
-              <CardLabel className="card-label-smaller">{t("FSM_REGISTRY_LABEL_EMPLOYMENT")}</CardLabel>
+              <CardLabel className="card-label-smaller">{`${t("FSM_REGISTRY_LABEL_EMPLOYMENT")} *`} </CardLabel>
               <div className="field">
                 <RadioButtons
                   selectedOption={jurisdiction?.emp_Type}
@@ -342,7 +351,7 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
                   style={{ display: "flex", marginBottom: 0 }}
                   innerStyles={{ marginLeft: "10px" }}
                   options={mdmsOptions?.SanitationWorkerEmploymentType}
-                  optionsKey="name"
+                  optionsKey="i18nKey"
                   disabled={false}
                 />
               </div>
@@ -356,7 +365,13 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
                   className="form-field"
                   isMandatory={true}
                   defaultUnit="Selected"
-                  selected={jurisdiction?.roles ? jurisdiction?.roles : jurisdiction?.sys_role ? jurisdiction?.sys_role : defaultsysRole}
+                  selected={
+                    jurisdiction?.roles
+                      ? jurisdiction?.roles?.filter((i) => i.code !== "SANITATION_WORKER" && i.code !== "CITIZEN")
+                      : jurisdiction?.sys_role
+                      ? jurisdiction?.sys_role
+                      : defaultsysRole
+                  }
                   options={sysRole}
                   onSelect={selectrole}
                   optionsKey="name"

@@ -18,6 +18,7 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] })
           isMandatory: true,
           type: "text",
           key: "name",
+          disable: disabled,
           populators: {
             name: "name",
             validation: {
@@ -31,13 +32,13 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] })
         },
         {
           label: "ES_FSM_REGISTRY_NEW_GENDER",
-          isMandatory: true,
+          // isMandatory: true,
           type: "component",
           route: "select-gender",
           hideInEmployee: false,
           key: "selectGender",
           component: "SelectGender",
-          // disable: disabled,
+          // disabled: disabled,
           texts: {
             headerCaption: "",
             header: "CS_COMMON_CHOOSE_GENDER",
@@ -48,7 +49,7 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] })
         },
         {
           label: t("ES_FSM_REGISTRY_NEW_DOB"),
-          isMandatory: true,
+          // isMandatory: true,
           type: "custom",
           key: "dob",
           populators: {
@@ -57,7 +58,7 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] })
               required: true,
             },
             component: (props, customProps) => (
-              <DatePicker onChange={props.onChange} date={props.value} {...customProps} max={convertEpochToDate(new Date().setFullYear(new Date().getFullYear()))} />
+              <DatePicker onChange={props.onChange} date={props.value} {...customProps} max={convertEpochToDate(new Date().setFullYear(new Date().getFullYear() - 18))} />
             ),
           },
         },
@@ -152,7 +153,7 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] })
           populators: {
             allowMultiSelect: true,
             name: "skills",
-            optionsKey: "code",
+            optionsKey: "i18nKey",
             error: "ES_TQM_REQUIRED",
             required: true,
             options: skillsOption,

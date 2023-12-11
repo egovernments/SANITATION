@@ -69,6 +69,7 @@ export const FsmBreadCrumb = ({ location }) => {
         : `/${window?.contextPath}/employee`,
       content: isVehicleLog ? t("ES_TITLE_INBOX") : "FSM",
       show: isFsm,
+      isBack: true
     },
     {
       path: isNewApplication ? `/${window?.contextPath}/employee/fsm/new-application` : "",
