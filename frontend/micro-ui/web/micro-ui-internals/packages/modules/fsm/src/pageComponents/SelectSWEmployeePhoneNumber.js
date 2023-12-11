@@ -45,12 +45,17 @@ const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userT
   useEffect(() => {
     if (!isNaN(checkMobile) && checkMobile?.length === 10 && checkWorker?.Individual?.length > 0) {
       setIsMobilePresent(true);
-      seterror(config.key, { isMobilePresent: true });
+      seterror(config.key, { ...errors[config.key], isMobilePresent: true });
       return;
     }
     setIsMobilePresent(false);
-    clearErrors(config.key)
   }, [checkMobile, checkWorker]);
+
+  useEffect(() => {
+    if (isMobilePresent === false) {
+      clearErrors(config.key);
+    }
+  }, [isMobilePresent]);
 
   function setValue(value, input) {
     setCheckMobile(value);
@@ -58,7 +63,7 @@ const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userT
   }
   function validate(value, input) {
     setError(!input.populators.validation.pattern.test(value));
-    seterror(config.key, { isMobilePresent: true });
+    seterror(config.key, { ...errors[config.key], invalidMobile: !input.populators.validation.pattern.test(value) });
   }
 
   return (
