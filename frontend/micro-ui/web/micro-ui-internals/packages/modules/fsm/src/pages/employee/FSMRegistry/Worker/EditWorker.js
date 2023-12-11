@@ -18,7 +18,7 @@ const EditWorker = ({ parentUrl, heading }) => {
   const [defaultValues, setDefaultValues] = useState(null);
   const [skillsOption, setSkillsOption] = useState([]);
   const [employer, setEmployer] = useState([]);
-  const [Config, setConfig] = useState(WorkerConfig({ t }));
+  const [Config, setConfig] = useState(WorkerConfig({ t, disabled: true }));
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
   const [checkRoleField, setCheckRoleField] = useState(false);
@@ -62,12 +62,14 @@ const EditWorker = ({ parentUrl, heading }) => {
   });
 
   useEffect(() => {
-    setSkillsOption(mdmsOptions?.SanitationWorkerSkills);
-    setEmployer(mdmsOptions?.SanitationWorkerEmployer);
+    const tempSkills = mdmsOptions?.SanitationWorkerSkills?.map((i) => ({ ...i, i18nKey: `ES_FSM_OPTION_${i.code}` }));
+    const tempEmp = mdmsOptions?.SanitationWorkerEmployer?.map((i) => ({ ...i, i18nKey: `ES_FSM_OPTION_${i.code}` }));
+    setSkillsOption(tempSkills);
+    setEmployer(tempEmp);
   }, [mdmsOptions, ismdms]);
 
   useEffect(() => {
-    setConfig(WorkerConfig({ t, skillsOption, employer }));
+    setConfig(WorkerConfig({ t, disabled: true, skillsOption, employer }));
   }, [skillsOption, employer]);
 
   const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useWorkerUpdate(tenantId);
@@ -117,13 +119,15 @@ const EditWorker = ({ parentUrl, heading }) => {
       for (let i = 1; i <= functionalRoleCount; i++) {
         const functionalRoleKey = `FUNCTIONAL_ROLE_${i}`;
         const functionalRoleValue = data.find((item) => item.key === functionalRoleKey).value;
+        const fnmap = allowedRoles?.find((i) => i.code === functionalRoleValue);
 
         const transformedData = {
           emp_Type: {
             code: data.find((item) => item.key === `EMPLOYMENT_TYPE_${i}`).value,
           },
           fn_role: {
-            code: functionalRoleValue,
+            code: fnmap?.code,
+            i18nKey: `ES_FSM_OPTION_${fnmap?.code}`,
           },
         };
 
@@ -155,7 +159,7 @@ const EditWorker = ({ parentUrl, heading }) => {
   }
 
   useEffect(() => {
-    if (workerData && workerData?.Individual) {
+    if (workerData && workerData?.Individual && !isVendorLoading) {
       const workerDetails = workerData?.Individual?.[0];
       setWorkerinfo(workerDetails);
       const values = {
@@ -179,10 +183,14 @@ const EditWorker = ({ parentUrl, heading }) => {
         street: workerDetails?.address?.[0]?.street,
         doorNo: workerDetails?.address?.[0]?.doorNo,
         landmark: workerDetails?.address?.[0]?.landmark,
-        skills: workerDetails?.skills?.map((obj) => ({ ...obj, code: obj.type })),
+        skills: mdmsOptions?.SanitationWorkerSkills?.filter((mdm) => workerDetails?.skills?.some((item) => item?.type === mdm?.code))?.map((i) => ({
+          ...i,
+          i18nKey: `ES_FSM_OPTION_${i.code}`,
+        })),
+        // workerDetails?.skills?.map((obj) => ({ ...obj, code: obj.type })),
         employementDetails: {
           employer: { name: workerDetails?.additionalFields?.fields?.find((i) => i.key === "EMPLOYER")?.value },
-          vendor: vendorData,
+          vendor: vendorData?.[0],
         },
         AddWorkerRoles: transformData(workerDetails),
         documents: {
@@ -205,14 +213,14 @@ const EditWorker = ({ parentUrl, heading }) => {
 
       setDefaultValues(values);
     }
-  }, [workerData, WorkerLoading, plantUserData]);
+  }, [workerData, WorkerLoading, plantUserData, vendorData, isVendorLoading]);
 
-  const onFormValueChange = (setValue, formData) => {
+  const onFormValueChange = (setValue, formData, errors) => {
     for (let i = 0; i < formData?.AddWorkerRoles?.length; i++) {
       let key = formData?.AddWorkerRoles[i];
-      if (!(key?.emp_Type && key?.fn_role && key?.sys_role && ((key?.licenseNo && key?.fn_role?.code === "DRIVER") || (key?.fn_role?.code === "PLANT_OPERATOR" && key?.plant)))) {
+      if (!(key?.emp_Type && key?.fn_role && key?.sys_role && key?.fn_role?.code)) {
         setCheckRoleField(false);
-        break;
+        // break;
       } else {
         setCheckRoleField(true);
       }
@@ -222,15 +230,20 @@ const EditWorker = ({ parentUrl, heading }) => {
       !isNaN(formData?.SelectEmployeePhoneNumber?.mobileNumber?.length) &&
       formData?.SelectEmployeePhoneNumber?.mobileNumber?.length === 10 &&
       formData?.name &&
-      formData?.selectGender &&
-      formData?.dob &&
+      // formData?.selectGender &&
+      // formData?.dob &&
       formData?.address?.city &&
       formData?.address?.locality &&
       formData?.skills &&
       formData?.employementDetails?.employer &&
-      (!formData?.AddWorkerRoles || (formData?.AddWorkerRoles?.length > 0 && checkRoleField))
+      formData?.employementDetails?.vendor &&
+      (!formData?.AddWorkerRoles || formData?.AddWorkerRoles?.length === 0 || (formData?.AddWorkerRoles?.length > 0 && checkRoleField))
     ) {
-      setSubmitValve(true);
+      if (errors?.SelectEmployeePhoneNumber?.isMobilePresent && formData?.SelectEmployeePhoneNumber?.mobileNumber !== workerData?.Individual?.[0]?.mobileNumber) {
+        setSubmitValve(false);
+      } else {
+        setSubmitValve(true);
+      }
     } else {
       setSubmitValve(false);
     }
@@ -336,10 +349,10 @@ const EditWorker = ({ parentUrl, heading }) => {
           // fields: restructuredData,
           fields: roleDetailsArray,
         },
-        isSystemUser: false,
+        isSystemUser: true,
         userDetails: {
           ...workerinfo?.userDetails,
-          username: name,
+          username: mobileNumber,
           tenantId: tenantId,
           roles: roleDetails
             ? Object.values(roleDetails[0].sys_role).map((role) => ({
@@ -347,7 +360,7 @@ const EditWorker = ({ parentUrl, heading }) => {
                 tenantId: tenantId,
               }))
             : [{ code: "SANITATION_WORKER", tenantId }],
-          type: roleDetails?.map((entry) => entry.sys_role.code)?.includes("citizen") ? "CITIZEN" : "EMPLOYEE",
+          type: "CITIZEN",
         },
       },
     };
@@ -410,7 +423,7 @@ const EditWorker = ({ parentUrl, heading }) => {
   return (
     <React.Fragment>
       <div>
-        <Header>{t("FSM_REGISTRY_ADD_WORKER_HEADING")}</Header>
+        <Header>{t("FSM_REGISTRY_EDIT_WORKER_HEADING")}</Header>
       </div>
       <div style={!isMobile ? { marginLeft: "-15px" } : {}}>
         <FormComposerV2

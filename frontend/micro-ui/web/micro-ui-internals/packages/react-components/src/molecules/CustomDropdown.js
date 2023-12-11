@@ -127,7 +127,7 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
             }}
             selected={props?.value || value}
             defaultLabel={t(config?.defaultText) }
-            defaultUnit={t(config?.selectedText) || t("TQM_DROPDOWN_SELECTED")}
+            defaultUnit={t(config?.selectedText) || t("COMMON_SELECTED")}
             config={config}
 
           />

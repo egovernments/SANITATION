@@ -5,7 +5,7 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
   const stateId = Digit.ULBService.getStateId();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [selectedEmployer, setSelectedEmployer] = useState(null);
-  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [selectedVendor, setSelectedVendor] = useState(formData[config.key]?.vendor || null);
   const [vendorList, setVendorList] = useState(null);
 
   const { isLoading: ismdms, data: mdmsOptions } = Digit.Hooks.useCustomMDMS(
@@ -18,7 +18,8 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
     ],
     {
       select: (data) => {
-        return data?.FSM;
+        const temp = data?.FSM?.SanitationWorkerEmployer?.map((i) => ({ ...i, i18nKey: `ES_FSM_OPTION_${i.code}` }));
+        return { SanitationWorkerEmployer: temp };
       },
     }
   );
@@ -49,10 +50,12 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
     if (selectedEmployer?.code === "ULB" && vendorData) {
       const temp = vendorData.filter((i) => i.agencyType === "ULB");
       setVendorList(temp);
+      setSelectedVendor(null);
     }
-    if (selectedEmployer?.code === "PRIVATE_VENDOR" && vendorData) {
+    if (selectedEmployer?.code === "Private" && vendorData) {
       const temp = vendorData.filter((i) => i.agencyType === "Private");
       setVendorList(temp);
+      setSelectedVendor(null);
     }
   }, [selectedEmployer]);
 
@@ -71,7 +74,7 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
       agencyType: type?.code === "ULB" ? "ULB" : "",
     };
     refetchVendor(updatedParams);
-    onSelect(config.key, { ...formData[config.key], employer: type });
+    onSelect(config.key, { ...formData[config.key], employer: type, vendor: null });
   };
 
   useEffect(() => {}, [selectedEmployer]);
@@ -87,7 +90,7 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
           style={{ display: "flex", gap: "5rem" }}
           onSelect={(d) => selectEmployer(d)}
           selectedOption={selectedEmployer || formData[config.key]?.employer}
-          optionsKey="code"
+          optionsKey="i18nKey"
           options={mdmsOptions?.SanitationWorkerEmployer}
         />
       </LabelFieldPair>

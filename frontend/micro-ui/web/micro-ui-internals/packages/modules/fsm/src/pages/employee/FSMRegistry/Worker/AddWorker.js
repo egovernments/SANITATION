@@ -55,8 +55,10 @@ const AddWorker = ({ parentUrl, heading }) => {
   );
 
   useEffect(() => {
-    setSkillsOption(mdmsOptions?.SanitationWorkerSkills);
-    setEmployer(mdmsOptions?.SanitationWorkerEmployer);
+    const tempSkills = mdmsOptions?.SanitationWorkerSkills?.map((i) => ({ ...i, i18nKey: `ES_FSM_OPTION_${i.code}` }));
+    const tempEmp = mdmsOptions?.SanitationWorkerEmployer?.map((i) => ({ ...i, i18nKey: `ES_FSM_OPTION_${i.code}` }));
+    setSkillsOption(tempSkills);
+    setEmployer(tempEmp);
   }, [mdmsOptions, ismdms]);
 
   useEffect(() => {
@@ -65,10 +67,10 @@ const AddWorker = ({ parentUrl, heading }) => {
 
   const defaultValues = {};
 
-  const onFormValueChange = (setValue, formData) => {
+  const onFormValueChange = (setValue, formData, errors) => {
     for (let i = 0; i < formData?.AddWorkerRoles?.length; i++) {
       let key = formData?.AddWorkerRoles[i];
-      if (!(key?.emp_Type && key?.fn_role && key?.sys_role && ((key?.fn_role?.code === "SANITATION_HELPER" || key?.licenseNo && key?.fn_role?.code === "DRIVER")))) {
+      if (!(key?.emp_Type && key?.fn_role && key?.sys_role && key?.fn_role?.code)) {
         setCheckRoleField(false);
         break;
       } else {
@@ -80,13 +82,15 @@ const AddWorker = ({ parentUrl, heading }) => {
       !isNaN(formData?.SelectEmployeePhoneNumber?.mobileNumber?.length) &&
       formData?.SelectEmployeePhoneNumber?.mobileNumber?.length === 10 &&
       formData?.name &&
-      formData?.selectGender &&
-      formData?.dob &&
+      // formData?.selectGender &&
+      // formData?.dob &&
       formData?.address?.city &&
       formData?.address?.locality &&
       formData?.skills &&
       formData?.employementDetails?.employer &&
-      (!formData?.AddWorkerRoles || (formData?.AddWorkerRoles?.length > 0 && checkRoleField))
+      formData?.employementDetails?.vendor &&
+      (!formData?.AddWorkerRoles || formData?.AddWorkerRoles?.length === 0 || (formData?.AddWorkerRoles?.length > 0 && checkRoleField)) &&
+      !errors?.SelectEmployeePhoneNumber?.isMobilePresent
     ) {
       setSubmitValve(true);
     } else {
@@ -189,9 +193,9 @@ const AddWorker = ({ parentUrl, heading }) => {
           // fields: restructuredData,
           fields: roleDetailsArray,
         },
-        isSystemUser: false,
+        isSystemUser: true,
         userDetails: {
-          username: name,
+          username: mobileNumber,
           tenantId: tenantId,
           roles: roleDetails
             ? // Object.values(roleDetails[0].sys_role).map((role) => ({
@@ -208,7 +212,7 @@ const AddWorker = ({ parentUrl, heading }) => {
                   return result;
                 }, [])
             : [{ code: "SANITATION_WORKER", tenantId }],
-          type: roleDetails?.map((entry) => entry.sys_role.code)?.includes("citizen") ? "CITIZEN" : "EMPLOYEE",
+          type: "CITIZEN",
         },
       },
     };
@@ -219,7 +223,7 @@ const AddWorker = ({ parentUrl, heading }) => {
         setTimeout(closeToast, 5000);
       },
       onSuccess: async (data, variables) => {
-        setShowToast({ key: "success", action: "ADD_WORKER" });
+        // setShowToast({ key: "success", action: "ADD_WORKER" });
         queryClient.invalidateQueries("FSM_WORKER_SEARCH");
         // if (roleDetails?.some((entry) => entry.plant)) {
         //   try {
@@ -251,9 +255,10 @@ const AddWorker = ({ parentUrl, heading }) => {
               },
             };
             const response = await vendorMutate(vendorData);
+            setShowToast({ key: "success", action: "WORDER_ADDED_WITH_VENDOR" });
           } catch (updateError) {
             console.error("Error updating data:", updateError);
-            setShowToast({ key: "error", action: updateError });
+            setShowToast({ key: "success", action: "WORDER_ADDED_VENDOR_FAILED" });
           }
         }
         setTimeout(() => {
