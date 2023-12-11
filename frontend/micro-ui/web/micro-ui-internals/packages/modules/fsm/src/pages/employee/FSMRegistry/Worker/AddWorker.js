@@ -286,6 +286,9 @@ const AddWorker = ({ parentUrl, heading }) => {
           defaultValues={defaultValues}
           onFormValueChange={onFormValueChange}
           noBreakLine={true}
+          cardStyle={{
+            padding:"1rem 1.5rem"
+          }}
         />
         {showToast && (
           <Toast

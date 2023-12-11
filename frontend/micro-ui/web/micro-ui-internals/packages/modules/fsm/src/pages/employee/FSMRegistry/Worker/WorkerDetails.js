@@ -18,12 +18,15 @@ import {
   CardText,
   Dropdown,
   AddIcon,
+  AddNewIcon
 } from "@egovernments/digit-ui-react-components";
+
 
 import { useQueryClient } from "react-query";
 
 import { useHistory, useParams } from "react-router-dom";
 import ConfirmationBox from "../../../../components/Confirmation";
+import { ViewImages } from "../../../../components/ViewImages";
 
 const Heading = (props) => {
   return <h1 className="heading-m">{props.label}</h1>;
@@ -293,7 +296,9 @@ const WorkerDetails = (props) => {
   const renderModalContent = () => {
     if (selectedAction === "DELETE" || selectedAction === "DELETE_VENDOR") {
       return (
-        <ConfirmationBox t={t} title={"ES_FSM_REGISTRY_DELETE_TEXT"} />
+        <ConfirmationBox t={t} title={"ES_FSM_REGISTRY_DELETE_TEXT"} styles={{
+          height:"6rem"
+        }} />
         // <div className="confirmation_box">
         //   <span>{t(`ES_FSM_REGISTRY_DELETE_TEXT`)} </span>
         // </div>
@@ -326,51 +331,82 @@ const WorkerDetails = (props) => {
     <React.Fragment>
       {!isWorkerLoading ? (
         <React.Fragment>
-          <Header style={{ marginBottom: "16px" }}>{t("ES_FSM_REGISTRY_WORKER_DETAILS_ID", { ID: id })}</Header>
-          <div style={!isMobile ? { marginLeft: "-15px" } : {}}>
-            <Card style={{ position: "relative" }}>
+          <Header style={{ marginBottom: '16px' }}>
+            {t('ES_FSM_REGISTRY_WORKER_DETAILS_ID', { ID: id })}
+          </Header>
+          <div style={!isMobile ? { marginLeft: '-15px' } : {}}>
+            <Card style={{ position: 'relative' }} className="page-padding-fix">
               {workerData?.[0]?.employeeResponse?.map((detail, index) => (
                 <React.Fragment key={index}>
-                  <CardSectionHeader style={index > 0 ? { marginBottom: "16px", marginTop: "32px" } : { marginBottom: "16px" }}>{t(detail.title)}</CardSectionHeader>
+                  <CardSectionHeader
+                    style={
+                      index > 0
+                        ? { marginBottom: '16px', marginTop: '32px' }
+                        : { marginBottom: '16px' }
+                    }
+                  >
+                    {t(detail.title)}
+                  </CardSectionHeader>
                   <StatusTable>
                     {detail?.values?.map((value, index) =>
-                      value?.type === "custom" ? (
+                      value?.type === 'custom' ? (
                         <>
-                          <div className={`${index === detail?.values?.length - 1 ? "row last" : "row"} border-none`}>
+                          <div
+                            className={`${
+                              index === detail?.values?.length - 1
+                                ? 'row last'
+                                : 'row'
+                            } border-none`}
+                          >
                             <h2>{t(value.title)}</h2>
-                            <div className="value" style={{ color: "#f47738", display: "flex" }}>
-                              {t(value.value) || "N/A"}
-                              {value.value === "ES_FSM_REGISTRY_DETAILS_ADD_VENDOR" && (
-                                <span onClick={() => onActionSelect("ADD_VENDOR")}>
+                            <div
+                              className="value"
+                              style={{ color: '#f47738', display: 'flex' }}
+                            >
+                              {value.value ===
+                                'ES_FSM_REGISTRY_DETAILS_ADD_VENDOR' && (
+                                <span
+                                  onClick={() => onActionSelect('ADD_VENDOR')}
+                                >
                                   <AddIcon
                                     className=""
                                     fill="#f47738"
                                     styles={{
-                                      cursor: "pointer",
-                                      marginLeft: "20px",
-                                      height: "24px",
+                                      cursor: 'pointer',
+                                      marginLeft: '0px',
+                                      marginRight: '10px',
+                                      height: '24px',
                                     }}
                                   />
                                 </span>
                               )}
-                              {value.value != "ES_FSM_REGISTRY_DETAILS_ADD_VENDOR" && (
-                                <span onClick={() => onActionSelect("EDIT_VENDOR")}>
+                              {t(value.value) || 'N/A'}
+                              {value.value !=
+                                'ES_FSM_REGISTRY_DETAILS_ADD_VENDOR' && (
+                                <span
+                                  onClick={() => onActionSelect('EDIT_VENDOR')}
+                                >
                                   <EditIcon
                                     style={{
-                                      cursor: "pointer",
-                                      marginLeft: "20px",
+                                      cursor: 'pointer',
+                                      marginLeft: '20px',
                                     }}
                                   />
                                 </span>
                               )}
-                              {value.value != "ES_FSM_REGISTRY_DETAILS_ADD_VENDOR" && (
-                                <span onClick={() => onActionSelect("DELETE_VENDOR")}>
+                              {value.value !=
+                                'ES_FSM_REGISTRY_DETAILS_ADD_VENDOR' && (
+                                <span
+                                  onClick={() =>
+                                    onActionSelect('DELETE_VENDOR')
+                                  }
+                                >
                                   <DeleteIcon
                                     className="delete"
                                     fill="#f47738"
                                     style={{
-                                      cursor: "pointer",
-                                      marginLeft: "20px",
+                                      cursor: 'pointer',
+                                      marginLeft: '20px',
                                     }}
                                   />
                                 </span>
@@ -382,16 +418,57 @@ const WorkerDetails = (props) => {
                         <Row
                           key={t(value.title)}
                           label={t(value.title)}
-                          text={t(value.value) || "N/A"}
+                          text={t(value.value) || 'N/A'}
                           last={index === detail?.values?.length - 1}
                           caption={value.caption}
                           className="border-none"
                         />
                       )
                     )}
+                    {detail?.isPhoto && (
+                      <>
+                      <CardSectionHeader
+                    style={
+                      index > 0
+                        ? { marginBottom: '16px', marginTop: '32px' }
+                        : { marginBottom: '16px' }
+                    }
+                  >
+                    {t(detail.titlee)}
+                  </CardSectionHeader>
+                      <Row
+                        className="border-none check-page-uploaded-images"
+                        // label={t(`${detail?.titlee}`)}
+                        text={
+                          <ViewImages
+                            fileStoreIds={detail?.photo}
+                            // tenantId={state}
+                            tenantId={tenantId}
+                            onClick={(source, index) =>
+                              window.open(source, '_blank')
+                            }
+                          />
+                        }
+                      />
+                      </>
+                    )}
+                    {/* {detail?.isPhoto && (
+                      
+                          <ViewImages
+                            fileStoreIds={detail?.photo}
+                            tenantId={state}
+                            onClick={(source, index) =>
+                              window.open(source, '_blank')
+                            }
+                          />
+                      
+                    )} */}
                     {detail?.child?.map((data, index) => {
                       return (
-                        <Card className="card-with-background" style={{ maxWidth: "50%" }}>
+                        <Card
+                          className="card-with-background"
+                          style={{ maxWidth: '45%', marginLeft: '0px' }}
+                        >
                           <div className="card-head">
                             <h2>
                               {t(detail.type)} {index + 1}
@@ -400,36 +477,42 @@ const WorkerDetails = (props) => {
                           {data?.FUNCTIONAL_ROLE && (
                             <Row
                               key={t(data?.FUNCTIONAL_ROLE)}
-                              label={t("Functional role")}
-                              text={t(data?.FUNCTIONAL_ROLE) || "N/A"}
+                              label={`${t('Functional role')} :`}
+                              text={`${t(data?.FUNCTIONAL_ROLE)}` || 'N/A'}
                               // last={index === detail?.values?.length - 1}
                               // caption={value.caption}
                               className="border-none"
-                              rowContainerStyle={{ gap: "14rem" }}
+                              rowContainerStyle={{ gap: '14rem' }}
+                              textStyle={{ fontWeight: '700' }}
+                              labelStyle={{ width: '50%', fontWeight: '700' }}
                               // textStyle={value.value === "ACTIVE" ? { color: "green" } : {}}
                             />
                           )}
                           {data?.EMPLOYMENT_TYPE && (
                             <Row
                               key={t(data?.EMPLOYMENT_TYPE)}
-                              label={t("Employment type")}
-                              text={t(data?.EMPLOYMENT_TYPE) || "N/A"}
+                              label={`${t('Employment type')} :`}
+                              text={`${t(data?.EMPLOYMENT_TYPE)}` || 'N/A'}
                               // last={index === detail?.values?.length - 1}
                               // caption={value.caption}
                               className="border-none"
-                              rowContainerStyle={{ gap: "14rem" }}
+                              rowContainerStyle={{ gap: '14rem' }}
+                              textStyle={{ fontWeight: '700' }}
+                              labelStyle={{ width: '50%', fontWeight: '700' }}
                               // textStyle={value.value === "ACTIVE" ? { color: "green" } : {}}
                             />
                           )}
                           {data?.LICENSE_NUMBER && (
                             <Row
                               key={t(data?.LICENSE_NUMBER)}
-                              label={t("License Number")}
-                              text={t(data?.LICENSE_NUMBER) || "N/A"}
+                              label={`${t('License Number')} :`}
+                              text={`${t(data?.LICENSE_NUMBER)}` || 'N/A'}
                               // last={index === detail?.values?.length - 1}
                               // caption={value.caption}
                               className="border-none"
-                              rowContainerStyle={{ gap: "14rem" }}
+                              rowContainerStyle={{ gap: '14rem' }}
+                              textStyle={{ fontWeight: '700' }}
+                              labelStyle={{ width: '50%', fontWeight: '700' }}
                               // textStyle={value.value === "ACTIVE" ? { color: "green" } : {}}
                             />
                           )}
@@ -445,25 +528,53 @@ const WorkerDetails = (props) => {
             <Modal
               headerBarMain={<Heading label={t(modalHeading())} />}
               headerBarEnd={<CloseBtn onClick={closeModal} />}
-              actionCancelLabel={t("CS_COMMON_CANCEL")}
+              actionCancelLabel={t('CS_COMMON_CANCEL')}
               actionCancelOnSubmit={closeModal}
-              actionSaveLabel={t(selectedAction === "DELETE" || selectedAction === "DELETE_VENDOR" ? "ES_EVENT_DELETE" : "CS_COMMON_SUBMIT")}
+              actionSaveLabel={t(
+                selectedAction === 'DELETE' ||
+                  selectedAction === 'DELETE_VENDOR'
+                  ? 'ES_EVENT_DELETE'
+                  : 'CS_COMMON_SUBMIT'
+              )}
               actionSaveOnSubmit={handleModalAction}
               formId="modal-action"
+              headerBarMainStyle={{ marginBottom: '0px' }}
             >
-              {selectedAction === "DELETE" || selectedAction === "DELETE_VENDOR" ? renderModalContent() : <Card style={{ boxShadow: "none" }}>{renderModalContent()}</Card>}
+              {selectedAction === 'DELETE' ||
+              selectedAction === 'DELETE_VENDOR' ? (
+                renderModalContent()
+              ) : (
+                <Card style={{ boxShadow: 'none' }}>
+                  {renderModalContent()}
+                </Card>
+              )}
             </Modal>
           )}
           {showToast && (
             <Toast
-              error={showToast.key === "error" ? true : false}
-              label={t(showToast.key === "success" ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS` : showToast.action)}
+              error={showToast.key === 'error' ? true : false}
+              label={t(
+                showToast.key === 'success'
+                  ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS`
+                  : showToast.action
+              )}
               onClose={closeToast}
+              style={{ marginBottom: '1rem' }}
             />
           )}
-          <ActionBar style={{ zIndex: "19" }}>
-            {displayMenu ? <Menu localeKeyPrefix={"ES_FSM_REGISTRY_ACTION"} options={["EDIT", "DELETE", "HOME"]} t={t} onSelect={onActionSelect} /> : null}
-            <SubmitBar label={t("ES_COMMON_TAKE_ACTION")} onSubmit={() => setDisplayMenu(!displayMenu)} />
+          <ActionBar style={{ zIndex: '19' }}>
+            {displayMenu ? (
+              <Menu
+                localeKeyPrefix={'ES_FSM_REGISTRY_ACTION'}
+                options={['EDIT', 'DELETE', 'HOME']}
+                t={t}
+                onSelect={onActionSelect}
+              />
+            ) : null}
+            <SubmitBar
+              label={t('ES_COMMON_TAKE_ACTION')}
+              onSubmit={() => setDisplayMenu(!displayMenu)}
+            />
           </ActionBar>
         </React.Fragment>
       ) : (
