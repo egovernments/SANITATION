@@ -57,7 +57,7 @@ const getResponse = (data, vendorDetails = {}, tenantId) => {
     {
       title: "ES_FSM_REGISTRY_EMPLOYMENT_DETAILS",
       values: [
-        { title: "ES_FSM_REGISTRY_EMPLOYER_LABEL", value: data?.photo },
+        { title: "ES_FSM_REGISTRY_EMPLOYER_LABEL", value: rolesData?.find((i) => i.key === "EMPLOYER").value },
         { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_NAME", value: vendorDetails?.name || "ES_FSM_REGISTRY_DETAILS_ADD_VENDOR", type: "custom" },
       ],
     },
@@ -85,6 +85,7 @@ const WorkerDetails = async ({ tenantId, params, details }) => {
     workerData: data,
     employeeResponse: getResponse(data, vendorDetails?.vendor?.[0], tenantId),
     vendorDetails: vendorDetails?.vendor?.[0],
+    agencyType: data?.additionalFields?.fields?.find((i) => i.key === "EMPLOYER").value
   }));
 
   return data;
