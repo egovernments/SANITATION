@@ -32,7 +32,7 @@ paths:
   /pqm-anomaly-finder/v1/_plainsearch:
     post:
       tags:
-        - fsm-controller
+        - PQM Anomaly Service
       operationId: plainsearch
       requestBody:
         content:
@@ -72,7 +72,7 @@ components:
           maxLength: 64
         tenantId:
           description: Tenant Identifier
-          example: pb.amritsar
+          example: pb.citya
           type: string
           minLength: 2
           maxLength: 1000
