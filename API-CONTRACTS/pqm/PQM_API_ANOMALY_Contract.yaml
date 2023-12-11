@@ -1,0 +1,309 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Process Quality Monitor Anomaly Service
+  description: >-
+    The PQM Anomaly services APIs are helps in search for anomalys created for
+    the tests which fails the criteria
+paths:
+  /pqm-anomaly-finder/v1/_search:
+    post:
+      tags:
+        - PQM Anomaly Service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PqmAnomalySearchRequest'
+      responses:
+        '200':
+          description: Search test response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PqmAnomalyResponse'
+        '400':
+          description: Invalid search parameters
+          content:
+            '*/*':
+              schema:
+                $ref: >-
+                  https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes
+  /pqm-anomaly-finder/v1/_plainsearch:
+    post:
+      tags:
+        - PQM Anomaly Service
+      operationId: plainsearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestInfoWrapper:
+                  $ref: '#/components/schemas/RequestInfoWrapper'
+                criteria:
+                  $ref: '#/components/schemas/PqmAnomalySearchCriteria'
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PqmAnomalyResponse'
+components:
+  schemas:
+    PqmAnomaly:
+      title: All data required for a quality test
+      description: Quality monitoring test details
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the test
+          readOnly: true
+          type: string
+          minLength: 2
+          maxLength: 64
+        testId:
+          description: Unique identifier of the test
+          readOnly: true
+          type: string
+          minLength: 2
+          maxLength: 64
+        tenantId:
+          description: Tenant Identifier
+          example: pb.citya
+          type: string
+          minLength: 2
+          maxLength: 1000
+        description:
+          description: 'Description for the anomaly. '
+          example: description
+          type: string
+          minLength: 2
+          maxLength: 250
+        resolutionStatus:
+          description: resolutionStatus
+          example: resolutionStatus
+          type: string
+          minLength: 2
+          maxLength: 250
+        anomalyType:
+          description: Type of anomaly
+          example: LAB
+          type: string
+          readOnly: true
+          minLength: 2
+          maxLength: 32
+          enum:
+            - LAB_RESULTS_NOT_AS_PER_BENCHMARK
+            - IOT_DEVICE_RESULTS_NOT_AS_PER_BENCHMARK
+            - LAB_RESULTS_AND_DEVICE_RESULTS_DO_NOT_MATCH
+            - TEST_RESULT_NOT_SUBMITTED
+        referenceId:
+          description: >-
+            Identifier of the device/lab generating this data. Correlates with
+            referenceType.
+          example: LAB001, IOT_MACHINE_001
+          type: string
+          readOnly: true
+          minLength: 2
+          maxLength: 250
+        isActive:
+          type: boolean
+        additionalDetails:
+          description: >-
+            Json object to capture any extra information which is not
+            accommodated by model
+          type: object
+        auditDetails:
+          type: object
+          allOf:
+            - $ref: >-
+                https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/AuditDetails
+            - description: Collection of audit related fields used by most models
+              readOnly: true
+      required:
+        - tenantId
+        - anomalyType
+        - testId
+    PqmAnomalyResponse:
+      title: PqmAnomalyResponse
+      type: object
+      properties:
+        responseInfo:
+          type: object
+          allOf:
+            - $ref: >-
+                https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ResponseInfo
+            - description: >-
+                ResponseInfo should be used to carry metadata information about
+                the response from the server. apiId, ver and msgId in
+                ResponseInfo should always correspond to the same values in
+                respective request's RequestInfo.
+              readOnly: true
+        pqmAnomalys:
+          type: array
+          items:
+            $ref: '#/components/schemas/PqmAnomaly'
+        totalCount:
+          type: object
+          allOf:
+            - $ref: >-
+                https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/Pagination
+            - description: Pagination details
+    RequestInfoWrapper:
+      type: object
+      properties:
+        RequestInfo:
+          $ref: '#/components/schemas/RequestInfo'
+    RequestInfo:
+      type: object
+      properties:
+        apiId:
+          type: string
+        ver:
+          type: string
+        ts:
+          type: integer
+          format: int64
+        action:
+          type: string
+        did:
+          type: string
+        key:
+          type: string
+        msgId:
+          type: string
+        authToken:
+          type: string
+        correlationId:
+          type: string
+        plainAccessRequest:
+          $ref: '#/components/schemas/PlainAccessRequest'
+        userInfo:
+          $ref: '#/components/schemas/User'
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        code:
+          maxLength: 50
+          minLength: 0
+          type: string
+        tenantId:
+          maxLength: 256
+          minLength: 0
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userName:
+          maxLength: 180
+          minLength: 0
+          type: string
+        name:
+          maxLength: 250
+          minLength: 0
+          type: string
+        type:
+          maxLength: 50
+          minLength: 0
+          type: string
+        mobileNumber:
+          maxLength: 150
+          minLength: 0
+          type: string
+        emailId:
+          maxLength: 300
+          minLength: 0
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        tenantId:
+          maxLength: 256
+          minLength: 0
+          type: string
+        uuid:
+          maxLength: 36
+          minLength: 0
+          type: string
+    PqmAnomalySearchCriteria:
+      title: PqmAnomalySearchCriteria
+      description: Anomaly search attributes
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            minLength: 2
+            maxLength: 64
+        testIds:
+          type: array
+          items:
+            type: string
+            minLength: 2
+            maxLength: 64
+        tenantId:
+          description: Unique tenant of the system
+          example: tenantA
+          type: string
+          minLength: 2
+          maxLength: 1000
+        anomalyType:
+          description: anomalyType of the tests
+          example: LAB_RESULTS_NOT_AS_PER_BENCHMARK, TEST_RESULT_NOT_SUBMITTED
+          type: string
+          minLength: 2
+          maxLength: 32
+          enum:
+            - LAB_RESULTS_NOT_AS_PER_BENCHMARK
+            - IOT_DEVICE_RESULTS_NOT_AS_PER_BENCHMARK
+            - LAB_RESULTS_AND_DEVICE_RESULTS_DO_NOT_MATCH
+            - TEST_RESULT_NOT_SUBMITTED
+        fromDate:
+          description: from date of test scheduled
+          type: integer
+          format: int64
+        toDate:
+          description: to date of test scheduled
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int32
+        limit:
+          type: integer
+          format: int32
+    PqmAnomalySearchRequest:
+      type: object
+      properties:
+        requestInfo:
+          $ref: >-
+            https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/RequestInfo
+        PqmAnomalySearchCriteria:
+          $ref: '#/components/schemas/PqmAnomalySearchCriteria'
+      required:
+        - requestInfo
+        - pqmAnomalySearchCriteria
+    PlainAccessRequest:
+      type: object
+      properties:
+        recordId:
+          type: string
+        plainRequestFields:
+          type: array
+          items:
+            type: string
