@@ -206,7 +206,7 @@ const WorkerDetails = (props) => {
       },
       onSuccess: (data, variables) => {
         setShowToast({ key: "success", action: "DELETE_VENDOR" });
-        queryClient.invalidateQueries("FSM_VENDOR_SEARCH");
+        queryClient.invalidateQueries("DSO_SEARCH");
         refetch();
         setTimeout(closeToast, 5000);
       },
