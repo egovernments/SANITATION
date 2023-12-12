@@ -371,28 +371,28 @@ const EditWorker = ({ parentUrl, heading }) => {
         setTimeout(closeToast, 5000);
       },
       onSuccess: async (data, variables) => {
-        setShowToast({ key: "success", action: "ADD_WORKER" });
+        // setShowToast({ key: "success", action: "ADD_WORKER" });
         queryClient.invalidateQueries("FSM_WORKER_SEARCH");
-        if (roleDetails.some((entry) => entry.plant)) {
-          try {
-            const PlantCode = roleDetails
-              ?.map((entry) => ({
-                tenantId: tenantId,
-                plantCode: entry?.plant?.code,
-                individualId: data?.Individual?.individualId,
-                isActive: true,
-              }))
-              .filter((i) => i?.plantCode);
-            const plantFormData = {
-              plantUsers: PlantCode,
-            };
-            const plantresponse = await PlantUserMutate(plantFormData);
-          } catch (err) {
-            console.error("Plant user create", err);
-            setShowToast({ key: "error", action: err });
-          }
-        }
-        if (employer !== "CITIZEN" && vendor) {
+        // if (roleDetails.some((entry) => entry.plant)) {
+        //   try {
+        //     const PlantCode = roleDetails
+        //       ?.map((entry) => ({
+        //         tenantId: tenantId,
+        //         plantCode: entry?.plant?.code,
+        //         individualId: data?.Individual?.individualId,
+        //         isActive: true,
+        //       }))
+        //       .filter((i) => i?.plantCode);
+        //     const plantFormData = {
+        //       plantUsers: PlantCode,
+        //     };
+        //     const plantresponse = await PlantUserMutate(plantFormData);
+        //   } catch (err) {
+        //     console.error("Plant user create", err);
+        //     setShowToast({ key: "error", action: err });
+        //   }
+        // }
+        if (vendor) {
           try {
             const vendorData = {
               vendor: {
@@ -403,14 +403,15 @@ const EditWorker = ({ parentUrl, heading }) => {
               },
             };
             const response = await vendorMutate(vendorData);
+            setShowToast({ key: "success", action: "UPDATE_WORKER_WITH_VENDOR" });
           } catch (updateError) {
             console.error("Error updating data:", updateError);
-            setShowToast({ key: "error", action: updateError });
+            setShowToast({ key: "error", action: "UPDATE_WORKER_VENDOR_FAILED" });
           }
         }
         setTimeout(() => {
           closeToast();
-          history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=WORKER`);
+          history.push(`/${window?.contextPath}/employee/fsm/registry/worker-details?id=${id}`);
         }, 5000);
       },
     });
