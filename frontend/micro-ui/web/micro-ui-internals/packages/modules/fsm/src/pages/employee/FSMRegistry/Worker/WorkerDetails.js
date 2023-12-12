@@ -186,7 +186,7 @@ const WorkerDetails = (props) => {
     let getWorkerVendorDetails = dsoDetails?.workers;
 
     getWorkerVendorDetails = getWorkerVendorDetails.map((data) => {
-      if (data.individualId === id) {
+      if (data.individualId === workerData?.[0]?.id) {
         data.vendorWorkerStatus = "INACTIVE";
       }
       return data;
@@ -206,7 +206,7 @@ const WorkerDetails = (props) => {
       },
       onSuccess: (data, variables) => {
         setShowToast({ key: "success", action: "DELETE_VENDOR" });
-        queryClient.invalidateQueries("FSM_VENDOR_SEARCH");
+        queryClient.invalidateQueries("DSO_SEARCH");
         refetch();
         setTimeout(closeToast, 5000);
       },
