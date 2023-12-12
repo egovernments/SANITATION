@@ -471,7 +471,7 @@ const WorkerDetails = (props) => {
                         >
                           <div className="card-head">
                             <h2>
-                              {t(detail.type)} {index + 1}
+                              {t(`ES_SW_${detail.type}`)} {index + 1}
                             </h2>
                           </div>
                           {data?.FUNCTIONAL_ROLE && (
