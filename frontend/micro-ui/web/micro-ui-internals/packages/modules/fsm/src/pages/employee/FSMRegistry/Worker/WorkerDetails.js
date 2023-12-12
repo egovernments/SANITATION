@@ -186,7 +186,7 @@ const WorkerDetails = (props) => {
     let getWorkerVendorDetails = dsoDetails?.workers;
 
     getWorkerVendorDetails = getWorkerVendorDetails.map((data) => {
-      if (data.individualId === id) {
+      if (data.individualId === workerData?.[0]?.id) {
         data.vendorWorkerStatus = "INACTIVE";
       }
       return data;
