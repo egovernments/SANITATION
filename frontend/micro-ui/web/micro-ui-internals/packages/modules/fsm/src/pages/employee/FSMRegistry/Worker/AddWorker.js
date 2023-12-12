@@ -244,7 +244,7 @@ const AddWorker = ({ parentUrl, heading }) => {
         //     setShowToast({ key: "error", action: err });
         //   }
         // }
-        if (employer !== "CITIZEN" && vendor) {
+        if (vendor) {
           try {
             const vendorData = {
               vendor: {
