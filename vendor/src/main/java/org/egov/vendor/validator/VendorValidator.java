@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import java.util.Objects;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.tracer.model.CustomException;
 import org.egov.vendor.config.VendorConfiguration;
@@ -144,7 +145,7 @@ public class VendorValidator {
 			}
 
 		}
-		if (vendorRequest.getVendor().getVehicles() != null && !vendorRequest.getVendor().getDrivers().isEmpty()) {
+		if (vendorRequest.getVendor().getVehicles() != null && Objects.nonNull(vendorRequest.getVendor().getDrivers()) && !vendorRequest.getVendor().getDrivers().isEmpty()) {
 			ownerService.manageDrivers(vendorRequest);
 
 		}
