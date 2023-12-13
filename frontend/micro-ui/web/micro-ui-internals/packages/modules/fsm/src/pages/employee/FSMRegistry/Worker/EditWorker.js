@@ -289,7 +289,7 @@ const EditWorker = ({ parentUrl, heading }) => {
         });
       }
     });
-    console.log("respSkills", respSkills, skills);
+
     const employer = data?.employementDetails?.employer?.code || data?.employementDetails?.employer?.name;
     const vendor = data?.employementDetails?.vendor;
     const roleDetails = data?.AddWorkerRoles;
