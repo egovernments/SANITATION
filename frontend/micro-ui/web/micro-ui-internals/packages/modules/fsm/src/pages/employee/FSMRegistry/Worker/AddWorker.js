@@ -219,7 +219,7 @@ const AddWorker = ({ parentUrl, heading }) => {
 
     mutate(formData, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: error });
+        setShowToast({ key: "error", action: "ES_FSM_WORKER_ADD_FAILED" });
         setTimeout(closeToast, 5000);
       },
       onSuccess: async (data, variables) => {
