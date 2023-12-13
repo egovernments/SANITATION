@@ -161,6 +161,7 @@ const EditWorker = ({ parentUrl, heading }) => {
   useEffect(() => {
     if (workerData && workerData?.Individual && !isVendorLoading) {
       const workerDetails = workerData?.Individual?.[0];
+      const respSkills = workerDetails?.skills?.filter((i) => i.isDeleted === false);
       setWorkerinfo(workerDetails);
       const values = {
         SelectEmployeePhoneNumber: {
@@ -183,7 +184,7 @@ const EditWorker = ({ parentUrl, heading }) => {
         street: workerDetails?.address?.[0]?.street,
         doorNo: workerDetails?.address?.[0]?.doorNo,
         landmark: workerDetails?.address?.[0]?.landmark,
-        skills: mdmsOptions?.SanitationWorkerSkills?.filter((mdm) => workerDetails?.skills?.some((item) => item?.type === mdm?.code))?.map((i) => ({
+        skills: mdmsOptions?.SanitationWorkerSkills?.filter((mdm) => respSkills?.some((item) => item?.type === mdm?.code))?.map((i) => ({
           ...i,
           i18nKey: `ES_FSM_OPTION_${i.code}`,
         })),
@@ -266,14 +267,35 @@ const EditWorker = ({ parentUrl, heading }) => {
     const street = data?.street;
     const landmark = data?.landmark;
     const skills = data?.skills?.map((i) => {
-      return { type: i?.name || i?.code, level: "UNSKILLED" };
+      return { type: i?.code, level: "UNSKILLED" };
     });
+
+    let respSkills = workerinfo?.skills;
+
+    // if skills are not there but present in resp then remove
+    respSkills = respSkills.filter((resp_item) => skills.some((mydata_item) => resp_item.type === mydata_item.type && resp_item.level === mydata_item.level));
+    // respSkills.forEach((resp_item) => {
+    //   const existsInSelected = skills.some((selected_item) => resp_item.type === selected_item.type && resp_item.level === selected_item.level);
+    //   resp_item.isDeleted = !existsInSelected;
+    // });
+
+    // if skills are not there in resp but present in selected then add
+    skills.forEach((selected_item) => {
+      const exists = respSkills.some((resp_item) => resp_item.type === selected_item.type && resp_item.level === selected_item.level);
+      if (!exists) {
+        respSkills.push({
+          type: selected_item.type,
+          level: selected_item.level,
+        });
+      }
+    });
+    console.log("respSkills", respSkills, skills);
     const employer = data?.employementDetails?.employer?.code || data?.employementDetails?.employer?.name;
     const vendor = data?.employementDetails?.vendor;
     const roleDetails = data?.AddWorkerRoles;
     const restructuredData = [];
 
-    roleDetails.forEach((item) => {
+    roleDetails?.forEach((item) => {
       const restructuredItem = {};
       restructuredItem["FUNCTIONAL_ROLE"] = item.fn_role.code;
       restructuredItem["EMPLOYMENT_TYPE"] = item.emp_Type.name;
@@ -285,22 +307,24 @@ const EditWorker = ({ parentUrl, heading }) => {
     const driverLicenses = roleDetails?.filter((entry) => entry.fn_role && entry.fn_role.code === "DRIVER" && entry.licenseNo).map((entry) => entry.licenseNo);
     const roleDetailsArray = [];
 
-    roleDetails.forEach((item, index) => {
-      // Extracting functional role information
-      const fnRoleKey = `FUNCTIONAL_ROLE_${index + 1}`;
-      const fnRoleValue = item.fn_role.code;
+    if (roleDetails) {
+      roleDetails?.forEach((item, index) => {
+        // Extracting functional role information
+        const fnRoleKey = `FUNCTIONAL_ROLE_${index + 1}`;
+        const fnRoleValue = item.fn_role.code;
 
-      // Extracting employment type information
-      const empTypeKey = `EMPLOYMENT_TYPE_${index + 1}`;
-      const empTypeValue = item.emp_Type.code.toUpperCase();
+        // Extracting employment type information
+        const empTypeKey = `EMPLOYMENT_TYPE_${index + 1}`;
+        const empTypeValue = item.emp_Type.code.toUpperCase();
 
-      // Pushing the extracted information to the output array
-      roleDetailsArray.push({ key: fnRoleKey, value: fnRoleValue });
-      roleDetailsArray.push({ key: empTypeKey, value: empTypeValue });
-    });
+        // Pushing the extracted information to the output array
+        roleDetailsArray.push({ key: fnRoleKey, value: fnRoleValue });
+        roleDetailsArray.push({ key: empTypeKey, value: empTypeValue });
+      });
 
-    // Adding the count of functional roles
-    roleDetailsArray.push({ key: "FUNCTIONAL_ROLE_COUNT", value: `${roleDetails.length < 10 ? "0" : ""}${roleDetails.length.toString()}` });
+      // Adding the count of functional roles
+      roleDetailsArray.push({ key: "FUNCTIONAL_ROLE_COUNT", value: `${roleDetails?.length < 10 ? "0" : ""}${roleDetails?.length.toString()}` });
+    }
 
     // Adding the employer information (assuming it's a constant value like "PRIVATE_VENDOR")
     roleDetailsArray.push({ key: "EMPLOYER", value: employer });
@@ -333,7 +357,7 @@ const EditWorker = ({ parentUrl, heading }) => {
           },
         ],
         identifiers:
-          driverLicenses.length > 0
+          driverLicenses?.length > 0
             ? [
                 {
                   ...workerinfo?.indentifiers?.[0],
@@ -342,7 +366,7 @@ const EditWorker = ({ parentUrl, heading }) => {
                 },
               ]
             : null,
-        skills: skills,
+        skills: respSkills,
         photo: photograph,
         additionalFields: {
           ...workerinfo?.additionalDetails,
@@ -367,7 +391,7 @@ const EditWorker = ({ parentUrl, heading }) => {
 
     mutate(formData, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: error });
+        setShowToast({ key: "error", action: `ES_FSM_WORKER_UPDATE_FAILED` });
         setTimeout(closeToast, 5000);
       },
       onSuccess: async (data, variables) => {
@@ -443,7 +467,7 @@ const EditWorker = ({ parentUrl, heading }) => {
           onFormValueChange={onFormValueChange}
           noBreakLine={true}
           cardStyle={{
-            padding:"1rem 1.5rem"
+            padding: "1rem 1.5rem",
           }}
         />
         {showToast && (
