@@ -436,43 +436,31 @@ const WorkerDetails = (props) => {
                           {data?.FUNCTIONAL_ROLE && (
                             <Row
                               key={t(data?.FUNCTIONAL_ROLE)}
-                              label={`${t("Functional role")} :`}
+                              label={`${t("Functional role")}`}
                               text={`${t(data?.FUNCTIONAL_ROLE)}` || "N/A"}
-                              // last={index === detail?.values?.length - 1}
-                              // caption={value.caption}
                               className="border-none"
                               rowContainerStyle={{ gap: "7rem" }}
-                              textStyle={{ fontWeight: "700" }}
                               labelStyle={{ width: "50%", fontWeight: "700" }}
-                              // textStyle={value.value === "ACTIVE" ? { color: "green" } : {}}
                             />
                           )}
                           {data?.EMPLOYMENT_TYPE && (
                             <Row
                               key={t(data?.EMPLOYMENT_TYPE)}
-                              label={`${t("Employment type")} :`}
+                              label={`${t("Employment type")}`}
                               text={`${t(data?.EMPLOYMENT_TYPE)}` || "N/A"}
-                              // last={index === detail?.values?.length - 1}
-                              // caption={value.caption}
                               className="border-none"
                               rowContainerStyle={{ gap: "7rem" }}
-                              textStyle={{ fontWeight: "700" }}
                               labelStyle={{ width: "50%", fontWeight: "700" }}
-                              // textStyle={value.value === "ACTIVE" ? { color: "green" } : {}}
                             />
                           )}
                           {data?.LICENSE_NUMBER && (
                             <Row
                               key={t(data?.LICENSE_NUMBER)}
-                              label={`${t("License Number")} :`}
+                              label={`${t("License Number")}`}
                               text={`${t(data?.LICENSE_NUMBER)}` || "N/A"}
-                              // last={index === detail?.values?.length - 1}
-                              // caption={value.caption}
                               className="border-none"
                               rowContainerStyle={{ gap: "7rem" }}
-                              textStyle={{ fontWeight: "700" }}
                               labelStyle={{ width: "50%", fontWeight: "700" }}
-                              // textStyle={value.value === "ACTIVE" ? { color: "green" } : {}}
                             />
                           )}
                         </Card>
