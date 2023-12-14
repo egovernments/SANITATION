@@ -56,6 +56,12 @@ import PlusMinusInput from "./pageComponents/PlusMinusInput";
 import ConfirmationBox from "./components/Confirmation";
 import WorkflowFilter from "./components/WorkflowFilter";
 import Search from "./pages/employee/Search";
+import AddWorker from "./pages/employee/FSMRegistry/Worker/AddWorker";
+import AddWorkerRoles from "./pageComponents/addWorkerRole";
+import SelectSWEmployeePhoneNumber from "./pageComponents/SelectSWEmployeePhoneNumber";
+import EditWorker from "./pages/employee/FSMRegistry/Worker/EditWorker";
+import WorkerDetails from "./pages/employee/FSMRegistry/Worker/WorkerDetails";
+import SelectSWEmploymentDetails from "./pageComponents/SelectSWEmploymentDetails";
 
 const FSMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "FSM";
@@ -123,6 +129,7 @@ const FSMLinks = ({ matchPath, userType }) => {
 };
 
 const componentsToRegister = {
+  AddWorker,
   SelectPropertySubtype,
   SelectPropertyType,
   SelectAddress,
@@ -177,6 +184,11 @@ const componentsToRegister = {
   DSSCard: null, // TO HIDE THE DSS CARD IN HOME SCREEN as per MUKTA
   WorkflowFilter,
   FSMSearch: Search,
+  AddWorkerRoles,
+  SelectSWEmployeePhoneNumber,
+  EditWorker,
+  WorkerDetails,
+  SelectSWEmploymentDetails,
 };
 
 export const initFSMComponents = () => {

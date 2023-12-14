@@ -2,26 +2,33 @@ import { FSMService } from "../../elements/FSM";
 
 const getResponse = (data, vendorDetails = {}, tenantId) => {
   const rolesData = data?.additionalFields?.fields;
-  // const sysRole = data?.userDetails?.roles;
+  const sysRole = data?.userDetails?.roles;
   const countIndex = rolesData.findIndex((obj) => obj.key === "FUNCTIONAL_ROLE_COUNT");
-  const count = parseInt(rolesData[countIndex].value);
+  const count = parseInt(rolesData[countIndex]?.value) || null;
   const groupedObjects = [];
   const licenseNumber = data?.identifiers?.[0]?.identifierId;
-  for (let i = 1; i <= count; i++) {
-    const group = rolesData
-      .filter((obj) => obj.key.includes(`_${i}`))
-      .reduce((acc, obj) => {
-        acc[obj.key.replace(`_${i}`, "")] = obj.value;
-        if (obj.key.replace(`_${i}`, "") === "FUNCTIONAL_ROLE" && obj.value === "DRIVER") {
-          // "FSM_DRIVER"
-          acc["LICENSE_NUMBER"] = licenseNumber;
-          // acc["SYSTEM_ROLE"] = sysRole
-        }
-        return acc;
-      }, {});
-    groupedObjects.push(group);
+  if (count) {
+    for (let i = 1; i <= count; i++) {
+      const group =
+        countIndex !== -1
+          ? rolesData
+              .filter((obj) => obj.key.includes(`_${i}`))
+              .reduce((acc, obj) => {
+                acc[obj.key.replace(`_${i}`, "")] = obj.value;
+                if (obj.key.replace(`_${i}`, "") === "FUNCTIONAL_ROLE" && obj.value === "DRIVER") {
+                  // "FSM_DRIVER"
+                  acc["LICENSE_NUMBER"] = licenseNumber;
+                  // acc["SYSTEM_ROLE"] = sysRole
+                }
+                return acc;
+              }, {})
+          : rolesData.reduce((acc, obj) => {
+              acc[obj.key] = obj.value;
+              return acc;
+            });
+      groupedObjects.push(group);
+    }
   }
-
   let details = [
     {
       title: "ES_FSM_REGISTRY_PERSONAL_DETAILS",
@@ -51,19 +58,22 @@ const getResponse = (data, vendorDetails = {}, tenantId) => {
     {
       title: "ES_FSM_REGISTRY_EMPLOYMENT_DETAILS",
       values: [
-        { title: "ES_FSM_REGISTRY_EMPLOYER_LABEL", value: data?.photo },
+        { title: "ES_FSM_REGISTRY_EMPLOYER_LABEL", value: rolesData?.find((i) => i.key === "EMPLOYER").value },
         { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_NAME", value: vendorDetails?.name || "ES_FSM_REGISTRY_DETAILS_ADD_VENDOR", type: "custom" },
       ],
     },
     {
-      title: "ES_FSM_REGISTRY_PHOTO_DETAILS",
-      values: [{ title: "Photograph", value: data?.photo }],
+      titlee: "ES_FSM_REGISTRY_PHOTO_DETAILS",
+      photo: data?.photo ? [data?.photo] : [],
+      isPhoto: data?.photo,
     },
-    {
-      title: "ES_FSM_REGISTRY_ROLE_DETAILS",
-      type: "role",
-      child: groupedObjects,
-    },
+    groupedObjects.length > 0
+      ? {
+          title: "ES_FSM_REGISTRY_ROLE_DETAILS",
+          type: "role",
+          child: groupedObjects,
+        }
+      : {},
   ];
 
   return details;
@@ -71,13 +81,14 @@ const getResponse = (data, vendorDetails = {}, tenantId) => {
 
 const WorkerDetails = async ({ tenantId, params, details }) => {
   const workerDetails = await FSMService.workerSearch({ tenantId, details, params });
-  const ids = workerDetails?.Individual?.map((i) => i.individualId).join(",");
+  const ids = workerDetails?.Individual?.map((i) => i.id).join(",");
   const vendorDetails = await FSMService.vendorSearch(tenantId, { individualIds: ids, status: "ACTIVE" });
 
   const data = workerDetails?.Individual?.map((data) => ({
     workerData: data,
     employeeResponse: getResponse(data, vendorDetails?.vendor?.[0], tenantId),
     vendorDetails: vendorDetails?.vendor?.[0],
+    agencyType: data?.additionalFields?.fields?.find((i) => i.key === "EMPLOYER").value,
   }));
 
   return data;

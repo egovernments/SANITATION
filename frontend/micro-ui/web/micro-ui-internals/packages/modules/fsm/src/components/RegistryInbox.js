@@ -28,6 +28,19 @@ const RegisryInbox = (props) => {
   const [vendors, setVendors] = useState([]);
   const queryClient = useQueryClient();
 
+  const reqCriteriaIndividualUpdate = {
+    url: `/individual/v1/_update`,
+    params: {},
+    body: {
+      tenantId,
+    },
+    config: {
+      enabled: true,
+    },
+  };
+
+  const IndividualUpdateMutation = Digit.Hooks.useCustomAPIMutationHook(reqCriteriaIndividualUpdate);
+
   const {
     data: vendorData,
     isLoading: isVendorLoading,
@@ -37,15 +50,15 @@ const RegisryInbox = (props) => {
   } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: 'name', sortOrder: 'ASC', status: 'ACTIVE' },
-    { enabled: false }
+    { enabled: true }
   );
-
   const {
     isLoading: isUpdateVendorLoading,
     isError: vendorUpdateError,
     data: updateVendorResponse,
     error: updateVendorError,
     mutate: mutateVendor,
+    mutateAsync:mutateVendorAsync
   } = Digit.Hooks.fsm.useVendorUpdate(tenantId);
 
   const {
@@ -170,7 +183,140 @@ const RegisryInbox = (props) => {
     });
   };
 
+  const onSWUpdate = async (row) => {
+    // first we need to call the individual update and put isSystemUserActive to false
+    // then we need to call vendor update and put vendorWorkerStatus as INACTIVE
+    // if both are successfull show a toast
+    // Also if vendorWorkerStatus is INACTIVE && isSystemUserActive is false then vendor update should not be allowed i.e, dropdown should be disabled
+     
+    const individualObject = row?.original
+    const vendor = row?.original?.vendor
+    let vendorObject = {
+      
+    };
+    //untagging this individual
+    if(vendor?.workers) {
+      vendorObject = {
+        ...vendor,
+        workers:vendor?.workers?.map(worker => {
+          if(worker.individualId === individualObject.id){
+            return {...worker,vendorWorkerStatus:"INACTIVE"}
+          }else{
+            return worker
+          }
+        })
+      }
+    }
+    delete individualObject.vendor
+    
+    const promises = []
+
+    //push individual update promise
+    promises.push(
+      IndividualUpdateMutation.mutateAsync(
+        {
+          params: {},
+            body: {
+              Individual:{...individualObject,isSystemUserActive:!(individualObject?.isSystemUserActive) }
+            },
+        }
+      )
+    )
+
+    //push vendor update promise
+    if(vendorObject?.workers?.length > 0){
+      promises.push(
+        mutateVendorAsync(
+          {vendor:vendorObject}
+        )
+      )
+    }
+
+    const onSuccess = (res) => {
+      queryClient.invalidateQueries('DSO_SEARCH');
+      props.refetchVendor();
+      props.refetchData();
+      setShowToast({ key: 'SW_WORKER_UPDATE_SUCCESS', action: 'SW_WORKER_UPDATE_SUCCESS' });
+      setTimeout(closeToast, 3000);
+    }
+    const onError = (err) => {
+      setShowToast({ key: 'error', action: 'SW_WORKER_UPDATE_FAIL' });
+      setTimeout(closeToast, 3000);
+    }
+
+    try {
+      await Promise.all(promises);
+      onSuccess();
+    } catch (error) {
+      onError(error);
+    }
+    
+    
+    
+  }
+  const onVenderSelectForSanitationWorker = (row, selectedOption) => {
+    let driverData = row.original;
+    let formDetails = row.original.dsoDetails;
+
+    let existingVendor = driverData?.vendor;
+    let selectedVendor = selectedOption;
+    //if we select the same vendor don't do anything
+    if(selectedVendor?.id === existingVendor?.id){
+      return
+    }
+    delete driverData.vendor;
+    driverData.vendorDriverStatus = 'ACTIVE';
+    if (existingVendor) {
+      const drivers = existingVendor?.workers;
+      drivers.splice(
+        drivers.findIndex((ele) => ele.individualId === driverData.id),
+        1
+      );
+      const formData = {
+        vendor: {
+          ...formDetails,
+          drivers: drivers,
+        },
+      };
+    }
+    
+    const formData = {
+      vendor: {
+        ...selectedVendor,
+        workers: selectedVendor?.workers
+          ? [
+              ...selectedVendor.workers,
+              {
+                individualId: driverData?.id,
+                vendorWorkerStatus: 'ACTIVE',
+              },
+            ]
+          : [
+              {
+                individualId: driverData?.id,
+                vendorWorkerStatus: 'ACTIVE',
+              },
+            ],
+      },
+    };
+
+    mutateVendor(formData, {
+      onError: (error, variables) => {
+        setShowToast({ key: 'error', action: error });
+        setTimeout(closeToast, 5000);
+      },
+      onSuccess: (data, variables) => {
+        setShowToast({ key: 'success', action: 'VENDOR' });
+        queryClient.invalidateQueries('DSO_SEARCH');
+        props.refetchVendor();
+        props.refetchData();
+        setTimeout(closeToast, 3000);
+      },
+    });
+  };
+
   const onVendorDriverSelect = (row, selectedOption) => {
+    
     let driverData = row.original;
     let formDetails = row.original.dsoDetails;
 
@@ -313,6 +459,10 @@ const RegisryInbox = (props) => {
       case 'DRIVER':
         return history.push(
           `/${window?.contextPath}/employee/fsm/registry/new-driver`
+        );
+      case 'WORKER':
+        return history.push(
+          `/${window?.contextPath}/employee/fsm/registry/new-worker`
         );
       default:
         break;
@@ -740,7 +890,7 @@ const RegisryInbox = (props) => {
                     optionKey='name'
                     t={t}
                     style={{ position: "unset" }}
-                    optionCardStyles={{ maxWidth: "14%", maxHeight: "200px" }}
+                    optionCardStyles={{ maxWidth: "12.5%", maxHeight: "200px" }}
                     disable={row?.original?.isSystemUserActive ? false : true}
                   />
                 );

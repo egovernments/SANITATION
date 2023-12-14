@@ -109,7 +109,7 @@ export const FormComposerV2 = (props) => {
   }
 
   useEffect(() => {
-    props.onFormValueChange && props.onFormValueChange(setValue, formData, formState, reset, setError, clearErrors, trigger, getValues);
+    props.onFormValueChange && props.onFormValueChange(setValue, formData, errors, formState, reset, setError, clearErrors, trigger, getValues);
   }, [formData]);
 
   const fieldSelector = (type, populators, isMandatory, disable = false, component, config, sectionFormCategory) => {
@@ -559,7 +559,7 @@ export const FormComposerV2 = (props) => {
     } else if (section.head) {
       return (
         <>
-          <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {}} id={section.headId}>
+          <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {}} className={props?.sectionHeaderClassName} id={section.headId}>
             {t(section.head)}
           </CardSectionHeader>
         </>
