@@ -94,7 +94,7 @@ const FSMCard = () => {
   );
 
   const propsForFSTPO = {
-    Icon: <ShippingTruck />,
+    Icon: <ShippingTruck fill="white"/>,
     moduleName: t('ES_COMMON_FSTP_OPERATION'),
     // kpis: isSuccess ? Object.keys(info).map((key, index) => ({
     //             label: t(key),
@@ -151,7 +151,7 @@ const FSMCard = () => {
   );
 
   const propsForModuleCard = {
-    Icon: <ShippingTruck />,
+    Icon: <ShippingTruck fill="white"/>,
     moduleName: t('ES_TITLE_FAECAL_SLUDGE_MGMT'),
     kpis: [
       {
