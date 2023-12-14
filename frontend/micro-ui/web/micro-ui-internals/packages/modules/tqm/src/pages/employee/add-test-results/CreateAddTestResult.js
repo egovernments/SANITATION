@@ -86,7 +86,7 @@ const Create = () => {
         cardClassName={"page-padding-fix"}
       />
 
-      {showToast && <Toast error={showToast.isError} label={showToast.label} isDleteBtn={"true"} onClose={() => setShowToast(false)} style={{ bottom: "8%" }} />}
+      {showToast && <Toast error={showToast.isError} label={showToast.label} isDleteBtn={"true"} onClose={() => setShowToast(false)}  />}
     </div>
   );
 };

@@ -509,7 +509,7 @@ const WorkerDetails = (props) => {
               error={showToast.key === "error" ? true : false}
               label={t(showToast.key === "success" ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS` : showToast.action)}
               onClose={closeToast}
-              style={{ marginBottom: "1rem" }}
+              // style={{ marginBottom: "1rem" }}
             />
           )}
           <ActionBar style={{ zIndex: "19" }}>
