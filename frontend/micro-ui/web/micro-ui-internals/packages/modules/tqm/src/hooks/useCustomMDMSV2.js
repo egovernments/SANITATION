@@ -9,7 +9,8 @@ export const useCustomMDMSV2 = ({ tenantId, schemaCode, select, changeQueryName 
         tenantId: Digit.ULBService.getCurrentTenantId(),
         filters: filters,
         schemaCode: schemaCode,
-        isActive: true
+        isActive: true,
+        limit: 100
       },
     },
     config: {
