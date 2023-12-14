@@ -448,7 +448,7 @@ const WorkerDetails = (props) => {
                               // last={index === detail?.values?.length - 1}
                               // caption={value.caption}
                               className="border-none"
-                              rowContainerStyle={{ gap: "14rem" }}
+                              rowContainerStyle={{ gap: "7rem" }}
                               textStyle={{ fontWeight: "700" }}
                               labelStyle={{ width: "50%", fontWeight: "700" }}
                               // textStyle={value.value === "ACTIVE" ? { color: "green" } : {}}
@@ -462,7 +462,7 @@ const WorkerDetails = (props) => {
                               // last={index === detail?.values?.length - 1}
                               // caption={value.caption}
                               className="border-none"
-                              rowContainerStyle={{ gap: "14rem" }}
+                              rowContainerStyle={{ gap: "7rem" }}
                               textStyle={{ fontWeight: "700" }}
                               labelStyle={{ width: "50%", fontWeight: "700" }}
                               // textStyle={value.value === "ACTIVE" ? { color: "green" } : {}}
@@ -476,7 +476,7 @@ const WorkerDetails = (props) => {
                               // last={index === detail?.values?.length - 1}
                               // caption={value.caption}
                               className="border-none"
-                              rowContainerStyle={{ gap: "14rem" }}
+                              rowContainerStyle={{ gap: "7rem" }}
                               textStyle={{ fontWeight: "700" }}
                               labelStyle={{ width: "50%", fontWeight: "700" }}
                               // textStyle={value.value === "ACTIVE" ? { color: "green" } : {}}
