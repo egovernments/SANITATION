@@ -102,11 +102,11 @@ const TqmHome = (props) => {
     staletime: 0
   };
   const { data: alerts } = Digit.Hooks.useCustomAPIHook(requestCriteria3);
-  
+  const userNotLinkedToPlant = Digit.Utils.tqm.isUserNotLinkedToPlant()
   return (
     <div className='tqm-home-container'>
       <TqmCard t={t} reRoute={false} />
-      <div className='dashboard-container'>
+      <div className='dashboard-container' style={userNotLinkedToPlant? {display:"none"}:{}}>
       <YourPerformance performance={[data1, data2]} dateRange={dateRange} />
       <Alerts ale={alerts} />
       </div>
