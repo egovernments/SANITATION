@@ -1,5 +1,5 @@
 .tqm-table-test-container {
-  border: 0.5px solid #a6a6a6;
+  border: 0.5px solid #d6d5d4;
   border-radius: 4px;
   background: #ffffff;
   margin-top: 0.75rem;
@@ -10,14 +10,14 @@
     thead {
       background-color: #efefef;
       th {
-        border: 0.5px solid #a6a6a6;
+        border: 0.5px solid #d6d5d4;
         padding: 20px 18px;
         font-weight: 700;
         vertical-align: middle;
         text-align: left;
       }
       th:first-child {
-        border: 0.5px solid #a6a6a6;
+        border: 0.5px solid #d6d5d4;
         min-width: fit-content;
         width: fit-content;
       }
@@ -27,14 +27,14 @@
       }
     }
     tbody {
-      border: 0.5px solid #a6a6a6;
+      border: 0.5px solid #d6d5d4;
       .row:last-child {
         .data {
           border: 0;
         }
       }
       td {
-        border: 0.5px solid #a6a6a6;
+        border: 0.5px solid #d6d5d4;
         border-top-width: 1px;
         --border-opacity: 1;
         border-color: #d6d5d4;

@@ -174,7 +174,7 @@ const QualityParameter = ({onSelect,formData }) => {
                 </React.Fragment>
 
             )}
-            {showToast && !showComponent && <Toast warning={showToast.isWarning} label={showToast.label} isDleteBtn={"true"} onClose={() => setShowToast(false)} style={{ bottom: "8%" }} />}
+            {showToast && !showComponent && <Toast warning={showToast.isWarning} label={showToast.label} isDleteBtn={"true"} onClose={() => setShowToast(false)} />}
 
 
         </div>

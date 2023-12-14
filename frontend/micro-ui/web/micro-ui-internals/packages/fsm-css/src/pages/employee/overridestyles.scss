@@ -122,3 +122,23 @@
 .fsm-registry-dropdown {
   margin-bottom: 0px ;
 }
+
+.search-tabs-container{
+  .search-tab-head-selected {
+    background-color: #FFFFFF;
+  }
+}
+
+.action-bar-wrap-registry {
+  width: 10%;
+  .search-add {
+    justify-content: center;
+  }
+  .menu-wrap{
+    right: 2.1rem;
+  }
+}
+
+.page-padding-fix {
+  padding: 1rem 1.5rem;
+}

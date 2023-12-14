@@ -59,7 +59,7 @@ const HowItWorks = () => {
       <div className="how-it-works-page">
         {/* <BackButton></BackButton> */}
         <div className="how-it-works-page-header">
-          <Header>{t(mdmsConfigResult.screenHeader ? mdmsConfigResult.screenHeader : "HOW_IT_WORKS")}</Header>
+          <Header styles={{marginTop:"1rem"}}>{t(mdmsConfigResult.screenHeader ? mdmsConfigResult.screenHeader : "HOW_IT_WORKS")}</Header>
         </div>
         <div className="language-selector" style={{ margin: "10px" }}>
           {languages.map((language, index) => (
