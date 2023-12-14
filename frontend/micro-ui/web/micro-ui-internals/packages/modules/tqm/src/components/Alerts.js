@@ -4,11 +4,14 @@ import { useTranslation } from "react-i18next"
 const alerts = ({ ale }) => {
   const { t } = useTranslation();
 
-
   return [
     {
-      label: t("PQM_RESULTS_NOT_UPTO_BENCHMARK"),
+      label: t("PQM_RESULTS_TEST_NOT_SUBMITTED"),
       count: ale?.responseData?.data?.[0]?.plots?.[2]?.value || 0
+    },
+    {
+      label: t("PQM_RESULTS_NOT_UPTO_BENCHMARK"),
+      count: ale?.responseData?.data?.[0]?.plots?.[3]?.value || 0
     },
   ]
 }
@@ -28,7 +31,7 @@ const Alerts = ({ ale }) => {
             </p>
             <p className='alerts-container-subheader'>{t("PQM_TEST_ALERTS_LAST_30_DAYS")}</p>
           </div>
-          <div className='alerts-container-count'>{ale?.responseData?.data?.[0]?.plots?.[3]?.value}</div>
+          <div className='alerts-container-count'>{ale?.responseData?.data?.[0]?.plots?.[4]?.value}</div>
         </div>
 
         <div className={'alerts-container'}>
