@@ -85,7 +85,8 @@ const TqmHome = (props) => {
         "visualizationCode": "pqmAlerts",
         "queryType": "",
         "filters": {
-          "tenantId": [tenantId]
+          "tenantId": [tenantId],
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
         },
         "moduleLevel": "",
         "aggregationFactors": null,
