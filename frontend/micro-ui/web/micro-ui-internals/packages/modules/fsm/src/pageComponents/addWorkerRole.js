@@ -1,4 +1,15 @@
-import { CardLabel, Dropdown, LabelFieldPair, Loader, RemoveableTag, MultiSelectDropdown, TextInput, RadioButtons, DustbinIcon } from "@egovernments/digit-ui-react-components";
+import {
+  CardLabel,
+  Dropdown,
+  LabelFieldPair,
+  Loader,
+  RemoveableTag,
+  MultiSelectDropdown,
+  TextInput,
+  RadioButtons,
+  DustbinIcon,
+  AddIcon,
+} from "@egovernments/digit-ui-react-components";
 import React, { Fragment, useEffect, useState } from "react";
 import { cleanup } from "../utils";
 
@@ -163,7 +174,10 @@ const AddWorkerRoles = ({ t, config, onSelect, userType, formData }) => {
         />
       ))}
       {jurisdictions?.length < functionalRole?.length && (
-        <label onClick={handleAddUnit} className="link-label" style={{ width: "12rem" }}>
+        <label onClick={handleAddUnit} className="link-label" style={{ width: "12rem", display: "flex", gap: "0.5rem" }}>
+          <div className="search-add-icon">
+            <AddIcon />
+          </div>
           {t("FSM_REGISTRY_ADD_WORKER_ROLE")}
         </label>
       )}
@@ -206,7 +220,7 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
         const temp = {
           SanitationWorkerSkills: data?.FSM?.SanitationWorkerSkills,
           SanitationWorkerEmployer: data?.FSM?.SanitationWorkerEmployer,
-          SanitationWorkerEmploymentType: data?.FSM?.SanitationWorkerEmploymentType.map((i) => ({...i, i18nKey: `ES_FSM_OPTION_${i.code}`})),
+          SanitationWorkerEmploymentType: data?.FSM?.SanitationWorkerEmploymentType.map((i) => ({ ...i, i18nKey: `ES_FSM_OPTION_${i.code}` })),
           SanitationWorkerFunctionalRoles: data?.FSM?.SanitationWorkerFunctionalRoles,
         };
         return temp;
@@ -342,13 +356,13 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
               </LabelFieldPair>
             ) : null}
 
-            <LabelFieldPair>
+            <LabelFieldPair style={{ alignItems: "baseline" }}>
               <CardLabel className="card-label-smaller">{`${t("FSM_REGISTRY_LABEL_EMPLOYMENT")} *`} </CardLabel>
               <div className="field">
                 <RadioButtons
                   selectedOption={jurisdiction?.emp_Type}
                   onSelect={selectEmpType}
-                  style={{ display: "flex", marginBottom: 0 }}
+                  style={{ display: "flex", gap: "4rem" }}
                   innerStyles={{ marginLeft: "10px" }}
                   options={mdmsOptions?.SanitationWorkerEmploymentType}
                   optionsKey="i18nKey"

@@ -355,16 +355,9 @@ const WorkerDetails = (props) => {
                             <div className="value" style={{ color: "#f47738", display: "flex" }}>
                               {value.value === "ES_FSM_REGISTRY_DETAILS_ADD_VENDOR" && (
                                 <span onClick={() => onActionSelect("ADD_VENDOR")}>
-                                  <AddIcon
-                                    className=""
-                                    fill="#f47738"
-                                    styles={{
-                                      cursor: "pointer",
-                                      marginLeft: "0px",
-                                      marginRight: "10px",
-                                      height: "24px",
-                                    }}
-                                  />
+                                  <div className="search-add-icon" style={{ marginLeft: 0, marginRight: "10px", cursor: "pointer" }}>
+                                    <AddIcon className="" />
+                                  </div>
                                 </span>
                               )}
                               {t(value.value) || "N/A"}

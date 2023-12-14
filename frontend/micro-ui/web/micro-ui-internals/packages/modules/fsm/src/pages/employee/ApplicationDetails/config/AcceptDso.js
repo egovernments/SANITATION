@@ -42,11 +42,6 @@ export const configAcceptDso = ({
             type: 'dropdown',
             populators: (
               <React.Fragment>
-                {!vehicleNoList?.length ? (
-                  <CardLabelError>
-                    {t('ES_FSM_NO_VEHICLE_AVAILABLE')}
-                  </CardLabelError>
-                ) : null}
                 <Dropdown
                   option={vehicleNoList}
                   autoComplete="off"
@@ -56,6 +51,11 @@ export const configAcceptDso = ({
                   selected={vehicleNo}
                   disable={vehicleNoList?.length > 0 ? false : true}
                 />
+                {!vehicleNoList?.length ? (
+                  <CardLabelError style={{marginTop: "-14px"}}>
+                    {t('ES_FSM_NO_VEHICLE_AVAILABLE')}
+                  </CardLabelError>
+                ) : null}
               </React.Fragment>
             ),
           },
@@ -90,11 +90,6 @@ export const configAcceptDso = ({
             type: 'dropdown',
             populators: (
               <React.Fragment>
-                {(drivers?.length===0 || !drivers) ? (
-                  <CardLabelError>
-                    {t('ES_FSM_NO_DRIVER_AVAILABLE')}
-                  </CardLabelError>
-                ) : null}
                 <Dropdown
                   option={drivers}
                   autoComplete="off"
@@ -107,6 +102,11 @@ export const configAcceptDso = ({
                   disable={drivers?.length > 0 ? false : true}
                   placeholder={t("SW_SEARCH_BY_NAME_ID")}
                 />
+                {(drivers?.length===0 || !drivers) ? (
+                  <CardLabelError style={{marginTop: "-14px"}}>
+                    {t('ES_FSM_NO_DRIVER_AVAILABLE')}
+                  </CardLabelError>
+                ) : null}
               </React.Fragment>
             ),
           },

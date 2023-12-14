@@ -604,3 +604,14 @@ video::-webkit-media-controls-play-button {
     display: flex !important;
   }
 }
+
+.search-add-icon {
+  background: #f47738;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
