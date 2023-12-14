@@ -25,6 +25,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
         tenantId: tenantId,
         schemaCode: "PQM.QualityCriteria",
         isActive: true,
+        limit: 100,
       },
     },
   });
