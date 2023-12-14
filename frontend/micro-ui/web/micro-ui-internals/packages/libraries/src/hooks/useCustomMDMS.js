@@ -39,7 +39,8 @@ const useCustomMDMS = (tenantId, moduleName, masterDetails = [], config = {},mdm
           // tenantId, //changing here to send user's tenantId always whether stateId or city
           tenantId:Digit.ULBService.getCurrentTenantId(),
           schemaCode:mdmsv2?.schemaCode,
-          isActive:true
+          isActive:true,
+          limit: 100,
         }
       },
       config:{
