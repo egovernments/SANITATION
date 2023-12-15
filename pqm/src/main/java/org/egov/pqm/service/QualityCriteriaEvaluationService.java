@@ -148,6 +148,10 @@ public class QualityCriteriaEvaluationService {
     BigDecimal lowerBound;
     BigDecimal upperBound;
 
+    if (allowedDeviation == null) {
+      allowedDeviation = BigDecimal.valueOf(0);
+    }
+
     switch (benchmarkRule) {
       case EQUALS:
         lowerBound = benchmarkValues[0].subtract(allowedDeviation);
