@@ -148,7 +148,6 @@ public class QualityCriteriaEvaluationService {
     BigDecimal lowerBound;
     BigDecimal upperBound;
 
-//    allowedDeviation = allowedDeviation != null ? allowedDeviation : BigDecimal.valueOf(0);
     if (allowedDeviation == null) {
       allowedDeviation = BigDecimal.valueOf(0);
     }
