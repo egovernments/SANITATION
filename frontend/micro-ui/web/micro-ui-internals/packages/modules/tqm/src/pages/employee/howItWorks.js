@@ -39,7 +39,7 @@ const HowItWorks = () => {
 
   const { isLoading, data } = Digit.Hooks.useGetHowItWorksJSON(Digit.ULBService.getStateId());
 
-  const mdmsConfigResult = data?.MdmsRes["common-masters"]?.howItWorks[0]?.[`TQM`];
+  const mdmsConfigResult = data?.MdmsRes["common-masters"]?.howItWorks?.filter(row => row.moduleCode==="TQM")?.[0];
   const languages = [
     {
       label: "ENGLISH",
