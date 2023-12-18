@@ -45,6 +45,10 @@ public class ServiceConfiguration {
   @Value("${egov.mdms.search.v2.endpoint}")
   private String mdmsv2EndPoint;
 
+  @Value("${egov.mdms.search.v2.max.limit}")
+  private Integer mdmsv2MaxLimit;
+
+
 
   // Kafka Topic
   @Value("${egov.test.create.kafka.topic}")
