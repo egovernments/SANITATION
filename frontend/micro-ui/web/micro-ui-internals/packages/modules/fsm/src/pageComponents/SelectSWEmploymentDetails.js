@@ -4,7 +4,7 @@ import { CardLabel, Dropdown, LabelFieldPair, RadioButtons } from "@egovernments
 const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, setValue }) => {
   const stateId = Digit.ULBService.getStateId();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const [selectedEmployer, setSelectedEmployer] = useState(null);
+  const [selectedEmployer, setSelectedEmployer] = useState(formData[config.key]?.employer || null);
   const [selectedVendor, setSelectedVendor] = useState(formData[config.key]?.vendor || null);
   const [vendorList, setVendorList] = useState(null);
 
@@ -57,7 +57,7 @@ const SelectSWEmploymentDetails = ({ t, config, onSelect, userType, formData, se
       setVendorList(temp);
       setSelectedVendor(null);
     }
-  }, [selectedEmployer]);
+  }, [selectedEmployer, vendorData]);
 
   const selectVendor = (type) => {
     setSelectedVendor(type);
