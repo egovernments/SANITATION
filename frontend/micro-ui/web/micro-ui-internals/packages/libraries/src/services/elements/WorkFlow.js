@@ -298,10 +298,10 @@ export const WorkflowService = {
         },
       ];
 
-      const actionRolePair = nextActions?.map((action) => ({
-        action: action?.action,
-        roles: action.state?.actions?.map((action) => action.roles).join(","),
-      }));
+      // const actionRolePair = nextActions?.map((action) => ({
+      //   action: action?.action,
+      //   roles: action.state?.actions?.map((action) => action.roles).join(","),
+      // }));
 
       if (processInstances.length > 0) {
         const TLEnrichedWithWorflowData = await makeCommentsSubsidariesOfPreviousActions(processInstances);
@@ -442,22 +442,20 @@ export const WorkflowService = {
           } catch (err) {}
         }
 
-        // TAKING OUT CURRENT APPL STATUS
-        const tempCheckStatus = timeline.map((i) => i.status)[0];
-        const isPaymentPending = await billDetails(tenantId, id, "FSM.TRIP_CHARGES");
-        // HANDLING ACTION FOR NEW VEHICLE LOG FROM UI SIDE
-        // HIDING PAYMENT OPTION FOR DSO AND WHEN APPLICATION IS NOT IN PAYMENT STATUS
-        const nextActions = location.pathname.includes("new-vehicle-entry")
-          ? action_newVehicle
-          : location.pathname.includes("dso")
-          ? actionRolePair.filter((i) => i.action !== "PAY")
-          : (tempCheckStatus.includes("WAITING_FOR_DISPOSAL") || tempCheckStatus.includes("PENDING_APPL_FEE_PAYMENT")) && isPaymentPending === true
-          ? actionRolePair
-          : tempCheckStatus.includes("DISPOSED") && isPaymentPending === true
-          ? actionRolePair.filter((i) => i.action !== "REASSING")
-          : tempCheckStatus.includes("DISPOSED") && isPaymentPending === false
-          ? actionRolePair.filter((i) => i.action !== "REASSING" && i.action !== "PAY")
-          : actionRolePair.filter((i) => i.action !== "PAY");
+        //Added the condition so that following filter can happen only for fsm and does not affect other module
+        let nextStep = [];
+        if (window.location.href?.includes("fsm")) {
+          // TAKING OUT CURRENT APPL STATUS
+          const actionRolePair = nextActions?.map((action) => ({
+            action: action?.action,
+            roles: action.state?.actions?.map((action) => action.roles).join(","),
+          }));
+          nextStep = location.pathname.includes("new-vehicle-entry")
+            ? action_newVehicle
+            : location.pathname.includes("dso")
+            ? actionRolePair.filter((i) => i.action !== "PAY")
+            : actionRolePair;
+        }
 
         if (role !== "CITIZEN" && moduleCode === "PGR") {
           const onlyPendingForAssignmentStatusArray = timeline?.filter((e) => e?.status === "PENDINGFORASSIGNMENT");
@@ -483,7 +481,7 @@ export const WorkflowService = {
 
         const details = {
           timeline,
-          nextActions,
+          nextActions: window.location.href?.includes("fsm") ? nextStep : nextActions,
           actionState,
           applicationBusinessService: workflow?.ProcessInstances?.[0]?.businessService,
           processInstances: applicationProcessInstance,
