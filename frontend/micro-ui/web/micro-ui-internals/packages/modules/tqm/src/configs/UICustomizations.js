@@ -132,7 +132,7 @@ export const UICustomizations = {
       //set tenantId
       data.body.inbox.tenantId = Digit.ULBService.getCurrentTenantId();
       data.body.inbox.processSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
-
+      data.body.inbox.moduleSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
 
       // //testting
       // data.body.inbox.moduleSearchCriteria.ids = ["8"]
@@ -275,6 +275,7 @@ export const UICustomizations = {
       //set tenantId
       data.body.inbox.tenantId = Digit.ULBService.getCurrentTenantId();
       data.body.inbox.processSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.inbox.moduleSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
 
       //delete custom
       delete data.body.custom;
