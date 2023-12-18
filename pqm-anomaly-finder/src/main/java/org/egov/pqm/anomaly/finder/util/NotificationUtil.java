@@ -164,7 +164,7 @@ public class NotificationUtil {
 				.append(pqmAnomalyConfiguration.getLocalizationSearchEndpoint()).append("?").append("locale=")
 				.append(locale).append("&tenantId=").append(tenantId).append("&module=")
 				.append(AnomalyFinderConstants.SEARCH_MODULE_MDMS).append(",")
-				.append(AnomalyFinderConstants.PQM_LOC_SEARCH_MODULE);
+				.append(AnomalyFinderConstants.TQM_LOC_SEARCH_MODULE);
 		return uri;
 	}
 
