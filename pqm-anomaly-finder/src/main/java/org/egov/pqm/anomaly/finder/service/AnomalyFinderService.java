@@ -35,17 +35,21 @@ public class AnomalyFinderService {
 	@Autowired
 	private PqmAnomalyConfiguration config;
 
-	public void anomalyCreate(TestRequest testRequest) {
+	public void anomalyCreate(TestRequest testRequest, String topic) {
 
 		TestRequest testRequests = testAnomalyFinderValidator.validateCreate(testRequest);
-		PqmAnomalyRequest pqmAnomalyRequest = enrichmentService.enrichPqmAnomalyCreateRequest(testRequests);
+		PqmAnomalyRequest pqmAnomalyRequest = enrichmentService.enrichPqmAnomalyCreateRequest(testRequests, topic);
 		anomalyRepository.save(pqmAnomalyRequest);
-		notificationService.process(testRequests);
+		notificationService.process(testRequests,topic);
 	}
 	
 	public List<PqmAnomaly> pqmAnomalyPlainSearch(@Valid PqmAnomalySearchCriteria criteria, RequestInfo requestInfo) {
 		List<PqmAnomaly> pqmAnomalyList = getPqmAnomalyPlainSearch(criteria);	
 		return pqmAnomalyList;
+	}
+	
+	public List<PqmAnomaly> anomalySearch(@Valid PqmAnomalySearchCriteria criteria) {
+        return anomalyRepository.getAnomalyDataForCriteria(criteria);
 	}
 	
 	private List<PqmAnomaly> getPqmAnomalyPlainSearch(@Valid PqmAnomalySearchCriteria criteria) {

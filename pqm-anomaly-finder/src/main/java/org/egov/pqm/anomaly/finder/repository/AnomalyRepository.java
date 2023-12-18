@@ -58,6 +58,14 @@ public class AnomalyRepository {
 		return pqmAnomalys;
 	}
 
+	public List<PqmAnomaly> getAnomalyDataForCriteria(PqmAnomalySearchCriteria searchCriteria) {
+		List<Object> preparedStmtList = new ArrayList<>();
+		String query = anomalyFinderQueryBuilder.anomalySearchQueryWithCriteria(searchCriteria, preparedStmtList);
+		log.info("query->                           "+query);
+		List<PqmAnomaly> pqmAnomalys = jdbcTemplate.query(query, preparedStmtList.toArray(), anomalyFinderRowMapper);
+		log.info("preparedStmtList -> " +preparedStmtList);
+		return pqmAnomalys;
+	}
 	public List<String> fetchPqmAnomalyIds(@Valid PqmAnomalySearchCriteria criteria) {
 
 		List<Object> preparedStmtList = new ArrayList<>();

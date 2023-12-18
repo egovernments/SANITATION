@@ -80,5 +80,11 @@ public class PqmAnomalyConfiguration {
 	
 	@Value("${egov.pqmAnomaly.max.limit}")
 	private Integer maxSearchLimit;
+	
+	@Value("${persister.save.pqm.topic}")
+	private String notAsPerBenchMark;
+	
+	@Value("${egov.pqm.anomaly.testNotSubmitted.kafka.topic}")
+	private String testNotSubmitted;
 
 }

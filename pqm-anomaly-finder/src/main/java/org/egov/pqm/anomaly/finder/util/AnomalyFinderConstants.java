@@ -10,5 +10,6 @@ public class AnomalyFinderConstants {
 	public static final Object TQM_LOC_SEARCH_MODULE = "rainmaker-tqm";
 	public static final String TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB = "TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB";
 	public static final String TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT = "TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT";
+	public static final String TEST_RESULT_NOT_SUBMITTED = "TEST_RESULT_NOT_SUBMITTED";
 
 }

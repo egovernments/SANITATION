@@ -47,12 +47,12 @@ public class NotificationService {
 	 * 
 	 * @param request The fsmRequest listenend on the kafka topic
 	 */
-	public void process(TestRequest testRequest) {
+	public void process(TestRequest testRequest,String topic) {
 
 		if (null != pqmAnomalyConfiguration.getIsEventsNotificationEnabled()
 				&& pqmAnomalyConfiguration.getIsEventsNotificationEnabled()) {
 
-			EventRequest request = getEvents(testRequest);
+			EventRequest request = getEvents(testRequest, topic);
 			if (null != request)
 				notificationUtil.sendEventNotification(request);
 		}
@@ -67,7 +67,7 @@ public class NotificationService {
 	 * @param request
 	 * @return
 	 */
-	public EventRequest getEvents(TestRequest testRequest) {
+	public EventRequest getEvents(TestRequest testRequest,String topic) {
 
 		List<Event> events = new ArrayList<>();
 		RequestInfo requestInfo = testRequest.getRequestInfo();
@@ -80,18 +80,17 @@ public class NotificationService {
 
 			Set<String> mobileNumbers = smsRequests.stream().map(SMSRequest::getMobileNumber)
 					.collect(Collectors.toSet());
-			Map<String, String> mapOfPhnoAndUUIDs = fetchUserUUIDs(mobileNumbers, requestInfo, test.getTenantId());
+
 
 			Map<String, String> mobileNumberToMsg = smsRequests.stream()
 					.collect(Collectors.toMap(SMSRequest::getMobileNumber, SMSRequest::getMessage));
 			for (String mobile : mobileNumbers) {
-				if (null == mapOfPhnoAndUUIDs.get(mobile) || null == mobileNumberToMsg.get(mobile)) {
-					log.error("No UUID/SMS for mobile {} skipping event", mobile);
-					continue;
-				}
+
 				List<String> toUsers = new ArrayList<>();
-				toUsers.add(mapOfPhnoAndUUIDs.get(mobile));
-				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(null).build();
+
+				List<String> toRoles = new ArrayList<>();
+				toRoles.add("PQM_ADMIN");
+				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(toRoles).build();
 				Action action = null;
 				List<ActionItem> items = new ArrayList<>();
 
@@ -103,18 +102,12 @@ public class NotificationService {
 				action = Action.builder().actionUrls(items).build();
 				
 				String eventCategory = null;
-				switch (test.getSourceType()) {
-				case LAB_SCHEDULED:
+				
+				if(topic.equalsIgnoreCase(pqmAnomalyConfiguration.getNotAsPerBenchMark())) {
 					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
-					break;
-				case IOT_SCHEDULED:
-					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_IOT;
-					break;
-				case LAB_ADHOC:
-					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
-					break;
-				default:
-					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
+				}
+				if(topic.equalsIgnoreCase(pqmAnomalyConfiguration.getTestNotSubmitted())) {
+					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_SUBMITTED;
 				}
 
 				events.add(Event.builder().tenantId(test.getTenantId()).description(mobileNumberToMsg.get(mobile))
