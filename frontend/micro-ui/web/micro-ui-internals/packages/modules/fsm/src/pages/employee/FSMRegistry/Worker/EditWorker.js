@@ -416,7 +416,7 @@ const EditWorker = ({ parentUrl, heading }) => {
         //     setShowToast({ key: "error", action: err });
         //   }
         // }
-        if (vendor) {
+        if (vendor && !(vendor?.id === vendorData?.[0]?.id)) {
           try {
             const vendorData = {
               vendor: {
