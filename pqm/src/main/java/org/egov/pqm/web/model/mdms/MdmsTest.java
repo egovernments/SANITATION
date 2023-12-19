@@ -43,12 +43,6 @@ public class MdmsTest {
   @Valid
   private List<String> qualityCriteria = new ArrayList<>();
 
-  @JsonProperty("effectiveFrom")
-  private Long effectiveFrom = null;
-
-  @JsonProperty("effectiveTo")
-  private Long effectiveTo = null;
-
   @JsonProperty("active")
   private Boolean active = null;
 
