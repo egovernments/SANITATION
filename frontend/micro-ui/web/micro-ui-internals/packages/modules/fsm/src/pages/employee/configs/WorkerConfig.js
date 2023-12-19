@@ -66,6 +66,7 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] })
           type: "documentUpload",
           withoutLabel: true,
           module: "Photograph",
+          master: "FSM",
           error: "WORKS_REQUIRED_ERR",
           name: "documents",
           customClass: "",
