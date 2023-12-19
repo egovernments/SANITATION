@@ -1,5 +1,6 @@
 package org.egov.pqm.web.model.mdms;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.egov.pqm.web.model.QualityCriteria;
 @NoArgsConstructor
 @Data
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MdmsTest {
 
   @JsonProperty("code")
@@ -40,12 +42,6 @@ public class MdmsTest {
   @JsonProperty("qualityCriteria")
   @Valid
   private List<String> qualityCriteria = new ArrayList<>();
-
-  @JsonProperty("effectiveFrom")
-  private Long effectiveFrom = null;
-
-  @JsonProperty("effectiveTo")
-  private Long effectiveTo = null;
 
   @JsonProperty("active")
   private Boolean active = null;
