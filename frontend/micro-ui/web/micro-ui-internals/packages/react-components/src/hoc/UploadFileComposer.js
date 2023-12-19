@@ -9,14 +9,14 @@ import { Loader } from '../atoms/Loader'
 import MultiUploadWrapper from '../molecules/MultiUploadWrapper'
 import TextInput from '../atoms/TextInput'
 
-const UploadFileComposer = ({module, config, Controller, control, register, formData, errors, localePrefix, customClass, customErrorMsg}) => {
+const UploadFileComposer = ({master= "works", module, config, Controller, control, register, formData, errors, localePrefix, customClass, customErrorMsg}) => {
   const { t } = useTranslation()
   
   //fetch mdms config based on module name
   const tenant = Digit.ULBService.getStateId();
   const { isLoading, data } = Digit.Hooks.useCustomMDMS(
       tenant,
-      "works",
+      master,
       [
           {
               "name": "DocumentConfig",
@@ -27,7 +27,7 @@ const UploadFileComposer = ({module, config, Controller, control, register, form
 
 
 
-  const docConfig = data?.works?.DocumentConfig?.[0]
+  const docConfig = data?.[master]?.DocumentConfig?.[0]
 
   let documentFileTypeMappings = {
     docx : "vnd.openxmlformats-officedocument.wordprocessingml.document",
