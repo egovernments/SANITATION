@@ -399,6 +399,7 @@ export const FormComposerV2 = (props) => {
         return (
           <UploadFileComposer
             module={config?.module}
+            master={config?.master}
             config={config}
             Controller={Controller}
             register={register}
