@@ -2,10 +2,10 @@ export const createModifiedData = (data) => {
     const modifiedData = [
         {
             "tenantId": Digit.ULBService.getCurrentTenantId(),
-            "plantCode": data?.plantCode?.code,
-            "processCode": data?.processCode?.code,
-            "stageCode": data?.stageCode?.code,
-            "materialCode": data?.materialCode?.code,
+            "plantCode": data?.TestStandard?.plantCode?.plantCode,
+            "processCode": data?.TestStandard?.processCode?.process,
+            "stageCode": data?.TestStandard?.stageCode?.stage,
+            "materialCode": data?.TestStandard?.materialCode?.material,
             "testCriteria": Object.keys(data?.QualityParameter)
                 .filter(criteriaCode => criteriaCode.toLowerCase() !== "document")
                 .map(criteriaCode => ({

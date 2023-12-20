@@ -24,6 +24,7 @@ import SensorScreen from "./pages/employee/sensor-monitoring/SensorScreen";
 import TqmAdminNotification from "./pages/employee/TqmAdminNotification";
 import TqmTopBar from "./components/TqmTopBar";
 import ChangePlant from "./components/ChangePlant";
+import TestStandard from "./pages/employee/add-test-results/TestStandard";
 
 const TQMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = ["TQM", "mdms"];
@@ -64,7 +65,8 @@ const componentsToRegister = {
   TqmParameterReadings: ParameterReadings,
   TqmAdminNotification,
   CustomEmployeeTopBar:TqmTopBar,
-  ChangePlant
+  ChangePlant,
+  TestStandard
 };
 
 const overrideHooks = () => {
