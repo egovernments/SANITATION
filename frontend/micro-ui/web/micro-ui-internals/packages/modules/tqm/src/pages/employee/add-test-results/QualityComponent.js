@@ -3,13 +3,13 @@ import { CardLabel, LabelFieldPair, Toast, TextInput, LinkButton, CardLabelError
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash";
-import { useCustomMDMSV2 } from "../../../hooks/useCustomMDMSV2";
 
 const QualityParameter = ({onSelect,formData }) => {
     const { t } = useTranslation();
     const { control} = useForm();
     const [showComponent, setShowComponent] = useState(false);
-    const {plantCode,processCode,stageCode,materialCode} = formData
+    const {plantCode,processCode,stageCode,materialCode} = formData?.TestStandard || {}
+    
     const [showToast, setShowToast] = useState(false);
     const tenant = Digit.ULBService.getStateId();
     const [allFieldsDefined, setallFieldsDefined] = useState(false);
@@ -29,13 +29,13 @@ const QualityParameter = ({onSelect,formData }) => {
     }, [formData])
     
 
-    const { isLoading, data } = useCustomMDMSV2({
+    const { isLoading, data } = Digit.Hooks.tqm.useCustomMDMSV2({
         tenantId: tenant,
         "filters": {
-            "plant": plantCode?.code,
-            "process": processCode?.code,
-            "stage": stageCode?.code,
-            "material": materialCode?.code
+            "plant": plantCode?.plantCode,
+            "process": processCode?.process,
+            "stage": stageCode?.stage,
+            "material": materialCode?.material
         },
         schemaCode: "PQM.TestStandard",
         changeQueryName: `${plantCode?.code}${processCode?.code}${stageCode?.code}${materialCode?.code}`,
@@ -55,15 +55,21 @@ const QualityParameter = ({onSelect,formData }) => {
             setShowToast(false);
         }
         else if (!data || Object.keys(data).length === 0) {
-            setShowToast({
-                label: t('TQM_QUALITY_CRITERIA_NOT_PRESENT'),
-                isWarning: true
-            });
+            // setShowToast({
+            //     label: t('TQM_QUALITY_CRITERIA_NOT_PRESENT'),
+            //     isWarning: true
+            // });
             closeToast();
-            setShowComponent(false);
+            // setShowComponent(false);
         }
-        else setShowComponent(true);
-    }, [data]);
+        // else setShowComponent(true);
+
+        if(plantCode && processCode && stageCode  && materialCode){
+            setShowComponent(true)
+        }else{
+            setShowComponent(false)
+        }
+    }, [data,formData]);
 
     const qualityCriteria = data?.map(item => item.qualityCriteria);
     const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
@@ -83,6 +89,7 @@ const QualityParameter = ({onSelect,formData }) => {
     if(isLoading) {
         return <Loader />
     }
+    
     return (
         <div>
             {!showComponent && (
