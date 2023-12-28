@@ -111,7 +111,7 @@ export const tqmSearchConfigUlbAdmin = {
                 }
               },
               {
-                "label": "TQM_INBOX_DATE_RANGE",
+                "label": "TQM_VIEW_PAST_DATE_RANGE",
                 "type": "dateRange",
                 "isMandatory": false,
                 "disable": false,
