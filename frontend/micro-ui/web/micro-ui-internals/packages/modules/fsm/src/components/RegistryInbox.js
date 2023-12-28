@@ -868,10 +868,12 @@ const RegisryInbox = (props) => {
               disableSortBy: true,
               accessor: 'role',
               Cell: ({ row }) => {
-                const functionalRole = row?.original?.additionalFields?.fields?.filter(row => row.key==="FUNCTIONAL_ROLE")?.[0]?.value
+                const functionalRole = row?.original?.additionalFields?.fields?.filter(row => row.key.startsWith("FUNCTIONAL_ROLE_"))?.filter((i) => i?.key !== "FUNCTIONAL_ROLE_COUNT");
+                const role = functionalRole?.length > 0 ? functionalRole?.length : "ES_COMMON_NA" ;
+                // const role = functionalRole?.length > 0 ? functionalRole?.map(i => t(`SW_FUNCTIONAL_ROLE_${i.value}`)).join(", ") : "ES_COMMON_NA" ;
                 return (
                   <div>
-                    {functionalRole ? t(`SW_FUNCTIONAL_ROLE_${functionalRole}`) : t("ES_COMMON_NA") }
+                    {t(role)}
                   </div>
                 );
               },

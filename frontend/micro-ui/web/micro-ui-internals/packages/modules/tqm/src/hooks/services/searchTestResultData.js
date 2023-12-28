@@ -138,7 +138,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
                   key: t("ES_TQM_LABEL_SLA"),
                   isSla: true,
                   isSuccess: Math.sign(sla) === -1 ? false : true,
-                  value: Math.sign(sla) === -1 ? `${Math.abs(sla)} ${t("COMMON_DAYS_OVERDUE")}` : `${sla} ${t("COMMON_DAYS")}`,
+                  value: Math.sign(sla) === -1 ? `${Math.ceil(sla)} ${t("COMMON_DAYS_OVERDUE")}` : `${sla} ${t("COMMON_DAYS")}`,
                 }
               : {},
           ]
@@ -228,7 +228,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
               key: t("ES_TQM_LABEL_SLA"),
               isSla: true,
               isSuccess: Math.sign(sla) === -1 ? false : true,
-              value: Math.sign(sla) === -1 ? `${Math.abs(sla)} ${t("COMMON_DAYS_OVERDUE")}` : `${sla} ${t("COMMON_DAYS")}`,
+              value: Math.sign(sla) === -1 ? `${Math.ceil(sla)} ${t("COMMON_DAYS_OVERDUE")}` : `${sla} ${t("COMMON_DAYS")}`,
             },
           ],
     documents: testResponse?.documents?.map((i) => {
