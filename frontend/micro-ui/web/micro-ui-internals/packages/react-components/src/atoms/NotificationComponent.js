@@ -29,7 +29,7 @@ function NotificationComponent(props) {
                 <ButtonSelector onSubmit={() => onSubmit(i?.route, i?.id)} theme="secondary" label={t(`ES_TQM_LABEL_${i?.action ? i?.action : ""}`)} />
               </div>
               <span className={i?.date < 0 ? `sla-cell-error bg` : `sla-cell-success bg`}>
-                {i?.date < 0 ? t(`ES_TQM_SLA_PENDING_OVERDUE_DATE`, { NO_OF_DAYS: Math.abs(i?.date) }) : t(`ES_TQM_SLA_PENDING_DUE_DATE`, { NO_OF_DAYS: Math.abs(i?.date) })}
+                {i?.date < 0 ? t(`ES_TQM_SLA_PENDING_OVERDUE_DATE`, { NO_OF_DAYS: Math.ceil(i?.date) }) : t(`ES_TQM_SLA_PENDING_DUE_DATE`, { NO_OF_DAYS: Math.ceil(i?.date) })}
               </span>
               <hr className="break-line" />
             </>

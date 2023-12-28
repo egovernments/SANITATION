@@ -195,7 +195,7 @@ export const UICustomizations = {
           const remainingSLA = targetDate - currentDate;
           sla = Math.ceil(remainingSLA / (24 * 60 * 60 * 1000));
           if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
-          return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.abs(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
+          return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.ceil(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
@@ -320,7 +320,7 @@ export const UICustomizations = {
           const remainingSLA = targetDate - currentDate;
           sla = Math.ceil(remainingSLA / (24 * 60 * 60 * 1000));
           if(!row?.businessObject?.scheduledDate) return t("ES_COMMON_NA")
-          return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.abs(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
+          return Math.sign(sla) === -1 ? <span className="sla-cell-error">{Math.ceil(sla)} {t("COMMON_DAYS_OVERDUE")}</span> : <span className="sla-cell-success">{sla} {t("COMMON_DAYS")}</span>;
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
