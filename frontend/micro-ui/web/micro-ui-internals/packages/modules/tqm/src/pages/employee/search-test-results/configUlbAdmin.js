@@ -115,8 +115,16 @@ export const tqmSearchConfigUlbAdmin = {
                 "type": "dateRange",
                 "isMandatory": false,
                 "disable": false,
+                "key": "dateRange",
+                "preProcess": {
+                  "updateDependent": [
+                    "populators.maxDate"
+                  ]
+                },
                 "populators": {
-                  "name": "dateRange"
+                  "name": "dateRange",
+                  "maxDate":"currentDate"
+
                 }
               }
             ]

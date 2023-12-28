@@ -122,7 +122,8 @@ export const tqmInboxConfigPlantOperator = {
             "columns": [
               {
                 "label": "TQM_TEST_ID",
-                "jsonPath": "ProcessInstance.businessId"
+                "jsonPath": "ProcessInstance.businessId",
+                "additionalCustomization": true
               },
               {
                 "label": "TQM_TREATMENT_PROCESS",

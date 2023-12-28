@@ -199,11 +199,28 @@ export const UICustomizations = {
           
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
+        
+        case "TQM_TEST_ID":
+          const isMobile = window.Digit.Utils.browser.isMobile();
+          if(isMobile){
+            return <span>{value}</span>
+          }
+          return <span className="link">
+            <Link
+              to={`/${window.contextPath}/employee/tqm/test-details?id=${value}`}
+              // to={`/${window.contextPath}/employee/tqm/inbox`}
+            >
+              {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+            </Link>
+          </span>
         default:
           return "case_not_found"
       }
     },
     onCardActionClick:(obj)=> {
+      return `test-details?id=${obj?.apiResponse?.ProcessInstance?.businessId}`
+    },
+    onCardClick:(obj)=> {
       return `test-details?id=${obj?.apiResponse?.ProcessInstance?.businessId}`
     },
     
@@ -436,6 +453,18 @@ export const UICustomizations = {
         case "TQM_PENDING_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
 
+        case "TQM_TEST_ID":
+          const isMobile = window.Digit.Utils.browser.isMobile();
+          if(isMobile){
+            return <span>{value}</span>
+          }
+          return <span className="link">
+            <Link
+              to={`/${window.contextPath}/employee/tqm/summary?id=${value}&type=past`}
+            >
+              {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+            </Link>
+          </span>
         default:
           return "case_not_found"
       }
