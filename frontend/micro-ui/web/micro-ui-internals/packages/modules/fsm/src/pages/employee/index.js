@@ -69,13 +69,15 @@ export const FsmBreadCrumb = ({ location }) => {
       path:
         isVendorDetails || isVehicleDetails || isWorkerDetails
           ? `/${window?.contextPath}/employee/fsm/registry`
+          : isRegistry
+          ? null
           : FSTPO
           ? `/${window?.contextPath}/employee/fsm/fstp-inbox`
           : `/${window?.contextPath}/employee`,
       query: isVendorDetails ? "selectedTabs=VENDOR" : isVehicleDetails ? "selectedTabs=VEHICLE" : isWorkerDetails ? "selectedTabs=WORKER" : null,
       content: isVehicleLog ? t("ES_TITLE_INBOX") : "FSM",
       show: isFsm,
-      isBack: isVendorDetails || isVehicleDetails || isWorkerDetails ? false : true,
+      isBack: isVendorDetails || isVehicleDetails || isWorkerDetails || isRegistry ? false : true,
     },
     {
       path: isNewApplication ? `/${window?.contextPath}/employee/fsm/new-application` : "",
