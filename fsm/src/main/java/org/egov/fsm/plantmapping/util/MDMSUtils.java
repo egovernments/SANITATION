@@ -37,56 +37,6 @@ public class MDMSUtils {
 
   public static final String filterCode = "$.*.code";
 
-  public Object fetchMdmsData(RequestInfo requestInfo, String tenantId, String moduleName,
-      List<String> masterNameList) {
-    org.egov.mdms.model.MdmsCriteriaReq mdmsCriteriaReq = getMdmsRequest(requestInfo, tenantId, moduleName, masterNameList);
-    Object response = new HashMap<>();
-    MdmsResponse mdmsResponse = new MdmsResponse();
-    try {
-       response = serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
-    } catch (Exception e) {
-      log.error("Exception occurred while fetching category lists from mdms: ", e);
-    }
-
-    return response;
-
-  }
-
-  private org.egov.mdms.model.MdmsCriteriaReq getMdmsRequest(RequestInfo requestInfo, String tenantId,
-      String moduleName, List<String> masterNameList) {
-    List<MasterDetail> masterDetailList = new ArrayList<>();
-    for (String masterName : masterNameList) {
-      MasterDetail masterDetail = new MasterDetail();
-      masterDetail.setName(masterName);
-      masterDetailList.add(masterDetail);
-    }
-
-    ModuleDetail moduleDetail = new ModuleDetail();
-    moduleDetail.setMasterDetails(masterDetailList);
-    moduleDetail.setModuleName(moduleName);
-    List<ModuleDetail> moduleDetailList = new ArrayList<>();
-    moduleDetailList.add(moduleDetail);
-
-    org.egov.mdms.model.MdmsCriteria mdmsCriteria = new org.egov.mdms.model.MdmsCriteria();
-    mdmsCriteria.setTenantId(tenantId.split("\\.")[0]);
-    mdmsCriteria.setModuleDetails(moduleDetailList);
-
-    org.egov.mdms.model.MdmsCriteriaReq mdmsCriteriaReq = new org.egov.mdms.model.MdmsCriteriaReq();
-    mdmsCriteriaReq.setMdmsCriteria(mdmsCriteria);
-    mdmsCriteriaReq.setRequestInfo(requestInfo);
-
-    return mdmsCriteriaReq;
-  }
-
-  /**
-   * Returns the url for mdms search v1 endpoint
-   *
-   * @return url for mdms search v1 endpoint
-   */
-  public StringBuilder getMdmsSearchUrl() {
-    return new StringBuilder().append(config.getMdmsHost()).append(config.getMdmsEndPoint());
-  }
-
   /**
    * Returns the url for mdms search v2 endpoint
    *
