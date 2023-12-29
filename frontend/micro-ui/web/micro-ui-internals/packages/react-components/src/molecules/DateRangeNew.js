@@ -158,6 +158,8 @@ const DateRangeNew = ({populators, values, onFilterChange, t, labelClass, label,
                             weekStartsOn={1}
                             maxDate={populators?.maxDate}
                             minDate={populators?.minDate}
+                            startDatePlaceholder={t("EVENTS_START_DATE_LABEL")}
+                            endDatePlaceholder={t("EVENTS_END_DATE_LABEL")}
                         />
                     </div>
                 )}
