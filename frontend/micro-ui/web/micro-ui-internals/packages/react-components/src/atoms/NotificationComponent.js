@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-function NotificationComponent(props) {
+function NotificationComponent({linkObj,...props}) {
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -35,7 +35,7 @@ function NotificationComponent(props) {
             </>
           ) : (
             index === 3 && (
-              <Link to={props?.viewAllRoute}>
+              <Link to={linkObj}>
                 <ActionLinks>{t(`ES_TQM_VIEW_ALL_PENDING_TASKS`)}</ActionLinks>
               </Link>
             )
