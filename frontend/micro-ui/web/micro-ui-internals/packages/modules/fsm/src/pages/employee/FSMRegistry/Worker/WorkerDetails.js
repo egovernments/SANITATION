@@ -168,7 +168,7 @@ const WorkerDetails = (props) => {
 
     mutateUpdateWorker(formData, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: error });
+        setShowToast({ key: "error", action: "DELETE_WORKER_FAILED" });
         setTimeout(closeToast, 5000);
       },
       onSuccess: (data, variables) => {
@@ -204,7 +204,7 @@ const WorkerDetails = (props) => {
 
     mutateVendor(formData, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: error });
+        setShowToast({ key: "error", action: "DELETE_VENDOR_FAILED" });
         setTimeout(closeToast, 5000);
       },
       onSuccess: (data, variables) => {
@@ -231,7 +231,7 @@ const WorkerDetails = (props) => {
     };
     mutateVendor(formData, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: error });
+        setShowToast({ key: "error", action: "ADD_VENDOR_FAILED" });
         refetch();
         setTimeout(closeToast, 5000);
       },
@@ -263,7 +263,7 @@ const WorkerDetails = (props) => {
 
     mutateVendor(formData, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: error });
+        setShowToast({ key: "error", action: "EDIT_VENDOR_FAILED" });
         setTimeout(closeToast, 5000);
       },
       onSuccess: (data, variables) => {
