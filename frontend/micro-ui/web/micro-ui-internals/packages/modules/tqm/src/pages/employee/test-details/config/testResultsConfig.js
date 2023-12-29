@@ -5,7 +5,7 @@ export const testResultsConfig = ({ t, testDetailsData, testCriteriaData }) => {
 
   const testParamConfig = testParams?.map((i) => {
     return {
-      label: `${t(i?.i18nKey)} ${i?.unit !== "NA" || i?.unit === null ? t(i?.unit) : ""}` || "N/A",
+      label: `${t(i?.i18nKey)}` || "N/A",
       isMandatory: true,
       type: "text",
       disable: false,
