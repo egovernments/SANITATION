@@ -165,7 +165,7 @@ const AddWorker = ({ parentUrl, heading }) => {
       }, 5000);
       return;
     }
-    
+
     const formData = {
       Individual: {
         tenantId: tenantId,
@@ -228,57 +228,58 @@ const AddWorker = ({ parentUrl, heading }) => {
       },
     };
 
-    console.log('formData',formData)
-    // mutate(formData, {
-    //   onError: (error, variables) => {
-    //     setShowToast({ key: "error", action: "ES_FSM_WORKER_ADD_FAILED" });
-    //     setTimeout(closeToast, 5000);
-    //   },
-    //   onSuccess: async (data, variables) => {
-    //     // setShowToast({ key: "success", action: "ADD_WORKER" });
-    //     // queryClient.invalidateQueries("FSM_WORKER_SEARCH");
-    //     // if (roleDetails?.some((entry) => entry.plant)) {
-    //     //   try {
-    //     //     const PlantCode = roleDetails
-    //     //       ?.map((entry) => ({
-    //     //         tenantId: tenantId,
-    //     //         plantCode: entry?.plant?.code,
-    //     //         individualId: data?.Individual?.individualId,
-    //     //         isActive: true,
-    //     //       }))
-    //     //       .filter((i) => i?.plantCode);
-    //     //     const plantFormData = {
-    //     //       plantUsers: PlantCode,
-    //     //     };
-    //     //     const plantresponse = await PlantUserMutate(plantFormData);
-    //     //   } catch (err) {
-    //     //     console.error("Plant user create", err);
-    //     //     setShowToast({ key: "error", action: err });
-    //     //   }
-    //     // }
-    //     if (vendor) {
-    //       try {
-    //         const vendorData = {
-    //           vendor: {
-    //             ...vendor,
-    //             workers: vendor.workers
-    //               ? [...vendor.workers, { individualId: data?.Individual?.id, vendorWorkerStatus: "ACTIVE" }]
-    //               : [{ individualId: data?.Individual?.id, vendorWorkerStatus: "ACTIVE" }],
-    //           },
-    //         };
-    //         const response = await vendorMutate(vendorData);
-    //         setShowToast({ key: "success", action: "WORDER_ADDED_WITH_VENDOR" });
-    //       } catch (updateError) {
-    //         console.error("Error updating data:", updateError);
-    //         setShowToast({ key: "success", action: "WORDER_ADDED_VENDOR_FAILED" });
-    //       }
-    //     }
-    //     setTimeout(() => {
-    //       closeToast();
-    //       history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=WORKER`);
-    //     }, 5000);
-    //   },
-    // });
+    mutate(formData, {
+      onError: (error, variables) => {
+        setShowToast({ key: "error", action: "ES_FSM_WORKER_ADD_FAILED" });
+        setTimeout(closeToast, 5000);
+      },
+      onSuccess: async (data, variables) => {
+        // setShowToast({ key: "success", action: "ADD_WORKER" });
+        // queryClient.invalidateQueries("FSM_WORKER_SEARCH");
+        // if (roleDetails?.some((entry) => entry.plant)) {
+        //   try {
+        //     const PlantCode = roleDetails
+        //       ?.map((entry) => ({
+        //         tenantId: tenantId,
+        //         plantCode: entry?.plant?.code,
+        //         individualId: data?.Individual?.individualId,
+        //         isActive: true,
+        //       }))
+        //       .filter((i) => i?.plantCode);
+        //     const plantFormData = {
+        //       plantUsers: PlantCode,
+        //     };
+        //     const plantresponse = await PlantUserMutate(plantFormData);
+        //   } catch (err) {
+        //     console.error("Plant user create", err);
+        //     setShowToast({ key: "error", action: err });
+        //   }
+        // }
+        if (vendor) {
+          try {
+            const vendorData = {
+              vendor: {
+                ...vendor,
+                workers: vendor.workers
+                  ? [...vendor.workers, { individualId: data?.Individual?.id, vendorWorkerStatus: "ACTIVE" }]
+                  : [{ individualId: data?.Individual?.id, vendorWorkerStatus: "ACTIVE" }],
+              },
+            };
+            const response = await vendorMutate(vendorData);
+            setShowToast({ key: "success", action: "WORDER_ADDED_WITH_VENDOR" });
+          } catch (updateError) {
+            console.error("Error updating data:", updateError);
+            setShowToast({ key: "success", action: "WORDER_ADDED_VENDOR_FAILED" });
+          }
+        } else {
+          setShowToast({ key: "success", action: "ADD_WORKER_SUCCESS" });
+        }
+        setTimeout(() => {
+          closeToast();
+          history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=WORKER`);
+        }, 5000);
+      },
+    });
   };
   const isMobile = window.Digit.Utils.browser.isMobile();
 
