@@ -31,7 +31,7 @@ public class PlantMDMSValidator {
   public List<Object> validateIfMasterPresent(RequestInfo requestInfo, String tenantId,
 			String schemaCode, String uniqueId) {
 		Object mdmsData = mdmsUtils.mdmsCallV2(requestInfo, tenantId, schemaCode, new ArrayList<>());
-		List<Object> result = JsonPath.read(mdmsData, "$.mdms[?(@.uniqueIdentifier == '" + uniqueId + ".true" + "')]");
+		List<Object> result = JsonPath.read(mdmsData, "$.mdms[?(@.uniqueIdentifier == '" + uniqueId + "')]");
 		if (result.isEmpty()) {
 			throw new CustomException(
 					"INVALID" + " " + schemaCode.substring(schemaCode.lastIndexOf('.') + 1).toUpperCase(),
@@ -44,7 +44,7 @@ public class PlantMDMSValidator {
 
   public void validateMdmsData(PlantMappingRequest request) {
     String tenantId = request.getPlantMapping().getTenantId().split("\\.")[0];
-    List<Object> result=validateIfMasterPresent(request.getRequestInfo(), tenantId, "FSM.FSTPPlantInfo",
+    List<Object> result=validateIfMasterPresent(request.getRequestInfo(), tenantId, "PQM.Plant",
     		request.getPlantMapping().getPlantCode() );
     validateFSTPPlantInfo(result,  request.getPlantMapping().getTenantId());
    
