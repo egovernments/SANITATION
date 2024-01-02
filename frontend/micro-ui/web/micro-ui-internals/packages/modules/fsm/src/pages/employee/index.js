@@ -67,7 +67,7 @@ export const FsmBreadCrumb = ({ location }) => {
     },
     {
       path:
-        isVendorDetails || isVehicleDetails || isWorkerDetails || isAddWorker || isNewVehicle || isNewVendor || isAddWorker || isVendorEdit || isEditWorker || isVehicleEdit
+        isVendorDetails || isVehicleDetails || isWorkerDetails || isAddWorker || isNewVehicle || isNewVendor || isVendorEdit || isEditWorker || isVehicleEdit
           ? `/${window?.contextPath}/employee/fsm/registry`
           : isRegistry
           ? null
