@@ -31,6 +31,8 @@ import { useQueryClient } from "react-query";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { ViewImages } from "../../../components/ViewImages";
 import getPDFData from "../../../getPDFData";
+import LocationCard from "../../../components/LocationCard";
+import { ApplicationTable } from "../../../components/ApplicationTable";
 
 const ApplicationDetails = (props) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -48,6 +50,7 @@ const ApplicationDetails = (props) => {
   const DSO = Digit.UserService.hasAccess(["FSM_DSO"]) || false;
   const [showOptions, setShowOptions] = useState(false);
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
+  const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
 
   const { tenants } = storeData || {};
 
@@ -58,8 +61,10 @@ const ApplicationDetails = (props) => {
     tenantId,
     applicationNumber,
     {},
-    props.userType
+    props.userType,
+    {getTripData: checkvehicletrack?.vehicleTrackingStatus || false }
   );
+
   const { isLoading: isDataLoading, isSuccess, data: applicationData } = Digit.Hooks.fsm.useSearch(
     tenantId,
     { applicationNos: applicationNumber },
@@ -335,6 +340,14 @@ const ApplicationDetails = (props) => {
                 </StatusTable>
               </React.Fragment>
             ))}
+
+            {applicationDetails?.tripList?.length > 0 && (
+              <>
+                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t("Trip Details")}</CardSectionHeader>
+                <ApplicationTable detail={applicationDetails?.tripList} />
+              </>
+            )}
+            
             {applicationData?.pitDetail?.additionalDetails?.fileStoreId?.CITIZEN?.length && (
               <>
                 <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t("ES_FSM_SUB_HEADING_CITIZEN_UPLOADS")}</CardSectionHeader>
@@ -356,6 +369,13 @@ const ApplicationDetails = (props) => {
               </>
             )}
             {imageZoom ? <ImageViewer imageSrc={imageZoom} onClose={onCloseImageZoom} /> : null}
+
+            {applicationData?.geoLocation?.latitude && applicationData?.geoLocation?.longitude && (
+              <>
+                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t("ES_APPLICATION_DETAILS_LOCATION_GEOLOCATION")}</CardSectionHeader>
+                <LocationCard position={{ latitude: applicationData?.geoLocation?.latitude, longitude: applicationData?.geoLocation?.longitude }} />
+              </>
+            )}
 
             <BreakLine />
             {(workflowDetails?.isLoading || isDataLoading) && <Loader />}

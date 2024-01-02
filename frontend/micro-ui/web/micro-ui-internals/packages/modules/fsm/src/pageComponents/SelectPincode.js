@@ -5,6 +5,8 @@ import Timeline from "../components/TLTimelineInFSM";
 
 const SelectPincode = ({ t, config, onSelect, formData = {}, userType, register, errors, props }) => {
   const tenants = Digit.Hooks.fsm.useTenants();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
   const [pincode, setPincode] = useState(formData?.address?.pincode || "");
   const [pincodeServicability, setPincodeServicability] = useState(null);
 
@@ -70,6 +72,9 @@ const SelectPincode = ({ t, config, onSelect, formData = {}, userType, register,
   };
 
   if (userType === "employee") {
+    if (checkvehicletrack?.vehicleTrackingStatus) {
+      return null;
+    }
     return inputs?.map((input, index) => {
       return (
         <>
@@ -82,11 +87,7 @@ const SelectPincode = ({ t, config, onSelect, formData = {}, userType, register,
               <TextInput key={input.name} value={pincode} onChange={onChange} {...input.validation} />
             </div>
           </LabelFieldPair>
-          {pincodeServicability && (
-            <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>
-              {t(pincodeServicability)}
-            </CardLabelError>
-          )}
+          {pincodeServicability && <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>{t(pincodeServicability)}</CardLabelError>}
         </>
       );
     });

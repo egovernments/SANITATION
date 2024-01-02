@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const FSMLink = ({ parentRoute, isMobile, data }) => {
+const FSMLink = ({ parentRoute, isMobile, data, cardStyle }) => {
   const { t } = useTranslation();
 
   const allLinks = [
@@ -47,13 +47,13 @@ const FSMLink = ({ parentRoute, isMobile, data }) => {
     <div className="header">
       <span className="logo">
         <ShippingTruck />
-      </span>{" "}
-      <span className="text">{t("ES_TITLE_FAECAL_SLUDGE_MGMT")}</span>
+      </span>
+      <span className="text">{window.location.href.includes("/fsm/vehicle-tracking/alerts") ? t("Alerts"): t("ES_TITLE_FAECAL_SLUDGE_MGMT")}</span>
     </div>
   );
 
   return (
-    <Card className="employeeCard filter inboxLinksInbox">
+    <Card className="employeeCard filter inboxLinksInbox" style={cardStyle}>
       <div className="complaint-links-container">
         {GetLogo()}
         <div className="body">

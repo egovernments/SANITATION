@@ -150,9 +150,11 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   const [showToast,setShowToast] = useState(null)
   const [dsoList, setDsoList] = useState([]);
   const [vehicleNoList, setVehicleNoList] = useState([]);
+  const [vehicleDriverList, setVehicleDriverList] = useState([]);
   const [config, setConfig] = useState({});
   const [dso, setDSO] = useState(null);
   const [vehicleNo, setVehicleNo] = useState(null);
+  const [vehicleDriver, setVehicleDriver] = useState(null);
   const [vehicleMenu, setVehicleMenu] = useState([]);
   const [vehicle, setVehicle] = useState(null);
 
@@ -245,6 +247,8 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       const [dso] = dsoData.filter((dso) => dso.id === applicationData.dsoId);
       const tempList = dso?.vehicles?.filter((vehicle) => vehicle.capacity == applicationData?.vehicleCapacity);
       const vehicleNoList = tempList?.sort((a,b) => (a?.registrationNumber > b?.registrationNumber ? 1 : -1 ));
+      const tempDriverList = dso?.drivers
+      setVehicleDriverList(tempDriverList)
       setVehicleNoList(vehicleNoList);
     }
   }, [isSuccess, isDsoSuccess]);
@@ -274,6 +278,10 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
 
   function selectVehicleNo(vehicleNo) {
     setVehicleNo(vehicleNo);
+  }
+
+  function selectVehicleDriver(driver) {
+    setVehicleDriver(driver)
   }
 
   function selectVehicle(value) {
@@ -311,6 +319,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     if (dso) applicationData.dsoId = dso.id;
     if (vehicleNo && action === "ACCEPT") applicationData.vehicleId = vehicleNo.id;
     if (vehicleNo && action === "DSO_ACCEPT") applicationData.vehicleId = vehicleNo.id;
+    if (vehicleDriver && action === "DSO_ACCEPT") applicationData.driverId = vehicleDriver.id;
     if (vehicle && action === "ASSIGN") applicationData.vehicleType = vehicle.code;
     if (data.date) applicationData.possibleServiceDate = new Date(`${data.date}`).getTime();
     if (data.desluged) applicationData.completedOn = new Date(data.desluged).getTime();
@@ -410,6 +419,9 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
             vehicleNo,
             vehicleNoList,
             selectVehicleNo,
+            vehicleDriverList,
+            vehicleDriver,
+            selectVehicleDriver,
             action,
             workers,
             selectedDriver,

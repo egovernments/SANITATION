@@ -62,6 +62,9 @@ import SelectSWEmployeePhoneNumber from "./pageComponents/SelectSWEmployeePhoneN
 import EditWorker from "./pages/employee/FSMRegistry/Worker/EditWorker";
 import WorkerDetails from "./pages/employee/FSMRegistry/Worker/WorkerDetails";
 import SelectSWEmploymentDetails from "./pageComponents/SelectSWEmploymentDetails";
+import VehicleTrackingCard from "./components/VehicleTrackingCard";
+import Alerts from "./pages/employee/Alerts";
+import IllegalDumpingSites from "./pages/employee/IllegalDumpingSites";
 
 const FSMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "FSM";
@@ -189,6 +192,9 @@ const componentsToRegister = {
   EditWorker,
   WorkerDetails,
   SelectSWEmploymentDetails,
+  VehicleTrackingCard,
+  Alerts,
+  IllegalDumpingSites,
 };
 
 export const initFSMComponents = () => {
