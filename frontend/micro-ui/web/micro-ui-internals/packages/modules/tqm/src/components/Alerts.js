@@ -57,7 +57,7 @@ const Alerts = ({ ale }) => {
       <Card className={'alerts-container1'} style={{ paddingLeft: "0px", paddingRight: "0px", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
         <div className='alerts-container-header alerts-container-item'>
           <div className='kk'>
-            <div className='alerts-container-count1'>{ale?.responseData?.data?.[0]?.plots?.[3]?.value}</div>
+            <div className='alerts-container-count1'>{ale?.responseData?.data?.[0]?.plots?.[4]?.value}</div>
             <div>
               <p className='alerts-container-subheader'>{t("PQM_TEST_ALERTS_LAST_30_DAYS")}</p>
             </div>
