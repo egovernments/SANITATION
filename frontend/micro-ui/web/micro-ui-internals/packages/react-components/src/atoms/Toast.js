@@ -44,7 +44,7 @@ const Toast = (props) => {
     <div className="toast-success" style={{ ...props.style }}>
       <RoundedCheck />
       <h2>{props.label}</h2>
-      <DeleteBtn fill="none" className="toast-close-btn" onClick={props.onClose} />
+      { props.isDleteBtn ? <DeleteBtn fill="none" className="toast-close-btn" onClick={props.onClose} /> : null}
     </div>
   );
 };
