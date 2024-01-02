@@ -305,6 +305,12 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     // Digit.SessionStorage.set("PGR_CREATE_IMAGES", ids);
   };
 
+  const tempSelectedWorkers = selectedWorkers?.map(obj => {
+    if (obj.userDetails && obj.userDetails.roles) {
+      obj.userDetails.roles = obj.userDetails.roles.filter(role => role.code !== "FSM_DRIVER");
+    }
+    return obj;
+  });
   function submit(data) {
     const workflow = { action: action };
 
@@ -360,7 +366,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         setTimeout(closeToast, 5000);
         return
       }
-      const workersList = [selectedDriver,...selectedWorkers]
+      const workersList = [selectedDriver,...tempSelectedWorkers]
       // workerList?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER"))
       const workerPayload = workersList?.map(worker=> {
         return {
