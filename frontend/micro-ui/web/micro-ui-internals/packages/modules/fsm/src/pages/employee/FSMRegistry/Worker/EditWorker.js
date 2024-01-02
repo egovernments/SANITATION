@@ -395,7 +395,6 @@ const EditWorker = ({ parentUrl, heading }) => {
         setTimeout(closeToast, 5000);
       },
       onSuccess: async (data, variables) => {
-        // setShowToast({ key: "success", action: "ADD_WORKER" });
         // queryClient.invalidateQueries("FSM_WORKER_SEARCH");
         // if (roleDetails.some((entry) => entry.plant)) {
         //   try {
@@ -432,6 +431,8 @@ const EditWorker = ({ parentUrl, heading }) => {
             console.error("Error updating data:", updateError);
             setShowToast({ key: "error", action: "UPDATE_WORKER_VENDOR_FAILED" });
           }
+        } else {
+          setShowToast({ key: "success", action: "EDIT_WORKER_SUCCESS" });
         }
         setTimeout(() => {
           closeToast();
