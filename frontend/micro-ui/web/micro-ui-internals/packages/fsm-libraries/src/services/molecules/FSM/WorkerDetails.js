@@ -6,7 +6,7 @@ const getResponse = (data, vendorDetails = {}, tenantId) => {
   const countIndex = rolesData.findIndex((obj) => obj.key === "FUNCTIONAL_ROLE_COUNT");
   const count = parseInt(rolesData[countIndex]?.value) || null;
   const groupedObjects = [];
-  const licenseNumber = data?.identifiers?.[0]?.identifierId;
+  const licenseNumber = data?.identifiers?.[0]?.identifierType === "DRIVING_LICENSE_NUMBER" ? data?.identifiers?.[0]?.identifierId : null;
   if (count) {
     for (let i = 1; i <= count; i++) {
       const group =

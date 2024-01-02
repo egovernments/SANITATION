@@ -139,7 +139,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     config: {
       enabled: individualIds?.length > 0 ? true : false,
       select: (data) => {
-        const result = data?.Individual?.map(ind => {return {givenName:ind?.name?.givenName,optionsKey:`${ind?.name?.givenName} / ${ind?.individualId}`,...ind}})?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER") || worker?.userDetails?.roles?.some(role=> role?.code === "SANITATION_HELPER") )
+        const result = data?.Individual?.map(ind => {return {givenName:ind?.name?.givenName,optionsKey:`${ind?.name?.givenName} / ${ind?.individualId}`,...ind}})?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "SANITATION_HELPER"))
         setWorkers(result)
         const drivers = result?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER"))
         setDrivers(drivers)
