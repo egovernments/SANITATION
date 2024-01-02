@@ -57,14 +57,12 @@ public class PlantMappingService {
 		RequestInfo requestInfo = request.getRequestInfo();
 
 		PlantMapping plantMap = request.getPlantMapping();
-//		Object mdmsData = util.mDMSCall(requestInfo, request.getPlantMapping().getTenantId());
 		mdmsValidator.validateMdmsData(request);
 		if (plantMap.getId() == null) {
 			throw new CustomException(FSMErrorConstants.UPDATE_ERROR,
 					"FSTP employee map not found in the System" + plantMap.getId());
 		}
 
-//		validaor.validateCreateOrUpdate(request, mdmsData);
 		validaor.validateCreateOrUpdate(request);
 		List<String> ids = new ArrayList<>();
 		ids.add(plantMap.getId());
