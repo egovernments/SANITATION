@@ -106,8 +106,8 @@ const AddWorker = ({ parentUrl, heading }) => {
     const name = data?.name;
     const mobileNumber = data?.SelectEmployeePhoneNumber?.mobileNumber;
     const gender = data?.selectGender?.code;
-    const dob = new Date(`${data.dob}`).getTime() || new Date(`1/1/1970`).getTime();
-    const photograph = data?.documents?.img?.[0]?.[1]?.fileStoreId?.fileStoreId || null;
+    const dob = data.dob ? new Date(`${data.dob}`).getTime() : null;
+    const photograph = data?.documents?.img_photo?.[0]?.[1]?.fileStoreId?.fileStoreId || null;
     const pincode = data?.pincode;
     const city = data?.address?.city?.name;
     const locality = data?.address?.locality?.code;
@@ -154,6 +154,17 @@ const AddWorker = ({ parentUrl, heading }) => {
 
     // Adding the employer information (assuming it's a constant value like "PRIVATE_VENDOR")
     roleDetailsArray.push({ key: "EMPLOYER", value: employer });
+
+    const checkDuplicacy = roleDetailsArray.filter((item) => item.key.startsWith("FUNCTIONAL_ROLE")).map((item) => item.value);
+    const isDuplicate = checkDuplicacy.length === new Set(checkDuplicacy).size;
+
+    if (!isDuplicate) {
+      setShowToast({ key: "error", action: `ES_FSM_WORKER_DUPLICATE_ROLE` });
+      setTimeout(() => {
+        closeToast();
+      }, 5000);
+      return;
+    }
 
     const formData = {
       Individual: {
@@ -224,7 +235,7 @@ const AddWorker = ({ parentUrl, heading }) => {
       },
       onSuccess: async (data, variables) => {
         // setShowToast({ key: "success", action: "ADD_WORKER" });
-        queryClient.invalidateQueries("FSM_WORKER_SEARCH");
+        // queryClient.invalidateQueries("FSM_WORKER_SEARCH");
         // if (roleDetails?.some((entry) => entry.plant)) {
         //   try {
         //     const PlantCode = roleDetails
@@ -260,6 +271,8 @@ const AddWorker = ({ parentUrl, heading }) => {
             console.error("Error updating data:", updateError);
             setShowToast({ key: "success", action: "WORDER_ADDED_VENDOR_FAILED" });
           }
+        } else {
+          setShowToast({ key: "success", action: "ADD_WORKER_SUCCESS" });
         }
         setTimeout(() => {
           closeToast();
@@ -292,7 +305,7 @@ const AddWorker = ({ parentUrl, heading }) => {
           onFormValueChange={onFormValueChange}
           noBreakLine={true}
           cardStyle={{
-            padding:"1rem 1.5rem"
+            padding: "1rem 1.5rem",
           }}
         />
         {showToast && (
