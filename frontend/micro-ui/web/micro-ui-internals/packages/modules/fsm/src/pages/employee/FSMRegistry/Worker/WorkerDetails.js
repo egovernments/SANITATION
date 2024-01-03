@@ -477,7 +477,7 @@ const WorkerDetails = (props) => {
               headerBarEnd={<CloseBtn onClick={closeModal} />}
               actionCancelLabel={t("CS_COMMON_CANCEL")}
               actionCancelOnSubmit={closeModal}
-              actionSaveLabel={t(selectedAction === "DELETE" || selectedAction === "DELETE_VENDOR" ? "ES_EVENT_DELETE" : "CS_COMMON_SUBMIT")}
+              actionSaveLabel={t(selectedAction === "DELETE" ? "ES_EVENT_DELETE_SW" : selectedAction === "DELETE_VENDOR" ? "ES_EVENT_DELETE" : "CS_COMMON_SUBMIT")}
               actionSaveOnSubmit={handleModalAction}
               formId="modal-action"
               headerBarMainStyle={{ marginBottom: "0px" }}
