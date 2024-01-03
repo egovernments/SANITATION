@@ -38,6 +38,9 @@ export const FsmBreadCrumb = ({ location }) => {
   const isNewVendor = location?.pathname?.includes("new-vendor");
   const isNewVehicle = location?.pathname?.includes("new-vehicle");
   const isNewDriver = location?.pathname?.includes("new-driver");
+  const isAddWorker = location?.pathname?.includes("new-worker");
+  const isViewWorker = location?.pathname?.includes("worker-details");
+  const isEditWorker = location?.pathname?.includes("edit-worker");
 
   const [search, setSearch] = useState(false);
   const [id, setId] = useState(false);
@@ -111,6 +114,18 @@ export const FsmBreadCrumb = ({ location }) => {
     {
       content: t("ES_TITLE_VENDOR_EDIT"),
       show: isRegistry && (isVendorEdit || isVehicleEdit || isDriverEdit),
+    },
+    {
+      content: t("ES_TITLE_WORKER_EDIT"),
+      show: isRegistry && isEditWorker,
+    },
+    {
+      content: t("ES_TITLE_WORKER_ADD"),
+      show: isRegistry && isAddWorker,
+    },
+    {
+      content: t("ES_TITLE_WORKER_DETAILS"),
+      show: isRegistry && isViewWorker,
     },
     {
       path: `/${window?.contextPath}/employee/fsm/modify-application/` + id,

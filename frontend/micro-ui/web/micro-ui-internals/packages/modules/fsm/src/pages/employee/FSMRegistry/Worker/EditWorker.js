@@ -131,7 +131,7 @@ const EditWorker = ({ parentUrl, heading }) => {
           },
         };
 
-        if (functionalRoleValue === "DRIVER") {
+        if (functionalRoleValue === "DRIVER" && rdata?.identifiers?.[0]?.identifierType === "DRIVING_LICENSE_NUMBER") {
           transformedData.licenseNo = rdata?.identifiers?.[0]?.identifierId;
         }
 

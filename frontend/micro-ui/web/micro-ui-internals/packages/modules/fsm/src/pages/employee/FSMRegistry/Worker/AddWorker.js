@@ -107,7 +107,7 @@ const AddWorker = ({ parentUrl, heading }) => {
     const mobileNumber = data?.SelectEmployeePhoneNumber?.mobileNumber;
     const gender = data?.selectGender?.code;
     const dob = new Date(`${data.dob}`).getTime() || new Date(`1/1/1970`).getTime();
-    const photograph = data?.documents?.img_measurement_book?.[0]?.[1]?.fileStoreId?.fileStoreId || null;
+    const photograph = data?.documents?.img?.[0]?.[1]?.fileStoreId?.fileStoreId || null;
     const pincode = data?.pincode;
     const city = data?.address?.city?.name;
     const locality = data?.address?.locality?.code;
