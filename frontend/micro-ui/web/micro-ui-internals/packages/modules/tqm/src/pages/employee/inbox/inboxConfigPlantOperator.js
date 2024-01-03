@@ -65,6 +65,13 @@ export const tqmInboxConfigPlantOperator = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Process"
                   }
+                },
+                "removableTagConf":{
+                  "name":"processCodes",
+                  "label":"TQM_TREATMENT_PROCESS",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.processCodes"
                 }
               },
               {
@@ -115,7 +122,7 @@ export const tqmInboxConfigPlantOperator = {
           "label": "",
           "labelMobile": "TQM_INBOX_FILTER",
           "children": {},
-          "show": true
+          "show": true,
         },
         "searchResult": {
           "uiConfig": {
@@ -265,10 +272,12 @@ export const tqmInboxConfigPlantOperator = {
           },
           "label": "Filter",
           "labelMobile": "TQM_INBOX_SORT",
-          "show": true
+          "show": true,
         }
       },
-      "additionalSections": {}
+      "additionalSections": {},
+      "persistFormData":true,
+      "showAsRemovableTagsInMobile":true
     }
   ]
 }

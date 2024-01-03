@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export const initialInboxState = {
     searchForm:{
 
@@ -26,6 +28,8 @@ const reducer = (state, action) => {
             return {...state,searchForm:action.state}
         case "clearFilterForm":
             return {...state,filterForm:action.state}
+        case "jsonPath":
+            // const {state:updatedSearchStateSearchForm} = action 
         default:
             return state;
     }
