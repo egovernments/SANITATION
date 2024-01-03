@@ -14,7 +14,7 @@ function isStartDateFocused(focusNumber) {
     return focusNumber === 0;
 }
 
-const DateRangeNew = ({ values, onFilterChange, t, labelClass, label, customStyles, inputRef}) => {
+const DateRangeNew = ({populators, values, onFilterChange, t, labelClass, label, customStyles, inputRef}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [focusedRange, setFocusedRange] = useState([0, 0]);
     const [selectionRange, setSelectionRange] = useState({
@@ -156,6 +156,10 @@ const DateRangeNew = ({ values, onFilterChange, t, labelClass, label, customStyl
                             staticRanges={staticRanges}
                             inputRanges={[]}
                             weekStartsOn={1}
+                            maxDate={populators?.maxDate}
+                            minDate={populators?.minDate}
+                            startDatePlaceholder={t("EVENTS_START_DATE_LABEL")}
+                            endDatePlaceholder={t("EVENTS_END_DATE_LABEL")}
                         />
                     </div>
                 )}

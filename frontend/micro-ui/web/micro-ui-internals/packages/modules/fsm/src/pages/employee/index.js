@@ -38,10 +38,14 @@ export const FsmBreadCrumb = ({ location }) => {
   const isNewVendor = location?.pathname?.includes("new-vendor");
   const isNewVehicle = location?.pathname?.includes("new-vehicle");
   const isNewDriver = location?.pathname?.includes("new-driver");
+  const isAddWorker = location?.pathname?.includes("new-worker");
+  const isEditWorker = location?.pathname?.includes("edit-worker");
+  const isWorkerDetails = location?.pathname?.includes("worker-details");
 
   const [search, setSearch] = useState(false);
   const [id, setId] = useState(false);
-
+  const searchParams = new URLSearchParams(location.search);
+  const paramId = searchParams.get("id");
   useEffect(() => {
     if (!search) {
       setSearch(isSearch);
@@ -62,14 +66,18 @@ export const FsmBreadCrumb = ({ location }) => {
       show: isFsm,
     },
     {
-      path: isRegistry
-        ? `/${window?.contextPath}/employee/fsm/registry?selectedTabs=VENDOR`
-        : FSTPO
-        ? `/${window?.contextPath}/employee/fsm/fstp-inbox`
-        : `/${window?.contextPath}/employee`,
+      path:
+        isVendorDetails || isVehicleDetails || isWorkerDetails || isAddWorker || isNewVehicle || isNewVendor || isVendorEdit || isEditWorker || isVehicleEdit
+          ? `/${window?.contextPath}/employee/fsm/registry`
+          : isRegistry
+          ? null
+          : FSTPO
+          ? `/${window?.contextPath}/employee/fsm/fstp-inbox`
+          : `/${window?.contextPath}/employee`,
+      query: isVehicleDetails ? "selectedTabs=VEHICLE" : isWorkerDetails ? "selectedTabs=WORKER" : "selectedTabs=VENDOR",
       content: isVehicleLog ? t("ES_TITLE_INBOX") : "FSM",
       show: isFsm,
-      isBack: true
+      isBack: isVendorDetails || isVehicleDetails || isWorkerDetails || isRegistry ? false : true,
     },
     {
       path: isNewApplication ? `/${window?.contextPath}/employee/fsm/new-application` : "",
@@ -109,8 +117,14 @@ export const FsmBreadCrumb = ({ location }) => {
       show: isRegistry && (isDriverDetails || isDriverEdit),
     },
     {
+      path: isWorkerDetails ? null : `/${window?.contextPath}/employee/fsm/registry/worker-details`,
+      query: `id=${paramId}`,
+      content: t("ES_TITLE_WORKER_DETAILS"),
+      show: isRegistry && (isWorkerDetails || isEditWorker),
+    },
+    {
       content: t("ES_TITLE_VENDOR_EDIT"),
-      show: isRegistry && (isVendorEdit || isVehicleEdit || isDriverEdit),
+      show: isRegistry && (isVendorEdit || isVehicleEdit || isDriverEdit || isEditWorker),
     },
     {
       path: `/${window?.contextPath}/employee/fsm/modify-application/` + id,
@@ -124,8 +138,10 @@ export const FsmBreadCrumb = ({ location }) => {
         ? t("ES_FSM_REGISTRY_DETAILS_TYPE_VEHICLE")
         : isNewDriver
         ? t("ES_FSM_REGISTRY_DETAILS_TYPE_DRIVER")
+        : isAddWorker
+        ? t("ES_FSM_REGISTRY_DETAILS_TYPE_WORKER")
         : null,
-      show: isRegistry && (isNewVendor || isNewVehicle || isNewDriver),
+      show: isRegistry && (isNewVendor || isNewVehicle || isNewDriver || isAddWorker),
     },
   ];
 

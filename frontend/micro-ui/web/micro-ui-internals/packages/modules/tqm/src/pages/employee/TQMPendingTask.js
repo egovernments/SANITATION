@@ -44,7 +44,7 @@ function TQMPendingTask(props) {
             date: dueDate,
           };
         });
-        return tasks;
+        return {tasks,totalCount:data?.totalCount};
       },
     },
   };
@@ -64,9 +64,10 @@ function TQMPendingTask(props) {
     tqm && (
       <NotificationComponent
         heading="Pending Tasks"
-        data={tqm}
-        viewAllRoute={`/${window?.contextPath}/employee/tqm/inbox`}
+        data={tqm?.tasks}
+        // viewAllRoute={`/${window?.contextPath}/employee/tqm/inbox`}
         actionRoute={`/${window?.contextPath}/employee/tqm/test-details`}
+        linkObj={{ pathname:`/${window?.contextPath}/employee/tqm/inbox`, state: {count:isLoading ? '-' : tqm?.totalCount} }}
       />
     )
   );

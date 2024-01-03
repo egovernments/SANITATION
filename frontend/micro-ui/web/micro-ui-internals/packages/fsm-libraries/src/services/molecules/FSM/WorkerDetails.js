@@ -6,7 +6,7 @@ const getResponse = (data, vendorDetails = {}, tenantId) => {
   const countIndex = rolesData.findIndex((obj) => obj.key === "FUNCTIONAL_ROLE_COUNT");
   const count = parseInt(rolesData[countIndex]?.value) || null;
   const groupedObjects = [];
-  const licenseNumber = data?.identifiers?.[0]?.identifierId;
+  const licenseNumber = data?.identifiers?.[0]?.identifierType === "DRIVING_LICENSE_NUMBER" ? data?.identifiers?.[0]?.identifierId : null;
   if (count) {
     for (let i = 1; i <= count; i++) {
       const group =
@@ -45,7 +45,7 @@ const getResponse = (data, vendorDetails = {}, tenantId) => {
         { title: "FSM_REGISTRY_APPLICANT_MOBILE_NO", value: data?.mobileNumber },
         { title: "ES_APPLICATION_DETAILS_LOCATION_PINCODE", value: data?.address?.[0]?.pincode },
         { title: "ES_APPLICATION_DETAILS_LOCATION_CITY", value: data?.address?.[0]?.city },
-        { title: "CS_APPLICATION_DETAILS_MOHALLA", value: data?.address?.[0]?.locality?.code },
+        { title: "CS_APPLICATION_DETAILS_MOHALLA", value: `${Digit.Utils.locale.getRevenueLocalityCode(data?.address?.[0]?.locality?.code, tenantId)}` },
         { title: "CS_APPLICATION_DETAILS_STREET", value: data?.address?.[0]?.street },
         { title: "ES_APPLICATION_DETAILS_LOCATION_DOOR", value: data?.address?.[0]?.doorNo },
         { title: "ES_APPLICATION_DETAILS_LOCATION_LANDMARK", value: data?.address?.[0]?.landmark },

@@ -13,7 +13,6 @@ import Button from "../../atoms/Button"
 
 
 const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = "search", fullConfig, data, onClose, defaultValues }) => {
-  
   const { t } = useTranslation();
   const { state, dispatch } = useContext(InboxContext)
   const [showToast,setShowToast] = useState(null)
@@ -26,9 +25,10 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
   }
 
   //define session for modal form
-  const mobileSearchSession = Digit.Hooks.useSessionStorage("MOBILE_SEARCH_MODAL_FORM", 
-    defaultValues
+  const mobileSearchSession = Digit.Hooks.useSessionStorage(`MOBILE_SEARCH_MODAL_FORM_${uiConfig?.type}_${fullConfig?.label}`, 
+  {...uiConfig?.defaultValues}
   );
+  
   const [sessionFormData, setSessionFormData, clearSessionFormData] = mobileSearchSession;
   const {
     register,
@@ -43,9 +43,11 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
     setError,
     clearErrors,
   } = useForm({
-    defaultValues: defaultValues,
+    defaultValues: {...uiConfig?.defaultValues,...sessionFormData},
+    // defaultValues:{...uiConfig?.defaultValues}
   });
   const formData = watch();
+
   const checkKeyDown = (e) => {
     const keyCode = e.keyCode ? e.keyCode : e.key ? e.key : e.which;
     if (keyCode === 13) {
@@ -61,7 +63,7 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
   //on form value change, update session data with form data
   useEffect(()=>{ 
     if (!_.isEqual(sessionFormData, formData)) {
-      const difference = _.pickBy(sessionFormData, (v, k) => !_.isEqual(formData[k], v));
+      // const difference = _.pickBy(sessionFormData, (v, k) => !_.isEqual(formData[k], v));
       setSessionFormData({ ...sessionFormData,...formData,  });
     }
   },[formData]);

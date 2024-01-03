@@ -131,7 +131,7 @@ const EditWorker = ({ parentUrl, heading }) => {
           },
         };
 
-        if (functionalRoleValue === "DRIVER") {
+        if (functionalRoleValue === "DRIVER" && rdata?.identifiers?.[0]?.identifierType === "DRIVING_LICENSE_NUMBER") {
           transformedData.licenseNo = rdata?.identifiers?.[0]?.identifierId;
         }
 
@@ -173,7 +173,7 @@ const EditWorker = ({ parentUrl, heading }) => {
           active: true,
           i18nKey: `COMMON_GENDER_${workerDetails?.gender}`,
         },
-        dob: workerDetails?.dateOfBirth.split("/").reverse().join("-"),
+        dob: workerDetails?.dateOfBirth ? workerDetails?.dateOfBirth.split("/").reverse().join("-") : null,
         pincode: workerDetails?.address?.[0]?.pincode,
         address: {
           city: {
@@ -258,8 +258,8 @@ const EditWorker = ({ parentUrl, heading }) => {
     const name = data?.name;
     const mobileNumber = data?.SelectEmployeePhoneNumber?.mobileNumber;
     const gender = data?.selectGender?.code;
-    const dob = new Date(`${data.dob}`).getTime() || new Date(`1/1/1970`).getTime();
-    const photograph = data?.documents?.img_measurement_book?.[0]?.[1]?.fileStoreId?.fileStoreId || null;
+    const dob = data.dob ? new Date(`${data.dob}`).getTime() : null;
+    const photograph = data?.documents?.img_photo?.[0]?.[1]?.fileStoreId?.fileStoreId || null;
     const pincode = data?.pincode;
     const city = data?.address?.city?.name;
     const locality = data?.address?.locality?.code;
@@ -329,6 +329,17 @@ const EditWorker = ({ parentUrl, heading }) => {
     // Adding the employer information (assuming it's a constant value like "PRIVATE_VENDOR")
     roleDetailsArray.push({ key: "EMPLOYER", value: employer });
 
+    const checkDuplicacy = roleDetailsArray.filter((item) => item.key.startsWith("FUNCTIONAL_ROLE")).map((item) => item.value);
+    const isDuplicate = checkDuplicacy.length === new Set(checkDuplicacy).size;
+
+    if (!isDuplicate) {
+      setShowToast({ key: "error", action: `ES_FSM_WORKER_DUPLICATE_ROLE` });
+      setTimeout(() => {
+        closeToast();
+      }, 5000);
+      return;
+    }
+
     const formData = {
       Individual: {
         ...workerinfo,
@@ -395,8 +406,7 @@ const EditWorker = ({ parentUrl, heading }) => {
         setTimeout(closeToast, 5000);
       },
       onSuccess: async (data, variables) => {
-        // setShowToast({ key: "success", action: "ADD_WORKER" });
-        queryClient.invalidateQueries("FSM_WORKER_SEARCH");
+        // queryClient.invalidateQueries("FSM_WORKER_SEARCH");
         // if (roleDetails.some((entry) => entry.plant)) {
         //   try {
         //     const PlantCode = roleDetails
@@ -432,6 +442,8 @@ const EditWorker = ({ parentUrl, heading }) => {
             console.error("Error updating data:", updateError);
             setShowToast({ key: "error", action: "UPDATE_WORKER_VENDOR_FAILED" });
           }
+        } else {
+          setShowToast({ key: "success", action: "EDIT_WORKER_SUCCESS" });
         }
         setTimeout(() => {
           closeToast();
