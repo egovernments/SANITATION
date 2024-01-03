@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Header, Loader } from "@egovernments/digit-ui-react-components";
 import { InboxSearchComposer } from "@egovernments/digit-ui-module-utilities";
 import { useLocation } from "react-router-dom";
-// import { configs } from "../../config/Employee/inbox";
+import { FSMInboxConfig } from "./configs/FSMInboxConfig";
 
 const Inbox = () => {
   const { t } = useTranslation();
@@ -14,30 +14,14 @@ const Inbox = () => {
   const [pageConfig, setPageConfig] = useState(null);
   // const moduleName = Digit.Utils.getConfigModuleName();
   const tenant = Digit.ULBService.getStateId();
-  const { isLoading, data } = Digit.Hooks.useCustomMDMS(
-    tenant,
-    "commonUiConfig",
-    [
-      {
-        name: "FSMInboxConfig",
-      },
-    ],
-    {
-      select: (data) => {
-        return data;
-      },
-    }
-  );
-  const updatedConfig = useMemo(() => Digit.Utils.preProcessMDMSConfigInboxSearch(t, pageConfig, "sections.search.uiConfig.fields", {}), [
-    data,
-    pageConfig,
-  ]);
+  const data = FSMInboxConfig();
+  const updatedConfig = useMemo(() => Digit.Utils.preProcessMDMSConfigInboxSearch(t, pageConfig, "sections.search.uiConfig.fields", {}), [data, pageConfig]);
 
   useEffect(() => {
     setPageConfig(_.cloneDeep(data?.["commonUiConfig"]?.FSMInboxConfig?.[0]));
   }, [data, location]);
 
-  if (isLoading || !pageConfig) return <Loader />;
+  if (!data || !pageConfig) return <Loader />;
   return (
     <React.Fragment>
       <Header styles={{ fontSize: "32px" }}>
