@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.kafka.common.protocol.types.Field;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.mdms.model.MasterDetail;
 import org.egov.mdms.model.MdmsCriteria;
@@ -23,6 +24,9 @@ import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.json.JsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 import com.jayway.jsonpath.spi.mapper.MappingProvider;
+
+import static org.egov.vendor.util.VendorConstants.FSM_MODULE;
+import static org.egov.vendor.util.VendorConstants.VENDOR_MODULE;
 
 @Component
 public class VendorUtil {
@@ -56,8 +60,8 @@ public class VendorUtil {
 		});
 	}
 
-	public Object mDMSCall(RequestInfo requestInfo, String tenantId) {
-		MdmsCriteriaReq mdmsCriteriaReq = getMDMSRequest(requestInfo, tenantId);
+	public Object mDMSCall(RequestInfo requestInfo, String tenantId, String module) {
+		MdmsCriteriaReq mdmsCriteriaReq = getMDMSRequest(requestInfo, tenantId, module);
 		return serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
 	}
 
@@ -66,9 +70,14 @@ public class VendorUtil {
 				.append(vendorConfiguration.getMdmsEndPoint());
 	}
 
-	public MdmsCriteriaReq getMDMSRequest(RequestInfo requestInfo, String tenantId) {
+	public MdmsCriteriaReq getMDMSRequest(RequestInfo requestInfo, String tenantId, String module) {
 
-		List<ModuleDetail> moduleRequest = getVendorModuleRequest();
+		List<ModuleDetail> moduleRequest = null;
+		if(module.equals(VENDOR_MODULE))
+			moduleRequest = getVendorModuleRequest();
+		else if(module.equals(FSM_MODULE))
+			moduleRequest = getSanitationWorkerMDMSRequest();
+
 		List<ModuleDetail> moduleDetails = new LinkedList<>();
 		moduleDetails.addAll(moduleRequest);
 		MdmsCriteria mdmsCriteria = MdmsCriteria.builder().moduleDetails(moduleDetails).tenantId(tenantId).build();
@@ -85,10 +94,26 @@ public class VendorUtil {
 		masterDtls.add(
 				MasterDetail.builder().name(VendorConstants.VENDOR_PAYMENT_PREFERENCE).filter(activeFilter).build());
 		moduleDtls.add(
-				ModuleDetail.builder().masterDetails(masterDtls).moduleName(VendorConstants.VENDOR_MODULE).build());
+				ModuleDetail.builder().masterDetails(masterDtls).moduleName(VENDOR_MODULE).build());
 
 		return moduleDtls;
 
+	}
+
+	public List<ModuleDetail> getSanitationWorkerMDMSRequest()
+	{
+		final String activeFilter = "$.[?(@.active==true)]";
+		List<ModuleDetail> moduleDtls = new ArrayList<>();
+
+		List<MasterDetail> masterDtls = new ArrayList<>();
+		masterDtls.add(MasterDetail.builder().name(VendorConstants.SW_FUNCTIONAL_ROLES).filter(activeFilter).build());
+		masterDtls.add(
+				MasterDetail.builder().name(VendorConstants.SW_SKILLS).filter(activeFilter).build());
+
+		moduleDtls.add(
+				ModuleDetail.builder().masterDetails(masterDtls).moduleName(VendorConstants.FSM_MODULE).build());
+
+		return moduleDtls;
 	}
 
 	public AuditDetails getAuditDetails(String by, Boolean isCreate) {

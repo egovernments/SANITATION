@@ -1,17 +1,14 @@
 package org.egov.fsm.config;
 
 import java.util.TimeZone;
-
 import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @AllArgsConstructor
@@ -276,7 +273,7 @@ public class FSMConfiguration {
 		
 		
 		// CONFIGURATIONS
-		
+
 
 		@Value("${egov.fsm.avg.rating.comment.mandatory}")
 		private String averageRatingCommentMandatory;
@@ -284,4 +281,17 @@ public class FSMConfiguration {
 		@Value("${persister.update.fsm.vehicle.trip.details.topic}")
 		private String vehicleUpdateTripToInactive;
 		
+		@Value("${is.external.workflow.enabled}")
+		private Boolean isExternalWorkFlowEnabled;
+		
+		// FSM Event topic
+		@Value("${fsm.event.kafka.topic}")
+		private String fsmEventTopic;
+
+	@Value("${persister.create.fsm.worker.topic}")
+	private String createFsmWorkerTopic;
+
+	@Value("${persister.update.fsm.worker.topic}")
+	private String updateFsmWorkerTopic;
+
 }

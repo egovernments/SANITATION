@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.egov.fsm.consumer.FSMEventConsumer;
 import org.egov.fsm.service.FSMInboxService;
 import org.egov.fsm.util.ResponseInfoFactory;
+import org.egov.fsm.web.model.FSMEvent;
 import org.egov.fsm.web.model.RequestInfoWrapper;
 import org.egov.fsm.web.model.VehicleCustomResponse;
 import org.egov.fsm.web.model.vehicle.trip.VehicleTripSearchCriteria;
@@ -26,17 +28,28 @@ public class FSMInboxController {
 
 	@Autowired
 	private ResponseInfoFactory responseInfoFactory;
+	
+	@Autowired
+	private FSMEventConsumer consumer;
 
 	@PostMapping(value = "/fetchApplicationIds")
-    public ResponseEntity<VehicleCustomResponse> fetchApplicationIds(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,@Valid @RequestBody VehicleTripSearchCriteria criteria) {
+	public ResponseEntity<VehicleCustomResponse> fetchApplicationIds(
+			@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
+			@Valid @RequestBody VehicleTripSearchCriteria criteria) {
 
 		List<String> fsmApplicationIdList = fsmInboxService.fetchApplicationIds(criteria);
 
 		VehicleCustomResponse response = VehicleCustomResponse.builder().applicationIdList(fsmApplicationIdList)
-                .responseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true))
-                .build();
+				.responseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(),
+						true))
+				.build();
 		return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+	}
 
+	@PostMapping(value = "/_test")
+	public ResponseEntity<?> test(@Valid @RequestBody FSMEvent event) {
+		consumer.pushEvent(event);
+		return new ResponseEntity<>(null, HttpStatus.OK);
 
+	}
 }

@@ -1,16 +1,13 @@
 package org.egov.vendor.web.model;
 
-import java.util.List;
-
-import org.springframework.util.CollectionUtils;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.CollectionUtils;
 
 @Getter
 @Setter
@@ -18,73 +15,84 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class VendorSearchCriteria {
-	@JsonProperty("offset")
-	private Integer offset;
 
-	@JsonProperty("limit")
-	private Integer limit;
+  @JsonProperty("offset")
+  private Integer offset;
 
-	@JsonProperty("tenantId")
-	private String tenantId;
+  @JsonProperty("limit")
+  private Integer limit;
 
-	@JsonProperty("mobileNumber")
-	private String mobileNumber;
+  @JsonProperty("tenantId")
+  private String tenantId;
 
-	@JsonProperty("vehicleType")
-	private String vehicleType;
+  @JsonProperty("mobileNumber")
+  private String mobileNumber;
 
-	@JsonProperty("ownerIds")
-	private List<String> ownerIds;
+  @JsonProperty("vehicleType")
+  private String vehicleType;
 
-	@JsonProperty("vehicleRegistrationNumber")
-	private List<String> vehicleRegistrationNumber;
+  @JsonProperty("ownerIds")
+  private List<String> ownerIds;
 
-	@JsonProperty("vehicleIds")
-	private List<String> vehicleIds;
+  @JsonProperty("vehicleRegistrationNumber")
+  private List<String> vehicleRegistrationNumber;
 
-	@JsonProperty("name")
-	private List<String> name;
+  @JsonProperty("vehicleIds")
+  private List<String> vehicleIds;
 
-	@JsonProperty("ids")
-	private List<String> ids;
+  @JsonProperty("name")
+  private List<String> name;
 
-	@JsonProperty("vehicleCapacity")
-	private String vehicleCapacity;
+  @JsonProperty("agencyType")
+  private String agencyType;
 
-	@JsonProperty("status")
-	private List<String> status;
+  @JsonProperty("ids")
+  private List<String> ids;
 
-	@JsonProperty("driverIds")
-	private List<String> driverIds;
+  @JsonProperty("vehicleCapacity")
+  private String vehicleCapacity;
 
-	@JsonProperty("sortBy")
-	private SortBy sortBy;
+  @JsonProperty("status")
+  private List<String> status;
 
-	@JsonProperty("sortOrder")
-	private SortOrder sortOrder;
+  @JsonProperty("driverIds")
+  private List<String> driverIds;
 
-	public enum SortOrder {
-		ASC, DESC
-	}
+  @JsonProperty("individualIds")
+  private List<String> individualIds;
 
-	public enum SortBy {
-		tenantId, mobileNumber, vehicleType, ownerIds, vehicleRegistrationNumber, vehicleIds, name, ids,
-		vehicleCapacity, status, driverIds, createdTime,vendor_createdTime
-	}
+  @JsonProperty("sortBy")
+  private SortBy sortBy;
 
-	public boolean isEmpty() {
-		return (this.tenantId == null && this.offset == null && this.limit == null && this.mobileNumber == null
-				&& CollectionUtils.isEmpty(this.vehicleRegistrationNumber) && this.ownerIds == null
-				&& CollectionUtils.isEmpty(this.name) && CollectionUtils.isEmpty(this.vehicleIds)
-				&& CollectionUtils.isEmpty(this.ids) && this.vehicleType == null && this.vehicleCapacity == null
-				&& CollectionUtils.isEmpty(this.status));
-	}
+  @JsonProperty("sortOrder")
+  private SortOrder sortOrder;
 
-	public boolean tenantIdOnly() {
-		return (this.tenantId != null && this.mobileNumber == null && this.ownerIds == null
-				&& CollectionUtils.isEmpty(this.vehicleRegistrationNumber) && CollectionUtils.isEmpty(this.vehicleIds)
-				&& CollectionUtils.isEmpty(this.name) && CollectionUtils.isEmpty(this.ids) && this.vehicleType == null
-				&& this.vehicleCapacity == null && CollectionUtils.isEmpty(this.status));
-	}
+  public boolean isEmpty() {
+    return (this.tenantId == null && this.offset == null && this.limit == null
+        && this.mobileNumber == null
+        && CollectionUtils.isEmpty(this.vehicleRegistrationNumber) && this.ownerIds == null
+        && CollectionUtils.isEmpty(this.name) && CollectionUtils.isEmpty(this.vehicleIds)
+        && CollectionUtils.isEmpty(this.ids) && this.vehicleType == null
+        && this.vehicleCapacity == null
+        && CollectionUtils.isEmpty(this.status));
+  }
+
+  public boolean tenantIdOnly() {
+    return (this.tenantId != null && this.mobileNumber == null && this.ownerIds == null
+        && CollectionUtils.isEmpty(this.vehicleRegistrationNumber) && CollectionUtils.isEmpty(
+        this.vehicleIds)
+        && CollectionUtils.isEmpty(this.name) && CollectionUtils.isEmpty(this.ids)
+        && this.vehicleType == null
+        && this.vehicleCapacity == null && CollectionUtils.isEmpty(this.status));
+  }
+
+  public enum SortOrder {
+    ASC, DESC
+  }
+
+  public enum SortBy {
+    tenantId, mobileNumber, vehicleType, ownerIds, vehicleRegistrationNumber, vehicleIds, name, ids,
+    vehicleCapacity, status, driverIds, createdTime, vendor_createdTime
+  }
 
 }
