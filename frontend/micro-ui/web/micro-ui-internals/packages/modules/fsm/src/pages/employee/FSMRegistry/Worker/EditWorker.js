@@ -390,10 +390,19 @@ const EditWorker = ({ parentUrl, heading }) => {
           username: mobileNumber,
           tenantId: tenantId,
           roles: roleDetails
-            ? Object.values(roleDetails[0].sys_role).map((role) => ({
-                code: role.code,
-                tenantId: tenantId,
-              }))
+            ? // Object.values(roleDetails[0].sys_role).map((role) => ({
+              //     code: role.code,
+              //     tenantId: tenantId,
+              //   }))
+              roleDetails
+                .map((item) => Object.values(item.sys_role))
+                .flat()
+                .reduce((result, role) => {
+                  if (!result.some((entry) => entry.code === role.code)) {
+                    result.push({ code: role.code, tenantId });
+                  }
+                  return result;
+                }, [])
             : [{ code: "SANITATION_WORKER", tenantId }],
           type: "CITIZEN",
         },
@@ -447,6 +456,7 @@ const EditWorker = ({ parentUrl, heading }) => {
         }
         setTimeout(() => {
           closeToast();
+          queryClient.invalidateQueries("FSM_WORKER_SEARCH");
           history.push(`/${window?.contextPath}/employee/fsm/registry/worker-details?id=${id}`);
         }, 5000);
       },
