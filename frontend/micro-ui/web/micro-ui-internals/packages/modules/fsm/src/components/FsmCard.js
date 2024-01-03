@@ -68,6 +68,7 @@ const FSMCard = () => {
   const filters = {
     sortBy: 'createdTime',
     sortOrder: 'DESC',
+    tenantId: tenantId,
     total: true,
   };
 

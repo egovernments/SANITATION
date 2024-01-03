@@ -127,6 +127,18 @@ export const FsmBreadCrumb = ({ location }) => {
       show: isRegistry && (isVendorEdit || isVehicleEdit || isDriverEdit || isEditWorker),
     },
     {
+      content: t("ES_TITLE_WORKER_EDIT"),
+      show: isRegistry && isEditWorker,
+    },
+    {
+      content: t("ES_TITLE_WORKER_ADD"),
+      show: isRegistry && isAddWorker,
+    },
+    {
+      content: t("ES_TITLE_WORKER_DETAILS"),
+      show: isRegistry && isWorkerDetails,
+    },
+    {
       path: `/${window?.contextPath}/employee/fsm/modify-application/` + id,
       content: t("ES_FSM_APPLICATION_UPDATE"),
       show: isModifyApplication,

@@ -92,7 +92,9 @@ const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userT
                     {...input.validation}
                   />
                 </div>
-                <div>{iserror && <CardLabelError style={{ width: "100%",position:"sticky",zIndex:"1000",marginTop:"-20px" }}>{t(input.populators.error)}</CardLabelError>}</div>
+                <div>
+                  {iserror && <CardLabelError style={{ width: "100%", position: "sticky", zIndex: "1000", marginTop: "-20px" }}>{t(input.populators.error)}</CardLabelError>}
+                </div>
                 <div>
                   {isMobilePresent && (
                     <CardLabelError style={{ width: "100%",position:"sticky",zIndex:"1000",marginTop:"-20px" }}>

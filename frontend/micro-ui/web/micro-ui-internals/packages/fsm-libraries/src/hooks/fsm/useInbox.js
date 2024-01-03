@@ -12,6 +12,7 @@ const useFSMInbox = (tenantId, filters, config = {}, overRideUUID = false) => {
       moduleName: "fsm",
     },
     moduleSearchCriteria: {
+      tenantId,
       ...(mobileNumber ? { mobileNumber } : {}),
       ...(applicationNos ? { applicationNos } : {}),
       ...(sortBy ? { sortBy } : {}),

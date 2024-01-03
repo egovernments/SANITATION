@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 import Header from "./Header";
 import Button from "./Button";
 import { useHistory, Link } from "react-router-dom";
-import { CloseSvg, NotificationBell } from "./svgindex";
+import { CloseSvg, NoResultsFoundIcon, NotificationBell } from "./svgindex";
 
 
 const Notification = ({ actions }) => {
@@ -11,6 +11,7 @@ const Notification = ({ actions }) => {
     const history = useHistory();
     const [notifications, setNotifications] = useState([]);
     const [showall, setshowall] = useState(false);
+    const isMobile = window.Digit.Utils.browser.isMobile();
 
     useEffect(() => {
         setNotifications(actions || []);
@@ -39,20 +40,21 @@ const Notification = ({ actions }) => {
                 <Header >{t("ES_TQM_NOTIFICATIONS")}</Header>
                 <div className="clear-all-link" onClick={handleClearAll}>{t("ES_CLEAR_ALL")}</div>
             </div>
-            {displayNotifications.length > 0 &&
+            {displayNotifications.length > 0 ?
                 <div className="NotificationItem">
                     <div className="Notification">
 
                         {displayNotifications.map((item, index) => (
                             <div key={index} className="WhatsNewCard">
+                                {isMobile && <p>{item.timePastAfterEventCreation}</p>}
                                 <div className="NotificationHeader">
                                     <h1>{t(item.header)}</h1>
-                                    <CloseSvg onClick={() => handleClearNotification(index)} />
+                                    {!isMobile && <CloseSvg onClick={() => handleClearNotification(index)} />}
                                 </div>
                                 <div className="notificationContent">
                                     <div>
                                         <p>{t(item.eventNotificationText)}</p>
-                                        <p>{item.timePastAfterEventCreation}</p>
+                                        {!isMobile && <p>{item.timePastAfterEventCreation}</p>}
                                     </div>
                                     <div className="button-container">
                                     <Link to={`/${window.contextPath}/employee/tqm/view-test-results?id=${item?.actionUrl?.split('testId=')[1]}`}>
@@ -70,6 +72,10 @@ const Notification = ({ actions }) => {
                             </div>
                         )}
                     </div>
+                </div> : 
+                <div className="no-results-found">
+                    <NoResultsFoundIcon />
+                    <p className="text">{t("ES_TQM_NO_NOTIFICATION")}</p>
                 </div>
             }
         </div>
