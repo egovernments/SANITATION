@@ -124,7 +124,8 @@ const WorkerDetails = (props) => {
 
   useEffect(() => {
     switch (selectedAction) {
-      case "DELETE":
+      case "DELETE_SW":
+      case "ENABLE_SW":
       case "ADD_VENDOR":
       case "EDIT_VENDOR":
       case "DELETE_VENDOR":
@@ -144,7 +145,8 @@ const WorkerDetails = (props) => {
 
   const handleModalAction = () => {
     switch (selectedAction) {
-      case "DELETE":
+      case "DELETE_SW":
+      case "ENABLE_SW":
         return handleDeleteWorker();
       case "DELETE_VENDOR":
         return handleDeleteVendor();
@@ -162,17 +164,17 @@ const WorkerDetails = (props) => {
     const formData = {
       Individual: {
         ...workerdetails,
-        isSystemUserActive: false,
+        isSystemUserActive: selectedAction === "ENABLE_SW" ? true : false,
       },
     };
 
     mutateUpdateWorker(formData, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: "DELETE_WORKER_FAILED" });
+        setShowToast({ key: "error", action: selectedAction === "ENABLE_SW" ? "ENABLE_WORKER_FAILED" : "DELETE_WORKER_FAILED" });
         setTimeout(closeToast, 5000);
       },
       onSuccess: (data, variables) => {
-        setShowToast({ key: "success", action: "DELETE_WORKER" });
+        setShowToast({ key: "success", action: selectedAction === "ENABLE_SW" ? "ENABLE_WORKER" : "DELETE_WORKER" });
         queryClient.invalidateQueries("DSO_SEARCH");
 
         setTimeout(() => {
@@ -286,7 +288,10 @@ const WorkerDetails = (props) => {
 
   const modalHeading = () => {
     switch (selectedAction) {
-      case "DELETE":
+      case "DELETE_SW":
+        return "ES_FSM_REGISTRY_DELETE_SW_POPUP_HEADER";
+      case "ENABLE_SW":
+        return "ES_FSM_REGISTRY_ENABLE_SW_POPUP_HEADER";
       case "DELETE_VENDOR":
         return "ES_FSM_REGISTRY_DELETE_POPUP_HEADER";
       case "ADD_VENDOR":
@@ -299,7 +304,21 @@ const WorkerDetails = (props) => {
   };
 
   const renderModalContent = () => {
-    if (selectedAction === "DELETE" || selectedAction === "DELETE_VENDOR") {
+    if (selectedAction === "DELETE_SW" || selectedAction === "ENABLE_SW") {
+      return (
+        <ConfirmationBox
+          t={t}
+          title={workerData?.[0]?.workerData?.isSystemUserActive ? "ES_FSM_REGISTRY_DELETE_SW_TEXT" : "ES_FSM_REGISTRY_ENABLE_SW_TEXT"}
+          styles={{
+            height: "6rem",
+          }}
+        />
+        // <div className="confirmation_box">
+        //   <span>{t(`ES_FSM_REGISTRY_DELETE_TEXT`)} </span>
+        // </div>
+      );
+    }
+    if (selectedAction === "DELETE_VENDOR") {
       return (
         <ConfirmationBox
           t={t}
@@ -477,12 +496,24 @@ const WorkerDetails = (props) => {
               headerBarEnd={<CloseBtn onClick={closeModal} />}
               actionCancelLabel={t("CS_COMMON_CANCEL")}
               actionCancelOnSubmit={closeModal}
-              actionSaveLabel={t(selectedAction === "DELETE" ? "ES_EVENT_DELETE_SW" : selectedAction === "DELETE_VENDOR" ? "ES_EVENT_DELETE" : "CS_COMMON_SUBMIT")}
+              actionSaveLabel={t(
+                selectedAction === "DELETE_SW"
+                  ? "ES_EVENT_DELETE_SW"
+                  : selectedAction === "ENABLE_SW"
+                  ? "ES_EVENT_ENABLE_SW"
+                  : selectedAction === "DELETE_VENDOR"
+                  ? "ES_EVENT_DELETE"
+                  : "CS_COMMON_SUBMIT"
+              )}
               actionSaveOnSubmit={handleModalAction}
               formId="modal-action"
               headerBarMainStyle={{ marginBottom: "0px" }}
             >
-              {selectedAction === "DELETE" || selectedAction === "DELETE_VENDOR" ? renderModalContent() : <Card style={{ boxShadow: "none" }}>{renderModalContent()}</Card>}
+              {selectedAction === "DELETE_SW" || selectedAction === "ENABLE_SW" || selectedAction === "DELETE_VENDOR" ? (
+                renderModalContent()
+              ) : (
+                <Card style={{ boxShadow: "none" }}>{renderModalContent()}</Card>
+              )}
             </Modal>
           )}
           {showToast && (
@@ -494,7 +525,14 @@ const WorkerDetails = (props) => {
             />
           )}
           <ActionBar style={{ zIndex: "19" }}>
-            {displayMenu ? <Menu localeKeyPrefix={"ES_FSM_REGISTRY_ACTION"} options={["EDIT", "DELETE", "HOME"]} t={t} onSelect={onActionSelect} /> : null}
+            {displayMenu ? (
+              <Menu
+                localeKeyPrefix={"ES_FSM_REGISTRY_ACTION"}
+                options={["EDIT", workerData?.[0]?.workerData?.isSystemUserActive ? "DELETE_SW" : "ENABLE_SW", "HOME"]}
+                t={t}
+                onSelect={onActionSelect}
+              />
+            ) : null}
             <SubmitBar label={t("ES_COMMON_TAKE_ACTION")} onSubmit={() => setDisplayMenu(!displayMenu)} />
           </ActionBar>
         </React.Fragment>
