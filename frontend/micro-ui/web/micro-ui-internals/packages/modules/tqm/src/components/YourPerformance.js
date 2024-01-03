@@ -42,7 +42,7 @@ const YourPerformance = ({ performance, dateRange }) => {
     {
       icon: <EmailIcon />,
       label: t("SHARE_IMG_EMAIL"),
-      onClick: () => {
+      onClick: (e) => {
         setShowOptions(!showOptions);
         setTimeout(() => {
           return Digit.ShareFiles.Image(Digit.ULBService.getCurrentTenantId(), fullPageRef, t("ES_PERFORMANCE"), "mail");
@@ -52,7 +52,7 @@ const YourPerformance = ({ performance, dateRange }) => {
     {
       icon: <WhatsappIcon />,
       label: t("SHARE_IMG_WHATSAPP"),
-      onClick: () => {
+      onClick: (e) => {
         setShowOptions(!showOptions);
         setTimeout(() => {
           return Digit.ShareFiles.Image(Digit.ULBService.getCurrentTenantId(), fullPageRef, t("ES_PERFORMANCE"), "whatsapp");

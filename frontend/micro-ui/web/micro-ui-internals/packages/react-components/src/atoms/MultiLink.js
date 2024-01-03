@@ -1,15 +1,29 @@
-import React, { forwardRef, useCallback, useRef } from "react";
+import React, { forwardRef, useCallback, useEffect, useRef } from "react";
 import LinkButton from "./LinkButton";
 import { PrimaryDownlaodIcon } from "./svgindex";
 import { useTranslation } from "react-i18next";
 
-const MultiLink = forwardRef(({ className, onHeadClick, displayOptions = false, options, label, icon, showOptions, downloadBtnClassName, downloadOptionsClassName, optionsClassName, style, optionsStyle, reportStyles, optionStyle }, ref) => {
+const MultiLink = forwardRef(({ className, onHeadClick, displayOptions = false, options, label, icon,setShowOptions, showOptions, downloadBtnClassName, downloadOptionsClassName, optionsClassName, style, optionsStyle, reportStyles, optionStyle }, ref) => {
   const { t } = useTranslation();
   const menuRef = useRef();
+  const parRef = useRef();
   const handleOnClick = useCallback(() => {
-    showOptions?.(false)
+    setShowOptions(false)
   }, [])
-  Digit.Hooks.useClickOutside(menuRef, handleOnClick, !displayOptions);
+
+  const handleClickOutside = (event) => {
+    if (parRef.current && !parRef.current.contains(event.target)) {
+      handleOnClick();
+    }
+  };
+  
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   const MenuWrapper = React.forwardRef((props, ref) => {
     return <div ref={ref} className={`multilink-optionWrap ${optionsClassName} ${downloadOptionsClassName}`} style={optionsStyle}>
@@ -23,7 +37,7 @@ const MultiLink = forwardRef(({ className, onHeadClick, displayOptions = false, 
   })
 
   return (
-    <div className={className} ref={ref} style={reportStyles}>
+    <div className={className} ref={parRef} style={reportStyles}>
       <div className={`multilink-labelWrap ${downloadBtnClassName}`} onClick={onHeadClick} style={style}>
         {icon ? icon : <PrimaryDownlaodIcon />}
         <LinkButton label={label || t("CS_COMMON_DOWNLOAD")} className="multilink-link-button multilink-label" />

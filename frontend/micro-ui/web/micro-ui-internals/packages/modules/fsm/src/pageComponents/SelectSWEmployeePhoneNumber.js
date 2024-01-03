@@ -92,10 +92,12 @@ const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userT
                     {...input.validation}
                   />
                 </div>
-                <div>{iserror && <CardLabelError style={{ width: "100%",position:"sticky",zIndex:"1000",marginTop:"-20px" }}>{t(input.populators.error)}</CardLabelError>}</div>
+                <div>
+                  {iserror && <CardLabelError style={{ width: "100%", position: "sticky", zIndex: "1000", marginTop: "-20px" }}>{t(input.populators.error)}</CardLabelError>}
+                </div>
                 <div>
                   {isMobilePresent && (
-                    <CardLabelError style={{ width: "100%",position:"sticky",zIndex:"1000",marginTop:"-20px" }}>
+                    <CardLabelError style={{ width: "100%", position: "sticky", zIndex: "1000", marginTop: "-20px" }}>
                       {t("FSM_REGISTRY_WORKER_MOBILE_EXIST_ERROR", { SW: isMobilePresent })}
                       <Link to={`/${window?.contextPath}/employee/fsm/registry/worker-details?id=${checkWorker?.Individual?.[0]?.individualId}`}>
                         {t("FSM_REGISTRY_WORKER_LINK_VIEW_DETAILS")}

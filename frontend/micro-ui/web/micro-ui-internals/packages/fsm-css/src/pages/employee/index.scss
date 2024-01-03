@@ -557,6 +557,10 @@
       }
     }
   }
+  .sidebar-list:last-child{
+    position: fixed;
+    bottom: 0;
+  }
 }
 .sections-parent.inbox {
   .details-container {
@@ -614,4 +618,17 @@ video::-webkit-media-controls-play-button {
   justify-content: center;
   align-items: center;
   margin-left: 10px;
+}
+.inbox-search-links-container {
+  border-radius: 4px;
+  .contents {
+    .link {
+      padding-left: 0;
+    }
+  }
+}
+.inbox-search-component-wrapper {
+  .search-component-table {
+    border-radius: 4px;
+  }
 }
