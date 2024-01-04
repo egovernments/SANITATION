@@ -3,7 +3,7 @@
 Process Quality Monitoring Service
 
 ## DB UML Diagram
-![img.png](img.png)
+![img.png](pqm-db-diagram.png)
 
 ## Service Dependencies
 
@@ -14,6 +14,7 @@ Process Quality Monitoring Service
 - user-events
 - notification-service
 - filestore
+- pqm-anomaly-finder
 
 ## Swagger API Contract
 Link to the swagger API contract [yaml](https://raw.githubusercontent.com/egovernments/municipal-services/master/docs/fsm/Fsm_Apply_Contract.yaml) 
@@ -27,6 +28,7 @@ Link to the postman collection [here](https://api.postman.com/collections/134284
 - The service will evaluate the uploaded test values against benchmarks and produce result (FAIL/PASS) status. 
 - Test results will be further processed for anomaly analysis. 
 - The service can perform two types of test: Manual Test (Lab), and Automatic Test (IoT-based).
+- The service also provides functionality of mapping plant codes to plant operators and ULB admins
 
 ## API Details
 
