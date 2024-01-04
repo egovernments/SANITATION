@@ -101,6 +101,7 @@ export const configAcceptDso = ({
                   selected={selectedDriver}
                   disable={drivers?.length > 0 ? false : true}
                   placeholder={t("SW_SEARCH_BY_NAME_ID")}
+                  optionCardStyles={{"maxHeight":"16rem"}}
                 />
                 {(drivers?.length===0 || !drivers) ? (
                   <CardLabelError style={{marginTop: "-14px"}}>
@@ -132,6 +133,7 @@ export const configAcceptDso = ({
                   }}
                   optionsKey={"optionsKey"}
                   t={t}
+                  ServerStyle={{"maxHeight":"12rem"}}
                   // defaultLabel={t("SW_SEARCH_BY_NAME_ID")}
                   // defaultLabelClassName={"as-placeholder"}
                 />
