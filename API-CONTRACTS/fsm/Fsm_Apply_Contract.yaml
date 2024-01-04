@@ -81,27 +81,27 @@ paths:
           in: query
           description: limit for the pagination results
           schema:
-            type: integer
+           type: integer
         - name: sortOrder
           in: query
           description: sort the search results in Ascending or descending order
           schema:
-            type: string
-            enum:
-              - ASC
-              - DESC
+           type: string
+           enum:
+            - ASC
+            - DESC
         - name: sortBy
           in: query
           description: sort the search results by fields
           schema:
-            type: string
-            enum:
-              - applicationStatus
-              - applicationNumber
-              - propertyUsage
-              - vehicle
-              - locality
-              - createdTime
+           type: string
+           enum:
+            - applicationStatus
+            - applicationNumber
+            - propertyUsage
+            - vehicle
+            - locality
+            - createdTime
       responses:
         '202':
           description: Successful response sorted by reverse chrnological order of creation
@@ -263,24 +263,24 @@ paths:
           in: query
           description: limit for the pagination results
           schema:
-            type: integer
+           type: integer
         - name: sortOrder
           in: query
           description: sort the search results in Ascending or descending order
           schema:
-            type: string
-            enum:
-              - ASC
-              - DESC
+           type: string
+           enum:
+            - ASC
+            - DESC
         - name: sortBy
           in: query
           description: sort the search results by fields
           schema:
-            type: string
-            enum:
-              - id
-              - propertyType
-              - capacity
+           type: string
+           enum:
+            - id
+            - propertyType
+            - capacity
         - name : ids
           in: query
           description: serch by ids of the billingslab
