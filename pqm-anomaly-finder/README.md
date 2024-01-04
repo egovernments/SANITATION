@@ -2,7 +2,7 @@
 
 Process Quality Monitoring Anomaly Finder Service
 
-## DB UML Diagram
+## DB ER Diagram
 ![img_1.png](anomaly-db-diagram.png)
 
 ## Service Dependencies

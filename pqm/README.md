@@ -2,7 +2,7 @@
 
 Process Quality Monitoring Service
 
-## DB UML Diagram
+## DB ER Diagram
 ![img.png](pqm-db-diagram.png)
 
 ## Service Dependencies
