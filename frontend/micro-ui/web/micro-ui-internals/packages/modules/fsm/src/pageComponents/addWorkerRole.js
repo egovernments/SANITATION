@@ -246,7 +246,7 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
   }, [fnRoleSelected]);
 
   const selectFunctionalRole = (value) => {
-    setjurisdictions((pre) => pre.map((item) => (item.key === jurisdiction.key ? { ...item, fn_role: value } : item)));
+    setjurisdictions((pre) => pre.map((item) => (item.key === jurisdiction.key ? { ...item, fn_role: value, roles: null } : item)));
     setFnRoleSelected(value);
   };
 
