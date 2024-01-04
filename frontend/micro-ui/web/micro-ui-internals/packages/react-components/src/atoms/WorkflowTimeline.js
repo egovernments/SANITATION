@@ -97,6 +97,7 @@ const WorkflowTimeline = ({ businessService, tenantId,applicationNo, timelineSta
                                                     {
                                                         index === 0 && !checkpoint?.isTerminateState &&
                                                             <React.Fragment>
+                                                                <div className="checkpoint-connect-wrap">
                                                                 <CheckPoint
                                                                     keyValue={index}
                                                                     isCompleted={index === 0}
@@ -106,6 +107,8 @@ const WorkflowTimeline = ({ businessService, tenantId,applicationNo, timelineSta
                                                                     // customChild={getTimelineCaptions(checkpoint, -1)}
                                                                     customClassName="checkpoint-connect-wrap"
                                                                 />
+                                                                <div class="checkpoint-connect"></div>
+                                                                </div>
                                                             </React.Fragment>
                                                     }   
                                                         <CheckPoint
