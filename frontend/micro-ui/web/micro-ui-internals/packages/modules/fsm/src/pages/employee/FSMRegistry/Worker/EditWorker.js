@@ -90,7 +90,7 @@ const EditWorker = ({ parentUrl, heading }) => {
   const { data: vendorData, isLoading: isVendorLoading, isSuccess: isVendorSuccess, error: vendorError, refetch: refetchVendor } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: "name", sortOrder: "ASC", status: "ACTIVE", individualIds: workerData?.Individual?.[0]?.id },
-    { enabled: workerData && !WorkerLoading }
+    { enabled: workerData && !WorkerLoading, cacheTime: 0 }
   );
 
   const {
@@ -159,7 +159,7 @@ const EditWorker = ({ parentUrl, heading }) => {
   }
 
   useEffect(() => {
-    if (workerData && workerData?.Individual && !isVendorLoading) {
+    if (workerData && workerData?.Individual && !isVendorLoading && vendorData) {
       const workerDetails = workerData?.Individual?.[0];
       const respSkills = workerDetails?.skills?.filter((i) => i.isDeleted === false);
       setWorkerinfo(workerDetails);
