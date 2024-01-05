@@ -375,7 +375,7 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
 
             {/* system role here */}
             <LabelFieldPair>
-              <CardLabel className="card-label-smaller">{t("FSM_REGISTRY_LABEL_SYSTEM_ROLE")} *</CardLabel>
+              <CardLabel className="card-label-smaller">{t("FSM_REGISTRY_LABEL_SYSTEM_ROLE")}</CardLabel>
               <div className="form-field">
                 <MultiSelectDropdown
                   className="form-field"
