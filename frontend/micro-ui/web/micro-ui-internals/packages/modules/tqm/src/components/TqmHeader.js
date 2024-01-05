@@ -15,6 +15,9 @@ import { TourSteps } from '../utils/TourSteps';
 const excludeBackBtn = [
   'landing'
 ]
+const excludeHelpBtn = [
+  'how-it-works'
+]
 
 const TqmHeader = ({location,defaultPath}) => {
   const history = useHistory()
@@ -36,7 +39,7 @@ const TqmHeader = ({location,defaultPath}) => {
       <div className="tqm-header">
         {!pathVar?.includes(excludeBackBtn) ?  <BackButton>{t('CS_COMMON_BACK')}</BackButton> : <div></div>}
 
-        <Help startTour={startTour} />
+        {!pathVar?.includes(excludeHelpBtn) ? <Help startTour={startTour} /> :<div></div>}
       </div>
     </>
   );
