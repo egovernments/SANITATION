@@ -44,6 +44,17 @@ frontend/micro-ui/web/public/index.html
 # Changelog
 
 ```bash
+0.0.36 dropdown style fixes
+0.0.35 sla css fixes
+0.0.34 pop up css fixes
+0.0.33 ui ux fixes
+0.0.32 added styles for tqm home
+0.0.31 added styles for tqm view test screen
+0.0.30 added styles for tqm test wf actions and pop up screen
+0.0.29 added styles for tqm test and response screen
+0.0.28 Added Home screen card styles for plant operator home screen
+0.0.27 Added TQM Home Card and Notification component.  
+0.0.26 Added TQM and Summary and enhancements.  
 0.0.25 Added support fixes for inbox v2 component.  
 0.0.24 Added min-height for mobile reponive  
 0.0.23 Dropdown width fixes  

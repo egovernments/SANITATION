@@ -351,7 +351,7 @@ const VehicleDetails = (props) => {
             {t('ES_FSM_REGISTRY_VEHICLE_DETAILS')}
           </Header>
           <div style={!isMobile ? { marginLeft: '-15px' } : {}}>
-            <Card style={{ position: 'relative' }}>
+            <Card style={{ position: 'relative' }} className='page-padding-fix'>
               {vehicleData?.[0]?.employeeResponse?.map((detail, index) => (
                 <React.Fragment key={index}>
                   {index > 0 && (

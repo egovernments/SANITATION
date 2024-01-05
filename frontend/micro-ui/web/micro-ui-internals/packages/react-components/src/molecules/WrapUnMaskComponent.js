@@ -77,7 +77,7 @@ const WrapUnMaskComponent = React.memo(({ privacy = {}, value, unmaskField, ...r
   ) : (
     <React.Fragment>
       {!unmaskField && value}
-      {privacy && (
+      {privacy && privacyState && (
         <span style={{ display: "inline-flex", width: "fit-content", marginLeft: "10px" }}>
           <UnMaskComponent
             privacy={privacy}

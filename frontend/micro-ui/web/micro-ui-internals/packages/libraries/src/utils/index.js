@@ -8,6 +8,8 @@ import * as privacy from "./privacy";
 import PDFUtil, { downloadReceipt, downloadPDFFromLink, downloadBill, getFileUrl } from "./pdf";
 import getFileTypeFromFileStoreURL from "./fileType";
 import preProcessMDMSConfigInboxSearch from "./preProcessMDMSConfigInboxSearch";
+import preProcessMDMSConfig from "./preProcessMDMSConfig";
+import * as parsingUtils from "../services/atoms/Utils/ParsingUtils"
 
 const GetParamFromUrl = (key, fallback, search) => {
   if (typeof window !== "undefined") {
@@ -16,6 +18,10 @@ const GetParamFromUrl = (key, fallback, search) => {
     return params.has(key) ? params.get(key) : fallback;
   }
   return fallback;
+};
+
+const didEmployeeHasAtleastOneRole = (roles = []) => {
+  return roles.some((role) => didEmployeeHasRole(role));
 };
 
 const getPattern = (type) => {
@@ -269,8 +275,25 @@ const getConfigModuleName = () => {
   return window?.globalConfigs?.getConfig("UICONFIG_MODULENAME") || "commonUiConfig";
 };
 
+const createFunction = (functionAsString) => {
+  return Function("return " + functionAsString)();
+};
+
+const getDefaultLanguage = () => {
+  return  `${getLocaleDefault()}_${getLocaleRegion()}`;
+};
+
+const getLocaleDefault = () => {
+  return globalConfigs?.getConfig("LOCALE_DEFAULT")  || "en";
+};
+
+const getLocaleRegion = () => {
+  return window?.globalConfigs?.getConfig("LOCALE_REGION") || "IN";
+};
+
 export default {
   pdf: PDFUtil,
+  createFunction,
   downloadReceipt,
   downloadBill,
   downloadPDFFromLink,
@@ -281,6 +304,7 @@ export default {
   locale,
   date,
   GetParamFromUrl,
+  didEmployeeHasAtleastOneRole,
   getStaticMapUrl,
   detectDsoRoute,
   routeSubscription,
@@ -304,6 +328,10 @@ export default {
   wsAccess,
   swAccess,
   getConfigModuleName,
+  preProcessMDMSConfig,
   preProcessMDMSConfigInboxSearch,
   ...privacy,
+  getDefaultLanguage,
+  getLocaleDefault,
+  getLocaleRegion
 };

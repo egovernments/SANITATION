@@ -1,18 +1,26 @@
-@import 'tailwindcss/base';
-
-@import 'tailwindcss/components';
-
-@import 'tailwindcss/utilities';
-
-@import 'react-date-range/dist/styles.css';
-@import 'react-date-range/dist/theme/default.css';
-
-@import './components/card.scss';
-@import './components/toggleSwitch.scss';
-@import './components/plusMinus.scss';
-@import './components/table.scss';
-@import './pages/employee/index.scss';
-@import './pages/employee/login.scss';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "react-date-range/dist/styles.css";
+@import "react-date-range/dist/theme/default.css";
+@import "./components/card.scss";
+@import "./components/toggleSwitch.scss";
+@import "./components/plusMinus.scss";
+@import "./components/table.scss";
+@import "./pages/employee/index.scss";
+@import "./pages/employee/login.scss";
+@import "./components/notificationComponent.scss";
+@import "./components/ulbHomeCard.scss";
+@import "./components/InboxSearchComposer.scss";
+@import "./pages/employee/overridestyles.scss";
+@import "./pages/employee/tqmHome.scss";
+@import "./pages/employee/tqmPopUp.scss";
+@import "./components/DetailsCard.scss";
+@import "./components/sla.scss";
+@import "./components/Notification.scss";
+@import "./components/tqmHeader.scss";
+@import "./pages/employee/create.scss";
+@import "./pages/employee/registry.scss";
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
@@ -48,6 +56,11 @@
 .employee-data-table .row h2 {
   width: 25%;
 }
+.employee-data-table .row {
+  @media (min-width: 1024px) {
+    justify-content: flex-start;
+  }
+}
 
 input::-webkit-calendar-picker-indicator {
   position: absolute;
@@ -59,7 +72,7 @@ input::-webkit-calendar-picker-indicator {
 .employeeCard {
   .card-section-header.fsm-registry {
     margin-top: 40px;
-    margin-bottom: unset;
+    margin-bottom: 16px;
     &:first-child {
       margin-top: 0;
     }
@@ -233,13 +246,7 @@ input::-webkit-calendar-picker-indicator {
 .select-wrap {
   .options-card {
     max-height: 200px;
-    overflow-y: scroll;
-  }
-}
-
-.action-bar-wrap-registry {
-  .menu-wrap {
-    position: relative;
+    overflow: auto;
   }
 }
 
@@ -280,5 +287,58 @@ input::-webkit-calendar-picker-indicator {
 .action-bar-wrap {
   .card-link {
     margin-top: 4px;
+  }
+}
+
+.employeeCard {
+  .card-section-header {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 670px) {
+  .toast-success {
+    width: 100%;
+    bottom: 0rem;
+    border-radius: 0;
+    margin: 0;
+    z-index: 1000;
+  }
+}
+
+.tqm-document-title {
+  text-align: left;
+  margin-top: 8px;
+  font-weight: 700;
+  line-height: 18.75px;
+  color: #505a5f;
+  font-size: 16px;
+}
+
+.employee-select-wrap {
+  .options-card {
+    top: 100%;
+    border-left-width: 0 !important;
+    border-right-width: 0 !important;
+  }
+}
+.employee-select-wrap.fsm-registry-dropdown {
+  .options-card {
+    top: unset !important;
+  }
+}
+.inbox-search-links-container {
+  .header {
+    grid-template-columns: 12% 1fr;
+    grid-gap: 0.81rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .employee-select-wrap {
+    .options-card.date-range {
+      top: unset;
+      bottom: 100%;
+    }
   }
 }

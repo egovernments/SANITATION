@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 
 export const CheckPoint = (props) => {
   return (
-    <div className={props.isCompleted ? "checkpoint-done" : "checkpoint"} key={props.keyValue}>
+    <div className={props.isCompleted ? `${props?.customClassName} checkpoint-done` : `checkpoint ${props?.customClassName}`} key={props.keyValue}>
       <h2></h2>
       <header>
         {props.label}

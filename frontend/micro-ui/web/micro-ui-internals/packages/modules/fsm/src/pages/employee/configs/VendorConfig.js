@@ -1,5 +1,5 @@
 import React from "react";
-const { DatePicker, Dropdown } = require("@egovernments/digit-ui-react-components");
+const { DatePicker, Dropdown, RadioOrSelect } = require("@egovernments/digit-ui-react-components");
 import { convertEpochToDate } from "../../../utils";
 
 const VendorConfig = (t, disabled = false) => {
@@ -21,6 +21,30 @@ const VendorConfig = (t, disabled = false) => {
             error: t("FSM_REGISTRY_INVALID_NAME"),
             defaultValue: "",
             className: "payment-form-text-input-correction",
+          },
+        },
+        {
+          label: t("ES_FSM_REGISTRY_AGENCY_TYPE"),
+          isMandatory: true,
+          type: "custom",
+          key: "agencyType",
+          populators: {
+            name: "agencyType",
+            validation: {
+              required: true,
+            },
+            component: (props, customProps) => (
+              <RadioOrSelect
+                name="gender"
+                options={[{ code: "ULB" }, { code: "Private" }]}
+                selectedOption={props?.value}
+                optionKey="code"
+                onSelect={props?.onChange}
+                // t={t}
+                isMandatory={true}
+                style={{ display: "grid", gridTemplateColumns: "0.2fr 1fr", marginBottom: "1rem", marginTop: "1.5rem" }}
+              />
+            ),
           },
         },
       ],
@@ -56,12 +80,7 @@ const VendorConfig = (t, disabled = false) => {
               required: true,
             },
             component: (props, customProps) => (
-              <DatePicker
-                onChange={props.onChange}
-                date={props.value}
-                {...customProps}
-                max={convertEpochToDate(new Date().setFullYear(new Date().getFullYear()))}
-              />
+              <DatePicker onChange={props.onChange} date={props.value} {...customProps} max={convertEpochToDate(new Date().setFullYear(new Date().getFullYear()))} />
             ),
           },
         },

@@ -344,8 +344,8 @@ const VendorDetails = (props) => {
           <Header style={{ marginBottom: '16px' }}>
             {t('ES_FSM_REGISTRY_VENDOR_DETAILS')}
           </Header>
-          <div style={!isMobile ? { marginLeft: '-15px' } : {}}>
-            <Card style={{ position: 'relative' }}>
+          <div >
+            <Card style={{ position: 'relative' }} className='page-padding-fix' >
               {dsoData?.[0]?.employeeResponse?.map((detail, index) => (
                 <React.Fragment key={index}>
                   {index > 0 && (
@@ -355,7 +355,7 @@ const VendorDetails = (props) => {
                       {t(detail.title)}
                     </CardSectionHeader>
                   )}
-                  <div style={!isMobile ? { marginLeft: '-15px' } : {}}>
+                  <div>
                     <StatusTable>
                       {detail?.values?.map((value, index) => {
                         return (
