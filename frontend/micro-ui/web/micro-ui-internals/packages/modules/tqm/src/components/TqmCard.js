@@ -1,4 +1,4 @@
-import { EmployeeModuleCard, ArrowRightInbox, TqmHomePageCardIcon } from "@egovernments/digit-ui-react-components";
+import { EmployeeModuleCard, ArrowRightInbox, TqmHomePageCardIcon, Loader } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -137,6 +137,10 @@ const TqmCard = ({reRoute=true}) => {
   }
   if(reRoute && isPlantOperatorLoggedIn){
     history.push( `/${window?.contextPath}/employee/tqm/landing`)
+  }
+
+  if(isLoading){
+    return <Loader />
   }
   return <EmployeeModuleCard {...propsForModuleCard} />;
 };
