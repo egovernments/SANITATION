@@ -93,7 +93,7 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
   const clearSearch = () => {
     reset(uiConfig?.defaultValues)
     dispatch({
-      type: "clearSearchForm",
+      type: uiConfig?.type === "filter"?"clearFilterForm" :"clearSearchForm",
       state: { ...uiConfig?.defaultValues }
       //need to pass form with empty strings 
     })
