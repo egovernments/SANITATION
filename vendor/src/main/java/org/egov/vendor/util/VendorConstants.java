@@ -43,9 +43,14 @@ public class VendorConstants {
 
 	public static final String VENDOR_AGENCY_TYPE = "AgencyType";
 
+	public static final String SW_FUNCTIONAL_ROLES = "SanitationWorkerFunctionalRoles";
+
+	public static final String SW_SKILLS = "SanitationWorkerSkills";
+
 	public static final String VENDOR_PAYMENT_PREFERENCE = "PaymentPreference";
 
 	public static final String VENDOR_MODULE = "Vendor";
+	public static final String FSM_MODULE = "FSM";
 
 	public static final String UPDATE_ERROR = "Update Error";
 
@@ -58,5 +63,28 @@ public class VendorConstants {
 	public static final String TENANT_ID_MANDATORY = "TenantId is mandatory in search";
 	public static final String DISABLED = "DISABLED";
 	public static final String FSM_DRIVER = "FSM_DRIVER";
+	public static final String DuplicateUserNameException = "DuplicateUserNameException";
+	public static final String ROLE_FSM_DSO = "FSM_DSO";
+
+	//Skills
+	public static final String SKILL_DRIVER = "DRIVER";
+	public static final String SKILL_LEVEL_UNSKILLED = "Unskilled";
+
+	//Functional Roles
+
+	public static final String FUNCTIONAL_ROLE = "FUNCTIONAL_ROLE";
+	public static final String FUNCTIONAL_ROLE_DRIVER = "DRIVER";
+
+	//System Roles
+	public static final String SYSTEM_ROLE_CODE_SANITATION_WORKER = "SANITATION_WORKER";
+	public static final String SYSTEM_ROLE_NAME_SANITATION_WORKER = "Sanitation Worker";
+	public static final String SYSTEM_ROLE_CODE_FSM_DRIVER = "FSM_DRIVER";
+	public static final String SYSTEM_ROLE_NAME_FSM_DRIVER = "FSM_DRIVER";
+
+	//Identifiers
+
+	public static final String DRIVING_LICENSE_NUMBER_IDENTIFIER = "DRIVING_LICENSE_NUMBER";
+
+
 
 }

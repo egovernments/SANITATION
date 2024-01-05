@@ -21,4 +21,5 @@ public class VendorErrorConstants {
 	public static final String INVALID_TENANT_ID_MDMS_MSG = "INVALID_TENANT_ID_MDMS_MSG";
 	public static final String INVALID_OWNER_ERROR_MESSAGE = "Dob, relationShip, relation ship name and gender are mandaotry !";
 	public static final String MOBILE_NUMBER_ALREADY_EXIST = "MOBILE_NUMBER_ALREADY_EXIST";
+	public static final String VENDOR_MOBILE_NUMBER_ALREADY_EXIST="The mobile number is already in use. Please use another mobile number to create a vendor";
 }

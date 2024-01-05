@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import java.util.Objects;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.tracer.model.CustomException;
 import org.egov.vendor.config.VendorConfiguration;
@@ -123,8 +124,10 @@ public class VendorValidator {
 		mdmsValidator.validateAgencyType(vendorRequest);
 		mdmsValidator.validatePaymentPreference(vendorRequest);
 		boundaryService.getAreaType(vendorRequest, config.getHierarchyTypeCode());
+		if (vendorRequest.getVendor().getVehicles() != null && !vendorRequest.getVendor().getVehicles().isEmpty()) {
+			vehicleService.manageVehicle(vendorRequest);
+		}
 
-		vehicleService.manageVehicle(vendorRequest);
 		if (!isCreate) {
 			userService.vendorMobileExistanceCheck(vendorRequest, requestInfo);
 		}
@@ -142,7 +145,9 @@ public class VendorValidator {
 			}
 
 		}
+		if (vendorRequest.getVendor().getVehicles() != null && Objects.nonNull(vendorRequest.getVendor().getDrivers()) && !vendorRequest.getVendor().getDrivers().isEmpty()) {
+			ownerService.manageDrivers(vendorRequest);
 
-		ownerService.manageDrivers(vendorRequest);
+		}
 	}
 }

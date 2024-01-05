@@ -1,5 +1,6 @@
 package org.egov.vendor.repository.querybuilder;
 
+import com.google.common.base.Strings;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,9 @@ public class VendorQueryBuilder {
 	private static final String VEHICLE_EXISTS = "SELECT vendor_id FROM eg_vendor_vehicle where vechile_id IN ";
 	private static final String DRIVER_EXISTS = "SELECT vendor_id FROM eg_vendor_driver where driver_id IN ";
 
+	private static final String WORKER_EXISTS = "SELECT vendor_id FROM eg_vendor_sanitation_worker where individual_id IN ";
+	private static final String WORKERS_QUERY = "select individual_id from eg_vendor_sanitation_worker where vendor_id=? AND vendor_sw_status = ?";
+
 	private static final String DRIVER_ID = "driver_id";
 	private static final String VEHICLE_ID = "vechile_id";
 	private static final String VENDOR_ID = "vendor_id";
@@ -46,6 +50,10 @@ public class VendorQueryBuilder {
 
 	public String getDriverSearchQuery() {
 		return String.format(DRIVER_VEHICLE_QUERY, DRIVER_ID, VENDOR_DRIVER, VENDOR_ID, VENDOR_DRIVER_STATUS);
+	}
+
+	public String getWorkerSearchQuery() {
+		return WORKERS_QUERY;
 	}
 
 	public String getVehicleSearchQuery() {
@@ -78,6 +86,22 @@ public class VendorQueryBuilder {
 		if (!CollectionUtils.isEmpty(status)) {
 			addClauseIfRequired(preparedStmtList, builder);
 			builder.append(" vendordriverstatus IN (").append(createQuery(status)).append(")");
+			addToPreparedStatement(preparedStmtList, status);
+		}
+
+		return builder.toString();
+	}
+
+	public String vendorsFoWorkers(VendorSearchCriteria vendorSearchCriteria,
+			List<Object> preparedStmtList) {
+		StringBuilder builder = new StringBuilder(WORKER_EXISTS);
+		builder.append("(").append(createQuery(vendorSearchCriteria.getIndividualIds())).append(")");
+		addToPreparedStatement(preparedStmtList, vendorSearchCriteria.getIndividualIds());
+
+		List<String> status = vendorSearchCriteria.getStatus();
+		if (!CollectionUtils.isEmpty(status)) {
+			addClauseIfRequired(preparedStmtList, builder);
+			builder.append(" vendor_sw_status IN (").append(createQuery(status)).append(")");
 			addToPreparedStatement(preparedStmtList, status);
 		}
 
@@ -150,6 +174,12 @@ public class VendorQueryBuilder {
 				addToPreparedStatement(preparedStmtList, status);
 			}
 
+			// search by agency type
+			if (!Strings.isNullOrEmpty(criteria.getAgencyType())) {
+				addClauseIfRequired(preparedStmtList, builder);
+				builder.append(" vendor.agencyType=? ");
+				preparedStmtList.add(criteria.getAgencyType());
+			}
 		}
 		return addPaginationWrapper(builder.toString(), preparedStmtList, criteria);
 	}

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import org.egov.vendor.driver.web.model.Driver;
+import org.egov.vendor.driver.web.model.Worker;
 import org.egov.vendor.web.model.location.Address;
 import org.egov.vendor.web.model.user.User;
 import org.egov.vendor.web.model.vehicle.Vehicle;
@@ -65,6 +66,10 @@ public class Vendor {
 	@JsonProperty("drivers")
 	@Valid
 	private List<Driver> drivers = null;
+
+	@JsonProperty("workers")
+	@Valid
+	private List<Worker> workers = null;
 
 	@JsonProperty("additionalDetails")
 	private Object additionalDetails = null;
