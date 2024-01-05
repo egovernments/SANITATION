@@ -30,7 +30,7 @@ import { CustomService } from "../services/elements/CustomService";
  */
 
 const useCustomAPIHook = (props) => {
-  const { url = "", params, body, config = {}, plainAccessRequest, changeQueryName = "Random" } = props;
+  const { url = "", method, params, body, config = {}, plainAccessRequest, changeQueryName = "Random" } = props;
 
   const client = useQueryClient();
 
