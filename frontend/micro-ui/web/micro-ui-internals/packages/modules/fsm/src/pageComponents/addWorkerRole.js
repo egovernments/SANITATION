@@ -246,7 +246,9 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
   }, [fnRoleSelected]);
 
   const selectFunctionalRole = (value) => {
-    setjurisdictions((pre) => pre.map((item) => (item.key === jurisdiction.key ? { ...item, fn_role: value, roles: null } : item)));
+    setjurisdictions((pre) =>
+      pre.map((item) => (item.key === jurisdiction.key ? { ...item, fn_role: value, roles: null, sys_role: null, emp_Type: null, licenseNo: null } : item))
+    );
     setFnRoleSelected(value);
   };
 
@@ -381,10 +383,10 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
                   defaultUnit="Selected"
                   selected={
                     jurisdiction?.roles
-                      ? jurisdiction?.roles?.filter((i) => i.code !== "SANITATION_WORKER" && i.code !== "CITIZEN")
+                      ? jurisdiction?.roles?.filter((i) => i?.code !== "SANITATION_WORKER" && i?.code !== "CITIZEN")
                       : jurisdiction?.sys_role
                       ? jurisdiction?.sys_role
-                      : defaultsysRole
+                      : []
                   }
                   options={sysRole}
                   onSelect={selectrole}
