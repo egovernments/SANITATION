@@ -413,7 +413,9 @@ export const UICustomizations = {
         data.body.pagination.sortBy = "scheduledDate"
       }
 
-      data.body.testSearchCriteria.testType = ["LAB_SCHEDULED","IOT_SCHEDULED"]
+      if(data?.body?.testSearchCriteria?.testType?.length === 0 || !data?.body?.testSearchCriteria?.testType){
+        data.body.testSearchCriteria.testType = ["LAB_SCHEDULED","IOT_SCHEDULED"]
+      }
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)
 
