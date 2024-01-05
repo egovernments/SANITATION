@@ -49,18 +49,18 @@ const TqmSearch = () => {
         () => Digit.Utils.preProcessMDMSConfigInboxSearch(t, data, "sections.search.uiConfig.fields",{
           updateDependent : [
             {
-              key : "fromProposalDate",
-              value : [new Date().toISOString().split("T")[0]]
+              key : "dateRange",
+              value : new Date()
             },
-            {
-              key : "toProposalDate",
-              value : [new Date().toISOString().split("T")[0]]
-            }
+            // {
+            //   key : "toProposalDate",
+            //   value : [new Date().toISOString().split("T")[0]]
+            // }
           ]
         }
         ),[data]);
     
-
+    
     if (isLoading) return <Loader />
     return (
         <React.Fragment>

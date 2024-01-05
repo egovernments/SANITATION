@@ -76,8 +76,6 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
         return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vendor`);
       case "VEHICLE":
         return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vehicle`);
-      case "DRIVER":
-        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-driver`);
       case "WORKER":
         return history.push(`/${window?.contextPath}/employee/fsm/registry/new-worker`);
       default:
@@ -177,7 +175,7 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
                 </div>
               </div>
               {showAddMenu && (
-                <Menu localeKeyPrefix={"ES_FSM_ACTION_CREATE"} options={["VENDOR", "DRIVER", "VEHICLE", "WORKER"]} t={t} onSelect={onActionSelect} />
+                <Menu localeKeyPrefix={"ES_FSM_ACTION_CREATE"} options={["VENDOR", "VEHICLE", "WORKER"]} t={t} onSelect={onActionSelect} />
               )}
             </div>
           </div>

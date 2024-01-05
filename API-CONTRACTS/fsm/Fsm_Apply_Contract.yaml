@@ -1,606 +1,463 @@
----
-openapi: 3.0.1
+openapi: 3.0.0
 info:
-  version: 1.1.0
-  title: FSM Services
+  version: 1.0.0
+  title: Apply for FSM
   description: |
     ### API specs for FSM ###
     * Citizen / Employee can Apply for desludging service
     * Update the details of the existing application
-    * search the application based on criteria
+    * serarch the application based on criteria
     * Citizen / Employee can take the actions on the perticular applicationbased on the wf configuration
+  contact:
+    name: Egovernments Foundation
+    email: contact@egovernments.org
+x-module: BPA
+x-common-path: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml'
 paths:
-  "/plantmap/v1/_update":
+  /fsm/v1/_search:
     post:
-      tags:
-        - plant-mapping-controller
-      operationId: update
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PlantMappingRequest"
-      responses:
-        '200':
-          description: default response
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/PlantMappingResponse"
-  "/plantmap/v1/_create":
-    post:
-      tags:
-        - plant-mapping-controller
-      operationId: create
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PlantMappingRequest"
-      responses:
-        '200':
-          description: default response
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/PlantMappingResponse"
-  "/plantmap/v1/_search":
-    post:
-      tags:
-        - plant-mapping-controller
-      operationId: search
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                requestInfoWrapper:
-                  "$ref": "#/components/schemas/RequestInfoWrapper"
-                criteria:
-                  "$ref": "#/components/schemas/PlantMappingSearchCriteria"
-      responses:
-        '200':
-          description: default response
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/PlantMappingResponse"
-  "/v1/_update":
-    post:
-      tags:
-        - fsm-controller
-      operationId: update_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FSMRequest"
-      responses:
-        '200':
-          description: default response
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/FSMResponse"
-  "/v1/_create":
-    post:
-      tags:
-        - fsm-controller
-      operationId: create_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FSMRequest"
-      responses:
-        '200':
-          description: default response
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/FSMResponse"
-  "/v1/_search":
-    post:
-      tags:
-        - fsm-controller
-      operationId: search_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                requestInfoWrapper:
-                  "$ref": "#/components/schemas/RequestInfoWrapper"
-                criteria:
-                  "$ref": "#/components/schemas/FSMSearchCriteria"
-      responses:
-        '200':
-          description: default response
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/FSMResponse"
-  "/v1/_audit":
-    post:
-      tags:
-        - fsm-controller
-      operationId: audit
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                requestInfoWrapper:
-                  "$ref": "#/components/schemas/RequestInfoWrapper"
-                criteria:
-                  "$ref": "#/components/schemas/FSMAuditSearchCriteria"
-      responses:
-        '200':
-          description: default response
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/FSMAuditResponse"
-  "/v1/_getapplicationsforperiodic":
-    post:
-      tags:
-        - fsm-controller
-      operationId: getFSMApplicationsForPeriodicServices
+      summary: Get application details based on below criteria
+      description: |
+        Gets the list of fsm application for a particular ULB based on search criteria.
       parameters:
-        - name: tenantId
+        - $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/parameters/tenantId'
+        - name: ids
           in: query
-          required: true
+          description: Search by list of UUID
+          schema:
+            type: array
+            items:
+              type: string
+              maxItems: 10
+        - name: applicationStatus
+          in: query
+          description: search application by list of application Status(s)
+          schema:
+            type: array
+            items:
+              type: string
+        - name: locality
+          in: query
+          description: search application by list of Locality (s)
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ownerIds
+          in: query
+          description: search by list of uuid(s) of the owner of the application
+          schema:
+            type: array
+            items:
+              type: string
+        - name: fromDate
+          in: query
+          description: search by the created date faling between the fromdate and today
+          schema:
+            type: integer
+        - name: toDate
+          in: query
+          description: search by the created date faling between the fromdate and today
+          schema:
+            type: integer
+        - name: applicationNos
+          in: query
+          description: search application by list of applicationNo(s)
+          schema:
+            type: array
+            items:
+              type: string
+        - name: mobileNumber
+          in: query
+          description: Search applicationb by mobileNumber of the Owner of the application
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/RequestInfoWrapper"
+        - name : offset
+          in: query
+          description: offset for the pagination results
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: limit for the pagination results
+          schema:
+           type: integer
+        - name: sortOrder
+          in: query
+          description: sort the search results in Ascending or descending order
+          schema:
+           type: string
+           enum:
+            - ASC
+            - DESC
+        - name: sortBy
+          in: query
+          description: sort the search results by fields
+          schema:
+           type: string
+           enum:
+            - applicationStatus
+            - applicationNumber
+            - propertyUsage
+            - vehicle
+            - locality
+            - createdTime
       responses:
-        '200':
-          description: default response
+        '202':
+          description: Successful response sorted by reverse chrnological order of creation
           content:
-            "*/*":
+            '*/*':
               schema:
-                "$ref": "#/components/schemas/PeriodicApplicationResponse"
-  "/v1/_createperiodicapplications":
-    post:
-      tags:
-        - fsm-controller
-      operationId: createPeriodicApplications
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PeriodicApplicationRequest"
-      responses:
-        '200':
-          description: default response
+                $ref: '#/components/schemas/FSMResponse'
+        '400':
+          description: Invalid input.
           content:
-            "*/*":
+            '*/*':
               schema:
-                "$ref": "#/components/schemas/PeriodicApplicationResponse"
-  "/v1/_schedular":
-    post:
+                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'
       tags:
-        - fsm-controller
-      operationId: schedulePeriodicApplications
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/RequestInfoWrapper"
-      responses:
-        '200':
-          description: default response
-  "/v1/_plainsearch":
+        - FSM
+  /fsm/v1/_audit:
     post:
-      tags:
-        - fsm-controller
-      operationId: plainsearch
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                requestInfoWrapper:
-                  "$ref": "#/components/schemas/RequestInfoWrapper"
-                criteria:
-                  "$ref": "#/components/schemas/FSMSearchCriteria"
+      summary: Get the application audit log for every change in the response. Provides a record for each set of change
+      parameters:
+        - $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/parameters/tenantId'
+        - name: applicationNo
+          in: query
+          description: search for audit log based on the application no of FSM
+          schema:
+            type: string
+        - name: id
+          in: query
+          description: search for audit log based on the unique id of the application
+          schema:
+            type: string
       responses:
-        '200':
-          description: default response
+        '202':
+          description: Successful response sorted by reverse chrnological order of creation
           content:
-            "*/*":
+            '*/*':
               schema:
-                "$ref": "#/components/schemas/FSMResponse"
-  "/v1/fetchApplicationIds":
-    post:
+                $ref: '#/components/schemas/FSMAuditResponse'
       tags:
-        - fsm-inbox-controller
-      operationId: fetchApplicationIds
+        - FSM
+
+  /fsm/v1/_create:
+    post:
+      summary: Apply for desludging
+      description: Apply for desludging
+      tags:
+        - FSM
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                requestInfoWrapper:
-                  "$ref": "#/components/schemas/RequestInfoWrapper"
-                criteria:
-                  "$ref": "#/components/schemas/VehicleTripSearchCriteria"
+              $ref: '#/components/schemas/FSMRequest'
+        description: Request schema.
+        required: true
       responses:
-        '200':
-          description: default response
+        '202':
+          description: Application submitted successfully
           content:
-            "*/*":
+            '*/*':
               schema:
-                "$ref": "#/components/schemas/VehicleCustomResponse"
+                $ref: '#/components/schemas/FSMResponse'
+        '400':
+          description: Failed to process the application
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'
+  /fsm/v1/_update:
+    post:
+      summary: Update service requests
+      description: Updates service request
+      tags:
+        - FSM
+      responses:
+        '202':
+          description: Application submitted successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FSMResponse'
+        '400':
+          description: Failed to process the application
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FSMRequest'
+        description: Request schema.
+        required: true
+
+  /fsm-calculator/v1/billingSlab/_create:
+    post:
+      summary: Create Billing Slab record for the combination of propertyusage, slum ,tancapcity
+      tags:
+        - FSM-Calculator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingSlabRequest'
+        description: Reuqest Schema for BillingSlab
+        required: true
+      responses:
+        '202':
+          description: BillingSlab created successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BillingSlabResponse'
+        '400':
+          description: Failed to process the BillingSlab
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'
+
+  /fsm-calculator/v1/billingSlab/_update:
+    post:
+      summary: update Billing Slab record for the combination of propertyusage, slum ,tancapcity
+      tags:
+        - FSM-Calculator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingSlabRequest'
+        description: Reuqest Schema for BillingSlab
+        required: true
+      responses:
+        '202':
+          description: BillingSlab updated successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BillingSlabResponse'
+        '400':
+          description: Failed to process the BillingSlab
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'
+
+  /fsm-calculator/v1/billingSlab/_search:
+    post:
+      summary: Get the BillingSlab based on the search criteria
+      tags:
+        - FSM-Calculator
+      parameters:
+        - $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/parameters/tenantId'
+        - name : offset
+          in: query
+          description: offset for the pagination results
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: limit for the pagination results
+          schema:
+           type: integer
+        - name: sortOrder
+          in: query
+          description: sort the search results in Ascending or descending order
+          schema:
+           type: string
+           enum:
+            - ASC
+            - DESC
+        - name: sortBy
+          in: query
+          description: sort the search results by fields
+          schema:
+           type: string
+           enum:
+            - id
+            - propertyType
+            - capacity
+        - name : ids
+          in: query
+          description: serch by ids of the billingslab
+          schema:
+            type: array
+            items:
+              type: string
+        - name : propertyType
+          in: query
+          description: search by propertyType
+          schema:
+            type: string
+        - name : capacity
+          in: query
+          description: search by capacity
+          schema:
+            type: number
+            format: double
+        - name : slum
+          in: query
+          description: search by slum yes or no
+          schema:
+            type: string
+            enum:
+              - YES
+              - NO
+      responses:
+        '202':
+          description: Successful response sorted by reverse chrnological order of creation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BillingSlabResponse'
+  /fsm-calculator/v1/_calculate:
+    post:
+      summary: Calcualte the FSM Charges and generate Demand for the same, based on the billingslab
+      tags:
+        - FSM-Calculator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculationReq'
+        description: Reuqest Schema calculate api
+        required: true
+      responses:
+        '202':
+          description: calculated  successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CalculationRes'
+        '400':
+          description: Failed to process the calcuation
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'
+  /fsm-calculator/v1/_estimate:
+    post:
+      summary: Calcualte the FSM Charge, based on the billingslab . Does not create demand
+      tags:
+        - FSM-Calculator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculationReq'
+        description: Reuqest Schema estimate api
+        required: true
+      responses:
+        '202':
+          description: estimate calculated successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CalculationRes'
+        '400':
+          description: Failed to process the estimate
+          content:
+            '*/*':
+              schema:
+                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'
 components:
   schemas:
-    AuditDetails:
+    Workflow:
       type: object
+      description: 'BPA application object to capture the details of land, land owners, and address of the land.'
       properties:
-        createdBy:
-          type: string
-        lastModifiedBy:
-          type: string
-        createdTime:
-          type: integer
-          format: int64
-        lastModifiedTime:
-          type: integer
-          format: int64
-    PlainAccessRequest:
-      type: object
-      properties:
-        recordId:
-          type: string
-        plainRequestFields:
-          type: array
-          items:
-            type: string
-    PlantMapping:
-      required:
-        - tenantId
-      type: object
-      properties:
-        id:
-          type: string
-        employeeUuid:
-          maxLength: 64
-          minLength: 0
-          type: string
-        plantCode:
-          maxLength: 64
-          minLength: 0
-          type: string
-        tenantId:
-          maxLength: 64
-          minLength: 2
-          type: string
-        auditDetails:
-          "$ref": "#/components/schemas/AuditDetails"
-        status:
-          type: string
-          enum:
-            - ACTIVE
-            - INACTIVE
-    PlantMappingRequest:
-      type: object
-      properties:
-        RequestInfo:
-          "$ref": "#/components/schemas/RequestInfo"
-        plantMapping:
-          "$ref": "#/components/schemas/PlantMapping"
-    RequestInfo:
-      type: object
-      properties:
-        apiId:
-          type: string
-        ver:
-          type: string
-        ts:
-          type: integer
-          format: int64
         action:
           type: string
-        did:
-          type: string
-        key:
-          type: string
-        msgId:
-          type: string
-        authToken:
-          type: string
-        correlationId:
-          type: string
-        plainAccessRequest:
-          "$ref": "#/components/schemas/PlainAccessRequest"
-        userInfo:
-          "$ref": "#/components/schemas/User"
-    Role:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          maxLength: 128
-          minLength: 0
-          type: string
-        code:
-          maxLength: 50
-          minLength: 0
-          type: string
-        tenantId:
-          maxLength: 256
-          minLength: 0
-          type: string
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        userName:
-          maxLength: 180
-          minLength: 0
-          type: string
-        name:
-          maxLength: 250
-          minLength: 0
-          type: string
-        type:
-          maxLength: 50
-          minLength: 0
-          type: string
-        mobileNumber:
-          maxLength: 150
-          minLength: 0
-          type: string
-        emailId:
-          maxLength: 300
-          minLength: 0
-          type: string
-        roles:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Role"
-        tenantId:
-          maxLength: 256
-          minLength: 0
-          type: string
-        uuid:
-          maxLength: 36
-          minLength: 0
-          type: string
-    PlantMappingResponse:
-      type: object
-      properties:
-        responseInfo:
-          "$ref": "#/components/schemas/ResponseInfo"
-        plantMapping:
-          type: array
-          items:
-            "$ref": "#/components/schemas/PlantMapping"
-    ResponseInfo:
-      type: object
-      properties:
-        apiId:
-          type: string
-        ver:
-          type: string
-        ts:
-          type: integer
-          format: int64
-        resMsgId:
-          type: string
-        msgId:
-          type: string
-        status:
-          type: string
-    RequestInfoWrapper:
-      type: object
-      properties:
-        RequestInfo:
-          "$ref": "#/components/schemas/RequestInfo"
-    PlantMappingSearchCriteria:
-      type: object
-      properties:
-        empty:
-          type: boolean
-        tenantId:
-          type: string
-        plantCode:
-          type: string
-        employeeUuid:
+          description: Action on the application in certain
+          minLength: 1
+          maxLength: 64
+        assignes:
           type: array
           items:
             type: string
-        ids:
+        comments:
+          type: string
+          description: Unique Identifier scrutinized number
+          minLength: 1
+          maxLength: 64
+        rating:
+          type: integer
+          description: Rating for the application
+        varificationDocuments:
+          description: Attach the workflow varification documents.
           type: array
           items:
-            type: string
-    Address:
-      type: object
-      properties:
-        tenantId:
-          type: string
-        doorNo:
-          maxLength: 256
-          minLength: 0
-          type: string
-        plotNo:
-          maxLength: 64
-          minLength: 0
-          type: string
-        id:
-          type: string
-        landmark:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        city:
-          type: string
-        district:
-          type: string
-        region:
-          maxLength: 64
-          minLength: 0
-          type: string
-        state:
-          maxLength: 64
-          minLength: 0
-          type: string
-        country:
-          maxLength: 64
-          minLength: 0
-          type: string
-        pincode:
-          maxLength: 6
-          minLength: 0
-          pattern: "^[1-9]{1}[0-9]{5}$"
-          type: string
-        additionalDetails:
-          type: object
-        auditDetails:
-          "$ref": "#/components/schemas/AuditDetails"
-        buildingName:
-          maxLength: 64
-          minLength: 0
-          type: string
-        street:
-          maxLength: 256
-          minLength: 0
-          type: string
-        slumName:
-          type: string
-        locality:
-          "$ref": "#/components/schemas/Boundary"
-        geoLocation:
-          "$ref": "#/components/schemas/GeoLocation"
-    Boundary:
-      required:
-        - code
-        - name
-      type: object
-      properties:
-        code:
-          type: string
-        name:
-          type: string
-        label:
-          type: string
-        latitude:
-          type: string
-        longitude:
-          type: string
-        children:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Boundary"
-        materializedPath:
-          type: string
-    Document:
-      type: object
-      properties:
-        id:
-          maxLength: 64
-          minLength: 0
-          type: string
-        documentType:
-          type: string
-        fileStore:
-          type: string
-        documentUid:
-          maxLength: 64
-          minLength: 0
-          type: string
-        additionalDetails:
-          type: object
-    Driver:
-      type: object
-      properties:
-        id:
-          type: string
-        tenantId:
-          maxLength: 64
-          minLength: 0
-          type: string
-        name:
-          maxLength: 128
-          minLength: 0
-          type: string
-        owner:
-          "$ref": "#/components/schemas/User"
-        ownerId:
-          maxLength: 64
-          minLength: 0
-          type: string
-        additionalDetails:
-          type: object
-        description:
-          type: string
-        licenseNumber:
-          type: string
-        vendor:
-          "$ref": "#/components/schemas/Vendor"
-        status:
-          type: string
-          enum:
-            - ACTIVE
-            - INACTIVE
-            - DISABLED
-        auditDetails:
-          "$ref": "#/components/schemas/AuditDetails"
-        vendorDriverStatus:
-          type: string
-          enum:
-            - ACTIVE
-            - INACTIVE
-            - DISABLED
+            $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/Document'
     FSM:
-      required:
-        - tenantId
       type: object
+      description: |
+        Request schema of FSM application. 
+
       properties:
         citizen:
-          "$ref": "#/components/schemas/User"
+          $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/UserInfo'
         id:
           type: string
-        tenantId:
-          maxLength: 64
+          readOnly: true
+          description: The server generated unique ID(UUID).
           minLength: 2
+          maxLength: 64
+        tenantId:
           type: string
+          description: Unique identifier of the tenant.
+          minLength: 2
+          maxLength: 64
         applicationNo:
           type: string
+          readOnly: true
+          description: The unique formatted id for application no.
+          minLength: 2
+          maxLength: 128
         description:
           type: string
+          description: Additional information or description of the application
+          minLength: 2
+          maxLength: 256
         accountId:
           type: string
-        additionalDetails:
+          description: Applier(CItizen) unique id(UUID) from user service.
+          minLength: 2
+          maxLength: 64
+        additionalDetail:
           type: object
+          description: This is the json object that will carry the actual input (whereever the metadata requries input). Structure should be same as the schema definition provided in the metadata of the service (schema compliance check to be performed at client/server)
         applicationStatus:
           type: string
+          description: The current status of the service request.
+          readOnly: true
         source:
           type: string
+          description: 'Source mdms master data. Which captures the source of the service request(ex:- whatsapp, ivr, Swachhata etc)'
+          minLength: 2
+          maxLength: 64
+          example: whatsapp, ivr etc
         sanitationtype:
           type: string
-        propertyUsage:
-          type: string
+          description: This is the master data defined in MDMS
+          minLength: 2
+          maxLength: 64
         vehicleType:
           type: string
+          description: This is the master data defined in MDMS
+          minLength: 2
+          maxLength: 64
+        propertyUsage:
+          type: string
+          description: This is the master data defined in MDMS
+          minLength: 2
+          maxLength: 64
         noOfTrips:
           type: integer
-          format: int32
-        vehicleCapacity:
-          type: string
+          description: Total no of trips reqired for desludging the PIT
         status:
           type: string
           enum:
@@ -608,432 +465,353 @@ components:
             - INACTIVE
         vehicleId:
           type: string
-        vehicle:
-          "$ref": "#/components/schemas/Vehicle"
+          description: Unique Id of the vehicle which got assigned to the perticular application
+          minLength: 2
+          maxLength: 64
         dsoId:
           type: string
-        dso:
-          "$ref": "#/components/schemas/Vendor"
-        workers:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Worker"
+          description: Unique Id of the DSO assigned to the application
+          minLength: 2
+          maxLength: 64
         possibleServiceDate:
           type: integer
-          format: int64
-        pitDetail:
-          "$ref": "#/components/schemas/PitDetail"
-        address:
-          "$ref": "#/components/schemas/Address"
-        auditDetails:
-          "$ref": "#/components/schemas/AuditDetails"
+          description: possible service date populated while assigning vehicle
+          format: date
         wasteCollected:
           type: number
           format: double
-        completedOn:
-          type: integer
-          format: int64
-        advanceAmount:
-          type: number
-        applicationType:
-          type: string
-        oldApplicationNo:
-          type: string
-        paymentPreference:
-          type: string
-    Worker:
-      type: object
-      properties:
-        id:
-          type: string
-        tenantId:
-          maxLength: 64
-          minLength: 0
-          type: string
-        applicationId:
-          maxLength: 64
-          minLength: 0
-          type: string
-        individualId:
-          maxLength: 64
-          minLength: 0
-          type: string
-        workerType:
-          type: string
-          enum:
-            - DRIVER
-            - HELPER
-        status:
-          type: string
-          enum:
-            - ACTIVE
-            - INACTIVE
-            - DISABLED
-        additionalDetails:
-          type: object
+          description: waster collected at the application site
+        pitDetail:
+          $ref: '#/components/schemas/PitDetail'
+        address:
+          $ref: '#/components/schemas/Address'
         auditDetails:
-          "$ref": "#/components/schemas/AuditDetails"
-    FSMRequest:
-      type: object
-      properties:
-        RequestInfo:
-          "$ref": "#/components/schemas/RequestInfo"
-        fsm:
-          "$ref": "#/components/schemas/FSM"
-        workflow:
-          "$ref": "#/components/schemas/Workflow"
-    GeoLocation:
-      type: object
-      properties:
-        id:
-          type: string
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-        additionalDetails:
-          type: object
+          $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/AuditDetails'
+      required:
+        - tenantId
+        - propertyUsage
+
     PitDetail:
       type: object
+      description: |
+        cature the pit details
       properties:
-        type:
-          type: string
+        citizen:
+          $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/UserInfo'
         id:
           type: string
-        tenantId:
-          type: string
+          readOnly: true
+          description: The server generated unique ID(UUID).
+          minLength: 2
+          maxLength: 64
         height:
-          maximum: 99.9
-          exclusiveMaximum: false
           type: number
           format: double
+          description: Hight of the PIT in meter
+          minLength: 2
+          maxLength: 64
         length:
-          maximum: 99.9
-          exclusiveMaximum: false
           type: number
           format: double
+          description: Length of the PIT in meter
+          minLength: 2
+          maxLength: 128
         width:
-          maximum: 99.9
-          exclusiveMaximum: false
           type: number
           format: double
+          description: Width of the PIT in meter
+          minLength: 2
+          maxLength: 128
         diameter:
-          maximum: 99.9
-          exclusiveMaximum: false
           type: number
           format: double
+          description: diameter  of the PIT in meter
+          minLength: 2
+          maxLength: 128
         distanceFromRoad:
           type: number
           format: double
+          description: Distance of the PIT from road in meter
+          minLength: 2
+          maxLength: 128
         auditDetails:
-          "$ref": "#/components/schemas/AuditDetails"
-        additionalDetails:
-          type: object
-    Vehicle:
-      type: object
-      properties:
-        id:
-          type: string
-        tenantId:
-          type: string
-        registrationNumber:
-          type: string
-        model:
-          type: string
-        type:
-          type: string
-        tankCapacity:
-          type: number
-          format: double
-        suctionType:
-          type: string
-        pollutionCertiValidTill:
-          type: integer
-          format: int64
-        InsuranceCertValidTill:
-          type: integer
-          format: int64
-        fitnessValidTill:
-          type: integer
-          format: int64
-        roadTaxPaidTill:
-          type: integer
-          format: int64
-        gpsEnabled:
-          type: boolean
-        additionalDetails:
-          type: object
-        source:
-          type: string
-        ownerId:
-          type: string
-        status:
-          type: string
-          enum:
-            - ACTIVE
-            - INACTIVE
-        owner:
-          "$ref": "#/components/schemas/User"
-        auditDetails:
-          "$ref": "#/components/schemas/AuditDetails"
-    Vendor:
-      type: object
-      properties:
-        id:
-          type: string
-        tenantId:
-          type: string
-        name:
-          type: string
-        address:
-          "$ref": "#/components/schemas/Address"
-        owner:
-          "$ref": "#/components/schemas/User"
-        vehicles:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Vehicle"
-        drivers:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Driver"
-        workers:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Worker"
-        additionalDetails:
-          type: object
-        source:
-          type: string
-        description:
-          type: string
-        ownerId:
-          type: string
-        status:
-          type: string
-          enum:
-            - ACTIVE
-            - INACTIVE
-        auditDetails:
-          "$ref": "#/components/schemas/AuditDetails"
-    Workflow:
-      type: object
-      properties:
-        action:
-          type: string
-        assignes:
-          type: array
-          items:
-            type: string
-        comments:
-          type: string
-        verificationDocuments:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Document"
-        rating:
-          type: integer
-          format: int32
-    FSMResponse:
+          $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/AuditDetails'
       required:
-        - fsm
-        - responseInfo
+        - width
+
+    FSMRequest:
       type: object
+      description: Request object for FSM
       properties:
-        totalCount:
-          type: integer
-          format: int32
-        responseInfo:
-          "$ref": "#/components/schemas/ResponseInfo"
+        requestInfo:
+          $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/RequestHeader'
         fsm:
-          type: array
-          items:
-            "$ref": "#/components/schemas/FSM"
+          $ref: '#/components/schemas/FSM'
         workflow:
-          "$ref": "#/components/schemas/Workflow"
-    FSMSearchCriteria:
+          $ref: '#/components/schemas/Workflow'
+      required:
+        - requestInfo
+        - fsm
+    FSMResponse:
       type: object
+      description: Response of the FSM
       properties:
-        empty:
-          type: boolean
-        offset:
-          type: integer
-          format: int32
-        limit:
-          type: integer
-          format: int32
-        tenantId:
+        responseInfo:
+          $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-1-1.yml#/definitions/ResponseInfo
+        fsm:
+          $ref: '#/components/schemas/FSM'
+        workflow:
+          $ref: '#/components/schemas/Workflow'
+        totalCount:
           type: string
-        mobileNumber:
-          type: string
-        applicationStatus:
-          type: array
-          items:
-            type: string
-        locality:
-          type: array
-          items:
-            type: string
-        ownerIds:
-          type: array
-          items:
-            type: string
-        fromDate:
-          type: integer
-          format: int64
-        toDate:
-          type: integer
-          format: int64
-        applicationNos:
-          type: array
-          items:
-            type: string
-        applicationType:
-          type: string
-        oldApplicationNos:
-          type: array
-          items:
-            type: string
-        ids:
-          type: array
-          items:
-            type: string
-        sortBy:
-          type: string
-          enum:
-            - applicationStatus
-            - applicationNumber
-            - propertyUsage
-            - vehicle
-            - locality
-            - createdTime
-        sortOrder:
-          type: string
-          enum:
-            - ASC
-            - DESC
-    FSMAuditSearchCriteria:
+          description: totalcount of records available in the system satifyig the search criteria
+      required:
+        - responseInfo
+        - totalCount
+        - fsm
+    FSMAuditResponse:
       type: object
+      description: Response of the FSM Audit search
       properties:
-        tenantId:
-          type: string
-        applicationNo:
-          type: string
-        id:
-          type: string
+        responseInfo:
+          $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-1-1.yml#/definitions/ResponseInfo
+        fsmAudit:
+          $ref: '#/components/schemas/FSMAudit'
+      required:
+        - responseInfo
+        - fsmAudit
     FSMAudit:
       type: object
+      description: >
+        Representation of FSM Audit
       properties:
         who:
           type: string
+          description: uuid of the user who changed the data of FSM object
         when:
           type: integer
-          format: int64
+          format: date
+          description: timestamp of the time change occured
         what:
           type: object
-          additionalProperties:
-            type: object
-    FSMAuditResponse:
+          description: key value pair of the changed key and the changed value
+    Address:
       type: object
-      properties:
-        responseInfo:
-          "$ref": "#/components/schemas/ResponseInfo"
-        fsmAudit:
-          type: array
-          items:
-            "$ref": "#/components/schemas/FSMAudit"
-    PeriodicApplicationResponse:
-      type: object
-      properties:
-        responseInfo:
-          "$ref": "#/components/schemas/ResponseInfo"
-        applicationNoList:
-          type: array
-          items:
-            type: string
-    PeriodicApplicationRequest:
-      type: object
+      description: >
+        Representation of a address. Indiavidual APIs may choose to extend from
+        this using allOf if more details needed to be added in their case.
       properties:
         tenantId:
           type: string
-        RequestInfo:
-          "$ref": "#/components/schemas/RequestInfo"
-        applicationNoList:
-          type: array
-          items:
-            type: string
-    VehicleTripSearchCriteria:
+          description: Unique Identifier of the tenant to which user primarily belongs
+        doorNo:
+          type: string
+          description: House number or door number.
+        plotNo:
+          type: string
+          description: Plot number of the house.
+        id:
+          type: string
+          description: System generated id for the address
+          readOnly: true
+        landmark:
+          description: additional landmark to help locate the address
+          type: string
+        city:
+          description: City of the address. Can be represented by the tenantid itself
+          type: string
+        district:
+          description: The district in which the property is located
+          type: string
+        region:
+          description: The Region in which the property is located
+          type: string
+        state:
+          description: The State in which the property is located
+          type: string
+        country:
+          description: The country in which the property is located
+          type: string
+        pincode:
+          type: string
+          description: PIN code of the address. Indian pincodes will usually be all numbers.
+        additionDetails:
+          type: string
+          description: more address detail as may be needed
+        buildingName:
+          type: string
+          description: Name of the building
+          maxLength: 64
+          minLength: 2
+        street:
+          type: string
+          description: Street Name
+          maxLength: 64
+          minLength: 2
+        slumName:
+          type: string
+          description: Street Name
+          maxLength: 64
+          minLength: 2
+        locality:
+          $ref: 'https://raw.githubusercontent.com/egovernments/egov-services/master/docs/egov-location/contracts/v11-0-0.yml#/definitions/Boundary'
+        geoLocation:
+          $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/GeoLocation'
+      required:
+        - tenantId
+        - locality
+    BillingSlab:
       type: object
+      description: Representation of billing slab
       properties:
-        empty:
-          type: boolean
-        offset:
-          type: integer
-          format: int32
-        limit:
-          type: integer
-          format: int32
+        id:
+          type: string
+          description: unique identifier of the billing slab
         tenantId:
           type: string
-        businessService:
+          description: id of the tenant i.e city
+        capacityFrom:
+          type: number
+          format: double
+          description: billing slab apply for the tankCapacity form
+        capacityTo:
+          type: number
+          format: double
+          description: billing slab apply for the tankCapacity till
+        propertyType:
           type: string
-        ids:
-          type: array
-          items:
-            type: string
-        vehicleIds:
-          type: array
-          items:
-            type: string
-        tripOwnerIds:
-          type: array
-          items:
-            type: string
-        driverIds:
-          type: array
-          items:
-            type: string
-        applicationStatus:
-          type: array
-          items:
-            type: string
-        refernceNos:
-          type: array
-          items:
-            type: string
-        applicationNos:
-          type: array
-          items:
-            type: string
-        sortBy:
+          description: billing slab propertyType
+        slum:
+          type: string
+          description: billing slab applies for slum
+          enum:
+            - YES
+            - NO
+        price:
+          type: number
+          format: double
+          description: price of the billing slab
+        auditDetails:
+          $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/AuditDetails'
+        status:
           type: string
           enum:
-            - APPLICATIONSTATUS
-            - APPLICATIONINO
-            - VEHICLE
-            - REFERENCENO
-            - CREATEDTIME
-            - TRIPSTARTTIME
-            - TRIPENDTIME
-        sortOrder:
-          type: string
-          enum:
-            - ASC
-            - DESC
-    VehicleCustomResponse:
+            - ACTIVE
+            - INACTIVE
+    BillingSlabRequest:
       type: object
+      description: Request object for BillingSlab
+      properties:
+        requestInfo:
+          $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/RequestHeader'
+        fsm:
+          $ref: '#/components/schemas/BillingSlab'
+      required:
+        - requestInfo
+        - billingSlab
+    BillingSlabResponse:
+      type: object
+      description: Response of the BillingSlab
       properties:
         responseInfo:
-          "$ref": "#/components/schemas/ResponseInfo"
-        applicationStatusCount:
+          $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-1-1.yml#/definitions/ResponseInfo
+        billingSlab:
           type: array
           items:
-            type: object
-            additionalProperties:
-              type: object
-        applicationIds:
+            $ref: '#/components/schemas/BillingSlab'
+      required:
+        - responseInfo
+        - billingSlab
+    CalculationReq:
+      type: object
+      description: Request object for Calcuation
+      properties:
+        requestInfo:
+          $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/RequestHeader'
+        CalulationCriteria:
+          $ref: '#/components/schemas/CalulationCriteria'
+      required:
+        - requestInfo
+        - CalulationCriteria
+    CalculationRes:
+      type: object
+      description: Response of the BillingSlab
+      properties:
+        responseInfo:
+          $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-1-1.yml#/definitions/ResponseInfo
+        Calculations:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/Calculation'
+      required:
+        - responseInfo
+        - Calculations
+    CalulationCriteria:
+      type: object
+      description: Calculation Criteria to calcaulte and generate Demand
+      properties:
+        tenantId:
+          type: string
+          description: Unique Identifier of the tenant to which user primarily belongs
+        feeType:
+          type: string
+          description: type of fee to be calcaulted and generrate demand, As of now it is only one
+          enum:
+            - APPLICATION_FEE
+        fsm:
+          $ref: '#/components/schemas/FSM'
+        applicationNo:
+          type: string
+          description: Application number of the FSM application
+    Calculation:
+      type: object
+      description: ist of calculations
+      properties:
+        tenantId:
+          type: string
+          description: Unique Identifier of the tenant to which user primarily belongs
+        feeType:
+          type: string
+          description: type of fee to be calcaulted and generrate demand, As of now it is only one
+          enum:
+            - APPLICATION_FEE
+        fsm:
+          $ref: '#/components/schemas/FSM'
+        applicationNumber:
+          type: string
+          description: Application number of the FSM application
+        taxHeadEstimates:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxHeadEstimate'
+    TaxHeadEstimate:
+      type: object
+      description: Estimate object for each taxHead
+      properties:
+        taxHeadCode:
+          type: string
+        estimateAmount:
+          type: number
+          format: bigdecimal
+        category:
+          type: string
+          enum:
+            - TAX
+            - FEE
+            - REBATE
+            - ADVANCE_COLLECTION
+            - PENALTY
+            - FINES
+            - CHARGES
+
+servers:
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/phanikiran-wtt-egov/FSM/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/WalkingTreeDev/eGov-FSM/1.0.0

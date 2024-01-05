@@ -103,12 +103,19 @@ export const tqmSearchConfigPlantOperator = {
                 }
               },
               {
-                "label": "TQM_INBOX_DATE_RANGE",
+                "label": "TQM_VIEW_PAST_DATE_RANGE",
                 "type": "dateRange",
                 "isMandatory": false,
                 "disable": false,
+                "key": "dateRange",
+                "preProcess": {
+                  "updateDependent": [
+                    "populators.maxDate"
+                  ]
+                },
                 "populators": {
-                  "name": "dateRange"
+                  "name": "dateRange",
+                  "maxDate":"currentDate"
                 }
               }
             ]
@@ -124,7 +131,7 @@ export const tqmSearchConfigPlantOperator = {
               {
                 "label": "TQM_TEST_ID",
                 "jsonPath": "testId",
-                "additionalCustomization": false
+                "additionalCustomization": true
               },
               {
                 "label": "TQM_TREATMENT_PROCESS",
