@@ -76,8 +76,8 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
         return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vendor`);
       case "VEHICLE":
         return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vehicle`);
-      case "DRIVER":
-        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-driver`);
+      case "WORKER":
+        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-worker`);
       default:
         break;
     }
@@ -128,23 +128,7 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
   return (
     <React.Fragment>
       <div className="search-container" style={{ width: "auto" }}>
-        <div className="search-complaint-container">
-          {(type === "mobile" || mobileView) && (
-            <div className="complaint-header">
-              <h2>{t("ES_COMMON_SEARCH_BY")}</h2>
-              <span
-                style={{
-                  position: "absolute",
-                  top: "2%",
-                  right: "8px",
-                }}
-                onClick={onClose}
-              >
-                <CloseSvg />
-              </span>
-            </div>
-          )}
-          <div className="search-tabs-container">
+      <div className="search-tabs-container">
             <div>
               <button
                 className={selectedTab === "VENDOR" ? "search-tab-head-selected" : "search-tab-head"}
@@ -164,7 +148,7 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
               >
                 {t("ES_FSM_REGISTRY_INBOX_TAB_VEHICLE")}
               </button>
-              <button
+              {/* <button
                 className={selectedTab === "DRIVER" ? "search-tab-head-selected" : "search-tab-head"}
                 onClick={() => {
                   clearSearch({});
@@ -172,6 +156,15 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
                 }}
               >
                 {t("ES_FSM_REGISTRY_INBOX_TAB_DRIVER")}
+              </button> */}
+              <button
+                className={selectedTab === "WORKER" ? "search-tab-head-selected" : "search-tab-head"}
+                onClick={() => {
+                  clearSearch({});
+                  onTabChange("WORKER");
+                }}
+              >
+                {t("ES_FSM_REGISTRY_INBOX_TAB_WORKER")}
               </button>
             </div>
             <div className="action-bar-wrap-registry">
@@ -182,14 +175,30 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
                 </div>
               </div>
               {showAddMenu && (
-                <Menu localeKeyPrefix={"ES_FSM_ACTION_CREATE"} options={["VENDOR", "DRIVER", "VEHICLE"]} t={t} onSelect={onActionSelect} />
+                <Menu localeKeyPrefix={"ES_FSM_ACTION_CREATE"} options={["VENDOR", "VEHICLE", "WORKER"]} t={t} onSelect={onActionSelect} />
               )}
             </div>
           </div>
+        <div className="search-complaint-container">
+          {(type === "mobile" || mobileView) && (
+            <div className="complaint-header">
+              <h2>{t("ES_COMMON_SEARCH_BY")}</h2>
+              <span
+                style={{
+                  position: "absolute",
+                  top: "2%",
+                  right: "8px",
+                }}
+                onClick={onClose}
+              >
+                <CloseSvg />
+              </span>
+            </div>
+          )}
           <form onSubmit={handleSubmit(onSubmitInput)}>
             <div
               className={FSTP ? "complaint-input-container for-pt for-search" : "complaint-input-container"}
-              style={{ width: "100%", gridTemplateColumns: "33.33% 66.66% 0%" }}
+              style={{ width: "100%", gridTemplateColumns: selectedTab === "WORKER" ? "25% 25% 25% 25%" : "33.33% 66.66% 0%" }}
             >
               {searchFields?.map((input, index) => (
                 <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}>

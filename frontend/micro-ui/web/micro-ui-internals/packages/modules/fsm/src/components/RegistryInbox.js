@@ -28,6 +28,19 @@ const RegisryInbox = (props) => {
   const [vendors, setVendors] = useState([]);
   const queryClient = useQueryClient();
 
+  const reqCriteriaIndividualUpdate = {
+    url: `/individual/v1/_update`,
+    params: {},
+    body: {
+      tenantId,
+    },
+    config: {
+      enabled: true,
+    },
+  };
+
+  const IndividualUpdateMutation = Digit.Hooks.useCustomAPIMutationHook(reqCriteriaIndividualUpdate);
+
   const {
     data: vendorData,
     isLoading: isVendorLoading,
@@ -37,15 +50,15 @@ const RegisryInbox = (props) => {
   } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: 'name', sortOrder: 'ASC', status: 'ACTIVE' },
-    { enabled: false }
+    { enabled: true }
   );
-
   const {
     isLoading: isUpdateVendorLoading,
     isError: vendorUpdateError,
     data: updateVendorResponse,
     error: updateVendorError,
     mutate: mutateVendor,
+    mutateAsync:mutateVendorAsync
   } = Digit.Hooks.fsm.useVendorUpdate(tenantId);
 
   const {
@@ -170,7 +183,140 @@ const RegisryInbox = (props) => {
     });
   };
 
+  const onSWUpdate = async (row) => {
+    // first we need to call the individual update and put isSystemUserActive to false
+    // then we need to call vendor update and put vendorWorkerStatus as INACTIVE
+    // if both are successfull show a toast
+    // Also if vendorWorkerStatus is INACTIVE && isSystemUserActive is false then vendor update should not be allowed i.e, dropdown should be disabled
+     
+    const individualObject = row?.original
+    const vendor = row?.original?.vendor
+    let vendorObject = {
+      
+    };
+    //untagging this individual
+    if(vendor?.workers) {
+      vendorObject = {
+        ...vendor,
+        workers:vendor?.workers?.map(worker => {
+          if(worker.individualId === individualObject.id){
+            return {...worker,vendorWorkerStatus:"INACTIVE"}
+          }else{
+            return worker
+          }
+        })
+      }
+    }
+    delete individualObject.vendor
+    
+    const promises = []
+
+    //push individual update promise
+    promises.push(
+      IndividualUpdateMutation.mutateAsync(
+        {
+          params: {},
+            body: {
+              Individual:{...individualObject,isSystemUserActive:!(individualObject?.isSystemUserActive) }
+            },
+        }
+      )
+    )
+
+    //push vendor update promise
+    if(vendorObject?.workers?.length > 0){
+      promises.push(
+        mutateVendorAsync(
+          {vendor:vendorObject}
+        )
+      )
+    }
+
+    const onSuccess = (res) => {
+      queryClient.invalidateQueries('DSO_SEARCH');
+      props.refetchVendor();
+      props.refetchData();
+      setShowToast({ key: 'SW_WORKER_UPDATE_SUCCESS', action: 'SW_WORKER_UPDATE_SUCCESS' });
+      setTimeout(closeToast, 3000);
+    }
+    const onError = (err) => {
+      setShowToast({ key: 'error', action: 'SW_WORKER_UPDATE_FAIL' });
+      setTimeout(closeToast, 3000);
+    }
+
+    try {
+      await Promise.all(promises);
+      onSuccess();
+    } catch (error) {
+      onError(error);
+    }
+    
+    
+    
+  }
+  const onVenderSelectForSanitationWorker = (row, selectedOption) => {
+    let driverData = row.original;
+    let formDetails = row.original.dsoDetails;
+
+    let existingVendor = driverData?.vendor;
+    let selectedVendor = selectedOption;
+    //if we select the same vendor don't do anything
+    if(selectedVendor?.id === existingVendor?.id){
+      return
+    }
+    delete driverData.vendor;
+    driverData.vendorDriverStatus = 'ACTIVE';
+    if (existingVendor) {
+      const drivers = existingVendor?.workers;
+      drivers.splice(
+        drivers.findIndex((ele) => ele.individualId === driverData.id),
+        1
+      );
+      const formData = {
+        vendor: {
+          ...formDetails,
+          drivers: drivers,
+        },
+      };
+    }
+    
+    const formData = {
+      vendor: {
+        ...selectedVendor,
+        workers: selectedVendor?.workers
+          ? [
+              ...selectedVendor.workers,
+              {
+                individualId: driverData?.id,
+                vendorWorkerStatus: 'ACTIVE',
+              },
+            ]
+          : [
+              {
+                individualId: driverData?.id,
+                vendorWorkerStatus: 'ACTIVE',
+              },
+            ],
+      },
+    };
+
+    mutateVendor(formData, {
+      onError: (error, variables) => {
+        setShowToast({ key: 'error', action: error });
+        setTimeout(closeToast, 5000);
+      },
+      onSuccess: (data, variables) => {
+        setShowToast({ key: 'success', action: 'VENDOR' });
+        queryClient.invalidateQueries('DSO_SEARCH');
+        props.refetchVendor();
+        props.refetchData();
+        setTimeout(closeToast, 3000);
+      },
+    });
+  };
+
   const onVendorDriverSelect = (row, selectedOption) => {
+    
     let driverData = row.original;
     let formDetails = row.original.dsoDetails;
 
@@ -310,9 +456,9 @@ const RegisryInbox = (props) => {
         return history.push(
           `/${window?.contextPath}/employee/fsm/registry/new-vehicle`
         );
-      case 'DRIVER':
+      case 'WORKER':
         return history.push(
-          `/${window?.contextPath}/employee/fsm/registry/new-driver`
+          `/${window?.contextPath}/employee/fsm/registry/new-worker`
         );
       default:
         break;
@@ -676,7 +822,94 @@ const RegisryInbox = (props) => {
             },
           },
         ];
-      default:
+        case 'WORKER':
+          return [
+            {
+              Header: t('ES_FSM_REGISTRY_INBOX_SW_ID'),
+              disableSortBy: true,
+              accessor: 'id',
+              Cell: ({ row }) => {
+                return (
+                  <div>
+                    <span className='link'>
+                      <Link
+                        to={
+                          `/${window?.contextPath}/employee/fsm/registry/worker-details?id=${row.original['individualId']}`
+                        }
+                      >
+                        <div>
+                          {row.original.individualId}
+                          <br />
+                        </div>
+                      </Link>
+                    </span>
+                  </div>
+                );
+              },
+            },
+            {
+              Header: t('ES_FSM_REGISTRY_INBOX_SW_NAME'),
+              disableSortBy: true,
+              accessor: 'name',
+              Cell: ({ row }) => {
+                return (
+                  <div>
+                    {row?.original?.name?.givenName ? row?.original?.name?.givenName : t("ES_COMMON_NA") }
+                  </div>
+                );
+              },
+            },
+            {
+              Header: t('ES_FSM_REGISTRY_INBOX_SW_ROLE'),
+              disableSortBy: true,
+              accessor: 'role',
+              Cell: ({ row }) => {
+                const functionalRole = row?.original?.additionalFields?.fields?.filter(row => row.key.startsWith("FUNCTIONAL_ROLE_"))?.filter((i) => i?.key !== "FUNCTIONAL_ROLE_COUNT");
+                const role = functionalRole?.length > 0 ? functionalRole?.length : "ES_COMMON_NA" ;
+                // const role = functionalRole?.length > 0 ? functionalRole?.map(i => t(`SW_FUNCTIONAL_ROLE_${i.value}`)).join(", ") : "ES_COMMON_NA" ;
+                return (
+                  <div>
+                    {t(role)}
+                  </div>
+                );
+              },
+            },
+            {
+              Header: t('ES_FSM_REGISTRY_INBOX_VENDOR_NAME'),
+              Cell: ({ row }) => { 
+                const employer = row?.original?.additionalFields?.fields?.filter(row => row?.key==="EMPLOYER")?.[0]?.value
+                const vendorOptions = vendors?.filter(row => row?.agencyType===employer)
+                return (
+                  <Dropdown
+                    className='fsm-registry-dropdown'
+                    selected={row.original.vendor}
+                    option={employer ? vendorOptions : vendors}
+                    select={(value) => onVenderSelectForSanitationWorker(row, value)}
+                    optionKey='name'
+                    t={t}
+                    style={{ position: "unset" }}
+                    optionCardStyles={{ maxWidth: "12.5%", maxHeight: "200px" }}
+                    disable={row?.original?.isSystemUserActive ? false : true}
+                  />
+                );
+              },
+            },
+            {
+              Header: t('ES_FSM_REGISTRY_INBOX_ENABLED'),
+              disableSortBy: true,
+              Cell: ({ row }) => {
+                return (
+                  <ToggleSwitch
+                    style={{ display: 'flex', justifyContent: 'left' }}
+                    value={row?.original?.isSystemUserActive ? true : false}
+                    onChange={() => onSWUpdate(row)}
+                    name={`switch-${row.id}`}
+                  />
+                );
+              },
+            },
+          ];
+        default:
         return [];
     }
   }, [props.selectedTab, vendors]);

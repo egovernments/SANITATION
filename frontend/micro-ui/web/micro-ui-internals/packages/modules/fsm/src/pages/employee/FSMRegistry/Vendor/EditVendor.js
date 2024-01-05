@@ -46,6 +46,9 @@ const EditVendor = ({ parentUrl, heading }) => {
         plotNo: dsoDetails?.dsoDetails?.address?.plotNo,
         landmark: dsoDetails?.dsoDetails?.address?.landmark,
         pincode: dsoDetails?.dsoDetails?.address?.pincode,
+        agencyType: {
+          code: dsoDetails?.dsoDetails?.agencyType
+        },
         buildingName: dsoDetails?.dsoDetails?.address?.buildingName,
         address: {
           pincode: dsoDetails?.dsoDetails?.address?.pincode,
@@ -76,7 +79,7 @@ const EditVendor = ({ parentUrl, heading }) => {
   const Config = VendorConfig(t, true);
 
   const onFormValueChange = (setValue, formData) => {
-    if (formData?.phone && formData?.address?.locality) {
+    if (formData?.phone && formData?.address?.locality && formData?.agencyType?.code) {
       setSubmitValve(true);
     } else {
       setSubmitValve(false);
@@ -107,10 +110,12 @@ const EditVendor = ({ parentUrl, heading }) => {
     const gender = data?.selectGender?.code;
     const emailId = data?.emailId;
     const dob = new Date(`${data.dob}`).getTime() || new Date(`1/1/1970`).getTime();
+    const agencyType = data?.agencyType?.code
     const formData = {
       vendor: {
         ...dsoDetails,
         name,
+        agencyType: agencyType,
         address: {
           ...dsoDetails.address,
           landmark,
@@ -193,6 +198,9 @@ const EditVendor = ({ parentUrl, heading }) => {
           defaultValues={defaultValues}
           onFormValueChange={onFormValueChange}
           noBreakLine={true}
+          cardStyle={{
+            padding:"1rem 1.5rem"
+          }}
         />
         {showToast && (
           <Toast

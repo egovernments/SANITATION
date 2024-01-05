@@ -8,6 +8,7 @@ import {
   AddNewIcon,
   ViewReportIcon,
   InboxIcon,
+  VehicleLogIcon,
 } from '@egovernments/digit-ui-react-components';
 import { checkForEmployee } from '../utils';
 const ArrowRight = ({ to }) => (
@@ -67,6 +68,7 @@ const FSMCard = () => {
   const filters = {
     sortBy: 'createdTime',
     sortOrder: 'DESC',
+    tenantId: tenantId,
     total: true,
   };
 
@@ -94,7 +96,7 @@ const FSMCard = () => {
   );
 
   const propsForFSTPO = {
-    Icon: <ShippingTruck />,
+    Icon: <VehicleLogIcon />,
     moduleName: t('ES_COMMON_FSTP_OPERATION'),
     // kpis: isSuccess ? Object.keys(info).map((key, index) => ({
     //             label: t(key),
@@ -151,7 +153,7 @@ const FSMCard = () => {
   );
 
   const propsForModuleCard = {
-    Icon: <ShippingTruck />,
+    Icon: <VehicleLogIcon fill = "#fff" />,
     moduleName: t('ES_TITLE_FAECAL_SLUDGE_MGMT'),
     kpis: [
       {

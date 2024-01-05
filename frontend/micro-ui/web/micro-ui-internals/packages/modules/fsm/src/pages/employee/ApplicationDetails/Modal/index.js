@@ -1,5 +1,5 @@
 import { Loader, Modal, FormComposer, Toast } from "@egovernments/digit-ui-react-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,Fragment } from "react";
 import { useQueryClient } from "react-query";
 import { UploadPitPhoto } from "@egovernments/digit-ui-react-components";
 
@@ -39,7 +39,8 @@ const popupActionBarStyles = {
   justifyContent: 'space-around'
 }
 
-const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction, actionData, module }) => {
+const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction, actionData, module,applicationDetails }) => {
+  
   const mobileView = Digit.Utils.browser.isMobile() ? true : false;
   const { data: dsoData, isLoading: isDsoLoading, isSuccess: isDsoSuccess, error: dsoError } = Digit.Hooks.fsm.useDsoSearch(tenantId, { limit: '-1', status: 'ACTIVE' });
   const { isLoading, isSuccess, isError, data: applicationData, error } = Digit.Hooks.fsm.useSearch(
@@ -105,6 +106,48 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     { staleTime: Infinity }
   );
 
+  const individualIds = applicationDetails?.dsoDetails?.workers?.map(worker => {
+    return worker?.individualId  
+  })?.filter(id => id)
+  
+  const [workers,setWorkers] = useState([])
+  const [drivers,setDrivers] = useState([])
+  const [selectedDriver,setSelectedDriver] = useState([])
+  const [selectedWorkers,setSelectedWorkers] = useState([])
+            
+  const {
+    data: workerData,
+    isLoading: isLoadingWorkers,
+    isSuccess: isSuccessWorkers,
+    error: isErrorWorkers,
+    refetch: refetchWorkers,
+  } = Digit.Hooks.fsm.useWorkerSearch({
+    tenantId,
+    details: {
+      Individual: {
+        // roleCodes: ['SANITATION_WORKER'],
+        tenantId,
+        id:individualIds
+      },
+    },
+    params: {
+      // ...paginationParms,
+      // name: searchParams?.name,
+      limit: 100,
+      offset: 0,
+    },
+    config: {
+      enabled: individualIds?.length > 0 ? true : false,
+      select: (data) => {
+        const result = data?.Individual?.map(ind => {return {givenName:ind?.name?.givenName,optionsKey:`${ind?.name?.givenName} / ${ind?.individualId}`,...ind}})?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "SANITATION_WORKER"))
+        setWorkers(result)
+        const drivers = result?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER"))
+        setDrivers(drivers)
+        return result
+      },
+    },
+  });
+  const [showToast,setShowToast] = useState(null)
   const [dsoList, setDsoList] = useState([]);
   const [vehicleNoList, setVehicleNoList] = useState([]);
   const [config, setConfig] = useState({});
@@ -138,6 +181,10 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     pitType: applicationData?.sanitationtype,
     pitDetail: applicationData?.pitDetail,
   });
+
+  const closeToast = () => {
+    setShowToast(null);
+  };
 
   useEffect(() => {
     if (isSuccess && isVehicleDataLoaded && applicationData) {
@@ -258,6 +305,12 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     // Digit.SessionStorage.set("PGR_CREATE_IMAGES", ids);
   };
 
+  const tempSelectedWorkers = selectedWorkers?.map(obj => {
+    if (obj.userDetails && obj.userDetails.roles) {
+      obj.userDetails.roles = obj.userDetails.roles.filter(role => role.code !== "FSM_DRIVER");
+    }
+    return obj;
+  });
   function submit(data) {
     const workflow = { action: action };
 
@@ -286,7 +339,17 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       }
     }
     if (data.noOfTrips) applicationData.noOfTrips = Number(data.noOfTrips);
-    if (action === "REASSING") applicationData.vehicleId = null;
+    if (action === "REASSING") {
+      applicationData.vehicleId = null
+      if(applicationData?.workers?.length > 0) {
+        applicationData.workers = applicationData?.workers?.map(worker => {
+          return {
+            ...worker,
+            status:"INACTIVE"
+          }
+        })
+      }
+    };
 
     if (reassignReason) addCommentToWorkflow(reassignReason, workflow, data);
     if (rejectionReason) addCommentToWorkflow(rejectionReason, workflow, data);
@@ -295,8 +358,36 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     if (fstpoRejectionReason && data.comments) workflow.comments = data.comments;
     if (fstpoRejectionReason) workflow.fstpoRejectionReason = fstpoRejectionReason?.code;
 
+    
+    if(action==="DSO_ACCEPT" || action==="ACCEPT"){
+      //if driver selected is there in selectedworkers do early return and show toast
+      if(selectedWorkers?.some?.(worker => worker?.id === selectedDriver?.id)){
+        setShowToast({ label:"FSM_DRIVER_SW_ERR",error:true });
+        setTimeout(closeToast, 5000);
+        return
+      }
+      const workersList = [selectedDriver,...tempSelectedWorkers]
+      // workerList?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER"))
+      const workerPayload = workersList?.map(worker=> {
+        return {
+          tenantId:worker?.tenantId,
+          applicationId:applicationData?.id,
+          individualId:worker?.id,
+          workerType:worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER") ? "DRIVER":"HELPER",
+          status:"ACTIVE"
+        }
+      })
+      submitAction({ fsm: {...applicationData,workers:workerPayload}, workflow });
+      return
+    }
+    
     submitAction({ fsm: applicationData, workflow });
   }
+
+  const onRemoveWorkers = (index, workerToRemove) => {
+    setSelectedWorkers(()=>selectedWorkers?.filter(worker=> worker.individualId!==workerToRemove.individualId))
+  };
+
   useEffect(() => {
     switch (action) {
       case "SCHEDULE":
@@ -313,7 +404,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       case "DSO_ACCEPT":
       case "ACCEPT":
         //TODO: add accept UI
-        setFormValve(vehicleNo ? true : false);
+        setFormValve(vehicleNo && selectedDriver?.optionsKey ? true : false);
         return setConfig(
           configAcceptDso({
             t,
@@ -326,6 +417,13 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
             vehicleNoList,
             selectVehicleNo,
             action,
+            workers,
+            selectedDriver,
+            selectedWorkers,
+            setSelectedDriver,
+            setSelectedWorkers,
+            onRemoveWorkers,
+            drivers,
           })
         );
 
@@ -452,44 +550,59 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       default:
         break;
     }
-  }, [action, reassignReason, isDsoLoading, dso, vehicleMenu, rejectionReason, vehicleNo, vehicleNoList, Reason, fstpoRejectionReason]);
+  }, [action, reassignReason, isDsoLoading, dso, vehicleMenu, rejectionReason, vehicleNo, vehicleNoList, Reason, fstpoRejectionReason,workers,selectedDriver,selectedWorkers,drivers]);
+
+ 
 
   const hiddenFileInput = React.useRef(null);
-
+  
   return action && config.form && !isDsoLoading && !isReasonLoading && isVehicleDataLoaded ? (
-    <Modal
-      popupStyles={mobileView ? { height: 'fit-content', minHeight: '100vh' } : { height: "fit-content" }}
-      headerBarMain={<Heading label={t(config.label.heading)} />}
-      headerBarEnd={<CloseBtn onClick={closeModal} />}
-      actionCancelLabel={t(config.label.cancel)}
-      actionCancelOnSubmit={closeModal}
-      actionSaveLabel={t(config.label.submit)}
-      actionSaveOnSubmit={() => { }}
-      formId="modal-action"
-      isDisabled={!formValve}
-      popupModuleMianStyles={mobileView ? { paddingBottom: '60px' } : {}}
-      popupModuleActionBarStyles={mobileView ? popupActionBarStyles : {}}
-    >
-      <FormComposer
-        config={config.form}
-        noBoxShadow
-        inline
-        childrenAtTheBottom
-        onSubmit={submit}
+    <>
+      <Modal
+        popupStyles={mobileView ? { height: 'fit-content', minHeight: '100vh' } : { height: "fit-content" }}
+        headerBarMain={<Heading label={t(config.label.heading)} />}
+        headerBarEnd={<CloseBtn onClick={closeModal} />}
+        actionCancelLabel={t(config.label.cancel)}
+        actionCancelOnSubmit={closeModal}
+        actionSaveLabel={t(config.label.submit)}
+        actionSaveOnSubmit={() => { }}
         formId="modal-action"
-        defaultValues={defaultValues}
+        isDisabled={!formValve}
+        popupModuleMianStyles={mobileView ? { paddingBottom: '60px' } : {}}
+        popupModuleActionBarStyles={mobileView ? popupActionBarStyles : {}}
+        popUpContainerClassName={'fsm-application-modal-popup'}
       >
-      </FormComposer>
-      {action === "COMPLETED" ? <UploadPitPhoto
-        header=""
-        tenantId={tenantId}
-        cardText=""
-        onPhotoChange={handleUpload}
-        uploadedImages={null} /> : null
-      }
+        <FormComposer
+          config={config.form}
+          noBoxShadow
+          inline
+          childrenAtTheBottom
+          onSubmit={submit}
+          formId="modal-action"
+          defaultValues={defaultValues}
+        >
+        </FormComposer>
+        {action === "COMPLETED" ? <UploadPitPhoto
+          header=""
+          tenantId={tenantId}
+          cardText=""
+          onPhotoChange={handleUpload}
+          uploadedImages={null} /> : null
+        }
 
-      {/* {toastError && <Toast {...toastError} />} */}
-    </Modal>
+        {/* {toastError && <Toast {...toastError} />} */}
+      </Modal>
+      {showToast && (
+        <Toast
+          error={showToast?.error}
+          label={t(
+            showToast?.label
+          )}
+          onClose={closeToast}
+          style={{zIndex:"100000"}}
+        />
+      )}
+    </>
   ) : (
     <Loader />
   );

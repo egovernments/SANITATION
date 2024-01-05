@@ -28,6 +28,11 @@ const Modal = ({
   headerBarMainStyle,
   isOBPSFlow = false,
   popupModuleActionBarStyles = {},
+  popmoduleClassName = "",
+  popUpContainerClassName="",
+  popupModuleActionBarClass = "",
+  popupMainModuleClass = "",
+  customTheme = "",
 }) => {
   /**
    * TODO: It needs to be done from the desgin changes
@@ -40,13 +45,13 @@ const Modal = ({
     };
   }, []);
   return (
-    <PopUp>
-      <div className="popup-module" style={popupStyles}>
+    <PopUp className={popUpContainerClassName}>
+      <div className={`popup-module ${popmoduleClassName}`} style={popupStyles}>
         <HeaderBar main={headerBarMain} end={headerBarEnd} style={headerBarMainStyle ? headerBarMainStyle : {}} />
-        <div className="popup-module-main" style={popupModuleMianStyles ? popupModuleMianStyles : {}}>
+        <div className={`popup-module-main ${popupMainModuleClass}`} style={popupModuleMianStyles ? popupModuleMianStyles : {}}>
           {children}
           <div
-            className="popup-module-action-bar"
+            className={`popup-module-action-bar ${popupModuleActionBarClass}`}
             style={
               isOBPSFlow
                 ? !mobileView
@@ -55,9 +60,9 @@ const Modal = ({
                 : popupModuleActionBarStyles
             }
           >
-            {actionCancelLabel ? <ButtonSelector theme="border" label={actionCancelLabel} onSubmit={actionCancelOnSubmit} style={style} /> : null}
+            {actionCancelLabel ? <ButtonSelector theme="border" label={actionCancelLabel} onSubmit={actionCancelOnSubmit} style={style} customTheme={customTheme} /> : null}
             {!hideSubmit ? (
-              <ButtonSelector label={actionSaveLabel} onSubmit={actionSaveOnSubmit} formId={formId} isDisabled={isDisabled} style={style} />
+              <ButtonSelector label={actionSaveLabel} onSubmit={actionSaveOnSubmit} formId={formId} isDisabled={isDisabled} style={style} customTheme={customTheme} />
             ) : null}
             {actionSingleLabel ? 
              <ActionBar style={{ position: mobileView ? "absolute" : "relative", boxShadow: "none", minWidth: "240px", maxWidth: "360px", margin: "16px" }}>

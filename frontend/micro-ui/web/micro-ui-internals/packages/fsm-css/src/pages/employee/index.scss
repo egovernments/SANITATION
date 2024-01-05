@@ -18,7 +18,8 @@
   }
   .home-action-cards {
     height: auto !important;
-    min-height: 263px;
+    min-height: auto;
+    padding-bottom: 0;
   }
   .topbar {
     position: fixed;
@@ -495,5 +496,139 @@
     width: calc(100% - 219px);
     margin-left: 16px;
     margin-right: 16px;
+  }
+}
+
+.break-line {
+  border-color: #d6d5d4 !important;
+}
+
+.upload-file {
+  margin-bottom: 1rem;
+}
+
+.card-label-error.custom-formcomposer {
+  width: 70%;
+  margin-left: 30%;
+  font-size: 14px;
+  margin-top: -21px;
+  @media (max-width: 639px) {
+    margin-left: unset;
+    width: 100%;
+  }
+}
+
+.employeeCard-override {
+  @media (min-width: 1024px) {
+    padding: 16px;
+  }
+  @media (max-width: 639px) {
+    margin-left: 0.5rem !important;
+    padding: 1rem;
+  }
+  .employee-card-sub-header {
+    margin-bottom: 16px;
+    margin-top: 32px;
+    font-size: 24px;
+    line-height: 32px;
+    @media (max-width: 639px) {
+      margin-top: 0;
+    }
+  }
+}
+
+.field-container {
+  @media (min-width: 1024px) {
+    max-width: unset;
+  }
+}
+
+.label-field-pair {
+  .card-label {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.drawer-list {
+  .sidebar-list {
+    .submenu-container {
+      .sidebar-link {
+        padding: unset !important;
+      }
+    }
+  }
+  .sidebar-list:last-child{
+    position: fixed;
+    bottom: 0;
+  }
+}
+.sections-parent.inbox {
+  .details-container {
+    margin-bottom: 1rem;
+    margin-top: 0;
+  }
+  .searchBox {
+    margin-bottom: 0;
+  }
+}
+
+.field {
+  .error-msg {
+    margin-bottom: 1rem;
+  }
+}
+.validation-error {
+  margin-top: -12px;
+}
+.tag-container {
+  .text {
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+  }
+}
+
+video::-webkit-media-controls-panel {
+  position: absolute;
+  width: 100%;
+  top: 55%;
+  height: auto;
+}
+video::-webkit-media-controls-play-button {
+  display: flex !important;
+}
+
+@media (max-width: 700px) {
+  video::-webkit-media-controls-panel {
+    position: unset;
+    width: 100%;
+    top: 0;
+    height: auto;
+  }
+  video::-webkit-media-controls-play-button {
+    display: flex !important;
+  }
+}
+
+.search-add-icon {
+  background: #f47738;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+.inbox-search-links-container {
+  border-radius: 4px;
+  .contents {
+    .link {
+      padding-left: 0;
+    }
+  }
+}
+.inbox-search-component-wrapper {
+  .search-component-table {
+    border-radius: 4px;
   }
 }

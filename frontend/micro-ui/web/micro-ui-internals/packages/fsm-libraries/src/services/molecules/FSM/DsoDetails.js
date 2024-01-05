@@ -77,7 +77,8 @@ const DsoDetails = async (tenantId, filters = {}) => {
 
   //TODO get possible dates to book dso
 
-  const data = dsoDetails.vendor.map((dso) => ({
+  const data = dsoDetails?.vendor?.map((dso) => ({
+    workers:dso?.workers,
     displayName: dso.name,
     mobileNumber: dso.owner?.mobileNumber,
     name: dso.name,

@@ -43,6 +43,7 @@ module.exports = function (app) {
     "/tl-services/v1/_create",
     "/tl-services/v1/_search",
     "/egov-url-shortening/shortener",
+    "/eus/shortener",
     "/inbox/v1/_search",
     "/tl-services",
     "/tl-calculator",
@@ -63,6 +64,10 @@ module.exports = function (app) {
     "/inbox/v1/elastic/_search",
     "/fsm-calculator",
     "/inbox/v2/_search",
+    "/mdms-v2/",
+    "/pqm/",
+    "/pqm-service/",
+    "/individual/",
   ].forEach((location) => app.use(location, createProxy));
   ["/pb-egov-assets"].forEach((location) => app.use(location, assetsProxy));
 };

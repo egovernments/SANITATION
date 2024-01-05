@@ -294,7 +294,7 @@ const ApplicationDetails = (props) => {
               optionsClassName={"employee-options-btn-className"}
               options={dowloadOptions}
               displayOptions={isDisplayDownloadMenu}
-
+              setShowOptions = {()=>{}}
               // displayOptions={showOptions}
               // options={dowloadOptions}
             />
@@ -401,6 +401,7 @@ const ApplicationDetails = (props) => {
               submitAction={submitAction}
               actionData={workflowDetails?.data?.timeline}
               module={workflowDetails?.data?.applicationBusinessService}
+              applicationDetails={applicationDetails}
             />
           ) : null}
           {showToast && (

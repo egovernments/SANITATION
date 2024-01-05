@@ -38,10 +38,14 @@ export const FsmBreadCrumb = ({ location }) => {
   const isNewVendor = location?.pathname?.includes("new-vendor");
   const isNewVehicle = location?.pathname?.includes("new-vehicle");
   const isNewDriver = location?.pathname?.includes("new-driver");
+  const isAddWorker = location?.pathname?.includes("new-worker");
+  const isEditWorker = location?.pathname?.includes("edit-worker");
+  const isWorkerDetails = location?.pathname?.includes("worker-details");
 
   const [search, setSearch] = useState(false);
   const [id, setId] = useState(false);
-
+  const searchParams = new URLSearchParams(location.search);
+  const paramId = searchParams.get("id");
   useEffect(() => {
     if (!search) {
       setSearch(isSearch);
@@ -62,13 +66,18 @@ export const FsmBreadCrumb = ({ location }) => {
       show: isFsm,
     },
     {
-      path: isRegistry
-        ? `/${window?.contextPath}/employee/fsm/registry?selectedTabs=VENDOR`
-        : FSTPO
-        ? `/${window?.contextPath}/employee/fsm/fstp-inbox`
-        : `/${window?.contextPath}/employee`,
+      path:
+        isVendorDetails || isVehicleDetails || isWorkerDetails || isAddWorker || isNewVehicle || isNewVendor || isVendorEdit || isEditWorker || isVehicleEdit
+          ? `/${window?.contextPath}/employee/fsm/registry`
+          : isRegistry
+          ? null
+          : FSTPO
+          ? `/${window?.contextPath}/employee/fsm/fstp-inbox`
+          : `/${window?.contextPath}/employee`,
+      query: isVehicleDetails ? "selectedTabs=VEHICLE" : isWorkerDetails ? "selectedTabs=WORKER" : "selectedTabs=VENDOR",
       content: isVehicleLog ? t("ES_TITLE_INBOX") : "FSM",
       show: isFsm,
+      isBack: isVendorDetails || isVehicleDetails || isWorkerDetails || isRegistry ? false : true,
     },
     {
       path: isNewApplication ? `/${window?.contextPath}/employee/fsm/new-application` : "",
@@ -108,8 +117,26 @@ export const FsmBreadCrumb = ({ location }) => {
       show: isRegistry && (isDriverDetails || isDriverEdit),
     },
     {
+      path: isWorkerDetails ? null : `/${window?.contextPath}/employee/fsm/registry/worker-details`,
+      query: `id=${paramId}`,
+      content: t("ES_TITLE_WORKER_DETAILS"),
+      show: isRegistry && (isWorkerDetails || isEditWorker),
+    },
+    {
       content: t("ES_TITLE_VENDOR_EDIT"),
-      show: isRegistry && (isVendorEdit || isVehicleEdit || isDriverEdit),
+      show: isRegistry && (isVendorEdit || isVehicleEdit || isDriverEdit || isEditWorker),
+    },
+    {
+      content: t("ES_TITLE_WORKER_EDIT"),
+      show: isRegistry && isEditWorker,
+    },
+    {
+      content: t("ES_TITLE_WORKER_ADD"),
+      show: isRegistry && isAddWorker,
+    },
+    {
+      content: t("ES_TITLE_WORKER_DETAILS"),
+      show: isRegistry && isWorkerDetails,
     },
     {
       path: `/${window?.contextPath}/employee/fsm/modify-application/` + id,
@@ -123,8 +150,10 @@ export const FsmBreadCrumb = ({ location }) => {
         ? t("ES_FSM_REGISTRY_DETAILS_TYPE_VEHICLE")
         : isNewDriver
         ? t("ES_FSM_REGISTRY_DETAILS_TYPE_DRIVER")
+        : isAddWorker
+        ? t("ES_FSM_REGISTRY_DETAILS_TYPE_WORKER")
         : null,
-      show: isRegistry && (isNewVendor || isNewVehicle || isNewDriver),
+      show: isRegistry && (isNewVendor || isNewVehicle || isNewDriver || isAddWorker),
     },
   ];
 
@@ -210,23 +239,22 @@ const EmployeeApp = ({ path, url, userType }) => {
   const EditDriver = Digit.ComponentRegistryService.getComponent("EditDriver");
   const BreadCrumbComp = Digit.ComponentRegistryService.getComponent("FsmBreadCrumb");
   const FSMSearch = Digit.ComponentRegistryService.getComponent("FSMSearch");
+  const AddWorker = Digit.ComponentRegistryService.getComponent("AddWorker");
+  const EditWorker = Digit.ComponentRegistryService.getComponent("EditWorker");
+  const WorkerDetails = Digit.ComponentRegistryService.getComponent("WorkerDetails");
 
   const locationCheck =
     window.location.href.includes("/employee/fsm/inbox") ||
     window.location.href.includes("/employee/fsm/registry") ||
     window.location.href.includes("/employee/fsm/application-details/");
 
-  const desludgingApplicationCheck =
-    window.location.href.includes("/employee/fsm/new-application") || window.location.href.includes("/employee/fsm/modify-application");
+  const desludgingApplicationCheck = window.location.href.includes("/employee/fsm/new-application") || window.location.href.includes("/employee/fsm/modify-application");
   return (
     <Switch>
       <React.Fragment>
         <div className="ground-container fsm-ground-container">
           {FSTPO ? (
-            <BackButton
-              isCommonPTPropertyScreen={location.pathname.includes("new") ? true : false}
-              getBackPageNumber={location.pathname.includes("new") ? () => -2 : null}
-            >
+            <BackButton isCommonPTPropertyScreen={location.pathname.includes("new") ? true : false} getBackPageNumber={location.pathname.includes("new") ? () => -2 : null}>
               {t("CS_COMMON_BACK")}
             </BackButton>
           ) : (
@@ -239,10 +267,7 @@ const EmployeeApp = ({ path, url, userType }) => {
           <PrivateRoute path={`${path}/fstp-inbox`} component={() => <FstpInbox parentRoute={path} />} />
           <PrivateRoute path={`${path}/new-application`} component={() => <NewApplication parentUrl={url} />} />
           <PrivateRoute path={`${path}/modify-application/:id`} component={() => <EditApplication />} />
-          <PrivateRoute
-            path={`${path}/application-details/:id`}
-            component={() => <EmployeeApplicationDetails parentRoute={path} userType="EMPLOYEE" />}
-          />
+          <PrivateRoute path={`${path}/application-details/:id`} component={() => <EmployeeApplicationDetails parentRoute={path} userType="EMPLOYEE" />} />
           <PrivateRoute path={`${path}/fstp-operator-details/:id`} component={FstpOperatorDetails} />
           <PrivateRoute path={`${path}/response`} component={(props) => <Response {...props} parentRoute={path} />} />
           <PrivateRoute path={`${path}/application-audit/:id`} component={() => <ApplicationAudit parentRoute={path} />} />
@@ -265,6 +290,9 @@ const EmployeeApp = ({ path, url, userType }) => {
           {/* <PrivateRoute exact path={`${path}/home`} component={() => <ULBHomeCard module={module} />} /> */}
           <PrivateRoute exact path={`${path}/fstp/new-vehicle-entry`} component={FstpOperatorDetails} />
           <PrivateRoute exact path={`${path}/fstp/new-vehicle-entry/:id`} component={FstpOperatorDetails} />
+          <PrivateRoute path={`${path}/registry/new-worker`} component={() => <AddWorker parentRoute={path} />} />
+          <PrivateRoute path={`${path}/registry/edit-worker`} component={() => <EditWorker parentRoute={path} />} />
+          <PrivateRoute path={`${path}/registry/worker-details`} component={() => <WorkerDetails parentRoute={path} />} />
         </div>
       </React.Fragment>
     </Switch>

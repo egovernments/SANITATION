@@ -16,9 +16,7 @@ const AddVendor = ({ parentUrl, heading }) => {
   const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("FSM_ERROR_DATA", false);
   const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
 
-  const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useVendorCreate(
-    tenantId
-  );
+  const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useVendorCreate(tenantId);
 
   useEffect(() => {
     setMutationHappened(false);
@@ -41,7 +39,7 @@ const AddVendor = ({ parentUrl, heading }) => {
   };
 
   const onFormValueChange = (setValue, formData) => {
-    if (formData?.vendorName && formData?.phone && formData?.address?.locality && formData?.selectGender) {
+    if (formData?.vendorName && formData?.phone && formData?.address?.locality && formData?.selectGender && formData?.agencyType?.code) {
       setSubmitValve(true);
     } else {
       setSubmitValve(false);
@@ -72,11 +70,12 @@ const AddVendor = ({ parentUrl, heading }) => {
     const phone = data?.phone;
     const dob = new Date(`${data.dob}`).getTime() || new Date(`1/1/1970`).getTime();
     const additionalDetails = data?.additionalDetails;
+    const agencyType = data?.agencyType?.code
     const formData = {
       vendor: {
         tenantId: tenantId,
         name,
-        agencyType: "ULB",
+        agencyType: agencyType,
         paymentPreference: "post-service",
         address: {
           tenantId: tenantId,
@@ -160,6 +159,9 @@ const AddVendor = ({ parentUrl, heading }) => {
           defaultValues={defaultValues}
           onFormValueChange={onFormValueChange}
           noBreakLine={true}
+          cardStyle={{
+            padding: "1rem 1.5rem",
+          }}
         />
         {showToast && (
           <Toast

@@ -2,28 +2,14 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Loader } from "@egovernments/digit-ui-react-components";
 import { InboxSearchComposer } from "@egovernments/digit-ui-module-utilities";
-// import { searchConfig } from "../../config/Employee/search";
+import { FSMSearchConfig } from "./configs/FSMSearchConfig";
 
 const Search = () => {
   const { t } = useTranslation();
 
   //   const configModuleName = Digit.Utils.getConfigModuleName();
   const tenant = Digit.ULBService.getStateId();
-  const { isLoading, data } = Digit.Hooks.useCustomMDMS(
-    tenant,
-    "commonUiConfig",
-    [
-      {
-        name: "FSMSearchConfig",
-      },
-    ],
-    {
-      select: (data) => {
-        const config = data?.["commonUiConfig"]?.FSMSearchConfig?.[0];
-        return config;
-      },
-    }
-  );
+  const data = FSMSearchConfig();
   // const configs = Digit.Utils.configUpdater(searchConfigMuktaFuzzy())
 
   // const configs = data?.[configModuleName].SearchEstimateWMSConfig?.[0]
@@ -44,7 +30,7 @@ const Search = () => {
     [data]
   );
 
-  if (isLoading) return <Loader />;
+  if (!data) return <Loader />;
   return (
     <React.Fragment>
       <Header className="works-header-search">{t(configs?.label)}</Header>

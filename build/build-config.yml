@@ -57,6 +57,28 @@ config:
         image-name: 'inbox'
         dockerfile: 'build/maven/Dockerfile'
 
+  - name: 'builds/SANITATION/pqm'
+    build:
+      - work-dir: 'pqm'
+        image-name: 'pqm-service'
+        dockerfile: 'build/maven/Dockerfile'
+      - work-dir: 'pqm/src/main/resources/db'
+        image-name: 'pqm-service-db'
+
+  - name: 'builds/SANITATION/pqm-scheduler'
+    build:
+      - work-dir: 'pqm-scheduler'
+        image-name: 'pqm-scheduler'
+        dockerfile: 'pqm-scheduler/Dockerfile'
+
+  - name: 'builds/SANITATION/pqm-anomaly-finder'
+    build:
+      - work-dir: 'pqm-anomaly-finder'
+        image-name: 'pqm-anomaly-finder'
+        dockerfile: 'build/maven/Dockerfile'
+      - work-dir: 'pqm-anomaly-finder/src/main/resources/db'
+        image-name: 'pqm-anomaly-finder-db'
+
   #Sanitation Frontend
   - name: 'builds/SANITATION/frontend/sanitation-ui'
     build:
