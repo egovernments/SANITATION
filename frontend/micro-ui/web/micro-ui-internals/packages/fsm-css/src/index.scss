@@ -303,6 +303,7 @@ input::-webkit-calendar-picker-indicator {
     bottom: 0rem;
     border-radius: 0;
     margin: 0;
+    z-index: 1000;
   }
 }
 
@@ -318,6 +319,8 @@ input::-webkit-calendar-picker-indicator {
 .employee-select-wrap {
   .options-card {
     top: 100%;
+    border-left-width: 0 !important;
+    border-right-width: 0 !important;
   }
 }
 .employee-select-wrap.fsm-registry-dropdown {
@@ -328,6 +331,7 @@ input::-webkit-calendar-picker-indicator {
 .inbox-search-links-container {
   .header {
     grid-template-columns: 12% 1fr;
+    grid-gap: 0.81rem;
   }
 }
 
@@ -338,7 +342,6 @@ input::-webkit-calendar-picker-indicator {
       bottom: 100%;
     }
   }
-}
 
 /*
 PART OF VEHICLE TRACKING

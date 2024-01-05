@@ -299,7 +299,7 @@ const ApplicationDetails = (props) => {
               optionsClassName={"employee-options-btn-className"}
               options={dowloadOptions}
               displayOptions={isDisplayDownloadMenu}
-
+              setShowOptions = {()=>{}}
               // displayOptions={showOptions}
               // options={dowloadOptions}
             />

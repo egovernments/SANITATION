@@ -34,6 +34,7 @@ export const UICustomizations = {
       const tenantId = Digit.ULBService.getCurrentTenantId();
       data.body.inbox.tenantId = tenantId;
       data.body.inbox.processSearchCriteria.tenantId = tenantId;
+      data.body.inbox.moduleSearchCriteria.tenantId = tenantId;
       // // deleting them for now(assignee-> need clarity from pintu,ward-> static for now,not implemented BE side)
       // const assignee = _.clone(data.body.inbox.moduleSearchCriteria.assignee);
       // delete data.body.inbox.moduleSearchCriteria.assignee;

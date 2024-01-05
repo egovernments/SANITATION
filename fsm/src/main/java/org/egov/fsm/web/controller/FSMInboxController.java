@@ -4,10 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.egov.fsm.consumer.FSMEventConsumer;
 import org.egov.fsm.service.FSMInboxService;
 import org.egov.fsm.util.ResponseInfoFactory;
-import org.egov.fsm.web.model.FSMEvent;
 import org.egov.fsm.web.model.RequestInfoWrapper;
 import org.egov.fsm.web.model.VehicleCustomResponse;
 import org.egov.fsm.web.model.vehicle.trip.VehicleTripSearchCriteria;
@@ -28,9 +26,6 @@ public class FSMInboxController {
 
 	@Autowired
 	private ResponseInfoFactory responseInfoFactory;
-	
-	@Autowired
-	private FSMEventConsumer consumer;
 
 	@PostMapping(value = "/fetchApplicationIds")
 	public ResponseEntity<VehicleCustomResponse> fetchApplicationIds(
@@ -46,10 +41,4 @@ public class FSMInboxController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/_test")
-	public ResponseEntity<?> test(@Valid @RequestBody FSMEvent event) {
-		consumer.pushEvent(event);
-		return new ResponseEntity<>(null, HttpStatus.OK);
-
-	}
 }

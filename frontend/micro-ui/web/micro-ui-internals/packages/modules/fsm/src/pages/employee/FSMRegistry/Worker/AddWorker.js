@@ -155,6 +155,17 @@ const AddWorker = ({ parentUrl, heading }) => {
     // Adding the employer information (assuming it's a constant value like "PRIVATE_VENDOR")
     roleDetailsArray.push({ key: "EMPLOYER", value: employer });
 
+    const checkDuplicacy = roleDetailsArray.filter((item) => item.key.startsWith("FUNCTIONAL_ROLE")).map((item) => item.value);
+    const isDuplicate = checkDuplicacy.length === new Set(checkDuplicacy).size;
+
+    if (!isDuplicate) {
+      setShowToast({ key: "error", action: `ES_FSM_WORKER_DUPLICATE_ROLE` });
+      setTimeout(() => {
+        closeToast();
+      }, 5000);
+      return;
+    }
+
     const formData = {
       Individual: {
         tenantId: tenantId,
@@ -260,6 +271,8 @@ const AddWorker = ({ parentUrl, heading }) => {
             console.error("Error updating data:", updateError);
             setShowToast({ key: "success", action: "WORDER_ADDED_VENDOR_FAILED" });
           }
+        } else {
+          setShowToast({ key: "success", action: "ADD_WORKER_SUCCESS" });
         }
         setTimeout(() => {
           closeToast();
