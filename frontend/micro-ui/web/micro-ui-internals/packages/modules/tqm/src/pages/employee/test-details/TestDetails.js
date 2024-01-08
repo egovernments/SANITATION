@@ -25,29 +25,59 @@ function TestDetails() {
     id: id,
     tenantId: tenantId,
     config: {
-      select: (data) => ({
-        data: {
-          cards: [
-            {
-              sections: [
+      select: (data) => {
+        debugger
+        if(data?.wfStatus==="PENDINGRESULTS"){
+          return {
+            data: {
+              cards: [
                 {
-                  type: "DATA",
-                  cardHeader: { value: t("ES_TQM_TEST_DETAILS_HEADING"), inlineStyles: { marginTop: 0 } },
-                  values: data.details,
-                },
-                {
-                  type: "COMPONENT",
-                  component: "TqmCardReading",
-                  props: {
-                    parameterData: data?.testResponse?.testCriteria || null,
-                  },
+                  sections: [
+                    {
+                      type: "DATA",
+                      cardHeader: { value: t("ES_TQM_TEST_DETAILS_HEADING"), inlineStyles: { marginTop: 0 } },
+                      values: data.details,
+                    },
+                    // {
+                    //   type: "COMPONENT",
+                    //   component: "TqmCardReading",
+                    //   props: {
+                    //     parameterData: data?.testResponse?.testCriteria || null,
+                    //   },
+                    // },
+                  ],
                 },
               ],
             },
-          ],
-        },
-        response: data.testResponse,
-      }),
+            response: data.testResponse,
+          }
+        }else {
+          return {
+            data: {
+              cards: [
+                {
+                  sections: [
+                    {
+                      type: "DATA",
+                      cardHeader: { value: t("ES_TQM_TEST_DETAILS_HEADING"), inlineStyles: { marginTop: 0 } },
+                      values: data.details,
+                    },
+                    {
+                      type: "COMPONENT",
+                      component: "TqmCardReading",
+                      props: {
+                        parameterData: data?.testResponse?.testCriteria || null,
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            response: data.testResponse,
+          }
+        }
+        
+    },
       staleTime: 0,
     },
   });
