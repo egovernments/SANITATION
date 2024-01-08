@@ -9,6 +9,7 @@ const TQMSummary = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
+  const isMobile = window.Digit.Utils.browser.isMobile();
 
   const config = {
     select: (data) => ({
@@ -26,7 +27,7 @@ const TQMSummary = () => {
           ? {
               sections: [
                 {
-                  cardHeader: { value: t("ES_TQM_DOCUMENTS_HEADING"), inlineStyles: {} },
+                  cardHeader: { value: t("ES_TQM_DOCUMENTS_HEADING"), inlineStyles: isMobile ? {} : { marginTop: 0 } },
                   type: "COMPONENT",
                   component: "TqmDocumentsPreview",
                   props: {
@@ -44,7 +45,7 @@ const TQMSummary = () => {
                   component: "TqmParameterReadings",
                   props: {
                     reading: data?.reading,
-                    responseData: data?.testResponse
+                    responseData: data?.testResponse,
                   },
                 },
               ],

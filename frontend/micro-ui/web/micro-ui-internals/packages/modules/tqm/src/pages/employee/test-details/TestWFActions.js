@@ -80,6 +80,7 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
         onSubmit={onSubmit}
         label={t(actionState === "SCHEDULED" ? "ES_TQM_UPDATE_STATUS_BUTTON" : "ES_TQM_SUBMIT_TEST_RESULTS_BUTTON")}
         submitInForm={true}
+        cardClassName={"testwf"}
       />
       {showPopUp && (
         <Modal
