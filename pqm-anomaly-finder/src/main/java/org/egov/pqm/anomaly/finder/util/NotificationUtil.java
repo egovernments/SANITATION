@@ -46,7 +46,7 @@ public class NotificationUtil {
 	/**
 	 * Creates customized message based on fsm
 	 * 
-	 * @param fsm                 The fsm for which message is to be sent
+	 * @param test                 The test for which message is to be sent
 	 * @param localizationMessage The messages from localization
 	 * @return customized message based on fsm
 	 */
@@ -90,6 +90,14 @@ public class NotificationUtil {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			dateFormat.setTimeZone(possibleSrvdt.getTimeZone());
 			message = message.replace("{Test Submitted Date}", dateFormat.format(possibleSrvdt.getTime()));
+		}
+
+		if (message.contains("{Test Scheduled Date}")) {
+			Calendar possibleSrvdt = Calendar.getInstance();
+			possibleSrvdt.setTimeInMillis(test.getScheduledDate());
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			dateFormat.setTimeZone(possibleSrvdt.getTimeZone());
+			message = message.replace("{Test Scheduled Date}", dateFormat.format(possibleSrvdt.getTime()));
 		}
 
 		return message;
@@ -187,7 +195,7 @@ public class NotificationUtil {
 	 * Creates sms request for the each owners
 	 * 
 	 * @param message                 The message for the specific fsm
-	 * @param mobileNumberToOwnerName Map of mobileNumber to OwnerName
+	 * @param mobileNumberToOwner Map of mobileNumber to OwnerName
 	 * @return List of SMSRequest
 	 */
 	public List<SMSRequest> createSMSRequest(String message, Map<String, String> mobileNumberToOwner) {
