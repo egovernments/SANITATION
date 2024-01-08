@@ -26,7 +26,6 @@ function TestDetails() {
     tenantId: tenantId,
     config: {
       select: (data) => {
-        debugger
         if(data?.wfStatus==="PENDINGRESULTS"){
           return {
             data: {
