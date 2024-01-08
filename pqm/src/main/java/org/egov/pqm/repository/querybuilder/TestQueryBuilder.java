@@ -157,7 +157,7 @@ public class TestQueryBuilder {
       toDate.set(Calendar.MILLISECOND, 0);
 
       addClauseIfRequired(preparedStmtList, builder);
-      builder.append(" test.createdtime BETWEEN ").append(fromDate.getTimeInMillis())
+      builder.append(" test.lastmodifiedtime BETWEEN ").append(fromDate.getTimeInMillis())
           .append(" AND ")
           .append(toDate.getTimeInMillis());
     }
