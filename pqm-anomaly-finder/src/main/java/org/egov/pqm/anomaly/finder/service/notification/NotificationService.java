@@ -45,7 +45,7 @@ public class NotificationService {
 	/**
 	 * Creates and send the sms based on the fsmRequest
 	 * 
-	 * @param request The fsmRequest listenend on the kafka topic
+	 * @param testRequest The testRequest listenend on the kafka topic
 	 */
 	public void process(TestRequest testRequest,String topic) {
 
@@ -64,7 +64,7 @@ public class NotificationService {
 	 * 
 	 * Assumption - The fsmRequest received will always contain only one fsm.
 	 * 
-	 * @param request
+	 * @param testRequest
 	 * @return
 	 */
 	public EventRequest getEvents(TestRequest testRequest,String topic) {
@@ -76,7 +76,7 @@ public class NotificationService {
 
 			List<SMSRequest> smsRequests = new LinkedList<>();
 
-			enrichSMSRequest(test, smsRequests, requestInfo);
+			enrichSMSRequest(test, smsRequests, requestInfo, topic);
 
 			Set<String> mobileNumbers = smsRequests.stream().map(SMSRequest::getMobileNumber)
 					.collect(Collectors.toSet());
@@ -129,18 +129,26 @@ public class NotificationService {
 	/**
 	 * Enriches the smsRequest with the customized messages
 	 * 
-	 * @param request     The fsmRequest from kafka topic
+	 * @param test     The test from kafka topic
 	 * @param smsRequests List of SMSRequets
 	 */
-	private void enrichSMSRequest(Test test, List<SMSRequest> smsRequests, RequestInfo requestInfo) {
+	private void enrichSMSRequest(Test test, List<SMSRequest> smsRequests, RequestInfo requestInfo, String topic) {
 		String tenantId = test.getTenantId();
 		String localizationMessages = notificationUtil.getLocalizationMessages(tenantId, requestInfo);
 		String messageCode = null;
 
-		if (test != null) {
-			String appCreatedMessage = "CREATE_NOTIFICATION";
+		String localizationCode = null;
 
-			String message = notificationUtil.getCustomizedMsg(test, localizationMessages, appCreatedMessage,
+		if(topic.equalsIgnoreCase(pqmAnomalyConfiguration.getNotAsPerBenchMark())) {
+			localizationCode = AnomalyFinderConstants.NOTIF_TEST_RESULT_NOT_AS_PER_BENCHMARK;
+		}
+		if(topic.equalsIgnoreCase(pqmAnomalyConfiguration.getTestNotSubmitted())) {
+			localizationCode = AnomalyFinderConstants.NOTIF_TEST_RESULT_NOT_SUBMITTED;
+		}
+
+		if (test != null) {
+
+			String message = notificationUtil.getCustomizedMsg(test, localizationMessages, localizationCode,
 					requestInfo);
 			Map<String, String> mobileNumberToOwner = new HashMap<>();
 			mobileNumberToOwner.put(requestInfo.getUserInfo().getMobileNumber(), requestInfo.getUserInfo().getName());
