@@ -32,7 +32,7 @@ function ViewTestResults() {
                     type: "COMPONENT",
                     component: "TqmDetailsTable",
                     props: {
-                      cardHeader: { value: "Test Result", inlineStyles: {} },
+                      cardHeader: { value: "Test Result", inlineStyles: { marginTop: "1rem" } },
                       rowsData: data?.tableData.map((i, index) => {
                         return {
                           slno: index + 1,
