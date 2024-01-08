@@ -135,7 +135,7 @@ const FSMCard = () => {
     {
       label: t('ES_TITLE_NEW_DESULDGING_APPLICATION'),
       link: `/${window?.contextPath}/employee/fsm/new-application`,
-      roles: ['FSM_CREATOR_EMP', 'FSM_ADMIN'],
+      roles: ['FSM_CREATOR_EMP'],
     },
     {
       label: t('ES_TITILE_SEARCH_APPLICATION'),
