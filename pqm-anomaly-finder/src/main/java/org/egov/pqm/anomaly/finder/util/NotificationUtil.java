@@ -86,7 +86,7 @@ public class NotificationUtil {
 
 		if (message.contains("{Test Submitted Date}")) {
 			Calendar possibleSrvdt = Calendar.getInstance();
-			possibleSrvdt.setTimeInMillis(test.getScheduledDate());
+			possibleSrvdt.setTimeInMillis(test.getAuditDetails().getLastModifiedTime());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			dateFormat.setTimeZone(possibleSrvdt.getTimeZone());
 			message = message.replace("{Test Submitted Date}", dateFormat.format(possibleSrvdt.getTime()));
