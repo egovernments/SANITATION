@@ -67,67 +67,6 @@ public class NotificationService {
 	 * @param testRequest
 	 * @return
 	 */
-//	public EventRequest getEvents(TestRequest testRequest,String topic) {
-//
-//		List<Event> events = new ArrayList<>();
-//		RequestInfo requestInfo = testRequest.getRequestInfo();
-//		List<Test> tests = testRequest.getTests();
-//		for (Test test : tests) {
-//
-//			List<SMSRequest> smsRequests = new LinkedList<>();
-//
-//			enrichSMSRequest(test, smsRequests, requestInfo);
-//
-////			Set<String> mobileNumbers = smsRequests.stream().map(SMSRequest::getMobileNumber)
-////					.collect(Collectors.toSet());
-//			
-//			List<String> UUIDs = fetchUserUUIDs( requestInfo,
-//					test.getTenantId());
-//
-//			Map<String, String> mobileNumberToMsg = smsRequests.stream()
-//					.collect(Collectors.toMap(SMSRequest::getMobileNumber, SMSRequest::getMessage));
-////			for (String mobile : mobileNumbers) {
-//
-//				List<String> toUsers = new ArrayList<>();
-//
-////				List<String> toRoles = new ArrayList<>();
-////				toRoles.add("PQM_ADMIN");
-//				toUsers.addAll(UUIDs);
-//				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(null).build();
-//				Action action = null;
-//				List<ActionItem> items = new ArrayList<>();
-//
-//				String actionLink = pqmAnomalyConfiguration.getTestLink().replace("$testId", test.getTestId());
-//				actionLink = pqmAnomalyConfiguration.getUiAppHost() + actionLink;
-//				ActionItem item = ActionItem.builder().actionUrl(actionLink).code(pqmAnomalyConfiguration.getViewCode())
-//						.build();
-//				items.add(item);
-//				action = Action.builder().actionUrls(items).build();
-//				
-//				String eventCategory = null;
-//				
-//				if(topic.equalsIgnoreCase(pqmAnomalyConfiguration.getNotAsPerBenchMark())) {
-//					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
-//				}
-//				if(topic.equalsIgnoreCase(pqmAnomalyConfiguration.getTestNotSubmitted())) {
-//					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_SUBMITTED;
-//				}
-//
-//				events.add(Event.builder().tenantId(test.getTenantId()).description(mobileNumberToMsg.get(mobile))
-//						.eventType(AnomalyFinderConstants.USREVENTS_EVENT_TYPE).eventCategory(eventCategory)
-//						.name(AnomalyFinderConstants.USREVENTS_EVENT_NAME)
-//						.postedBy(AnomalyFinderConstants.USREVENTS_EVENT_POSTEDBY).source(Source.WEBAPP)
-//						.recepient(recepient).eventDetails(null).actions(action).build());
-//			}
-////		}
-//
-//		if (!CollectionUtils.isEmpty(events)) {
-//			return EventRequest.builder().requestInfo(requestInfo).events(events).build();
-//		} else {
-//			return null;
-//		}
-//
-//	}
 	
 	public EventRequest getEvents(TestRequest testRequest,String topic) {
 
@@ -152,7 +91,6 @@ public class NotificationService {
 				List<String> toUsers = new ArrayList<>();
 
 				List<String> toRoles = new ArrayList<>();
-//				toRoles.add("PQM_ADMIN");
 				toUsers.addAll(UUIDs);
 				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(null).build();
 				Action action = null;
@@ -224,7 +162,6 @@ public class NotificationService {
 
 	private List<String> fetchUserUUIDs(RequestInfo requestInfo, String tenantId) {
 
-//		Map<String, String> mapOfPhnoAndUUIDs = new HashMap<>();
 		List<String> returnUuids = new ArrayList<>();
 		StringBuilder uri = new StringBuilder();
 		uri.append(pqmAnomalyConfiguration.getUserHost()).append(pqmAnomalyConfiguration.getUserSearchEndpoint());
@@ -237,27 +174,17 @@ public class NotificationService {
 		// Put the list into the map
 		userSearchRequest.put("roleCodes", roleCodesList);
 
-//		userSearchRequest.put("roleCodes", "PQM_ADMIN");
-		
-//			userSearchRequest.put("userName", requestInfo.getUserInfo().getUserName() );
 			try {
 				Object user = serviceRequestRepository.fetchResult(uri, userSearchRequest);
 				if (null != user) {
 					 List<String> uuids = JsonPath.read(user, "$.user[*].uuid");
-//					 List<String> mobileNumbers = JsonPath.read(user, "$.user[*].mobileNumber");
 					 returnUuids.addAll(uuids);
-//					    for (String uuid : uuids) {
-//					    	uuids.add(uuid);
-//					    }
-//					String uuid = JsonPath.read(user, "$.user[0].uuid");
-//					mapOfPhnoAndUUIDs.put(mobileNo, uuid);
 				} else {
 					log.error("Service returned null while fetching user for roleCodes - PQM_ADMIN");
 				}
 			} catch (Exception e) {
 				log.error("Exception while fetching user with roleodes - PQM_ADMIN" );
 				log.error("Exception trace: ", e);
-//				continue;
 			}
 		
 		return returnUuids;
