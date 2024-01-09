@@ -452,7 +452,7 @@ export const UICustomizations = {
         case "TQM_TEST_RESULTS":
           return value?.includes("PASS") ? <span className="sla-cell-success">{t(`TQM_TEST_RESULT_${value}`)}</span> : <span className="sla-cell-error">{t(`TQM_TEST_RESULT_${value}`)}</span>;
           
-        case "TQM_PENDING_DATE":
+        case "TQM_TEST_SUBMITTED_DATE":
           return  Digit.DateUtils.ConvertEpochToDate(value)
 
         case "TQM_TEST_ID":
