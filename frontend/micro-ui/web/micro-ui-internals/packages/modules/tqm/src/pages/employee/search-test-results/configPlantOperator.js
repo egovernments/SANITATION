@@ -168,8 +168,8 @@ export const tqmSearchConfigPlantOperator = {
                 "translate": true
               },
               {
-                "label": "TQM_PENDING_DATE",
-                "jsonPath": "scheduledDate",
+                "label": "TQM_TEST_SUBMITTED_DATE",
+                "jsonPath": "auditDetails.lastModifiedTime",
                 "additionalCustomization": true
               },
               {
