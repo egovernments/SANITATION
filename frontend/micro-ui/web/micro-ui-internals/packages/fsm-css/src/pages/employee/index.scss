@@ -557,7 +557,7 @@
       }
     }
   }
-  .sidebar-list:last-child{
+  .sidebar-list:last-child {
     position: fixed;
     bottom: 0;
   }
@@ -581,6 +581,13 @@
   margin-top: -12px;
 }
 .tag-container {
+  .tag {
+    .text {
+      text-overflow: ellipsis;
+      text-wrap: nowrap;
+      display: block;
+    }
+  }
   .text {
     text-overflow: ellipsis;
     text-wrap: nowrap;
@@ -630,5 +637,11 @@ video::-webkit-media-controls-play-button {
 .inbox-search-component-wrapper {
   .search-component-table {
     border-radius: 4px;
+  }
+}
+
+@media (max-width: 700px) {
+  .employeeCard.page-padding-fix {
+    padding: 1rem 0.5rem;
   }
 }

@@ -37,6 +37,10 @@
     padding-right: 16px;
     margin-top: 1rem;
   }
+  .employeeCard.testwf {
+    margin: 0;
+    margin-right: 0.5rem;
+  }
 }
 
 .fsm-inline-style {
@@ -299,7 +303,7 @@ input::-webkit-calendar-picker-indicator {
 @media (max-width: 670px) {
   .toast-success {
     width: 100%;
-    bottom: 0rem;
+    bottom: 57px;
     border-radius: 0;
     margin: 0;
     z-index: 1000;
@@ -340,5 +344,12 @@ input::-webkit-calendar-picker-indicator {
       top: unset;
       bottom: 100%;
     }
+  }
+}
+
+@media (min-width: 780px){
+  .employeeCard .card-caption {
+    font-size: 16px;
+    line-height: 32px;
   }
 }

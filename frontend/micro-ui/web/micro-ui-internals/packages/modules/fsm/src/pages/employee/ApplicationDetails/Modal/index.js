@@ -140,7 +140,8 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       enabled: individualIds?.length > 0 ? true : false,
       select: (data) => {
         const result = data?.Individual?.map(ind => {return {givenName:ind?.name?.givenName,optionsKey:`${ind?.name?.givenName} / ${ind?.individualId}`,...ind}})?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "SANITATION_WORKER"))
-        setWorkers(result)
+        const workersOutOfResult = result?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "SANITATION_HELPER"))
+        setWorkers(workersOutOfResult)
         const drivers = result?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER"))
         setDrivers(drivers)
         return result
@@ -368,15 +369,23 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       }
       const workersList = [selectedDriver,...tempSelectedWorkers]
       // workerList?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER"))
-      const workerPayload = workersList?.map(worker=> {
+      const workerPayload = workersList?.map((worker,idx)=> {
         return {
           tenantId:worker?.tenantId,
           applicationId:applicationData?.id,
           individualId:worker?.id,
-          workerType:worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER") ? "DRIVER":"HELPER",
+          // workerType:worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER") ? "DRIVER":"HELPER",
+          workerType:idx===0 ? "DRIVER":"HELPER",
+          
           status:"ACTIVE"
         }
       })
+      //resettting the states
+      setSelectedDriver([])
+      setSelectedWorkers([])
+      setDrivers([])
+      setWorkers([])
+      refetchWorkers()
       submitAction({ fsm: {...applicationData,workers:workerPayload}, workflow });
       return
     }
