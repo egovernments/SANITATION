@@ -392,12 +392,15 @@ public class FSMService {
 			}
 
 			List<Worker> filteredList = fsm.getWorkers().stream()
+					.filter(worker -> worker.getStatus().equals(WorkerStatus.ACTIVE))
 					.filter(worker -> vendor.getWorkers().stream()
 							.anyMatch(w -> w.getIndividualId().equals(worker.getIndividualId())))
 					.collect(Collectors.toList());
 
-			if(filteredList.size() != fsm.getWorkers().size()){
-				throw new CustomException(FSMErrorConstants.INVALID_DSO_WORKERS, " Worker(s) Does not belong to DSO!");
+			if (filteredList.size() != fsm.getWorkers().stream()
+					.filter(worker -> worker.getStatus().equals(WorkerStatus.ACTIVE)).count()) {
+				throw new CustomException(FSMErrorConstants.INVALID_DSO_WORKERS,
+						" Worker(s) Does not belong to DSO!");
 			}
 		}
 	}
