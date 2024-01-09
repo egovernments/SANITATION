@@ -1050,6 +1050,7 @@ const RegisryInbox = (props) => {
               : showToast.action
           )}
           onClose={closeToast}
+          style={{marginBottom:"-3.8rem"}}
         />
       )}
     </div>

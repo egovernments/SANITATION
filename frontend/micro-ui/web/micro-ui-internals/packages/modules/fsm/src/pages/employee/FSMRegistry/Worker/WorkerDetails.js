@@ -371,7 +371,7 @@ const WorkerDetails = (props) => {
                         <>
                           <div className={`${index === detail?.values?.length - 1 ? "row last" : "row"} border-none`}>
                             <h2>{t(value.title)}</h2>
-                            <div className="value" style={{ color: "#f47738", display: "flex" }}>
+                            <div className="value" style={{  display: "flex" }}>
                               {value.value === "ES_FSM_REGISTRY_DETAILS_ADD_VENDOR" && (
                                 <span onClick={() => onActionSelect("ADD_VENDOR")}>
                                   <div className="search-add-icon" style={{ marginLeft: 0, marginRight: "10px", cursor: "pointer" }}>
