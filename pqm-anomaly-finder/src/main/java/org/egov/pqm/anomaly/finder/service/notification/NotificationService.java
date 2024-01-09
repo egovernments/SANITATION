@@ -67,6 +67,68 @@ public class NotificationService {
 	 * @param testRequest
 	 * @return
 	 */
+//	public EventRequest getEvents(TestRequest testRequest,String topic) {
+//
+//		List<Event> events = new ArrayList<>();
+//		RequestInfo requestInfo = testRequest.getRequestInfo();
+//		List<Test> tests = testRequest.getTests();
+//		for (Test test : tests) {
+//
+//			List<SMSRequest> smsRequests = new LinkedList<>();
+//
+//			enrichSMSRequest(test, smsRequests, requestInfo);
+//
+////			Set<String> mobileNumbers = smsRequests.stream().map(SMSRequest::getMobileNumber)
+////					.collect(Collectors.toSet());
+//			
+//			List<String> UUIDs = fetchUserUUIDs( requestInfo,
+//					test.getTenantId());
+//
+//			Map<String, String> mobileNumberToMsg = smsRequests.stream()
+//					.collect(Collectors.toMap(SMSRequest::getMobileNumber, SMSRequest::getMessage));
+////			for (String mobile : mobileNumbers) {
+//
+//				List<String> toUsers = new ArrayList<>();
+//
+////				List<String> toRoles = new ArrayList<>();
+////				toRoles.add("PQM_ADMIN");
+//				toUsers.addAll(UUIDs);
+//				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(null).build();
+//				Action action = null;
+//				List<ActionItem> items = new ArrayList<>();
+//
+//				String actionLink = pqmAnomalyConfiguration.getTestLink().replace("$testId", test.getTestId());
+//				actionLink = pqmAnomalyConfiguration.getUiAppHost() + actionLink;
+//				ActionItem item = ActionItem.builder().actionUrl(actionLink).code(pqmAnomalyConfiguration.getViewCode())
+//						.build();
+//				items.add(item);
+//				action = Action.builder().actionUrls(items).build();
+//				
+//				String eventCategory = null;
+//				
+//				if(topic.equalsIgnoreCase(pqmAnomalyConfiguration.getNotAsPerBenchMark())) {
+//					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_AS_PER_BENCHMARKS_FOR_LAB;
+//				}
+//				if(topic.equalsIgnoreCase(pqmAnomalyConfiguration.getTestNotSubmitted())) {
+//					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_SUBMITTED;
+//				}
+//
+//				events.add(Event.builder().tenantId(test.getTenantId()).description(mobileNumberToMsg.get(mobile))
+//						.eventType(AnomalyFinderConstants.USREVENTS_EVENT_TYPE).eventCategory(eventCategory)
+//						.name(AnomalyFinderConstants.USREVENTS_EVENT_NAME)
+//						.postedBy(AnomalyFinderConstants.USREVENTS_EVENT_POSTEDBY).source(Source.WEBAPP)
+//						.recepient(recepient).eventDetails(null).actions(action).build());
+//			}
+////		}
+//
+//		if (!CollectionUtils.isEmpty(events)) {
+//			return EventRequest.builder().requestInfo(requestInfo).events(events).build();
+//		} else {
+//			return null;
+//		}
+//
+//	}
+	
 	public EventRequest getEvents(TestRequest testRequest,String topic) {
 
 		List<Event> events = new ArrayList<>();
@@ -78,19 +140,18 @@ public class NotificationService {
 
 			enrichSMSRequest(test, smsRequests, requestInfo, topic);
 
-//			Set<String> mobileNumbers = smsRequests.stream().map(SMSRequest::getMobileNumber)
-//					.collect(Collectors.toSet());
-			
+			Set<String> mobileNumbers = smsRequests.stream().map(SMSRequest::getMobileNumber)
+					.collect(Collectors.toSet());
 			List<String> UUIDs = fetchUserUUIDs( requestInfo,
 					test.getTenantId());
 
-//			Map<String, String> mobileNumberToMsg = smsRequests.stream()
-//					.collect(Collectors.toMap(SMSRequest::getMobileNumber, SMSRequest::getMessage));
-//			for (String mobile : mobileNumbers) {
+			Map<String, String> mobileNumberToMsg = smsRequests.stream()
+					.collect(Collectors.toMap(SMSRequest::getMobileNumber, SMSRequest::getMessage));
+			for (String mobile : mobileNumbers) {
 
 				List<String> toUsers = new ArrayList<>();
 
-//				List<String> toRoles = new ArrayList<>();
+				List<String> toRoles = new ArrayList<>();
 //				toRoles.add("PQM_ADMIN");
 				toUsers.addAll(UUIDs);
 				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(null).build();
@@ -113,13 +174,13 @@ public class NotificationService {
 					eventCategory = AnomalyFinderConstants.TEST_RESULT_NOT_SUBMITTED;
 				}
 
-				events.add(Event.builder().tenantId(test.getTenantId())
+				events.add(Event.builder().tenantId(test.getTenantId()).description(mobileNumberToMsg.get(mobile))
 						.eventType(AnomalyFinderConstants.USREVENTS_EVENT_TYPE).eventCategory(eventCategory)
 						.name(AnomalyFinderConstants.USREVENTS_EVENT_NAME)
 						.postedBy(AnomalyFinderConstants.USREVENTS_EVENT_POSTEDBY).source(Source.WEBAPP)
 						.recepient(recepient).eventDetails(null).actions(action).build());
 			}
-//		}
+		}
 
 		if (!CollectionUtils.isEmpty(events)) {
 			return EventRequest.builder().requestInfo(requestInfo).events(events).build();
@@ -128,6 +189,7 @@ public class NotificationService {
 		}
 
 	}
+
 
 	/**
 	 * Enriches the smsRequest with the customized messages
