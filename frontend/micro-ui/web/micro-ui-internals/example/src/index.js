@@ -24,7 +24,7 @@ const enabledModules = [
   "FSM",
   "Utilities",
   "Tqm",
-  // "Engagement"
+  "Engagement"
 ];
 
 const initTokens = (stateCode) => {
