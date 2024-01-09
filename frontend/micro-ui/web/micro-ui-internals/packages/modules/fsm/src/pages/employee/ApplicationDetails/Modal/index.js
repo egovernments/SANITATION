@@ -369,15 +369,23 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       }
       const workersList = [selectedDriver,...tempSelectedWorkers]
       // workerList?.filter(worker => worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER"))
-      const workerPayload = workersList?.map(worker=> {
+      const workerPayload = workersList?.map((worker,idx)=> {
         return {
           tenantId:worker?.tenantId,
           applicationId:applicationData?.id,
           individualId:worker?.id,
-          workerType:worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER") ? "DRIVER":"HELPER",
+          // workerType:worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER") ? "DRIVER":"HELPER",
+          workerType:idx===0 ? "DRIVER":"HELPER",
+          
           status:"ACTIVE"
         }
       })
+      //resettting the states
+      setSelectedDriver([])
+      setSelectedWorkers([])
+      setDrivers([])
+      setWorkers([])
+      refetchWorkers()
       submitAction({ fsm: {...applicationData,workers:workerPayload}, workflow });
       return
     }
