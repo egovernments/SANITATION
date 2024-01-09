@@ -90,10 +90,10 @@ public class NotificationService {
 
 				List<String> toUsers = new ArrayList<>();
 
-				List<String> toRoles = new ArrayList<>();
-				toRoles.add("PQM_ADMIN");
+//				List<String> toRoles = new ArrayList<>();
+//				toRoles.add("PQM_ADMIN");
 				toUsers.addAll(UUIDs);
-				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(toRoles).build();
+				Recepient recepient = Recepient.builder().toUsers(toUsers).toRoles(null).build();
 				Action action = null;
 				List<ActionItem> items = new ArrayList<>();
 
@@ -161,14 +161,20 @@ public class NotificationService {
 		Map<String, Object> userSearchRequest = new HashMap<>();
 		userSearchRequest.put("RequestInfo", requestInfo);
 		userSearchRequest.put("tenantId", tenantId);
-		userSearchRequest.put("roleCodes", "PQM_ADMIN");
+		List<String> roleCodesList = new ArrayList<>();
+		roleCodesList.add("PQM_ADMIN");
+
+		// Put the list into the map
+		userSearchRequest.put("roleCodes", roleCodesList);
+
+//		userSearchRequest.put("roleCodes", "PQM_ADMIN");
 		
-			userSearchRequest.put("userName", requestInfo.getUserInfo().getUserName() );
+//			userSearchRequest.put("userName", requestInfo.getUserInfo().getUserName() );
 			try {
 				Object user = serviceRequestRepository.fetchResult(uri, userSearchRequest);
 				if (null != user) {
 					 List<String> uuids = JsonPath.read(user, "$.user[*].uuid");
-					 List<String> mobileNumbers = JsonPath.read(user, "$.user[*].mobileNumber");
+//					 List<String> mobileNumbers = JsonPath.read(user, "$.user[*].mobileNumber");
 					 returnUuids.addAll(uuids);
 //					    for (String uuid : uuids) {
 //					    	uuids.add(uuid);
