@@ -381,6 +381,7 @@ public class FSMService {
 	private void validateDSOWorkers(FSM fsm, Vendor vendor, FSMRequest fsmRequest) {
 		if(CollectionUtils.isEmpty(fsm.getWorkers()) || fsm.getWorkers().stream().filter(worker -> worker.getWorkerType().equals(
 				WorkerType.DRIVER)).count() != 1){
+			log.info("Invalid worker error ::: {}", fsm.getWorkers());
 			throw new CustomException(FSMErrorConstants.INVALID_DSO_WORKERS,
 					"Valid workers should be assigned to accept the Request !");
 		} else {
