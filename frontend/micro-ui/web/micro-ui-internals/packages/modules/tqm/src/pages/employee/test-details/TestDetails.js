@@ -107,8 +107,14 @@ function TestDetails() {
   const submitAction = (data) => {
     mutate(data, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: nextAction === "SCHEDULED" ? "ES_TQM_SCHEDULE_UPDATED_FAILED" : "ES_TQM_TEST_UPDATED_FAILED" });
-        setTimeout(closeToast, 5000);
+        //here if the response error code is "" then show "This test is no longer valid as Process/Stage/Output of the test has been removed"  MDMS_INVALID_ERROR_UPDATE_TEST
+        if(error?.message?.includes("code is not present in mdms")){
+          setShowToast({ key: "error", action: "MDMS_INVALID_ERROR_UPDATE_TEST" });
+          setTimeout(closeToast, 5000);
+        }else{
+          setShowToast({ key: "error", action: nextAction === "SCHEDULED" ? "ES_TQM_SCHEDULE_UPDATED_FAILED" : "ES_TQM_TEST_UPDATED_FAILED" });
+          setTimeout(closeToast, 5000);
+        }
       },
       onSuccess: (data, variables) => {
         setShowToast({ key: "success", action: "ES_TQM_STATUS_UPDATED_SUCCESSFULLY" });

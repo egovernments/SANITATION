@@ -159,7 +159,7 @@ const EditWorker = ({ parentUrl, heading }) => {
   }
 
   useEffect(() => {
-    if (workerData && workerData?.Individual && !isVendorLoading && vendorData) {
+    if (workerData && workerData?.Individual  && !isVendorLoading && vendorData ) {
       const workerDetails = workerData?.Individual?.[0];
       const respSkills = workerDetails?.skills?.filter((i) => i.isDeleted === false);
       setWorkerinfo(workerDetails);
@@ -211,7 +211,6 @@ const EditWorker = ({ parentUrl, heading }) => {
             : null,
         },
       };
-
       setDefaultValues(values);
     }
   }, [workerData, WorkerLoading, plantUserData, vendorData, isVendorLoading]);
