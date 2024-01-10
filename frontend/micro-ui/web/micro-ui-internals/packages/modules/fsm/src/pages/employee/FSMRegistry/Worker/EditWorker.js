@@ -212,59 +212,6 @@ const EditWorker = ({ parentUrl, heading }) => {
         },
       };
       setDefaultValues(values);
-    }else if (workerData && workerData?.Individual   ) {
-      const workerDetails = workerData?.Individual?.[0];
-      const respSkills = workerDetails?.skills?.filter((i) => i.isDeleted === false);
-      setWorkerinfo(workerDetails);
-      const values = {
-        SelectEmployeePhoneNumber: {
-          mobileNumber: workerDetails?.mobileNumber,
-        },
-        name: workerDetails?.name?.givenName,
-        selectGender: {
-          code: workerDetails?.gender,
-          active: true,
-          i18nKey: `COMMON_GENDER_${workerDetails?.gender}`,
-        },
-        dob: workerDetails?.dateOfBirth ? workerDetails?.dateOfBirth.split("/").reverse().join("-") : null,
-        pincode: workerDetails?.address?.[0]?.pincode,
-        address: {
-          city: {
-            code: workerDetails?.address?.[0]?.city,
-          },
-          locality: { ...workerDetails?.address?.[0]?.locality },
-        },
-        street: workerDetails?.address?.[0]?.street,
-        doorNo: workerDetails?.address?.[0]?.doorNo,
-        landmark: workerDetails?.address?.[0]?.landmark,
-        skills: mdmsOptions?.SanitationWorkerSkills?.filter((mdm) => respSkills?.some((item) => item?.type === mdm?.code))?.map((i) => ({
-          ...i,
-          i18nKey: `ES_FSM_OPTION_${i.code}`,
-        })),
-        // workerDetails?.skills?.map((obj) => ({ ...obj, code: obj.type })),
-        employementDetails: {
-          employer: { name: workerDetails?.additionalFields?.fields?.find((i) => i.key === "EMPLOYER")?.value },
-          vendor: vendorData?.[0],
-        },
-        AddWorkerRoles: transformData(workerDetails),
-        documents: {
-          img_photo: workerDetails?.photo
-            ? [
-                [
-                  "Photo",
-                  {
-                    file: { name: "photo" },
-                    fileStoreId: {
-                      fileStoreId: workerDetails?.photo,
-                      tenantId: tenantId,
-                    },
-                  },
-                ],
-              ]
-            : null,
-        },
-      };
-      setDefaultValues(values);
     }
   }, [workerData, WorkerLoading, plantUserData, vendorData, isVendorLoading]);
 
