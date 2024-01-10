@@ -41,17 +41,6 @@ public class PqmController {
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
-  @PostMapping(value = "/_createWithWorkflow", consumes = {"application/json"})
-  ResponseEntity<TestResponse> createWithWorkflow(@Valid @RequestBody TestRequest testRequest) {
-    Test test = pqmService.createTestViaScheduler(testRequest);
-    List<Test> testList = new ArrayList<>();
-    testList.add(test);
-    TestResponse response = TestResponse.builder().tests(testList)
-        .responseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(testRequest.getRequestInfo(), true))
-        .build();
-    return new ResponseEntity<>(response, HttpStatus.OK);
-  }
-
   @PostMapping(value = "/_update", consumes = {"application/json"})
   ResponseEntity<TestResponse> update(@Valid @RequestBody TestRequest testRequest) {
       Test test = pqmService.update(testRequest);
