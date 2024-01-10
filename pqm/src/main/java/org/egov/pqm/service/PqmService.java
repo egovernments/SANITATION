@@ -295,106 +295,110 @@ public class PqmService {
 
     List<MdmsTest> mdmsTestList = parseJsonToTestList(jsonString);
 
-    for (MdmsTest mdmsTest : mdmsTestList) {
-      TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().sourceType(
-              Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED)))
-          .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED)).tenantId(tenantId)
-          .testCode(Collections.singletonList(mdmsTest.getCode())).build();
-      Pagination pagination = Pagination.builder().limit(2).sortBy(SortBy.scheduledDate)
-          .sortOrder(DESC).build();
-      TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
-          .testSearchCriteria(testSearchCriteria).pagination(pagination).build();
+      for (MdmsTest mdmsTest : mdmsTestList) {
+        try {
+          TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().sourceType(
+                        Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED)))
+                .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED)).tenantId(tenantId)
+                .testCode(Collections.singletonList(mdmsTest.getCode())).build();
+        Pagination pagination = Pagination.builder().limit(2).sortBy(SortBy.scheduledDate)
+                .sortOrder(DESC).build();
+        TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
+                .testSearchCriteria(testSearchCriteria).pagination(pagination).build();
 
-      //search from DB for any pending tests
-      List<Test> testListFromDb = testSearch(testSearchRequest, requestInfo, false).getTests();
+        //search from DB for any pending tests
+        List<Test> testListFromDb = testSearch(testSearchRequest, requestInfo, false).getTests();
 
-      //starting anomaly detection for tests with no results submitted
-      if (testListFromDb.size() >= 2) {
-        String plantConfigCode = codeToPlantMap.get(mdmsTest.getPlant()).getPlantConfig();
-        int manualTestPendingEscalationDays = codeToPlantConfigMap.get(plantConfigCode).getManualTestPendingEscalationDays();
-        Test secondTest = testListFromDb.get(1);
-        Long scheduleDate = secondTest.getScheduledDate();
-        Long escalationDate = addDaysToEpoch(scheduleDate, manualTestPendingEscalationDays);
+        //starting anomaly detection for tests with no results submitted
+        if (testListFromDb.size() >= 2) {
+          String plantConfigCode = codeToPlantMap.get(mdmsTest.getPlant()).getPlantConfig();
+          int manualTestPendingEscalationDays = codeToPlantConfigMap.get(plantConfigCode).getManualTestPendingEscalationDays();
+          Test secondTest = testListFromDb.get(1);
+          Long scheduleDate = secondTest.getScheduledDate();
+          Long escalationDate = addDaysToEpoch(scheduleDate, manualTestPendingEscalationDays);
 
-        if (secondTest.getStatus() == TestResultStatus.PENDING && isPastScheduledDate(escalationDate)) {
-          PqmAnomalySearchCriteria pqmAnomalySearchCriteria = PqmAnomalySearchCriteria.builder().tenantId(tenantId).testIds(Collections.singletonList(secondTest.getTestId())).build();
-          PqmAnomalySearchRequest pqmAnomalySearchRequest = PqmAnomalySearchRequest.builder().requestInfo(requestInfo).pqmAnomalySearchCriteria(pqmAnomalySearchCriteria).build();
-          List<PqmAnomaly> pqmAnomalyList = pqmAnomalyService.search(requestInfo, pqmAnomalySearchRequest);
-          if (pqmAnomalyList == null) {
-            throw new CustomException(PQM_ANOMALY_SEARCH_ERROR, PQM_ANOMALY_SEARCH_ERROR_DESC);
-          }
-          if (pqmAnomalyList.isEmpty()) {
-            enrichmentService.pushToAnomalyDetectorIfTestResultNotSubmitted(TestRequest.builder().requestInfo(requestInfo).tests(Collections.singletonList(secondTest)).build());
+          if (secondTest.getStatus() == TestResultStatus.PENDING && isPastScheduledDate(escalationDate)) {
+            PqmAnomalySearchCriteria pqmAnomalySearchCriteria = PqmAnomalySearchCriteria.builder().tenantId(tenantId).testIds(Collections.singletonList(secondTest.getTestId())).build();
+            PqmAnomalySearchRequest pqmAnomalySearchRequest = PqmAnomalySearchRequest.builder().requestInfo(requestInfo).pqmAnomalySearchCriteria(pqmAnomalySearchCriteria).build();
+            List<PqmAnomaly> pqmAnomalyList = pqmAnomalyService.search(requestInfo, pqmAnomalySearchRequest);
+            if (pqmAnomalyList == null) {
+              throw new CustomException(PQM_ANOMALY_SEARCH_ERROR, PQM_ANOMALY_SEARCH_ERROR_DESC);
+            }
+            if (pqmAnomalyList.isEmpty()) {
+              enrichmentService.pushToAnomalyDetectorIfTestResultNotSubmitted(TestRequest.builder().requestInfo(requestInfo).tests(Collections.singletonList(secondTest)).build());
+            }
           }
         }
-      }
 
-      int frequency = Integer.parseInt(mdmsTest.getFrequency().split("_")[0]);
+        int frequency = Integer.parseInt(mdmsTest.getFrequency().split("_")[0]);
 
-      LocalDate currentDate = LocalDate.now();
-      LocalDate calculatedDate = currentDate.plusDays(frequency);
-      Instant instant = calculatedDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        LocalDate currentDate = LocalDate.now();
+        LocalDate calculatedDate = currentDate.plusDays(frequency);
+        Instant instant = calculatedDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
 
-      List<QualityCriteria> qualityCriteriaList = new ArrayList<>();
+        List<QualityCriteria> qualityCriteriaList = new ArrayList<>();
 
-      for (String mdmsQualityCriteria : mdmsTest.getQualityCriteria()) {
-        QualityCriteria qualityCriteria = QualityCriteria.builder()
-            .criteriaCode(mdmsQualityCriteria).resultStatus(TestResultStatus.PENDING)
-            .isActive(Boolean.TRUE).build();
-        qualityCriteriaList.add(qualityCriteria);
-      }
+        for (String mdmsQualityCriteria : mdmsTest.getQualityCriteria()) {
+          QualityCriteria qualityCriteria = QualityCriteria.builder()
+                  .criteriaCode(mdmsQualityCriteria).resultStatus(TestResultStatus.PENDING)
+                  .isActive(Boolean.TRUE).build();
+          qualityCriteriaList.add(qualityCriteria);
+        }
 
-      if (CollectionUtils.isEmpty(testListFromDb)) {
-        //case 1: when no pending tests exist in DB
-        Test createTest = Test.builder()
-            .testCode(mdmsTest.getCode())
-            .tenantId(tenantId)
-            .plantCode(mdmsTest.getPlant())
-            .processCode(mdmsTest.getProcess())
-            .stageCode(mdmsTest.getStage())
-            .materialCode(mdmsTest.getMaterial())
-            .qualityCriteria(qualityCriteriaList)
-            .sourceType(SourceType.LAB_SCHEDULED)
-            .isActive(Boolean.TRUE)
-            .scheduledDate(instant.toEpochMilli())
-            .build();
-
-        TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest))
-            .requestInfo(requestInfo).build();
-
-        //send to create function
-        createTestViaScheduler(testRequest);
-      } else {
-        //case 2: when pending test exist in DB
-        Test testFromDb = testListFromDb.get(0);
-
-        Long scheduleDate = testFromDb.getScheduledDate();
-
-        if (isPastScheduledDate(scheduleDate)) {
+        if (CollectionUtils.isEmpty(testListFromDb)) {
+          //case 1: when no pending tests exist in DB
           Test createTest = Test.builder()
-              .tenantId(testFromDb.getTenantId())
-              .testCode(mdmsTest.getCode())
-              .plantCode(testFromDb.getPlantCode())
-              .processCode(testFromDb.getProcessCode())
-              .stageCode(testFromDb.getStageCode())
-              .materialCode(testFromDb.getMaterialCode())
-              .qualityCriteria(qualityCriteriaList)
-              .sourceType(SourceType.LAB_SCHEDULED)
-              .isActive(Boolean.TRUE)
-              .scheduledDate(instant.toEpochMilli())
-              .build();
+                  .testCode(mdmsTest.getCode())
+                  .tenantId(tenantId)
+                  .plantCode(mdmsTest.getPlant())
+                  .processCode(mdmsTest.getProcess())
+                  .stageCode(mdmsTest.getStage())
+                  .materialCode(mdmsTest.getMaterial())
+                  .qualityCriteria(qualityCriteriaList)
+                  .sourceType(SourceType.LAB_SCHEDULED)
+                  .isActive(Boolean.TRUE)
+                  .scheduledDate(instant.toEpochMilli())
+                  .build();
 
-          TestRequest testRequest = TestRequest.builder()
-              .tests(Collections.singletonList(createTest)).requestInfo(requestInfo)
-              .build();
+          TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest))
+                  .requestInfo(requestInfo).build();
 
           //send to create function
           createTestViaScheduler(testRequest);
+        } else {
+          //case 2: when pending test exist in DB
+          Test testFromDb = testListFromDb.get(0);
+
+          Long scheduleDate = testFromDb.getScheduledDate();
+
+          if (isPastScheduledDate(scheduleDate)) {
+            Test createTest = Test.builder()
+                    .tenantId(testFromDb.getTenantId())
+                    .testCode(mdmsTest.getCode())
+                    .plantCode(testFromDb.getPlantCode())
+                    .processCode(testFromDb.getProcessCode())
+                    .stageCode(testFromDb.getStageCode())
+                    .materialCode(testFromDb.getMaterialCode())
+                    .qualityCriteria(qualityCriteriaList)
+                    .sourceType(SourceType.LAB_SCHEDULED)
+                    .isActive(Boolean.TRUE)
+                    .scheduledDate(instant.toEpochMilli())
+                    .build();
+
+            TestRequest testRequest = TestRequest.builder()
+                    .tests(Collections.singletonList(createTest)).requestInfo(requestInfo)
+                    .build();
+
+            //send to create function
+            createTestViaScheduler(testRequest);
+          }
+        }
+        }
+        catch (Exception e)
+        {
+          throw new CustomException(INVALID_TEST_STANDARD, INVALID_TEST_STANDARD_MESSAGE + mdmsTest.getCode());
         }
       }
-
-
-    }
 
   }
 
