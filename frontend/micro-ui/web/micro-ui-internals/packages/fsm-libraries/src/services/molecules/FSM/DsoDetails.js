@@ -47,7 +47,7 @@ const getDriverDetails = (drivers) => {
     : [];
 };
 
-const getResponse = (data) => {
+const getResponse = (data,t) => {
   let details = [
     {
       title: "",
@@ -56,6 +56,7 @@ const getResponse = (data) => {
         { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_ADDRESS", value: data?.address?.locality?.name },
         { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_PHONE", value: data?.owner?.mobileNumber },
         { title: "ES_FSM_REGISTRY_DETAILS_ADDITIONAL_DETAILS", value: data?.additionalDetails?.description },
+        { title: "ES_FSM_REGISTRY_AGENCY_TYPE", value: data?.agencyType ? t(Digit.Utils.locale.getTransformedLocale(`FSM_VENDOR_AGENCY_TYPE_${data?.agencyType}`)): t("ES_COMMON_NA")}
       ],
     },
     {
@@ -72,7 +73,7 @@ const getResponse = (data) => {
   return details;
 };
 
-const DsoDetails = async (tenantId, filters = {}) => {
+const DsoDetails = async (tenantId, filters = {},t) => {
   const dsoDetails = await FSMService.vendorSearch(tenantId, filters);
 
   //TODO get possible dates to book dso
@@ -90,7 +91,7 @@ const DsoDetails = async (tenantId, filters = {}) => {
     activeDrivers: dso.drivers?.filter((driver) => driver.status === "ACTIVE"),
     allVehicles: dso.vehicles,
     dsoDetails: dso,
-    employeeResponse: getResponse(dso),
+    employeeResponse: getResponse(dso,t),
     vehicles: dso.vehicles
       ?.filter((vehicle) => vehicle.status === "ACTIVE")
       ?.map((vehicle) => ({
