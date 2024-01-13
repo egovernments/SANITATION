@@ -12,7 +12,7 @@ const HowItWorks = () => {
   const [selected, setselected] = useState(selectedLanguage);
   const handleChangeLanguage = (language) => {
     setselected(language.value);
-    Digit.LocalizationService.changeLanguage(language.value, stateInfo.code);
+    // Digit.LocalizationService.changeLanguage(language.value, stateInfo.code);
   };
   const [videoPlay, setVideoPlay] = useState(false);
   const [vidSrc, setVidSrc] = useState("");
