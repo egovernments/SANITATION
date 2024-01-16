@@ -358,7 +358,6 @@ const ApplicationDetails = (props) => {
             {imageZoom ? <ImageViewer imageSrc={imageZoom} onClose={onCloseImageZoom} /> : null}
 
             <BreakLine />
-            {console.log("workflowDetails", workflowDetails)}
             {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
             {!workflowDetails?.isLoading && !isDataLoading && (
               <Fragment>
@@ -383,7 +382,6 @@ const ApplicationDetails = (props) => {
                               label={t("CS_COMMON_FSM_" + `${checkpoint.performedAction === "UPDATE" ? "UPDATE_" : ""}` + checkpoint.status)}
                               customChild={getTimelineCaptions(checkpoint)}
                             />
-                            {console.log("caption", checkpoint)}
                           </React.Fragment>
                         );
                       })}
