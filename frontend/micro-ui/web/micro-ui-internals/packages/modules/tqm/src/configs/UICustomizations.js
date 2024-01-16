@@ -414,7 +414,7 @@ export const UICustomizations = {
       }
 
       if(data?.body?.testSearchCriteria?.testType?.length === 0 || !data?.body?.testSearchCriteria?.testType){
-        data.body.testSearchCriteria.testType = ["LAB_SCHEDULED","IOT_SCHEDULED"]
+        data.body.testSearchCriteria.testType = ["LAB_SCHEDULED","IOT_SCHEDULED","LAB_ADHOC"]
       }
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)

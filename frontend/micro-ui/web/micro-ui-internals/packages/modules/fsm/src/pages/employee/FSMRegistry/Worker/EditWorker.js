@@ -90,7 +90,8 @@ const EditWorker = ({ parentUrl, heading }) => {
   const { data: vendorData, isLoading: isVendorLoading, isSuccess: isVendorSuccess, error: vendorError, refetch: refetchVendor } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: "name", sortOrder: "ASC", status: "ACTIVE", individualIds: workerData?.Individual?.[0]?.id },
-    { enabled: workerData && !WorkerLoading, cacheTime: 0 }
+    { enabled: workerData && !WorkerLoading, cacheTime: 0 },
+    t
   );
 
   const {
