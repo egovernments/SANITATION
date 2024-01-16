@@ -172,7 +172,7 @@ const ApplicationDetails = (props) => {
   }
 
   const getTimelineCaptions = (checkpoint) => {
-    const __comment = checkpoint?.comment?.split("~");
+    const __comment = checkpoint?.comment?.split("~") || checkpoint?.wfComment?.[0]?.split("~");
     const reason = __comment ? __comment[0] : null;
     const reason_comment = __comment ? __comment[1] : null;
     if (checkpoint.status === "CREATED") {
@@ -358,6 +358,7 @@ const ApplicationDetails = (props) => {
             {imageZoom ? <ImageViewer imageSrc={imageZoom} onClose={onCloseImageZoom} /> : null}
 
             <BreakLine />
+            {console.log("workflowDetails", workflowDetails)}
             {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
             {!workflowDetails?.isLoading && !isDataLoading && (
               <Fragment>
@@ -382,6 +383,7 @@ const ApplicationDetails = (props) => {
                               label={t("CS_COMMON_FSM_" + `${checkpoint.performedAction === "UPDATE" ? "UPDATE_" : ""}` + checkpoint.status)}
                               customChild={getTimelineCaptions(checkpoint)}
                             />
+                            {console.log("caption", checkpoint)}
                           </React.Fragment>
                         );
                       })}
