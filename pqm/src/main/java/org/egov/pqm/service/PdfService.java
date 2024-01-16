@@ -209,7 +209,7 @@ public class PdfService {
             EgovPdfResp egovPdfResp =  EgovPdfResp.builder().filestoreIds(response.getFilestoreIds()).build();
             return egovPdfResp;
         } catch (Exception ex) {
-            throw new CustomException("WATER_FILESTORE_PDF_EXCEPTION", "PDF response can not parsed!!!");
+            throw new CustomException("PQM_FILESTORE_PDF_EXCEPTION", "PDF response can not parsed!!!");
         }
     }
 
