@@ -59,7 +59,8 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         additionalDetails = parseTillObject(additionalDetails);
         return { ...details, additionalDetails };
       },
-    }
+    },
+    t
   );
   const client = useQueryClient();
   const stateCode = Digit.ULBService.getStateId();
