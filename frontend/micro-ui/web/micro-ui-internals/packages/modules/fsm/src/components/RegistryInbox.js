@@ -50,7 +50,7 @@ const RegisryInbox = (props) => {
   } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: 'name', sortOrder: 'ASC', status: 'ACTIVE' },
-    { enabled: true }
+    { enabled: true }, t
   );
   const {
     isLoading: isUpdateVendorLoading,

@@ -24,7 +24,7 @@ const AdvanceCollection = ({ t, config, onSelect, formData, userType, FSMTextFie
   const { data: dsoData, isLoading: isDsoLoading, isSuccess: isDsoSuccess, error: dsoError } = Digit.Hooks.fsm.useDsoSearch(tenantId, {
     limit: -1,
     status: "ACTIVE",
-  });
+  }, {}, t);
 
   const inputs = [
     {
