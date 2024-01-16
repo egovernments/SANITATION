@@ -26,7 +26,7 @@ const SelectTripNo = ({ config, formData, t, onSelect, userType }) => {
   } = Digit.Hooks.fsm.useDsoSearch(tenantId, {
     limit: -1,
     status: 'ACTIVE',
-  });
+  }, {}, t);
   const {
     isLoading: isVehicleMenuLoading,
     data: vehicleData,

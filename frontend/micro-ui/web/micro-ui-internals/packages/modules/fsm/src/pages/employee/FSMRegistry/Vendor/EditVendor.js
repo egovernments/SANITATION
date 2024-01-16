@@ -22,7 +22,8 @@ const EditVendor = ({ parentUrl, heading }) => {
   const { data: dsoData, isLoading: daoDataLoading, isSuccess: isDsoSuccess, error: dsoError } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { ids: dsoId },
-    { staleTime: Infinity }
+    { staleTime: Infinity },
+    t
   );
 
   const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useVendorUpdate(
