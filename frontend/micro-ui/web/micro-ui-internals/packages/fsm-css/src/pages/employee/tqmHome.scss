@@ -16,6 +16,8 @@
     .alerts-container-header {
       padding: 16px;
       @apply bg-white shadow-card p-md mb-xl;
+      box-shadow: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.16) ;
       border-radius: 4px;
       font-size: 1.5rem;
       margin-bottom: 1rem;
@@ -164,7 +166,11 @@
 .alert-word{
     padding-left: 3rem;
     margin-bottom: 3rem;
-
+}
+@media (min-width: 750px) {
+  .alert-word {
+    padding-left: 0;
+  }
 }
 .alerts-container-count1{
   padding-top: 35px;
@@ -172,7 +178,7 @@
 }
 .alerts-container1 {
   display: flex;
-  margin-left: 50px;
+  margin-left: 0;
   padding-top: 0px;
   flex-direction: column;
   justify-content: space-between;
@@ -207,7 +213,6 @@
     padding: 0 16px 0px 16px;
     margin-bottom: 0.81rem;
     height: 100%;
-    box-shadow: none;
     .alerts-container-item-label {
 
     }

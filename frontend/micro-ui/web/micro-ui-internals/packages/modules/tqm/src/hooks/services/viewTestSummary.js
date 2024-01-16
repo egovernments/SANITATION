@@ -51,8 +51,8 @@ export const viewTestSummary = async ({ tenantId, t, id }) => {
       {
         key: "ES_TQM_LABEL_TEST_SUBMITTED_ON",
         value:
-          (testResponse?.scheduledDate &&
-            `${new Date(testResponse?.scheduledDate).getDate()}/${new Date(testResponse?.scheduledDate).getMonth() + 1}/${new Date(testResponse?.scheduledDate).getFullYear()}`) ||
+          (updatedTime &&
+            `${new Date(updatedTime).getDate()}/${new Date(updatedTime).getMonth() + 1}/${new Date(updatedTime).getFullYear()}`) ||
           t("TQM_SUMMARY_NA"),
       },
       {

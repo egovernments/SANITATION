@@ -17,7 +17,7 @@ function TQMPendingTask(props) {
         moduleSearchCriteria: {
           tenantId,
           sortBy: "createdTime",
-          sortOrder: "ASC",
+          sortOrder: "DESC",
         },
         limit: 100,
         offset: 0,

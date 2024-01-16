@@ -59,11 +59,13 @@ const Create = () => {
         }, 5000);
       },
       onSuccess: async (data) => {
-        history.push(`/sanitation-ui/employee/tqm/view-test-results?id=${data.tests[0].testId}&type=adhoc`
-        );
-      }
+        setShowToast({ key: "success", label: "TQM_ADD_TEST_SUCCESS" });
+        setTimeout(() => {
+          closeToast();
+          history.push(`/sanitation-ui/employee/tqm/view-test-results?id=${data.tests[0].testId}&type=adhoc`);
+        }, 5000);
+      },
     });
-
   };
 
   return (
@@ -86,7 +88,7 @@ const Create = () => {
         cardClassName={"page-padding-fix"}
       />
 
-      {showToast && <Toast error={showToast.isError} label={showToast.label} isDleteBtn={"true"} onClose={() => setShowToast(false)}  />}
+      {showToast && <Toast error={showToast?.isError} label={showToast?.label} isDleteBtn={"true"} onClose={() => setShowToast(false)} />}
     </div>
   );
 };

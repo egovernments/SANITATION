@@ -11,10 +11,11 @@ function ParameterReadings({ reading, responseData }) {
   const isTestPassed = responseData?.status.includes("PASS") ? true : false;
   const searchParams = new URLSearchParams(location.search);
   const type = searchParams.get("type");
+  const isMobile = window.Digit.Utils.browser.isMobile();
 
   return reading ? (
     <>
-      {reading?.title ? <CardSubHeader>{t(reading?.title)}</CardSubHeader> : null}
+      {reading?.title ? <CardSubHeader style={isMobile ? {} : { marginTop: 0, marginBottom: 0 }}>{t(reading?.title)}</CardSubHeader> : null}
       {reading?.date ? (
         <CardCaption style={{ display: "flex" }}>
           <p style={{ marginRight: "0.5rem" }}>{t("ES_TQM_TEST_RESULTS_DATE_LABEL")}: </p>

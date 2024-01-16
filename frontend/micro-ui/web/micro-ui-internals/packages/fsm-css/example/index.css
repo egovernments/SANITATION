@@ -1303,6 +1303,9 @@ img, video {
   .inbox-search-wrapper .inbox-search-component-wrapper .sections-parent.inbox .links .inbox-links-icon path:first-child {
     fill: none; }
 
+.inbox-search-wrapper .search-wrapper {
+  border-radius: 4px; }
+
 .inbox-search-wrapper .sections-parent.search .searchBox {
   margin-bottom: 0; }
 
@@ -1825,6 +1828,10 @@ img, video {
 .drawer-list .sidebar-list .submenu-container .sidebar-link {
   padding: unset !important; }
 
+.drawer-list .sidebar-list:last-child {
+  position: fixed;
+  bottom: 0; }
+
 .sections-parent.inbox .details-container {
   margin-bottom: 1rem;
   margin-top: 0; }
@@ -1877,6 +1884,14 @@ video::-webkit-media-controls-play-button {
   -ms-flex-align: center;
   align-items: center;
   margin-left: 10px; }
+
+.inbox-search-links-container {
+  border-radius: 4px; }
+  .inbox-search-links-container .contents .link {
+    padding-left: 0; }
+
+.inbox-search-component-wrapper .search-component-table {
+  border-radius: 4px; }
 
 .notification {
   padding: 1rem; }
@@ -2040,6 +2055,9 @@ video::-webkit-media-controls-play-button {
 .pqm-table td {
   vertical-align: top !important; }
 
+.pqm-table thead th {
+  min-width: 150px !important; }
+
 .multi-select-dropdown-wrap .server {
   overflow-x: auto !important;
   overflow-y: auto !important; }
@@ -2083,6 +2101,9 @@ video::-webkit-media-controls-play-button {
 .page-padding-fix {
   padding: 1rem 1.5rem; }
 
+.language-selector .language-button-container .customBtn, .language-selector .language-button-container .customBtn-selected {
+  width: 100px; }
+
 .tqm-home-container {
   margin: .5rem;
   display: -webkit-box;
@@ -2116,6 +2137,9 @@ video::-webkit-media-controls-play-button {
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
       padding: 16px;
       margin-bottom: 64px;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.16);
       border-radius: 4px;
       font-size: 1.5rem;
       margin-bottom: 1rem;
@@ -2256,7 +2280,7 @@ video::-webkit-media-controls-play-button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin-left: 50px;
+  margin-left: 0;
   padding-top: 0;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -2300,9 +2324,7 @@ video::-webkit-media-controls-play-button {
     font-weight: 700;
     padding: 0 16px;
     margin-bottom: .81rem;
-    height: 100%;
-    -webkit-box-shadow: none;
-    box-shadow: none; }
+    height: 100%; }
     .alerts-container1 .alerts-container-item .alerts-container-item-count {
       padding-left: 30px; }
 
@@ -2393,12 +2415,7 @@ video::-webkit-media-controls-play-button {
       .tqm-table-test-container .table thead th, .tqm-table-test-container .table thead th:first-child {
         border: .5px solid #d6d5d4; }
       .tqm-table-test-container .table thead th:first-child {
-        min-width: -webkit-fit-content;
-        min-width: -moz-fit-content;
-        min-width: fit-content;
-        width: -webkit-fit-content;
-        width: -moz-fit-content;
-        width: fit-content; }
+        min-width: 6rem; }
       .tqm-table-test-container .table thead .underline {
         width: 370%;
         margin-top: 15px; }
@@ -2467,7 +2484,7 @@ video::-webkit-media-controls-play-button {
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   justify-content: flex-end;
-  margin-right: 1rem; }
+  margin-right: 4rem; }
 
 .button-container, .headerContainer {
   display: -webkit-box;
@@ -2489,6 +2506,11 @@ video::-webkit-media-controls-play-button {
   margin-top: 8px;
   margin-right: 10px; }
 
+@media (max-width: 700px) {
+  .bell-icon {
+    margin-top: 4px;
+    margin-bottom: 8px; } }
+
 .notificationContent {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2496,6 +2518,8 @@ video::-webkit-media-controls-play-button {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between; }
+  .notificationContent p {
+    font-size: .875rem; }
 
 .WhatsNewCard {
   margin-bottom: 15px;
@@ -2508,7 +2532,8 @@ video::-webkit-media-controls-play-button {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  font-size: x-large;
+  font-size: 1rem;
+  margin-bottom: .25rem;
   font-weight: 700; }
 
 .viewDetailsButton h2 {
@@ -2532,7 +2557,51 @@ video::-webkit-media-controls-play-button {
   border: none; }
 
 .Container {
-  padding-left: 1.25rem; }
+  padding-left: 1.25rem;
+  padding-right: .5rem; }
+  .Container .no-results-found {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center; }
+    .Container .no-results-found .text {
+      margin-top: 1.25rem;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      color: #505a5f; }
+
+@media (max-width: 700px) {
+  .WhatsNewCard {
+    padding-left: 1rem;
+    padding-right: 1rem; }
+  .WhatsNewCard p {
+    font-size: .875rem; }
+  .Container {
+    padding-left: 0;
+    padding-right: 0;
+    margin: 1rem; }
+    .Container .headerContainer .h1 {
+      margin-left: 0; }
+    .Container .NotificationItem .Notification .WhatsNewCard .NotificationHeader {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .44rem; }
+    .Container .NotificationItem .Notification .WhatsNewCard .notificationContent {
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column; }
+      .Container .NotificationItem .Notification .WhatsNewCard .notificationContent .button-container {
+        margin-right: 0;
+        display: block; }
+        .Container .NotificationItem .Notification .WhatsNewCard .notificationContent .button-container button {
+          width: 100%; } }
 
 .tqm-header {
   display: -webkit-box !important;
@@ -2813,7 +2882,8 @@ input::-webkit-calendar-picker-indicator {
     width: 100%;
     bottom: 0;
     border-radius: 0;
-    margin: 0; } }
+    margin: 0;
+    z-index: 1000; } }
 
 .tqm-document-title {
   text-align: left;
@@ -2824,13 +2894,16 @@ input::-webkit-calendar-picker-indicator {
   font-size: 16px; }
 
 .employee-select-wrap .options-card {
-  top: 100%; }
+  top: 100%;
+  border-left-width: 0 !important;
+  border-right-width: 0 !important; }
 
 .employee-select-wrap.fsm-registry-dropdown .options-card {
   top: unset !important; }
 
 .inbox-search-links-container .header {
-  grid-template-columns: 12% 1fr; }
+  grid-template-columns: 12% 1fr;
+  grid-gap: .81rem; }
 
 @media (max-width: 640px) {
   .employee-select-wrap .options-card.date-range {

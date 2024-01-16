@@ -456,10 +456,6 @@ const RegisryInbox = (props) => {
         return history.push(
           `/${window?.contextPath}/employee/fsm/registry/new-vehicle`
         );
-      case 'DRIVER':
-        return history.push(
-          `/${window?.contextPath}/employee/fsm/registry/new-driver`
-        );
       case 'WORKER':
         return history.push(
           `/${window?.contextPath}/employee/fsm/registry/new-worker`
@@ -1054,6 +1050,7 @@ const RegisryInbox = (props) => {
               : showToast.action
           )}
           onClose={closeToast}
+          style={{marginBottom:"-3.8rem"}}
         />
       )}
     </div>

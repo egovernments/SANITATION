@@ -25,29 +25,58 @@ function TestDetails() {
     id: id,
     tenantId: tenantId,
     config: {
-      select: (data) => ({
-        data: {
-          cards: [
-            {
-              sections: [
+      select: (data) => {
+        if(data?.wfStatus==="PENDINGRESULTS"){
+          return {
+            data: {
+              cards: [
                 {
-                  type: "DATA",
-                  cardHeader: { value: t("ES_TQM_TEST_DETAILS_HEADING"), inlineStyles: { marginTop: 0 } },
-                  values: data.details,
-                },
-                {
-                  type: "COMPONENT",
-                  component: "TqmCardReading",
-                  props: {
-                    parameterData: data?.testResponse?.testCriteria || null,
-                  },
+                  sections: [
+                    {
+                      type: "DATA",
+                      cardHeader: { value: t("ES_TQM_TEST_DETAILS_HEADING"), inlineStyles: { marginTop: 0 } },
+                      values: data.details,
+                    },
+                    // {
+                    //   type: "COMPONENT",
+                    //   component: "TqmCardReading",
+                    //   props: {
+                    //     parameterData: data?.testResponse?.testCriteria || null,
+                    //   },
+                    // },
+                  ],
                 },
               ],
             },
-          ],
-        },
-        response: data.testResponse,
-      }),
+            response: data.testResponse,
+          }
+        }else {
+          return {
+            data: {
+              cards: [
+                {
+                  sections: [
+                    {
+                      type: "DATA",
+                      cardHeader: { value: t("ES_TQM_TEST_DETAILS_HEADING"), inlineStyles: { marginTop: 0 } },
+                      values: data.details,
+                    },
+                    {
+                      type: "COMPONENT",
+                      component: "TqmCardReading",
+                      props: {
+                        parameterData: data?.testResponse?.testCriteria || null,
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            response: data.testResponse,
+          }
+        }
+        
+    },
       staleTime: 0,
     },
   });
@@ -78,8 +107,14 @@ function TestDetails() {
   const submitAction = (data) => {
     mutate(data, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: nextAction === "SCHEDULED" ? "ES_TQM_SCHEDULE_UPDATED_FAILED" : "ES_TQM_TEST_UPDATED_FAILED" });
-        setTimeout(closeToast, 5000);
+        //here if the response error code is "" then show "This test is no longer valid as Process/Stage/Output of the test has been removed"  MDMS_INVALID_ERROR_UPDATE_TEST
+        if(error?.message?.includes("code is not present in mdms")){
+          setShowToast({ key: "error", action: "MDMS_INVALID_ERROR_UPDATE_TEST" });
+          setTimeout(closeToast, 5000);
+        }else{
+          setShowToast({ key: "error", action: nextAction === "SCHEDULED" ? "ES_TQM_SCHEDULE_UPDATED_FAILED" : "ES_TQM_TEST_UPDATED_FAILED" });
+          setTimeout(closeToast, 5000);
+        }
       },
       onSuccess: (data, variables) => {
         setShowToast({ key: "success", action: "ES_TQM_STATUS_UPDATED_SUCCESSFULLY" });

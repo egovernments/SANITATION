@@ -76,8 +76,6 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
         return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vendor`);
       case "VEHICLE":
         return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vehicle`);
-      case "DRIVER":
-        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-driver`);
       case "WORKER":
         return history.push(`/${window?.contextPath}/employee/fsm/registry/new-worker`);
       default:
@@ -177,7 +175,7 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
                 </div>
               </div>
               {showAddMenu && (
-                <Menu localeKeyPrefix={"ES_FSM_ACTION_CREATE"} options={["VENDOR", "DRIVER", "VEHICLE", "WORKER"]} t={t} onSelect={onActionSelect} />
+                <Menu localeKeyPrefix={"ES_FSM_ACTION_CREATE"} options={["VENDOR", "VEHICLE", "WORKER"]} t={t} onSelect={onActionSelect} />
               )}
             </div>
           </div>
@@ -200,7 +198,7 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
           <form onSubmit={handleSubmit(onSubmitInput)}>
             <div
               className={FSTP ? "complaint-input-container for-pt for-search" : "complaint-input-container"}
-              style={{ width: "100%", gridTemplateColumns: selectedTab === "WORKER" ? "25% 25% 25% 25%" : "33.33% 66.66% 0%" }}
+              style={{ width: "100%", gridTemplateColumns: selectedTab === "WORKER" ? "22% 22% 22% 34%" : "33.33% 66.66% 0%" }}
             >
               {searchFields?.map((input, index) => (
                 <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}>
@@ -212,7 +210,7 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
               ))}
               <div style={{ display: "flex" }}>
                 {type === "desktop" && !mobileView && <SubmitBar className="submit-bar-search" label={t("ES_COMMON_SEARCH")} submit />}
-                {type === "desktop" && !mobileView && <span className="clear-search">{clearAll()}</span>}
+                {type === "desktop" && !mobileView && <span className="clear-search" style={{width:"40%"}}>{clearAll()}</span>}
               </div>
             </div>
             {error ? <CardLabelError className="search-error-label">{t("ES_SEARCH_APPLICATION_ERROR")}</CardLabelError> : null}
