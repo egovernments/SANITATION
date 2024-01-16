@@ -3,22 +3,15 @@ package org.egov.pqm.web.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
+
+import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.service.PqmService;
 import org.egov.pqm.util.ResponseInfoFactory;
-import org.egov.pqm.web.model.RequestInfoWrapper;
-import org.egov.pqm.web.model.Test;
-import org.egov.pqm.web.model.TestRequest;
-import org.egov.pqm.web.model.TestResponse;
-import org.egov.pqm.web.model.TestSearchCriteria;
-import org.egov.pqm.web.model.TestSearchRequest;
+import org.egov.pqm.web.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1")
@@ -79,6 +72,15 @@ public class PqmController {
 		            true));
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
+    @PostMapping(value = "/_downloadPdf")
+    public ResponseEntity<EgovPdfResp> downloadPdf(@RequestParam("testId") String testId,
+                                                    @RequestBody RequestInfo requestInfo) {
+        EgovPdfResp egovPdfResp =  pqmService.downloadPdf(requestInfo,testId);
+        return new ResponseEntity<>(egovPdfResp, HttpStatus.OK);
+    }
+
+
 
 }
 
