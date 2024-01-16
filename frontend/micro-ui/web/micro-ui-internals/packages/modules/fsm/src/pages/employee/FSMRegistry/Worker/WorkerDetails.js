@@ -80,7 +80,8 @@ const WorkerDetails = (props) => {
   const { data: vendorData, isLoading: isVendorLoading, isSuccess: isVendorSuccess, error: vendorError } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: "name", sortOrder: "ASC", status: "ACTIVE", agencyType: workerData?.[0]?.agencyType },
-    {}
+    {},
+    t
   );
 
   const {
