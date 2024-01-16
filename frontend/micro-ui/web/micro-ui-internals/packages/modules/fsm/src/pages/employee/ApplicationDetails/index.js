@@ -172,7 +172,7 @@ const ApplicationDetails = (props) => {
   }
 
   const getTimelineCaptions = (checkpoint) => {
-    const __comment = checkpoint?.comment?.split("~");
+    const __comment = checkpoint?.comment?.split("~") || checkpoint?.wfComment?.[0]?.split("~");
     const reason = __comment ? __comment[0] : null;
     const reason_comment = __comment ? __comment[1] : null;
     if (checkpoint.status === "CREATED") {
