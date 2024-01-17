@@ -2084,49 +2084,6 @@ img, video {
   -ms-flex-pack: justify;
   justify-content: space-between; }
 
-.employee-card-textarea {
-  width: 50%; }
-
-.fsm-table-alerts-container {
-  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
-  border-radius: .25rem;
-  border: 1px solid #d6d5d4;
-  background: #fff;
-  width: 100%;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  margin-top: .75rem;
-  padding-bottom: 2rem; }
-  .fsm-table-alerts-container .table {
-    table-layout: fixed;
-    width: 100%;
-    border-collapse: collapse; }
-    .fsm-table-alerts-container .table thead th {
-      padding: 20px 18px;
-      font-weight: 700;
-      vertical-align: middle;
-      text-align: left; }
-    .fsm-table-alerts-container .table thead th:first-child {
-      min-width: 265px;
-      width: 265px; }
-    .fsm-table-alerts-container .table thead .underline {
-      width: 370%;
-      margin-top: 15px; }
-    .fsm-table-alerts-container .table tbody td {
-      border-top-width: 1px;
-      --border-opacity:1;
-      border-color: #d6d5d4;
-      border-color: rgba(214, 213, 212, var(--border-opacity));
-      text-align: left;
-      vertical-align: middle;
-      padding: 20px 18px;
-      font-size: 16px;
-      white-space: normal; }
-    .fsm-table-alerts-container .table tbody .underline {
-      width: 370%;
-      margin-top: 15px; }
-
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
     margin-bottom: 70px !important;
