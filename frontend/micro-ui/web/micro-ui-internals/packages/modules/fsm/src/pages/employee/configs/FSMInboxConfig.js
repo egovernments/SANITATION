@@ -165,10 +165,6 @@ export const FSMInboxConfig = () => {
                 defaultValues: {
                   status: "",
                   locality: [],
-                  assignee: {
-                    code: "ASSIGNED_TO_ME",
-                    name: "ASSIGNED_TO_ME",
-                  },
                 },
                 fields: [
                   {
