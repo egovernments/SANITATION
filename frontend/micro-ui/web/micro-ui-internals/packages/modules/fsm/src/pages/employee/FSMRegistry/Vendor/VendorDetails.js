@@ -68,7 +68,8 @@ const VendorDetails = (props) => {
   } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { ids: dsoId },
-    { staleTime: 0 }
+    { staleTime: 0 },
+    t
   );
 
   const {

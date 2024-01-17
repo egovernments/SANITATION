@@ -102,17 +102,17 @@ export const FsmBreadCrumb = ({ location }) => {
     { content: t("ES_TITLE_APPLICATION_DETAILS"), show: isApplicationDetails },
     { content: t("ES_TITLE_VEHICLE_LOG"), show: isVehicleLog },
     {
-      path: `/${window?.contextPath}/employee/fsm/registry/vendor-details/` + id,
+      path: isVendorDetails ? null : `/${window?.contextPath}/employee/fsm/registry/vendor-details/` + id,
       content: t("ES_TITLE_VENDOR_DETAILS"),
       show: isRegistry && (isVendorDetails || isVendorEdit),
     },
     {
-      path: `/${window?.contextPath}/employee/fsm/registry/vehicle-details/` + id,
+      path: isVehicleDetails ? null : `/${window?.contextPath}/employee/fsm/registry/vehicle-details/` + id,
       content: t("ES_TITLE_VEHICLE_DETAILS"),
       show: isRegistry && (isVehicleDetails || isVehicleEdit),
     },
     {
-      path: `/${window?.contextPath}/employee/fsm/registry/driver-details/` + id,
+      path: isDriverDetails ? null : `/${window?.contextPath}/employee/fsm/registry/driver-details/` + id,
       content: t("ES_TITLE_DRIVER_DETAILS"),
       show: isRegistry && (isDriverDetails || isDriverEdit),
     },

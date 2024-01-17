@@ -49,7 +49,8 @@ const FstpInbox = () => {
       name: searchParams?.name,
       status: "ACTIVE",
     },
-    { enabled: searchParams?.name?.length > 1 }
+    { enabled: searchParams?.name?.length > 1 },
+    t
   );
   let filters = {
     businessService: "FSM_VEHICLE_TRIP",

@@ -71,13 +71,7 @@ const ApplicationDetails = (props) => {
     { staleTime: Infinity }
   );
 
-  const {
-    isLoading: updatingApplication,
-    isError: updateApplicationError,
-    data: updateResponse,
-    error: updateError,
-    mutate,
-  } = Digit.Hooks.fsm.useApplicationActions(tenantId);
+  const { isLoading: updatingApplication, isError: updateApplicationError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useApplicationActions(tenantId);
 
   const workflowDetails = Digit.Hooks.useWorkflowDetails({
     tenantId: applicationDetails?.tenantId || tenantId,
@@ -89,9 +83,7 @@ const ApplicationDetails = (props) => {
         ? "PAY_LATER_SERVICE"
         : applicationData?.advanceAmount > 0
         ? "FSM_ADVANCE_PAY_SERVICE"
-        : applicationData?.paymentPreference === null &&
-          applicationData?.additionalDetails?.tripAmount === 0 &&
-          applicationData?.advanceAmount === null
+        : applicationData?.paymentPreference === null && applicationData?.additionalDetails?.tripAmount === 0 && applicationData?.advanceAmount === null
         ? "FSM_ZERO_PAY_SERVICE"
         : "FSM",
     role: DSO ? "FSM_DSO" : "FSM_EMPLOYEE",
@@ -177,7 +169,7 @@ const ApplicationDetails = (props) => {
   }
 
   const getTimelineCaptions = (checkpoint) => {
-    const __comment = checkpoint?.comment?.split("~");
+    const __comment = checkpoint?.comment?.split("~") || checkpoint?.wfComment?.[0]?.split("~");
     const reason = __comment ? __comment[0] : null;
     const reason_comment = __comment ? __comment[1] : null;
     if (checkpoint.status === "CREATED") {
@@ -192,7 +184,8 @@ const ApplicationDetails = (props) => {
       checkpoint.status === "PENDING_APPL_FEE_PAYMENT" ||
       checkpoint.status === "DSO_REJECTED" ||
       checkpoint.status === "CANCELED" ||
-      checkpoint.status === "REJECTED"
+      checkpoint.status === "REJECTED" ||
+      (checkpoint.status === "PENDING_DSO_APPROVAL" && checkpoint.performedAction === "SENDBACK")
     ) {
       const caption = {
         date: checkpoint?.auditDetails?.created,
@@ -299,7 +292,7 @@ const ApplicationDetails = (props) => {
               optionsClassName={"employee-options-btn-className"}
               options={dowloadOptions}
               displayOptions={isDisplayDownloadMenu}
-              setShowOptions = {()=>{}}
+              setShowOptions={() => {}}
               // displayOptions={showOptions}
               // options={dowloadOptions}
             />
@@ -381,9 +374,7 @@ const ApplicationDetails = (props) => {
             {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
             {!workflowDetails?.isLoading && !isDataLoading && (
               <Fragment>
-                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>
-                  {t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
-                </CardSectionHeader>
+                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}</CardSectionHeader>
                 {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
                   <CheckPoint
                     isCompleted={true}
@@ -431,25 +422,15 @@ const ApplicationDetails = (props) => {
               onClose={closeToast}
             />
           )}
-          {!workflowDetails?.isLoading &&
-            workflowDetails?.data?.nextActions?.length === 1 &&
-            workflowDetails?.data?.nextActions?.[0]?.action !== "RATE" && (
-              <ActionBar style={{ zIndex: "19" }}>
-                <SubmitBar
-                  label={t(`ES_FSM_${workflowDetails?.data?.nextActions[0].action}`)}
-                  onSubmit={() => onActionSelect(workflowDetails?.data?.nextActions[0].action)}
-                />
-              </ActionBar>
-            )}
+          {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length === 1 && workflowDetails?.data?.nextActions?.[0]?.action !== "RATE" && (
+            <ActionBar style={{ zIndex: "19" }}>
+              <SubmitBar label={t(`ES_FSM_${workflowDetails?.data?.nextActions[0].action}`)} onSubmit={() => onActionSelect(workflowDetails?.data?.nextActions[0].action)} />
+            </ActionBar>
+          )}
           {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length > 1 && (
             <ActionBar style={{ zIndex: "19" }}>
               {displayMenu && workflowDetails?.data?.nextActions ? (
-                <Menu
-                  localeKeyPrefix={"ES_FSM"}
-                  options={workflowDetails?.data?.nextActions.map((action) => action.action)}
-                  t={t}
-                  onSelect={onActionSelect}
-                />
+                <Menu localeKeyPrefix={"ES_FSM"} options={workflowDetails?.data?.nextActions.map((action) => action.action)} t={t} onSelect={onActionSelect} />
               ) : null}
               <SubmitBar label={t("ES_COMMON_TAKE_ACTION")} onSubmit={() => setDisplayMenu(!displayMenu)} />
             </ActionBar>

@@ -86,7 +86,7 @@ const TqmHome = (props) => {
         "queryType": "",
         "filters": {
           "tenantId": [tenantId],
-          // "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
+          "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
         },
         "moduleLevel": "",
         "aggregationFactors": null,

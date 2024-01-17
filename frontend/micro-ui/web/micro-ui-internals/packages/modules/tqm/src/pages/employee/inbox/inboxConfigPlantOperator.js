@@ -181,30 +181,9 @@ export const tqmInboxConfigPlantOperator = {
                 "text": "TQM_VIEW_PAST_RESULTS",
                 "url": "/employee/tqm/search-test-results",
                 "roles": [
-                  "FSM_CREATOR_EMP"
+                  "PQM_TP_OPERATOR","FSM_EMP_FSTPO"
                 ]
               },
-              {
-                "text": "TQM_VIEW_IOT_RESULTS",
-                "url": "/employee/tqm/search-test-results",
-                "roles": [
-                  "FSM_CREATOR_EMP"
-                ]
-              },
-              {
-                "text": "TQM_SENSOR_MON",
-                "url": "/employee/tqm/search-devices",
-                "roles": [
-                  "FSM_CREATOR_EMP"
-                ]
-              },
-              {
-                "text": "TQM_VIEW_DASHBOARD",
-                "url": "/employee/tqm/dashboard",
-                "roles": [
-                  "FSM_CREATOR_EMP"
-                ]
-              }
             ],
             "label": "TQM_QUALITY_TESTING",
             "logoIcon": {

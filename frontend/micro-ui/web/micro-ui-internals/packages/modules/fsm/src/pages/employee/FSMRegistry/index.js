@@ -100,7 +100,8 @@ const FSMRegistry = () => {
       driverIds: driverIds,
       status: "ACTIVE",
     },
-    { enabled: false }
+    { enabled: false },
+    t
   );
   
   const inboxTotalCount = dsoData?.TotalCount || dsoData?.totalCount ;
@@ -202,6 +203,8 @@ const FSMRegistry = () => {
           let vendor = vendorData.find((ele) => ele.dsoDetails?.workers?.find((driver) => driver.individualId === data.id));
           if (vendor) {
             data.vendor = vendor.dsoDetails;
+          }else{
+            data.vendor = null
           }
           return data;
         });

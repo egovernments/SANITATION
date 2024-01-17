@@ -80,7 +80,7 @@ export const Search = {
         ids: response.dsoId,
         vehicleIds: response?.vehicleId,
       };
-      [dsoDetails] = await DsoDetails(tenantId, dsoFilters);
+      [dsoDetails] = await DsoDetails(tenantId, dsoFilters, t);
 
       if (response?.vehicleId) {
         vehicle = dsoDetails.vehicles.find(

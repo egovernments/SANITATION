@@ -50,7 +50,7 @@ const RegisryInbox = (props) => {
   } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: 'name', sortOrder: 'ASC', status: 'ACTIVE' },
-    { enabled: true }
+    { enabled: true }, t
   );
   const {
     isLoading: isUpdateVendorLoading,
@@ -1050,6 +1050,7 @@ const RegisryInbox = (props) => {
               : showToast.action
           )}
           onClose={closeToast}
+          style={{marginBottom:"-3.8rem"}}
         />
       )}
     </div>
