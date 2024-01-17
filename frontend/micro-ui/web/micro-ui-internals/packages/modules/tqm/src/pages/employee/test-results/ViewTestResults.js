@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { ViewComposer, Header, Loader } from "@egovernments/digit-ui-react-components";
+import { ViewComposer, Header, Loader, MultiLink } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
@@ -94,11 +94,29 @@ function ViewTestResults() {
             ],
           },
         ],
+        isWorkflowComplete: data?.workflowStatus?.processInstances?.[0]?.state?.isTerminateState,
       }),
       staleTime: 0,
       cacheTime: 0,
     },
   });
+
+  const handleDownloadPdf = async () => {
+    try {
+      const respo = await Digit.CustomService.getResponse({
+        url: "/pqm-service/v1/_downloadPdf",
+        params: {
+          testId: id,
+        },
+      });
+      if (respo?.filestoreIds?.[0]) {
+        const pdfDownload = await Digit.UploadServices.Filefetch(respo?.filestoreIds, tenantId);
+        window.open(pdfDownload?.data?.fileStoreIds?.[0]?.url, "_blank");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -106,7 +124,17 @@ function ViewTestResults() {
 
   return (
     <>
-      <Header> {t("ES_TQM_TEST_RESULTS_DETAILS_HEADER")} </Header>
+      <div style={{display: "flex", justifyContent: "space-between"}}>
+        <Header> {t("ES_TQM_TEST_RESULTS_DETAILS_HEADER")} </Header>
+        {testData?.isWorkflowComplete ? (
+          <MultiLink
+            className="multilinkWrapper employee-mulitlink-main-div"
+            onHeadClick={handleDownloadPdf}
+            style={{ marginTop: "10px" }}
+            downloadBtnClassName={"employee-download-btn-className"}
+          />
+        ) : null}
+      </div>
       {!isLoading && <ViewComposer data={testData} isLoading={isLoading} />}
     </>
   );
