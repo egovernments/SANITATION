@@ -2309,24 +2309,3 @@ input::-webkit-calendar-picker-indicator {
 
 .employeeCard .card-section-header {
   margin-bottom: 16px; }
-.sla-cell-success {
-  background-color: rgba(0, 112, 60, 0.12);
-  color: #00703c !important; }
-
-.sla-cell-error, .sla-cell-success {
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 0 24px;
-  border-radius: 11px; }
-
-.sla-cell-error {
-  color: #d4351c !important;
-  background-color: rgba(212, 53, 28, 0.12); }
-
-.sla-cell-warning {
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 0 24px;
-  border-radius: 11px;
-  color: #f47738 !important;
-  background-color: rgba(241, 143, 94, 0.12); }
