@@ -156,6 +156,7 @@ export const FSMInboxConfig = () => {
             },
             filter: {
               uiConfig: {
+                formClassName: "filter",
                 type: "filter",
                 headerStyle: null,
                 primaryLabel: "Filter",
