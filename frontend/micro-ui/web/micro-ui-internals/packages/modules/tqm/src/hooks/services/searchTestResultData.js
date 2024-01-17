@@ -247,5 +247,6 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
         : null,
     wfStatus: testResponse?.wfStatus,
     testResponse,
+    workflowStatus: workflowData
   };
 };
