@@ -42,7 +42,7 @@ const popupActionBarStyles = {
 const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction, actionData, module,applicationDetails }) => {
   
   const mobileView = Digit.Utils.browser.isMobile() ? true : false;
-  const { data: dsoData, isLoading: isDsoLoading, isSuccess: isDsoSuccess, error: dsoError } = Digit.Hooks.fsm.useDsoSearch(tenantId, { limit: '-1', status: 'ACTIVE' });
+  const { data: dsoData, isLoading: isDsoLoading, isSuccess: isDsoSuccess, error: dsoError } = Digit.Hooks.fsm.useDsoSearch(tenantId, { limit: '-1', status: 'ACTIVE' }, {}, t);
   const { isLoading, isSuccess, isError, data: applicationData, error } = Digit.Hooks.fsm.useSearch(
     tenantId,
     { applicationNos: id },
