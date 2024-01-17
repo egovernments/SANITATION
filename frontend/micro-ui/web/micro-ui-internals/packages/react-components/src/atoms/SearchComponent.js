@@ -136,7 +136,7 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
         <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => checkKeyDown(e)}>
           <div>
             {uiConfig?.showFormInstruction && <p className="search-instruction-header">{t(uiConfig?.showFormInstruction)}</p>}
-            <div className={`search-field-wrapper ${screenType} ${uiConfig?.formClassName?uiConfig?.formClassName:""}`}>
+            <div className={`search-field-wrapper ${screenType} ${uiConfig?.formClassName ? uiConfig?.formClassName:""}`}>
               <RenderFormFields 
                 // fields={uiConfig?.fields} 
                 fields={activeLink ? allUiConfigs?.filter(uiConf => activeLink?.name === uiConf.uiConfig.navLink)?.[0]?.uiConfig?.fields : uiConfig?.fields}
