@@ -1,67 +1,145 @@
-import React,{useState} from 'react';
-import RemoveableTag from '../atoms/RemoveableTag';
+import React, { useState, useEffect, useContext } from 'react';
+import RemoveableTagNew from '../atoms/RemovableTagNew';
 import { useTranslation } from 'react-i18next';
-const RemovableTags = ({
-  config,
-  browserSession,
-  dispatch,
-  fields,
-  ...props
-}) => {
-  const {t} = useTranslation()
-  const [sessionData, setSessionData, clearSessionData] = browserSession;
-  //sessionData will be the single source of truth for showing removable tags
-  //on click of tags we'll call dispatch and update the state which in turns updates the browser session
-  
-  // console.log('fields',fields);
+import { Loader } from '../atoms/Loader';
+import { InboxContext } from './InboxSearchComposerContext';
+import _ from "lodash";
+
+const generateTagsFromFields = (fields, sessionData, t) => {
   //filetering the fields
-  
+
   const fieldsToShow = fields
     ?.filter((row) => row?.removableTagConf)
     ?.map((row) => row?.removableTagConf);
+
+  const crumbs = [];
+  fieldsToShow?.forEach((field, idx) => {
+    //one field can have multiple crumbs
+    // we need to fill
+
+    //setting the text
+    const value = _.get(sessionData, field.sessionJsonPath, '');
+    if (!value || value?.length === 0) {
+      return;
+    }
+
+    //convert this to switch case and write a separate fn for it
+    switch (field?.type) {
+      case 'multi':
+        value?.forEach((val) => {
+          crumbs?.push({
+            label: t(field.label) || '',
+            value: `${t(
+              Digit.Utils.locale.getTransformedLocale(
+                _.get(val, field.valueJsonPath, '')
+              )
+            )}`,
+            removableTagConf: {
+              ...field,
+              value: val,
+            },
+          });
+        });
+        break;
+      case 'single':
+        crumbs?.push({
+          label: t(field.label) || '',
+          value: `${t(
+            Digit.Utils.locale.getTransformedLocale(
+              _.get(value, field.valueJsonPath, '')
+            )
+          )}`,
+          removableTagConf: { ...field, value },
+        });
+        break;
+      case 'dateRange':
+        crumbs?.push({
+          label: t(field.label) || '',
+          value: _.get(value, field.valueJsonPath, ''),
+          removableTagConf: { ...field, value },
+        });
+        break;
+      default:
+        break;
+    }
+
+    // if (field?.type === 'multi') {
+    //   value?.forEach((val) => {
+    //     crumbs?.push({
+    //       label: t(field.label) || '',
+    //       value: `${t(
+    //         Digit.Utils.locale.getTransformedLocale(
+    //           _.get(val, field.valueJsonPath, '')
+    //         )
+    //       )}`,
+    //       removableTagConf:{
+    //         ...field,
+    //         value:val
+    //       }
+    //     });
+    //   });
+    // } else if (field?.type === 'single') {
+    //   crumbs?.push({
+    //     label: t(field.label) || '',
+    //     value: `${t(
+    //       Digit.Utils.locale.getTransformedLocale(
+    //         _.get(val, field.valueJsonPath, '')
+    //       )
+    //     )}`,
+    //     removableTagConf:{...field,value:val}
+    //   });
+    // }
+  });
+
+  return crumbs;
+};
+
+const RemovableTags = ({ config, browserSession, fields, ...props }) => {
+  const { t } = useTranslation();
+  const [sessionData, setSessionData, clearSessionData] = browserSession;
+  
+  const [removableTags, setRemovableTags] = useState([]);
+  const { state, dispatch } = useContext(InboxContext);
+
+  //sessionData will be the single source of truth for showing removable tags
+  //on click of tags we'll call dispatch and update the state which in turns updates the browser session
+
   // On onclick of removable tag you need to update the state accordingly so that browser session gets updated accordingly
   // map over fields in search and filter section
   // for each field, refer field.removableTagConf
 
-  //this will be an array containing all the info required for every tag
-  const removableTags = fieldsToShow?.map((field,idx) => {
-    debugger
-    const obj = {
-      key:idx
-    }
+  //an effect for generating selected filter tags
+  useEffect(() => {
+    setRemovableTags(generateTagsFromFields(fields, sessionData, t));
+    return () => {};
+  }, [fields, sessionData]);
 
-    console.log('BS', sessionData);
-    //setting the text
-    const value = _.get(sessionData,field.sessionJsonPath,"")
-    if(!value){
-      return ""
-    }
-    let text = t(field.label) || ""
-    if(field?.type === "multi"){
-      value?.forEach(val => {
-        text += ` ${t(Digit.Utils.locale.getTransformedLocale(_.get(val,field.valueJsonPath,"")))} `  
-      })
-    } else if(field?.type === "single") {
-      text = _.get(value,field.valueJsonPath,"")
-    }
-    obj.text = text
-    // debugger
-    return obj
-  })
-  
-  console.log("rt",removableTags);
+
+  // function to handle deletion of tags
+  //flow -> onClick -> Update state(dispatch with jsonPath) -> session gets updated automatically due to effect in parent
+  const handleCrumbDeletion = (tag) => {
+    dispatch(
+      {
+        type:"jsonPath",
+        tag
+      }
+    )
+  };
+
+  if (removableTags?.length === 0) {
+    return null;
+  }
 
   return (
-    // <div>
-    //   Removable Tags
-    // </div>
-    <div className="tag-container">
+    <div className="inbox-tag-container">
       {removableTags?.map((tag, index) => {
         return (
-          <RemoveableTag
+          <RemoveableTagNew
             key={index}
-            text={tag?.text}
-            onClick={() => {console.log("delete")}}
+            text={tag}
+            onClick={() => {
+              handleCrumbDeletion(tag);
+            }}
           />
         );
       })}

@@ -68,10 +68,11 @@ export const tqmInboxConfigPlantOperator = {
                 },
                 "removableTagConf":{
                   "name":"processCodes",
-                  "label":"TQM_TREATMENT_PROCESS",
+                  "label":"Process",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
-                  "sessionJsonPath":"searchForm.processCodes"
+                  "sessionJsonPath":"searchForm.processCodes",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -89,6 +90,14 @@ export const tqmInboxConfigPlantOperator = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Material"
                   }
+                },
+                "removableTagConf":{
+                  "name":"materialCodes",
+                  "label":"Output",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.materialCodes",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -106,6 +115,14 @@ export const tqmInboxConfigPlantOperator = {
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfig",
                   "customfn": "populateStatusReqCriteria"
+                },
+                "removableTagConf":{
+                  "name":"status",
+                  "label":"Status",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.status",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -115,6 +132,14 @@ export const tqmInboxConfigPlantOperator = {
                 "disable": false,
                 "populators": {
                   "name": "dateRange"
+                },
+                "removableTagConf":{
+                  "name":"dateRange",
+                  "label":"Date Range",
+                  "valueJsonPath":"range.title",
+                  "type":"dateRange", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.dateRange",
+                  // "deleteRef":"code" // deleteRef should only be given for multi type
                 }
               }
             ]
@@ -245,6 +270,14 @@ export const tqmInboxConfigPlantOperator = {
                   "innerStyles": {
                     "display": "flex"
                   }
+                },
+                "removableTagConf":{
+                  "name":"sortOrder",
+                  "label":"Sort Order",
+                  "valueJsonPath":"name",
+                  "type":"single", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"filterForm.sortOrder",
+                  // "deleteRef":"code"
                 }
               }
             ]

@@ -91,12 +91,30 @@ const InboxSearchComposer = ({configs,browserSession}) => {
 
     },[state])
     
+    //adding this effect in case of screen refresh
+    useEffect(() => {
+        if(_.isEqual(state, initialInboxState)){
+            dispatch({
+                type:"obj",
+                updatedState:Object?.keys(session)?.length > 0 ? session : initialInboxState
+            })
+        } 
+    },[])
+
     //adding another effect to sync session with state, the component invoking InboxSearchComposer will be passing session as prop
     useEffect(() => {
-        if(!_.isEqual(state, session)){
-            setSession(state)
-        }
-    }, [state])
+        setSession(state)
+        // if(!_.isEqual(state, session)){
+        //     // setSession(()=>{
+        //     //     return {
+        //     //         ...state
+        //     //     }
+        //     // })
+        //     setSession(state)
+        // }
+        
+    },[state])
+
     
 
     let requestCriteria = {
@@ -235,7 +253,7 @@ const InboxSearchComposer = ({configs,browserSession}) => {
                 {
                     (configs?.type === 'inbox' || configs?.type === 'search') && (configs?.showAsRemovableTagsInMobile) &&
                     <MediaQuery maxWidth={426}>
-                        <RemovableTags config={configs} browserSession={browserSession} dispatch={dispatch} fields={[...configs?.sections?.search?.uiConfig?.fields,...configs?.sections?.filter?.uiConfig?.fields]}/>
+                        <RemovableTags config={configs} browserSession={browserSession} fields={[...configs?.sections?.search?.uiConfig?.fields,...configs?.sections?.filter?.uiConfig?.fields]}/>
                    </MediaQuery>
                 }
                 {   
@@ -284,6 +302,7 @@ const InboxSearchComposer = ({configs,browserSession}) => {
                     data={data}
                     onClose={handlePopupClose}
                     defaultValues={configs?.sections?.filter?.uiConfig?.defaultValues}
+                    browserSession={browserSession}
                     />
                 </div>
               )}
@@ -303,6 +322,7 @@ const InboxSearchComposer = ({configs,browserSession}) => {
                     data={data}
                     onClose={handlePopupClose}
                     defaultValues={configs?.sections?.search?.uiConfig?.defaultValues}
+                    browserSession={browserSession}
                     />
                 </div>
               )}

@@ -12,24 +12,31 @@ import _ from "lodash";
 import Button from "../../atoms/Button"
 
 
-const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = "search", fullConfig, data, onClose, defaultValues }) => {
+const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = "search", fullConfig, data, onClose, defaultValues,browserSession }) => {
   const { t } = useTranslation();
   const { state, dispatch } = useContext(InboxContext)
   const [showToast,setShowToast] = useState(null)
   let updatedFields = [];
   const {apiDetails} = fullConfig
-
+  
   if (fullConfig?.postProcessResult){
     //conditions can be added while calling postprocess function to pass different params
     Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.postProcess(data, uiConfig) 
   }
 
   //define session for modal form
-  const mobileSearchSession = Digit.Hooks.useSessionStorage(`MOBILE_SEARCH_MODAL_FORM_${uiConfig?.type}_${fullConfig?.label}`, 
-  {...uiConfig?.defaultValues}
-  );
+  //uiConfig.type === filter || sort
+  //we need to sync browsersession and mobileSearchSession
+  // const mobileSearchSession = Digit.Hooks.useSessionStorage(`MOBILE_SEARCH_MODAL_FORM_${uiConfig?.type}_${fullConfig?.label}`, 
+  // {...uiConfig?.defaultValues}
+  // );
   
-  const [sessionFormData, setSessionFormData, clearSessionFormData] = mobileSearchSession;
+  // const [sessionFormData, setSessionFormData, clearSessionFormData] = mobileSearchSession;
+  const [session,setSession,clearSession] = browserSession || []
+  
+
+  const defValuesFromSession = uiConfig?.type === "filter" ? session?.searchForm : session?.filterForm
+
   const {
     register,
     handleSubmit,
@@ -43,7 +50,8 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
     setError,
     clearErrors,
   } = useForm({
-    defaultValues: {...uiConfig?.defaultValues,...sessionFormData},
+    // defaultValues: {...uiConfig?.defaultValues,...sessionFormData},
+    defaultValues: {...uiConfig?.defaultValues,...defValuesFromSession}
     // defaultValues:{...uiConfig?.defaultValues}
   });
   const formData = watch();
@@ -60,17 +68,17 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
   }, [formState]);
 
 
-  //on form value change, update session data with form data
-  useEffect(()=>{ 
-    if (!_.isEqual(sessionFormData, formData)) {
-      // const difference = _.pickBy(sessionFormData, (v, k) => !_.isEqual(formData[k], v));
-      setSessionFormData({ ...sessionFormData,...formData,  });
-    }
-  },[formData]);
+  // //on form value change, update session data with form data
+  // useEffect(()=>{ 
+  //   if (!_.isEqual(sessionFormData, formData)) {
+  //     // const difference = _.pickBy(sessionFormData, (v, k) => !_.isEqual(formData[k], v));
+  //     setSessionFormData({ ...sessionFormData,...formData,  });
+  //   }
+  // },[formData]);
 
-  useEffect(()=>{
-    clearSessionFormData();
-  },[]);
+  // useEffect(()=>{
+  //   clearSessionFormData();
+  // },[]);
 
   const onSubmit = (data) => {
     onClose?.()
