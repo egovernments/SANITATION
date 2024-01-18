@@ -34,23 +34,6 @@ export const tqmSearchConfigPlantOperator = {
               "dateRange": {}
             },
             "fields": [
-              // {
-              //   "label": "TQM_PLANT_NAME",
-              //   "type": "dropdown",
-              //   "isMandatory": false,
-              //   "disable": false,
-              //   "populators": {
-              //     "optionsCustomStyle": {
-              //       "top": "2.3rem"
-              //     },
-              //     "name": "plantCodes",
-              //     "optionsKey": "i18nKey",
-              //     "allowMultiSelect": true,
-              //     "mdmsv2": {
-              //       "schemaCode": "PQM.Plant"
-              //     }
-              //   }
-              // },
               {
                 "label": "TQM_TREATMENT_PROCESS",
                 "type": "dropdown",
@@ -66,6 +49,14 @@ export const tqmSearchConfigPlantOperator = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Process"
                   }
+                },
+                "removableTagConf":{
+                  "name":"processCodes",
+                  "label":"Process",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.processCodes",
+                  "deleteRef":"code"// only required for multi type
                 }
               },
               {
@@ -83,6 +74,14 @@ export const tqmSearchConfigPlantOperator = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Material"
                   }
+                },
+                "removableTagConf":{
+                  "name":"materialCodes",
+                  "label":"Output",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.materialCodes",
+                  "deleteRef":"code" // only required for multi type
                 }
               },
               {
@@ -100,6 +99,14 @@ export const tqmSearchConfigPlantOperator = {
                   "mdmsv2": {
                     "schemaCode": "PQM.SourceType"
                   }
+                },
+                "removableTagConf":{
+                  "name":"testType",
+                  "label":"Test Type",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.testType",
+                  "deleteRef":"code" // only required for multi type
                 }
               },
               {
@@ -116,6 +123,14 @@ export const tqmSearchConfigPlantOperator = {
                 "populators": {
                   "name": "dateRange",
                   "maxDate":"currentDate"
+                },
+                "removableTagConf":{
+                  "name":"dateRange",
+                  "label":"Date",
+                  "valueJsonPath":"range.title",
+                  "type":"dateRange", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.dateRange",
+                  // "deleteRef":"code" // only required for multi type
                 }
               }
             ]
@@ -227,6 +242,14 @@ export const tqmSearchConfigPlantOperator = {
                   "innerStyles": {
                     "display": "flex"
                   }
+                },
+                "removableTagConf":{
+                  "name":"sortOrder",
+                  "label":"Sort Order",
+                  "valueJsonPath":"name",
+                  "type":"single", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"filterForm.sortOrder",
+                  // "deleteRef":"code" // only required for multi type
                 }
               }
             ]
@@ -236,7 +259,9 @@ export const tqmSearchConfigPlantOperator = {
           "show": true
         }
       },
-      "additionalSections": {}
+      "additionalSections": {},
+      "persistFormData":true,
+      "showAsRemovableTagsInMobile":true
     },
   ],
 };

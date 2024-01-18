@@ -288,7 +288,7 @@ export const tqmInboxConfigPlantOperator = {
         }
       },
       "additionalSections": {},
-      "persistFormData":true,
+      "persistFormData":true,//for now it's redundant
       "showAsRemovableTagsInMobile":true
     }
   ]
