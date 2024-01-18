@@ -99,4 +99,11 @@ public class Constants {
 
   public static final Pattern REGEX_METACHARACTER_PATTERN = Pattern.compile(
       "^[a-z0-9]+(-[a-z0-9]+)*$");
+
+  public static final String PQM_PDF_KEY = "pqm-adhoctest";
+  public static final Object SEARCH_MODULE_MDMS = "rainmaker-mdms";
+  public static final Object TQM_LOC_SEARCH_MODULE = "rainmaker-tqm";
+
+
+
 }

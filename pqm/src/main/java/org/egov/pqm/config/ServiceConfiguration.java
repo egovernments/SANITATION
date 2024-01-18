@@ -134,4 +134,25 @@ public class ServiceConfiguration {
   @Value("${egov.statelevel.tenantid}")
   private String egovStateLevelTenantId;
 
+  // Localization
+  @Value("${egov.localization.host}")
+  private String localizationHost;
+
+  @Value("${egov.localization.context.path}")
+  private String localizationContextPath;
+
+  @Value("${egov.localization.search.endpoint}")
+  private String localizationSearchEndpoint;
+
+  @Value("${egov.localization.statelevel}")
+  private Boolean isLocalizationStateLevel;
+
+
+  //PDF
+  @Value("${egov.pdfservice.link}")
+  private String pdfServiceLink;
+
+  @Value("${egov.pdfservice.host}")
+  private String pdfServiceHost;
+
 }

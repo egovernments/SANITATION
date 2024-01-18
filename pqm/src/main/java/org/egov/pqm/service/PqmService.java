@@ -20,18 +20,7 @@ import org.egov.pqm.util.JsonParser;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.validator.PqmValidator;
-import org.egov.pqm.web.model.Document;
-import org.egov.pqm.web.model.DocumentResponse;
-import org.egov.pqm.web.model.Pagination;
-import org.egov.pqm.web.model.QualityCriteria;
-import org.egov.pqm.web.model.SortBy;
-import org.egov.pqm.web.model.SourceType;
-import org.egov.pqm.web.model.Test;
-import org.egov.pqm.web.model.TestRequest;
-import org.egov.pqm.web.model.TestResponse;
-import org.egov.pqm.web.model.TestResultStatus;
-import org.egov.pqm.web.model.TestSearchCriteria;
-import org.egov.pqm.web.model.TestSearchRequest;
+import org.egov.pqm.web.model.*;
 import org.egov.pqm.web.model.anomaly.PqmAnomaly;
 import org.egov.pqm.web.model.anomaly.PqmAnomalySearchCriteria;
 import org.egov.pqm.web.model.anomaly.PqmAnomalySearchRequest;
@@ -83,6 +72,8 @@ public class PqmService {
 
   @Autowired
   private AnomalyService pqmAnomalyService;
+
+  @Autowired PdfService pdfService;
 
   /**
    * search the PQM applications based on the search criteria
@@ -453,6 +444,23 @@ public class PqmService {
 
     // Add days to epoch
     return epochMillis + daysInMillis;
+  }
+
+  public EgovPdfResp downloadPdf(RequestInfo requestInfo, String testId)
+  {
+    TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().testId(testId).build();
+    Pagination pagination = Pagination.builder().build();
+    TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo).testSearchCriteria(testSearchCriteria).pagination(pagination).build();
+    TestResponse testResponse = testSearch(testSearchRequest,requestInfo,Boolean.FALSE);
+
+    if(testResponse == null)
+    {
+      throw new CustomException(PQM_SEARCH_ERROR, PQM_SEARCH_ERROR_DESC);
+    }
+
+    Test test = testResponse.getTests().get(0);
+    return pdfService.enrichQualityCriteria(TestRequest.builder().tests(Collections.singletonList(test)).requestInfo(requestInfo).build());
+
   }
 
 }

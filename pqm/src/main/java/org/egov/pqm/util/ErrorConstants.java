@@ -54,4 +54,12 @@ public static final String PLANT_USER_TYPE_INVALID_ERROR = "PLANT_USER_TYPE_INVA
   public static final String PQM_ANOMALY_SEARCH_ERROR = "PQM_ANOMALY_SEARCH_ERROR";
   public static final String PQM_ANOMALY_SEARCH_ERROR_DESC = "No Anomalies returned from PQM Anomaly Service";
 
+  public static final String PQM_SEARCH_ERROR = "PQM_SEARCH_ERROR";
+  public static final String PQM_SEARCH_ERROR_DESC = "No Test found for the given testId in Database";
+
+
+  public static final String PQM_LOCALIZATION_ERROR = "PQM_LOCALIZATION_ERROR";
+  public static final String PQM_LOCALIZATION_ERROR_DESC_UNIT = "No Localization found for this Unit Code";
+  public static final String PQM_LOCALIZATION_ERROR_DESC_QUALITYCRITERIA = "No Localization found for this QualityCriteria Code";
+
 }
