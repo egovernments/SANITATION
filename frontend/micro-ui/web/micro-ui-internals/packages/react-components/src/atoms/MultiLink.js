@@ -3,12 +3,12 @@ import LinkButton from "./LinkButton";
 import { PrimaryDownlaodIcon } from "./svgindex";
 import { useTranslation } from "react-i18next";
 
-const MultiLink = forwardRef(({ className, onHeadClick, displayOptions = false, options, label, icon,setShowOptions, showOptions, downloadBtnClassName, downloadOptionsClassName, optionsClassName, style, optionsStyle, reportStyles, optionStyle }, ref) => {
+const MultiLink = forwardRef(({ className, onHeadClick, displayOptions = false, options, label, icon, setShowOptions = null, showOptions, downloadBtnClassName, downloadOptionsClassName, optionsClassName, style, optionsStyle, reportStyles, optionStyle }, ref) => {
   const { t } = useTranslation();
   const menuRef = useRef();
   const parRef = useRef();
   const handleOnClick = useCallback(() => {
-    setShowOptions(false)
+    setShowOptions ? setShowOptions(false) : null
   }, [])
 
   const handleClickOutside = (event) => {
