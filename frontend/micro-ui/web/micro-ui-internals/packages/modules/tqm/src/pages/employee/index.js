@@ -79,8 +79,9 @@ const App = ({ path }) => {
   // TQM_SEARCH_SESSION -> don't delete when -> search-test-results,summary
   useEffect(() => {
     const pathVar = location.pathname.replace(path + "/", "").split("?")?.[0];
-    Digit.Utils.tqm.destroySessionHelper(pathVar,["inbox","test-details"],"TQM_INBOX_SESSION");
-    Digit.Utils.tqm.destroySessionHelper(pathVar,["search-test-results","summary"],"TQM_SEARCH_SESSION");
+    Digit.Utils.tqm.destroySessionHelper(pathVar,["inbox","test-details","view-test-results"],"TQM_INBOX_SESSION");
+    Digit.Utils.tqm.destroySessionHelper(pathVar,["search-test-results","summary","view-test-results"],"TQM_SEARCH_SESSION");
+    
   }, [location])
   
 

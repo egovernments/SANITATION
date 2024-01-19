@@ -97,7 +97,7 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
   }
 
   const clearSearch = () => {
-    clearSessionFormData();
+    // clearSessionFormData();
     reset(uiConfig?.defaultValues)
     dispatch({
       type: "clearSearchForm",
