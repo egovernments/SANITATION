@@ -346,6 +346,7 @@ const RenderFormFields = ({data,...props}) => {
                     control={control}
                     getValues={getValues}
                     responseData={data}
+                    populators={populators}
                   />
                 )}
                 name={config?.key}
