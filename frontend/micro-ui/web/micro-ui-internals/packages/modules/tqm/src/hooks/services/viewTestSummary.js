@@ -80,5 +80,6 @@ export const viewTestSummary = async ({ tenantId, t, id }) => {
         }
       : null,
     testResponse: testResponse,
+    workflowStatus: workflowData
   };
 };
