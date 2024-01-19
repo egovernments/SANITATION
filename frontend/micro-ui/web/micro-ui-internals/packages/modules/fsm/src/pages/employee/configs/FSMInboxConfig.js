@@ -36,7 +36,7 @@ export const FSMInboxConfig = () => {
                 secondaryLabel: "Clear Search",
                 minReqFields: 1,
                 defaultValues: {
-                  complaintNumber: "",
+                  applicationNos: "",
                   mobileNumber: "",
                 },
                 fields: [
