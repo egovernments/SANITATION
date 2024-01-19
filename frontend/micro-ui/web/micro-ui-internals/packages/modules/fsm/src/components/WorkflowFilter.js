@@ -9,7 +9,7 @@ const WorkflowFilter = ({ props, t, populators, formData, responseData }) => {
   function mergeObjects(jsonArray) {
     const mergedMap = new Map();
 
-    jsonArray.forEach((obj) => {
+    jsonArray?.forEach((obj) => {
       const key = `${obj.applicationstatus}`;
       if (!mergedMap.has(key)) {
         mergedMap.set(key, { ...obj });

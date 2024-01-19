@@ -17,7 +17,7 @@ import FstpOperations from "./FstpOperations";
 import FstpServiceRequest from "./FstpServiceRequest";
 import Inbox from "./Inbox";
 
-export const FsmBreadCrumb = ({ location }) => {
+export const FsmBreadCrumb = ({ location, defaultPath }) => {
   const { t } = useTranslation();
   const DSO = Digit.UserService.hasAccess(["FSM_DSO"]);
   const FSTPO = Digit.UserService.hasAccess(["FSM_EMP_FSTPO"]);
@@ -41,7 +41,7 @@ export const FsmBreadCrumb = ({ location }) => {
   const isAddWorker = location?.pathname?.includes("new-worker");
   const isEditWorker = location?.pathname?.includes("edit-worker");
   const isWorkerDetails = location?.pathname?.includes("worker-details");
-
+  const pathVar = location.pathname.replace(defaultPath + "/", "").split("?")?.[0];
   const [search, setSearch] = useState(false);
   const [id, setId] = useState(false);
   const searchParams = new URLSearchParams(location.search);
@@ -74,13 +74,13 @@ export const FsmBreadCrumb = ({ location }) => {
           : FSTPO
           ? `/${window?.contextPath}/employee/fsm/fstp-inbox`
           : `/${window?.contextPath}/employee`,
-      query: isVehicleDetails ? "selectedTabs=VEHICLE" : isWorkerDetails ? "selectedTabs=WORKER" : "selectedTabs=VENDOR",
+      query: isVehicleDetails ? "selectedTabs=VEHICLE" : isWorkerDetails ? "selectedTabs=WORKER" : isVendorDetails ? "selectedTabs=VENDOR" : "",
       content: isVehicleLog ? t("ES_TITLE_INBOX") : "FSM",
       show: isFsm,
-      isBack: isVendorDetails || isVehicleDetails || isWorkerDetails || isRegistry ? false : true,
+      isBack: false,
     },
     {
-      path: isNewApplication ? `/${window?.contextPath}/employee/fsm/new-application` : "",
+      path: isNewApplication ? "" : `/${window?.contextPath}/employee/fsm/new-application`,
       content: t("FSM_NEW_DESLUDGING_APPLICATION"),
       show: isFsm && isNewApplication,
     },
@@ -90,12 +90,12 @@ export const FsmBreadCrumb = ({ location }) => {
       show: location.pathname.includes("/employee/fsm/response") ? true : false,
     },
     {
-      path: isInbox || isSearch || isApplicationDetails ? `/${window?.contextPath}/employee/fsm/inbox` : "",
+      path: isInbox ? "" : isSearch || isApplicationDetails ? `/${window?.contextPath}/employee/fsm/inbox` : "",
       content: t("ES_TITLE_INBOX"),
       show: (isFsm && isInbox) || isSearch || isApplicationDetails,
     },
     {
-      path: `/${window?.contextPath}/employee/fsm/search`,
+      path: pathVar === "search" ? "" : `/${window?.contextPath}/employee/fsm/search`,
       content: t("ES_TITILE_SEARCH_APPLICATION"),
       show: search,
     },
@@ -247,7 +247,7 @@ const EmployeeApp = ({ path, url, userType }) => {
             </BackButton>
           ) : (
             <div>
-              <BreadCrumbComp location={location} />
+              <BreadCrumbComp location={location} defaultPath={path} />
             </div>
           )}
           <PrivateRoute exact path={`${path}/`} component={() => <FSMLinks matchPath={path} userType={userType} />} />
