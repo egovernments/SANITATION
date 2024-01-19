@@ -38,7 +38,7 @@ function isFalsyOrEmpty(input) {
 const InboxSearchComposer = ({configs,browserSession}) => {
     
     const [session,setSession,clearSession] = browserSession || []
-    
+   
     const {t} = useTranslation()
     const presets = Digit.Hooks.useQueryParams();
     // if(Object.keys(presets).length > 0) configs = Digit.Utils.configUpdater(configs)
@@ -103,7 +103,13 @@ const InboxSearchComposer = ({configs,browserSession}) => {
 
     //adding another effect to sync session with state, the component invoking InboxSearchComposer will be passing session as prop
     useEffect(() => {
-        setSession(state)
+        // if(_.isEqual(state, initialInboxState)){
+        //     return 
+        // }
+        // if(_.isEqual(state, session)){
+        //     return 
+        // }
+        setSession(() => state)
         // if(!_.isEqual(state, session)){
         //     // setSession(()=>{
         //     //     return {
@@ -176,6 +182,7 @@ const InboxSearchComposer = ({configs,browserSession}) => {
                                 data={data}
                                 activeLink={activeLink}
                                 setActiveLink={setActiveLink}
+                                browserSession={browserSession}
                                 />
                         </div>
                     </MediaQuery>
@@ -192,6 +199,7 @@ const InboxSearchComposer = ({configs,browserSession}) => {
                                 data={data}
                                 activeLink={activeLink}
                                 setActiveLink={setActiveLink}
+                                browserSession={browserSession}
                                 />
                         </div> 
                     </MediaQuery>
@@ -207,6 +215,7 @@ const InboxSearchComposer = ({configs,browserSession}) => {
                                 screenType={configs.type}
                                 fullConfig={configs}
                                 data={data}
+                                browserSession={browserSession}
                                 />
                         </div>
                      </MediaQuery>
@@ -221,6 +230,7 @@ const InboxSearchComposer = ({configs,browserSession}) => {
                                 screenType={configs.type}
                                 fullConfig={configs}
                                 data={data}
+                                browserSession={browserSession}
                                 />
                         </div> 
                     </MediaQuery>

@@ -30,6 +30,7 @@ export const tqmInboxConfig = {
       "sections": {
         "search": {
           "uiConfig": {
+            "type":"search",
             "searchWrapperStyles": {
               "flexDirection": "column-reverse",
               "marginTop": "1.4rem",
