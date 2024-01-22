@@ -445,6 +445,8 @@ export const WorkflowService = {
         //Added the condition so that following filter can happen only for fsm and does not affect other module
         let nextStep = [];
         if (window.location.href?.includes("fsm")) {
+          // const tempCheckStatus = timeline?.map((i) => i?.status)[0];
+          const isPaymentPending = await billDetails(tenantId, id, "FSM.TRIP_CHARGES");
           // TAKING OUT CURRENT APPL STATUS
           const actionRolePair = nextActions?.map((action) => ({
             action: action?.action,
@@ -453,6 +455,8 @@ export const WorkflowService = {
           nextStep = location.pathname.includes("new-vehicle-entry")
             ? action_newVehicle
             : location.pathname.includes("dso")
+            ? actionRolePair.filter((i) => i.action !== "PAY")
+            : isPaymentPending === false
             ? actionRolePair.filter((i) => i.action !== "PAY")
             : actionRolePair;
         }
