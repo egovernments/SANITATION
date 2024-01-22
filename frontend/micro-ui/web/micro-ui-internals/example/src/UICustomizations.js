@@ -195,4 +195,22 @@ export const UICustomizations = {
       };
     },
   },
+  VehicleAlertsConfig: {
+    vehicleListDropdown: () => {
+      const tenantId = Digit.ULBService.getCurrentTenantId();
+
+      return {
+        url: "/vehicle/v1/_search",
+        params: { tenantId: tenantId, sortBy: "registrationNumber", sortOrder: "ASC", status: "ACTIVE" },
+        body: {},
+        config: {
+          enabled: true,
+          select: (data) => {
+            const vehicleLists = [...data?.vehicle];
+            return vehicleLists;
+          },
+        },
+      };
+    },
+  },
 };

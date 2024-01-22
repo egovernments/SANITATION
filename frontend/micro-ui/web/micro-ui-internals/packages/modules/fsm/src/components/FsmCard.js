@@ -138,6 +138,11 @@ const FSMCard = () => {
       roles: ['FSM_CREATOR_EMP'],
     },
     {
+      label: t('ES_FSM_VEHICLE_TRACKING'),
+      link: `/${window?.contextPath}/employee/fsm/vehicle-tracking/home`,
+      roles: ['FSM_ADMIN'],
+    },
+    {
       label: t('ES_TITILE_SEARCH_APPLICATION'),
       link: `/${window?.contextPath}/employee/fsm/search`,
     },
