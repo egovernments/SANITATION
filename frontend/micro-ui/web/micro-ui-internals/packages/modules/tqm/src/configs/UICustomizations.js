@@ -98,8 +98,11 @@ export const UICustomizations = {
         data.config.enabled = false
         return data
       }
-      const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
+      // const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
       
+      //picking data from state always instead of config(issue -> first api call from state rather than config)
+      const {processCodes,materialCodes,status,dateRange} = data?.state?.searchForm || {}
+      const {sortOrder} = data?.state?.filterForm || {}
       //processcodes
       data.body.inbox.moduleSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
 
@@ -144,6 +147,8 @@ export const UICustomizations = {
       if(activePlantCode?.length>0){
         data.body.inbox.moduleSearchCriteria.plantCodes = [...activePlantCode]
       }
+
+     
       return data
     },
     populateStatusReqCriteria:() => {
@@ -264,7 +269,11 @@ export const UICustomizations = {
         data.config.enabled = false
         return data
       }
-      const { id,plantCodes:selectedPlantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
+      // const { id,plantCodes:selectedPlantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
+
+      const {id,plantCodes:selectedPlantCodes} = data?.state?.searchForm || {}
+      const {processCodes,stage, materialCodes, status} = data?.state?.filterForm || {}
+
       //ids
       data.body.inbox.moduleSearchCriteria.testIds = id ?  [id] : null
 
@@ -384,8 +393,11 @@ export const UICustomizations = {
   SearchTestResults: {
     preProcess: (data,additionalDetails) => {
       
-      const { processCodes, materialCodes, testType, dateRange,sortOrder,limit,offset } = data.body.custom || {};
+      // const { processCodes, materialCodes, testType, dateRange,sortOrder,limit,offset } = data.body.custom || {};
 
+      const {processCodes, materialCodes, testType, dateRange} = data?.state?.searchForm || {}
+      const {sortOrder} = data?.state?.filterForm || {}
+      
       data.body.testSearchCriteria={}
       data.body.pagination={}
 
@@ -475,7 +487,10 @@ export const UICustomizations = {
   SearchTestResultsUlbAdmin: {
     preProcess: (data,additionalDetails) => {
       
-      const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data.body.custom || {};
+      // const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data.body.custom || {};
+
+      const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data?.state?.searchForm || {};
+
       data.body.testSearchCriteria={}
 
       //update testSearchCriteria
