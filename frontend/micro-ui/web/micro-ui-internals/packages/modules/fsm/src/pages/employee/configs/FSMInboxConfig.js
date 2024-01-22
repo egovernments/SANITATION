@@ -163,8 +163,9 @@ export const FSMInboxConfig = () => {
                 secondaryLabel: "",
                 minReqFields: 0,
                 defaultValues: {
-                  status: "",
+                  status: [],
                   locality: [],
+                  state: []
                 },
                 fields: [
                   {
