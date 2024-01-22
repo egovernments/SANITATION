@@ -275,6 +275,81 @@ const DesktopInbox = (props) => {
             accessor: (row) => row.tripDetails[0]?.volume,
           },
         ];
+      case "FSM_ALERTS":
+        return [
+          {
+            Header: t("ES_INBOX_APPLICATION_NO"),
+            disableSortBy: true,
+            accessor: "tripDetails",
+            Cell: ({ row }) => {
+              const applicationNo = row.original["tripDetails"]?.[0]?.referenceNo;
+              return (
+                <div>
+                  <span className="link">
+                    <Link to={`/${window?.contextPath}/employee/fsm/application-details/` + applicationNo}>
+                      {row.original["tripDetails"].map((i) => (
+                        <div>
+                          {i.referenceNo}
+                          <br />
+                        </div>
+                      ))}
+                    </Link>
+                  </span>
+                </div>
+              );
+            },
+          },
+          {
+            Header: t("ES_INBOX_VEHICLE_LOG"),
+            accessor: "applicationNo",
+            disableSortBy: true,
+            Cell: ({ row }) => row.original["applicationNo"],
+            // {
+            //   return (
+            //     <div>
+            //       <span className="link">
+            //         <Link to={`/${window?.contextPath}/employee/fsm/fstp-operator-details/` + row.original["applicationNo"]}>{row.original["applicationNo"]}</Link>
+            //       </span>
+            //     </div>
+            //   );
+            // }
+          },
+          {
+            Header: t("ES_INBOX_DSO_NAME"),
+            disableSortBy: true,
+            accessor: (row) => (row.dsoName ? `${row.dsoName}` : `${row.tripOwner.name}`),
+          },
+          {
+            Header: t("ES_INBOX_VEHICLE_NO"),
+            disableSortBy: true,
+            accessor: (row) => row.vehicle?.registrationNumber,
+          },
+          {
+            Header: t("Alerts"),
+            disableSortBy: true,
+            Cell: ({ row }) => {
+              const allTrips = props?.alertsData?.filter((i) => i?.applicationNo === row.original["tripDetails"]?.[0]?.referenceNo)?.[0];
+              const alert = allTrips?.alert;
+              const noOfAlerts = alert.map ? alert?.length : alert;
+              return (
+                <div>
+                  <span>{noOfAlerts || "N/A"}</span>
+                </div>
+              );
+            },
+          },
+          {
+            Header: t("ES_INBOX_APPLICATION_DATE"),
+            accessor: "createdTime",
+            Cell: ({ row }) => {
+              return GetCell(
+                `${new Date(row.original.auditDetails.createdTime).getDate()}/${new Date(row.original.auditDetails.createdTime).getMonth() + 1}/${new Date(
+                  row.original.auditDetails.createdTime
+                ).getFullYear()}`
+              );
+            },
+          },
+        ];
       default:
         return [
           {
@@ -403,6 +478,7 @@ const DesktopInbox = (props) => {
     window.location.href.includes("/fsm/search") ||
     window.location.href.includes("/fsm/fstp-inbox") ||
     window.location.href.includes("/fsm/fstp-fsm-request") ||
+    window.location.href.includes("/fsm/vehicle-tracking/alerts") ||
     window.location.href.includes("/fsm/fstp/new-vehicle-entry");
 
   if (isEnabledFSMInboxModules) {
@@ -446,9 +522,9 @@ const DesktopInbox = (props) => {
         {props.userRole !== "FSM_EMP_FSTPO" && !props.isSearch && (
           <div className="filters-container">
             {props.userRole !== "FSM_EMP_FSTPO_REQUEST" ? (
-              <FSMLink parentRoute={props.parentRoute} />
+              <FSMLink parentRoute={props.parentRoute} cardStyle={{marginTop: "unset"}}/>
             ) : null}
-            <div
+            { !window.location.href.includes("vehicle-tracking") && <div
               style={
                 props.userRole !== "FSM_EMP_FSTPO_REQUEST"
                   ? { marginTop: "24px" }
@@ -462,7 +538,7 @@ const DesktopInbox = (props) => {
                 onFilterChange={props.onFilterChange}
                 type="desktop"
               />
-            </div>
+            </div>}
           </div>
         )}
         <div style={{ flex: 1, marginLeft: "24px" }}>

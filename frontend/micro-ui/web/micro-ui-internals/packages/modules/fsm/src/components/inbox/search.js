@@ -154,7 +154,8 @@ const SearchApplication = ({
   const checkInboxLocation =
     window.location.href.includes('employee/fsm/inbox') ||
     window.location.href.includes('employee/fsm/fstp-inbox') ||
-    window.location.href.includes('employee/fsm/fstp-fsm-request');
+    window.location.href.includes('employee/fsm/fstp-fsm-request') ||
+    window.location.href.includes('fsm/vehicle-tracking/alerts');
 
   const checkFSMInbox = window.location.href.includes('employee/fsm/inbox');
 

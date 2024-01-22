@@ -230,6 +230,9 @@ const EmployeeApp = ({ path, url, userType }) => {
   const AddWorker = Digit.ComponentRegistryService.getComponent("AddWorker");
   const EditWorker = Digit.ComponentRegistryService.getComponent("EditWorker");
   const WorkerDetails = Digit.ComponentRegistryService.getComponent("WorkerDetails");
+  const VehicleTrackingCard = Digit.ComponentRegistryService.getComponent("VehicleTrackingCard");
+  const VehicleTrackingAlerts = Digit.ComponentRegistryService.getComponent("Alerts");
+  const IllegalDumpingSites = Digit.ComponentRegistryService.getComponent("IllegalDumpingSites");
 
   const locationCheck =
     window.location.href.includes("/employee/fsm/inbox") ||
@@ -281,6 +284,9 @@ const EmployeeApp = ({ path, url, userType }) => {
           <PrivateRoute path={`${path}/registry/new-worker`} component={() => <AddWorker parentRoute={path} />} />
           <PrivateRoute path={`${path}/registry/edit-worker`} component={() => <EditWorker parentRoute={path} />} />
           <PrivateRoute path={`${path}/registry/worker-details`} component={() => <WorkerDetails parentRoute={path} />} />
+          <PrivateRoute exact path={`${path}/vehicle-tracking/home`} component={() => <VehicleTrackingCard matchPath={path} userType={userType} />} />
+          <PrivateRoute path={`${path}/vehicle-tracking/alerts`} component={() => <VehicleTrackingAlerts parentRoute={path} isInbox={true} />} />
+          <PrivateRoute path={`${path}/vehicle-tracking/illegal-dumping-sites`} component={() => <IllegalDumpingSites />} />
         </div>
       </React.Fragment>
     </Switch>
