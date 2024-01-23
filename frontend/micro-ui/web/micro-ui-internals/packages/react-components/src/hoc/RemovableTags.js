@@ -42,6 +42,7 @@ const generateTagsFromFields = (fields, sessionData, t) => {
         });
         break;
       case 'single':
+        if(_.get(value, field.valueJsonPath, '')){
         crumbs?.push({
           label: t(field.label) || '',
           value: `${t(
@@ -51,13 +52,26 @@ const generateTagsFromFields = (fields, sessionData, t) => {
           )}`,
           removableTagConf: { ...field, value },
         });
+      }else if(typeof value === "string" && value){
+        crumbs?.push({
+          label: t(field.label) || '',
+          value: `${t(
+            Digit.Utils.locale.getTransformedLocale(
+              value
+            )
+          )}`,
+          removableTagConf: { ...field, value },
+        });
+      }
         break;
       case 'dateRange':
+        if(_.get(value, field.valueJsonPath, '')){
         crumbs?.push({
           label: t(field.label) || '',
           value: _.get(value, field.valueJsonPath, ''),
           removableTagConf: { ...field, value },
         });
+      }
         break;
       default:
         break;

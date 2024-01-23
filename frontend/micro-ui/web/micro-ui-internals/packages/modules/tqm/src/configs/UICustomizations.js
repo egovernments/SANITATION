@@ -273,7 +273,7 @@ export const UICustomizations = {
 
       const {id,plantCodes:selectedPlantCodes} = data?.state?.searchForm || {}
       const {processCodes,stage, materialCodes, status} = data?.state?.filterForm || {}
-
+      
       //ids
       data.body.inbox.moduleSearchCriteria.testIds = id ?  [id] : null
 
@@ -387,7 +387,16 @@ export const UICustomizations = {
         },
         changeQueryName:"setPlantUsersInboxDropdown"
       }
-    }
+    },
+    onCardClick:(obj)=> {
+      return `view-test-results?tenantId=${obj?.apiResponse?.businessObject?.tenantId}&id=${obj?.apiResponse?.businessObject?.testId}&from=TQM_BREAD_INBOX`
+    },
+    onCardActionClick:(obj)=> {
+      return `view-test-results?tenantId=${obj?.apiResponse?.businessObject?.tenantId}&id=${obj?.apiResponse?.businessObject?.testId}&from=TQM_BREAD_INBOX`
+    },
+    getCustomActionLabel:(obj,row) => {
+      return "TQM_VIEW_TEST_DETAILS"
+    },
     
   },
   SearchTestResults: {
@@ -490,7 +499,6 @@ export const UICustomizations = {
       // const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data.body.custom || {};
 
       const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data?.state?.searchForm || {};
-
       data.body.testSearchCriteria={}
 
       //update testSearchCriteria
@@ -537,10 +545,11 @@ export const UICustomizations = {
       return ""
     },
     onCardClick:(obj,row)=> {
-      
+      return `view-test-results?tenantId=${obj?.apiResponse?.tenantId}&id=${obj?.apiResponse?.testId}&from=TQM_BREAD_PAST_TESTS&type=`
+     
     },
     onCardActionClick:(obj,row)=> {
-      
+      return `view-test-results?tenantId=${obj?.apiResponse?.tenantId}&id=${obj?.apiResponse?.testId}&from=TQM_BREAD_PAST_TESTS&type=`
     },
     getCustomActionLabel:(obj,row) => {
       return ""

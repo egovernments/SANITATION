@@ -28,14 +28,13 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
   let updatedFields = [];
   const {apiDetails} = fullConfig
   const [session,setSession,clearSession] = browserSession || []
-  // console.log("checkSession",session);
+  
   if (fullConfig?.postProcessResult){
     //conditions can be added while calling postprocess function to pass different params
     Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.postProcess(data, uiConfig) 
   }
 
   const defValuesFromSession = uiConfig?.type === "search" ? session?.searchForm : session?.filterForm
-  //console.log(uiConfig?.defaultValues);
   
   	
   const {

@@ -35,7 +35,7 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
   const [session,setSession,clearSession] = browserSession || []
   
 
-  const defValuesFromSession = uiConfig?.type === "filter" ? session?.searchForm : session?.filterForm
+  const defValuesFromSession = uiConfig?.typeMobile === "filter" ? session?.searchForm : session?.filterForm
 
   const {
     register,
@@ -100,7 +100,7 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
     // clearSessionFormData();
     reset(uiConfig?.defaultValues)
     dispatch({
-      type: "clearSearchForm",
+      type: uiConfig?.type === "filter"?"clearFilterForm" :"clearSearchForm",
       state: { ...uiConfig?.defaultValues }
       //need to pass form with empty strings 
     })
@@ -111,7 +111,7 @@ const MobileSearchComponent = ({ uiConfig, modalType, header = "", screenType = 
   }
 
 const renderHeader = () => {
-  switch(uiConfig?.type) {
+  switch(uiConfig?.typeMobile) {
     case "filter" : {
       return (
         <div className="popup-label" style={{ display: "flex", paddingBottom: "20px" }}>
@@ -179,7 +179,7 @@ const renderHeader = () => {
           onKeyDown={(e) => checkKeyDown(e)}
         >
           <div
-            className={`search-field-wrapper ${screenType} ${uiConfig?.type} vertical-gap`}
+            className={`search-field-wrapper ${screenType} ${uiConfig?.typeMobile} vertical-gap`}
           >
             <RenderFormFields
               fields={uiConfig?.fields}
@@ -193,10 +193,11 @@ const renderHeader = () => {
               clearErrors={clearErrors}
               labelStyle={{ fontSize: '16px' }}
               apiDetails={apiDetails}
+              data={data}
             />
             <ActionBar className="clear-search-container">
               <div
-                className={`search-button-wrapper ${screenType} inbox  ${uiConfig?.type}`}
+                className={`search-button-wrapper ${screenType} inbox  ${uiConfig?.typeMobile}`}
               >
                 {/* { uiConfig?.secondaryLabel && <LinkLabel style={{marginBottom: 0, whiteSpace: 'nowrap'}} onClick={clearSearch}>{t(uiConfig?.secondaryLabel)}</LinkLabel> } */}
                 {uiConfig?.secondaryLabel && (

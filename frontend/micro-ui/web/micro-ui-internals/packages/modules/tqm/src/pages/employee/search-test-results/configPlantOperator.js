@@ -19,7 +19,8 @@ export const tqmSearchConfigPlantOperator = {
       "sections": {
         "search": {
           "uiConfig": {
-            "type": "filter",
+            "type": "search",
+            "typeMobile": "filter",
             "headerLabel": "TQM_INBOX_FILTERS",
             "headerStyle": null,
             "primaryLabel": "TQM_INBOX_FILTER",
@@ -205,7 +206,8 @@ export const tqmSearchConfigPlantOperator = {
         },
         "filter": {
           "uiConfig": {
-            "type": "sort",
+            "type": "filter",
+            "typeMobile": "sort",
             "headerStyle": null,
             "headerLabel": "TQM_INBOX_SORTBY",
             "primaryLabel": "TQM_INBOX_SORT",

@@ -152,6 +152,17 @@ const InboxSearchComposer = ({configs,browserSession}) => {
         setType("");
     };
 
+    let fieldsForRemovableTags = []
+    if((configs?.type === 'inbox' || configs?.type === 'search') && (configs?.showAsRemovableTagsInMobile)){
+        if(configs?.sections?.search?.uiConfig?.fields) {
+            fieldsForRemovableTags = configs?.sections?.search?.uiConfig?.fields
+        }
+        if(configs?.sections?.filter?.uiConfig?.fields) {
+            fieldsForRemovableTags = [...fieldsForRemovableTags,...configs?.sections?.filter?.uiConfig?.fields]
+        }
+    }
+    
+
     return (
         <InboxContext.Provider value={{state,dispatch}} >
             {/* <Header className="works-header-search">{t(configs?.label)}</Header> */}
@@ -263,7 +274,10 @@ const InboxSearchComposer = ({configs,browserSession}) => {
                 {
                     (configs?.type === 'inbox' || configs?.type === 'search') && (configs?.showAsRemovableTagsInMobile) &&
                     <MediaQuery maxWidth={426}>
-                        <RemovableTags config={configs} browserSession={browserSession} fields={[...configs?.sections?.search?.uiConfig?.fields,...configs?.sections?.filter?.uiConfig?.fields]}/>
+                        <RemovableTags config={configs} browserSession={browserSession} 
+                        // fields={[...configs?.sections?.search?.uiConfig?.fields,...configs?.sections?.filter?.uiConfig?.fields]} 
+                        fields={fieldsForRemovableTags}
+                        />
                    </MediaQuery>
                 }
                 {   

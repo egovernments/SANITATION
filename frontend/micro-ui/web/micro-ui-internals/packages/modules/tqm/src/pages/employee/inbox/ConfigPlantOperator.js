@@ -30,7 +30,8 @@ export const tqmInboxConfigPlantOperator = {
       "sections": {
         "search": {
           "uiConfig": {
-            "type": "filter",
+            "type": "search",
+            "typeMobile":"filter",
             "headerLabel": "TQM_INBOX_FILTERS",
             "searchWrapperStyles": {
               "flexDirection": "column-reverse",
@@ -149,6 +150,67 @@ export const tqmInboxConfigPlantOperator = {
           "children": {},
           "show": true,
         },
+        "filter": {
+          "uiConfig": {
+            "formClassName": "filter",
+            "type": "filter",
+            "typeMobile":"sort",
+            "headerStyle": null,
+            "headerLabel": "TQM_INBOX_SORTBY",
+            "primaryLabel": "TQM_INBOX_SORT",
+            "secondaryLabel": "TQM_CLEAR_SEARCH",
+            "minReqFields": 0,
+            "defaultValues": {
+              "sortOrder": {
+                "code": "LATEST_FIRST",
+                "name": "TQM_INBOX_LATEST_FIRST",
+                "value": "DESC"
+              }
+            },
+            "fields": [
+              {
+                "label": "",
+                "type": "radio",
+                "isMandatory": false,
+                "disable": false,
+                "populators": {
+                  "name": "sortOrder",
+                  "options": [
+                    {
+                      "code": "LATEST_FIRST",
+                      "name": "TQM_INBOX_LATEST_FIRST",
+                      "value": "DESC"
+                    },
+                    {
+                      "code": "LATEST_LAST",
+                      "name": "TQM_INBOX_LATEST_LAST",
+                      "value": "ASC"
+                    }
+                  ],
+                  "optionsKey": "name",
+                  "styles": {
+                    "gap": "1rem",
+                    "flexDirection": "column"
+                  },
+                  "innerStyles": {
+                    "display": "flex"
+                  }
+                },
+                "removableTagConf":{
+                  "name":"sortOrder",
+                  "label":"Sort Order",
+                  "valueJsonPath":"name",
+                  "type":"single", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"filterForm.sortOrder",
+                  // "deleteRef":"code"
+                }
+              }
+            ]
+          },
+          "label": "Filter",
+          "labelMobile": "TQM_INBOX_SORT",
+          "show": true,
+        },
         "searchResult": {
           "uiConfig": {
             "columns": [
@@ -226,66 +288,7 @@ export const tqmInboxConfigPlantOperator = {
           "children": {},
           "show": true
         },
-        "filter": {
-          "uiConfig": {
-            "formClassName": "filter",
-            "type": "sort",
-            "headerStyle": null,
-            "headerLabel": "TQM_INBOX_SORTBY",
-            "primaryLabel": "TQM_INBOX_SORT",
-            "secondaryLabel": "TQM_CLEAR_SEARCH",
-            "minReqFields": 0,
-            "defaultValues": {
-              "sortOrder": {
-                "code": "LATEST_FIRST",
-                "name": "TQM_INBOX_LATEST_FIRST",
-                "value": "DESC"
-              }
-            },
-            "fields": [
-              {
-                "label": "",
-                "type": "radio",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "name": "sortOrder",
-                  "options": [
-                    {
-                      "code": "LATEST_FIRST",
-                      "name": "TQM_INBOX_LATEST_FIRST",
-                      "value": "DESC"
-                    },
-                    {
-                      "code": "LATEST_LAST",
-                      "name": "TQM_INBOX_LATEST_LAST",
-                      "value": "ASC"
-                    }
-                  ],
-                  "optionsKey": "name",
-                  "styles": {
-                    "gap": "1rem",
-                    "flexDirection": "column"
-                  },
-                  "innerStyles": {
-                    "display": "flex"
-                  }
-                },
-                "removableTagConf":{
-                  "name":"sortOrder",
-                  "label":"Sort Order",
-                  "valueJsonPath":"name",
-                  "type":"single", // single, multi, date(single), dateRange(single),...etc,
-                  "sessionJsonPath":"filterForm.sortOrder",
-                  // "deleteRef":"code"
-                }
-              }
-            ]
-          },
-          "label": "Filter",
-          "labelMobile": "TQM_INBOX_SORT",
-          "show": true,
-        }
+        
       },
       "additionalSections": {},
       "persistFormData":true,//for now it's redundant

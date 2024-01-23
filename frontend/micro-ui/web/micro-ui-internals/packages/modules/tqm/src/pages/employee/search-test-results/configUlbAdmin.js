@@ -20,6 +20,7 @@ export const tqmSearchConfigUlbAdmin = {
         "search": {
           "uiConfig": {
             "type":"search",
+            "typeMobile":"filter",
             "headerLabel": "TQM_INBOX_FILTERS",
             "headerStyle": null,
             "primaryLabel": "ES_COMMON_SEARCH",
@@ -41,25 +42,16 @@ export const tqmSearchConfigUlbAdmin = {
                 "disable": false,
                 "populators": {
                   "name": "id"
+                },
+                "removableTagConf":{
+                  "name":"id",
+                  "label":"Id",
+                  "valueJsonPath":"id",
+                  "type":"single", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.id",
+                  // "deleteRef":"code"
                 }
               },
-              // {
-              //   "label": "TQM_PLANT_NAME",
-              //   "type": "dropdown",
-              //   "isMandatory": false,
-              //   "disable": false,
-              //   "populators": {
-              //     "optionsCustomStyle": {
-              //       "top": "2.3rem"
-              //     },
-              //     "name": "plantCodes",
-              //     "optionsKey": "i18nKey",
-              //     "allowMultiSelect": true,
-              //     "mdmsv2": {
-              //       "schemaCode": "PQM.Plant"
-              //     }
-              //   }
-              // },
               {
                 "label": "TQM_PLANT_NAME",
                 "type": "apidropdown",
@@ -75,6 +67,14 @@ export const tqmSearchConfigUlbAdmin = {
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfigUlbAdmin",
                   "customfn": "populatePlantUsersReqCriteria"
+                },
+                "removableTagConf":{
+                  "name":"plantCodes",
+                  "label":"Plant",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.plantCodes",
+                  "deleteRef":"id"
                 }
               },
               {
@@ -92,6 +92,14 @@ export const tqmSearchConfigUlbAdmin = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Process"
                   }
+                },
+                "removableTagConf":{
+                  "name":"processCodes",
+                  "label":"Process",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.processCodes",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -109,6 +117,14 @@ export const tqmSearchConfigUlbAdmin = {
                   "mdmsv2": {
                     "schemaCode": "PQM.SourceType"
                   }
+                },
+                "removableTagConf":{
+                  "name":"testType",
+                  "label":"Test Type",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.testType",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -126,6 +142,14 @@ export const tqmSearchConfigUlbAdmin = {
                   "name": "dateRange",
                   "maxDate":"currentDate"
 
+                },
+                "removableTagConf":{
+                  "name":"dateRange",
+                  "label":"Date",
+                  "valueJsonPath":"range.title",
+                  "type":"dateRange", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.dateRange",
+                  // "deleteRef":"code" // only required for multi type
                 }
               }
             ]
@@ -186,7 +210,9 @@ export const tqmSearchConfigUlbAdmin = {
           "show": true
         }
       },
-      "additionalSections": {}
+      "additionalSections": {},
+      "persistFormData":true,
+      "showAsRemovableTagsInMobile":true
     },
   ],
 };
