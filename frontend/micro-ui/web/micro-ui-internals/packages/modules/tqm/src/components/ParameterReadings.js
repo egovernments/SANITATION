@@ -51,7 +51,6 @@ function ParameterReadings({ reading, responseData }) {
           <SubmitBar
             label={type === "past" ? t("ES_TQM_TEST_BACK_TO_PAST_TEST") : t("ES_TQM_TEST_BACK_TO_INBOX")}
             onSubmit={() => (type === "past" ? history.goBack() : history.go(-3))}
-            style={{ marginBottom: "12px" }}
           />
         </ActionBar>
       )}
