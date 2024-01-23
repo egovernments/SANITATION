@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { CardCaption, CardSubHeader, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { ActionBar, CardCaption, CardSubHeader, SubmitBar } from "@egovernments/digit-ui-react-components";
 import CardReading from "./CardReadings";
 import CardMessage from "./CardMessage";
 import { useTranslation } from "react-i18next";
@@ -40,11 +40,21 @@ function ParameterReadings({ reading, responseData }) {
           message={isTestPassed ? <>{t("ES_TQM_TEST_PARAMS_SUCCESS_MESSAGE")}</> : <>{t("ES_TQM_TEST_PARAMS_FAIL_MESSAGE")}</>}
         />
       ) : null}
-      <SubmitBar
-        label={type === "past" ? t("ES_TQM_TEST_BACK_TO_PAST_TEST") : t("ES_TQM_TEST_BACK_TO_INBOX")}
-        onSubmit={() => (type === "past" ? history.goBack() : history.go(-3))}
-        style={{ marginBottom: "12px" }}
-      />
+      {isMobile ? (
+        <SubmitBar
+          label={type === "past" ? t("ES_TQM_TEST_BACK_TO_PAST_TEST") : t("ES_TQM_TEST_BACK_TO_INBOX")}
+          onSubmit={() => (type === "past" ? history.goBack() : history.go(-3))}
+          style={{ marginBottom: "12px" }}
+        />
+      ) : (
+        <ActionBar>
+          <SubmitBar
+            label={type === "past" ? t("ES_TQM_TEST_BACK_TO_PAST_TEST") : t("ES_TQM_TEST_BACK_TO_INBOX")}
+            onSubmit={() => (type === "past" ? history.goBack() : history.go(-3))}
+            style={{ marginBottom: "12px" }}
+          />
+        </ActionBar>
+      )}
     </>
   ) : null;
 }
