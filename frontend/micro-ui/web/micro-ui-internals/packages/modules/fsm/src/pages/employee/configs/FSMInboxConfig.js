@@ -33,6 +33,7 @@ export const FSMInboxConfig = () => {
               uiConfig: {
                 headerStyle: null,
                 primaryLabel: "Search",
+                type:"search",
                 secondaryLabel: "Clear Search",
                 minReqFields: 1,
                 defaultValues: {
@@ -203,6 +204,7 @@ export const FSMInboxConfig = () => {
             },
           },
           additionalSections: {},
+          persistFormData:true
         },
       ],
     },
