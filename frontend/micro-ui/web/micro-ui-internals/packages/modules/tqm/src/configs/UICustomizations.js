@@ -558,11 +558,13 @@ export const UICustomizations = {
 
     const isMobile = window.Digit.Utils.browser.isMobile();
       if(isMobile){
+        data.body.pagination={}
         data.body.pagination.limit = 100
         data.body.pagination.offset = 0
       }else{
-      data.body.pagination.limit = limit
-      data.body.pagination.offset = offset
+        data.body.pagination={}
+        data.body.pagination.limit = limit
+        data.body.pagination.offset = offset
       }
 
       cleanObject(data.body.testSearchCriteria)
