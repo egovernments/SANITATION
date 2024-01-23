@@ -9,13 +9,13 @@ import { Loader } from '../atoms/Loader';
 import NoResultsFound from '../atoms/NoResultsFound';
 import { InfoIcon } from "../atoms/svgindex";
 
-const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fullConfig,revalidate,type,activeLink }) => {
+const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fullConfig,revalidate,type,activeLink,browserSession }) => {
     
     const {apiDetails} = fullConfig
     const { t } = useTranslation();
     const resultsKey = config.resultsJsonPath
     const [showResultsTable,setShowResultsTable] = useState(true)
-    
+    const [session,setSession,clearSession] = browserSession || []
     // let searchResult = data?.[resultsKey]?.length>0 ? data?.[resultsKey] : []
     let searchResult = _.get(data,resultsKey,[])
     searchResult = searchResult?.length>0 ? searchResult : []
@@ -82,6 +82,7 @@ const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fu
         })
     }, [config, searchResult])
 
+    const defaultValuesFromSession = session?.tableForm ? {...session?.tableForm} : {limit:10,offset:0}
     const {
         register,
         handleSubmit,
@@ -97,12 +98,19 @@ const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fu
         clearErrors,
         unregister,
     } = useForm({
-        defaultValues: {
-            offset: 0,
-            limit: 10, 
-        },
+        defaultValues: defaultValuesFromSession
     });
     
+     //call this fn whenever session gets updated
+  const setDefaultValues = () => {
+    reset(defaultValuesFromSession)
+  }
+
+  //adding this effect because simply setting session to default values is not working
+  useEffect(() => {
+    setDefaultValues()
+  }, [session])
+
     const isMobile = window.Digit.Utils.browser.isMobile();
     const [searchQuery, onSearch] = useState("");
 
@@ -130,8 +138,8 @@ const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fu
     }, []);
 
     useEffect(() => {
-        register("offset", 0);
-        register("limit", 10);
+        register("offset",session?.tableForm?.offset || 0);
+        register("limit",session?.tableForm?.limit || 10);
     }, [register]);
 
     function onPageSizeChange(e) {

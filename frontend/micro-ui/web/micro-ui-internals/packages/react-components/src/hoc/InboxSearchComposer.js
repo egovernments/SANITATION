@@ -295,6 +295,7 @@ const InboxSearchComposer = ({configs,browserSession}) => {
                                 fullConfig={configs}
                                 type={configs?.type}
                                 activeLink={activeLink}
+                                browserSession={browserSession}
                                 />
                             </MediaQuery>
                             <MediaQuery maxWidth={426}>
