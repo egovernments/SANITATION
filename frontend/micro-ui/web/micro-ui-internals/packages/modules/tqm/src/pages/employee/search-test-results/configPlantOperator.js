@@ -214,7 +214,11 @@ export const tqmSearchConfigPlantOperator = {
             "secondaryLabel": "TQM_CLEAR_SEARCH",
             "minReqFields": 0,
             "defaultValues": {
-              "sortOrder": ""
+              "sortOrder": {
+                "code": "LATEST_FIRST",
+                "name": "TQM_INBOX_LATEST_FIRST",
+                "value": "DESC"
+              }
             },
             "fields": [
               {

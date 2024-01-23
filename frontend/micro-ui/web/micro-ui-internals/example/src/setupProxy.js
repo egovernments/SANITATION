@@ -68,6 +68,7 @@ module.exports = function (app) {
     "/pqm/",
     "/pqm-service/",
     "/individual/",
+    "/trackingservice/",
   ].forEach((location) => app.use(location, createProxy));
   ["/pb-egov-assets"].forEach((location) => app.use(location, assetsProxy));
 };

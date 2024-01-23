@@ -12,6 +12,8 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
     schemaCode: "PQM.QualityTestLab",
   });
 
+  const isMobile = window.Digit.Utils.browser.isMobile();
+
   // const { isLoading: isDataLoading, data: testDetailsData } = Digit.Hooks.tqm.useSearchTest({ id: id, tenantId: tenantId });
 
   const { isLoading: istestCriteriaLoading, data: testCriteriaData } = Digit.Hooks.tqm.useCustomMDMSV2({
@@ -79,7 +81,7 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
         config={config}
         onSubmit={onSubmit}
         label={t(actionState === "SCHEDULED" ? "ES_TQM_UPDATE_STATUS_BUTTON" : "ES_TQM_SUBMIT_TEST_RESULTS_BUTTON")}
-        submitInForm={true}
+        submitInForm={isMobile ? true : false}
         cardClassName={"testwf"}
       />
       {showPopUp && (

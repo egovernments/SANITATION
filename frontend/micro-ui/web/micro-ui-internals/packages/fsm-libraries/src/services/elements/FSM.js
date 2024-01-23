@@ -234,4 +234,13 @@ export const FSMService = {
       params: { tenantId },
       auth: true,
     }),
+  vehicleTripAlertsDetails: (tenantId, details) =>
+    Request({
+      url: Urls.fsm.vehicleTripAlertsDetails,
+      useCache: false,
+      userService: true,
+      method: "POST",
+      params: { tenantId, ...details },
+      auth: true,
+    }),
 };
