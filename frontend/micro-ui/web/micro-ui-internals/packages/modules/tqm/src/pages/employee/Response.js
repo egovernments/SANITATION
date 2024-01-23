@@ -10,6 +10,7 @@ const Response = () => {
   const [testId, setTestId] = useState(queryStrings?.testId);
   const [isResponseSuccess, setIsResponseSuccess] = useState(queryStrings?.isSuccess === "true" ? true : queryStrings?.isSuccess === "false" ? false : true);
   const { state } = useLocation();
+  const isMobile = window.Digit.Utils.browser.isMobile();
 
   const navigate = (page) => {
     switch (page) {
@@ -24,9 +25,17 @@ const Response = () => {
       <Banner successful={isResponseSuccess} message={t(state?.message)} multipleResponseIDs={testId} whichSvg={`${isResponseSuccess ? "tick" : null}`} />
       <Card style={{ border: "none", boxShadow: "none", padding: "0", paddingBottom: "1rem" }}>
         <div style={{ display: "flex", marginBottom: "0.75rem" }}> {t(state?.text, { TEST_ID: testId })} </div>
-        <Link to={`/${window.contextPath}/employee/tqm/summary?id=${testId}`}>
-          <SubmitBar label={t("ES_TQM_SEE_SUMMARY_TITLE")} />
-        </Link>
+        {isMobile ? (
+          <Link to={`/${window.contextPath}/employee/tqm/summary?id=${testId}`}>
+            <SubmitBar label={t("ES_TQM_SEE_SUMMARY_TITLE")} />
+          </Link>
+        ) : (
+          <ActionBar>
+            <Link to={`/${window.contextPath}/employee/tqm/summary?id=${testId}`}>
+              <SubmitBar label={t("ES_TQM_SEE_SUMMARY_TITLE")} />
+            </Link>
+          </ActionBar>
+        )}
       </Card>
     </Card>
   );
