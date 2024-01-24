@@ -25,7 +25,7 @@ export const tqmSearchConfigUlbAdmin = {
             "headerStyle": null,
             "primaryLabel": "ES_COMMON_SEARCH",
             "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
-            "minReqFields": 1,
+            "minReqFields": 0,
             "showFormInstruction": "TQM_SEARCH_HINT",
             "defaultValues": {
               "id": "",
