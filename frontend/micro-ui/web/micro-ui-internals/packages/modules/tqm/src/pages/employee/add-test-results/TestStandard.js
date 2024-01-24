@@ -89,14 +89,21 @@ function filterByUniqueKey(arrayOfObjects, key) {
 }
 
 const TestStandard = ({ control, errors, formData,setValue, ...props }) => {
+  
   const formName = 'TestStandard';
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   //plant,process,stage,outputType
   const [plant, setPlant] = useState(Digit.Utils.tqm.getMappedPlants());
-  const [process, setProcess] = useState([]);
-  const [stage, setStage] = useState([]);
-  const [outputType, setOutputType] = useState([]);
+  const [process, setProcess] = useState(
+    formData?.[formName]?.processCode ? [formData?.[formName]?.processCode] : []
+  );
+  const [stage, setStage] = useState(
+    formData?.[formName]?.stageCode ? [formData?.[formName]?.stageCode] : []
+  );
+  const [outputType, setOutputType] = useState(
+    formData?.[formName]?.materialCode ? [formData?.[formName]?.materialCode] : []
+  );
 
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [selectedProcess, setSelectedProcess] = useState(null);

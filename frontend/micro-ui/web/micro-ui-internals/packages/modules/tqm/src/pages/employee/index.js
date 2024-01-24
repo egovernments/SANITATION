@@ -81,6 +81,7 @@ const App = ({ path }) => {
     const pathVar = location.pathname.replace(path + "/", "").split("?")?.[0];
     Digit.Utils.tqm.destroySessionHelper(pathVar,["inbox","test-details","view-test-results"],"TQM_INBOX_SESSION");
     Digit.Utils.tqm.destroySessionHelper(pathVar,["search-test-results","summary","view-test-results"],"TQM_SEARCH_SESSION");
+    Digit.Utils.tqm.destroySessionHelper(pathVar,["add-test-result"],"CREATE_ADHOC_TEST");
     
   }, [location])
   

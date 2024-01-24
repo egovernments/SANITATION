@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { addTestConfig } from "./config";
 import { createModifiedData } from "./createModifiedData";
+import _ from "lodash"
 const Create = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
@@ -15,6 +16,15 @@ const Create = () => {
       setShowToast(false);
     }, 5000)
   };
+
+  const CreateAdhocTestSession = Digit.Hooks.useSessionStorage("CREATE_ADHOC_TEST", {});
+  const [sessionFormData,setSessionFormData, clearSessionFormData] = CreateAdhocTestSession;
+
+  const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
+    if (!_.isEqual(sessionFormData, formData)) {
+        setSessionFormData({ ...sessionFormData, ...formData });
+    }
+}
 
   const onSubmit = async (data) => {
     const qualityParams = data.QualityParameter;
@@ -81,11 +91,12 @@ const Create = () => {
 
           };
         })}
-        defaultValues={{}}
+        defaultValues={sessionFormData}
         onSubmit={onSubmit}
         fieldStyle={{ marginRight: 0 }}
         noBreakLine={true}
         cardClassName={"page-padding-fix"}
+        onFormValueChange={onFormValueChange}
       />
 
       {showToast && <Toast error={showToast?.isError} label={showToast?.label} isDleteBtn={"true"} onClose={() => setShowToast(false)} />}
