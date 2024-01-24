@@ -41,11 +41,14 @@ export const tqmSearchConfigUlbAdmin = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  "name": "id"
+                  "name": "id",
+                  "style":{
+                    "marginBottom":"0px"
+                  }
                 },
                 "removableTagConf":{
                   "name":"id",
-                  "label":"Id",
+                  "label":"TQM_RT_ID",
                   "valueJsonPath":"id",
                   "type":"single", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.id",
@@ -70,7 +73,7 @@ export const tqmSearchConfigUlbAdmin = {
                 },
                 "removableTagConf":{
                   "name":"plantCodes",
-                  "label":"Plant",
+                  "label":"TQM_RT_PLANT",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.plantCodes",
@@ -95,7 +98,7 @@ export const tqmSearchConfigUlbAdmin = {
                 },
                 "removableTagConf":{
                   "name":"processCodes",
-                  "label":"Process",
+                  "label":"TQM_RT_PROCESS",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.processCodes",
@@ -120,7 +123,7 @@ export const tqmSearchConfigUlbAdmin = {
                 },
                 "removableTagConf":{
                   "name":"testType",
-                  "label":"Test Type",
+                  "label":"TQM_RT_TEST_TYPE",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.testType",
@@ -145,7 +148,7 @@ export const tqmSearchConfigUlbAdmin = {
                 },
                 "removableTagConf":{
                   "name":"dateRange",
-                  "label":"Date",
+                  "label":"TQM_RT_DATE_RANGE",
                   "valueJsonPath":"range.title",
                   "type":"dateRange", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.dateRange",

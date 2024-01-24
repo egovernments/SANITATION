@@ -53,7 +53,7 @@ export const tqmSearchConfigPlantOperator = {
                 },
                 "removableTagConf":{
                   "name":"processCodes",
-                  "label":"Process",
+                  "label":"TQM_RT_PROCESS",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.processCodes",
@@ -78,7 +78,7 @@ export const tqmSearchConfigPlantOperator = {
                 },
                 "removableTagConf":{
                   "name":"materialCodes",
-                  "label":"Output",
+                  "label":"TQM_RT_OUTPUT",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.materialCodes",
@@ -103,7 +103,7 @@ export const tqmSearchConfigPlantOperator = {
                 },
                 "removableTagConf":{
                   "name":"testType",
-                  "label":"Test Type",
+                  "label":"TQM_RT_TEST_TYPE",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.testType",
@@ -127,7 +127,7 @@ export const tqmSearchConfigPlantOperator = {
                 },
                 "removableTagConf":{
                   "name":"dateRange",
-                  "label":"Date",
+                  "label":"TQM_RT_DATE_RANGE",
                   "valueJsonPath":"range.title",
                   "type":"dateRange", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.dateRange",
@@ -251,7 +251,7 @@ export const tqmSearchConfigPlantOperator = {
                 },
                 "removableTagConf":{
                   "name":"sortOrder",
-                  "label":"Sort Order",
+                  "label":"TQM_RT_SORT_ORDER",
                   "valueJsonPath":"name",
                   "type":"single", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"filterForm.sortOrder",

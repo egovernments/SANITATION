@@ -53,7 +53,7 @@ const WorkflowFilter = ({ props, t, populators, formData, responseData }) => {
             }}
             value={row.statusid}
             // checked={formData?.[populators.name]?.[row.uuid]}
-            checked={formData?.[populators.name]?.[row.statusid]}
+            checked={formData?.[populators.name]?.[row.statusid]?true:false}
             label={t(Digit.Utils.locale.getTransformedLocale(`CS_COMMON_FSM_${row?.applicationstatus}`))}
           />
         );

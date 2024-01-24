@@ -56,11 +56,14 @@ export const tqmInboxConfig = {
                 "disable": false,
                 "populators": {
                   "name": "id",
-                  "error": "TQM_ERR_VALID_TEST_ID"
+                  "error": "TQM_ERR_VALID_TEST_ID",
+                  "style":{
+                    "marginBottom":"0px"
+                  }
                 },
                 "removableTagConf":{
                   "name":"id",
-                  "label":"Id",
+                  "label":"TQM_RT_ID",
                   "valueJsonPath":"id",
                   "type":"single", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.id",
@@ -85,7 +88,7 @@ export const tqmInboxConfig = {
                 },
                 "removableTagConf":{
                   "name":"plantCodes",
-                  "label":"Plant",
+                  "label":"TQM_RT_PLANT",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"searchForm.plantCodes",
@@ -222,7 +225,7 @@ export const tqmInboxConfig = {
                 },
                 "removableTagConf":{
                   "name":"processCodes",
-                  "label":"Process",
+                  "label":"TQM_RT_PROCESS",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"filterForm.processCodes",
@@ -244,7 +247,7 @@ export const tqmInboxConfig = {
                 },
                 "removableTagConf":{
                   "name":"stage",
-                  "label":"Stage",
+                  "label":"TQM_RT_STAGE",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"filterForm.stage",
@@ -270,7 +273,7 @@ export const tqmInboxConfig = {
                 },
                 "removableTagConf":{
                   "name":"materialCodes",
-                  "label":"Ouput",
+                  "label":"TQM_RT_OUTPUT",
                   "valueJsonPath":"i18nKey",
                   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
                   "sessionJsonPath":"filterForm.materialCodes",
