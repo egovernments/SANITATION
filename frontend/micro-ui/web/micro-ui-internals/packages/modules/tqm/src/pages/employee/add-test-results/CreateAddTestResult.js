@@ -69,7 +69,7 @@ const Create = () => {
         }, 5000);
       },
       onSuccess: async (data) => {
-        setShowToast({ key: "success", label: "TQM_ADD_TEST_SUCCESS" });
+        setShowToast({ key: "success", label: t("TQM_ADD_TEST_SUCCESS") });
         setTimeout(() => {
           closeToast();
           history.push(`/sanitation-ui/employee/tqm/view-test-results?id=${data.tests[0].testId}&type=adhoc`);
