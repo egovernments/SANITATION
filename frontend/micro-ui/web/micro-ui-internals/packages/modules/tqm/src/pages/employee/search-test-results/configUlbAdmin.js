@@ -193,7 +193,7 @@ export const tqmSearchConfigUlbAdmin = {
               },
               {
                 "label": "ES_TQM_TEST_DATE",
-                "jsonPath": "scheduledDate",
+                "jsonPath": "auditDetails.lastModifiedTime",
                 "additionalCustomization": true
               },
               {
