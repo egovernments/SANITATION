@@ -82,6 +82,8 @@ const App = ({ path }) => {
     Digit.Utils.tqm.destroySessionHelper(pathVar,["inbox","test-details","view-test-results"],"TQM_INBOX_SESSION");
     Digit.Utils.tqm.destroySessionHelper(pathVar,["search-test-results","summary","view-test-results"],"TQM_SEARCH_SESSION");
     Digit.Utils.tqm.destroySessionHelper(pathVar,["add-test-result"],"CREATE_ADHOC_TEST");
+    Digit.Utils.tqm.destroySessionHelper(pathVar,["test-details"],"UPDATE_TEST_SESSION_SCHEDULED");
+    Digit.Utils.tqm.destroySessionHelper(pathVar,["test-details"],"UPDATE_TEST_SESSION_PENDINGRESULTS");
     
   }, [location])
   
