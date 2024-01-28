@@ -34,7 +34,7 @@ function isFalsyOrEmpty(input) {
     return false;
   }
 
-const InboxSearchComposer = ({configs}) => {
+const InboxSearchComposer = ({configs, scrollPosition}) => {
     const {t} = useTranslation()
     const presets = Digit.Hooks.useQueryParams();
     // if(Object.keys(presets).length > 0) configs = Digit.Utils.configUpdater(configs)
@@ -145,6 +145,11 @@ const InboxSearchComposer = ({configs}) => {
         setPopup(false);
         setType("");
     };
+
+    useEffect(() => {
+        // Implement to scroll if scroll persistent is enabled 
+        window.scrollTo(0, scrollPosition)
+    })
 
     return (
         <InboxContext.Provider value={{state,dispatch}} >
