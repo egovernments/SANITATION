@@ -290,14 +290,15 @@ export const tqmInboxConfig = {
                   "labelPrefix": "WF_STATUS_",
                   "businessService": "PQM"
                 },
-                // "removableTagConf":{
-                //   "name":"status",
-                //   "label":"Status",
-                //   "valueJsonPath":"i18nKey",
-                //   "type":"multi", // single, multi, date(single), dateRange(single),...etc,
-                //   "sessionJsonPath":"filterForm.status",
-                //   "deleteRef":"id"
-                // }
+                "removableTagConf":{
+                  "name":"status",
+                  "label":"Status",
+                  // "valueJsonPath":"i18nKey",
+                  "type":"workflowStatusFilter", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"filterForm.status",
+                  // "deleteRef":"id",
+                  "valuePrefix": "WF_STATUS_PQM_",
+                }
               }
             ]
           },

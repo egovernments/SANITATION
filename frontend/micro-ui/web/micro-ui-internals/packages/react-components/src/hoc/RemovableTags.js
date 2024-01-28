@@ -5,7 +5,7 @@ import { Loader } from '../atoms/Loader';
 import { InboxContext } from './InboxSearchComposerContext';
 import _ from "lodash";
 
-const generateTagsFromFields = (fields, sessionData, t) => {
+const generateTagsFromFields = (fields, sessionData, t,data) => {
   //filetering the fields
 
   const fieldsToShow = fields
@@ -73,6 +73,28 @@ const generateTagsFromFields = (fields, sessionData, t) => {
         });
       }
         break;
+      case 'workflowStatusFilter':
+        if(!data || !value || Object?.keys(value)?.length===0){
+          return
+        }
+        const statusIds = Object?.keys(value)?.map(key => value[key] ? key : false)?.filter(val => val)
+        const statusObj = data?.statusMap?.map(status => {
+          if(statusIds?.includes(status?.statusid)){
+            return {
+              ...status
+            }
+          }else {
+            return false
+          }
+        })?.filter(val => val)
+        statusObj?.forEach(obj => {
+          crumbs?.push({
+            label: t(field.label) || '',
+            value: field?.valuePrefix ? t(Digit.Utils.locale.getTransformedLocale(`${field.valuePrefix}${obj?.applicationstatus}`)):t(Digit.Utils.locale.getTransformedLocale(obj?.applicationstatus)) ,
+            removableTagConf: { ...field, dynamicId:obj.statusid },
+          });
+        })
+        break;
       default:
         break;
     }
@@ -108,7 +130,7 @@ const generateTagsFromFields = (fields, sessionData, t) => {
   return crumbs;
 };
 
-const RemovableTags = ({ config, browserSession, fields, ...props }) => {
+const RemovableTags = ({ config, browserSession, fields,data, ...props }) => {
   const { t } = useTranslation();
   const [sessionData, setSessionData, clearSessionData] = browserSession;
   
@@ -124,9 +146,9 @@ const RemovableTags = ({ config, browserSession, fields, ...props }) => {
 
   //an effect for generating selected filter tags
   useEffect(() => {
-    setRemovableTags(generateTagsFromFields(fields, sessionData, t));
+    setRemovableTags(generateTagsFromFields(fields, sessionData, t,data));
     return () => {};
-  }, [fields, sessionData]);
+  }, [fields, sessionData,data]);
 
 
   // function to handle deletion of tags

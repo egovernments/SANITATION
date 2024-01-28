@@ -274,7 +274,7 @@ const InboxSearchComposer = ({configs,browserSession}) => {
                 {
                     (configs?.type === 'inbox' || configs?.type === 'search') && (configs?.showAsRemovableTagsInMobile) &&
                     <MediaQuery maxWidth={426}>
-                        <RemovableTags config={configs} browserSession={browserSession} 
+                        <RemovableTags config={configs} browserSession={browserSession} data={data} 
                         // fields={[...configs?.sections?.search?.uiConfig?.fields,...configs?.sections?.filter?.uiConfig?.fields]} 
                         fields={fieldsForRemovableTags}
                         />

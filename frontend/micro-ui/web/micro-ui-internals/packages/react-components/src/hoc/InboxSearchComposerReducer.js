@@ -71,7 +71,10 @@ const reducer = (state, action) => {
         case 'dateRange':
           _.set(stateObj, removableTagConf?.sessionJsonPath, '');
           return stateObj;
-
+        case 'workflowStatusFilter':
+          //if we are here then we have dynamic ids to delete from state
+          _.set(stateObj,`${removableTagConf?.sessionJsonPath}.${removableTagConf?.dynamicId}`, false)
+          return stateObj
         default:
           break;
       }
