@@ -30,7 +30,7 @@ export const tqmInboxConfig = {
       "sections": {
         "search": {
           "uiConfig": {
-            "headerLabel": "TQM_INBOX_SEARCH",
+            "headerLabel": "ES_COMMON_SEARCH",
             "type":"search",
             "typeMobile":"filter",
             "searchWrapperStyles": {
@@ -98,7 +98,7 @@ export const tqmInboxConfig = {
             ]
           },
           "label": "",
-          "labelMobile": "TQM_INBOX_SEARCH",
+          "labelMobile": "ES_COMMON_SEARCH",
           "children": {},
           "show": true
         },
