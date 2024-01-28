@@ -30,7 +30,7 @@ export const tqmInboxConfig = {
       "sections": {
         "search": {
           "uiConfig": {
-            "headerLabel": "TQM_INBOX_FILTERS",
+            "headerLabel": "TQM_INBOX_SEARCH",
             "type":"search",
             "typeMobile":"filter",
             "searchWrapperStyles": {
@@ -98,7 +98,7 @@ export const tqmInboxConfig = {
             ]
           },
           "label": "",
-          "labelMobile": "TQM_INBOX_FILTER",
+          "labelMobile": "TQM_INBOX_SEARCH",
           "children": {},
           "show": true
         },
@@ -191,7 +191,7 @@ export const tqmInboxConfig = {
         },
         "filter": {
           "uiConfig": {
-            "headerLabel": "TQM_INBOX_SORTBY",
+            "headerLabel": "TQM_INBOX_FILTER",
             "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
             "formClassName": "filter",
             "type": "filter",
@@ -302,7 +302,7 @@ export const tqmInboxConfig = {
             ]
           },
           "label": "Filter",
-          "labelMobile": "TQM_INBOX_SORT",
+          "labelMobile": "TQM_INBOX_FILTER",
           "show": true
         }
       },
