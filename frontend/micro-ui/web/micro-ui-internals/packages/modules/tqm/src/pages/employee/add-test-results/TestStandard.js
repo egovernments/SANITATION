@@ -88,27 +88,21 @@ function filterByUniqueKey(arrayOfObjects, key) {
   });
 }
 
-const TestStandard = ({ control, errors, formData,setValue, ...props }) => {
+const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }) => {
   
   const formName = 'TestStandard';
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   //plant,process,stage,outputType
   const [plant, setPlant] = useState(Digit.Utils.tqm.getMappedPlants());
-  const [process, setProcess] = useState(
-    formData?.[formName]?.processCode ? [formData?.[formName]?.processCode] : []
-  );
-  const [stage, setStage] = useState(
-    formData?.[formName]?.stageCode ? [formData?.[formName]?.stageCode] : []
-  );
-  const [outputType, setOutputType] = useState(
-    formData?.[formName]?.materialCode ? [formData?.[formName]?.materialCode] : []
-  );
+  const [process, setProcess] = useState([]);
+  const [stage, setStage] = useState([]);
+  const [outputType, setOutputType] = useState([]);
 
-  const [selectedPlant, setSelectedPlant] = useState(null);
-  const [selectedProcess, setSelectedProcess] = useState(null);
-  const [selectedStage, setSelectedStage] = useState(null);
-  const [selectedOutputType, setSelectedOutputType] = useState(null);
+  // const [selectedPlant, setSelectedPlant] = useState(null);
+  // const [selectedProcess, setSelectedProcess] = useState(null);
+  // const [selectedStage, setSelectedStage] = useState(null);
+  // const [selectedOutputType, setSelectedOutputType] = useState(null);
 
   const {
     isLoading: isTestStandardLoading,
@@ -140,7 +134,7 @@ const TestStandard = ({ control, errors, formData,setValue, ...props }) => {
       },
     },
     filters: {
-      plant: selectedPlant?.plantCode,
+      plant: getValues("TestStandard.plantCode")?.plantCode,
     },
   });
 
@@ -149,21 +143,21 @@ const TestStandard = ({ control, errors, formData,setValue, ...props }) => {
     
     //plant
     if(option === "plant") {
-      setSelectedProcess(null)
-      setSelectedOutputType(null)
-      setSelectedStage(null)
+      // setSelectedProcess(null)
+      // setSelectedOutputType(null)
+      // setSelectedStage(null)
       setValue(`${formName}.processCode`,null)
       setValue(`${formName}.stageCode`,null)
       setValue(`${formName}.materialCode`,null)
-      setProcess([])
+      // setProcess([])
       setOutputType([])
       setStage([])
     }
     //process
     else if(option === "process") {
       // setSelectedProcess(null)
-      setSelectedOutputType(null)
-      setSelectedStage(null)
+      // setSelectedOutputType(null)
+      // setSelectedStage(null)
       // setValue(`${formName}.processCode`,null)
       setValue(`${formName}.stageCode`,null)
       setValue(`${formName}.materialCode`,null)
@@ -174,7 +168,7 @@ const TestStandard = ({ control, errors, formData,setValue, ...props }) => {
     //stage
     else if(option === "stage") {
       // setSelectedProcess(null)
-      setSelectedOutputType(null)
+      // setSelectedOutputType(null)
       // setSelectedStage(null)
       // setValue(`${formName}.processCode`,null)
       // setValue(`${formName}.stageCode`,null)
@@ -193,33 +187,33 @@ const TestStandard = ({ control, errors, formData,setValue, ...props }) => {
   }
 
   useEffect(() => {
-    if (selectedPlant?.plantCode) {
+    if (getValues("TestStandard.plantCode") && testStandard) {
       const getFilteredProcess = filterObjectsByUniqueKeyValuePair(testStandard, {
-        plant: selectedPlant?.plantCode,
+        plant: getValues("TestStandard.plantCode")?.plantCode,
       });
       
       setProcess(filterByUniqueKey(getFilteredProcess,"process"));
       
     }
-    if (selectedPlant?.plantCode && selectedProcess?.process) {
+    if (getValues("TestStandard.plantCode") && getValues("TestStandard.processCode") && testStandard) {
       const getFilteredStage = filterObjectsByUniqueKeyValuePair(testStandard, {
-        plant: selectedPlant?.plantCode,
-        process:selectedProcess?.process
+        plant: getValues("TestStandard.plantCode")?.plantCode,
+        process:getValues("TestStandard.processCode")?.process
       });
       setStage(filterByUniqueKey(getFilteredStage,"stage"));
      
 
     }
-    if (selectedPlant?.plantCode && selectedProcess?.process && selectedStage?.stage) {
+    if (getValues("TestStandard.plantCode") && getValues("TestStandard.processCode") && getValues("TestStandard.stageCode") && testStandard) {
       const getFilteredOutputType = filterObjectsByUniqueKeyValuePair(testStandard, {
-        plant: selectedPlant?.plantCode,
-        process:selectedProcess?.process,
-        stage:selectedStage?.stage
+        plant: getValues("TestStandard.plantCode")?.plantCode,
+        process:getValues("TestStandard.processCode")?.process,
+        stage:getValues("TestStandard.stageCode")?.stage
       });
       setOutputType(filterByUniqueKey(getFilteredOutputType,"material"));
       
     }
-  }, [selectedPlant,selectedStage,selectedProcess,selectedOutputType]);
+  }, [formData,testStandard]);
 
   if (isTestStandardLoading) {
     return <Loader />;
@@ -240,12 +234,13 @@ const TestStandard = ({ control, errors, formData,setValue, ...props }) => {
             }}
             render={(props) => (
               <Dropdown
-                selected={selectedPlant || props.value}
+                // selected={selectedPlant || props.value}
+                selected={props.value}
                 disable={false}
                 isMandatory={true}
                 option={plant}
                 select={(data) => {
-                  setSelectedPlant(data);
+                  // setSelectedPlant(data);
                   props.onChange(data);
                   clearFields("plant")
                 }}
@@ -281,12 +276,13 @@ const TestStandard = ({ control, errors, formData,setValue, ...props }) => {
             }}
             render={(props) => (
               <Dropdown
-                selected={selectedProcess || props.value}
+                // selected={selectedProcess || props.value}
+                selected={props.value}
                 disable={process.length > 0 ? false : true}
                 isMandatory={true}
                 option={process}
                 select={(data) => {
-                  setSelectedProcess(data);
+                  // setSelectedProcess(data);
                   props.onChange(data);
                   clearFields("process")
                 }}
@@ -322,12 +318,13 @@ const TestStandard = ({ control, errors, formData,setValue, ...props }) => {
             }}
             render={(props) => (
               <Dropdown
-                selected={selectedStage || props.value}
+                // selected={selectedStage || props.value}
+                selected={props.value}
                 disable={stage.length > 0 ? false : true}
                 isMandatory={true}
                 option={stage}
                 select={(data) => {
-                  setSelectedStage(data);
+                  // setSelectedStage(data);
                   props.onChange(data);
                   clearFields("stage")
                 }}
@@ -363,12 +360,13 @@ const TestStandard = ({ control, errors, formData,setValue, ...props }) => {
             }}
             render={(props) => (
               <Dropdown
-                selected={selectedOutputType || props.value}
+                // selected={selectedOutputType || props.value}
+                selected={props.value}
                 disable={outputType.length > 0 ? false : true}
                 isMandatory={true}
                 option={outputType}
                 select={(data) => {
-                  setSelectedOutputType(data);
+                  // setSelectedOutputType(data);
                   props.onChange(data);
                   clearFields("material")
                 }}
