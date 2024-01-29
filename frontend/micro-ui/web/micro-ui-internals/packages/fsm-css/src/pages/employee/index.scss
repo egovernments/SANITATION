@@ -649,6 +649,9 @@ video::-webkit-media-controls-play-button {
   }
 }
 .inbox-search-component-wrapper {
+  .popup-wrap {
+    top: 5rem;
+  }
   .search-component-table {
     border-radius: 4px;
   }
