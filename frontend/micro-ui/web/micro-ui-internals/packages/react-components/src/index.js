@@ -226,6 +226,7 @@ import PitDimension from "./molecules/PitDimension";
 import RadioOrSelect from "./molecules/RadioOrSelect";
 import RatingCard from "./molecules/RatingCard";
 import RemoveableTag from "./atoms/RemoveableTag";
+import RemoveableTagNew from "./atoms/RemovableTagNew";
 import SearchAction from "./molecules/SearchAction";
 import SortAction from "./molecules/SortAction";
 import { SearchField, SearchForm } from "./molecules/SearchForm";
@@ -392,6 +393,7 @@ export {
   FilterAction,
   ApplyFilterBar,
   RemoveableTag,
+  RemoveableTagNew,
   RadioOrSelect,
   Localities,
   SearchForm,

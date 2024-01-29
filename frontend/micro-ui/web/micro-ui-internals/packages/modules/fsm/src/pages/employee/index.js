@@ -240,6 +240,19 @@ const EmployeeApp = ({ path, url, userType }) => {
     window.location.href.includes("/employee/fsm/application-details/");
 
   const desludgingApplicationCheck = window.location.href.includes("/employee/fsm/new-application") || window.location.href.includes("/employee/fsm/modify-application");
+
+  const destroySessionHelper = (currentPath,pathList,sessionName) => {
+    if(!pathList.includes(currentPath)){
+      sessionStorage.removeItem(`Digit.${sessionName}`)
+    }
+  }
+
+  //destroying inbox session 
+  useEffect(() => {
+    const pathVar = location.pathname.replace(path + "/", "").split("?")?.[0];
+    destroySessionHelper(pathVar,["inbox","application-details/"],"FSM_INBOX_SESSION");
+  }, [location])
+
   return (
     <Switch>
       <React.Fragment>

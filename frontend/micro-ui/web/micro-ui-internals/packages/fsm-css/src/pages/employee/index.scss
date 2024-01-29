@@ -497,6 +497,11 @@
     margin-left: 16px;
     margin-right: 16px;
   }
+  @media (min-width: 780px) {
+    .label-field-pair {
+      flex-direction: row;
+    }
+  }
 }
 
 .break-line {
@@ -644,6 +649,9 @@ video::-webkit-media-controls-play-button {
   }
 }
 .inbox-search-component-wrapper {
+  .popup-wrap {
+    top: 5rem;
+  }
   .search-component-table {
     border-radius: 4px;
   }
@@ -653,4 +661,9 @@ video::-webkit-media-controls-play-button {
   .employeeCard.page-padding-fix {
     padding: 1rem 0.5rem;
   }
+}
+
+.bannerCard .language-button-container button {
+  width: 11.2rem;
+  height: 2.5rem;
 }
