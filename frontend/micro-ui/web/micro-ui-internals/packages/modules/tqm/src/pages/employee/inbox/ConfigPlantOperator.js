@@ -196,14 +196,14 @@ export const tqmInboxConfigPlantOperator = {
                     "display": "flex"
                   }
                 },
-                "removableTagConf":{
-                  "name":"sortOrder",
-                  "label":"TQM_RT_SORT_ORDER",
-                  "valueJsonPath":"name",
-                  "type":"single", // single, multi, date(single), dateRange(single),...etc,
-                  "sessionJsonPath":"filterForm.sortOrder",
-                  // "deleteRef":"code"
-                }
+                // "removableTagConf":{
+                //   "name":"sortOrder",
+                //   "label":"TQM_RT_SORT_ORDER",
+                //   "valueJsonPath":"name",
+                //   "type":"single", // single, multi, date(single), dateRange(single),...etc,
+                //   "sessionJsonPath":"filterForm.sortOrder",
+                //   // "deleteRef":"code"
+                // }
               }
             ]
           },
