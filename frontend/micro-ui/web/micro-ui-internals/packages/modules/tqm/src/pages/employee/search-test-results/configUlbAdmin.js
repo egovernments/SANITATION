@@ -19,11 +19,13 @@ export const tqmSearchConfigUlbAdmin = {
       "sections": {
         "search": {
           "uiConfig": {
+            "type":"search",
+            "typeMobile":"filter",
             "headerLabel": "TQM_INBOX_FILTERS",
             "headerStyle": null,
             "primaryLabel": "ES_COMMON_SEARCH",
             "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
-            "minReqFields": 1,
+            "minReqFields": 0,
             "showFormInstruction": "TQM_SEARCH_HINT",
             "defaultValues": {
               "id": "",
@@ -39,26 +41,20 @@ export const tqmSearchConfigUlbAdmin = {
                 "isMandatory": false,
                 "disable": false,
                 "populators": {
-                  "name": "id"
+                  "name": "id",
+                  "style":{
+                    "marginBottom":"0px"
+                  }
+                },
+                "removableTagConf":{
+                  "name":"id",
+                  "label":"TQM_RT_ID",
+                  "valueJsonPath":"id",
+                  "type":"single", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.id",
+                  // "deleteRef":"code"
                 }
               },
-              // {
-              //   "label": "TQM_PLANT_NAME",
-              //   "type": "dropdown",
-              //   "isMandatory": false,
-              //   "disable": false,
-              //   "populators": {
-              //     "optionsCustomStyle": {
-              //       "top": "2.3rem"
-              //     },
-              //     "name": "plantCodes",
-              //     "optionsKey": "i18nKey",
-              //     "allowMultiSelect": true,
-              //     "mdmsv2": {
-              //       "schemaCode": "PQM.Plant"
-              //     }
-              //   }
-              // },
               {
                 "label": "TQM_PLANT_NAME",
                 "type": "apidropdown",
@@ -74,6 +70,14 @@ export const tqmSearchConfigUlbAdmin = {
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfigUlbAdmin",
                   "customfn": "populatePlantUsersReqCriteria"
+                },
+                "removableTagConf":{
+                  "name":"plantCodes",
+                  "label":"TQM_RT_PLANT",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.plantCodes",
+                  "deleteRef":"id"
                 }
               },
               {
@@ -91,6 +95,14 @@ export const tqmSearchConfigUlbAdmin = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Process"
                   }
+                },
+                "removableTagConf":{
+                  "name":"processCodes",
+                  "label":"TQM_RT_PROCESS",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.processCodes",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -108,6 +120,14 @@ export const tqmSearchConfigUlbAdmin = {
                   "mdmsv2": {
                     "schemaCode": "PQM.SourceType"
                   }
+                },
+                "removableTagConf":{
+                  "name":"testType",
+                  "label":"TQM_RT_TEST_TYPE",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.testType",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -125,6 +145,14 @@ export const tqmSearchConfigUlbAdmin = {
                   "name": "dateRange",
                   "maxDate":"currentDate"
 
+                },
+                "removableTagConf":{
+                  "name":"dateRange",
+                  "label":"TQM_RT_DATE_RANGE",
+                  "valueJsonPath":"range.title",
+                  "type":"dateRange", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.dateRange",
+                  // "deleteRef":"code" // only required for multi type
                 }
               }
             ]
@@ -165,7 +193,7 @@ export const tqmSearchConfigUlbAdmin = {
               },
               {
                 "label": "ES_TQM_TEST_DATE",
-                "jsonPath": "scheduledDate",
+                "jsonPath": "auditDetails.lastModifiedTime",
                 "additionalCustomization": true
               },
               {
@@ -185,7 +213,9 @@ export const tqmSearchConfigUlbAdmin = {
           "show": true
         }
       },
-      "additionalSections": {}
+      "additionalSections": {},
+      "persistFormData":true,
+      "showAsRemovableTagsInMobile":true
     },
   ],
 };

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState,useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useForm,useWatch} from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { InboxContext } from "../hoc/InboxSearchComposerContext";
 import RenderFormFields from "../molecules/RenderFormFields";
@@ -16,7 +16,7 @@ const setUIConf = (uiConfig) => {
   return [{uiConfig}]
 }
 
-const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullConfig, data,activeLink,setActiveLink}) => {
+const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullConfig, data,activeLink,setActiveLink,browserSession}) => {
   
   //whenever activeLink changes we'll change uiConfig
   // const [activeLink,setActiveLink] = useState(uiConfig?.configNavItems?.filter(row=>row.activeByDefault)?.[0]?.name)
@@ -27,12 +27,16 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
   const [showToast,setShowToast] = useState(null)
   let updatedFields = [];
   const {apiDetails} = fullConfig
-
+  const [session,setSession,clearSession] = browserSession || []
+  
   if (fullConfig?.postProcessResult){
     //conditions can be added while calling postprocess function to pass different params
     Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.postProcess(data, uiConfig) 
   }
 
+  const defValuesFromSession = uiConfig?.type === "search" ? session?.searchForm : session?.filterForm
+  
+  	
   const {
     register,
     handleSubmit,
@@ -49,8 +53,12 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
     unregister,
   } = useForm({
     defaultValues: uiConfig?.defaultValues,
+    // defaultValues: {...uiConfig?.defaultValues,...defValuesFromSession}
+    // defaultValues:defaultValuesFromSession
   });
+  
   const formData = watch();
+
   const checkKeyDown = (e) => {
     const keyCode = e.keyCode ? e.keyCode : e.key ? e.key : e.which;
     if (keyCode === 13) {
@@ -91,13 +99,31 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
   }
 
   const clearSearch = () => {
+    
     reset(uiConfig?.defaultValues)
     dispatch({
       type: uiConfig?.type === "filter"?"clearFilterForm" :"clearSearchForm",
       state: { ...uiConfig?.defaultValues }
       //need to pass form with empty strings 
     })
+    //here reset tableForm as well
+    dispatch({
+      type: "tableForm",
+      state: { limit:10,offset:0 }
+      //need to pass form with empty strings 
+    })
   }
+
+  //call this fn whenever session gets updated
+  const setDefaultValues = () => {
+    reset({...uiConfig?.defaultValues,...defValuesFromSession})
+  }
+
+  //adding this effect because simply setting session to default values is not working
+  useEffect(() => {
+    setDefaultValues()
+  }, [session])
+  
  
   const closeToast = () => {
     setShowToast(null);

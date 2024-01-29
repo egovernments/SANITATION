@@ -74,6 +74,20 @@ const App = ({ path }) => {
   const SensorScreen = Digit?.ComponentRegistryService?.getComponent("SensorScreen");
   let isMobile = window.Digit.Utils.browser.isMobile();
 
+  //here adding a useEffect hook to manually clear sessionStorages
+  // TQM_INBOX_SESSION -> don't delete when -> inbox, test-details
+  // TQM_SEARCH_SESSION -> don't delete when -> search-test-results,summary
+  useEffect(() => {
+    const pathVar = location.pathname.replace(path + "/", "").split("?")?.[0];
+    Digit.Utils.tqm.destroySessionHelper(pathVar,["inbox","test-details","view-test-results"],"TQM_INBOX_SESSION");
+    Digit.Utils.tqm.destroySessionHelper(pathVar,["search-test-results","summary","view-test-results"],"TQM_SEARCH_SESSION");
+    Digit.Utils.tqm.destroySessionHelper(pathVar,["add-test-result"],"CREATE_ADHOC_TEST");
+    Digit.Utils.tqm.destroySessionHelper(pathVar,["test-details"],"UPDATE_TEST_SESSION_SCHEDULED");
+    Digit.Utils.tqm.destroySessionHelper(pathVar,["test-details"],"UPDATE_TEST_SESSION_PENDINGRESULTS");
+    
+  }, [location])
+  
+
   return (
     <>
       {isUlbAdminLoggedIn && isMobile ? <BackButton>{t("CS_COMMON_BACK")}</BackButton> : !isPlantOperatorLoggedIn ? <TqmBreadCrumb location={location} defaultPath={path} /> : null}
@@ -86,7 +100,7 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/home`} component={() => <TqmHome {...{ path }} />} />
           <PrivateRoute path={`${path}/sample`} component={() => <SampleComp />} />
           <PrivateRoute path={`${path}/check`} component={() => <TQMPendingTask />} />
-          <PrivateRoute path={`${path}/inbox`} component={() => <TqmInbox {...{ path }} />} />
+          <PrivateRoute path={`${path}/inbox`} component={() => <TqmInbox />} />
           <PrivateRoute path={`${path}/search-test-results`} component={() => <TqmSearch {...{ path }} />} />
           <PrivateRoute path={`${path}/add-test-result`} component={() => <Create />} />
           <PrivateRoute path={`${path}/test-details`} component={() => <TestDetails />} />

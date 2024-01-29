@@ -30,6 +30,9 @@ export const tqmInboxConfig = {
       "sections": {
         "search": {
           "uiConfig": {
+            "headerLabel": "ES_COMMON_SEARCH",
+            "type":"search",
+            "typeMobile":"filter",
             "searchWrapperStyles": {
               "flexDirection": "column-reverse",
               "marginTop": "1.4rem",
@@ -39,7 +42,7 @@ export const tqmInboxConfig = {
             },
             "headerStyle": null,
             "primaryLabel": "Search",
-            "secondaryLabel": "Clear Search",
+            "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
             "minReqFields": 0,
             "defaultValues": {
               "id": "",
@@ -53,24 +56,20 @@ export const tqmInboxConfig = {
                 "disable": false,
                 "populators": {
                   "name": "id",
-                  "error": "TQM_ERR_VALID_TEST_ID"
+                  "error": "TQM_ERR_VALID_TEST_ID",
+                  "style":{
+                    "marginBottom":"0px"
+                  }
+                },
+                "removableTagConf":{
+                  "name":"id",
+                  "label":"TQM_RT_ID",
+                  "valueJsonPath":"id",
+                  "type":"single", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.id",
+                  // "deleteRef":"code"
                 }
               },
-              // {
-              //   "label": "TQM_PLANT_NAME",
-              //   "type": "dropdown",
-              //   "isMandatory": false,
-              //   "disable": false,
-              //   "populators": {
-              //     "optionsCustomStyle": {},
-              //     "name": "plantCodes",
-              //     "optionsKey": "i18nKey",
-              //     "allowMultiSelect": false,
-              //     "mdmsv2": {
-              //       "schemaCode": "PQM.Plant"
-              //     }
-              //   }
-              // },
               {
                 "label": "TQM_PLANT_NAME",
                 "type": "apidropdown",
@@ -86,11 +85,20 @@ export const tqmInboxConfig = {
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfigUlbAdmin",
                   "customfn": "populatePlantUsersReqCriteria"
+                },
+                "removableTagConf":{
+                  "name":"plantCodes",
+                  "label":"TQM_RT_PLANT",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.plantCodes",
+                  "deleteRef":"id"
                 }
               }
             ]
           },
           "label": "",
+          "labelMobile": "ES_COMMON_SEARCH",
           "children": {},
           "show": true
         },
@@ -183,8 +191,11 @@ export const tqmInboxConfig = {
         },
         "filter": {
           "uiConfig": {
+            "headerLabel": "TQM_INBOX_FILTER",
+            "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",
             "formClassName": "filter",
             "type": "filter",
+            "typeMobile":"sort",
             "headerStyle": null,
             "primaryLabel": "Filter",
             "minReqFields": 0,
@@ -210,7 +221,15 @@ export const tqmInboxConfig = {
                   "customfn": "populateMdmsv2SearchReqCriteria",
                   "mdmsv2": {
                     "schemaCode": "PQM.Process"
-                  }
+                  },
+                },
+                "removableTagConf":{
+                  "name":"processCodes",
+                  "label":"TQM_RT_PROCESS",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"filterForm.processCodes",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -225,6 +244,14 @@ export const tqmInboxConfig = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Stage"
                   }
+                },
+                "removableTagConf":{
+                  "name":"stage",
+                  "label":"TQM_RT_STAGE",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"filterForm.stage",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -243,6 +270,14 @@ export const tqmInboxConfig = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Material"
                   }
+                },
+                "removableTagConf":{
+                  "name":"materialCodes",
+                  "label":"TQM_RT_OUTPUT",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"filterForm.materialCodes",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -254,15 +289,27 @@ export const tqmInboxConfig = {
                   "name": "status",
                   "labelPrefix": "WF_STATUS_",
                   "businessService": "PQM"
+                },
+                "removableTagConf":{
+                  "name":"status",
+                  "label":"Status",
+                  // "valueJsonPath":"i18nKey",
+                  "type":"workflowStatusFilter", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"filterForm.status",
+                  // "deleteRef":"id",
+                  "valuePrefix": "WF_STATUS_PQM_",
                 }
               }
             ]
           },
           "label": "Filter",
+          "labelMobile": "TQM_INBOX_FILTER",
           "show": true
         }
       },
-      "additionalSections": {}
+      "additionalSections": {},
+      "persistFormData":true,
+      "showAsRemovableTagsInMobile":true
     }
   ]
 }

@@ -98,8 +98,12 @@ export const UICustomizations = {
         data.config.enabled = false
         return data
       }
-      const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
+      // const { processCodes, materialCodes, status, dateRange,sortOrder,limit,offset } = data.body.custom || {};
       
+      //picking data from state always instead of config(issue -> first api call from state rather than config)
+      const {processCodes,materialCodes,status,dateRange} = data?.state?.searchForm || {}
+      const {sortOrder} = data?.state?.filterForm || {}
+      const {limit,offset} = data?.state?.tableForm || {}
       //processcodes
       data.body.inbox.moduleSearchCriteria.processCodes = processCodes?.map(processCode => processCode.code)
 
@@ -124,10 +128,14 @@ export const UICustomizations = {
       cleanObject(data.body.inbox.processSearchCriteria)
       cleanObject(data.body.inbox.moduleSearchCriteria)
      
-      
-      data.body.inbox.limit = 100
-      data.body.inbox.offset = 0
-      
+      const isMobile = window.Digit.Utils.browser.isMobile();
+      if(isMobile){
+        data.body.inbox.limit = 100
+        data.body.inbox.offset = 0
+      }else{
+      data.body.inbox.limit = limit
+      data.body.inbox.offset = offset
+      }
 
       //set tenantId
       data.body.inbox.tenantId = Digit.ULBService.getCurrentTenantId();
@@ -144,6 +152,8 @@ export const UICustomizations = {
       if(activePlantCode?.length>0){
         data.body.inbox.moduleSearchCriteria.plantCodes = [...activePlantCode]
       }
+
+     
       return data
     },
     populateStatusReqCriteria:() => {
@@ -264,7 +274,11 @@ export const UICustomizations = {
         data.config.enabled = false
         return data
       }
-      const { id,plantCodes:selectedPlantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
+      // const { id,plantCodes:selectedPlantCodes,processCodes,stage, materialCodes, status } = data.body.custom || {};
+
+      const {id,plantCodes:selectedPlantCodes} = data?.state?.searchForm || {}
+      const {processCodes,stage, materialCodes, status} = data?.state?.filterForm || {}
+      const {limit,offset} = data?.state?.tableForm || {}
       //ids
       data.body.inbox.moduleSearchCriteria.testIds = id ?  [id] : null
 
@@ -285,6 +299,15 @@ export const UICustomizations = {
 
       //status
       data.body.inbox.moduleSearchCriteria.status = status ? Object?.keys(status)?.filter(key=>status[key]) : null
+
+      const isMobile = window.Digit.Utils.browser.isMobile();
+      if(isMobile){
+        data.body.inbox.limit = 100
+        data.body.inbox.offset = 0
+      }else{
+      data.body.inbox.limit = limit
+      data.body.inbox.offset = offset
+      }
 
       cleanObject(data.body.inbox.processSearchCriteria)
       cleanObject(data.body.inbox.moduleSearchCriteria)
@@ -378,14 +401,26 @@ export const UICustomizations = {
         },
         changeQueryName:"setPlantUsersInboxDropdown"
       }
-    }
+    },
+    onCardClick:(obj)=> {
+      return `view-test-results?tenantId=${obj?.apiResponse?.businessObject?.tenantId}&id=${obj?.apiResponse?.businessObject?.testId}&from=TQM_BREAD_INBOX`
+    },
+    onCardActionClick:(obj)=> {
+      return `view-test-results?tenantId=${obj?.apiResponse?.businessObject?.tenantId}&id=${obj?.apiResponse?.businessObject?.testId}&from=TQM_BREAD_INBOX`
+    },
+    getCustomActionLabel:(obj,row) => {
+      return "TQM_VIEW_TEST_DETAILS"
+    },
     
   },
   SearchTestResults: {
     preProcess: (data,additionalDetails) => {
       
-      const { processCodes, materialCodes, testType, dateRange,sortOrder,limit,offset } = data.body.custom || {};
+      // const { processCodes, materialCodes, testType, dateRange,sortOrder,limit,offset } = data.body.custom || {};
 
+      const {processCodes, materialCodes, testType, dateRange} = data?.state?.searchForm || {}
+      const {sortOrder} = data?.state?.filterForm || {}
+      const {limit,offset} = data?.state?.tableForm || {}
       data.body.testSearchCriteria={}
       data.body.pagination={}
 
@@ -420,9 +455,16 @@ export const UICustomizations = {
       cleanObject(data.body.pagination)
 
       //update pagination
+
+      const isMobile = window.Digit.Utils.browser.isMobile();
       
-      if(Digit.Utils.tqm.isPlantOperatorLoggedIn()){
+      if(isMobile){
         data.body.pagination.limit = 100
+        data.body.pagination.offset = 0
+      }
+      else{
+      data.body.pagination.limit = limit
+      data.body.pagination.offset = offset
       }
 
       //delete custom
@@ -475,7 +517,10 @@ export const UICustomizations = {
   SearchTestResultsUlbAdmin: {
     preProcess: (data,additionalDetails) => {
       
-      const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data.body.custom || {};
+      // const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data.body.custom || {};
+
+      const { id,plantCodes:selectedPlantCodes, processCodes, testType, dateRange } = data?.state?.searchForm || {};
+      const {limit,offset} = data?.state?.tableForm || {}
       data.body.testSearchCriteria={}
 
       //update testSearchCriteria
@@ -511,6 +556,17 @@ export const UICustomizations = {
     //   data.body.pagination.sortOrder = "DESC"
     // }
 
+    const isMobile = window.Digit.Utils.browser.isMobile();
+      if(isMobile){
+        data.body.pagination={}
+        data.body.pagination.limit = 100
+        data.body.pagination.offset = 0
+      }else{
+        data.body.pagination={}
+        data.body.pagination.limit = limit
+        data.body.pagination.offset = offset
+      }
+
       cleanObject(data.body.testSearchCriteria)
       cleanObject(data.body.pagination)
 
@@ -522,10 +578,11 @@ export const UICustomizations = {
       return ""
     },
     onCardClick:(obj,row)=> {
-      
+      return `view-test-results?tenantId=${obj?.apiResponse?.tenantId}&id=${obj?.apiResponse?.testId}&from=TQM_BREAD_PAST_TESTS&type=`
+     
     },
     onCardActionClick:(obj,row)=> {
-      
+      return `view-test-results?tenantId=${obj?.apiResponse?.tenantId}&id=${obj?.apiResponse?.testId}&from=TQM_BREAD_PAST_TESTS&type=`
     },
     getCustomActionLabel:(obj,row) => {
       return ""

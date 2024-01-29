@@ -61,13 +61,13 @@ const TqmSearch = () => {
         }
         ),[data]);
     
-    
+    const tqmSearchSession = Digit.Hooks.useSessionStorage("TQM_SEARCH_SESSION", {})
     if (isLoading) return <Loader />
     return (
         <React.Fragment>
         <Header className="works-header-search">{t(configs?.label)}</Header>
             <div className="inbox-search-wrapper">
-                <InboxSearchComposer configs={configs} scrollPosition={scrollPosition}></InboxSearchComposer>
+                <InboxSearchComposer configs={configs} scrollPosition={scrollPosition} browserSession={tqmSearchSession}></InboxSearchComposer>
             </div>
         </React.Fragment>
     )
