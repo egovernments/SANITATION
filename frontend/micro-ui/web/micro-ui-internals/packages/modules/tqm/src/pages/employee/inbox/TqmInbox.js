@@ -12,6 +12,8 @@ const TqmInbox = () => {
     const isUlbAdminLoggedIn = Digit.Utils.tqm.isUlbAdminLoggedIn()
     const moduleName = Digit?.Utils?.getConfigModuleName() || "commonSanitationUiConfig"
     const tenant = Digit.ULBService.getStateId();
+    // Hook calling to enable scroll persistent 
+    const scrollPosition = Digit.Hooks.useScrollPersistence();
     const { isLoading, data:config } = Digit.Hooks.useCustomMDMS(tenant,
         "commonSanitationUiConfig",
         [
@@ -47,7 +49,7 @@ const TqmInbox = () => {
         <React.Fragment>
             <Header styles={{ fontSize: "32px" }}>{t(config?.label)}{<span className="inbox-count">{location?.state?.count ? location?.state?.count : 0}</span>}</Header>
             <div className="inbox-search-wrapper">
-              <InboxSearchComposer configs={config} browserSession={tqmInboxSession}></InboxSearchComposer>
+              <InboxSearchComposer configs={config} scrollPosition={scrollPosition} browserSession={tqmInboxSession}></InboxSearchComposer>
             </div>
         </React.Fragment>
     )

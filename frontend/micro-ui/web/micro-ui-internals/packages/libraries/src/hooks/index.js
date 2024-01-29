@@ -84,6 +84,7 @@ import useCustomAPIMutationHook from './useCustomAPIMutationHook.js';
 import useDynamicData from './useDynamicData';
 import useRouteSubscription from './useRouteSubscription';
 import useGenderMDMS from './useGenderMDMS';
+import useScrollPersistence from './useScrollPersistence.js';
 
 const dss = {
   useMDMS: useDssMdms,
@@ -183,7 +184,8 @@ const Hooks = {
   useRouteSubscription,
   useDynamicData,
   useGenderMDMS,
-  useLocation
+  useLocation,
+  useScrollPersistence
 };
 
 export default Hooks;

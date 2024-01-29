@@ -129,7 +129,7 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
             defaultLabel={t(config?.defaultText) }
             defaultUnit={t(config?.selectedText) || t("COMMON_SELECTED")}
             config={config}
-
+            disable={disable}
           />
         </div> : type === "radio" ? (
         <RadioButtons

@@ -35,7 +35,7 @@ function isFalsyOrEmpty(input) {
     return false;
   }
 
-const InboxSearchComposer = ({configs,browserSession}) => {
+const InboxSearchComposer = ({configs,scrollPosition,browserSession}) => {
     
     const [session,setSession,clearSession] = browserSession || []
    
@@ -162,6 +162,10 @@ const InboxSearchComposer = ({configs,browserSession}) => {
         }
     }
     
+    useEffect(() => {
+        // Implement to scroll if scroll persistent is enabled 
+        window.scrollTo(0, scrollPosition)
+    })
 
     return (
         <InboxContext.Provider value={{state,dispatch}} >
