@@ -117,6 +117,7 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
       />
       {showPopUp && (
         <Modal
+          popUpContainerClassName="tqm-pop-wrap"
           popmoduleClassName="tqm-pop-module"
           popupModuleActionBarClass="tqm-pop-action"
           style={{ flex: 1 }}

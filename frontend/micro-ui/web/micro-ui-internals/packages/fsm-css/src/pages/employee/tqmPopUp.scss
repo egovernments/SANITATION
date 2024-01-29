@@ -52,10 +52,13 @@
 }
 
 .popup-wrap {
-  top: unset;
+  top: 0;
   .popup-module.tqm-pop-module {
     .header-wrap {
       margin-bottom: 0;
     }
+  }
+  .tqm-pop-wrap{
+    top: 5rem
   }
 }
