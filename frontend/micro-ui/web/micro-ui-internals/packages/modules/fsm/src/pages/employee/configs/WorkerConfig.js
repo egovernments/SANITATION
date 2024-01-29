@@ -149,9 +149,10 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] })
           isMandatory: true,
           key: "skills",
           type: "dropdown",
-          disable: false,
+          disable: disabled,
           label: "FSM_REGISTRY_WORKER_SKILLS",
           populators: {
+            disable: disabled,
             allowMultiSelect: true,
             name: "skills",
             optionsKey: "i18nKey",
