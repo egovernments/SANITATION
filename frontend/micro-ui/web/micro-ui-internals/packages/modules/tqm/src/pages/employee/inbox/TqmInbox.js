@@ -2,8 +2,8 @@ import React, {useMemo,useState,useEffect} from "react";
 import { useTranslation } from "react-i18next";
 import { Header, InboxSearchComposer,Loader } from "@egovernments/digit-ui-react-components";
 import { useLocation } from "react-router-dom";
-import { tqmInboxConfig } from "./inboxConfig";
-import { tqmInboxConfigPlantOperator } from "./inboxConfigPlantOperator";
+import { tqmInboxConfig } from "./ConfigUlbAdmin";
+import { tqmInboxConfigPlantOperator } from "./ConfigPlantOperator";
 
 const TqmInbox = () => {
     const { t } = useTranslation();
@@ -41,13 +41,15 @@ const TqmInbox = () => {
         
         );
     
+    const tqmInboxSession = Digit.Hooks.useSessionStorage("TQM_INBOX_SESSION", {})    
+
     if(isLoading) return <Loader />
     
     return (
         <React.Fragment>
             <Header styles={{ fontSize: "32px" }}>{t(config?.label)}{<span className="inbox-count">{location?.state?.count ? location?.state?.count : 0}</span>}</Header>
             <div className="inbox-search-wrapper">
-              <InboxSearchComposer configs={config} scrollPosition={scrollPosition}></InboxSearchComposer>
+              <InboxSearchComposer configs={config} scrollPosition={scrollPosition} browserSession={tqmInboxSession}></InboxSearchComposer>
             </div>
         </React.Fragment>
     )

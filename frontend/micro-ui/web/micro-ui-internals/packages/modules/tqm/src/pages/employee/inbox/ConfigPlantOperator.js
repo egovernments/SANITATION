@@ -30,7 +30,8 @@ export const tqmInboxConfigPlantOperator = {
       "sections": {
         "search": {
           "uiConfig": {
-            "type": "filter",
+            "type": "search",
+            "typeMobile":"filter",
             "headerLabel": "TQM_INBOX_FILTERS",
             "searchWrapperStyles": {
               "flexDirection": "column-reverse",
@@ -65,6 +66,14 @@ export const tqmInboxConfigPlantOperator = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Process"
                   }
+                },
+                "removableTagConf":{
+                  "name":"processCodes",
+                  "label":"TQM_RT_PROCESS",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.processCodes",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -82,6 +91,14 @@ export const tqmInboxConfigPlantOperator = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Material"
                   }
+                },
+                "removableTagConf":{
+                  "name":"materialCodes",
+                  "label":"TQM_RT_OUTPUT",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.materialCodes",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -99,6 +116,14 @@ export const tqmInboxConfigPlantOperator = {
                   "masterName": "commonUiConfig",
                   "moduleName": "TqmInboxConfig",
                   "customfn": "populateStatusReqCriteria"
+                },
+                "removableTagConf":{
+                  "name":"status",
+                  "label":"TQM_RT_STATUS",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.status",
+                  "deleteRef":"code"
                 }
               },
               {
@@ -108,6 +133,14 @@ export const tqmInboxConfigPlantOperator = {
                 "disable": false,
                 "populators": {
                   "name": "dateRange"
+                },
+                "removableTagConf":{
+                  "name":"dateRange",
+                  "label":"TQM_RT_DATE_RANGE",
+                  "valueJsonPath":"range.title",
+                  "type":"dateRange", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.dateRange",
+                  // "deleteRef":"code" // deleteRef should only be given for multi type
                 }
               }
             ]
@@ -115,7 +148,68 @@ export const tqmInboxConfigPlantOperator = {
           "label": "",
           "labelMobile": "TQM_INBOX_FILTER",
           "children": {},
-          "show": true
+          "show": true,
+        },
+        "filter": {
+          "uiConfig": {
+            "formClassName": "filter",
+            "type": "filter",
+            "typeMobile":"sort",
+            "headerStyle": null,
+            "headerLabel": "TQM_INBOX_SORTBY",
+            "primaryLabel": "TQM_INBOX_SORT",
+            "secondaryLabel": "TQM_CLEAR_SEARCH",
+            "minReqFields": 0,
+            "defaultValues": {
+              "sortOrder": {
+                "code": "LATEST_FIRST",
+                "name": "TQM_INBOX_LATEST_FIRST",
+                "value": "DESC"
+              }
+            },
+            "fields": [
+              {
+                "label": "",
+                "type": "radio",
+                "isMandatory": false,
+                "disable": false,
+                "populators": {
+                  "name": "sortOrder",
+                  "options": [
+                    {
+                      "code": "LATEST_FIRST",
+                      "name": "TQM_INBOX_LATEST_FIRST",
+                      "value": "DESC"
+                    },
+                    {
+                      "code": "LATEST_LAST",
+                      "name": "TQM_INBOX_LATEST_LAST",
+                      "value": "ASC"
+                    }
+                  ],
+                  "optionsKey": "name",
+                  "styles": {
+                    "gap": "1rem",
+                    "flexDirection": "column"
+                  },
+                  "innerStyles": {
+                    "display": "flex"
+                  }
+                },
+                "removableTagConf":{
+                  "name":"sortOrder",
+                  "label":"TQM_RT_SORT_ORDER",
+                  "valueJsonPath":"name",
+                  "type":"single", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"filterForm.sortOrder",
+                  // "deleteRef":"code"
+                }
+              }
+            ]
+          },
+          "label": "Filter",
+          "labelMobile": "TQM_INBOX_SORT",
+          "show": true,
         },
         "searchResult": {
           "uiConfig": {
@@ -194,60 +288,11 @@ export const tqmInboxConfigPlantOperator = {
           "children": {},
           "show": true
         },
-        "filter": {
-          "uiConfig": {
-            "formClassName": "filter",
-            "type": "sort",
-            "headerStyle": null,
-            "headerLabel": "TQM_INBOX_SORTBY",
-            "primaryLabel": "TQM_INBOX_SORT",
-            "secondaryLabel": "TQM_CLEAR_SEARCH",
-            "minReqFields": 0,
-            "defaultValues": {
-              "sortOrder": {
-                "code": "LATEST_FIRST",
-                "name": "TQM_INBOX_LATEST_FIRST",
-                "value": "DESC"
-              }
-            },
-            "fields": [
-              {
-                "label": "",
-                "type": "radio",
-                "isMandatory": false,
-                "disable": false,
-                "populators": {
-                  "name": "sortOrder",
-                  "options": [
-                    {
-                      "code": "LATEST_FIRST",
-                      "name": "TQM_INBOX_LATEST_FIRST",
-                      "value": "DESC"
-                    },
-                    {
-                      "code": "LATEST_LAST",
-                      "name": "TQM_INBOX_LATEST_LAST",
-                      "value": "ASC"
-                    }
-                  ],
-                  "optionsKey": "name",
-                  "styles": {
-                    "gap": "1rem",
-                    "flexDirection": "column"
-                  },
-                  "innerStyles": {
-                    "display": "flex"
-                  }
-                }
-              }
-            ]
-          },
-          "label": "Filter",
-          "labelMobile": "TQM_INBOX_SORT",
-          "show": true
-        }
+        
       },
-      "additionalSections": {}
+      "additionalSections": {},
+      "persistFormData":true,//for now it's redundant
+      "showAsRemovableTagsInMobile":true
     }
   ]
 }

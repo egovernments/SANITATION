@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash";
 
-const QualityParameter = ({onSelect,formData }) => {
+const QualityParameter = ({onSelect,formData,setValue }) => {
     const { t } = useTranslation();
     const { control} = useForm();
     const [showComponent, setShowComponent] = useState(false);
@@ -74,7 +74,7 @@ const QualityParameter = ({onSelect,formData }) => {
     const qualityCriteria = data?.map(item => item.qualityCriteria);
     const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
     const CardLabelStyle = { marginTop: "-5px" }
-    const [quality, setQuality] = useState({});
+    const [quality, setQuality] = useState(formData?.QualityParameter ? formData?.QualityParameter : {});
 
     function displayValue(newValue, criteria, index) {
         let temp = quality
@@ -118,12 +118,14 @@ const QualityParameter = ({onSelect,formData }) => {
                                             render={(props) => (
                                                 <TextInput
                                                     value={props.value}
+                                                    defaultValue={formData?.QualityParameter?.[criteria]}
                                                     pattern="^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$"
                                                     title={t("ES_TQM_TEST_FORMAT_TIP")}
                                                     type={"text"}
                                                     onChange={(e) => {
                                                         const newValue = e.target.value;
                                                         displayValue(newValue, criteria, subindex);
+                                                        setValue(`QualityParameter.${criteria}`,newValue)
                                                     }}
                                                 />
                                             )}
@@ -139,7 +141,22 @@ const QualityParameter = ({onSelect,formData }) => {
                         <CardLabel style={CardLabelStyle}>{`${t("ES_TQM_TEST_PARAM_ATTACH_DOCUMENTS")}`}</CardLabel>
                         <div className="field">
                             <Controller
-                                name={`photo`}
+                                // defaultValue={formData?.QualityParameter?.document}
+                                // defaultValue={formData?.QualityParameter?.document ? [
+                                //     [
+                                //         formData?.QualityParameter?.document?.[0]?.fileName,
+                                //         {
+                                //             "file": {
+                                //                 name:formData?.QualityParameter?.document?.[0]?.fileName
+                                //             },
+                                //             "fileStoreId": {
+                                //                 "fileStoreId": formData?.QualityParameter?.document?.[0]?.fileStoreId,
+                                //                 "tenantId": Digit.ULBService.getCurrentTenantId()
+                                //             }
+                                //         }
+                                //     ]
+                                // ]: []}
+                                name={`document`}
                                 control={control}
                                 rules={{}}
                                 render={({ onChange, ref, value = [] }) => {
@@ -156,9 +173,12 @@ const QualityParameter = ({onSelect,formData }) => {
                                             });
                                         }
                                         let temp = quality;
+                                        // temp = { ...temp, document: finalDocumentData }
                                         temp = { ...temp, document: finalDocumentData?.[0]?.fileStoreId }
                                         setQuality(temp)
                                         onChange(numberOfFiles > 0 ? filesData : []);
+                                        // setValue("QualityParameter.document",finalDocumentData)
+                                        
                                     }
                                     return (
                                         <MultiUploadWrapper
