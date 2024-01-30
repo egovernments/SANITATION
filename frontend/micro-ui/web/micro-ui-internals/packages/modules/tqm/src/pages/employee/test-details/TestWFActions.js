@@ -2,6 +2,7 @@ import { CardText, FormComposerV2, Loader, Modal, WarningIcon } from "@egovernme
 import React, { Fragment, useEffect, useState } from "react";
 import { updateConfig } from "./config/updateTestConfig";
 import { testResultsConfig } from "./config/testResultsConfig";
+import _ from "lodash";
 
 function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, testDetailsData, isDataLoading }) {
   const [showPopUp, setshowPopUp] = useState(null);
@@ -12,6 +13,30 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
     schemaCode: "PQM.QualityTestLab",
   });
 
+  const UpdateTestSessionScheduled = Digit.Hooks.useSessionStorage("UPDATE_TEST_SESSION_SCHEDULED", {});
+  const [sessionFormDataScheduled,setSessionFormDataScheduled, clearSessionFormDataScheduled] = UpdateTestSessionScheduled
+
+  const UpdateTestSessionPendingResults = Digit.Hooks.useSessionStorage("UPDATE_TEST_SESSION_PENDINGRESULTS", {});
+  const [sessionFormDataPendingResults,setSessionFormDataPendingResults, clearSessionFormDataPendingResults] = UpdateTestSessionPendingResults
+  
+
+  const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
+    if(actionState === "PENDINGRESULTS") {
+        if (!_.isEqual(sessionFormDataPendingResults, formData)) {
+          const duplicateFormData = _.clone(formData)
+          delete duplicateFormData.status
+          setSessionFormDataPendingResults({ ...sessionFormDataPendingResults, ...duplicateFormData });
+      }
+    }else{
+        if (!_.isEqual(sessionFormDataScheduled, formData)) {
+          setSessionFormDataScheduled({ ...sessionFormDataScheduled, ...formData });
+      }
+    }
+    
+  }
+
+  const isMobile = window.Digit.Utils.browser.isMobile();
+
   // const { isLoading: isDataLoading, data: testDetailsData } = Digit.Hooks.tqm.useSearchTest({ id: id, tenantId: tenantId });
 
   const { isLoading: istestCriteriaLoading, data: testCriteriaData } = Digit.Hooks.tqm.useCustomMDMSV2({
@@ -21,6 +46,12 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
   });
 
   const onSubmit = (data) => {
+    if (actionState === "PENDINGRESULTS"){
+      clearSessionFormDataPendingResults()
+    }else{
+      clearSessionFormDataScheduled()
+    }
+
     if (actionState === "PENDINGRESULTS" && !showPopUp) {
       setshowPopUp(data);
       return null;
@@ -79,11 +110,14 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
         config={config}
         onSubmit={onSubmit}
         label={t(actionState === "SCHEDULED" ? "ES_TQM_UPDATE_STATUS_BUTTON" : "ES_TQM_SUBMIT_TEST_RESULTS_BUTTON")}
-        submitInForm={true}
-        cardClassName={"testwf"}
+        submitInForm={isMobile ? true : false}
+        cardClassName={isMobile ? "testwf" : "employeeCard-override"}
+        onFormValueChange={onFormValueChange}
+        defaultValues={actionState === "PENDINGRESULTS" ? sessionFormDataPendingResults : sessionFormDataScheduled}
       />
       {showPopUp && (
         <Modal
+          popUpContainerClassName="tqm-pop-wrap"
           popmoduleClassName="tqm-pop-module"
           popupModuleActionBarClass="tqm-pop-action"
           style={{ flex: 1 }}

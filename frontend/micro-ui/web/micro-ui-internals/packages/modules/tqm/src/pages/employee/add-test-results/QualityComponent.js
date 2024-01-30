@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash";
 
-const QualityParameter = ({onSelect,formData }) => {
+const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props}) => {
+    
     const { t } = useTranslation();
     const { control} = useForm();
     const [showComponent, setShowComponent] = useState(false);
@@ -74,12 +75,15 @@ const QualityParameter = ({onSelect,formData }) => {
     const qualityCriteria = data?.map(item => item.qualityCriteria);
     const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
     const CardLabelStyle = { marginTop: "-5px" }
-    const [quality, setQuality] = useState({});
+    const [quality, setQuality] = useState(formData?.QualityParameter ? formData?.QualityParameter : {});
 
     function displayValue(newValue, criteria, index) {
-        let temp = quality
-        temp[criteria] = newValue;
-        setQuality(temp)
+        setQuality((prevState)=> {
+            return {
+                ...prevState,
+                [criteria]:newValue
+            }
+        })
     }
 
     useEffect(() => {
@@ -117,13 +121,17 @@ const QualityParameter = ({onSelect,formData }) => {
                                             }}
                                             render={(props) => (
                                                 <TextInput
-                                                    value={props.value}
+                                                    // value={props.value}
+                                                    // defaultValue={formData?.QualityParameter?.[criteria]}
+                                                    value={quality?.[criteria]}
+                                                    defaultValue={quality?.[criteria]}
                                                     pattern="^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$"
                                                     title={t("ES_TQM_TEST_FORMAT_TIP")}
                                                     type={"text"}
                                                     onChange={(e) => {
                                                         const newValue = e.target.value;
                                                         displayValue(newValue, criteria, subindex);
+                                                        setValue(`QualityParameter.${criteria}`,newValue)
                                                     }}
                                                 />
                                             )}
@@ -139,7 +147,8 @@ const QualityParameter = ({onSelect,formData }) => {
                         <CardLabel style={CardLabelStyle}>{`${t("ES_TQM_TEST_PARAM_ATTACH_DOCUMENTS")}`}</CardLabel>
                         <div className="field">
                             <Controller
-                                name={`photo`}
+                                defaultValue={quality?.document || []}
+                                name={`QualityParameter.document`}
                                 control={control}
                                 rules={{}}
                                 render={({ onChange, ref, value = [] }) => {
@@ -147,19 +156,24 @@ const QualityParameter = ({onSelect,formData }) => {
                                         const numberOfFiles = filesData.length;
                                         let finalDocumentData = [];
                                         if (numberOfFiles > 0) {
-                                            filesData.forEach((value) => {
-                                                finalDocumentData.push({
-                                                    fileName: value?.[0],
-                                                    fileStoreId: value?.[1]?.fileStoreId?.fileStoreId,
-                                                    documentType: value?.[1]?.file?.type,
-                                                });
+                                          filesData.forEach((value) => {
+                                            finalDocumentData.push({
+                                              fileName: value?.[0],
+                                              fileStoreId: value?.[1]?.fileStoreId?.fileStoreId,
+                                              documentType: value?.[1]?.file?.type,
                                             });
+                                          });
                                         }
-                                        let temp = quality;
-                                        temp = { ...temp, document: finalDocumentData?.[0]?.fileStoreId }
-                                        setQuality(temp)
+                                        //here we need to update the form the same way as the state of the reducer in multiupload, since Upload component within the multiupload wrapper uses that same format of state so we need to set the form data as well in the same way. Previously we were altering it and updating the formData
+
+                                        setQuality((prevState) => {
+                                            return {
+                                                ...prevState,
+                                                document:filesData
+                                            }
+                                        })
                                         onChange(numberOfFiles > 0 ? filesData : []);
-                                    }
+                                      }
                                     return (
                                         <MultiUploadWrapper
                                             t={t}
@@ -167,10 +181,10 @@ const QualityParameter = ({onSelect,formData }) => {
                                             tenantId={Digit.ULBService.getCurrentTenantId()}
                                             getFormState={getFileStoreData}
                                             showHintBelow={false}
-                                            setuploadedstate={value || []}
+                                            setuploadedstate={value || quality?.document || []}
                                             allowedFileTypesRegex={/(jpg|jpeg|png|pdf)$/i}
                                             allowedMaxSizeInMB={2}
-                                            maxFilesAllowed={1}
+                                            maxFilesAllowed={1}    
                                         />
                                     );
                                 }}

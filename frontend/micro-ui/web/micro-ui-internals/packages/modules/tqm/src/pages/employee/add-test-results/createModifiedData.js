@@ -16,10 +16,10 @@ export const createModifiedData = (data) => {
             "testType": "LAB_ADHOC",
             "scheduledDate": null,
             "isActive": null,
-            "documents": data?.QualityParameter?.document
+            "documents": data?.QualityParameter?.document?.length > 0
                 ? [
                     {
-                        "fileStoreId": data?.QualityParameter?.document,
+                        "fileStoreId": data?.QualityParameter?.document?.[0]?.[1]?.fileStoreId?.fileStoreId
                     }
                 ]
                 : [],

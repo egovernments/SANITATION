@@ -19,7 +19,8 @@ export const tqmSearchConfigPlantOperator = {
       "sections": {
         "search": {
           "uiConfig": {
-            "type": "filter",
+            "type": "search",
+            "typeMobile": "filter",
             "headerLabel": "TQM_INBOX_FILTERS",
             "headerStyle": null,
             "primaryLabel": "TQM_INBOX_FILTER",
@@ -34,23 +35,6 @@ export const tqmSearchConfigPlantOperator = {
               "dateRange": {}
             },
             "fields": [
-              // {
-              //   "label": "TQM_PLANT_NAME",
-              //   "type": "dropdown",
-              //   "isMandatory": false,
-              //   "disable": false,
-              //   "populators": {
-              //     "optionsCustomStyle": {
-              //       "top": "2.3rem"
-              //     },
-              //     "name": "plantCodes",
-              //     "optionsKey": "i18nKey",
-              //     "allowMultiSelect": true,
-              //     "mdmsv2": {
-              //       "schemaCode": "PQM.Plant"
-              //     }
-              //   }
-              // },
               {
                 "label": "TQM_TREATMENT_PROCESS",
                 "type": "dropdown",
@@ -66,6 +50,14 @@ export const tqmSearchConfigPlantOperator = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Process"
                   }
+                },
+                "removableTagConf":{
+                  "name":"processCodes",
+                  "label":"TQM_RT_PROCESS",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.processCodes",
+                  "deleteRef":"code"// only required for multi type
                 }
               },
               {
@@ -83,6 +75,14 @@ export const tqmSearchConfigPlantOperator = {
                   "mdmsv2": {
                     "schemaCode": "PQM.Material"
                   }
+                },
+                "removableTagConf":{
+                  "name":"materialCodes",
+                  "label":"TQM_RT_OUTPUT",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.materialCodes",
+                  "deleteRef":"code" // only required for multi type
                 }
               },
               {
@@ -100,6 +100,14 @@ export const tqmSearchConfigPlantOperator = {
                   "mdmsv2": {
                     "schemaCode": "PQM.SourceType"
                   }
+                },
+                "removableTagConf":{
+                  "name":"testType",
+                  "label":"TQM_RT_TEST_TYPE",
+                  "valueJsonPath":"i18nKey",
+                  "type":"multi", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.testType",
+                  "deleteRef":"code" // only required for multi type
                 }
               },
               {
@@ -116,6 +124,14 @@ export const tqmSearchConfigPlantOperator = {
                 "populators": {
                   "name": "dateRange",
                   "maxDate":"currentDate"
+                },
+                "removableTagConf":{
+                  "name":"dateRange",
+                  "label":"TQM_RT_DATE_RANGE",
+                  "valueJsonPath":"range.title",
+                  "type":"dateRange", // single, multi, date(single), dateRange(single),...etc,
+                  "sessionJsonPath":"searchForm.dateRange",
+                  // "deleteRef":"code" // only required for multi type
                 }
               }
             ]
@@ -190,14 +206,19 @@ export const tqmSearchConfigPlantOperator = {
         },
         "filter": {
           "uiConfig": {
-            "type": "sort",
+            "type": "filter",
+            "typeMobile": "sort",
             "headerStyle": null,
             "headerLabel": "TQM_INBOX_SORTBY",
             "primaryLabel": "TQM_INBOX_SORT",
             "secondaryLabel": "TQM_CLEAR_SEARCH",
             "minReqFields": 0,
             "defaultValues": {
-              "sortOrder": ""
+              "sortOrder": {
+                "code": "LATEST_FIRST",
+                "name": "TQM_INBOX_LATEST_FIRST",
+                "value": "DESC"
+              }
             },
             "fields": [
               {
@@ -227,7 +248,15 @@ export const tqmSearchConfigPlantOperator = {
                   "innerStyles": {
                     "display": "flex"
                   }
-                }
+                },
+                // "removableTagConf":{
+                //   "name":"sortOrder",
+                //   "label":"TQM_RT_SORT_ORDER",
+                //   "valueJsonPath":"name",
+                //   "type":"single", // single, multi, date(single), dateRange(single),...etc,
+                //   "sessionJsonPath":"filterForm.sortOrder",
+                //   // "deleteRef":"code" // only required for multi type
+                // }
               }
             ]
           },
@@ -236,7 +265,9 @@ export const tqmSearchConfigPlantOperator = {
           "show": true
         }
       },
-      "additionalSections": {}
+      "additionalSections": {},
+      "persistFormData":true,
+      "showAsRemovableTagsInMobile":true
     },
   ],
 };

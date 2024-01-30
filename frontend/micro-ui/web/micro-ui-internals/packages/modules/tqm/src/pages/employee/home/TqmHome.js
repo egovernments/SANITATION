@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import TqmCard from '../../../components/TqmCard'
 import Alerts from '../../../components/Alerts'
 import YourPerformance from '../../../components/YourPerformance'
@@ -13,6 +13,12 @@ const TqmHome = (props) => {
   startDate.setMonth(startDate.getMonth() - 1);
   const [dateRange, setDateRange] = useState(getDateRange({ startDate: startDate.getTime(), endDate: endDate }));
   
+  useEffect(() =>{
+    // removing scroll persistent
+    localStorage.removeItem("/sanitation-ui/employee/tqm/inbox");
+    localStorage.removeItem("/sanitation-ui/employee/tqm/test-details");
+  }, [])
+
   const activePlantCode = Digit.SessionStorage.get('active_plant')?.plantCode
     ? [Digit.SessionStorage.get('active_plant')?.plantCode]
     : Digit.SessionStorage.get('user_plants')

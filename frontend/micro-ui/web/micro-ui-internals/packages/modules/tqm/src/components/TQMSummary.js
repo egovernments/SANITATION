@@ -11,6 +11,12 @@ const TQMSummary = () => {
   const id = searchParams.get("id");
   const isMobile = window.Digit.Utils.browser.isMobile();
 
+  useEffect(() => {
+    // storing scroll value for scroll persistence
+    const checkValue = localStorage.getItem("/sanitation-ui/employee/tqm/search-test-results");
+    localStorage.setItem("scrollValue", checkValue);
+  }, []);
+
   const config = {
     select: (data) => ({
       cards: [

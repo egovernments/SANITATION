@@ -38,6 +38,12 @@ export default {
   
   getMappedPlants:()=>{
     return Digit.SessionStorage.get("user_plants")?.length>=0 ? Digit.SessionStorage.get("user_plants")?.filter(row => row.plantCode) : []
+  },
+  //fn to decide whether to destroy a session or not
+  destroySessionHelper:(currentPath,pathList,sessionName) => {
+    if(!pathList.includes(currentPath)){
+      sessionStorage.removeItem(`Digit.${sessionName}`)
+    }
   }
 }
 

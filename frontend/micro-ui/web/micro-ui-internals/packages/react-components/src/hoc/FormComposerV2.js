@@ -153,6 +153,7 @@ export const FormComposerV2 = (props) => {
                   pattern={populators?.pattern}
                   customIcon={populators?.customIcon}
                   customClass={populators?.customClass}
+                  defaultValue={formData?.[populators.name]}
                 />
               )}
               name={populators.name}

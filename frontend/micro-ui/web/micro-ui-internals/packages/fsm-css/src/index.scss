@@ -13,6 +13,7 @@
 @import "./components/ulbHomeCard.scss";
 @import "./components/InboxSearchComposer.scss";
 @import "./pages/employee/overridestyles.scss";
+@import "./pages/employee/inboxTag.scss";
 @import "./pages/employee/tqmHome.scss";
 @import "./pages/employee/tqmPopUp.scss";
 @import "./components/DetailsCard.scss";
@@ -21,6 +22,7 @@
 @import "./components/tqmHeader.scss";
 @import "./pages/employee/create.scss";
 @import "./pages/employee/registry.scss";
+@import "./components/applicationTable.scss";
 
 @media screen and (max-width: 768px) {
   .employeeCard.fsm {
@@ -353,3 +355,34 @@ input::-webkit-calendar-picker-indicator {
     line-height: 32px;
   }
 }
+
+/*
+PART OF VEHICLE TRACKING
+
+.sla-cell-success {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0 24px;
+  border-radius: 11px;
+  background-color: rgba(0, 112, 60, 0.12);
+  color: #00703c !important;
+}
+
+.sla-cell-error {
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 11px;
+  padding: 0 24px;
+  color: #d4351c !important;
+  background-color: rgb(212, 53, 28, 0.12);
+}
+
+.sla-cell-warning {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0 24px;
+  border-radius: 11px;
+  color: #f47738 !important;
+  background-color: rgb(241, 143, 94, 0.12);
+}
+*/

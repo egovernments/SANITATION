@@ -230,6 +230,9 @@ const EmployeeApp = ({ path, url, userType }) => {
   const AddWorker = Digit.ComponentRegistryService.getComponent("AddWorker");
   const EditWorker = Digit.ComponentRegistryService.getComponent("EditWorker");
   const WorkerDetails = Digit.ComponentRegistryService.getComponent("WorkerDetails");
+  const VehicleTrackingCard = Digit.ComponentRegistryService.getComponent("VehicleTrackingCard");
+  const VehicleTrackingAlerts = Digit.ComponentRegistryService.getComponent("Alerts");
+  const IllegalDumpingSites = Digit.ComponentRegistryService.getComponent("IllegalDumpingSites");
 
   const locationCheck =
     window.location.href.includes("/employee/fsm/inbox") ||
@@ -237,6 +240,19 @@ const EmployeeApp = ({ path, url, userType }) => {
     window.location.href.includes("/employee/fsm/application-details/");
 
   const desludgingApplicationCheck = window.location.href.includes("/employee/fsm/new-application") || window.location.href.includes("/employee/fsm/modify-application");
+
+  const destroySessionHelper = (currentPath,pathList,sessionName) => {
+    if(!pathList.includes(currentPath)){
+      sessionStorage.removeItem(`Digit.${sessionName}`)
+    }
+  }
+
+  //destroying inbox session 
+  useEffect(() => {
+    const pathVar = location.pathname.replace(path + "/", "").split("?")?.[0];
+    destroySessionHelper(pathVar,["inbox","application-details/"],"FSM_INBOX_SESSION");
+  }, [location])
+
   return (
     <Switch>
       <React.Fragment>
@@ -281,6 +297,9 @@ const EmployeeApp = ({ path, url, userType }) => {
           <PrivateRoute path={`${path}/registry/new-worker`} component={() => <AddWorker parentRoute={path} />} />
           <PrivateRoute path={`${path}/registry/edit-worker`} component={() => <EditWorker parentRoute={path} />} />
           <PrivateRoute path={`${path}/registry/worker-details`} component={() => <WorkerDetails parentRoute={path} />} />
+          <PrivateRoute exact path={`${path}/vehicle-tracking/home`} component={() => <VehicleTrackingCard matchPath={path} userType={userType} />} />
+          <PrivateRoute path={`${path}/vehicle-tracking/alerts`} component={() => <VehicleTrackingAlerts parentRoute={path} isInbox={true} />} />
+          <PrivateRoute path={`${path}/vehicle-tracking/illegal-dumping-sites`} component={() => <IllegalDumpingSites />} />
         </div>
       </React.Fragment>
     </Switch>
