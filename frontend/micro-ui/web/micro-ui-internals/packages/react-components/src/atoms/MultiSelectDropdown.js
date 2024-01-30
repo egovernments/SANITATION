@@ -80,16 +80,17 @@ const MultiSelectDropdown = ({ options, optionsKey, selected = [], onSelect, def
   }
 
   const MenuItem = ({ option, index }) => (
-    <div key={index} style={isOBPSMultiple ? (index%2 !== 0 ?{background : "#EEEEEE"}:{}):{}}>
+    <div key={index} className={`${option.isDisabled ? "disabled" : ""}`}style={isOBPSMultiple ? (index%2 !== 0 ?{background : "#EEEEEE"}:{}):{}}>
       <input
         type="checkbox"
         value={option[optionsKey]}
         checked={alreadyQueuedSelectedState.find((selectedOption) => selectedOption[optionsKey] === option[optionsKey]) ? true : false}
         onChange={(e) => isPropsNeeded?onSelectToAddToQueue(e, option,props):isOBPSMultiple?onSelectToAddToQueue(e, option,BlockNumber):onSelectToAddToQueue(e, option)}
         style={{minWidth: "24px", width: "100%"}}
+        disabled={option.isDisabled || false}
       />
       <div className="custom-checkbox">
-        <CheckSvg style={{innerWidth: "24px", width: "24px"}}/>
+        <CheckSvg style={{innerWidth: "24px", width: "24px"}} fill={option.isDisabled ? "#505050" : "#F47738"} />
       </div>
       <p className="label" style={index === optionIndex ? {
                     opacity: 1,
