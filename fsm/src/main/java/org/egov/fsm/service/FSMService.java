@@ -606,6 +606,10 @@ public class FSMService {
 			}
 		}
 
+		if(!Objects.isNull(criteria.getIndividualIds()) && !criteria.getIndividualIds().isEmpty()) {
+			setApplicationIdsWithWorkers(criteria.getIndividualIds(), criteria);
+		}
+
 		fsmResponse = repository.getFSMData(criteria, dsoId);
 		fsmList = fsmResponse.getFsm();
 		if (!fsmList.isEmpty()) {
@@ -613,6 +617,20 @@ public class FSMService {
 		}
 
 		return fsmResponse;
+	}
+
+	private void setApplicationIdsWithWorkers(List<String> individualIds, FSMSearchCriteria criteria) {
+		WorkerSearchCriteria workerSearchCriteria = WorkerSearchCriteria.builder()
+				.workerTypes(Collections.singletonList(WorkerType.DRIVER.toString()))
+				.individualIds(individualIds)
+				.status(Collections.singletonList(WorkerStatus.ACTIVE.toString()))
+				.tenantId(criteria.getTenantId())
+				.build();
+		List<Worker> workers = fsmWorkerRepository.getWorkersData(workerSearchCriteria);
+		List<String> applicationIds = workers.stream().map(Worker::getApplicationId).collect(Collectors.toList());
+		if(!applicationIds.isEmpty()) {
+			criteria.setIds(applicationIds);
+		}
 	}
 
 	private void checkRoleInValidateSearch(RequestInfo requestInfo, FSMSearchCriteria criteria) {
