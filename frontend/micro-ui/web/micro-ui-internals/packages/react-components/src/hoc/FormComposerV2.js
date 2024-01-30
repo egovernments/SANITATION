@@ -649,7 +649,7 @@ export const FormComposerV2 = (props) => {
                     {t(field.label)}
                     {field?.appendColon ? " : " : null}
                     {field.isMandatory ? " * " : null}
-                    {field.labelChildren && field.labelChildren}
+                    {field?.labelChildren ? field?.labelChildren : null}
                   </CardLabel>
                 )}
                 <div style={field.withoutLabel ? { width: "100%", ...props?.fieldStyle } : { ...props?.fieldStyle }} className="field">
