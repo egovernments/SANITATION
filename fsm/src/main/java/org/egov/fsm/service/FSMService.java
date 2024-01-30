@@ -606,8 +606,12 @@ public class FSMService {
 			}
 		}
 
-		if(!Objects.isNull(criteria.getIndividualIds()) && !criteria.getIndividualIds().isEmpty()) {
-			setApplicationIdsWithWorkers(criteria.getIndividualIds(), criteria);
+		if (!Objects.isNull(criteria.getIndividualIds()) && !criteria.getIndividualIds().isEmpty()) {
+			List<String> applicationIds = setApplicationIdsWithWorkers(criteria);
+			if (applicationIds.isEmpty()) {
+				return FSMResponse.builder().fsm(Collections.emptyList()).totalCount(0).build();
+			}
+			criteria.setIds(applicationIds);
 		}
 
 		fsmResponse = repository.getFSMData(criteria, dsoId);
@@ -619,18 +623,14 @@ public class FSMService {
 		return fsmResponse;
 	}
 
-	private void setApplicationIdsWithWorkers(List<String> individualIds, FSMSearchCriteria criteria) {
-		WorkerSearchCriteria workerSearchCriteria = WorkerSearchCriteria.builder()
+	private List<String> setApplicationIdsWithWorkers(FSMSearchCriteria criteria) {
+		List<Worker> workers = fsmWorkerRepository.getWorkersData(WorkerSearchCriteria.builder()
 				.workerTypes(Collections.singletonList(WorkerType.DRIVER.toString()))
-				.individualIds(individualIds)
+				.individualIds(criteria.getIndividualIds())
 				.status(Collections.singletonList(WorkerStatus.ACTIVE.toString()))
 				.tenantId(criteria.getTenantId())
-				.build();
-		List<Worker> workers = fsmWorkerRepository.getWorkersData(workerSearchCriteria);
-		List<String> applicationIds = workers.stream().map(Worker::getApplicationId).collect(Collectors.toList());
-		if(!applicationIds.isEmpty()) {
-			criteria.setIds(applicationIds);
-		}
+				.build());
+		return workers.stream().map(Worker::getApplicationId).collect(Collectors.toList());
 	}
 
 	private void checkRoleInValidateSearch(RequestInfo requestInfo, FSMSearchCriteria criteria) {
