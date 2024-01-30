@@ -167,7 +167,7 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], defaultSkill = [
             error: "ES_TQM_REQUIRED",
             required: true,
             options: skillsOption,
-            defaultSkill: defaultSkill,
+            defaultOptions: defaultSkill,
             //   mdmsv2: {
             //     schemaCode: "PQM.Plant",
             //   }

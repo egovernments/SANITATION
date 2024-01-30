@@ -93,8 +93,8 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
   //   return selectedValue
   // }
 
-  if(config?.optionsDisable && config?.options && config?.defaultSkill){
-    config?.options?.forEach(obj1 => obj1.isDisabled = config?.defaultSkill.some(obj2 => obj2.type === obj1.code));
+  if(config?.optionsDisable && config?.options && config?.defaultOptions){
+    config?.options?.forEach(obj1 => obj1.isDisabled = config?.defaultOptions.some(obj2 => obj2.type === obj1.code));
   }
 
   return (
