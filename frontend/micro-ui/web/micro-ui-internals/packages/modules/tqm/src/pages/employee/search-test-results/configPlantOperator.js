@@ -249,14 +249,14 @@ export const tqmSearchConfigPlantOperator = {
                     "display": "flex"
                   }
                 },
-                "removableTagConf":{
-                  "name":"sortOrder",
-                  "label":"TQM_RT_SORT_ORDER",
-                  "valueJsonPath":"name",
-                  "type":"single", // single, multi, date(single), dateRange(single),...etc,
-                  "sessionJsonPath":"filterForm.sortOrder",
-                  // "deleteRef":"code" // only required for multi type
-                }
+                // "removableTagConf":{
+                //   "name":"sortOrder",
+                //   "label":"TQM_RT_SORT_ORDER",
+                //   "valueJsonPath":"name",
+                //   "type":"single", // single, multi, date(single), dateRange(single),...etc,
+                //   "sessionJsonPath":"filterForm.sortOrder",
+                //   // "deleteRef":"code" // only required for multi type
+                // }
               }
             ]
           },
