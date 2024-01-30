@@ -555,6 +555,7 @@
 }
 
 .drawer-list {
+  margin-bottom: 2rem;
   .sidebar-list {
     .submenu-container {
       .sidebar-link {
@@ -666,4 +667,20 @@ video::-webkit-media-controls-play-button {
 .bannerCard .language-button-container button {
   width: 11.2rem;
   height: 2.5rem;
+}
+
+#jk-dropdown-unique {
+  .disabled {
+    pointer-events: none;
+    background-color: #eee;
+    .custom-checkbox {
+      background-color: transparent;
+      border-color: #505050;
+    }
+  }
+}
+
+.sidebar-list-footer {
+  position: fixed;
+  bottom: 0;
 }

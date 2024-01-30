@@ -1,8 +1,8 @@
 import React from "react";
-import { DatePicker, Dropdown } from "@egovernments/digit-ui-react-components";
+import { DatePicker, InfoIcon } from "@egovernments/digit-ui-react-components";
 import { convertEpochToDate } from "../../../utils";
 
-const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] }) => {
+const WorkerConfig = ({ t, disabled = false, skillsOption = [], defaultSkill = [], employer = [] }) => {
   return [
     {
       head: "ES_FSM_REGISTRY_PERSONAL_DETAILS",
@@ -149,16 +149,25 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], employer = [] })
           isMandatory: true,
           key: "skills",
           type: "dropdown",
-          disable: disabled,
+          optionsDisable: disabled,
           label: "FSM_REGISTRY_WORKER_SKILLS",
+          labelChildren: (
+            <div className="tooltip" style={{ paddingLeft: "10px", marginBottom: "-3px" }}>
+              <InfoIcon />
+              <span className="tooltiptext" style={{ width: "150px", left: "230%", fontSize: "14px" }}>
+                {t("ES_FSM_SW_SKILLS_INFO_TIP")}
+              </span>
+            </div>
+          ),
           populators: {
-            disable: disabled,
+            optionsDisable: disabled,
             allowMultiSelect: true,
             name: "skills",
             optionsKey: "i18nKey",
             error: "ES_TQM_REQUIRED",
             required: true,
             options: skillsOption,
+            defaultSkill: defaultSkill,
             //   mdmsv2: {
             //     schemaCode: "PQM.Plant",
             //   }
