@@ -11,9 +11,7 @@ import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGe
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-@SpringBootApplication(
-    nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
-)
+@SpringBootApplication
 @ComponentScan(
     basePackages = { "org.egov"},
     nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
