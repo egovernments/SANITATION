@@ -99,8 +99,19 @@ const VendorDetails = (props) => {
       },
     },
     config: {
+      staleTime: 0,
+      cacheTime: 0,
+      enabled: !isLoading,
       select: (data) => {
-        return data?.Individual?.map((i) => ({ optionsKey: `${i.name.givenName} / ${i.individualId}`, ...i }));
+        const individuals = data?.Individual
+        const filteredData = individuals?.filter(entry =>
+          entry.additionalFields &&
+          entry.additionalFields.fields &&
+          entry.additionalFields.fields.some(field =>
+            field.key === "EMPLOYER" && field.value === dsoData?.[0]?.dsoDetails?.agencyType
+          )
+        );
+        return filteredData?.map((i) => ({ optionsKey: `${i.name.givenName} / ${i.individualId}`, ...i }));
       },
     },
   });
