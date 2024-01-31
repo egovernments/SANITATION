@@ -421,6 +421,7 @@ const VendorDetails = (props) => {
                                     text={
                                       <ViewImages
                                         fileStoreIds={value?.photo}
+                                        title={t("ES_FSM_PHOTOGRAPH")}
                                         // tenantId={state}
                                         docPreview={true}
                                         tenantId={tenantId}
