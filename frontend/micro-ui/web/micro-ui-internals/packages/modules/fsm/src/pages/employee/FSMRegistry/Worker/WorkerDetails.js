@@ -73,6 +73,7 @@ const WorkerDetails = (props) => {
         individualId: id,
       },
     },
+    t
   });
 
   // const { data: driverData, isLoading: isLoading, isSuccess: isDsoSuccess, error: dsoError, refetch } = Digit.Hooks.fsm.useDriverDetails(tenantId, { ids: id });
