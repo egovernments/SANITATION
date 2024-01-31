@@ -279,6 +279,8 @@ const TestStandard = ({ control, errors, formData,setValue,getValues,onSelect, .
                   props.onChange(data);
                   clearFields("plant")
                   displayValue(data,"plantCode")
+                  setValue('QualityParameter',{})
+
                 }}
                 optionKey="i18nKey"
                 t={t}
@@ -322,6 +324,7 @@ const TestStandard = ({ control, errors, formData,setValue,getValues,onSelect, .
                   props.onChange(data);
                   clearFields("process")
                   displayValue(data,"processCode")
+                  setValue('QualityParameter',{})
                 }}
                 optionKey="processi18nKey"
                 t={t}
@@ -365,6 +368,8 @@ const TestStandard = ({ control, errors, formData,setValue,getValues,onSelect, .
                   props.onChange(data);
                   clearFields("stage")
                   displayValue(data,"stageCode")
+                  setValue('QualityParameter',{})
+
                 }}
                 optionKey="stagei18nKey"
                 t={t}
@@ -408,6 +413,8 @@ const TestStandard = ({ control, errors, formData,setValue,getValues,onSelect, .
                   props.onChange(data);
                   clearFields("material")
                   displayValue(data,"materialCode")
+                  setValue('QualityParameter',{})
+
                 }}
                 optionKey="materiali18nKey"
                 t={t}
