@@ -438,7 +438,6 @@ const VendorDetails = (props) => {
                           style={{
                             color: "#f47738",
                             cursor: "pointer",
-                            marginLeft: "16px",
                           }}
                           onClick={() => onActionSelect(detail.type === "ES_FSM_REGISTRY_DETAILS_TYPE_WORKER" ? "ADD_WORKER" : "ADD_VEHICLE")}
                         >
