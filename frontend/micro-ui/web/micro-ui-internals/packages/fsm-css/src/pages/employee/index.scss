@@ -680,3 +680,16 @@ video::-webkit-media-controls-play-button {
   position: fixed;
   bottom: 0;
 }
+
+.employee-data-table {
+  .employeeCard.card-with-background {
+    max-width: 45%;
+    margin-left: 0;
+    .row {
+      justify-content: space-between;
+      .value{
+        width: 45%
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@egovernments/digit-ui-fsm-css",
-  "version": "0.1.27",
+  "version": "0.1.28",
   "license": "MIT",
   "main": "dist/index.css",
   "engines": {
