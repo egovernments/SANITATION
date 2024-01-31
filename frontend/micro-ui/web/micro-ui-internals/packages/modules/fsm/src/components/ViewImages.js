@@ -51,7 +51,7 @@ export const ViewImages = (props) => {
           <React.Fragment key={index}>
             <a target="_" href={doc.fullImage} style={{ minWidth: "80px", marginRight: "10px", maxWidth: "100px", height: "auto" }} key={index}>
               <DocumentRect />
-              <p className="tqm-document-title">{props?.title}</p>
+              {props?.title ? <p className="tqm-document-title">{props?.title}</p> : null}
             </a>
           </React.Fragment>
         ))}
