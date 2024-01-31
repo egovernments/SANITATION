@@ -207,7 +207,7 @@ export const tqmInboxConfigPlantOperator = {
               }
             ]
           },
-          "label": "Filter",
+          "label": "TQM_INBOX_SORT",
           "labelMobile": "TQM_INBOX_SORT",
           "show": true,
         },

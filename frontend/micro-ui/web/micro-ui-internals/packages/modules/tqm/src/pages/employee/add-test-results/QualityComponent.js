@@ -4,6 +4,15 @@ import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash";
 
+function allTruthy(obj) {
+    for (let key in obj) {
+      if (!obj[key]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props}) => {
     
     const { t } = useTranslation();
@@ -14,18 +23,9 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
     const [showToast, setShowToast] = useState(false);
     const tenant = Digit.ULBService.getStateId();
     const [allFieldsDefined, setallFieldsDefined] = useState(false);
-
     useEffect(() => {
-        const excludedField = "QualityParameter";
-        let allFieldsDefined = false;
-        for (const key in formData) {
-            if (key !== excludedField && formData[key] === undefined) {
-                setallFieldsDefined(false);
-                break;
-            }
-            else {
-                setallFieldsDefined(formData);
-            }
+        if(formData?.TestStandard && allTruthy(formData?.TestStandard)){
+            setallFieldsDefined(true)
         }
     }, [formData])
     
