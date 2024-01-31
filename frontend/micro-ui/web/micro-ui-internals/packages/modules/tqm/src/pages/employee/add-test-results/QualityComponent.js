@@ -30,6 +30,9 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
     }, [formData])
     
 
+    
+    
+
     const { isLoading, data } = Digit.Hooks.tqm.useCustomMDMSV2({
         tenantId: tenant,
         "filters": {
@@ -79,6 +82,12 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
     const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
     const CardLabelStyle = { marginTop: "-5px" }
     const [quality, setQuality] = useState(formData?.QualityParameter ? formData?.QualityParameter : {});
+
+    // useEffect(() => {
+    //     if(showComponent){
+    //       setQuality({})
+    //     }
+    //   }, [showComponent])
 
     function displayValue(newValue, criteria, index) {
         setQuality((prevState)=> {
