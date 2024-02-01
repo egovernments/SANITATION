@@ -78,6 +78,10 @@ public class Vendor {
 	@JsonProperty("source")
 	private String source = null;
 
+	@JsonProperty("workers")
+	@Valid
+	private List<Worker> workers = null;
+	
 	@SafeHtml
 	@JsonProperty("description")
 	private String description = null;

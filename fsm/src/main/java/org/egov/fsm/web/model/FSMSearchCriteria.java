@@ -41,6 +41,9 @@ public class FSMSearchCriteria {
     @JsonProperty("ownerIds")
     private List<String> ownerIds;
     
+    @JsonProperty("driverId")
+    private List<String> driverId ;
+    
     @JsonProperty("fromDate")
     private Long fromDate; 
     

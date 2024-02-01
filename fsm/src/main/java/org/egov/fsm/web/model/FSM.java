@@ -127,6 +127,10 @@ public class FSM   {
   @JsonProperty("vehicleId")
   private String vehicleId ;
   
+  @SafeHtml
+  @JsonProperty("driverId")
+  private String driverId ;
+  
   @JsonProperty("vehicle")
   private Vehicle vehicle ;
 

@@ -20,6 +20,7 @@ public class FSMToFSMAuditUtilConverter {
 	  fsmUtil.setSanitationtype(fsm.getSanitationtype());	  
 	  fsmUtil.setSource(fsm.getSource());
 	  fsmUtil.setVehicleId(fsm.getVehicleId());
+	  fsmUtil.setDriverId(fsm.getDriverId());
 	  fsmUtil.setVehicleType(fsm.getVehicleType());
 	  fsmUtil.setStatus(fsm.getStatus()==null? null : fsm.getStatus().name());
 	    

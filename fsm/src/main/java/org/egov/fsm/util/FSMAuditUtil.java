@@ -35,6 +35,8 @@ public class FSMAuditUtil {
 
 	private String vehicleId = null;
 
+	private String driverId = null;
+	
 	private String doorNo = null;
 
 	private String plotNo = null;
