@@ -9,10 +9,10 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>org.egov</groupId>
-  <artifactId>vehicle-tracking</artifactId>
+  <artifactId>trackingservice</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
-  <name>vehicle-tracking-service</name>
+  <name>trackingservice</name>
   <description>vehicle tracking service</description>
 
   <properties>
