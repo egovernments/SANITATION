@@ -160,7 +160,7 @@ export const tqmSearchConfigUlbAdmin = {
           "label": "",
           "children": {},
           "show": true,
-          "labelMobile": "TQM_INBOX_FILTER"
+          "labelMobile": "TQM_INBOX_SEARCH"
         },
         "searchResult": {
           "uiConfig": {
