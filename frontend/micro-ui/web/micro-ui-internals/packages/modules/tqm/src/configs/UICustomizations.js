@@ -578,11 +578,11 @@ export const UICustomizations = {
       return ""
     },
     onCardClick:(obj,row)=> {
-      return `view-test-results?tenantId=${obj?.apiResponse?.tenantId}&id=${obj?.apiResponse?.testId}&from=TQM_BREAD_PAST_TESTS&type=`
+      return `view-test-results?tenantId=${obj?.apiResponse?.tenantId}&id=${obj?.apiResponse?.testId}&from=TQM_BREAD_PAST_TESTS&type=${obj?.apiResponse?.testType === "LAB_ADHOC" ? "adhoc" : ""}`
      
     },
     onCardActionClick:(obj,row)=> {
-      return `view-test-results?tenantId=${obj?.apiResponse?.tenantId}&id=${obj?.apiResponse?.testId}&from=TQM_BREAD_PAST_TESTS&type=`
+      return `view-test-results?tenantId=${obj?.apiResponse?.tenantId}&id=${obj?.apiResponse?.testId}&from=TQM_BREAD_PAST_TESTS&type=${obj?.apiResponse?.testType === "LAB_ADHOC" ? "adhoc" : ""}`
     },
     getCustomActionLabel:(obj,row) => {
       return ""
