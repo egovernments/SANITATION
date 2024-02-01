@@ -2,12 +2,14 @@ package org.egov.tracking;
 
 import com.fasterxml.jackson.databind.Module;
 import java.util.concurrent.Executor;
+import org.egov.tracer.config.TracerConfiguration;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -16,6 +18,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
     basePackages = { "org.egov"},
     nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
 )
+@Import({ TracerConfiguration.class })
 @EnableAsync
 public class TrackingApplication {
 

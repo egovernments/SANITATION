@@ -82,7 +82,7 @@ config:
   - name: 'builds/SANITATION/trackingservice'
     build:
       - work-dir: 'trackingservice'
-        image-name: 'vehicle-tracking-service'
+        image-name: 'trackingservice'
         dockerfile: 'build/maven/Dockerfile'
       - work-dir: 'trackingservice/src/main/resources/db'
         image-name: 'vehicle-tracking-service-db'
