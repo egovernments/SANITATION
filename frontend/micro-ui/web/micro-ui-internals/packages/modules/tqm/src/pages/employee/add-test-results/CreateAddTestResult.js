@@ -5,6 +5,17 @@ import { useHistory } from "react-router-dom";
 import { addTestConfig } from "./config";
 import { createModifiedData } from "./createModifiedData";
 import _ from "lodash"
+
+function filterObjectKeys(obj, keysArray) {
+  const filteredObj = {};
+  keysArray.forEach(key => {
+      if (obj.hasOwnProperty(key)) {
+          filteredObj[key] = obj[key];
+      }
+  });
+  return filteredObj;
+}
+
 const Create = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
@@ -31,6 +42,12 @@ const Create = () => {
 }
 
   const onSubmit = async (data) => {
+    //filter data and qualityParams as well
+
+    let qualityCriteria = sessionStorage.getItem('Digit.qualityCriteria')?.split(',')
+    qualityCriteria.push('document')
+    data.QualityParameter = filterObjectKeys(data.QualityParameter,qualityCriteria)
+
     const qualityParams = data.QualityParameter;
     if (!qualityParams) {
       setShowToast({
