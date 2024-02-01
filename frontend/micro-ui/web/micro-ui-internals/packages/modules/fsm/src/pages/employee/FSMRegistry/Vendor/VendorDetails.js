@@ -478,6 +478,7 @@ const VendorDetails = (props) => {
               }
               headerBarEnd={<CloseBtn onClick={closeModal} />}
               actionCancelLabel={t("CS_COMMON_CANCEL")}
+              isDisabled={selectedOption?.optionsKey || selectedOption?.registrationNumber ? false : true}
               actionCancelOnSubmit={closeModal}
               actionSaveLabel={t(selectedAction === "DELETE" ? "ES_EVENT_DELETE" : "CS_COMMON_SUBMIT")}
               actionSaveOnSubmit={handleVendorUpdate}
