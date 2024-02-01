@@ -172,11 +172,11 @@ const WorkerDetails = (props) => {
 
     mutateUpdateWorker(formData, {
       onError: (error, variables) => {
-        setShowToast({ key: "error", action: selectedAction === "ENABLE_SW" ? "ENABLE_WORKER_FAILED" : "DELETE_WORKER_FAILED" });
+        setShowToast({ key: "error", action: selectedAction === "ENABLE_SW" ? "ENABLE_WORKER_FAILED" : "DISABLE_WORKER_FAILED" });
         setTimeout(closeToast, 5000);
       },
       onSuccess: (data, variables) => {
-        setShowToast({ key: "success", action: selectedAction === "ENABLE_SW" ? "ENABLE_WORKER" : "DELETE_WORKER" });
+        setShowToast({ key: "success", action: selectedAction === "ENABLE_SW" ? "ENABLE_WORKER" : "DISABLE_WORKER" });
         queryClient.invalidateQueries("DSO_SEARCH");
 
         setTimeout(() => {
