@@ -88,7 +88,7 @@ function filterByUniqueKey(arrayOfObjects, key) {
   });
 }
 
-const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }) => {
+const TestStandard = ({ control, errors, formData,setValue,getValues,onSelect, ...props }) => {
   
   const formName = 'TestStandard';
   const { t } = useTranslation();
@@ -98,6 +98,21 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
   const [process, setProcess] = useState([]);
   const [stage, setStage] = useState([]);
   const [outputType, setOutputType] = useState([]);
+
+  const [cardState,setCardState] = useState(formData?.TestStandard ? formData?.TestStandard : {})
+
+  function displayValue(newValue, criteria, index) {
+    setCardState((prevState) => {
+      return {
+        ...prevState,
+        [criteria]: newValue,
+      };
+    });
+  }
+
+  useEffect(() => {
+    onSelect('TestStandard', cardState);
+  }, [cardState]);
 
   // const [selectedPlant, setSelectedPlant] = useState(null);
   // const [selectedProcess, setSelectedProcess] = useState(null);
@@ -149,6 +164,14 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
       setValue(`${formName}.processCode`,null)
       setValue(`${formName}.stageCode`,null)
       setValue(`${formName}.materialCode`,null)
+      setCardState((prevState) => {
+        return {
+          ...prevState,
+          processCode:null,
+          stageCode:null,
+          materialCode:null
+        }
+      })
       // setProcess([])
       setOutputType([])
       setStage([])
@@ -161,6 +184,13 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
       // setValue(`${formName}.processCode`,null)
       setValue(`${formName}.stageCode`,null)
       setValue(`${formName}.materialCode`,null)
+      setCardState((prevState) => {
+        return {
+          ...prevState,
+          stageCode:null,
+          materialCode:null
+        }
+      })
       // setProcess([])
       setOutputType([])
       setStage([])
@@ -173,6 +203,12 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
       // setValue(`${formName}.processCode`,null)
       // setValue(`${formName}.stageCode`,null)
       setValue(`${formName}.materialCode`,null)
+      setCardState((prevState) => {
+        return {
+          ...prevState,
+          materialCode:null
+        }
+      })
       // setProcess([])
       setOutputType([])
       // setStage([])
@@ -183,7 +219,6 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
     //   // setSelectedOutputType(null)
     //   setSelectedStage(null)
     // }
-
   }
 
   useEffect(() => {
@@ -235,7 +270,7 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
             render={(props) => (
               <Dropdown
                 // selected={selectedPlant || props.value}
-                selected={props.value}
+                selected={cardState?.plantCode || props.value}
                 disable={false}
                 isMandatory={true}
                 option={plant}
@@ -243,6 +278,9 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
                   // setSelectedPlant(data);
                   props.onChange(data);
                   clearFields("plant")
+                  displayValue(data,"plantCode")
+                  setValue('QualityParameter',{})
+
                 }}
                 optionKey="i18nKey"
                 t={t}
@@ -277,7 +315,7 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
             render={(props) => (
               <Dropdown
                 // selected={selectedProcess || props.value}
-                selected={props.value}
+                selected={cardState?.processCode ||props.value}
                 disable={process.length > 0 ? false : true}
                 isMandatory={true}
                 option={process}
@@ -285,6 +323,8 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
                   // setSelectedProcess(data);
                   props.onChange(data);
                   clearFields("process")
+                  displayValue(data,"processCode")
+                  setValue('QualityParameter',{})
                 }}
                 optionKey="processi18nKey"
                 t={t}
@@ -319,7 +359,7 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
             render={(props) => (
               <Dropdown
                 // selected={selectedStage || props.value}
-                selected={props.value}
+                selected={cardState?.stageCode ||props.value}
                 disable={stage.length > 0 ? false : true}
                 isMandatory={true}
                 option={stage}
@@ -327,6 +367,9 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
                   // setSelectedStage(data);
                   props.onChange(data);
                   clearFields("stage")
+                  displayValue(data,"stageCode")
+                  setValue('QualityParameter',{})
+
                 }}
                 optionKey="stagei18nKey"
                 t={t}
@@ -361,7 +404,7 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
             render={(props) => (
               <Dropdown
                 // selected={selectedOutputType || props.value}
-                selected={props.value}
+                selected={cardState?.materialCode ||props.value}
                 disable={outputType.length > 0 ? false : true}
                 isMandatory={true}
                 option={outputType}
@@ -369,6 +412,9 @@ const TestStandard = ({ control, errors, formData,setValue,getValues, ...props }
                   // setSelectedOutputType(data);
                   props.onChange(data);
                   clearFields("material")
+                  displayValue(data,"materialCode")
+                  setValue('QualityParameter',{})
+
                 }}
                 optionKey="materiali18nKey"
                 t={t}

@@ -87,6 +87,8 @@ const DsoDetails = async (tenantId, filters = {}) => {
     auditDetails: dso.auditDetails,
     drivers: dso.drivers,
     activeDrivers: dso.drivers?.filter((driver) => driver.status === "ACTIVE"),
+    workers: dso.workers,
+    // activeWorkers: dso.workers?.filter((worker) => worker.vendorWorkerStatus === "ACTIVE"),
     allVehicles: dso.vehicles,
     dsoDetails: dso,
     employeeResponse: getResponse(dso),

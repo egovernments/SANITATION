@@ -1,8 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useMemo } from "react";
 import { CardLabel, LabelFieldPair, Toast, TextInput, LinkButton, CardLabelError, MobileNumber, DatePicker, Loader, Header, ImageUploadHandler, UploadFile, MultiUploadWrapper } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash";
+
+function allTruthy(obj) {
+    for (let key in obj) {
+      if (!obj[key]) {
+        return false;
+      }
+    }
+    return true;
+  }
 
 const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props}) => {
     
@@ -14,20 +23,14 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
     const [showToast, setShowToast] = useState(false);
     const tenant = Digit.ULBService.getStateId();
     const [allFieldsDefined, setallFieldsDefined] = useState(false);
-
     useEffect(() => {
-        const excludedField = "QualityParameter";
-        let allFieldsDefined = false;
-        for (const key in formData) {
-            if (key !== excludedField && formData[key] === undefined) {
-                setallFieldsDefined(false);
-                break;
-            }
-            else {
-                setallFieldsDefined(formData);
-            }
+        if(formData?.TestStandard && allTruthy(formData?.TestStandard)){
+            setallFieldsDefined(true)
         }
     }, [formData])
+    
+
+    
     
 
     const { isLoading, data } = Digit.Hooks.tqm.useCustomMDMSV2({
@@ -43,7 +46,7 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
         config: {
             enabled: !!allFieldsDefined,
             staleTime: 0,
-            cacheTime:0
+            cacheTime:0,
         }
     })
     const closeToast = () => {
@@ -72,10 +75,19 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
         }
     }, [data,formData]);
 
-    const qualityCriteria = data?.map(item => item.qualityCriteria);
+    //here make sure this is single array of unique items
+    // const qualityCriteria = data?.map(item => item.qualityCriteria);
+    const qualityCriteria = useMemo(() => data?.length > 0 ? [...new Set(data?.map(item => item.qualityCriteria)?.flatMap(array => array))]: [], [data])
+    // const qualityCriteria = data?.length > 0 ? [...new Set(data?.map(item => item.qualityCriteria)?.flatMap(array => array))]: []
     const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
     const CardLabelStyle = { marginTop: "-5px" }
     const [quality, setQuality] = useState(formData?.QualityParameter ? formData?.QualityParameter : {});
+
+    // useEffect(() => {
+    //     if(showComponent){
+    //       setQuality({})
+    //     }
+    //   }, [showComponent])
 
     function displayValue(newValue, criteria, index) {
         setQuality((prevState)=> {
@@ -106,11 +118,10 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
 
                 <React.Fragment>
                     <Header> {t("ES_TQM_QUALITY_PARAMETERS")}</Header>
-                    {qualityCriteria?.map((criterionList, index) => (
+                    {qualityCriteria?.map((criteria, index) => (
                         <div key={index}>
-                            {criterionList.map((criteria, subindex) => (
-                                <LabelFieldPair key={subindex}>
-                                    <CardLabel style={CardLabelStyle}>{t(Digit.Utils.locale.getTransformedLocale(`${"PQM.TestStandard"}_${criteria}`))} {criterionList?.length === 1 ? "*" : ""}</CardLabel>
+                                <LabelFieldPair key={index}>
+                                    <CardLabel style={CardLabelStyle}>{t(Digit.Utils.locale.getTransformedLocale(`${"PQM.TestStandard"}_${criteria}`))} {qualityCriteria?.length === 1 ? "*" : ""}</CardLabel>
                                     
                                     <div className="field">
                                         <Controller
@@ -130,7 +141,7 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
                                                     type={"text"}
                                                     onChange={(e) => {
                                                         const newValue = e.target.value;
-                                                        displayValue(newValue, criteria, subindex);
+                                                        displayValue(newValue, criteria, index);
                                                         setValue(`QualityParameter.${criteria}`,newValue)
                                                     }}
                                                 />
@@ -138,10 +149,8 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
                                         />
                                     </div>
                                 </LabelFieldPair>
-
+                                </div>
                             ))}
-                        </div>
-                    ))}
 
                     <LabelFieldPair>
                         <CardLabel style={CardLabelStyle}>{`${t("ES_TQM_TEST_PARAM_ATTACH_DOCUMENTS")}`}</CardLabel>

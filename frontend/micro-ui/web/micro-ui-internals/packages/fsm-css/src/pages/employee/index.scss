@@ -555,16 +555,13 @@
 }
 
 .drawer-list {
+  margin-bottom: 2rem;
   .sidebar-list {
     .submenu-container {
       .sidebar-link {
         padding: unset !important;
       }
     }
-  }
-  .sidebar-list:last-child {
-    position: fixed;
-    bottom: 0;
   }
 }
 .sections-parent.inbox {
@@ -666,4 +663,33 @@ video::-webkit-media-controls-play-button {
 .bannerCard .language-button-container button {
   width: 11.2rem;
   height: 2.5rem;
+}
+
+#jk-dropdown-unique {
+  .disabled {
+    pointer-events: none;
+    background-color: #eee;
+    .custom-checkbox {
+      background-color: transparent;
+      border-color: #505050;
+    }
+  }
+}
+
+.sidebar-list-footer {
+  position: fixed;
+  bottom: 0;
+}
+
+.employee-data-table {
+  .employeeCard.card-with-background {
+    max-width: 45%;
+    margin-left: 0;
+    .row {
+      justify-content: space-between;
+      .value{
+        width: 45%
+      }
+    }
+  }
 }

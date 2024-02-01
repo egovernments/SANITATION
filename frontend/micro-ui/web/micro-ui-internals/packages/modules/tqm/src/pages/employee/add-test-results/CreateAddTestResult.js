@@ -22,7 +22,11 @@ const Create = () => {
 
   const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
     if (!_.isEqual(sessionFormData, formData)) {
+        if(Object.keys(sessionFormData)?.length===0){
+          setSessionFormData({ ...formData });
+        }else{
         setSessionFormData({ ...sessionFormData, ...formData });
+        }
     }
 }
 
