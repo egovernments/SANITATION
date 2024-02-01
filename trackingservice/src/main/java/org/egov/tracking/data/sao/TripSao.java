@@ -41,7 +41,7 @@ public class TripSao {
         List<FsmApplication> fsmApplicationList = new ArrayList<>();
 
         HttpEntity<Map<String, Object>> entity = SaoUtil.getMapHttpEntity(authToken, null);
-        StringBuilder searchUrl = new StringBuilder().append(fsmUrl).append("/").append("_search?tenantId=").append(tenantId);
+        StringBuilder searchUrl = new StringBuilder().append(fsmUrl).append("fsm/v1/").append("_search?tenantId=").append(tenantId);
         if(workerId != null) {
             searchUrl.append("&individualIds=").append(workerId);
         }
@@ -67,7 +67,7 @@ public class TripSao {
     public String fetchFsmTrips(String referenceApplicationNo, String tripId, String tenantId, String authToken, String vehicleTripUrl) {
          log.info("## fetchFsmTripsForApplication is invoked");
         HttpEntity<Map<String, Object>> entity = SaoUtil.getMapHttpEntity(authToken, null);
-        StringBuilder searchUrl = new StringBuilder().append(vehicleTripUrl).append("/").append("_search?tenantId=").append(tenantId).append("&applicationStatus=").append(
+        StringBuilder searchUrl = new StringBuilder().append(vehicleTripUrl).append("vehicle/trip/v1/").append("_search?tenantId=").append(tenantId).append("&applicationStatus=").append(
             Constants.FSM_TRIP_SEARCH_STATUS_FILTER);
         if (referenceApplicationNo != null) {
             searchUrl.append("&refernceNos=").append(referenceApplicationNo);
@@ -103,7 +103,7 @@ public class TripSao {
         //Create http header and request body
         HttpEntity<Map<String, Object>> entity = SaoUtil.getMapHttpEntity(authToken, vehicleTripMap);
 
-        StringBuilder updateUrl = new StringBuilder().append(vehicleTripUrl).append("/").append("_update?_=1698562201046");
+        StringBuilder updateUrl = new StringBuilder().append(vehicleTripUrl).append("vehicle/trip/v1/").append("_update?_=1698562201046");
          log.info("## " + updateUrl);
 
         ResponseEntity<String> response = restTemplate.postForEntity(updateUrl.toString(), entity, String.class);
