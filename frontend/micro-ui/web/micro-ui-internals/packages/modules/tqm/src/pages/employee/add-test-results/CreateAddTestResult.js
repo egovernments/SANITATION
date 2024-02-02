@@ -36,6 +36,14 @@ const Create = () => {
     setFormSession(sessionFormData)
   },[sessionFormData])
   
+  useEffect(()=> {
+    return () => {
+      if(!location.pathname.includes("tqm")){
+        sessionStorage.removeItem("Digit.CREATE_ADHOC_TEST")
+      }
+    }
+  },[])
+
   const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
     const temp = JSON.parse(sessionStorage.getItem("Digit.CREATE_ADHOC_TEST"))
     if(!temp && _.isEmpty(formData?.TestStandard)) return;
