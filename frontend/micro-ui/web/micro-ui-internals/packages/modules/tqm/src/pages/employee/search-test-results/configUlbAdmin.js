@@ -21,7 +21,7 @@ export const tqmSearchConfigUlbAdmin = {
           "uiConfig": {
             "type":"search",
             "typeMobile":"filter",
-            "headerLabel": "TQM_INBOX_FILTERS",
+            "headerLabel": "TQM_INBOX_SEARCH",
             "headerStyle": null,
             "primaryLabel": "ES_COMMON_SEARCH",
             "secondaryLabel": "ES_COMMON_CLEAR_SEARCH",

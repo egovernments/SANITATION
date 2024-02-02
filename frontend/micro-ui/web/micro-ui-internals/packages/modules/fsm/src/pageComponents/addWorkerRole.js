@@ -247,7 +247,29 @@ function AddWorkerRole({ t, jurisdiction, jurisdictions, setjurisdictions, handl
 
   const selectFunctionalRole = (value) => {
     setjurisdictions((pre) =>
-      pre.map((item) => (item.key === jurisdiction.key ? { ...item, fn_role: value, roles: null, sys_role: null, emp_Type: null, licenseNo: null } : item))
+      pre.map((item) =>
+        item.key === jurisdiction.key
+          ? {
+              ...item,
+              fn_role: value,
+              roles: [
+                {
+                  code: "SANITATION_WORKER",
+                  name: "Sanitation Worker",
+                  isDefault: true,
+                },
+                {
+                  code: "CITIZEN",
+                  name: "Citizen",
+                  isDefault: true,
+                },
+              ],
+              sys_role: null,
+              emp_Type: null,
+              licenseNo: null,
+            }
+          : item
+      )
     );
     setFnRoleSelected(value);
   };
