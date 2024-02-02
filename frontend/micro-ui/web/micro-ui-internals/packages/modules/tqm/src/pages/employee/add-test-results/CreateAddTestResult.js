@@ -30,9 +30,16 @@ const Create = () => {
 
   const CreateAdhocTestSession = Digit.Hooks.useSessionStorage("CREATE_ADHOC_TEST", {});
   const [sessionFormData,setSessionFormData, clearSessionFormData] = CreateAdhocTestSession;
-
+  const [formSession, setFormSession] = useState(sessionFormData);
+  
+  useEffect(() => {
+    setFormSession(sessionFormData)
+  },[sessionFormData])
+  
   const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
-    if (!_.isEqual(sessionFormData, formData)) {
+    const temp = JSON.parse(sessionStorage.getItem("Digit.CREATE_ADHOC_TEST"))
+    if(!temp && _.isEmpty(formData?.TestStandard)) return;
+    if (!_.isEqual(temp?.value, formData)) {
         if(Object.keys(sessionFormData)?.length===0){
           setSessionFormData({ ...formData });
         }else{
@@ -112,7 +119,7 @@ const Create = () => {
 
           };
         })}
-        defaultValues={sessionFormData}
+        defaultValues={formSession}
         onSubmit={onSubmit}
         fieldStyle={{ marginRight: 0 }}
         noBreakLine={true}
