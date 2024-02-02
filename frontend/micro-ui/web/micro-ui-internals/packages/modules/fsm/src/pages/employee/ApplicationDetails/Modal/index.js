@@ -361,6 +361,18 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         })
       }
     };
+    //if action is send back we'll inactivate the assigned workers
+
+    if (action === "SENDBACK") {
+      if(applicationData?.workers?.length > 0) {
+        applicationData.workers = applicationData?.workers?.map(worker => {
+          return {
+            ...worker,
+            status:"INACTIVE"
+          }
+        })
+      }
+    };
 
     if (reassignReason) addCommentToWorkflow(reassignReason, workflow, data);
     if (rejectionReason) addCommentToWorkflow(rejectionReason, workflow, data);
