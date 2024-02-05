@@ -35,12 +35,8 @@ useScrollPersistence Hook
       localStorage.removeItem(URL_KEY);
       }, [])
   
-  NOTE: 
-    In mobile view, clicking on back will re run scroll function causing reset the scroll value to 0. So add to the "scrollValue" to enable a prevented check:  
-      useEffect(() => {
-        const checkValue = localStorage.getItem(URL_KEY);
-        localStorage.setItem("scrollValue", checkValue);
-      }, []); 
+  NOTE:
+  To avoid scroll function runs everytime when mounting, wheel eventlistener is added now to check the behaviour.   
 */
 
 import { useEffect, useState } from "react";
@@ -62,27 +58,13 @@ const useScrollPersistence = () => {
   const isMobile = window.Digit.Utils.browser.isMobile();
 
   useEffect(() => {
-
+    let checkWheel = false
+    const handleWheel = () => {
+      checkWheel = true;
+      return checkWheel
+    }
     const handleScroll = () => {
-      // functional calls when scrolling
-      const checkValue = localStorage.getItem("scrollValue");
-      const checkReloadValue = localStorage.getItem("reloadScrollValue");
-      const isScrolling = localStorage.getItem("isScrolling");
-      const temp = localStorage.getItem(getUrlKey())
-      if (checkValue > 0) {
-        localStorage.removeItem("scrollValue");
-        return;
-      }
-      // Check to prevent unintended function calls
-      if (checkReloadValue > 0 && isScrolling) {
-        localStorage.removeItem("reloadScrollValue");
-        return;
-      }
-      localStorage.removeItem("isScrolling");
-      if(isMobile && Math.abs(temp - window.scrollY) > 500){
-        return
-      }
-      if (!isScrolling) {
+      if (checkWheel) {
         const currentScrollPosition = window.scrollY;
         setScrollPosition(currentScrollPosition);
         localStorage.setItem(getUrlKey(), window.scrollY);
@@ -90,12 +72,11 @@ const useScrollPersistence = () => {
     };
 
     const handleBeforeUnload = () => {
-      localStorage.setItem("reloadScrollValue", window.scrollY);
-      localStorage.setItem("isScrolling", true);
       localStorage.setItem(getUrlKey(), window.scrollY);
     };
 
     // adding listener
+    window.addEventListener("wheel", handleWheel);
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("beforeunload", handleBeforeUnload);
 
@@ -107,7 +88,7 @@ const useScrollPersistence = () => {
 
     return () => {
       // unmounting listener
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("wheel", handleScroll);
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
