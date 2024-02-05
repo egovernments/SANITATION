@@ -59,6 +59,7 @@ const useScrollPersistence = () => {
   };
 
   const [scrollPosition, setScrollPosition] = useState(initialScrollPosition());
+  const isMobile = window.Digit.Utils.browser.isMobile();
 
   useEffect(() => {
 
@@ -67,6 +68,7 @@ const useScrollPersistence = () => {
       const checkValue = localStorage.getItem("scrollValue");
       const checkReloadValue = localStorage.getItem("reloadScrollValue");
       const isScrolling = localStorage.getItem("isScrolling");
+      const temp = localStorage.getItem(getUrlKey())
       if (checkValue > 0) {
         localStorage.removeItem("scrollValue");
         return;
@@ -77,6 +79,9 @@ const useScrollPersistence = () => {
         return;
       }
       localStorage.removeItem("isScrolling");
+      if(isMobile && Math.abs(temp - window.scrollY) > 500){
+        return
+      }
       if (!isScrolling) {
         const currentScrollPosition = window.scrollY;
         setScrollPosition(currentScrollPosition);
