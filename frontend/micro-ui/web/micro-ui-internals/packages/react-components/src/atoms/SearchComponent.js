@@ -92,6 +92,11 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
           ...data
         }
       })
+      //here reset tableForm as well when search
+      dispatch({
+        type: "tableForm",
+        state: { limit:10,offset:0 }
+      })
     } else {
       setShowToast({ warning: true, label: t("ES_COMMON_MIN_SEARCH_CRITERIA_MSG") })
       setTimeout(closeToast, 3000);
