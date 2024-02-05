@@ -92,7 +92,7 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
           ...data
         }
       })
-    //here reset tableForm as well when search
+      //here reset tableForm as well when search
       dispatch({
         type: "tableForm",
         state: { limit:10,offset:0 }
