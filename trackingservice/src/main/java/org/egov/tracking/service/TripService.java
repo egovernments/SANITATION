@@ -3,6 +3,7 @@ package org.egov.tracking.service;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.egov.tracking.config.ApplicationConfig;
 import org.egov.tracking.data.dao.PoiDao;
 import org.egov.tracking.data.dao.TripDao;
 import org.egov.tracking.data.dao.TripProgressDao;
@@ -42,12 +43,15 @@ public class TripService {
     @Autowired
     RuleEngine ruleEngine;
 
+    @Autowired
+    ApplicationConfig applicationConfig;
+
 
     //Fetch trips from FSM application
     public List<Trip> getFsmTripsForDriver(String workerId, String authToken, String tenantId) {
          log.info("## getFsmTripsForDriver is invoked");
         //Step 1 - Fetch from FSM the list of applications based on driver id
-        List<FsmApplication> fsmApplicationList = tripSao.searchFsmApplicationsForDriver(workerId, tenantId, authToken, Constants.DIGIT_FSM_URL);
+        List<FsmApplication> fsmApplicationList = tripSao.searchFsmApplicationsForDriver(workerId, tenantId, authToken, applicationConfig.getFsmUrl());
 
         //Step 2 - Fetch from FSM list of trips mapped to each application
         //TODO Switch to passing multiple application nos to target API
@@ -55,7 +59,7 @@ public class TripService {
             //Fetch the trip list for the application and add list back to the main applications list
 
             String tripResponseJson = tripSao.fetchFsmTrips(
-                    fsmApplication.getApplicationNo(), null, tenantId, authToken, Constants.DIGIT_VEHICLE_TRIP_URL);
+                    fsmApplication.getApplicationNo(), null, tenantId, authToken, applicationConfig.getVehicleTripUrl());
             fsmApplication.setFsmVehicleTripList(JsonUtil.getFSMVehicleTripObjectFromJson(tripResponseJson));
         }
 

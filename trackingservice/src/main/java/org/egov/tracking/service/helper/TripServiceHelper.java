@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.egov.tracking.config.ApplicationConfig;
 import org.egov.tracking.data.dao.PoiDao;
 import org.egov.tracking.data.dao.RouteDao;
 import org.egov.tracking.data.dao.TripDao;
@@ -34,6 +35,9 @@ public class TripServiceHelper {
 
     @Autowired
     POISao poiSao;
+
+    @Autowired
+    private ApplicationConfig applicationConfig;
 
     //Orchestrate creation of a new trip, which includes creates start and end POIs, route id and finally the trip in VTS
     public void createTripWithFsmData(String tripId, String tenantId, String referenceNo,
@@ -91,13 +95,13 @@ public class TripServiceHelper {
 
     public void updateFSMTripStatus(Trip trip, String authToken, TripSao tripSao) {
         String tripResponseJson = tripSao.fetchFsmTrips(
-                null, trip.getId(), trip.getTenantId(), authToken, Constants.DIGIT_VEHICLE_TRIP_URL);
+                null, trip.getId(), trip.getTenantId(), authToken, applicationConfig.getVehicleTripUrl());
 
         //Step 2.2 - Update FSM vehicle trip map entity
         Map<String, Object> updatedVehicleTrip = JsonUtil.updateFsmTripEndActionJson(tripResponseJson, trip.getTripEndType());
 
         //Step 2.3 - Call FSM vehicle trip API and update trip status
-        tripSao.updateFsmEndTripForApplication(updatedVehicleTrip, authToken, Constants.DIGIT_VEHICLE_TRIP_URL);
+        tripSao.updateFsmEndTripForApplication(updatedVehicleTrip, authToken, applicationConfig.getVehicleTripUrl());
     }
 
 }

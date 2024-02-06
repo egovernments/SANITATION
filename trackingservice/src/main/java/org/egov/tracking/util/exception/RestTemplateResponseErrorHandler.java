@@ -4,8 +4,7 @@ import static org.springframework.http.HttpStatus.Series.CLIENT_ERROR;
 import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -13,11 +12,9 @@ import org.springframework.web.client.ResponseErrorHandler;
 
 //Common error handling component for Spring RestTemplate
 @Component
+@Slf4j
 public class RestTemplateResponseErrorHandler
         implements ResponseErrorHandler {
-
-    Logger logger = LoggerFactory.getLogger(RestTemplateResponseErrorHandler.class);
-
     @Override
     public boolean hasError(ClientHttpResponse httpResponse)
             throws IOException {

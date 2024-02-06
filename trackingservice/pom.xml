@@ -2,60 +2,27 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <packaging>jar</packaging>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.2.6.RELEASE</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+  <groupId>org.egov</groupId>
+  <artifactId>trackingservice</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <name>trackingservice</name>
+  <description>vehicle tracking service</description>
+
   <properties>
     <log4j2.version>2.17.1</log4j2.version>
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <springdoc.version>1.6.14</springdoc.version>
-    <swagger-ui.version>4.15.5</swagger-ui.version>
+    <lombok.version>1.18.8</lombok.version>
   </properties>
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.6</version>
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
-  <groupId>org.egov</groupId>
-  <artifactId>vehicle-tracking</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <name>vehicle-tracking-services</name>
-  <description>vehicle tracking services</description>
 
-  <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-            <configuration>
-              <classifier>exec</classifier>
-            </configuration>
-          </execution>
-        </executions>
-        <configuration>
-          <excludes>
-            <exclude>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-            </exclude>
-            <exclude>
-              <groupId>org.springframework.boot</groupId>
-              <artifactId>spring-boot-devtools</artifactId>
-            </exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-
-    </plugins>
-  </build>
   <repositories>
     <repository>
       <id>repo.digit.org</id>
@@ -78,6 +45,35 @@
       <url>https://nexus-repo.egovernments.org/nexus/content/groups/public/</url>
     </repository>
   </repositories>
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+            <exclude>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-devtools</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
 
   <dependencies>
     <dependency>
@@ -94,10 +90,6 @@
       <artifactId>spring-boot-starter-tomcat</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
     </dependency>
@@ -105,7 +97,7 @@
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <version>${springdoc.version}</version>
+      <version>1.6.14</version>
     </dependency>
     <!-- @Nullable annotation -->
     <dependency>
@@ -141,9 +133,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <version>5.3.7</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -154,7 +145,11 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.egov.services</groupId>
+      <artifactId>tracer</artifactId>
+      <version>2.1.0-SNAPSHOT</version>
+    </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -167,7 +162,6 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.30</version>
       <optional>true</optional>
     </dependency>
   </dependencies>

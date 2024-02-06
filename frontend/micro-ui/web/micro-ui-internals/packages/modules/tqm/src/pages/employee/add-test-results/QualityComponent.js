@@ -30,6 +30,9 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
     }, [formData])
     
 
+    
+    
+
     const { isLoading, data } = Digit.Hooks.tqm.useCustomMDMSV2({
         tenantId: tenant,
         "filters": {
@@ -75,10 +78,17 @@ const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props
     //here make sure this is single array of unique items
     // const qualityCriteria = data?.map(item => item.qualityCriteria);
     const qualityCriteria = useMemo(() => data?.length > 0 ? [...new Set(data?.map(item => item.qualityCriteria)?.flatMap(array => array))]: [], [data])
+    sessionStorage.setItem('Digit.qualityCriteria',qualityCriteria?qualityCriteria:[])
     // const qualityCriteria = data?.length > 0 ? [...new Set(data?.map(item => item.qualityCriteria)?.flatMap(array => array))]: []
     const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
     const CardLabelStyle = { marginTop: "-5px" }
     const [quality, setQuality] = useState(formData?.QualityParameter ? formData?.QualityParameter : {});
+
+    // useEffect(() => {
+    //     if(showComponent){
+    //       setQuality({})
+    //     }
+    //   }, [showComponent])
 
     function displayValue(newValue, criteria, index) {
         setQuality((prevState)=> {

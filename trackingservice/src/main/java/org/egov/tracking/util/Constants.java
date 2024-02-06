@@ -14,10 +14,6 @@ public class Constants {
     public static final String RULE_METHOD_PREFIX = "rule";
     public static final int POI_MATCH_THRESHOLD_METERS = 100;
     public static final String MONITORING_USER_ID = "MonitoringService";
-    @Value("${egov.fsm.host}")
-    public static final String DIGIT_FSM_URL = "";
-    @Value("${egov.vehicle.host}")
-    public static final String DIGIT_VEHICLE_TRIP_URL = "";
     public static final String ILLEGAL_DUMP_YARD_STOPPAGE_CODE = "Stoppage";
     public static final int ILLEGAL_DUMP_YARD_STOPPAGE_THRESHOLD = 5;
     public static final int TRIP_PROGRESS_FETCH_LIMIT = 1000;
