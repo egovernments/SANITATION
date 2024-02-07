@@ -611,6 +611,7 @@ public class FSMService {
 			if (applicationIds.isEmpty()) {
 				return FSMResponse.builder().fsm(Collections.emptyList()).totalCount(0).build();
 			}
+			criteria.setOwnerIds(Collections.emptyList());
 			criteria.setIds(applicationIds);
 		}
 
