@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: trackingservice-app-ingress
+  namespace: apps
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/lua-resty-waf: "active"
+    nginx.ingress.kubernetes.io/lua-resty-waf-allow-unknown-content-types: "true"
+    nginx.ingress.kubernetes.io/lua-resty-waf-debug: "true"
+    nginx.ingress.kubernetes.io/lua-resty-waf-process-multipart-body: "false"
+    nginx.ingress.kubernetes.io/lua-resty-waf-score-threshold: "10"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  tls:
+    - hosts:
+        - unified-dev.digit.org
+      secretName: unified-dev.digit.org-tls-certs
+  rules:
+    - host: unified-dev.digit.org
+      http:
+        paths:
+          - path: /trackingservice
+            pathType: Prefix
+            backend:
+              service:
+                name: trackingservice-app-service
+                port:
+                  number: 80
+
