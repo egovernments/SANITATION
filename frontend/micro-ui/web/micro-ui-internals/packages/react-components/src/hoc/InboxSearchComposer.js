@@ -143,6 +143,9 @@ const InboxSearchComposer = ({configs,scrollPosition,browserSession}) => {
         return () => {
             revalidate();
             setEnable(false);
+            if(!location.pathname.includes("tqm") && Digit.Utils.tqm.isUlbAdminLoggedIn()){
+                sessionStorage.removeItem("Digit.TQM_INBOX_SESSION")
+            }
         };
     });
 
