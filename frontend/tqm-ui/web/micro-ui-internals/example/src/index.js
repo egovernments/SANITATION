@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { initLibraries } from '@egovernments/digit-ui-libraries';
-// import { initFSMLibraries } from '@egovernments/digit-ui-fsm-libraries';
+import { initFSMLibraries } from '@egovernments/digit-ui-fsm-libraries';
 import {
   PaymentModule,
   PaymentLinks,
