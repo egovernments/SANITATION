@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.openapitools.model.Location;
 import org.openapitools.model.Operator;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 // Common util class to implement id (primary key) generation logic for each entity
 @Component
@@ -68,7 +69,9 @@ public class DbUtil {
         Operator dbJson = new Operator();
 
         try {
-            dbJson = mapper.readValue(jsonString, Operator.class);
+            if(StringUtils.hasLength(jsonString)) {
+                dbJson = mapper.readValue(jsonString, Operator.class);
+            }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
