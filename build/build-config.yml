@@ -93,3 +93,10 @@ config:
       - work-dir: 'frontend/micro-ui/'
         image-name: 'sanitation-ui'
         dockerfile: 'frontend/micro-ui/web/docker/Dockerfile'
+
+  #TQM Frontend
+  - name: 'builds/SANITATION/frontend/tqm-ui'
+    build:
+      - work-dir: 'frontend/tqm-ui/'
+        image-name: 'tqm-ui'
+        dockerfile: 'frontend/tqm-ui/web/docker/Dockerfile'
