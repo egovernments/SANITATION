@@ -30,12 +30,12 @@ initFSMLibraries();
 
 const enabledModules = [
   // 'FSM',
-  'Payment',
-  'DSS',
-  'Engagement',
-  'HRMS',
+  // 'Payment',
+  // 'DSS',
+  // 'Engagement',
+  // 'HRMS',
   'Tqm',
-  'Utilities',
+  // 'Utilities',
 ];
 window.Digit.ComponentRegistryService.setupRegistry({
   ...paymentConfigs,

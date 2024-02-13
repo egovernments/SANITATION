@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { initLibraries } from '@egovernments/digit-ui-libraries';
-import { initFSMLibraries } from '@egovernments/digit-ui-fsm-libraries';
+// import { initFSMLibraries } from '@egovernments/digit-ui-fsm-libraries';
 import {
   PaymentModule,
   PaymentLinks,
   paymentConfigs,
 } from '@egovernments/digit-ui-module-common';
 import { initDSSComponents } from '@egovernments/digit-ui-module-dss';
-import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
+// import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
 import { initEngagementComponents } from '@egovernments/digit-ui-module-engagement';
 import {
   DigitUI,
@@ -91,7 +91,7 @@ const initDigitUI = () => {
   initEngagementComponents();
   // initWorksComponents();
   initHRMSComponents();
-  initFSMComponents();
+  // initFSMComponents();
   initUtilitiesComponents();
 
   const moduleReducers = (initData) => initData;
@@ -124,6 +124,6 @@ const initDigitUI = () => {
 };
 
 initLibraries().then(() => {
-  initFSMLibraries();
+  // initFSMLibraries();
   initDigitUI();
 });

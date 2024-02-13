@@ -1,10 +1,11 @@
-import utils from "../utils";
-import { useCustomMDMSV2 } from "./useCustomMDMSV2";
-import { useViewTestResults } from "./useViewTestResults";
-import { useViewTestSummary } from "./useViewTestSummary";
-import { useSearchTest } from "./useSearchTest";
-import useTestUpdate from "./useTestUpdate";
-import useCreateTest from "./useCreate";
+import utils from '../utils';
+import { useCustomMDMSV2 } from './useCustomMDMSV2';
+import { useViewTestResults } from './useViewTestResults';
+import { useViewTestSummary } from './useViewTestSummary';
+import { useSearchTest } from './useSearchTest';
+import useTestUpdate from './useTestUpdate';
+import useCreateTest from './useCreate';
+import useRouteSubscription from './useRouteSubscription';
 
 const tqm = {
   sampleTQMHook: () => {},
@@ -13,11 +14,16 @@ const tqm = {
   useCustomMDMSV2,
   useSearchTest,
   useTestUpdate,
-  useCreateTest
+  useCreateTest,
+};
+
+const fsm = {
+  useRouteSubscription,
 };
 
 const Hooks = {
   tqm,
+  fsm,
 };
 
 const Utils = {
