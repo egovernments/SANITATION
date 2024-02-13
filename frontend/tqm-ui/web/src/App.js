@@ -7,7 +7,7 @@ import {
 } from '@egovernments/digit-ui-module-core';
 import { initLibraries } from '@egovernments/digit-ui-libraries';
 import { initEngagementComponents } from '@egovernments/digit-ui-module-engagement';
-import { initFSMLibraries } from '@egovernments/digit-ui-fsm-libraries';
+// import { initFSMLibraries } from '@egovernments/digit-ui-fsm-libraries';
 
 import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
 import { initTQMComponents } from '@egovernments/digit-ui-module-tqm';
@@ -26,7 +26,7 @@ window.Digit.Customizations = {
 };
 
 initLibraries();
-initFSMLibraries();
+// initFSMLibraries();
 
 const enabledModules = [
   // 'FSM',
