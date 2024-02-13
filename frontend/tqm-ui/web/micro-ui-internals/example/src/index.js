@@ -9,7 +9,7 @@ import {
   paymentConfigs,
 } from '@egovernments/digit-ui-module-common';
 import { initDSSComponents } from '@egovernments/digit-ui-module-dss';
-// import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
+import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
 import { initEngagementComponents } from '@egovernments/digit-ui-module-engagement';
 import {
   DigitUI,
@@ -91,7 +91,7 @@ const initDigitUI = () => {
   initEngagementComponents();
   // initWorksComponents();
   initHRMSComponents();
-  // initFSMComponents();
+  initFSMComponents();
   initUtilitiesComponents();
 
   const moduleReducers = (initData) => initData;

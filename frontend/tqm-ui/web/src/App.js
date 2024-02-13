@@ -29,7 +29,7 @@ initLibraries();
 initFSMLibraries();
 
 const enabledModules = [
-  'FSM',
+  // 'FSM',
   'Payment',
   'DSS',
   'Engagement',
