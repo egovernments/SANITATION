@@ -9,7 +9,7 @@ import { initLibraries } from '@egovernments/digit-ui-libraries';
 import { initEngagementComponents } from '@egovernments/digit-ui-module-engagement';
 // import { initFSMLibraries } from '@egovernments/digit-ui-fsm-libraries';
 
-import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
+// import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
 import { initTQMComponents } from '@egovernments/digit-ui-module-tqm';
 import { initHRMSComponents } from '@egovernments/digit-ui-module-hrms';
 import {
@@ -45,7 +45,7 @@ window.Digit.ComponentRegistryService.setupRegistry({
 initCoreComponents();
 initDSSComponents();
 initEngagementComponents();
-initFSMComponents();
+// initFSMComponents();
 initHRMSComponents();
 initUtilitiesComponents();
 
