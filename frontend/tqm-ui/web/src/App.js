@@ -7,9 +7,9 @@ import {
 } from '@egovernments/digit-ui-module-core';
 import { initLibraries } from '@egovernments/digit-ui-libraries';
 import { initEngagementComponents } from '@egovernments/digit-ui-module-engagement';
-import { initFSMLibraries } from '@egovernments/digit-ui-fsm-libraries';
+// import { initFSMLibraries } from '@egovernments/digit-ui-fsm-libraries';
 
-import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
+// import { initFSMComponents } from '@egovernments/digit-ui-module-fsm';
 import { initTQMComponents } from '@egovernments/digit-ui-module-tqm';
 import { initHRMSComponents } from '@egovernments/digit-ui-module-hrms';
 import {
@@ -26,16 +26,16 @@ window.Digit.Customizations = {
 };
 
 initLibraries();
-initFSMLibraries();
+// initFSMLibraries();
 
 const enabledModules = [
   // 'FSM',
-  'Payment',
-  'DSS',
-  'Engagement',
-  'HRMS',
+  // 'Payment',
+  // 'DSS',
+  // 'Engagement',
+  // 'HRMS',
   'Tqm',
-  'Utilities',
+  // 'Utilities',
 ];
 window.Digit.ComponentRegistryService.setupRegistry({
   ...paymentConfigs,
@@ -45,7 +45,7 @@ window.Digit.ComponentRegistryService.setupRegistry({
 initCoreComponents();
 initDSSComponents();
 initEngagementComponents();
-initFSMComponents();
+// initFSMComponents();
 initHRMSComponents();
 initUtilitiesComponents();
 
