@@ -15,6 +15,7 @@ const tqm = {
   useSearchTest,
   useTestUpdate,
   useCreateTest,
+  useRouteSubscription,
 };
 
 const fsm = {
