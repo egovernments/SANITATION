@@ -277,6 +277,16 @@ public class PqmService {
       }
     });
     test.setDocuments(toInsert);
+
+    //If new document available for insert, make old documents inactive. This is to support only 1 document allowed for test
+    if(!toInsert.isEmpty()){
+      for (Document document : documentResponse.getDocuments()) {
+        if (document.isActive()) {
+          document.setActive(false);
+        }
+      }
+    }
+
     repository.updateTestDocuments(
         TestRequest.builder()
             .requestInfo(testRequest.getRequestInfo())

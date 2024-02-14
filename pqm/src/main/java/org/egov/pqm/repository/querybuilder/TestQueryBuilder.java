@@ -1,9 +1,9 @@
 package org.egov.pqm.repository.querybuilder;
 
+import com.google.common.base.Strings;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
-
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.SortBy;
@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
-import com.google.common.base.Strings;
 
 @Component
 public class TestQueryBuilder {
@@ -291,6 +289,8 @@ public class TestQueryBuilder {
       builder.append(" testId IN (").append(createQuery(idList)).append(")");
       addToPreparedStatement(preparedStmtList, idList);
 
+      builder.append(" isActive=? ");
+      preparedStmtList.add(true);
     }
     return builder.toString();
   }
