@@ -282,6 +282,7 @@ public class PqmService {
       for (Document document : documentResponse.getDocuments()) {
         if (document.isActive()) {
           document.setActive(false);
+          toUpdate.add(document);
         }
       }
     }
