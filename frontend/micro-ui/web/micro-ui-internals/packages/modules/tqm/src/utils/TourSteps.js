@@ -21,7 +21,7 @@ export const Tour = {
       target: '.tiles-card-2',
       disableBeacon: true,
       placement: 'auto',
-      redirectTo: '/sanitation-ui/employee/tqm/home',
+      redirectTo: '/tqm-ui/employee/tqm/home',
       // title:"This is your Home Screen"
     },
     {
@@ -30,7 +30,7 @@ export const Tour = {
       target: '.complaint-links-container',
       disableBeacon: true,
       placement: 'auto',
-      redirectTo: '/sanitation-ui/employee/tqm/inbox',
+      redirectTo: '/tqm-ui/employee/tqm/inbox',
       // title:"This is your Home Screen"
     },
     {
@@ -39,7 +39,7 @@ export const Tour = {
       target: '.searchBox',
       disableBeacon: true,
       placement: 'bottom',
-      // redirectTo:"/sanitation-ui/employee/tqm/search-test-results"
+      // redirectTo:"/tqm-ui/employee/tqm/search-test-results"
       // title:"This is your Home Screen"
     },
     {
@@ -48,7 +48,7 @@ export const Tour = {
       disableBeacon: true,
       placement: 'center',
       
-      // redirectTo:"/sanitation-ui/employee/tqm/search-test-results"
+      // redirectTo:"/tqm-ui/employee/tqm/search-test-results"
       // title:"This is your Home Screen"
     },
     {
@@ -59,7 +59,7 @@ export const Tour = {
       hideBackButton: true,
       stopTour:true,
       nextStepIndex:5
-      // redirectTo:"/sanitation-ui/employee/tqm/search-test-results"
+      // redirectTo:"/tqm-ui/employee/tqm/search-test-results"
       // title:"This is your Home Screen"
     },
     // {
@@ -84,7 +84,7 @@ export const Tour = {
       target: '.tiles-card-2',
       disableBeacon: true,
       placement: 'auto',
-      redirectTo: '/sanitation-ui/employee/tqm/home',
+      redirectTo: '/tqm-ui/employee/tqm/home',
       // title:"This is your Home Screen"
     },
     {
@@ -101,7 +101,7 @@ export const Tour = {
       target: '.complaint-links-container',
       disableBeacon: true,
       placement: 'auto',
-      redirectTo: '/sanitation-ui/employee/tqm/search-test-results',
+      redirectTo: '/tqm-ui/employee/tqm/search-test-results',
       // title:"This is your Home Screen"
     },
     {
@@ -111,7 +111,7 @@ export const Tour = {
       disableBeacon: true,
       placement: 'center',
       hideBackButton: true,
-      // redirectTo:"/sanitation-ui/employee/tqm/search-test-results"
+      // redirectTo:"/tqm-ui/employee/tqm/search-test-results"
       // title:"This is your Home Screen"
     },
     {
@@ -120,7 +120,7 @@ export const Tour = {
       target: '.searchBox',
       disableBeacon: true,
       placement: 'bottom',
-      // redirectTo:"/sanitation-ui/employee/tqm/search-test-results"
+      // redirectTo:"/tqm-ui/employee/tqm/search-test-results"
       // title:"This is your Home Screen"
     },
     //Add more steps corresponding to search results when search api is working fine
@@ -139,7 +139,7 @@ export const Tour = {
       target: '.tiles-card-2',
       disableBeacon: true,
       placement: 'auto',
-      redirectTo: '/sanitation-ui/employee/tqm/home',
+      redirectTo: '/tqm-ui/employee/tqm/home',
       // title:"This is your Home Screen"
     },
     {
@@ -156,7 +156,7 @@ export const Tour = {
       target: '.complaint-links-container',
       disableBeacon: true,
       placement: 'auto',
-      redirectTo: '/sanitation-ui/employee/dss/dashboard/pqm',
+      redirectTo: '/tqm-ui/employee/dss/dashboard/pqm',
       // title:"This is your Home Screen"
     },
   ],
@@ -164,7 +164,7 @@ export const Tour = {
 };
 
 export const TourSteps = {
-  '/sanitation-ui/employee/tqm/landing':[
+  '/tqm-ui/employee/tqm/landing':[
     {
       content:
         'Landing Page',

@@ -17,14 +17,14 @@ import "@egovernments/digit-ui-fsm-css/example/index.css";
 var Digit = window.Digit || {};
 
 const enabledModules = [
-  "DSS",
+  // "DSS",
   // "Works",
-  "HRMS",
-  "Payment",
-  "FSM",
-  "Utilities",
+  // "HRMS",
+  // "Payment",
+  // "FSM",
+  // "Utilities",
   "Tqm",
-  "Engagement"
+  // "Engagement"
 ];
 
 const initTokens = (stateCode) => {

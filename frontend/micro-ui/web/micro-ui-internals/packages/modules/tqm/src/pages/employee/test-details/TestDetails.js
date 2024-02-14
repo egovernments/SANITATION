@@ -123,7 +123,7 @@ function TestDetails() {
         queryClient.invalidateQueries("workFlowDetailsWorks");
         refetch();
         // Remove scroll value when action taken 
-        localStorage.removeItem("/sanitation-ui/employee/tqm/inbox")
+        localStorage.removeItem("/tqm-ui/employee/tqm/inbox")
         if (WFData?.actionState?.applicationStatus === UICustomizations?.workflowStatusMap?.pendingResults) {
           return history.push(`/${window.contextPath}/employee/tqm/response?testId=${id}&isSuccess=${true}`, {
             message: "ES_TQM_TEST_UPDATE_SUCCESS_RESPONSE",

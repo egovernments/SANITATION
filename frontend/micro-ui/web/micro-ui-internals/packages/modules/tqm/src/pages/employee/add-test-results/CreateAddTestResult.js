@@ -108,7 +108,7 @@ const Create = () => {
         setShowToast({ key: "success", label: t("TQM_ADD_TEST_SUCCESS") });
         setTimeout(() => {
           closeToast();
-          history.push(`/sanitation-ui/employee/tqm/view-test-results?id=${data.tests[0].testId}&type=adhoc`);
+          history.push(`/tqm-ui/employee/tqm/view-test-results?id=${data.tests[0].testId}&type=adhoc`);
         }, 5000);
       },
     });
