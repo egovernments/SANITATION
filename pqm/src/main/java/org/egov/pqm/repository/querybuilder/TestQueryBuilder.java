@@ -289,6 +289,7 @@ public class TestQueryBuilder {
       builder.append(" testId IN (").append(createQuery(idList)).append(")");
       addToPreparedStatement(preparedStmtList, idList);
 
+      addClauseIfRequired(preparedStmtList, builder);
       builder.append(" isActive=? ");
       preparedStmtList.add(true);
     }
