@@ -186,10 +186,10 @@ export const UICustomizations = {
       switch (type) {
         case "SCHEDULED":
           return "TQM_INBOX_ACTION_UPDATE_STATUS"
-        
+        case "DRAFTED":
+          return "TQM_INBOX_ACTION_UPDATE_DRAFT"
         case "PENDINGRESULTS":
           return "TQM_INBOX_ACTION_UPDATE_RESULTS"
-          
         default:
           return "case_not_found"
       }
