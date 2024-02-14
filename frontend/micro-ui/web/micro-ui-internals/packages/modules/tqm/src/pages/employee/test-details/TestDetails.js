@@ -78,6 +78,7 @@ function TestDetails() {
         
     },
       staleTime: 0,
+      cacheTime: 0
     },
   });
 
@@ -124,7 +125,7 @@ function TestDetails() {
         refetch();
         // Remove scroll value when action taken 
         localStorage.removeItem("/sanitation-ui/employee/tqm/inbox")
-        if (WFData?.actionState?.applicationStatus === UICustomizations?.workflowStatusMap?.pendingResults) {
+        if (data?.tests?.[0]?.workflow?.action === UICustomizations?.workflowActionMap?.update) {
           return history.push(`/${window.contextPath}/employee/tqm/response?testId=${id}&isSuccess=${true}`, {
             message: "ES_TQM_TEST_UPDATE_SUCCESS_RESPONSE",
             text: "ES_TQM_TEST_UPDATE_SUCCESS_RESPONSE_TEXT",
@@ -145,7 +146,7 @@ function TestDetails() {
           id={id}
           t={t}
           WFData={workflowDetails}
-          actionData={workflowDetails?.nextActions?.[0]}
+          actionData={workflowDetails?.nextActions}
           actionState={workflowDetails?.actionState?.applicationStatus}
           submitAction={submitAction}
           testDetailsData={testData?.response}
