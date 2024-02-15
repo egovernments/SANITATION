@@ -128,7 +128,7 @@ function TestDetails() {
         }
       },
       onSuccess: (data, variables) => {
-        setShowToast({ key: "success", action: "ES_TQM_STATUS_UPDATED_SUCCESSFULLY" });
+        setShowToast({ key: "success", action: data?.tests?.[0]?.workflow?.action === "SAVE_AS_DRAFT" ? "ES_TQM_DRAFT_UPDATED_SUCCESSFULLY" :"ES_TQM_STATUS_UPDATE_SUCCESS" });
         setTimeout(closeToast, 5000);
         queryClient.invalidateQueries("TQM_ADMIN_TEST_RESULTS");
         queryClient.invalidateQueries("workFlowDetailsWorks");
@@ -164,7 +164,7 @@ function TestDetails() {
         />
       )}
       {showToast && (
-        <Toast error={showToast.key === "error" ? true : false} label={t(showToast.key === "success" ? `ES_TQM_STATUS_UPDATE_SUCCESS` : showToast.action)} onClose={closeToast} isDleteBtn={true} />
+        <Toast error={showToast.key === "error" ? true : false} label={t(showToast.key === "success" ? showToast.action : showToast.action)} onClose={closeToast} isDleteBtn={true} />
       )}
     </>
   );
