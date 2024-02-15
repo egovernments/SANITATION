@@ -1,10 +1,8 @@
 package org.egov.pqm.repository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import org.egov.common.contract.request.RequestInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.pqmProducer.PqmProducer;
 import org.egov.pqm.repository.querybuilder.TestQueryBuilder;
@@ -13,21 +11,16 @@ import org.egov.pqm.repository.rowmapper.QualityCriteriaRowMapper;
 import org.egov.pqm.repository.rowmapper.TestRowMapper;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
-import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
 import org.egov.pqm.web.model.TestResponse;
 import org.egov.pqm.web.model.TestSearchCriteria;
 import org.egov.pqm.web.model.TestSearchRequest;
-import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
@@ -67,6 +60,10 @@ public class TestRepository {
   public void update(TestRequest testRequest) {
     producer.push(config.getTestUpdateTopic(), testRequest);
     producer.push(config.getTestUpdateEventTopic(), testRequest);
+  }
+
+  public void updateTestDocuments(TestRequest testRequest){
+    producer.push(config.getUpdateTestDocumentsTopic(), testRequest);
   }
 
   public TestResponse getPqmData(TestSearchRequest testSearchCriteria) {
