@@ -2,6 +2,8 @@ package org.egov.pqm.web.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,14 @@ public class QualityCriteria {
   @JsonProperty("criteriaCode")
   private String criteriaCode = null;
 
+  @JsonProperty("criteriaName")
+  private String criteriaName;
+
+  @JsonProperty("uom")
+  private String uom;
+
+  @JsonProperty("benchmarkValue")
+  private List<BigDecimal> benchmarkValue;
 
   @JsonProperty("resultValue")
   private BigDecimal resultValue = null;

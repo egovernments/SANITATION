@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Apply for FSM 
+  title: Apply for FSM
   description: |
     ### API specs for FSM ###
     * Citizen / Employee can Apply for desludging service
@@ -63,7 +63,7 @@ paths:
         - name: applicationNos
           in: query
           description: search application by list of applicationNo(s)
-          schema: 
+          schema:
             type: array
             items:
               type: string
@@ -95,7 +95,7 @@ paths:
           description: sort the search results by fields
           schema:
            type: string
-           enum: 
+           enum:
             - applicationStatus
             - applicationNumber
             - propertyUsage
@@ -120,7 +120,7 @@ paths:
   /fsm/v1/_audit:
     post:
       summary: Get the application audit log for every change in the response. Provides a record for each set of change
-      parameters: 
+      parameters:
         - $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/parameters/tenantId'
         - name: applicationNo
           in: query
@@ -141,11 +141,11 @@ paths:
                 $ref: '#/components/schemas/FSMAuditResponse'
       tags:
         - FSM
-        
+
   /fsm/v1/_create:
     post:
-      summary: Apply for desludging 
-      description: Apply for desludging 
+      summary: Apply for desludging
+      description: Apply for desludging
       tags:
         - FSM
       requestBody:
@@ -194,11 +194,11 @@ paths:
               $ref: '#/components/schemas/FSMRequest'
         description: Request schema.
         required: true
-        
+
   /fsm-calculator/v1/billingSlab/_create:
     post:
       summary: Create Billing Slab record for the combination of propertyusage, slum ,tancapcity
-      tags: 
+      tags:
         - FSM-Calculator
       requestBody:
         content:
@@ -220,11 +220,11 @@ paths:
             '*/*':
               schema:
                 $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'
-  
+
   /fsm-calculator/v1/billingSlab/_update:
     post:
       summary: update Billing Slab record for the combination of propertyusage, slum ,tancapcity
-      tags: 
+      tags:
         - FSM-Calculator
       requestBody:
         content:
@@ -245,14 +245,14 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'  
-                
+                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'
+
   /fsm-calculator/v1/billingSlab/_search:
     post:
       summary: Get the BillingSlab based on the search criteria
-      tags: 
+      tags:
         - FSM-Calculator
-      parameters: 
+      parameters:
         - $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/parameters/tenantId'
         - name : offset
           in: query
@@ -277,7 +277,7 @@ paths:
           description: sort the search results by fields
           schema:
            type: string
-           enum: 
+           enum:
             - id
             - propertyType
             - capacity
@@ -316,8 +316,8 @@ paths:
                 $ref: '#/components/schemas/BillingSlabResponse'
   /fsm-calculator/v1/_calculate:
     post:
-      summary: Calcualte the FSM Charges and generate Demand for the same, based on the billingslab 
-      tags: 
+      summary: Calcualte the FSM Charges and generate Demand for the same, based on the billingslab
+      tags:
         - FSM-Calculator
       requestBody:
         content:
@@ -338,11 +338,11 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes' 
+                $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/ErrorRes'
   /fsm-calculator/v1/_estimate:
     post:
       summary: Calcualte the FSM Charge, based on the billingslab . Does not create demand
-      tags: 
+      tags:
         - FSM-Calculator
       requestBody:
         content:
@@ -424,7 +424,7 @@ components:
           maxLength: 256
         accountId:
           type: string
-          description: Applier(CItizen) unique id(UUID) from user service. 
+          description: Applier(CItizen) unique id(UUID) from user service.
           minLength: 2
           maxLength: 64
         additionalDetail:
@@ -490,7 +490,7 @@ components:
       required:
         - tenantId
         - propertyUsage
-    
+
     PitDetail:
       type: object
       description: |
@@ -527,7 +527,7 @@ components:
           format: double
           description: diameter  of the PIT in meter
           minLength: 2
-          maxLength: 128          
+          maxLength: 128
         distanceFromRoad:
           type: number
           format: double
@@ -538,7 +538,7 @@ components:
           $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/AuditDetails'
       required:
         - width
-    
+
     FSMRequest:
       type: object
       description: Request object for FSM
@@ -581,7 +581,7 @@ components:
           $ref: '#/components/schemas/FSMAudit'
       required:
         - responseInfo
-        - fsmAudit   
+        - fsmAudit
     FSMAudit:
       type: object
       description: >
@@ -589,7 +589,7 @@ components:
       properties:
         who:
           type: string
-          description: uuid of the user who changed the data of FSM object 
+          description: uuid of the user who changed the data of FSM object
         when:
           type: integer
           format: date
@@ -659,7 +659,7 @@ components:
           $ref: 'https://raw.githubusercontent.com/egovernments/egov-services/master/docs/egov-location/contracts/v11-0-0.yml#/definitions/Boundary'
         geoLocation:
           $ref: 'https://raw.githubusercontent.com/egovernments/municipal-services/common-contract/docs/common-contract-v2-0-0.yml#/components/schemas/GeoLocation'
-      required: 
+      required:
         - tenantId
         - locality
     BillingSlab:
@@ -675,7 +675,7 @@ components:
         capacityFrom:
           type: number
           format: double
-          description: billing slab apply for the tankCapacity form 
+          description: billing slab apply for the tankCapacity form
         capacityTo:
           type: number
           format: double
@@ -686,7 +686,7 @@ components:
         slum:
           type: string
           description: billing slab applies for slum
-          enum: 
+          enum:
             - YES
             - NO
         price:
@@ -713,7 +713,7 @@ components:
         - billingSlab
     BillingSlabResponse:
       type: object
-      description: Response of the BillingSlab 
+      description: Response of the BillingSlab
       properties:
         responseInfo:
           $ref: >-
@@ -724,7 +724,7 @@ components:
             $ref: '#/components/schemas/BillingSlab'
       required:
         - responseInfo
-        - billingSlab            
+        - billingSlab
     CalculationReq:
       type: object
       description: Request object for Calcuation
@@ -738,7 +738,7 @@ components:
         - CalulationCriteria
     CalculationRes:
       type: object
-      description: Response of the BillingSlab 
+      description: Response of the BillingSlab
       properties:
         responseInfo:
           $ref: >-
@@ -749,7 +749,7 @@ components:
             $ref: '#/components/schemas/Calculation'
       required:
         - responseInfo
-        - Calculations   
+        - Calculations
     CalulationCriteria:
       type: object
       description: Calculation Criteria to calcaulte and generate Demand
@@ -760,7 +760,7 @@ components:
         feeType:
           type: string
           description: type of fee to be calcaulted and generrate demand, As of now it is only one
-          enum: 
+          enum:
             - APPLICATION_FEE
         fsm:
           $ref: '#/components/schemas/FSM'
@@ -769,7 +769,7 @@ components:
           description: Application number of the FSM application
     Calculation:
       type: object
-      description: ist of calculations 
+      description: ist of calculations
       properties:
         tenantId:
           type: string
@@ -777,7 +777,7 @@ components:
         feeType:
           type: string
           description: type of fee to be calcaulted and generrate demand, As of now it is only one
-          enum: 
+          enum:
             - APPLICATION_FEE
         fsm:
           $ref: '#/components/schemas/FSM'
@@ -807,7 +807,7 @@ components:
             - PENALTY
             - FINES
             - CHARGES
-        
+
 servers:
   # Added by API Auto Mocking Plugin
   # Added by API Auto Mocking Plugin

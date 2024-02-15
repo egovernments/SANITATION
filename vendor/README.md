@@ -22,7 +22,7 @@ Link to the swagger API contract [yaml](https://raw.githubusercontent.com/egover
 
 
 ### Postman Collection
-Link to the postman collection [here](https://www.getpostman.com/collections/2d55f98479499672a23e)
+Link to the postman collection [here](https://api.postman.com/collections/13428435-67194a8e-f288-473e-b7cc-8f26fd964ace?access_key=PMAT-01HK7FAQ5CJ5J1QPAH2ZJRC7H8)
 
 
 ## Service Details
