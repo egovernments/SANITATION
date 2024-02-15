@@ -71,25 +71,25 @@ const defaultLogo =
 const jsPdfGenerator = async ({ breakPageLimit = null, tenantId, logo, name, email, phoneNumber, heading, details, t = (text) => text }) => {
 
   const emailLeftMargin =
-    email.length <= 15
+    email?.length <= 15
       ? 190
-      : email.length <= 20
+      : email?.length <= 20
       ? 150
-      : email.length <= 25
+      : email?.length <= 25
       ? 130
-      : email.length <= 30
+      : email?.length <= 30
       ? 90
-      : email.length <= 35
+      : email?.length <= 35
       ? 50
-      : email.length <= 40
+      : email?.length <= 40
       ? 10
-      : email.length <= 45
+      : email?.length <= 45
       ? 0
-      : email.length <= 50
+      : email?.length <= 50
       ? -20
-      : email.length <= 55
+      : email?.length <= 55
       ? -70
-      : email.length <= 60
+      : email?.length <= 60
       ? -100
       : -60;
 
@@ -178,25 +178,25 @@ const jsPdfGenerator = async ({ breakPageLimit = null, tenantId, logo, name, ema
  */
 const jsPdfGeneratorv1 = async ({ breakPageLimit = null, tenantId, logo, name, email, phoneNumber, heading, details, headerDetails, t = (text) => text }) => {
   const emailLeftMargin =
-    email.length <= 15
+    email?.length <= 15
       ? 190
-      : email.length <= 20
+      : email?.length <= 20
         ? 150
-        : email.length <= 25
+        : email?.length <= 25
           ? 130
-          : email.length <= 30
+          : email?.length <= 30
             ? 90
-            : email.length <= 35
+            : email?.length <= 35
               ? 50
-              : email.length <= 40
+              : email?.length <= 40
                 ? 10
-                : email.length <= 45
+                : email?.length <= 45
                   ? 0
-                  : email.length <= 50
+                  : email?.length <= 50
                     ? -20
-                    : email.length <= 55
+                    : email?.length <= 55
                       ? -70
-                      : email.length <= 60
+                      : email?.length <= 60
                         ? -100
                         : -60;
 

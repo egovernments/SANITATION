@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Loader } from "../atoms/Loader";
 import RadioButtons from "../atoms/RadioButtons";
 import Dropdown from "../atoms/Dropdown";
@@ -93,6 +93,10 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
   //   return selectedValue
   // }
 
+  if(config?.optionsDisable && config?.options && config?.defaultOptions){
+    config?.options?.forEach(obj1 => obj1.isDisabled = config?.defaultOptions.some(obj2 => obj2.type === obj1.code));
+  }
+
   return (
     <React.Fragment key={config.name}>
       {/* <LabelFieldPair>
@@ -129,7 +133,8 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
             defaultLabel={t(config?.defaultText) }
             defaultUnit={t(config?.selectedText) || t("COMMON_SELECTED")}
             config={config}
-
+            disable={disable}
+            optionsDisable={config?.optionsDisable}
           />
         </div> : type === "radio" ? (
         <RadioButtons

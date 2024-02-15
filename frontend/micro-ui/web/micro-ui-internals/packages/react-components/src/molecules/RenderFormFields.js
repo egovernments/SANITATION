@@ -42,7 +42,7 @@ const RenderFormFields = ({data,...props}) => {
                             errorStyle={errors?.[populators.name]}
                             max={populators.max}
                             disable={disable}
-                            style={type === "date" ? { paddingRight: "3px" } : ""}
+                            style={type === "date" ? { paddingRight: "3px" } : populators?.style ? {...populators?.style} : {}}
                             maxlength={populators?.validation?.maxlength}
                             minlength={populators?.validation?.minlength}
                         />
@@ -346,6 +346,7 @@ const RenderFormFields = ({data,...props}) => {
                     control={control}
                     getValues={getValues}
                     responseData={data}
+                    populators={populators}
                   />
                 )}
                 name={config?.key}

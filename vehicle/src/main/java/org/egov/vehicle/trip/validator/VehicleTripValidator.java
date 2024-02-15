@@ -275,7 +275,7 @@ public class VehicleTripValidator {
 
 //		validateTripInOutTime(vehicleTrip, vehicleTrip.getTripDetails().get(0));
 
-		if (VehicleTripConstants.FSM_VEHICLE_TRIP_BUSINESSSERVICE.equalsIgnoreCase(vehicleTrip.getBusinessService())) {
+		/*if (VehicleTripConstants.FSM_VEHICLE_TRIP_BUSINESSSERVICE.equalsIgnoreCase(vehicleTrip.getBusinessService())) {
 			PlantMapping plantMapping = vehicleTripFSMService.getPlantMapping(request.getRequestInfo(),
 					vehicleTrip.getTenantId(), request.getRequestInfo().getUserInfo().getUuid());
 			if (null != plantMapping && StringUtils.isNotEmpty(plantMapping.getPlantCode())) {
@@ -287,7 +287,7 @@ public class VehicleTripValidator {
 				throw new CustomException(VehicleTripConstants.EMPLOYEE_FSTP_MAP_NOT_EXISTS,
 						"Logged user to FSTP mapping doesn't exists.");
 			}
-		}
+		}*/
 
 	}
 

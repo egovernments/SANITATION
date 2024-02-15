@@ -14,6 +14,7 @@ const EditVendor = ({ parentUrl, heading }) => {
   const [defaultValues, setDefaultValues] = useState({});
   const [dsoDetails, setDsoDetails] = useState({});
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
   const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("FSM_ERROR_DATA", false);
@@ -22,7 +23,8 @@ const EditVendor = ({ parentUrl, heading }) => {
   const { data: dsoData, isLoading: daoDataLoading, isSuccess: isDsoSuccess, error: dsoError } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { ids: dsoId },
-    { staleTime: Infinity }
+    { staleTime: Infinity },
+    t
   );
 
   const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useVendorUpdate(
@@ -73,7 +75,6 @@ const EditVendor = ({ parentUrl, heading }) => {
     }
   }, [dsoData]);
 
-  const { t } = useTranslation();
   const history = useHistory();
 
   const Config = VendorConfig(t, true);

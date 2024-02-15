@@ -33,10 +33,11 @@ export const FSMInboxConfig = () => {
               uiConfig: {
                 headerStyle: null,
                 primaryLabel: "Search",
+                type:"search",
                 secondaryLabel: "Clear Search",
                 minReqFields: 1,
                 defaultValues: {
-                  complaintNumber: "",
+                  applicationNos: "",
                   mobileNumber: "",
                 },
                 fields: [
@@ -156,18 +157,16 @@ export const FSMInboxConfig = () => {
             },
             filter: {
               uiConfig: {
+                formClassName: "filter",
                 type: "filter",
                 headerStyle: null,
                 primaryLabel: "Filter",
                 secondaryLabel: "",
                 minReqFields: 0,
                 defaultValues: {
-                  status: "",
+                  status: [],
                   locality: [],
-                  assignee: {
-                    code: "ASSIGNED_TO_ME",
-                    name: "ASSIGNED_TO_ME",
-                  },
+                  state: []
                 },
                 fields: [
                   {
@@ -205,6 +204,7 @@ export const FSMInboxConfig = () => {
             },
           },
           additionalSections: {},
+          persistFormData:true
         },
       ],
     },

@@ -32,10 +32,12 @@ const Inbox = () => {
   );
 
   const updatedConfig = useMemo(() => Digit.Utils.preProcessMDMSConfigInboxSearch(t, pageConfig, "sections.search.uiConfig.fields", {}), [data, pageConfig]);
-
+  
   useEffect(() => {
     setPageConfig(_.cloneDeep(data?.["commonUiConfig"]?.FSMInboxConfig?.[0]));
   }, [data, location]);
+
+  const fsmInboxSession = Digit.Hooks.useSessionStorage("FSM_INBOX_SESSION", {})
 
   if (isLoading || !pageConfig) return <Loader />;
   return (
@@ -45,7 +47,7 @@ const Inbox = () => {
         {location?.state?.count ? <span className="inbox-count">{location?.state?.count}</span> : null}
       </Header>
       <div className="inbox-search-wrapper">
-        <InboxSearchComposer configs={updatedConfig}></InboxSearchComposer>
+        <InboxSearchComposer configs={updatedConfig} browserSession={fsmInboxSession}></InboxSearchComposer>
       </div>
     </React.Fragment>
   );

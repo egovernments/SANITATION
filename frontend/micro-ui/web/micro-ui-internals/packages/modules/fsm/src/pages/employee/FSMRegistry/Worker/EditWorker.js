@@ -68,9 +68,6 @@ const EditWorker = ({ parentUrl, heading }) => {
     setEmployer(tempEmp);
   }, [mdmsOptions, ismdms]);
 
-  useEffect(() => {
-    setConfig(WorkerConfig({ t, disabled: true, skillsOption, employer }));
-  }, [skillsOption, employer]);
 
   const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useWorkerUpdate(tenantId);
 
@@ -87,10 +84,16 @@ const EditWorker = ({ parentUrl, heading }) => {
     },
   });
 
+  useEffect(() => {
+    const workerDetails = workerData?.Individual?.[0];
+    setConfig(WorkerConfig({ t, disabled: true, skillsOption, defaultSkill: workerDetails?.skills?.filter((i) => i.isDeleted === false), employer }));
+  }, [skillsOption, employer, workerData]);
+  
   const { data: vendorData, isLoading: isVendorLoading, isSuccess: isVendorSuccess, error: vendorError, refetch: refetchVendor } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: "name", sortOrder: "ASC", status: "ACTIVE", individualIds: workerData?.Individual?.[0]?.id },
-    { enabled: workerData && !WorkerLoading, cacheTime: 0 }
+    { enabled: workerData && !WorkerLoading, cacheTime: 0 },
+    t
   );
 
   const {

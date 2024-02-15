@@ -100,10 +100,17 @@
   grid-row-gap: 1.5rem;
   
 }
+
+.search-wrapper .search-field-wrapper {
+  grid-row-gap: 1rem;
+}
+
 .search-field-wrapper.inbox {
   row-gap: 0.5rem;
   
 }
+
+
 
 .multilink-option {
   display: flex !important;

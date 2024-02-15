@@ -1,4 +1,5 @@
 package org.egov.pqm.web.model.mdms;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Plant {
     @JsonProperty("code")
     private String code;
@@ -36,13 +38,8 @@ public class Plant {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("effectiveTo")
-    private long effectiveTo;
-
     @JsonProperty("plantConfig")
     private String plantConfig;
 
-    @JsonProperty("effectiveFrom")
-    private long effectiveFrom;
 
 }

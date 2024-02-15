@@ -47,7 +47,39 @@ const getDriverDetails = (drivers) => {
     : [];
 };
 
-const getResponse = (data) => {
+const getWorkerDetails = (workers, t) => {
+  return workers
+    ? workers?.map((worker, index) => {
+        const fn_list = worker?.additionalFields?.fields?.filter((item) => item.key.startsWith("FUNCTIONAL_ROLE_") && item.key !== "FUNCTIONAL_ROLE_COUNT");
+        return {
+          name: index,
+          id: worker?.individualId,
+          swid: worker?.id,
+          values: [
+            { title: "ES_FSM_REGISTRY_WORKER_NAME", value: worker?.name?.givenName || "N/A" },
+            { title: "ES_FSM_REGISTRY_WORKER_ID", value: worker?.individualId || "N/A" },
+            { title: "ES_FSM_REGISTRY_WORKER_GENDER", value: worker?.gender },
+            { title: "ES_FSM_REGISTRY_WORKER_DOB", value: worker?.dateOfBirth },
+            { title: "ES_FSM_REGISTRY_WORKER_SKILLS", value: worker?.skills?.length > 0 ? worker?.skills?.map((i) => t(`SW_SKILLS_${i.type}`))?.join(", ") : "N/A" },
+            { title: "ES_FSM_REGISTRY_WORKER_FUNCTIONAL_ROLE", value: fn_list?.length > 0 ? fn_list?.map((i) => t(`SW_ROLE_${i.value}`))?.join(", ") : "N/A" },
+            worker?.identifiers?.filter((i) => i.identifierType === "DRIVING_LICENSE_NUMBER").length > 0
+              ? { title: "ES_FSM_REGISTRY_DRIVER_LICENSE", value: worker?.identifiers?.filter((i) => i.identifierType === "DRIVING_LICENSE_NUMBER")?.[0]?.identifierId || "N/A" }
+              : null,
+            worker?.photo
+              ? {
+                  // titlee: "ES_FSM_REGISTRY_PHOTO_DETAILS",
+                  photo: worker?.photo ? [worker?.photo] : [],
+                  isPhoto: worker?.photo,
+                }
+              : null,
+            // { title: "ES_FSM_REGISTRY_DRIVER_LICENSE", value: driver?.licenseNumber },
+          ],
+        };
+      })
+    : [];
+};
+
+const getResponse = (data, t, workers) => {
   let details = [
     {
       title: "",
@@ -56,6 +88,10 @@ const getResponse = (data) => {
         { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_ADDRESS", value: data?.address?.locality?.name },
         { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_PHONE", value: data?.owner?.mobileNumber },
         { title: "ES_FSM_REGISTRY_DETAILS_ADDITIONAL_DETAILS", value: data?.additionalDetails?.description },
+        {
+          title: "ES_FSM_REGISTRY_AGENCY_TYPE",
+          value: data?.agencyType ? t(Digit.Utils.locale.getTransformedLocale(`FSM_VENDOR_AGENCY_TYPE_${data?.agencyType}`)) : t("ES_COMMON_NA"),
+        },
       ],
     },
     {
@@ -64,21 +100,34 @@ const getResponse = (data) => {
       child: getVehicleDetails(data.vehicles),
     },
     {
-      title: "ES_FSM_REGISTRY_DETAILS_DRIVER_DETAILS",
-      type: "ES_FSM_REGISTRY_DETAILS_TYPE_DRIVER",
-      child: getDriverDetails(data.drivers),
+      title: "ES_FSM_REGISTRY_DETAILS_WORKER_DETAILS",
+      type: "ES_FSM_REGISTRY_DETAILS_TYPE_WORKER",
+      child: getWorkerDetails(workers, t),
     },
   ];
   return details;
 };
 
-const DsoDetails = async (tenantId, filters = {}) => {
+const DsoDetails = async (tenantId, filters = {}, t) => {
   const dsoDetails = await FSMService.vendorSearch(tenantId, filters);
 
-  //TODO get possible dates to book dso
+  const workers = window.location.pathname.includes("vendor-details")
+    ? await Digit.FSMService.workerSearch({
+        tenantId,
+        params: {
+          offset: 0,
+          limit: 100,
+        },
+        details: {
+          Individual: {
+            id: dsoDetails?.vendor?.flatMap((dso) => dso?.workers?.map((i) => i.individualId)),
+          },
+        },
+      })
+    : null;
 
   const data = dsoDetails?.vendor?.map((dso) => ({
-    workers:dso?.workers,
+    workers: dso?.workers,
     displayName: dso.name,
     mobileNumber: dso.owner?.mobileNumber,
     name: dso.name,
@@ -88,9 +137,11 @@ const DsoDetails = async (tenantId, filters = {}) => {
     auditDetails: dso.auditDetails,
     drivers: dso.drivers,
     activeDrivers: dso.drivers?.filter((driver) => driver.status === "ACTIVE"),
+    workers: dso.workers,
+    // activeWorkers: dso.workers?.filter((worker) => worker.vendorWorkerStatus === "ACTIVE"),
     allVehicles: dso.vehicles,
     dsoDetails: dso,
-    employeeResponse: getResponse(dso),
+    employeeResponse: getResponse(dso, t, workers?.Individual ? workers?.Individual : null),
     vehicles: dso.vehicles
       ?.filter((vehicle) => vehicle.status === "ACTIVE")
       ?.map((vehicle) => ({

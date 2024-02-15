@@ -7,14 +7,14 @@ const TqmAdminNotification = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
-
+  
   if(!userRoles.includes("PQM_ADMIN")){
     return null
   }
 
   const requestCriteria = {
     url: "/egov-user-event/v1/events/_search",
-    params: {tenantId},
+    params: {tenantId,recepients:userInfo?.info?.uuid},
     body: {},
     config:{
       enabled: userRoles.includes("PQM_ADMIN") ? true : false

@@ -79,6 +79,14 @@ config:
       - work-dir: 'pqm-anomaly-finder/src/main/resources/db'
         image-name: 'pqm-anomaly-finder-db'
 
+  - name: 'builds/SANITATION/trackingservice'
+    build:
+      - work-dir: 'trackingservice'
+        image-name: 'trackingservice'
+        dockerfile: 'build/maven/Dockerfile'
+      - work-dir: 'trackingservice/src/main/resources/db'
+        image-name: 'vehicle-tracking-service-db'
+
   #Sanitation Frontend
   - name: 'builds/SANITATION/frontend/sanitation-ui'
     build:

@@ -78,7 +78,8 @@ const DriverDetails = (props) => {
   } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: 'name', sortOrder: 'ASC', status: 'ACTIVE' },
-    {}
+    {},
+    t
   );
 
   const {

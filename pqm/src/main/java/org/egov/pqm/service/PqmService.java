@@ -1,15 +1,38 @@
 package org.egov.pqm.service;
 
-import static org.egov.pqm.util.Constants.*;
-import static org.egov.pqm.util.ErrorConstants.*;
-import static org.egov.pqm.util.MDMSUtils.*;
+import static org.egov.pqm.util.Constants.MDMS_MASTER_TENANTS;
+import static org.egov.pqm.util.Constants.MDMS_MODULE_TENANT;
+import static org.egov.pqm.util.Constants.PQM_BUSINESS_SERVICE;
+import static org.egov.pqm.util.Constants.PQM_SCHEMA_CODE_PLANT;
+import static org.egov.pqm.util.Constants.SAVE_AS_DRAFT;
+import static org.egov.pqm.util.Constants.SCHEMA_CODE_PLANTCONFIG;
+import static org.egov.pqm.util.Constants.SCHEMA_CODE_TEST_STANDARD;
+import static org.egov.pqm.util.Constants.SUBMIT_SAMPLE;
+import static org.egov.pqm.util.Constants.UPDATE_RESULT;
+import static org.egov.pqm.util.Constants.WFSTATUS_PENDINGRESULTS;
+import static org.egov.pqm.util.Constants.WFSTATUS_SCHEDULED;
+import static org.egov.pqm.util.ErrorConstants.NO_TENANT_PRESENT_ERROR_DESC;
+import static org.egov.pqm.util.ErrorConstants.PLANT_PLANT_CONFIG_DATA_NOT_PRESENT_ERROR_DESC;
+import static org.egov.pqm.util.ErrorConstants.PQM_ANOMALY_SEARCH_ERROR;
+import static org.egov.pqm.util.ErrorConstants.PQM_ANOMALY_SEARCH_ERROR_DESC;
+import static org.egov.pqm.util.ErrorConstants.TEST_NOT_IN_DB;
+import static org.egov.pqm.util.ErrorConstants.TEST_NOT_PRESENT_CODE;
+import static org.egov.pqm.util.ErrorConstants.TEST_NOT_PRESENT_MESSAGE;
+import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
+import static org.egov.pqm.util.MDMSUtils.parseJsonToTestList;
 import static org.egov.pqm.web.model.Pagination.SortOrder.DESC;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
@@ -182,11 +205,10 @@ public class PqmService {
     if (test.getTestId() == null) { // validate if application exists
       throw new CustomException(UPDATE_ERROR, "Application Not found in the System" + test);
     }
-    if (test.getSourceType().equals(SourceType.LAB_SCHEDULED)) {
-      if (test.getWorkflow() == null || test.getWorkflow().getAction() == null) {
-        throw new CustomException(UPDATE_ERROR,
-            "Workflow action cannot be null." + String.format("{Workflow:%s}", test.getWorkflow()));
-      }
+    if (test.getSourceType().equals(SourceType.LAB_SCHEDULED) && (test.getWorkflow() == null
+        || test.getWorkflow().getAction() == null)) {
+      throw new CustomException(UPDATE_ERROR,
+          "Workflow action cannot be null." + String.format("{Workflow:%s}", test.getWorkflow()));
     }
     TestResponse testResponse = fetchFromDb(testRequest);
     List<Test> oldTests = testResponse.getTests();
@@ -204,20 +226,70 @@ public class PqmService {
         PQM_BUSINESS_SERVICE,
         null);
     actionValidator.validateUpdateRequest(testRequest, businessService);
-    if (test.getWorkflow().getAction().equals(UPDATE_RESULT)) {
-      // calculate test result
-      qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
-      enrichmentService.setTestResultStatus(testRequest);
-      enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
-    }
-    if (test.getWorkflow().getAction().equals(SUBMIT_SAMPLE)) {
-        // calculate test result
+
+    switch (test.getWorkflow().getAction()) {
+      case SUBMIT_SAMPLE:
         qualityCriteriaEvaluation.validateQualityCriteriaResult(testRequest);
-      }
+        break;
+      case SAVE_AS_DRAFT:
+        break;
+      case UPDATE_RESULT:
+        // calculate test result
+        qualityCriteriaEvaluation.evalutateQualityCriteria(testRequest);
+        enrichmentService.setTestResultStatus(testRequest);
+        enrichmentService.pushToAnomalyDetectorIfTestResultStatusFail(testRequest);
+        break;
+    }
+
     enrichmentService.enrichPQMUpdateRequest(testRequest);// enrich update request
     workflowIntegrator.callWorkFlow(testRequest);// updating workflow during update
+    updateTestDocuments(testRequest);
     repository.update(testRequest);
     return testRequest.getTests().get(0);
+  }
+
+  private void updateTestDocuments(TestRequest testRequest){
+    Test test = testRequest.getTests().get(0);
+    DocumentResponse documentResponse = repository.getDocumentData(
+        Collections.singletonList(test.getTestId()));
+    if(Objects.isNull(documentResponse) || Objects.isNull(documentResponse.getDocuments())){
+      return;
+    }
+
+    List<Document> toInsert = new ArrayList<>();
+    List<Document> toUpdate = new ArrayList<>();
+    List<String> existingDocumentIds = documentResponse.getDocuments().stream().map(Document::getId)
+        .collect(Collectors.toList());
+    test.getDocuments().forEach(document -> {
+      if(existingDocumentIds.contains(document.getId())){
+        toUpdate.add(document);
+      } else {
+        toInsert.add(document);
+      }
+    });
+
+    //If new document available for insert, make old documents inactive. This is to support only 1 document allowed for test
+    if(!toInsert.isEmpty() || test.getDocuments().isEmpty()){
+      for (Document document : documentResponse.getDocuments()) {
+        if (document.isActive()) {
+          document.setActive(false);
+          toUpdate.add(document);
+        }
+      }
+    }
+
+    test.setDocuments(toInsert);
+    repository.updateTestDocuments(
+        TestRequest.builder()
+            .requestInfo(testRequest.getRequestInfo())
+            .tests(Collections.singletonList(
+                    Test.builder()
+                        .documents(toUpdate)
+                        .qualityCriteria(test.getQualityCriteria())
+                        .build()
+                )
+            ).build()
+    );
   }
 
   /**

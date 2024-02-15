@@ -9,7 +9,7 @@ const WorkflowFilter = ({ props, t, populators, formData, responseData }) => {
   function mergeObjects(jsonArray) {
     const mergedMap = new Map();
 
-    jsonArray.forEach((obj) => {
+    jsonArray?.forEach((obj) => {
       const key = `${obj.applicationstatus}`;
       if (!mergedMap.has(key)) {
         mergedMap.set(key, { ...obj });
@@ -53,6 +53,7 @@ const WorkflowFilter = ({ props, t, populators, formData, responseData }) => {
             }}
             value={row.statusid}
             // checked={formData?.[populators.name]?.[row.uuid]}
+            checked={formData?.[populators.name]?.[row.statusid]?true:false}
             label={t(Digit.Utils.locale.getTransformedLocale(`CS_COMMON_FSM_${row?.applicationstatus}`))}
           />
         );

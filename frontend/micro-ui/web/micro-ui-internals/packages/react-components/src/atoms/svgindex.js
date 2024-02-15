@@ -260,14 +260,24 @@ const PDFSvg = ({
 );
 
 const SearchIconSvg = ({ className, onClick, styles, disable }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#f47738" className={className} width="24px" height="24px" onClick={onClick} style={{...styles}} disable={disable}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="#f47738"
+    className={className}
+    width="24px"
+    height="24px"
+    onClick={onClick}
+    style={{ ...styles }}
+    disable={disable}
+  >
     <path d="M0 0h24v24H0z" fill="none" />
     <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
   </svg>
 );
 
-const CheckSvg = ({ className, style = {} }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#F47738" className={className} style={style}>
+const CheckSvg = ({ className, style = {}, fill = "#F47738" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={fill} className={className} style={style}>
     <path d="M0 0h24v24H0z" fill="none" />
     <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" />
   </svg>
@@ -382,7 +392,7 @@ const ArrowRightInbox = ({ style }) => (
   </svg>
 );
 
-const ShippingTruck = ({ className, styles,fill="#F47738" }) => {
+const ShippingTruck = ({ className, styles, fill = "#F47738" }) => {
   return (
     <svg style={{ ...styles }} className={className} xmlns="http://www.w3.org/2000/svg" fill={fill} height="24" viewBox="0 0 24 24" width="24">
       <path
@@ -391,7 +401,7 @@ const ShippingTruck = ({ className, styles,fill="#F47738" }) => {
       />
     </svg>
   );
-}
+};
 
 function CloseSvg({ onClick }) {
   return (
@@ -1107,7 +1117,7 @@ const EditIcon = ({ style }) => (
 );
 
 const SearchIcon = ({ className, onClick, styles, disable }) => (
-  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={onClick} style={{...styles}} className={className} disable={disable}>
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={onClick} style={{ ...styles }} className={className} disable={disable}>
     <path
       d="M12.5 11H11.71L11.43 10.73C12.41 9.59 13 8.11 13 6.5C13 2.91 10.09 0 6.5 0C2.91 0 0 2.91 0 6.5C0 10.09 2.91 13 6.5 13C8.11 13 9.59 12.41 10.73 11.43L11 11.71V12.5L16 17.49L17.49 16L12.5 11ZM6.5 11C4.01 11 2 8.99 2 6.5C2 4.01 4.01 2 6.5 2C8.99 2 11 4.01 11 6.5C11 8.99 8.99 11 6.5 11Z"
       fill="#505A5F"

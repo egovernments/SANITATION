@@ -50,7 +50,7 @@ const RegisryInbox = (props) => {
   } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { sortBy: 'name', sortOrder: 'ASC', status: 'ACTIVE' },
-    { enabled: true }
+    { enabled: true }, t
   );
   const {
     isLoading: isUpdateVendorLoading,
@@ -405,6 +405,43 @@ const RegisryInbox = (props) => {
     });
   };
 
+  const onSWCellClick = async (row, column, length, isSearch) => {
+    const SWdata = await Digit.FSMService.workerSearch({tenantId, params: {
+      offset: 0,
+      limit: 100
+    }, details: {
+      Individual: {
+        id: row.original.workers?.map((i) => i?.individualId),
+      },
+    }})
+
+    setTableData((old) => {
+      return old.map((data, index) => {
+        if (
+          index == row.id &&
+          row.id !== data?.popup?.row &&
+          column.id !== data?.popup?.column &&
+          length
+        ) {
+          return {
+            ...data,
+            popup: {
+              row: row.id,
+              column: column.id,
+              popData: SWdata?.Individual 
+            },
+          };
+        } else {
+          return {
+            ...data,
+            popup: {},
+          };
+        }
+      })
+    }
+    );
+  };
+
   const onCellClick = (row, column, length) => {
     setTableData((old) =>
       old.map((data, index) => {
@@ -438,12 +475,16 @@ const RegisryInbox = (props) => {
           action
       );
     } else {
-      let driver = data.find((ele) => ele.name === action);
-      history.push(
-        `/${window?.contextPath}/employee/fsm/registry/driver-details/` +
-          driver?.id
-      );
+      const result = data.find(item => item.individualId === action.id) && { ...data.find(item => item.individualId === action.id), individual: action.individualId };
+      history.push(`/${window?.contextPath}/employee/fsm/registry/worker-details?id=${result?.individual}`);
     }
+    // } else {
+    //   let driver = data.find((ele) => ele.name === action);
+    //   history.push(
+    //     `/${window?.contextPath}/employee/fsm/registry/driver-details/` +
+    //       driver?.id
+    //   );
+    // }
   };
 
   const onSelectAdd = () => {
@@ -578,7 +619,7 @@ const RegisryInbox = (props) => {
             },
           },
           {
-            Header: t('ES_FSM_REGISTRY_INBOX_TOTAL_DRIVERS'),
+            Header: t('ES_FSM_REGISTRY_INBOX_TOTAL_WORKERS'),
             disableSortBy: true,
             Cell: ({ row, column }) => {
               return (
@@ -588,73 +629,30 @@ const RegisryInbox = (props) => {
                 >
                   <div
                     className={
-                      row.original?.drivers?.length ? 'link' : 'cell-text'
+                      row.original?.workers?.length ? 'link' : 'cell-text'
                     }
                     style={{ cursor: 'pointer' }}
                     onClick={() =>
-                      onCellClick(row, column, row.original?.drivers?.length)
+                      onSWCellClick(row, column, row.original?.workers?.length)
                     }
                   >
-                    {row.original?.drivers?.length || 0}
+                    {row.original?.workers?.length || 0}
                     <br />
                   </div>
                   {row.id === row.original?.popup?.row &&
                     column.id === row.original?.popup?.column && (
                       <Menu
+                        optionKey="name"
                         localeKeyPrefix={''}
-                        options={row.original?.drivers?.map(
-                          (data) => data.name
+                        options={
+                          row.original?.popup?.popData?.map(
+                          (data) => ({name: data.name.givenName, individualId: data.individualId, id: data.id})
                         )}
                         onSelect={(action) =>
                           onActionSelect(
                             action,
-                            'DRIVER',
-                            row.original?.drivers
-                          )
-                        }
-                      />
-                    )}
-                </div>
-              );
-            },
-          },
-          {
-            Header: t('ES_FSM_REGISTRY_INBOX_ACTIVE_DRIVERS'),
-            disableSortBy: true,
-            Cell: ({ row, column }) => {
-              return (
-                <div
-                  className='action-bar-wrap-registry'
-                  style={{ position: 'absolute' }}
-                >
-                  <div
-                    className={
-                      row.original?.activeDrivers?.length ? 'link' : 'cell-text'
-                    }
-                    style={{ cursor: 'pointer' }}
-                    onClick={() =>
-                      onCellClick(
-                        row,
-                        column,
-                        row.original?.activeDrivers?.length
-                      )
-                    }
-                  >
-                    {row.original?.activeDrivers?.length || 0}
-                    <br />
-                  </div>
-                  {row.id === row.original?.popup?.row &&
-                    column.id === row.original?.popup?.column && (
-                      <Menu
-                        localeKeyPrefix={''}
-                        options={row.original?.activeDrivers?.map(
-                          (data) => data.name
-                        )}
-                        onSelect={(action) =>
-                          onActionSelect(
-                            action,
-                            'DRIVER',
-                            row.original?.activeDrivers
+                            'WORKER',
+                            row.original?.workers
                           )
                         }
                       />

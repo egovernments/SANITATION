@@ -27,7 +27,7 @@ const Urls = {
   ChangePassword1: "/user/password/_update",
   UserProfileUpdate: "/user/profile/_update",
   EmployeeSearch: "/egov-hrms/employees/_search",
-  InboxSearchv1:"/inbox/v2/_search",
+  InboxSearchv1: "/inbox/v2/_search",
   InboxSearch: "/inbox/v2/_search",
 
   UserSearch: "/user/_search",
@@ -60,6 +60,7 @@ const Urls = {
     workerDelete: "/individual/v1/_delete",
     plantUserCreate: "/pqm-service/plant/user/v1/_create",
     plantUserUpdate: "/pqm-service/plant/user/v1/_update",
+    vehicleTripAlertsDetails: "/trackingservice/api/v3/trip/_searchfsm",
   },
 
   payment: {

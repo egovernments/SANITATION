@@ -104,8 +104,10 @@ export const FormComposerV2 = (props) => {
     props.onSubmit(data);
   }
 
-  function onSecondayActionClick(data) {
-    props.onSecondayActionClick();
+  async function onSecondayActionClick() {
+    if (props?.checkSecondaryValidation !== true) return;
+    const isValid = await trigger();
+    isValid ? props.onSecondayActionClick() : null;
   }
 
   useEffect(() => {
@@ -153,6 +155,7 @@ export const FormComposerV2 = (props) => {
                   pattern={populators?.pattern}
                   customIcon={populators?.customIcon}
                   customClass={populators?.customClass}
+                  defaultValue={formData?.[populators.name]}
                 />
               )}
               name={populators.name}
@@ -648,6 +651,7 @@ export const FormComposerV2 = (props) => {
                     {t(field.label)}
                     {field?.appendColon ? " : " : null}
                     {field.isMandatory ? " * " : null}
+                    {field?.labelChildren ? field?.labelChildren : null}
                   </CardLabel>
                 )}
                 <div style={field.withoutLabel ? { width: "100%", ...props?.fieldStyle } : { ...props?.fieldStyle }} className="field">
@@ -781,9 +785,9 @@ export const FormComposerV2 = (props) => {
       {formFields(section, index, array, sectionFormCategory)}
       {props.childrenAtTheBottom && props.children}
       {props.submitInForm && <SubmitBar label={t(props.label)} style={{ ...props?.buttonStyle }} submit="submit" disabled={isDisabled} className="w-full" />}
-      {props.secondaryActionLabel && (
-        <div className="primary-label-btn" style={{ margin: "20px auto 0 auto" }} onClick={onSecondayActionClick}>
-          {props.secondaryActionLabel}
+      {props.submitInForm && props.secondaryActionLabel && (
+        <div className="primary-label-btn" style={{ margin: "20px auto 0 auto", ...props?.secondaryActionStyle }} onClick={onSecondayActionClick}>
+          {t(props.secondaryActionLabel)}
         </div>
       )}
     </React.Fragment>
@@ -837,8 +841,13 @@ export const FormComposerV2 = (props) => {
         </HorizontalNav>
       )}
       {!props.submitInForm && props.label && (
-        <ActionBar>
+        <ActionBar style={props.secondaryActionLabel ? { display: "flex", flexDirection: "row-reverse" } : {}}>
           <SubmitBar label={t(props.label)} submit="submit" disabled={isDisabled} />
+          {props.secondaryActionLabel && (
+            <div className="primary-label-btn" style={{ width: "fit-content", border: "1px solid", padding: "0.4rem", marginRight: "10px" }} onClick={onSecondayActionClick}>
+              {t(props.secondaryActionLabel)}
+            </div>
+          )}
           {props.onSkip && props.showSkip && <LinkButton style={props?.skipStyle} label={t(`CS_SKIP_CONTINUE`)} onClick={props.onSkip} />}
         </ActionBar>
       )}

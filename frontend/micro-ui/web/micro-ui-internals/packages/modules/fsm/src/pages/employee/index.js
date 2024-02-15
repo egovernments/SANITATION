@@ -17,7 +17,7 @@ import FstpOperations from "./FstpOperations";
 import FstpServiceRequest from "./FstpServiceRequest";
 import Inbox from "./Inbox";
 
-export const FsmBreadCrumb = ({ location }) => {
+export const FsmBreadCrumb = ({ location, defaultPath }) => {
   const { t } = useTranslation();
   const DSO = Digit.UserService.hasAccess(["FSM_DSO"]);
   const FSTPO = Digit.UserService.hasAccess(["FSM_EMP_FSTPO"]);
@@ -41,7 +41,7 @@ export const FsmBreadCrumb = ({ location }) => {
   const isAddWorker = location?.pathname?.includes("new-worker");
   const isEditWorker = location?.pathname?.includes("edit-worker");
   const isWorkerDetails = location?.pathname?.includes("worker-details");
-
+  const pathVar = location.pathname.replace(defaultPath + "/", "").split("?")?.[0];
   const [search, setSearch] = useState(false);
   const [id, setId] = useState(false);
   const searchParams = new URLSearchParams(location.search);
@@ -74,13 +74,13 @@ export const FsmBreadCrumb = ({ location }) => {
           : FSTPO
           ? `/${window?.contextPath}/employee/fsm/fstp-inbox`
           : `/${window?.contextPath}/employee`,
-      query: isVehicleDetails ? "selectedTabs=VEHICLE" : isWorkerDetails ? "selectedTabs=WORKER" : "selectedTabs=VENDOR",
+      query: isVehicleDetails ? "selectedTabs=VEHICLE" : isWorkerDetails ? "selectedTabs=WORKER" : isVendorDetails ? "selectedTabs=VENDOR" : "",
       content: isVehicleLog ? t("ES_TITLE_INBOX") : "FSM",
       show: isFsm,
-      isBack: isVendorDetails || isVehicleDetails || isWorkerDetails || isRegistry ? false : true,
+      isBack: false,
     },
     {
-      path: isNewApplication ? `/${window?.contextPath}/employee/fsm/new-application` : "",
+      path: isNewApplication ? "" : `/${window?.contextPath}/employee/fsm/new-application`,
       content: t("FSM_NEW_DESLUDGING_APPLICATION"),
       show: isFsm && isNewApplication,
     },
@@ -90,29 +90,29 @@ export const FsmBreadCrumb = ({ location }) => {
       show: location.pathname.includes("/employee/fsm/response") ? true : false,
     },
     {
-      path: isInbox || isSearch || isApplicationDetails ? `/${window?.contextPath}/employee/fsm/inbox` : "",
+      path: isInbox ? "" : isSearch || isApplicationDetails ? `/${window?.contextPath}/employee/fsm/inbox` : "",
       content: t("ES_TITLE_INBOX"),
       show: (isFsm && isInbox) || isSearch || isApplicationDetails,
     },
     {
-      path: `/${window?.contextPath}/employee/fsm/search`,
+      path: pathVar === "search" ? "" : `/${window?.contextPath}/employee/fsm/search`,
       content: t("ES_TITILE_SEARCH_APPLICATION"),
       show: search,
     },
     { content: t("ES_TITLE_APPLICATION_DETAILS"), show: isApplicationDetails },
     { content: t("ES_TITLE_VEHICLE_LOG"), show: isVehicleLog },
     {
-      path: `/${window?.contextPath}/employee/fsm/registry/vendor-details/` + id,
+      path: isVendorDetails ? null : `/${window?.contextPath}/employee/fsm/registry/vendor-details/` + id,
       content: t("ES_TITLE_VENDOR_DETAILS"),
       show: isRegistry && (isVendorDetails || isVendorEdit),
     },
     {
-      path: `/${window?.contextPath}/employee/fsm/registry/vehicle-details/` + id,
+      path: isVehicleDetails ? null : `/${window?.contextPath}/employee/fsm/registry/vehicle-details/` + id,
       content: t("ES_TITLE_VEHICLE_DETAILS"),
       show: isRegistry && (isVehicleDetails || isVehicleEdit),
     },
     {
-      path: `/${window?.contextPath}/employee/fsm/registry/driver-details/` + id,
+      path: isDriverDetails ? null : `/${window?.contextPath}/employee/fsm/registry/driver-details/` + id,
       content: t("ES_TITLE_DRIVER_DETAILS"),
       show: isRegistry && (isDriverDetails || isDriverEdit),
     },
@@ -125,18 +125,6 @@ export const FsmBreadCrumb = ({ location }) => {
     {
       content: t("ES_TITLE_VENDOR_EDIT"),
       show: isRegistry && (isVendorEdit || isVehicleEdit || isDriverEdit || isEditWorker),
-    },
-    {
-      content: t("ES_TITLE_WORKER_EDIT"),
-      show: isRegistry && isEditWorker,
-    },
-    {
-      content: t("ES_TITLE_WORKER_ADD"),
-      show: isRegistry && isAddWorker,
-    },
-    {
-      content: t("ES_TITLE_WORKER_DETAILS"),
-      show: isRegistry && isWorkerDetails,
     },
     {
       path: `/${window?.contextPath}/employee/fsm/modify-application/` + id,
@@ -242,6 +230,9 @@ const EmployeeApp = ({ path, url, userType }) => {
   const AddWorker = Digit.ComponentRegistryService.getComponent("AddWorker");
   const EditWorker = Digit.ComponentRegistryService.getComponent("EditWorker");
   const WorkerDetails = Digit.ComponentRegistryService.getComponent("WorkerDetails");
+  const VehicleTrackingCard = Digit.ComponentRegistryService.getComponent("VehicleTrackingCard");
+  const VehicleTrackingAlerts = Digit.ComponentRegistryService.getComponent("Alerts");
+  const IllegalDumpingSites = Digit.ComponentRegistryService.getComponent("IllegalDumpingSites");
 
   const locationCheck =
     window.location.href.includes("/employee/fsm/inbox") ||
@@ -249,6 +240,19 @@ const EmployeeApp = ({ path, url, userType }) => {
     window.location.href.includes("/employee/fsm/application-details/");
 
   const desludgingApplicationCheck = window.location.href.includes("/employee/fsm/new-application") || window.location.href.includes("/employee/fsm/modify-application");
+
+  const destroySessionHelper = (currentPath,pathList,sessionName) => {
+    if(!pathList.includes(currentPath)){
+      sessionStorage.removeItem(`Digit.${sessionName}`)
+    }
+  }
+
+  //destroying inbox session 
+  useEffect(() => {
+    const pathVar = location.pathname.replace(path + "/", "").split("?")?.[0];
+    destroySessionHelper(pathVar,["inbox","application-details/"],"FSM_INBOX_SESSION");
+  }, [location])
+
   return (
     <Switch>
       <React.Fragment>
@@ -259,7 +263,7 @@ const EmployeeApp = ({ path, url, userType }) => {
             </BackButton>
           ) : (
             <div>
-              <BreadCrumbComp location={location} />
+              <BreadCrumbComp location={location} defaultPath={path} />
             </div>
           )}
           <PrivateRoute exact path={`${path}/`} component={() => <FSMLinks matchPath={path} userType={userType} />} />
@@ -293,6 +297,9 @@ const EmployeeApp = ({ path, url, userType }) => {
           <PrivateRoute path={`${path}/registry/new-worker`} component={() => <AddWorker parentRoute={path} />} />
           <PrivateRoute path={`${path}/registry/edit-worker`} component={() => <EditWorker parentRoute={path} />} />
           <PrivateRoute path={`${path}/registry/worker-details`} component={() => <WorkerDetails parentRoute={path} />} />
+          <PrivateRoute exact path={`${path}/vehicle-tracking/home`} component={() => <VehicleTrackingCard matchPath={path} userType={userType} />} />
+          <PrivateRoute path={`${path}/vehicle-tracking/alerts`} component={() => <VehicleTrackingAlerts parentRoute={path} isInbox={true} />} />
+          <PrivateRoute path={`${path}/vehicle-tracking/illegal-dumping-sites`} component={() => <IllegalDumpingSites />} />
         </div>
       </React.Fragment>
     </Switch>

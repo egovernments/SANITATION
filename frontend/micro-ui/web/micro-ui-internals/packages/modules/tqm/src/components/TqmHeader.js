@@ -28,6 +28,9 @@ const TqmHeader = ({location,defaultPath}) => {
   const { t } = useTranslation();
   //using location.pathname we can update the stepIndex accordingly when help is clicked from any other screen(other than home screen)
   const { pathname } = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const isPast = searchParams.get("type");
+
   const startTour = () => {
     history.push(`/${window.contextPath}/employee/tqm/how-it-works`);
   };
@@ -38,7 +41,7 @@ const TqmHeader = ({location,defaultPath}) => {
 
       <div className="tqm-header">
         {!pathVar?.includes(excludeBackBtn) ? (
-          <BackButton isCustomBack={pathname?.includes("summary") ? true : false} getBackPageNumber={-3}>
+          <BackButton isCustomBack={pathname?.includes("summary") && isPast !== "past" ? true : false} getBackPageNumber={-3}>
             {t("CS_COMMON_BACK")}
           </BackButton>
         ) : (

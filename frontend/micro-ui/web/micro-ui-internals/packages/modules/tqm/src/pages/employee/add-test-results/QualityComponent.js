@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useMemo } from "react";
 import { CardLabel, LabelFieldPair, Toast, TextInput, LinkButton, CardLabelError, MobileNumber, DatePicker, Loader, Header, ImageUploadHandler, UploadFile, MultiUploadWrapper } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash";
 
-const QualityParameter = ({onSelect,formData }) => {
+function allTruthy(obj) {
+    for (let key in obj) {
+      if (!obj[key]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+const QualityParameter = ({onSelect,formData,setValue,unregister,config,...props}) => {
+    
     const { t } = useTranslation();
     const { control} = useForm();
     const [showComponent, setShowComponent] = useState(false);
@@ -13,20 +23,14 @@ const QualityParameter = ({onSelect,formData }) => {
     const [showToast, setShowToast] = useState(false);
     const tenant = Digit.ULBService.getStateId();
     const [allFieldsDefined, setallFieldsDefined] = useState(false);
-
     useEffect(() => {
-        const excludedField = "QualityParameter";
-        let allFieldsDefined = false;
-        for (const key in formData) {
-            if (key !== excludedField && formData[key] === undefined) {
-                setallFieldsDefined(false);
-                break;
-            }
-            else {
-                setallFieldsDefined(formData);
-            }
+        if(formData?.TestStandard && allTruthy(formData?.TestStandard)){
+            setallFieldsDefined(true)
         }
     }, [formData])
+    
+
+    
     
 
     const { isLoading, data } = Digit.Hooks.tqm.useCustomMDMSV2({
@@ -42,7 +46,7 @@ const QualityParameter = ({onSelect,formData }) => {
         config: {
             enabled: !!allFieldsDefined,
             staleTime: 0,
-            cacheTime:0
+            cacheTime:0,
         }
     })
     const closeToast = () => {
@@ -71,15 +75,28 @@ const QualityParameter = ({onSelect,formData }) => {
         }
     }, [data,formData]);
 
-    const qualityCriteria = data?.map(item => item.qualityCriteria);
+    //here make sure this is single array of unique items
+    // const qualityCriteria = data?.map(item => item.qualityCriteria);
+    const qualityCriteria = useMemo(() => data?.length > 0 ? [...new Set(data?.map(item => item.qualityCriteria)?.flatMap(array => array))]: [], [data])
+    sessionStorage.setItem('Digit.qualityCriteria',qualityCriteria?qualityCriteria:[])
+    // const qualityCriteria = data?.length > 0 ? [...new Set(data?.map(item => item.qualityCriteria)?.flatMap(array => array))]: []
     const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
     const CardLabelStyle = { marginTop: "-5px" }
-    const [quality, setQuality] = useState({});
+    const [quality, setQuality] = useState(formData?.QualityParameter ? formData?.QualityParameter : {});
+
+    // useEffect(() => {
+    //     if(showComponent){
+    //       setQuality({})
+    //     }
+    //   }, [showComponent])
 
     function displayValue(newValue, criteria, index) {
-        let temp = quality
-        temp[criteria] = newValue;
-        setQuality(temp)
+        setQuality((prevState)=> {
+            return {
+                ...prevState,
+                [criteria]:newValue
+            }
+        })
     }
 
     useEffect(() => {
@@ -102,11 +119,10 @@ const QualityParameter = ({onSelect,formData }) => {
 
                 <React.Fragment>
                     <Header> {t("ES_TQM_QUALITY_PARAMETERS")}</Header>
-                    {qualityCriteria?.map((criterionList, index) => (
+                    {qualityCriteria?.map((criteria, index) => (
                         <div key={index}>
-                            {criterionList.map((criteria, subindex) => (
-                                <LabelFieldPair key={subindex}>
-                                    <CardLabel style={CardLabelStyle}>{t(Digit.Utils.locale.getTransformedLocale(`${"PQM.TestStandard"}_${criteria}`))} {criterionList?.length === 1 ? "*" : ""}</CardLabel>
+                                <LabelFieldPair key={index}>
+                                    <CardLabel style={CardLabelStyle}>{t(Digit.Utils.locale.getTransformedLocale(`${"PQM.TestStandard"}_${criteria}`))} {qualityCriteria?.length === 1 ? "*" : ""}</CardLabel>
                                     
                                     <div className="field">
                                         <Controller
@@ -117,29 +133,32 @@ const QualityParameter = ({onSelect,formData }) => {
                                             }}
                                             render={(props) => (
                                                 <TextInput
-                                                    value={props.value}
+                                                    // value={props.value}
+                                                    // defaultValue={formData?.QualityParameter?.[criteria]}
+                                                    value={quality?.[criteria]}
+                                                    defaultValue={quality?.[criteria]}
                                                     pattern="^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$"
                                                     title={t("ES_TQM_TEST_FORMAT_TIP")}
                                                     type={"text"}
                                                     onChange={(e) => {
                                                         const newValue = e.target.value;
-                                                        displayValue(newValue, criteria, subindex);
+                                                        displayValue(newValue, criteria, index);
+                                                        setValue(`QualityParameter.${criteria}`,newValue)
                                                     }}
                                                 />
                                             )}
                                         />
                                     </div>
                                 </LabelFieldPair>
-
+                                </div>
                             ))}
-                        </div>
-                    ))}
 
                     <LabelFieldPair>
                         <CardLabel style={CardLabelStyle}>{`${t("ES_TQM_TEST_PARAM_ATTACH_DOCUMENTS")}`}</CardLabel>
                         <div className="field">
                             <Controller
-                                name={`photo`}
+                                defaultValue={quality?.document || []}
+                                name={`QualityParameter.document`}
                                 control={control}
                                 rules={{}}
                                 render={({ onChange, ref, value = [] }) => {
@@ -147,19 +166,24 @@ const QualityParameter = ({onSelect,formData }) => {
                                         const numberOfFiles = filesData.length;
                                         let finalDocumentData = [];
                                         if (numberOfFiles > 0) {
-                                            filesData.forEach((value) => {
-                                                finalDocumentData.push({
-                                                    fileName: value?.[0],
-                                                    fileStoreId: value?.[1]?.fileStoreId?.fileStoreId,
-                                                    documentType: value?.[1]?.file?.type,
-                                                });
+                                          filesData.forEach((value) => {
+                                            finalDocumentData.push({
+                                              fileName: value?.[0],
+                                              fileStoreId: value?.[1]?.fileStoreId?.fileStoreId,
+                                              documentType: value?.[1]?.file?.type,
                                             });
+                                          });
                                         }
-                                        let temp = quality;
-                                        temp = { ...temp, document: finalDocumentData?.[0]?.fileStoreId }
-                                        setQuality(temp)
+                                        //here we need to update the form the same way as the state of the reducer in multiupload, since Upload component within the multiupload wrapper uses that same format of state so we need to set the form data as well in the same way. Previously we were altering it and updating the formData
+
+                                        setQuality((prevState) => {
+                                            return {
+                                                ...prevState,
+                                                document:filesData
+                                            }
+                                        })
                                         onChange(numberOfFiles > 0 ? filesData : []);
-                                    }
+                                      }
                                     return (
                                         <MultiUploadWrapper
                                             t={t}
@@ -167,10 +191,10 @@ const QualityParameter = ({onSelect,formData }) => {
                                             tenantId={Digit.ULBService.getCurrentTenantId()}
                                             getFormState={getFileStoreData}
                                             showHintBelow={false}
-                                            setuploadedstate={value || []}
+                                            setuploadedstate={value || quality?.document || []}
                                             allowedFileTypesRegex={/(jpg|jpeg|png|pdf)$/i}
                                             allowedMaxSizeInMB={2}
-                                            maxFilesAllowed={1}
+                                            maxFilesAllowed={1}    
                                         />
                                     );
                                 }}

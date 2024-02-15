@@ -606,6 +606,15 @@ public class FSMService {
 			}
 		}
 
+		if (!Objects.isNull(criteria.getIndividualIds()) && !criteria.getIndividualIds().isEmpty()) {
+			List<String> applicationIds = setApplicationIdsWithWorkers(criteria);
+			if (applicationIds.isEmpty()) {
+				return FSMResponse.builder().fsm(Collections.emptyList()).totalCount(0).build();
+			}
+			criteria.setOwnerIds(Collections.emptyList());
+			criteria.setIds(applicationIds);
+		}
+
 		fsmResponse = repository.getFSMData(criteria, dsoId);
 		fsmList = fsmResponse.getFsm();
 		if (!fsmList.isEmpty()) {
@@ -613,6 +622,16 @@ public class FSMService {
 		}
 
 		return fsmResponse;
+	}
+
+	private List<String> setApplicationIdsWithWorkers(FSMSearchCriteria criteria) {
+		List<Worker> workers = fsmWorkerRepository.getWorkersData(WorkerSearchCriteria.builder()
+				.workerTypes(Collections.singletonList(WorkerType.DRIVER.toString()))
+				.individualIds(criteria.getIndividualIds())
+				.status(Collections.singletonList(WorkerStatus.ACTIVE.toString()))
+				.tenantId(criteria.getTenantId())
+				.build());
+		return workers.stream().map(Worker::getApplicationId).collect(Collectors.toList());
 	}
 
 	private void checkRoleInValidateSearch(RequestInfo requestInfo, FSMSearchCriteria criteria) {

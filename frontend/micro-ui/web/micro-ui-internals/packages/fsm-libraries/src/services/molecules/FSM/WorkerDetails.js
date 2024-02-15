@@ -1,6 +1,6 @@
 import { FSMService } from "../../elements/FSM";
 
-const getResponse = (data, vendorDetails = {}, tenantId) => {
+const getResponse = (data, vendorDetails = {}, tenantId, t) => {
   const rolesData = data?.additionalFields?.fields;
   const sysRole = data?.userDetails?.roles;
   const countIndex = rolesData.findIndex((obj) => obj.key === "FUNCTIONAL_ROLE_COUNT");
@@ -53,12 +53,12 @@ const getResponse = (data, vendorDetails = {}, tenantId) => {
     },
     {
       title: "ES_FSM_REGISTRY_SKILLS_DETAILS",
-      values: [{ title: "ES_FSM_REGISTRY_SKILLS_LABEL", value: data?.skills?.map((i) => i.type).join(", ") }],
+      values: [{ title: "ES_FSM_REGISTRY_SKILLS_LABEL", value: data?.skills?.map((i) => t(`SW_SKILL_${i.type}`)).join(", ") }],
     },
     {
       title: "ES_FSM_REGISTRY_EMPLOYMENT_DETAILS",
       values: [
-        { title: "ES_FSM_REGISTRY_EMPLOYER_LABEL", value: rolesData?.find((i) => i.key === "EMPLOYER").value },
+        { title: "ES_FSM_REGISTRY_EMPLOYER_LABEL", value: rolesData?.find((i) => i.key === "EMPLOYER") ? rolesData?.find((i) => i.key === "EMPLOYER").value : "N/A" },
         { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_NAME", value: vendorDetails?.name || "ES_FSM_REGISTRY_DETAILS_ADD_VENDOR", type: "custom" },
       ],
     },
@@ -79,16 +79,16 @@ const getResponse = (data, vendorDetails = {}, tenantId) => {
   return details;
 };
 
-const WorkerDetails = async ({ tenantId, params, details }) => {
+const WorkerDetails = async ({ tenantId, params, details, t }) => {
   const workerDetails = await FSMService.workerSearch({ tenantId, details, params });
   const ids = workerDetails?.Individual?.map((i) => i.id).join(",");
   const vendorDetails = await FSMService.vendorSearch(tenantId, { individualIds: ids, status: "ACTIVE" });
 
   const data = workerDetails?.Individual?.map((data) => ({
     workerData: data,
-    employeeResponse: getResponse(data, vendorDetails?.vendor?.[0], tenantId),
+    employeeResponse: getResponse(data, vendorDetails?.vendor?.[0], tenantId, t),
     vendorDetails: vendorDetails?.vendor?.[0],
-    agencyType: data?.additionalFields?.fields?.find((i) => i.key === "EMPLOYER").value,
+    agencyType: data?.additionalFields?.fields?.find((i) => i.key === "EMPLOYER") ? data?.additionalFields?.fields?.find((i) => i.key === "EMPLOYER").value : null,
   }));
 
   return data;

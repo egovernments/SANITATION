@@ -39,6 +39,8 @@ import useWorkerDetails from "./fsm/useWorkerDetails";
 import useWorkerDelete from "./fsm/useWorkerDelete";
 import usePlantUserCreate from "./fsm/usePlantUserCreate";
 import usePlantUserUpdate from "./fsm/usePlantUserUpdate";
+import useVehicleTrackingCheck from "./fsm/useVehicleTrackingCheck";
+import useTripTrack from "./vehicleTracking/useTripTrack";
 
 const fsm = {
   useTenants: useTenantsFSM,
@@ -86,7 +88,10 @@ const fsm = {
   useWorkerDelete,
   usePlantUserCreate,
   usePlantUserUpdate,
+  useVehicleTrackingCheck,
+  useTripTrack,
 };
+
 const Hooks = {
   fsm,
 };

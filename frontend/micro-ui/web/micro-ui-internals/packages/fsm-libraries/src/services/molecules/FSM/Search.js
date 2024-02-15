@@ -7,6 +7,7 @@ import {
   getVehicleType,
 } from '../../../utils/fsm';
 import { MdmsService } from '@egovernments/digit-ui-libraries/src/services/elements/MDMS';
+import useTripTrack from "../../../hooks/vehicleTracking/useTripTrack";
 
 function mergeArraysByUniqueKey(array1, array2, key1, key2) {
   return array1.map(obj1 => ({
@@ -60,10 +61,18 @@ export const Search = {
     return response.fsm[0];
   },
 
+  getVehicleTripAlertsDetails: async ({tenantId, filters = {}}) => {
+    const response = await FSMService.vehicleTripAlertsDetails(tenantId, { ...filters });
+    return response;
+  },
+
   applicationDetails: async (t, tenantId, applicationNos, userType) => {
+    const checkvehicletrack = await MdmsService.getVehicleTrackingCheck(tenantId, "FSM", "VehicleTracking");
+    const getTripData = checkvehicletrack?.FSM?.VehicleTracking?.[0]?.vehicleTrackingStatus;
     const filter = { applicationNos };
     let dsoDetails = {};
     let vehicle = {};
+    let tripList;
     const response = await Search.application(tenantId, filter);
     let receivedPayment = response?.additionalDetails?.receivedPayment;
     if (response?.dsoId) {
@@ -71,13 +80,22 @@ export const Search = {
         ids: response.dsoId,
         vehicleIds: response?.vehicleId,
       };
-      [dsoDetails] = await DsoDetails(tenantId, dsoFilters);
+      [dsoDetails] = await DsoDetails(tenantId, dsoFilters, t);
 
       if (response?.vehicleId) {
         vehicle = dsoDetails.vehicles.find(
           (vehicle) => vehicle.id === response.vehicleId
         );
       }
+    }
+
+    if (getTripData) {
+      const filters = {
+        tenantId: tenantId,
+        referenceNos: applicationNos,
+      };
+      const data = await Search.getVehicleTripAlertsDetails({tenantId: tenantId, filters: filters});
+      tripList = data;
     }
 
     let paymentPreference = response?.paymentPreference;
@@ -202,11 +220,11 @@ export const Search = {
     let demandDetails;
     try{
        demandDetails = await PaymentService.demandSearch(
-        tenantId,
-        applicationNos,
-        'FSM.TRIP_CHARGES'
-        );
-      }catch(err){
+      tenantId,
+      applicationNos,
+      'FSM.TRIP_CHARGES'
+    );
+    }catch(err){
         console.error("error while fetching payment details")
       }
     const amountPerTrip =
@@ -447,6 +465,7 @@ export const Search = {
       return {
         tenantId: response.tenantId,
         applicationDetails: employeeResponse,
+        tripList: tripList,
         additionalDetails: response?.additionalDetails,
         totalAmount: totalAmount,
         applicationDetailsResponse: { ...response },

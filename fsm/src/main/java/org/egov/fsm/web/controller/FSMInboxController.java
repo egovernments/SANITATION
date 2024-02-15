@@ -40,4 +40,5 @@ public class FSMInboxController {
 				.build();
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
 }
