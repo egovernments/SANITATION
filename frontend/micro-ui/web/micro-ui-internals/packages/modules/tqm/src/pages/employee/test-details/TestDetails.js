@@ -26,7 +26,7 @@ function TestDetails() {
     tenantId: tenantId,
     config: {
       select: (data) => {
-        if(data?.wfStatus==="PENDINGRESULTS"){
+        if(data?.wfStatus==="PENDINGRESULTS" || data?.wfStatus==="DRAFTED"){
           return {
             data: {
               cards: [
