@@ -106,6 +106,16 @@ function TestDetails() {
   }, [WFData, isWFLoading]);
 
   const submitAction = (data) => {
+    if(data?.updateError === true){
+      setShowToast({ key: "error", action: "ES_TQM_FILL_MANDATORY_FIELD" });
+      setTimeout(closeToast, 5000);
+      return;
+    }
+    if(data?.draftError === true){
+      setShowToast({ key: "error", action: "ES_TQM_ONE_FIELD_MANDATORY" });
+      setTimeout(closeToast, 5000);
+      return;
+    }
     mutate(data, {
       onError: (error, variables) => {
         //here if the response error code is "" then show "This test is no longer valid as Process/Stage/Output of the test has been removed"  MDMS_INVALID_ERROR_UPDATE_TEST

@@ -87,6 +87,15 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
     changeQueryName: "QualityCriteria",
   });
 
+  function checkNonEmptyAndDefinedValues(data) {
+    for (const key in data) {
+      if (key !== "documents" && (data[key] === null || data[key] === undefined || data[key] === "")) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   const onSubmit = (data) => {
     if (actionState === "PENDINGRESULTS" || actionState === "DRAFTED") {
       clearSessionFormDataPendingResults();
@@ -95,6 +104,10 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
     }
 
     if ((actionState === "PENDINGRESULTS" || actionState === "DRAFTED") && !showPopUp) {
+      if (checkNonEmptyAndDefinedValues(data) === false) {
+        submitAction({ updateError: true });
+        return;
+      }
       setshowPopUp(data);
       return null;
     }
@@ -152,7 +165,20 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
     }
   }
 
+  const checkNonEmptyValue = (data) => {
+    for (const key in data) {
+      if (key !== "documents" && data[key]) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const handleSaveDraft = () => {
+    if (checkNonEmptyValue(sessionFormDataPendingResults) === false) {
+      submitAction({ draftError: true });
+      return;
+    }
     const keyf = Object.keys(sessionFormDataPendingResults);
     const tempCriteria = testDetailsData?.testCriteria;
     keyf?.forEach((i) => {
