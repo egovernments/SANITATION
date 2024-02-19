@@ -1,33 +1,33 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   // mode: 'development',
-  entry: "./src/index.js",
-  devtool: "source-map",
+  entry: './src/index.js',
+  devtool: 'source-map',
   module: {
     rules: [
       {
         test: /\.(js)$/,
         exclude: /node_modules/,
-        use: ["babel-loader"],
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
   output: {
-    filename: "[name].bundle.js",
-    path: path.resolve(__dirname, "build"),
-    publicPath: "/sanitation-ui/",
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'build'),
+    publicPath: '/tqm-ui/',
   },
   optimization: {
     splitChunks: {
-      chunks: "all",
+      chunks: 'all',
       minSize: 20000,
       maxSize: 50000,
       enforceSizeThreshold: 50000,
@@ -39,6 +39,6 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     // new BundleAnalyzerPlugin(),
-    new HtmlWebpackPlugin({ inject: true, template: "public/index.html" }),
+    new HtmlWebpackPlugin({ inject: true, template: 'public/index.html' }),
   ],
 };

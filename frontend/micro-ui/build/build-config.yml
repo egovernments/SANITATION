@@ -9,8 +9,8 @@
 # -
 
 config:
--   name: builds/sanitation-ui
+-   name: builds/tqm-ui
     build:
       - work-dir: frontend/micro-ui/web/
       dockerfile: web/docker/Dockerfile
-      image-name: sanitation-ui
+      image-name: tqm-ui
