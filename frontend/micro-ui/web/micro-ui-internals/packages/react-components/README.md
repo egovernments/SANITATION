@@ -27,6 +27,12 @@ class Example extends Component {
 }
 ```
 
+# Changelog
+
+```bash
+1.7.0-fsm-1.0.0 Added TQM module new components 
+```
+
 ## License
 
-MIT © [abhinav-egov](https://github.com/abhinav-egov)
+MIT © [nabeelmd-egov](https://github.com/nabeelmd-egov)
