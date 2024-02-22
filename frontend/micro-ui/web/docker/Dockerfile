@@ -10,7 +10,7 @@ ENV GENERATE_SOURCEMAP "false"
 COPY ${WORK_DIR} .
 RUN ls -lah
 
-#RUN node web/envs.js
+RUN node web/envs.js
 RUN cd web/ \
     && node envs.js \
     && node -e 'console.log(v8.getHeapStatistics().heap_size_limit/(1024*1024))' \
@@ -23,7 +23,8 @@ RUN cd web/ \
 FROM odhub/nginx-unprivileged
 ENV WORK_DIR=/var/web/tqm-ui
 
-RUN mkdir -p ${WORK_DIR}
+#RUN mkdir -p ${WORK_DIR}
+WORKDIR /var/web/tqm-ui
 
 COPY --from=build /app/web/build ${WORK_DIR}/
 COPY --from=build /app/web/docker/nginx.conf /etc/nginx/conf.d/default.conf
