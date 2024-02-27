@@ -379,8 +379,10 @@ public class FSMService {
 	}
 
 	private void validateDSOWorkers(FSM fsm, Vendor vendor, FSMRequest fsmRequest) {
-		if(CollectionUtils.isEmpty(fsm.getWorkers()) || fsm.getWorkers().stream().filter(worker -> worker.getWorkerType().equals(
-				WorkerType.DRIVER)).count() != 1){
+		if(CollectionUtils.isEmpty(fsm.getWorkers()) || fsm.getWorkers().stream()
+				.filter(worker -> worker.getStatus().equals(WorkerStatus.ACTIVE))
+				.filter(worker -> worker.getWorkerType().equals(WorkerType.DRIVER)).count() != 1){
+			log.info("Invalid worker error ::: {}", fsm.getWorkers());
 			throw new CustomException(FSMErrorConstants.INVALID_DSO_WORKERS,
 					"Valid workers should be assigned to accept the Request !");
 		} else {
@@ -390,12 +392,15 @@ public class FSMService {
 			}
 
 			List<Worker> filteredList = fsm.getWorkers().stream()
+					.filter(worker -> worker.getStatus().equals(WorkerStatus.ACTIVE))
 					.filter(worker -> vendor.getWorkers().stream()
 							.anyMatch(w -> w.getIndividualId().equals(worker.getIndividualId())))
 					.collect(Collectors.toList());
 
-			if(filteredList.size() != fsm.getWorkers().size()){
-				throw new CustomException(FSMErrorConstants.INVALID_DSO_WORKERS, " Worker(s) Does not belong to DSO!");
+			if (filteredList.size() != fsm.getWorkers().stream()
+					.filter(worker -> worker.getStatus().equals(WorkerStatus.ACTIVE)).count()) {
+				throw new CustomException(FSMErrorConstants.INVALID_DSO_WORKERS,
+						" Worker(s) Does not belong to DSO!");
 			}
 		}
 	}
