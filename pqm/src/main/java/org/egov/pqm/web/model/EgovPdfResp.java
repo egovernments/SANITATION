@@ -1,16 +1,16 @@
 package org.egov.pqm.web.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Data
 @Builder
 public class EgovPdfResp {
-
-	@JsonProperty("filestoreIds")
 	List<String> filestoreIds;
 }

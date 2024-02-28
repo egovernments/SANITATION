@@ -2,6 +2,7 @@ package org.egov.pqm.validator;
 
 
 import static org.egov.pqm.util.Constants.REGEX_METACHARACTER_PATTERN;
+import static org.egov.pqm.util.Constants.SAVE_AS_DRAFT;
 import static org.egov.pqm.util.Constants.UPDATE_RESULT;
 import static org.egov.pqm.util.ErrorConstants.CRITERIA_CODE_INVALID_CODE;
 import static org.egov.pqm.util.ErrorConstants.CRITERIA_CODE_INVALID_MESSAGE;
@@ -69,8 +70,9 @@ public class PqmValidator {
   public void validateTestCriteriaAndDocument(TestRequest testRequest) {
     validateTestCriteria(testRequest);
     if (Objects.equals(testRequest.getTests().get(0).getSourceType(), SourceType.LAB_ADHOC)
-        || (testRequest.getTests().get(0).getWorkflow() != null && Objects.equals(
-        testRequest.getTests().get(0).getWorkflow().getAction(), UPDATE_RESULT))
+        || (testRequest.getTests().get(0).getWorkflow() != null && (Objects.equals(
+        testRequest.getTests().get(0).getWorkflow().getAction(), UPDATE_RESULT) || Objects.equals(
+        testRequest.getTests().get(0).getWorkflow().getAction(), SAVE_AS_DRAFT)))
     ) {
       validateDocumentFields(testRequest);
     } else {
@@ -79,11 +81,11 @@ public class PqmValidator {
   }
 
   private void validateDocumentPresence(TestRequest testRequest) {
-    if (testRequest.getTests().get(0).getDocuments() != null) {
-      if (!testRequest.getTests().get(0).getDocuments().isEmpty()) {
-        throw new CustomException("DOCUMENT IS ONLY ATTACHED IN UPDATE_RESULT ACTION ",
-            "Document is only attached in update result action");
-      }
+    if (testRequest.getTests().get(0).getDocuments() != null && (!testRequest.getTests().get(0)
+        .getDocuments().isEmpty())) {
+      throw new CustomException("DOCUMENT IS ONLY ATTACHED IN UPDATE_RESULT ACTION ",
+          "Document is only attached in update result action");
+
     }
   }
 
