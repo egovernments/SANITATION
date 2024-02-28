@@ -373,7 +373,7 @@ const EditWorker = ({ parentUrl, heading }) => {
           driverLicenses?.length > 0
             ? [
                 {
-                  ...workerinfo?.indentifiers?.[0],
+                  ...workerinfo?.identifiers.filter(i => i.identifierType === "DRIVING_LICENSE_NUMBER")?.[0],
                   identifierType: "DRIVING_LICENSE_NUMBER",
                   identifierId: driverLicenses?.[0],
                 },
