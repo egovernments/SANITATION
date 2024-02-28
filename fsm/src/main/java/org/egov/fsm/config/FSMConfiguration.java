@@ -288,10 +288,10 @@ public class FSMConfiguration {
 		@Value("${fsm.event.kafka.topic}")
 		private String fsmEventTopic;
 
-		@Value("${persister.create.fsm.worker.topic}")
-		private String createFsmWorkerTopic;
+	@Value("${persister.create.fsm.worker.topic}")
+	private String createFsmWorkerTopic;
 
-		@Value("${persister.update.fsm.worker.topic}")
-		private String updateFsmWorkerTopic;
+	@Value("${persister.update.fsm.worker.topic}")
+	private String updateFsmWorkerTopic;
 
 }
