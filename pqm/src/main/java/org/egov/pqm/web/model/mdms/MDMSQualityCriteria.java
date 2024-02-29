@@ -1,5 +1,6 @@
 package org.egov.pqm.web.model.mdms;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MDMSQualityCriteria {
 
   @JsonProperty("code")
@@ -29,12 +31,6 @@ public class MDMSQualityCriteria {
 
   @JsonProperty("allowedDeviation")
   private BigDecimal allowedDeviation;
-
-  @JsonProperty("effectiveFrom")
-  private Long effectiveFrom;
-
-  @JsonProperty("effectiveTo")
-  private String effectiveTo;
 
   @JsonProperty("active")
   private Boolean active;

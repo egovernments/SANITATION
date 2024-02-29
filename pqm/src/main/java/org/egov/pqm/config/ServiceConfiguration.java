@@ -1,17 +1,14 @@
 package org.egov.pqm.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
@@ -77,6 +74,9 @@ public class ServiceConfiguration {
 
   @Value("${egov.plant.user.update.kafka.topic}")
   private String plantUserUpdateTopic;
+
+  @Value("${egov.test.document.update.kafka.topic}")
+  private String updateTestDocumentsTopic;
 
   //workflow
   @Value("${create.pqm.workflow.name}")
@@ -154,5 +154,7 @@ public class ServiceConfiguration {
 
   @Value("${egov.pdfservice.host}")
   private String pdfServiceHost;
+
+
 
 }
