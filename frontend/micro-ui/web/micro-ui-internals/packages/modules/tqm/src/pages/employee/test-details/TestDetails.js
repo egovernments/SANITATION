@@ -26,7 +26,7 @@ function TestDetails() {
     tenantId: tenantId,
     config: {
       select: (data) => {
-        if(data?.wfStatus==="PENDINGRESULTS"){
+        if(data?.wfStatus==="PENDINGRESULTS" || data?.wfStatus==="DRAFTED"){
           return {
             data: {
               cards: [
@@ -78,6 +78,7 @@ function TestDetails() {
         
     },
       staleTime: 0,
+      cacheTime: 0
     },
   });
 
@@ -105,6 +106,16 @@ function TestDetails() {
   }, [WFData, isWFLoading]);
 
   const submitAction = (data) => {
+    if(data?.updateError === true){
+      setShowToast({ key: "error", action: "ES_TQM_FILL_MANDATORY_FIELD" });
+      setTimeout(closeToast, 5000);
+      return;
+    }
+    if(data?.draftError === true){
+      setShowToast({ key: "error", action: "ES_TQM_ONE_FIELD_MANDATORY" });
+      setTimeout(closeToast, 5000);
+      return;
+    }
     mutate(data, {
       onError: (error, variables) => {
         //here if the response error code is "" then show "This test is no longer valid as Process/Stage/Output of the test has been removed"  MDMS_INVALID_ERROR_UPDATE_TEST
@@ -117,14 +128,14 @@ function TestDetails() {
         }
       },
       onSuccess: (data, variables) => {
-        setShowToast({ key: "success", action: "ES_TQM_STATUS_UPDATED_SUCCESSFULLY" });
+        setShowToast({ key: "success", action: data?.tests?.[0]?.workflow?.action === "SAVE_AS_DRAFT" ? "ES_TQM_DRAFT_UPDATED_SUCCESSFULLY" :"ES_TQM_STATUS_UPDATE_SUCCESS" });
         setTimeout(closeToast, 5000);
         queryClient.invalidateQueries("TQM_ADMIN_TEST_RESULTS");
         queryClient.invalidateQueries("workFlowDetailsWorks");
         refetch();
         // Remove scroll value when action taken 
-        localStorage.removeItem("/tqm-ui/employee/tqm/inbox")
-        if (WFData?.actionState?.applicationStatus === UICustomizations?.workflowStatusMap?.pendingResults) {
+        localStorage.removeItem("/sanitation-ui/employee/tqm/inbox")
+        if (data?.tests?.[0]?.workflow?.action === UICustomizations?.workflowActionMap?.update) {
           return history.push(`/${window.contextPath}/employee/tqm/response?testId=${id}&isSuccess=${true}`, {
             message: "ES_TQM_TEST_UPDATE_SUCCESS_RESPONSE",
             text: "ES_TQM_TEST_UPDATE_SUCCESS_RESPONSE_TEXT",
@@ -145,7 +156,7 @@ function TestDetails() {
           id={id}
           t={t}
           WFData={workflowDetails}
-          actionData={workflowDetails?.nextActions?.[0]}
+          actionData={workflowDetails?.nextActions}
           actionState={workflowDetails?.actionState?.applicationStatus}
           submitAction={submitAction}
           testDetailsData={testData?.response}
@@ -153,7 +164,7 @@ function TestDetails() {
         />
       )}
       {showToast && (
-        <Toast error={showToast.key === "error" ? true : false} label={t(showToast.key === "success" ? `ES_TQM_STATUS_UPDATE_SUCCESS` : showToast.action)} onClose={closeToast} isDleteBtn={true} />
+        <Toast error={showToast.key === "error" ? true : false} label={t(showToast.key === "success" ? showToast.action : showToast.action)} onClose={closeToast} isDleteBtn={true} />
       )}
     </>
   );
