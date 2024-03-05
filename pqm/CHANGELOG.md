@@ -11,3 +11,4 @@ All notable changes to this module will be documented in this file.
 - Map plant operators and ULB admins to plants
 - Search for list of test based on criteria
 - Plain search for re-indexing
+- Save as draft

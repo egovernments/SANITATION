@@ -1,6 +1,7 @@
 package org.egov.pqm.service;
 
 
+import static org.egov.pqm.util.Constants.SAVE_AS_DRAFT;
 import static org.egov.pqm.util.Constants.UPDATE_RESULT;
 import static org.egov.pqm.util.Constants.WFSTATUS_SUBMITTED;
 import static org.egov.pqm.util.PlantUserConstants.PQM_ADMIN;
@@ -97,7 +98,8 @@ public class EnrichmentService {
   public void enrichPQMUpdateRequest(TestRequest testRequest) {
     RequestInfo requestInfo = testRequest.getRequestInfo();
     setAuditDetails(testRequest, false);
-    if (Objects.equals(testRequest.getTests().get(0).getWorkflow().getAction(), UPDATE_RESULT)) {
+    if (Objects.equals(testRequest.getTests().get(0).getWorkflow().getAction(), UPDATE_RESULT)
+        || Objects.equals(testRequest.getTests().get(0).getWorkflow().getAction(), SAVE_AS_DRAFT)) {
       enrichDocument(testRequest, false);
     }
   }
