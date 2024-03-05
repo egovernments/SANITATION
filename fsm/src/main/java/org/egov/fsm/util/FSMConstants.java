@@ -46,6 +46,8 @@ public class FSMConstants {
 	public static final String FSM_SLUM_OVERRIDE_ALLOWED = "$.MdmsRes.FSM.Config[?(@.active==true && @.code==\"slumName\" && @.override==true )]";
 	public static final String FSM_TRIP_AMOUNT_OVERRIDE_ALLOWED = "$.MdmsRes.FSM.Config[?(@.active==true && @.code==\"additionalDetails.tripAmount\" && @.override==true )]";
 	public static final String FSM_NO_OF_TRIPS_AMOUNT_OVERRIDE_ALLOWED = "$.MdmsRes.FSM.Config[?(@.active==true && @.code==\"noOfTrips\" && @.override==true )]";
+	public static final String FSM_NO_OF_TRIPS_AMOUNT_OVERRIDE_ALLOWED_MDMS_V2 = "$.MdmsRes.FSM.Config[?(@.active==true && @.code==\"noOfTrips\" && @.override[0]==true )]";
+
 	public static final String SLUM_CODE_PATH="$.MdmsRes.FSM.Slum[?(@.active==true && @.locality==\"{1}\" && @.code==\"{2}\")]";
 	
 	

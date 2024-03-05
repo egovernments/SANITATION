@@ -469,6 +469,10 @@ public class FSMValidator {
 		List<Map<String, String>> noOftripsAllowed = JsonPath.read(mdmsData,
 				FSMConstants.FSM_NO_OF_TRIPS_AMOUNT_OVERRIDE_ALLOWED);
 
+		if(CollectionUtils.isEmpty(noOftripsAllowed)){
+			noOftripsAllowed =  JsonPath.read(mdmsData,
+					FSMConstants.FSM_NO_OF_TRIPS_AMOUNT_OVERRIDE_ALLOWED_MDMS_V2);
+		}
 		if (CollectionUtils.isEmpty(noOftripsAllowed) && (noOfTrips == null || noOfTrips.intValue() != 1)) {
 			fsmRequest.getFsm().setNoOfTrips(1);
 		}
