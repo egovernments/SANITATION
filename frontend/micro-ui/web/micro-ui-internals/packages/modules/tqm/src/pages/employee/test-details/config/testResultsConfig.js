@@ -5,13 +5,13 @@ export const testResultsConfig = ({ t, testDetailsData, testCriteriaData }) => {
 
   const testParamConfig = testParams?.map((i) => {
     return {
-      label: `${t(i?.i18nKey)}` || "N/A",
-      isMandatory: true,
+      label: `${t(i?.i18nKey)} *` || "N/A",
+      // isMandatory: true,
       type: "text",
       disable: false,
       populators: {
         validation: {
-          required: true,
+          // required: true,
           pattern: /^-?([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})$/,
         },
         name: i?.code,
