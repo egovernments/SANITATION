@@ -17,7 +17,7 @@
 
     var globalConfigs = (function () {
       var contextPath = "tqm-ui";
-      var stateTenantId = "od";
+      var stateTenantId = "pg";
       var gmaps_api_key = "AIzaSyAASfCFja6YxwDzEAzhHFc8B-17TNTCV0g";
       var configModuleName = "commonUiConfig";
       var centralInstanceEnabled = false;
@@ -59,9 +59,10 @@
           return mdmsContext;
         } else if (key === "INVALIDROLES") {
           return invalidEmployeeRoles;
-        } else if (key === "JWT_TOKEN") {
-          return "ZWdvdi11c2VyLWNsaWVudDplZ292LXVzZXItc2VjcmV0";
         }
+        // else if (key === "JWT_TOKEN") {
+        //   return "ZWdvdi11c2VyLWNsaWVudDplZ292LXVzZXItc2VjcmV0";
+        // }
       };
 
       return {
