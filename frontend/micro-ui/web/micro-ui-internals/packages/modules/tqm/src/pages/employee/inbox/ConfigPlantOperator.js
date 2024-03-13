@@ -1,5 +1,5 @@
 export const tqmInboxConfigPlantOperator = {
-  "tenantId": "pb",
+  "tenantId": "od",
   "moduleName": "commonSanitationUiConfig",
   "tqmInboxConfig": [
     {

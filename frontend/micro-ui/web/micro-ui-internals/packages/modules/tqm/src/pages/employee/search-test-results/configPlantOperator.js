@@ -1,5 +1,5 @@
 export const tqmSearchConfigPlantOperator = {
-  tenantId: 'pb',
+  tenantId: 'od',
   moduleName: 'commonSanitationUiConfig',
   tqmSearchConfig: [
     {

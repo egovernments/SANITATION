@@ -1,5 +1,5 @@
 export const SensorScreenConfigUlbAdmin = {
-    tenantId: 'pg',
+    tenantId: 'od',
     moduleName: 'commonSanitationUiConfig',
     SensorConfig: [
       {

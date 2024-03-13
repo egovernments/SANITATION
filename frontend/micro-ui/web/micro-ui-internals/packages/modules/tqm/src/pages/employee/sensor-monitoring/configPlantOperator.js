@@ -1,5 +1,5 @@
 export const SensorScreenConfigPlantOperator = {
-    tenantId: 'pb',
+    tenantId: 'od',
     moduleName: 'commonSanitationUiConfig',
     SensorConfig: [
       {

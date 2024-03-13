@@ -15,8 +15,8 @@ const TqmHome = (props) => {
   
   useEffect(() =>{
     // removing scroll persistent
-    localStorage.removeItem("/sanitation-ui/employee/tqm/inbox");
-    localStorage.removeItem("/sanitation-ui/employee/tqm/test-details");
+    localStorage.removeItem("/tqm-ui/employee/tqm/inbox");
+    localStorage.removeItem("/tqm-ui/employee/tqm/test-details");
   }, [])
 
   const activePlantCode = Digit.SessionStorage.get('active_plant')?.plantCode
