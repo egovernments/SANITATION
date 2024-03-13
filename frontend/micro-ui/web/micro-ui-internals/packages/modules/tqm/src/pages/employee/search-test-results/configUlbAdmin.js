@@ -1,5 +1,5 @@
 export const tqmSearchConfigUlbAdmin = {
-  tenantId: 'pg',
+  tenantId: 'od',
   moduleName: 'commonSanitationUiConfig',
   tqmSearchConfig: [
     {
