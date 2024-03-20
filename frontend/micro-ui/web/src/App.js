@@ -21,7 +21,7 @@ window.Digit.Customizations = {
 initLibraries();
 initFSMLibraries();
 
-const enabledModules = ["FSM", "Payment", "DSS", "Engagement", "HRMS","Tqm","Utilities"];
+const enabledModules = ["Payment", "DSS", "Engagement", "HRMS","Tqm","Utilities"];
 window.Digit.ComponentRegistryService.setupRegistry({
   ...paymentConfigs,
   PaymentModule,
