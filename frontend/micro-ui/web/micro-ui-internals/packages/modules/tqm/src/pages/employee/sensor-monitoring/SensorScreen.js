@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Header, InboxSearchComposer, Loader } from "@egovernments/digit-ui-react-components";
+import { Header, Loader } from "@egovernments/digit-ui-react-components";
+import {InboxSearchComposer} from '@egovernments/digit-ui-components';
 import { SensorScreenConfigUlbAdmin } from "./configUlbAdmin";
 import { SensorScreenConfigPlantOperator } from "./configPlantOperator";
 const SensorScreen = () => {

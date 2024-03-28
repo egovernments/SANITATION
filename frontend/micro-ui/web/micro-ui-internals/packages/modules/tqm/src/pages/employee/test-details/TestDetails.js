@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { ViewComposer, Toast, Loader } from "@egovernments/digit-ui-react-components";
+import { ViewComposer, Loader } from "@egovernments/digit-ui-react-components";
+import {Toast} from '@egovernments/digit-ui-components';
 import { useTranslation } from "react-i18next";
 import { useLocation, useHistory } from "react-router-dom";
 import TestWFActions from "./TestWFActions";

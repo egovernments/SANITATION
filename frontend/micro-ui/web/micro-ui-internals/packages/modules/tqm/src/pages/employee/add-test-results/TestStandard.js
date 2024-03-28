@@ -1,11 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import {
-  LabelFieldPair,
-  Dropdown,
   CardLabel,
   Loader,
-  CardLabelError,
 } from '@egovernments/digit-ui-react-components';
+import {Dropdown,  LabelFieldPair,CardLabelError} from '@egovernments/digit-ui-components';
+
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 

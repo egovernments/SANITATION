@@ -76,6 +76,9 @@ export const addTestConfig = [
         "key": "TestStandard",
         "customProps": {
           "module": "TQMModule"
+        },
+        populators: {
+          name: "teststandard"
         }
       }
     ]
@@ -89,6 +92,9 @@ export const addTestConfig = [
         "key": "QualityParameter",
         "customProps": {
           "module": "TQMModule"
+        },
+        populators: {
+          name: "teststandard"
         }
       }
     ]

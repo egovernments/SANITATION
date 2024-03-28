@@ -1,4 +1,5 @@
-import { InboxSearchComposer,Header } from "@egovernments/digit-ui-react-components";
+import {Header } from "@egovernments/digit-ui-react-components";
+import {InboxSearchComposer} from '@egovernments/digit-ui-components';
 
 import React,{Fragment} from 'react'
 
