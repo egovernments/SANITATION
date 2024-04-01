@@ -73,12 +73,12 @@ public class PqmController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-    @PostMapping(value = "/_downloadPdf")
-    public ResponseEntity<EgovPdfResp> downloadPdf(@RequestParam("testId") String testId,
-                                                    @RequestBody RequestInfo requestInfo) {
-        EgovPdfResp egovPdfResp =  pqmService.downloadPdf(requestInfo,testId);
-        return new ResponseEntity<>(egovPdfResp, HttpStatus.OK);
-    }
+	@PostMapping(value = "/_downloadPdf")
+	public ResponseEntity<EgovPdfResp> downloadPdf(@RequestParam("testId") String testId,
+			@Valid @RequestBody RequestInfoWrapper requestInfoWrapper) {
+		EgovPdfResp egovPdfResp = pqmService.downloadPdf(requestInfoWrapper.getRequestInfo(), testId);
+		return new ResponseEntity<>(egovPdfResp, HttpStatus.OK);
+	}
 
 
 
