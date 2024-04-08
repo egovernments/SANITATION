@@ -93,3 +93,10 @@ config:
       - work-dir: 'frontend/micro-ui/'
         image-name: 'sanitation-ui'
         dockerfile: 'frontend/micro-ui/web/docker/Dockerfile'
+
+  #Vehicle tracking web app
+  - name: 'builds/SANITATION/frontend/vehicle-tracker'
+    build:
+      - work-dir: 'frontend/vehicle-tracker/map_web_app/route_map'
+        image-name: 'vehicle-tracker'
+        dockerfile: 'frontend/vehicle-tracker/map_web_app/docker/Dockerfile'
