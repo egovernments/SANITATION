@@ -38,12 +38,13 @@ const TqmHome = (props) => {
           "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
           "tenantId": tenantId
         },
-        "moduleLevel": "",
+        "moduleLevel": "PQM",
         "aggregationFactors": null,
         "requestDate": {
           "startDate": startDate.getTime(),
           "endDate": endDate,
-        }
+        },
+        "source": "es"
       },
       "headers": {
         "tenantId": tenantId
@@ -66,12 +67,13 @@ const TqmHome = (props) => {
           "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
           "tenantId": tenantId
         },
-        "moduleLevel": "",
+        "moduleLevel": "PQM",
         "aggregationFactors": null,
         "requestDate": {
           "startDate": startDate.getTime(),
           "endDate": endDate,
-        }
+        },
+        "source": "es"
       },
       "headers": {
         "tenantId": tenantId
@@ -94,12 +96,13 @@ const TqmHome = (props) => {
           "tenantId": [tenantId],
           "plantCode":activePlantCode?.length > 0 ? activePlantCode : [],
         },
-        "moduleLevel": "",
+        "moduleLevel": "PQM",
         "aggregationFactors": null,
         "requestDate": {
           "startDate": startDate.getTime(),
           "endDate": endDate
-        }
+        },
+        "source": "es"
       },
       "headers": {
         "tenantId": tenantId
