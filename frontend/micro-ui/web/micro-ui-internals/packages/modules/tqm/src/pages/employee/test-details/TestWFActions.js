@@ -206,7 +206,7 @@ function TestWFActions({ id, t, WFData, actionData, actionState, submitAction, t
         config={config}
         onSubmit={onSubmit}
         label={t(actionState === "SCHEDULED" ? "ES_TQM_UPDATE_STATUS_BUTTON" : "ES_TQM_SUBMIT_TEST_RESULTS_BUTTON")}
-        secondaryActionLabel={actionData?.find((i) => i.action === "SAVE_AS_DRAFT") ? "ES_TQM_SAVE_AS_DRAFT" : null}
+        secondaryActionLabel={t(actionData?.find((i) => i.action === "SAVE_AS_DRAFT") ? "ES_TQM_SAVE_AS_DRAFT" : null)}
         secondaryActionStyle={{ border: "1px solid", justifyContent: "center", padding: "10px 0px", width: "100%" }}
         onSecondayActionClick={handleSaveDraft}
         checkSecondaryValidation={true}
