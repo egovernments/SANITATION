@@ -94,9 +94,16 @@ config:
         image-name: 'sanitation-ui'
         dockerfile: 'frontend/micro-ui/web/docker/Dockerfile'
 
+  #TQM Frontend
+  - name: 'builds/SANITATION/frontend/tqm-ui'
+    build:
+      - work-dir: 'frontend/tqm-ui/'
+        image-name: 'tqm-ui'
+        dockerfile: 'frontend/tqm-ui/web/docker/Dockerfile'
+
   #Vehicle tracking web app
-  - name: 'builds/SANITATION/vehicle-tracker'
+  - name: 'builds/SANITATION/route_map'
     build:
       - work-dir: 'frontend/vehicle-tracker/map_web_app/route_map'
-        image-name: 'vehicle-tracker'
+        image-name: 'route_map'
         dockerfile: 'frontend/vehicle-tracker/map_web_app/docker/Dockerfile'
