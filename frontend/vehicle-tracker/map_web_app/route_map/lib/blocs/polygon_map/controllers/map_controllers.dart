@@ -35,6 +35,7 @@ class MapControllers extends GetxController {
   String siteType = siteTypes.first;
 
   TextEditingController siteNameController = TextEditingController();
+
   // TextEditingController siteDistanceController = TextEditingController();
 
   DigitTheme theme = DigitTheme.instance;
@@ -43,10 +44,11 @@ class MapControllers extends GetxController {
   Future<void> fetchData() async {
     isFetching.value = true;
 
-    final alertPolygons = await Map2HttpRepository.getAllPolygonsWithAlerts(tenantId);
+    final alertPolygons =
+        await Map2HttpRepository.getAllPolygonsWithAlerts(tenantId);
 
-    if(alertMarkers.isNotEmpty) alertMarkers.clear();
-if(this.alertPolygons.isNotEmpty) this.alertPolygons.clear();
+    if (alertMarkers.isNotEmpty) alertMarkers.clear();
+    if (this.alertPolygons.isNotEmpty) this.alertPolygons.clear();
 
     for (var alartPolygon in alertPolygons) {
       if (alartPolygon.type == "point") {
@@ -241,7 +243,8 @@ if(this.alertPolygons.isNotEmpty) this.alertPolygons.clear();
   }
 
   void removePolygon(AlertPolygon alertPolygon) async {
-    final isDeleted = await Map2HttpRepository.deletePolygon(alertPolygon.id ?? "", tenantId);
+    final isDeleted =
+        await Map2HttpRepository.deletePolygon(alertPolygon.id ?? "", tenantId);
     if (isDeleted == false) {
       return;
     }
@@ -254,7 +257,9 @@ if(this.alertPolygons.isNotEmpty) this.alertPolygons.clear();
     isEditing.value = true;
 
     selectedPolygon.value = Polygon(
-      points: oldPolygon.locationDetails!.map((e) => LatLng(e.latitude, e.longitude)).toList(),
+      points: oldPolygon.locationDetails!
+          .map((e) => LatLng(e.latitude, e.longitude))
+          .toList(),
       color: theme.colors.curiousBlue.withOpacity(0.5),
       borderColor: theme.colors.curiousBlue,
       borderStrokeWidth: 2,
