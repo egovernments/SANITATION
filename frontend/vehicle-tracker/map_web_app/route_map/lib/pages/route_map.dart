@@ -51,7 +51,7 @@ class _RouteMapPageState extends State<RouteMapPage> {
     if (tripId == null || tenantId == null) {
       return const Scaffold(
         body: Center(
-          child: Text("Add trip Id or tenant Id"),
+          child: Text("No trip Id or tenant Id"),
         ),
       );
     }
