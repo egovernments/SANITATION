@@ -33,7 +33,7 @@ export const ApplicationTable = ({ detail }) => {
     starttime: formatTime(i?.actualStartTime) || "N/A",
     endtime: formatTime(i?.actualEndTime) || "N/A",
     endtype: i?.tripEndType || "N/A",
-    alerts: i?.alerts?.split(",")?.length || "0",
+    // alerts: i?.alerts?.split(",")?.length || "0",
     route: i?.routeId || "N/A",
   }));
 
@@ -44,7 +44,7 @@ export const ApplicationTable = ({ detail }) => {
     { key: "starttime", label: "Start Time" },
     { key: "endtime", label: "End Time" },
     { key: "endtype", label: "End Type" },
-    { key: "alerts", label: "Alerts" },
+    // { key: "alerts", label: "Alerts" },
     { key: "route", label: "Route" },
   ];
 
