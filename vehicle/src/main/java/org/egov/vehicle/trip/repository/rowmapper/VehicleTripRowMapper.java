@@ -51,6 +51,7 @@ public class VehicleTripRowMapper implements ResultSetExtractor<List<VehicleTrip
 			String tenantId = rs.getString("tenantid");
 			String status = rs.getString("status");
 			String applicationStatus = rs.getString("applicationstatus");
+			String endType = rs.getString("end_type");
 			String driverId = rs.getString("driver_id");
 			String dsoId = rs.getString("owner_id");
 			String vehicleId = rs.getString("vehicle_id");
@@ -78,7 +79,7 @@ public class VehicleTripRowMapper implements ResultSetExtractor<List<VehicleTrip
 						.lastModifiedTime(lastModifiedTime).build();
 
 				vehicleLog = VehicleTrip.builder().id(id).applicationNo(applicationNo).tenantId(tenantId)
-						.applicationStatus(applicationStatus).tripOwnerId(dsoId).vehicleId(vehicleId)
+						.applicationStatus(applicationStatus).endType(endType).tripOwnerId(dsoId).vehicleId(vehicleId)
 						.volumeCarried(volumeCarried).additionalDetails(additionalDetails).driverId(driverId)
 						.tripStartTime(tripstarttime).tripEndTime(tripendtime).businessService(businesSservice)
 						.volumeCarried(volumeCarried).status(StatusEnum.valueOf(status)).auditDetails(audit).build();
