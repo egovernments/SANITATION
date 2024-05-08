@@ -121,6 +121,10 @@ public class VehicleTrip   {
   @JsonProperty("applicationStatus")
   private String applicationStatus = null;
 
+  @SafeHtml
+  @JsonProperty("endType")
+  private String endType = null;
+
 
   @JsonProperty("additionalDetails")
   private Object additionalDetails = null;
