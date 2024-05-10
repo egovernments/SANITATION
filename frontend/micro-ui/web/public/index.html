@@ -31,6 +31,8 @@
       var digitHomeURL = "https://www.digit.org/";
       var assetS3Bucket = "egov-dev-assets";
       var invalidEmployeeRoles = ["CBO_ADMIN", "ORG_ADMIN", "ORG_STAFF", "SYSTEM"];
+      var logoutRedirectURL = "digit-ui/employee/user/language-selection";
+
 
       var getConfig = function (key) {
         if (key === "STATE_LEVEL_TENANT_ID") {
@@ -61,7 +63,9 @@
           return invalidEmployeeRoles;
         } else if (key === "JWT_TOKEN") {
           return "ZWdvdi11c2VyLWNsaWVudDplZ292LXVzZXItc2VjcmV0";
-        }
+        } else if (key === 'LOGOUT_REDIRECT_URL') {
+          return logoutRedirectURL;
+    }
       };
 
       return {
