@@ -40,10 +40,10 @@ public class PaymentUpdateService {
 	private EnrichmentService enrichmentService;
 
 	private ObjectMapper mapper;
-
+	
 	@Autowired
 	private FSMInboxService fSMInboxService;
-	
+
 	@Autowired
 	public PaymentUpdateService(FSMConfiguration config, FSMRepository repository, WorkflowIntegrator wfIntegrator,
 			EnrichmentService enrichmentService, ObjectMapper mapper) {

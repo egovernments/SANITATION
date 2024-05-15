@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.egov.fsm.service.FSMService;
+import org.egov.fsm.service.GarimaSanitationWorkerService;
 import org.egov.fsm.util.FSMUtil;
 import org.egov.fsm.util.ResponseInfoFactory;
 import org.egov.fsm.web.model.FSM;
@@ -18,10 +19,13 @@ import org.egov.fsm.web.model.FSMSearchCriteria;
 import org.egov.fsm.web.model.PeriodicApplicationRequest;
 import org.egov.fsm.web.model.PeriodicApplicationResponse;
 import org.egov.fsm.web.model.RequestInfoWrapper;
+import org.egov.fsm.web.model.garima.SanitationWorkerCreateRequest;
+import org.egov.fsm.web.model.garima.SanitationWorkerResponse;
+import org.egov.fsm.web.model.garima.SanitationWorkerSearchCriteria;
+import org.egov.fsm.web.model.garima.SanitationWorkerSearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +47,9 @@ public class FSMController {
 
 	@Autowired
 	private ResponseInfoFactory responseInfoFactory;
+
+	@Autowired
+	private GarimaSanitationWorkerService garimaSanitationWorkerService;
 
 
 	@PostMapping(value = "/_create")
@@ -138,6 +145,22 @@ public class FSMController {
 						.createResponseInfoFromRequestInfo(periodicApplicationRequest.getRequestInfo(), true))
 				.build();
 		return new ResponseEntity<>(response, HttpStatus.OK);
+
+	}
+	
+	@PostMapping(value = "/_createGarimaWorker")
+	public ResponseEntity<SanitationWorkerResponse> createGarimaWorker(@RequestBody SanitationWorkerCreateRequest sanitationWorkerCreateRequest) {
+
+		SanitationWorkerResponse sanitationWorkerResponse = garimaSanitationWorkerService.create(sanitationWorkerCreateRequest);
+		return new ResponseEntity<>(sanitationWorkerResponse, HttpStatus.OK);
+
+	}
+
+	@PostMapping(value = "/_searchGarimaWorker")
+	public ResponseEntity<SanitationWorkerSearchResponse> searchGarimaWorker(@Valid @ModelAttribute SanitationWorkerSearchCriteria sanitationWorkerSearchCriteria) {
+
+		SanitationWorkerSearchResponse sanitationWorkerSearchResponse = garimaSanitationWorkerService.search(sanitationWorkerSearchCriteria);
+		return new ResponseEntity<>(sanitationWorkerSearchResponse, HttpStatus.OK);
 
 	}
 

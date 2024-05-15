@@ -29,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,9 +62,9 @@ public class FSMRepository {
 	@Autowired
 	private TripDetailRowMapper detailMapper;
 
-		public void save(FSMRequest fsmRequest) {
-			producer.push(config.getSaveTopic(), fsmRequest);
-		}
+	public void save(FSMRequest fsmRequest) {
+		producer.push(config.getSaveTopic(), fsmRequest);
+	}
 
 	public void update(FSMRequest fsmRequest, boolean isStateUpdatable) {
 		RequestInfo requestInfo = fsmRequest.getRequestInfo();
@@ -108,8 +110,28 @@ public class FSMRepository {
 	public List<String> fetchFSMIds(@Valid FSMSearchCriteria criteria) {
 
 		List<Object> preparedStmtList = new ArrayList<>();
+		if (!StringUtils.isEmpty(criteria.getTenantId()))
+			preparedStmtList.add(criteria.getTenantId());
 		preparedStmtList.add(criteria.getOffset());
 		preparedStmtList.add(criteria.getLimit());
+
+		if (!CollectionUtils.isEmpty(criteria.getApplicationNos()) && !StringUtils.isEmpty(criteria.getTenantId())) {
+			List<String> applicationNumber = criteria.getApplicationNos();
+			applicationNumber.forEach(id -> {
+				preparedStmtList.add(id);
+			});
+			log.info("\nPrepared statement list:" + preparedStmtList.toString());
+			return jdbcTemplate.query(
+					"SELECT id from eg_fsm_application where tenantid = ? AND applicationno IN ( " + createQuery(applicationNumber)
+							+ "  ) ORDER BY createdtime offset " + " ? " + "limit ? ",
+					preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
+		}
+
+		if (!StringUtils.isEmpty(criteria.getTenantId()))
+			return jdbcTemplate.query(
+					"SELECT id from eg_fsm_application where tenantid = ? ORDER BY createdtime offset " + " ? " + "limit ? ",
+					preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
+
 		return jdbcTemplate.query(
 				"SELECT id from eg_fsm_application ORDER BY createdtime offset " + " ? " + "limit ? ",
 				preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
@@ -139,12 +161,12 @@ public class FSMRepository {
 				preparedStmtList.toArray());
 
 	}
-	
-	
+
+
 
 	/***
 	 * This method will return unique tenantid's
-	 * 
+	 *
 	 * @return tenant list
 	 */
 
@@ -162,7 +184,7 @@ public class FSMRepository {
 		return jdbcTemplate.queryForList(baseQuery.toString(), String.class, preparedStmtList.toArray());
 	}
 
-	public List<VehicleTripDetail> getTrpiDetails(String tripId, int numOfRecords, Boolean waitingForDisposal) {
+	public List<VehicleTripDetail> getTrpiDetails(String tripId, int numOfRecords,Boolean waitingForDisposal) {
 		List<VehicleTripDetail> tripDetails = null;
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = null;
@@ -175,7 +197,7 @@ public class FSMRepository {
 			tripDetails = jdbcTemplate.query(query, preparedStmtList.toArray(), detailMapper);
 
 		} catch (Exception e) {
-			log.info("INVALID_VEHICLE_TRIP_DETAILS " + e.getMessage());
+			log.info("INVALID_VEHICLE_TRIP_DETAILS "+e.getMessage());
 			throw new CustomException("INVALID_VEHICLE_TRIP_DETAILS", "INVALID_VEHICLE_TRIP_DETAILS");
 		}
 
@@ -191,6 +213,17 @@ public class FSMRepository {
 			producer.push(config.getVehicleUpdateTripToInactive(), new VehicleTripRequest(new RequestInfo(), vehicleTripList,null));
 		}
 	}
-	
+
+
+	private Object createQuery(List<String> ids) {
+		StringBuilder builder = new StringBuilder();
+		int length = ids.size();
+		for (int i = 0; i < length; i++) {
+			builder.append(" ?");
+			if (i != length - 1)
+				builder.append(",");
+		}
+		return builder.toString();
+	}
 
 }

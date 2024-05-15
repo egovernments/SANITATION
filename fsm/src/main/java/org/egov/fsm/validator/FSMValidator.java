@@ -61,6 +61,9 @@ public class FSMValidator {
 	public void validateCreate(FSMRequest fsmRequest, Object mdmsData) {
 		mdmsValidator.validateMdmsData(mdmsData);
 		FSM fsm = fsmRequest.getFsm();
+		if (!StringUtils.isEmpty(fsm.getPaymentPreference())) {
+			validatePaymentPreference(fsm.getPaymentPreference());
+		}
 		if (fsmRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase(FSMConstants.CITIZEN)) {
 			validateCitizenDetails(fsm, fsmRequest);
 
@@ -79,10 +82,6 @@ public class FSMValidator {
 				mdmsValidator.validateApplicationChannel(fsm.getSource());
 
 			}
-			if (!StringUtils.isEmpty(fsm.getPaymentPreference())) {
-				validatePaymentPreference(fsm.getPaymentPreference());
-
-			}
 			if (!StringUtils.isEmpty(fsm.getSanitationtype())) {
 				mdmsValidator.validateOnSiteSanitationType(fsm.getSanitationtype());
 			}
@@ -90,7 +89,7 @@ public class FSMValidator {
 		mdmsValidator.validatePropertyType(fsmRequest.getFsm().getPropertyUsage());
 		validateNoOfTrips(fsmRequest, mdmsData);
 	}
-
+	
 	private void validatePaymentPreference(String paymentPreference) {
 		Map<String, String> errorMap = new HashMap<>();
 
@@ -100,7 +99,7 @@ public class FSMValidator {
 
 		if (!errorMap.isEmpty())
 			throw new CustomException(errorMap);
-		
+
 	}
 
 	private void validateEmployeeData(FSM fsm, FSMRequest fsmRequest, Object mdmsData) {
@@ -309,7 +308,10 @@ public class FSMValidator {
 		checkUpdateOrActionError(searchResult, fsmRequest, mdmsData, fsm);
 
 		// SAN-889: Added validation for recevied payment
-        // SM-2099 :Removed validation for received payment		
+		
+		// #SM-2099 removed validation for received payment type
+
+		
 		/*
 		 * if (null != fsmRequest.getWorkflow() && null !=
 		 * fsmRequest.getWorkflow().getAction() &&
@@ -327,7 +329,9 @@ public class FSMValidator {
 		 * log.info("additionalDetails.get(\"receivedPayment\"):: " +
 		 * additionalDetails.get(FSMConstants.RECEIVED_PAYMENT));
 		 * mdmsValidator.validateReceivedPaymentType(additionalDetails.get(FSMConstants.
-		 * RECEIVED_PAYMENT)); }
+		 * RECEIVED_PAYMENT));
+		 * 
+		 * }
 		 */
 		validations(fsmRequest, searchResult, mdmsData, fsm);
 

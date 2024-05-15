@@ -15,51 +15,51 @@ import lombok.Setter;
 @Builder
 public class WorkerSearchCriteria {
 
-  @JsonProperty("offset")
-  private Integer offset;
+    @JsonProperty("offset")
+    private Integer offset;
 
-  @JsonProperty("limit")
-  private Integer limit;
+    @JsonProperty("limit")
+    private Integer limit;
 
-  @JsonProperty("tenantId")
-  private String tenantId;
+    @JsonProperty("tenantId")
+    private String tenantId;
 
-  @JsonProperty("ids")
-  private List<String> ids;
+    @JsonProperty("ids")
+    private List<String> ids;
 
-  @JsonProperty("workerTypes")
-  private List<String> workerTypes;
+    @JsonProperty("workerTypes")
+    private List<String> workerTypes;
 
-  @JsonProperty("status")
-  private List<String> status;
+    @JsonProperty("status")
+    private List<String> status;
 
-  @JsonProperty("individualIds")
-  private List<String> individualIds;
+    @JsonProperty("individualIds")
+    private List<String> individualIds;
 
-  @JsonProperty("applicationIds")
-  private List<String> applicationIds;
+    @JsonProperty("applicationIds")
+    private List<String> applicationIds;
 
-  @JsonProperty("sortBy")
-  private SortBy sortBy;
+    @JsonProperty("sortBy")
+    private SortBy sortBy;
 
-  @JsonProperty("sortOrder")
-  private SortOrder sortOrder;
+    @JsonProperty("sortOrder")
+    private SortOrder sortOrder;
 
-  public enum SortOrder {
-    ASC,
-    DESC
-  }
+    public enum SortOrder {
+        ASC,
+        DESC
+    }
 
-  public enum SortBy {
-    tenantId,
-    mobileNumber,
-    ownerIds,
-    name,
-    dsoName,
-    ids,
-    status,
-    driverWithNoVendor,
-    createdTime
-  }
+    public enum SortBy {
+        tenantId,
+        mobileNumber,
+        ownerIds,
+        name,
+        dsoName,
+        ids,
+        status,
+        driverWithNoVendor,
+        createdTime
+    }
 
 }

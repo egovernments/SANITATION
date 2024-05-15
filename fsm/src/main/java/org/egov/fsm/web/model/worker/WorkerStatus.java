@@ -4,30 +4,30 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum WorkerStatus {
-  ACTIVE("ACTIVE"),
-  INACTIVE("INACTIVE"),
-  DISABLED("DISABLED");
+    ACTIVE("ACTIVE"),
+    INACTIVE("INACTIVE"),
+    DISABLED("DISABLED");
 
-  private String value;
+    private String value;
 
-  WorkerStatus(String value) {
-    this.value = value;
-  }
-
-  @JsonCreator
-  public static WorkerStatus fromValue(String text) {
-    for (WorkerStatus b : WorkerStatus.values()) {
-      if (String.valueOf(b.value).equals(text)) {
-        return b;
-      }
+    WorkerStatus(String value) {
+        this.value = value;
     }
-    return null;
-  }
 
-  @Override
-  @JsonValue
-  public String toString() {
+    @JsonCreator
+    public static WorkerStatus fromValue(String text) {
+        for (WorkerStatus b : WorkerStatus.values()) {
+            if (String.valueOf(b.value).equals(text)) {
+                return b;
+            }
+        }
+        return null;
+    }
 
-    return String.valueOf(value);
-  }
+    @Override
+    @JsonValue
+    public String toString() {
+
+        return String.valueOf(value);
+    }
 }

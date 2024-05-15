@@ -64,25 +64,44 @@ public class UserService {
 			if (userDetailResponse != null || !userDetailResponse.getUser().isEmpty()) {
 
 				if (!userDetailResponse.getUser().isEmpty()) {
-					Boolean foundUser = Boolean.FALSE;
+					Boolean foundUser = Boolean.FALSE, isCitizenRegisteredOnCitizPortal = Boolean.FALSE;
 					for (int j = 0; j < userDetailResponse.getUser().size(); j++) {
 						User user = userDetailResponse.getUser().get(j);
-						if (!user.getUserName().equalsIgnoreCase(user.getMobileNumber())
+						if (user.getUserName().equalsIgnoreCase(user.getMobileNumber())
 								&& user.getName().equalsIgnoreCase(applicant.getName())) {
-							// found user with mobilenumber and username not same and name as equal to the
-							// applicnat name provided by ui
-							// then consider that user as applicant
+							// found user with mobilenumber and username same and name as equal
+							//condition gets executed when logged-in citizen applies for application.
+
 							if (applicant != null && applicant.getGender() != null) {
 								user.setGender(applicant.getGender());
 							}
+
 							applicant = user;
 							foundUser = Boolean.TRUE;
+							isCitizenRegisteredOnCitizPortal = Boolean.TRUE;
 							break;
 						}
 					}
-					// users exists with mobile number but non of them have the same name, then
+					if (!isCitizenRegisteredOnCitizPortal) {
+						for (int j = 0; j < userDetailResponse.getUser().size(); j++) {
+							User user = userDetailResponse.getUser().get(j);
+							if (!user.getUserName().equalsIgnoreCase(user.getMobileNumber())
+									&& user.getMobileNumber().equalsIgnoreCase(applicant.getMobileNumber())
+									&& user.getName().equalsIgnoreCase(applicant.getName())) {
+								//Checking if user exists with same name and mobilenumber but citizen has not registered on the portal
+
+								if (applicant != null && applicant.getGender() != null) {
+									user.setGender(applicant.getGender());
+								}
+								applicant = user;
+								foundUser = Boolean.TRUE;
+								break;
+							}
+						}
+					}
+					// users exists with mobile number but none of them have the same name, then
 					// create new user
-					if (foundUser) {
+					if (!foundUser) {
 						applicantDetailResponse = createApplicant(applicant, fsmRequest.getRequestInfo(),
 								Boolean.FALSE);
 						applicant = applicantDetailResponse.getUser().get(0);
@@ -107,6 +126,7 @@ public class UserService {
 			if (fsm.getCitizen() != null && fsm.getCitizen().getGender() != null) {
 				applicant.setGender(fsm.getCitizen().getGender());
 			}
+
 			fsm.setCitizen(applicant);
 
 		} else {

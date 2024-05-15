@@ -224,7 +224,14 @@ public class FSMConstants {
 
 	public static final String FSM_ZERO_PRICE_SERVICE = "FSM_ZERO_PAY_SERVICE";
 	public static final String FSM_LATER_PAY_SERVICE = "PAY_LATER_SERVICE";
+
 	public static final String WAITING_FOR_DISPOSAL = "WAITING_FOR_DISPOSAL";
+
+	// Sanitation Worker Constants
+	public static final String PATTERN_GENDER = "^[a-zA-Z ]*$";
+	public static final String PATTERN_MOBILE = "(^$|[0-9]{10})";
+
+	public static final String X_API_Key = "X-API-Key";
 
 	
 }

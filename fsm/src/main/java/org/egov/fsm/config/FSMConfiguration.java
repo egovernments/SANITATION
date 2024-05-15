@@ -1,14 +1,17 @@
 package org.egov.fsm.config;
 
 import java.util.TimeZone;
+
 import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @AllArgsConstructor
@@ -273,7 +276,7 @@ public class FSMConfiguration {
 		
 		
 		// CONFIGURATIONS
-
+		
 
 		@Value("${egov.fsm.avg.rating.comment.mandatory}")
 		private String averageRatingCommentMandatory;
@@ -281,17 +284,46 @@ public class FSMConfiguration {
 		@Value("${persister.update.fsm.vehicle.trip.details.topic}")
 		private String vehicleUpdateTripToInactive;
 		
+		// FSM Event topic
 		@Value("${is.external.workflow.enabled}")
 		private Boolean isExternalWorkFlowEnabled;
 		
-		// FSM Event topic
 		@Value("${fsm.event.kafka.topic}")
 		private String fsmEventTopic;
+		
+		 //Garima Host Configs
+	    @Value("${garima.sw.host}")
+	    private String garimaHost;
 
-	@Value("${persister.create.fsm.worker.topic}")
-	private String createFsmWorkerTopic;
+	    @Value("${garima.sw.context.path}")
+	    private String garimaContextPath;
 
-	@Value("${persister.update.fsm.worker.topic}")
-	private String updateFsmWorkerTopic;
+	    @Value("${garima.sw.create.path}")
+	    private String garimaCreatePath;
 
+	    @Value("${garima.sw.search.path}")
+	    private String garimaSearchPath;
+	    
+	    @Value("${garima.api.key}")
+		private String garimaApiKey;
+	    
+		 //Individual Host Configs
+	    @Value("${individual.host}")
+	    private String individualHost;
+
+	    @Value("${individual.context.path}")
+	    private String individualContextPath;
+
+	    @Value("${individual.create.path}")
+	    private String individualCreatePath;
+
+	    @Value("${individual.search.path}")
+	    private String individualSearchPath;
+	    
+	 // worker topic
+		@Value("${create.fsm.application.workers}")
+		private String createFsmWorkerTopic;
+
+		@Value("${update.fsm.application.workers}")
+		private String updateFsmWorkerTopic;
 }

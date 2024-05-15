@@ -30,8 +30,8 @@ public class FSMErrorConstants {
 	public static final String NO_VEHICLE_VEHICLE_TYPE = "NO_VEHICLE_VEHICLE_TYPE";
 	public static final String INVALID_PAYMENT_PREFERENCE ="INVALID_PAYMENT_PREFERENCE";
 	public static final String INVALID_RECEIVED_PAYMENT_TYPE ="INVALID_RECEIVED_PAYMENT_TYPE";
-	
-	
+
+
 	public static final String INVALID_APPLICANT_ERROR ="INVALID_APPLICANT_ERROR";
 	public static final String INVALID_TRIP_AMOUNT ="INVALID_TRIP_AMOUNT";
 	
@@ -80,7 +80,6 @@ public class FSMErrorConstants {
 	public static final String COMPLETED_DATE_NOT_NULL = "COMPLETED_DATE_NOT_NULL";
 	public static final String VEHICLE_NOT_FOUND = "VEHICLE_NOT_FOUND";
 	public static final String INVALID_DSO_VEHICLE = "INVALID_DSO_VEHICLE";
-	public static final String INVALID_DSO_WORKERS = "INVALID_DSO_WORKERS";
 	public static final String INVALID_CHECKLIST = "INVALID_CHECKLIST";
 	public static final String INVALID_SLUM = "INVALID_SLUM";
 	public static final String INVALID_NO_OF_TRIPS = "INVALID_NO_OF_TRIPS";
@@ -96,5 +95,8 @@ public class FSMErrorConstants {
 	public static final String ILLEGAL_ARGUMENT_EXCEPTION ="IllegalArgumentException";
 	public static final String DECREASE_NOT_POSSIBLE = "DECREASE_NOT_POSSIBLE";
 
-	
+	public static final String INVALID_API_KEY = "INVALID_API_KEY";
+
+	public static final String INVALID_API_KEY_MESSAGE = "Unauthorized. Invalid API key.";
+
 }

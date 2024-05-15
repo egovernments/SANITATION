@@ -2,6 +2,7 @@ package org.egov.fsm.web.model.worker;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,34 +24,39 @@ import org.springframework.validation.annotation.Validated;
 @Setter
 public class Worker {
 
-  @SafeHtml
-  @JsonProperty("id")
-  private String id = null;
+    @SafeHtml
+    @JsonProperty("id")
+    private String id = null;
 
-  @JsonProperty("tenantId")
-  @SafeHtml
-  @Size(max = 64)
-  private String tenantId = null;
+    @JsonProperty("tenantId")
+    @SafeHtml
+    @Size(max = 64)
+    private String tenantId = null;
 
-  @JsonProperty("applicationId")
-  @SafeHtml
-  @Size(max = 64)
-  private String applicationId = null;
+    @JsonProperty("applicationId")
+    @SafeHtml
+    @Size(max = 64)
+    private String applicationId = null;
 
-  @JsonProperty("individualId")
-  @SafeHtml
-  @Size(max = 64)
-  private String individualId = null;
+    @JsonProperty("individualId")
+    @SafeHtml
+    @Size(max = 64)
+    private String individualId = null;
 
-  @JsonProperty("workerType")
-  private WorkerType workerType = null;
+    @JsonProperty("garimaId")
+    @SafeHtml
+    @Size(max = 64)
+    private String garimaId = null;
 
-  @JsonProperty("status")
-  private WorkerStatus status = null;
+    @JsonProperty("workerType")
+    private WorkerType workerType = null;
 
-  @JsonProperty("additionalDetails")
-  private Object additionalDetails = null;
+    @JsonProperty("status")
+    private WorkerStatus status = null;
 
-  @JsonProperty("auditDetails")
-  private AuditDetails auditDetails = null;
+    @JsonProperty("additionalDetails")
+    private Object additionalDetails = null;
+
+    @JsonProperty("auditDetails")
+    private AuditDetails auditDetails = null;
 }

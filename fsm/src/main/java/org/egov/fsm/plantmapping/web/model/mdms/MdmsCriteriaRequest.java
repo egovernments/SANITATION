@@ -15,11 +15,11 @@ import javax.validation.Valid;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MdmsCriteriaRequest {
-  @JsonProperty("RequestInfo")
-  @Valid
-  private RequestInfo requestInfo;
+    @JsonProperty("RequestInfo")
+    @Valid
+    private RequestInfo requestInfo;
 
-  @JsonProperty("MdmsCriteria")
-  @Valid
-  private MdmsCriteria mdmsCriteria;
+    @JsonProperty("MdmsCriteria")
+    @Valid
+    private MdmsCriteria mdmsCriteria;
 }

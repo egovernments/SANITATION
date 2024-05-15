@@ -26,41 +26,41 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MdmsCriteria {
 
-  @JsonProperty("tenantId")
-  @Size(min = 1, max = 100)
-  @NotNull
-  private String tenantId;
+    @JsonProperty("tenantId")
+    @Size(min = 1, max = 100)
+    @NotNull
+    private String tenantId;
 
-  @JsonProperty("ids")
-  private Set<String> ids;
+    @JsonProperty("ids")
+    private Set<String> ids;
 
-  @JsonProperty("uniqueIdentifier")
-  @Size(min = 1, max = 64)
-  private String uniqueIdentifier;
+    @JsonProperty("uniqueIdentifier")
+    @Size(min = 1, max = 64)
+    private String uniqueIdentifier;
 
-  @JsonProperty("uniqueIdentifiers")
-  private List<String> uniqueIdentifiers;
+    @JsonProperty("uniqueIdentifiers")
+    private List<String> uniqueIdentifiers;
 
-  @JsonProperty("schemaCode")
-  private String schemaCode;
+    @JsonProperty("schemaCode")
+    private String schemaCode;
 
-  @JsonProperty("filters")
-  private Map<String, String> filterMap;
+    @JsonProperty("filters")
+    private Map<String, String> filterMap;
 
-  @JsonProperty("isActive")
-  private Boolean isActive;
+    @JsonProperty("isActive")
+    private Boolean isActive;
 
-  @JsonIgnore
-  private Map<String, String> schemaCodeFilterMap;
+    @JsonIgnore
+    private Map<String, String> schemaCodeFilterMap;
 
-  @JsonIgnore
-  private Set<String> uniqueIdentifiersForRefVerification;
+    @JsonIgnore
+    private Set<String> uniqueIdentifiersForRefVerification;
 
-  @JsonProperty("offset")
-  private Integer offset;
+    @JsonProperty("offset")
+    private Integer offset;
 
-  @JsonProperty("limit")
-  private Integer limit;
+    @JsonProperty("limit")
+    private Integer limit;
 
 
 }

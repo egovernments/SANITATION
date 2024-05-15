@@ -35,7 +35,7 @@ public class FSMQueryBuilder {
 	public static final String GET_APPLICATION_LIST = "select applicationno from eg_fsm_application where oldapplicationno=? and tenantid=?";
 
 	public static final String GET_VEHICLE_TRIPS_LIST = "SELECT * FROM eg_vehicle_trip_detail WHERE referenceno= ? and status='ACTIVE' order by createdtime desc ";
-
+	
 	public static final String GET_WAITING_FOR_DISPOSAL_VEHICLE_TRIPS_LIST = "SELECT * FROM eg_vehicle_trip_detail WHERE trip_id IN ( SELECT id FROM eg_vehicle_trip WHERE applicationstatus = 'WAITING_FOR_DISPOSAL')AND status = 'ACTIVE' AND referenceno = ? ORDER BY createdtime DESC ";
 
 	public String getFSMSearchQuery(FSMSearchCriteria criteria, String dsoId, List<Object> preparedStmtList) {
@@ -52,26 +52,12 @@ public class FSMQueryBuilder {
 				preparedStmtList.add(criteria.getTenantId());
 			}
 		}
-		/*
-		 * Enable part search by application number of fsm application
-		 */
+
 		List<String> applicationNumber = criteria.getApplicationNos();
-		if (!CollectionUtils.isEmpty(applicationNumber) && (applicationNumber.stream()
-				.filter(checkappnumber -> checkappnumber.length() > 0).findFirst().orElse(null) != null)) {
-			boolean flag = false;
+		if (!CollectionUtils.isEmpty(applicationNumber)) {
 			addClauseIfRequired(preparedStmtList, builder);
-			builder.append(" ( ");
-			for (String applicationno : applicationNumber) {
-
-				if (flag)
-					builder.append(" OR ");
-				builder.append(" UPPER(fsm.applicationNo) like ?");
-				preparedStmtList.add('%' + org.apache.commons.lang3.StringUtils.upperCase(applicationno) + '%');
-				builder.append(" ESCAPE '_' ");
-				flag = true;
-
-			}
-			builder.append(" ) ");
+			builder.append(" fsm.applicationNo IN (").append(createQuery(applicationNumber)).append(")");
+			addToPreparedStatement(preparedStmtList, applicationNumber);
 		}
 
 		List<String> applicationStatus = criteria.getApplicationStatus();
@@ -291,6 +277,7 @@ public class FSMQueryBuilder {
 		}
 		return builder.toString();
 	}
+	
 
 	public String getTripDetailSarchQuery(String referenceNumber, int numOfRecords, List<Object> preparedStmtList,
 			Boolean waitingForDisposal) {

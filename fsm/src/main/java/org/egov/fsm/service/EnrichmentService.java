@@ -1,41 +1,52 @@
 package org.egov.fsm.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
+
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.fsm.config.FSMConfiguration;
+import org.egov.fsm.repository.FsmWorkerRepository;
 import org.egov.fsm.repository.IdGenRepository;
 import org.egov.fsm.util.ComparisionUtility;
 import org.egov.fsm.util.FSMAuditUtil;
 import org.egov.fsm.util.FSMConstants;
 import org.egov.fsm.util.FSMErrorConstants;
 import org.egov.fsm.util.FSMUtil;
+import org.egov.fsm.util.SanitationWorkerUtils;
 import org.egov.fsm.web.model.AuditDetails;
 import org.egov.fsm.web.model.FSM;
 import org.egov.fsm.web.model.FSMAudit;
 import org.egov.fsm.web.model.FSMRequest;
 import org.egov.fsm.web.model.FSMSearchCriteria;
 import org.egov.fsm.web.model.Workflow;
+import org.egov.fsm.web.model.garima.SanitationWorker;
+import org.egov.fsm.web.model.garima.SanitationWorkerSearch;
+import org.egov.fsm.web.model.garima.SanitationWorkerSearchCriteria;
+import org.egov.fsm.web.model.garima.SanitationWorkerSearchResponse;
 import org.egov.fsm.web.model.idgen.IdResponse;
 import org.egov.fsm.web.model.user.User;
 import org.egov.fsm.web.model.user.UserDetailResponse;
 import org.egov.fsm.web.model.worker.Worker;
 import org.egov.fsm.web.model.worker.WorkerSearchCriteria;
 import org.egov.fsm.web.model.worker.WorkerStatus;
-import org.egov.fsm.web.model.worker.repository.FsmWorkerRepository;
+import org.egov.fsm.web.model.worker.WorkerType;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -56,10 +67,16 @@ public class EnrichmentService {
 
 	@Autowired
 	private ComparisionUtility comparisionUtility;
-
+	
 	@Autowired
 	private FsmWorkerRepository fsmWorkerRepository;
-
+	
+	@Autowired
+	private GarimaSanitationWorkerService garimaSanitationWorkerService;
+	
+	@Autowired
+	private SanitationWorkerUtils sanitationWorkerUtils;
+	
 	/**
 	 * enrich the create FSM request with the required data
 	 * 
@@ -202,26 +219,6 @@ public class EnrichmentService {
 			fsmRequest.getFsm().getPitDetail().setAuditDetails(auditDetails);
 		}
 
-		if (!CollectionUtils.isEmpty(fsmRequest.getFsm().getWorkers())){
-			enrichFsmWorkers(fsmRequest);
-		}
-	}
-
-	public void enrichFsmWorkers(FSMRequest fsmRequest) {
-		fsmRequest.getFsm().getWorkers().forEach(worker -> {
-			if (StringUtils.isEmpty(worker.getId())) {
-				Long time = System.currentTimeMillis();
-				worker.setId(UUID.randomUUID().toString());
-				worker.setAuditDetails(AuditDetails.builder()
-						.createdBy(fsmRequest.getRequestInfo().getUserInfo().getUuid())
-						.lastModifiedBy(fsmRequest.getRequestInfo().getUserInfo().getUuid())
-						.createdTime(time)
-						.lastModifiedTime(time)
-						.build());
-			} else {
-				worker.setAuditDetails(fsmRequest.getFsm().getAuditDetails());
-			}
-		});
 	}
 
 	/**
@@ -239,6 +236,7 @@ public class EnrichmentService {
 		UserDetailResponse userDetailResponse = userService.getUser(fsmsearch, requestInfo);
 		encrichApplicant(userDetailResponse, fsms);
 		enrichFsmWorkersSearch(fsms);
+
 	}
 
 	/**
@@ -278,15 +276,96 @@ public class EnrichmentService {
 	public List<FSMAudit> enrichFSMAudit(FSMAuditUtil sourceObject, List<FSMAuditUtil> targetObjects) {
 		return comparisionUtility.compareData(sourceObject, targetObjects);
 	}
+	
+	/**
+	 * enrich the GarimaSanitationWorker information in FSM Worker
+	 * 
+	 * @param sanitationWorker
+	 * @param fsms
+	 */
+	public Worker encrichWorker(SanitationWorker sanitationWorker,FSMRequest fsmRequest ,boolean flag) {
+		RequestInfo requestInfo = fsmRequest.getRequestInfo();
+		AuditDetails auditDetails = fsmUtil.getAuditDetails(requestInfo.getUserInfo().getUuid(), flag);
+		Worker worker = new Worker();
+		if (sanitationWorker != null) {
+			worker.setId(UUID.randomUUID().toString());
+			worker.setTenantId(fsmRequest.getFsm().getTenantId());
+			worker.setApplicationId(fsmRequest.getFsm().getId());
+//			worker.setGarimaId(sanitationWorker.getGarima_id());
+			worker.setIndividualId(sanitationWorker.getGarima_id());
+			worker.setStatus(WorkerStatus.ACTIVE);
+			worker.setWorkerType(sanitationWorker.getWorkerType());
+			worker.setAdditionalDetails(null);
+			worker.setAuditDetails(auditDetails);
 
-	public void enrichFsmWorkersSearch(List<FSM> fsmApplications) {
-		fsmApplications.forEach(fsm -> {
-			List<Worker> workers = fsmWorkerRepository.getWorkersData(WorkerSearchCriteria.builder()
-					.tenantId(fsm.getTenantId())
-					.applicationIds(Collections.singletonList(fsm.getId()))
-					.status(Arrays.asList(WorkerStatus.ACTIVE.toString(), WorkerStatus.INACTIVE.toString()))
-					.build());
-			fsm.setWorkers(workers);
-		});
+		}
+		return worker;
 	}
+	
+	public void enrichFsmWorkersSearch(List<FSM> fsmApplications) {fsmApplications.forEach(fsm -> {
+	    List<Worker> workers = fsmWorkerRepository.getWorkersData(WorkerSearchCriteria.builder()
+	            .tenantId(fsm.getTenantId())
+	            .applicationIds(Collections.singletonList(fsm.getId()))
+	            .status(Arrays.asList(WorkerStatus.ACTIVE.toString(), WorkerStatus.INACTIVE.toString()))
+	            .build());
+	    List<SanitationWorkerSearch> sanitationWorkerSearches = fetchGarimaData(workers);
+	    
+	    List<SanitationWorker> sanitationWorkers=new ArrayList<SanitationWorker>();
+
+			if (sanitationWorkerSearches != null && !sanitationWorkerSearches.isEmpty()) {
+				for (SanitationWorkerSearch sanitationWorkerSearch : sanitationWorkerSearches) {
+					SanitationWorker sanitationWorker = sanitationWorkerUtils
+							.createSanitationWorker(sanitationWorkerSearch);
+					String garimaId = sanitationWorker.getGarima_id();
+
+					 Optional<Worker> matchingWorker = Optional.empty();
+					    Iterator<Worker> workerIterator = workers.iterator();
+					    while (workerIterator.hasNext()) {
+					        Worker worker = workerIterator.next();
+					        if (garimaId.equals(worker.getIndividualId())) {
+					            matchingWorker = Optional.of(worker);
+					            workerIterator.remove(); // Remove the matched worker from the list
+					            break; // Exit loop once the first match is found
+					        }
+					    }
+
+					if (matchingWorker.isPresent()) {
+						Worker worker = matchingWorker.get();
+						WorkerType workerType = worker.getWorkerType();
+						sanitationWorker.setWorkerType(workerType);
+					}
+					sanitationWorkers.add(sanitationWorker);
+				}
+	    }			
+
+	    fsm.setSanitationWorker(sanitationWorkers);
+	});
+}
+	
+	
+	private List<SanitationWorkerSearch> fetchGarimaData(List<Worker> workers) {
+//		Set<String> garimaIds = workers.stream().map(Worker::getIndividualId).collect(Collectors.toSet());
+		List<String> garimaIds = workers.stream()
+		        .map(Worker::getIndividualId)
+		        .collect(Collectors.toList());
+
+		List<SanitationWorkerSearch> sanitationWorkerSearch = new ArrayList<>();
+		for (String garimaId : garimaIds) {
+			SanitationWorkerSearchResponse sanitationWorkerSearchResponse = garimaSanitationWorkerService
+					.search(SanitationWorkerSearchCriteria.builder().garimaId(garimaId).build());
+			try {
+				List<SanitationWorkerSearch> sanitationWorkersList = sanitationWorkerSearchResponse.getData();
+				if (!sanitationWorkersList.isEmpty()) {
+					sanitationWorkerSearch.add(sanitationWorkersList.get(0));
+				} else {
+					throw new CustomException("INVALID GARIMA ID",
+							"Sanitation Worker with id: " + garimaId + " is not registered ");
+				}
+			} catch (Exception e) {
+				throw new CustomException("GARIMA Returned", e.getMessage());
+			}
+		}
+		return sanitationWorkerSearch.isEmpty() ? null : sanitationWorkerSearch;
+	}
+
 }

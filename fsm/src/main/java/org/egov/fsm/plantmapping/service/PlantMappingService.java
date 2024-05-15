@@ -31,9 +31,9 @@ public class PlantMappingService {
 
 	@Autowired
 	private PlantMappingEnrichmentService enrichmentService;
-	
-	 @Autowired
-	  private PlantMDMSValidator mdmsValidator;
+
+	@Autowired
+	private PlantMDMSValidator mdmsValidator;
 
 	@Autowired
 	private PlantMappingRepository repository;
@@ -41,6 +41,7 @@ public class PlantMappingService {
 	public PlantMapping create(@Valid PlantMappingRequest request) {
 		RequestInfo requestInfo = request.getRequestInfo();
 		mdmsValidator.validateMdmsData(request);
+
 		if (request.getPlantMapping().getTenantId().split("\\.").length == 1) {
 			throw new CustomException(FSMErrorConstants.INVALID_TENANT,
 					"Application Request cannot be create at StateLevel");
@@ -58,6 +59,7 @@ public class PlantMappingService {
 
 		PlantMapping plantMap = request.getPlantMapping();
 		mdmsValidator.validateMdmsData(request);
+
 		if (plantMap.getId() == null) {
 			throw new CustomException(FSMErrorConstants.UPDATE_ERROR,
 					"FSTP employee map not found in the System" + plantMap.getId());
