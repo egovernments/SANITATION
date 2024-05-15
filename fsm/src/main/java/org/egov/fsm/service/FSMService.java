@@ -669,7 +669,7 @@ public class FSMService {
 	public List<FSM> searchFSMPlainSearch(@Valid FSMSearchCriteria criteria, RequestInfo requestInfo) {
 		List<FSM> fsmList = getFsmPlainSearch(criteria);
 		if (!fsmList.isEmpty()) {
-			enrichmentService.enrichFSMSearch(fsmList, requestInfo, criteria.getTenantId());
+			enrichmentService.enrichFSMPlainSearch(fsmList, requestInfo, criteria.getTenantId());
 		}
 		return fsmList;
 	}

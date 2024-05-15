@@ -238,6 +238,24 @@ public class EnrichmentService {
 		enrichFsmWorkersSearch(fsms);
 
 	}
+	
+	/**
+	 * 
+	 * @param fsms
+	 * @param requestInfo
+	 */
+	public void enrichFSMPlainSearch(List<FSM> fsms, RequestInfo requestInfo, String tenantId) {
+
+		enrichBoundarys(fsms, requestInfo);
+		List<String> accountIds = fsms.stream().map(FSM::getAccountId).collect(Collectors.toList());
+		FSMSearchCriteria fsmsearch = new FSMSearchCriteria();
+		fsmsearch.setTenantId(tenantId);
+		fsmsearch.setOwnerIds(accountIds);
+		UserDetailResponse userDetailResponse = userService.getUser(fsmsearch, requestInfo);
+		encrichApplicant(userDetailResponse, fsms);
+//		enrichFsmWorkersSearch(fsms);
+
+	}
 
 	/**
 	 * enrich the bounday in the FSM Object
