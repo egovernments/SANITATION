@@ -56,17 +56,17 @@ public class FSMInboxService {
 	 * @return
 	 */
 	public void inboxEvent(FSMRequest fsmRequest) {
-		ProcessInstance processInstance = null;
-
-		if (config.getIsExternalWorkFlowEnabled())
-			processInstance = workflowService.getProcessInstance(fsmRequest.getFsm(), fsmRequest.getRequestInfo());
-
-		if (!ObjectUtils.isEmpty(processInstance))
-			log.info("Incoming process instance:" + processInstance.toString());
-		else
-			log.info("PROCESS INSTANCE NOT FOUND!!");
+//		ProcessInstance processInstance = null;
+//
+//		if (config.getIsExternalWorkFlowEnabled())
+//			processInstance = workflowService.getProcessInstance(fsmRequest.getFsm(), fsmRequest.getRequestInfo());
+//
+//		if (!ObjectUtils.isEmpty(processInstance))
+//			log.info("Incoming process instance:" + processInstance.toString());
+//		else
+//			log.info("PROCESS INSTANCE NOT FOUND!!");
 		FSMEvent fsmEvent = new FSMEvent(fsmRequest);
-		fsmEvent.getFsmRequest().getFsm().setProcessInstance(processInstance);
+//		fsmEvent.getFsmRequest().getFsm().setProcessInstance(processInstance);
 		producer.push(config.getFsmEventTopic(), fsmEvent);
 	}
 
