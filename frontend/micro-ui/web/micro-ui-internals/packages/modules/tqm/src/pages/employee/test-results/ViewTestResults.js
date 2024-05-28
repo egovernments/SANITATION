@@ -101,6 +101,7 @@ function ViewTestResults() {
     },
   });
 
+
   const handleDownloadPdf = async () => {
     try {
       const respo = await Digit.CustomService.getResponse({

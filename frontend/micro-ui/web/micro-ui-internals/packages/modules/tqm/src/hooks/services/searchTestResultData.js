@@ -34,12 +34,14 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
 
   testcriteraData?.forEach((testItem) => {
     const matchingMdmsItem = mdmsCriteriaData?.mdms?.find((mdmsItem) => mdmsItem.uniqueIdentifier === testItem.criteriaCode);
+
     if (matchingMdmsItem) {
+      const combineResults = `${t(Digit.Utils.locale.getTransformedLocale(`ES_TQM_${matchingMdmsItem.data.benchmarkRule}`))} ${matchingMdmsItem.data.benchmarkValues.join(' - ')}`;
       const mergedData = {
         criteriaCode: testItem.criteriaCode,
         qparameter: matchingMdmsItem.data.parameter,
         uom: matchingMdmsItem.data.unit,
-        benchmarkValues: matchingMdmsItem.data.benchmarkValues?.[0],
+        benchmarkValues: combineResults,
         results: testItem.resultValue,
         status: testItem.resultStatus,
       };
@@ -241,6 +243,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
             "",
             "",
             "",
+            // "",
             t("ES_TQM_LABEL_RESULT_SUMMARY"),
             testResponse.status === "PASS" ? t("ES_TQM_LABEL_RESULT_PASS") : testResponse.status === "FAIL" ? t("ES_TQM_LABEL_RESULT_FAIL") : t("TQM_TEST_STATUS_PENDING"),
           ]
