@@ -9,6 +9,8 @@ import static org.egov.pqm.util.Constants.SCHEMA_CODE_PLANTCONFIG;
 import static org.egov.pqm.util.Constants.SCHEMA_CODE_TEST_STANDARD;
 import static org.egov.pqm.util.Constants.SUBMIT_SAMPLE;
 import static org.egov.pqm.util.Constants.UPDATE_RESULT;
+import static org.egov.pqm.util.Constants.WFSTATUS_DRAFTED; 
+import static org.egov.pqm.util.Constants.WFSTATUS_SUBMITTED;
 import static org.egov.pqm.util.Constants.WFSTATUS_PENDINGRESULTS;
 import static org.egov.pqm.util.Constants.WFSTATUS_SCHEDULED;
 import static org.egov.pqm.util.ErrorConstants.NO_TENANT_PRESENT_ERROR_DESC;
@@ -24,7 +26,6 @@ import static org.egov.pqm.util.ErrorConstants.UPDATE_ERROR;
 import static org.egov.pqm.util.MDMSUtils.parseJsonToTestList;
 import static org.egov.pqm.web.model.Pagination.SortOrder.DESC;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -36,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
+
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.repository.TestRepository;
@@ -45,7 +46,19 @@ import org.egov.pqm.util.JsonParser;
 import org.egov.pqm.util.MDMSUtils;
 import org.egov.pqm.validator.MDMSValidator;
 import org.egov.pqm.validator.PqmValidator;
-import org.egov.pqm.web.model.*;
+import org.egov.pqm.web.model.Document;
+import org.egov.pqm.web.model.DocumentResponse;
+import org.egov.pqm.web.model.EgovPdfResp;
+import org.egov.pqm.web.model.Pagination;
+import org.egov.pqm.web.model.QualityCriteria;
+import org.egov.pqm.web.model.SortBy;
+import org.egov.pqm.web.model.SourceType;
+import org.egov.pqm.web.model.Test;
+import org.egov.pqm.web.model.TestRequest;
+import org.egov.pqm.web.model.TestResponse;
+import org.egov.pqm.web.model.TestResultStatus;
+import org.egov.pqm.web.model.TestSearchCriteria;
+import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.anomaly.PqmAnomaly;
 import org.egov.pqm.web.model.anomaly.PqmAnomalySearchCriteria;
 import org.egov.pqm.web.model.anomaly.PqmAnomalySearchRequest;
@@ -60,6 +73,10 @@ import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -363,7 +380,7 @@ public class PqmService {
     for (MdmsTest mdmsTest : mdmsTestList) {
       TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().sourceType(
               Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED)))
-          .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED)).tenantId(tenantId)
+          .wfStatus(Arrays.asList(WFSTATUS_PENDINGRESULTS, WFSTATUS_SCHEDULED, WFSTATUS_DRAFTED)).tenantId(tenantId)
           .testCode(Collections.singletonList(mdmsTest.getCode())).build();
       Pagination pagination = Pagination.builder().limit(2).sortBy(SortBy.scheduledDate)
           .sortOrder(DESC).build();
@@ -409,27 +426,70 @@ public class PqmService {
         qualityCriteriaList.add(qualityCriteria);
       }
 
-      if (CollectionUtils.isEmpty(testListFromDb)) {
-        //case 1: when no pending tests exist in DB
-        Test createTest = Test.builder()
-            .testCode(mdmsTest.getCode())
-            .tenantId(tenantId)
-            .plantCode(mdmsTest.getPlant())
-            .processCode(mdmsTest.getProcess())
-            .stageCode(mdmsTest.getStage())
-            .materialCode(mdmsTest.getMaterial())
-            .qualityCriteria(qualityCriteriaList)
-            .sourceType(SourceType.LAB_SCHEDULED)
-            .isActive(Boolean.TRUE)
-            .scheduledDate(instant.toEpochMilli())
-            .build();
+		if (CollectionUtils.isEmpty(testListFromDb)) {
+			// case 1: when no pending tests exist in DB
 
-        TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest))
-            .requestInfo(requestInfo).build();
+			testSearchCriteria = TestSearchCriteria.builder()
+					.sourceType(Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED)))
+					.wfStatus(Arrays.asList(WFSTATUS_SUBMITTED)).tenantId(tenantId)
+					.testCode(Collections.singletonList(mdmsTest.getCode())).build();
+			pagination = Pagination.builder().limit(2).sortBy(SortBy.scheduledDate).sortOrder(DESC).build();
+			testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
+					.testSearchCriteria(testSearchCriteria).pagination(pagination).build();
+			// search from DB for any submitted tests before frequency date
+			List<Test> testSubmittedListFromDb = testSearch(testSearchRequest, requestInfo, false).getTests();
 
-        //send to create function
-        createTestViaScheduler(testRequest);
-      } else {
+			// case 1.1: when no tests exist in DB with this plantCode
+
+			if (CollectionUtils.isEmpty(testSubmittedListFromDb)) {
+				Test createTest = Test.builder()
+						.testCode(mdmsTest.getCode())
+						.tenantId(tenantId)
+						.plantCode(mdmsTest.getPlant())
+						.processCode(mdmsTest.getProcess())
+						.stageCode(mdmsTest.getStage())
+						.materialCode(mdmsTest.getMaterial())
+						.qualityCriteria(qualityCriteriaList)
+						.sourceType(SourceType.LAB_SCHEDULED)
+						.isActive(Boolean.TRUE)
+						.scheduledDate(instant.toEpochMilli()).build();
+
+				TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest))
+						.requestInfo(requestInfo).build();
+
+				// send to create function
+				createTestViaScheduler(testRequest);
+			} else {
+				// case 1.1: when submitted tests exist in DB and scheduleDate passed then
+				// create new tests
+
+				Test testFromDb = testSubmittedListFromDb.get(0);
+
+				Long scheduleDate = testFromDb.getScheduledDate();
+
+				if (isPastScheduledDate(scheduleDate)) {
+					Test createTest = Test.builder()
+							.tenantId(testFromDb.getTenantId())
+							.testCode(mdmsTest.getCode())
+							.plantCode(testFromDb.getPlantCode())
+							.processCode(testFromDb.getProcessCode())
+							.stageCode(testFromDb.getStageCode())
+							.materialCode(testFromDb.getMaterialCode())
+							.qualityCriteria(qualityCriteriaList)
+							.sourceType(SourceType.LAB_SCHEDULED)
+							.isActive(Boolean.TRUE)
+							.scheduledDate(instant.toEpochMilli()).build();
+
+					TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest))
+							.requestInfo(requestInfo).build();
+
+					// send to create function
+					createTestViaScheduler(testRequest);
+
+				}
+			}
+
+		} else {
         //case 2: when pending test exist in DB
         Test testFromDb = testListFromDb.get(0);
 
