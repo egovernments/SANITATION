@@ -429,15 +429,15 @@ public class PqmService {
 		if (CollectionUtils.isEmpty(testListFromDb)) {
 			// case 1: when no pending tests exist in DB
 
-			testSearchCriteria = TestSearchCriteria.builder()
+			TestSearchCriteria testSearchCriteriaForSubmiitedTest = TestSearchCriteria.builder()
 					.sourceType(Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED)))
 					.wfStatus(Arrays.asList(WFSTATUS_SUBMITTED)).tenantId(tenantId)
 					.testCode(Collections.singletonList(mdmsTest.getCode())).build();
 			pagination = Pagination.builder().limit(2).sortBy(SortBy.scheduledDate).sortOrder(DESC).build();
-			testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo)
-					.testSearchCriteria(testSearchCriteria).pagination(pagination).build();
+			TestSearchRequest testSearchRequestForSubmiitedTest = TestSearchRequest.builder().requestInfo(requestInfo)
+					.testSearchCriteria(testSearchCriteriaForSubmiitedTest).pagination(pagination).build();
 			// search from DB for any submitted tests before frequency date
-			List<Test> testSubmittedListFromDb = testSearch(testSearchRequest, requestInfo, false).getTests();
+			List<Test> testSubmittedListFromDb = testSearch(testSearchRequestForSubmiitedTest, requestInfo, false).getTests();
 
 			// case 1.1: when no tests exist in DB with this plantCode
 
