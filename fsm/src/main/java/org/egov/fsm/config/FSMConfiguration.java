@@ -66,6 +66,10 @@ public class FSMConfiguration {
 
 		@Value("${persister.update.fsm.topic}")
 		private String updateTopic;
+		
+		// inbox Config
+		@Value("${fsm.event.index.kafka.topic}")
+	    private String fsmEventIndexKafkaTopic;
 
 		
 		@Value("${persister.update.fsm.workflow.topic}")

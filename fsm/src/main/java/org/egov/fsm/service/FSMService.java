@@ -145,7 +145,7 @@ public class FSMService {
 			calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
 		}
 		
-		fSMInboxService.inboxEvent(fsmRequest);
+//		fSMInboxService.inboxEvent(fsmRequest);
 		return fsmRequest.getFsm();
 	}
 
@@ -218,7 +218,7 @@ public class FSMService {
 
 		createOrUpdateFsmApplicationWorkers(fsmRequest);
 		repository.update(fsmRequest, workflowService.isStateUpdatable(fsm.getApplicationStatus(), businessService));
-		fSMInboxService.inboxEvent( fsmRequest);
+//		fSMInboxService.inboxEvent( fsmRequest);
 		return fsmRequest.getFsm();
 	}
 
