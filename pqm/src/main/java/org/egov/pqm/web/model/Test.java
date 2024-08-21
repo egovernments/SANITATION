@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.egov.pqm.web.model.workflow.ProcessInstance;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -81,4 +83,7 @@ public class Test {
 
   @JsonProperty("labAssignedTo")
   private String labAssignedTo;
+  
+  @JsonProperty("processInstance")
+  private ProcessInstance processInstance;
 }

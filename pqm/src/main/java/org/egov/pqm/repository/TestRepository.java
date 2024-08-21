@@ -49,7 +49,7 @@ public class TestRepository {
 
   public void save(TestRequest testRequest) {
     producer.push(config.getTestSaveTopic(), testRequest);
-//    producer.push(config.getTestSaveEventTopic(), testRequest);
+    producer.push(config.getTestSaveEventTopic(), testRequest);
   }
 
   public void saveAnomaly(String topic, TestRequest testRequest) {
@@ -59,7 +59,7 @@ public class TestRepository {
 
   public void update(TestRequest testRequest) {
     producer.push(config.getTestUpdateTopic(), testRequest);
-//    producer.push(config.getTestUpdateEventTopic(), testRequest);
+    producer.push(config.getTestUpdateEventTopic(), testRequest);
   }
 
   public void updateTestDocuments(TestRequest testRequest){
