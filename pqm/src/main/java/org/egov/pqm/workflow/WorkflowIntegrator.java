@@ -108,14 +108,19 @@ public class WorkflowIntegrator {
 //			response1 = mapper.convertValue(response, ProcessInstanceResponse.class);
 //
 //		}
-		String response = null;
+//		ProcessInstanceResponse response = null;
 		ProcessInstanceResponse processInstanceResponse = null;
 
 		try {
-		    response = rest.postForObject(config.getWfHost().concat(config.getWfTransitionPath()), workFlowRequest, String.class);
-		    if (response != null) {
-		    	processInstanceResponse = mapper.convertValue(response, ProcessInstanceResponse.class);
-		    }
+			processInstanceResponse = rest.postForObject(config.getWfHost().concat(config.getWfTransitionPath()), workFlowRequest, ProcessInstanceResponse.class);
+
+//		    if (response != null) {
+//		        System.out.println("Response content: " + response);
+//		        Object processInstanceResponseObject=response;
+//		        System.out.println("Response content: " + response);
+//		        processInstanceResponse = mapper.convertValue(processInstanceResponseObject, ProcessInstanceResponse.class);
+//		        System.out.println("Converted ProcessInstanceResponse: " + processInstanceResponse);
+//		    }
 		} 
 
 		catch (HttpClientErrorException e) {
@@ -143,16 +148,17 @@ public class WorkflowIntegrator {
 		 * on success result from work-flow read the data and set the status back to pqm
 		 * object
 		 */
-		DocumentContext responseContext = JsonPath.parse(response);
-		List<Map<String, Object>> responseArray = responseContext.read(PROCESS_INSTANCES_JOSN_KEY);
-		Map<String, String> idStatusMap = new HashMap<>();
-		responseArray.forEach(object -> {
-
-			DocumentContext instanceContext = JsonPath.parse(object);
-			idStatusMap.put(instanceContext.read(BUSINESS_ID_JOSN_KEY), instanceContext.read(STATUS_JSON_KEY));
-		});
+//		DocumentContext responseContext = JsonPath.parse(response);
+//		List<Map<String, Object>> responseArray = responseContext.read(PROCESS_INSTANCES_JOSN_KEY);
+//		Map<String, String> idStatusMap = new HashMap<>();
+//		responseArray.forEach(object -> {
+//
+//			DocumentContext instanceContext = JsonPath.parse(object);
+//			idStatusMap.put(instanceContext.read(BUSINESS_ID_JOSN_KEY), instanceContext.read(STATUS_JSON_KEY));
+//		});
 		// setting the status back to pqm object from wf response
-		test.setWfStatus(idStatusMap.get(test.getTestId()));
+//		test.setWfStatus(idStatusMap.get(test.getTestId()));
+		test.setWfStatus(processInstanceResponse.getProcessInstances().get(0).getState().getApplicationStatus());
 		test.setProcessInstance(processInstanceResponse.getProcessInstances().get(0));
 
 	}
