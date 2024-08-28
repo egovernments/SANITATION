@@ -480,33 +480,36 @@ public class PqmService {
 			}
 
 		} else {
-        //case 2: when pending test exist in DB
-        Test testFromDb = testListFromDb.get(0);
+			// case 2: when pending test exist in DB
 
-        Long scheduleDate = testFromDb.getScheduledDate();
+			TestSearchCriteria testSearchCriteriaBasedOnScheduledDate = TestSearchCriteria.builder()
+					.sourceType(Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED))).tenantId(tenantId)
+					.testCode(Collections.singletonList(mdmsTest.getCode())).build();
+			pagination = Pagination.builder().limit(2).sortBy(SortBy.scheduledDate).sortOrder(DESC).build();
+			TestSearchRequest testSearchRequestBasedOnScheduledDate = TestSearchRequest.builder()
+					.requestInfo(requestInfo).testSearchCriteria(testSearchCriteriaBasedOnScheduledDate)
+					.pagination(pagination).build();
+			// search from DB for any submitted tests before frequency date
+			List<Test> testBasedOnScheduledDateListFromDb = testSearch(testSearchRequestBasedOnScheduledDate,
+					requestInfo, false).getTests();
+			Test testFromDb = testBasedOnScheduledDateListFromDb.get(0);
 
-        if (isPastScheduledDate(scheduleDate)) {
-          Test createTest = Test.builder()
-              .tenantId(testFromDb.getTenantId())
-              .testCode(mdmsTest.getCode())
-              .plantCode(testFromDb.getPlantCode())
-              .processCode(testFromDb.getProcessCode())
-              .stageCode(testFromDb.getStageCode())
-              .materialCode(testFromDb.getMaterialCode())
-              .qualityCriteria(qualityCriteriaList)
-              .sourceType(SourceType.LAB_SCHEDULED)
-              .isActive(Boolean.TRUE)
-              .scheduledDate(instant.toEpochMilli())
-              .build();
+			Long scheduleDate = testFromDb.getScheduledDate();
 
-          TestRequest testRequest = TestRequest.builder()
-              .tests(Collections.singletonList(createTest)).requestInfo(requestInfo)
-              .build();
+			if (isPastScheduledDate(scheduleDate)) {
+				Test createTest = Test.builder().tenantId(testFromDb.getTenantId()).testCode(mdmsTest.getCode())
+						.plantCode(testFromDb.getPlantCode()).processCode(testFromDb.getProcessCode())
+						.stageCode(testFromDb.getStageCode()).materialCode(testFromDb.getMaterialCode())
+						.qualityCriteria(qualityCriteriaList).sourceType(SourceType.LAB_SCHEDULED)
+						.isActive(Boolean.TRUE).scheduledDate(instant.toEpochMilli()).build();
 
-          //send to create function
-          createTestViaScheduler(testRequest);
-        }
-      }
+				TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest))
+						.requestInfo(requestInfo).build();
+
+				// send to create function
+				createTestViaScheduler(testRequest);
+			}
+		}
 
 
     }
