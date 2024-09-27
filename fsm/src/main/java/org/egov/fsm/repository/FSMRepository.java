@@ -62,6 +62,7 @@ public class FSMRepository {
 
 		public void save(FSMRequest fsmRequest) {
 			producer.push(config.getSaveTopic(), fsmRequest);
+	        producer.push(config.getFsmEventIndexKafkaTopic(), fsmRequest);
 		}
 
 	public void update(FSMRequest fsmRequest, boolean isStateUpdatable) {
@@ -77,12 +78,17 @@ public class FSMRepository {
 		} else {
 			fsmForStatusUpdate = fsm;
 		}
-		if (fsmForUpdate != null)
+		if (fsmForUpdate != null) {
 			producer.push(config.getUpdateTopic(), new FSMRequest(requestInfo, fsmForUpdate, fsmRequest.getWorkflow()));
+	        producer.push(config.getFsmEventIndexKafkaTopic(), fsmRequest);
+		}
 
-		if (fsmForStatusUpdate != null)
+		if (fsmForStatusUpdate != null) {
 			producer.push(config.getUpdateWorkflowTopic(),
 					new FSMRequest(requestInfo, fsmForStatusUpdate, fsmRequest.getWorkflow()));
+	        producer.push(config.getFsmEventIndexKafkaTopic(), fsmRequest);
+		}
+			
 
 	}
 

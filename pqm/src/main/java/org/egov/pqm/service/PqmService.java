@@ -480,7 +480,18 @@ public class PqmService {
 
 		} else {
         //case 2: when pending test exist in DB
-        Test testFromDb = testListFromDb.get(0);
+
+	TestSearchCriteria testSearchCriteriaBasedOnScheduledDate = TestSearchCriteria.builder()
+					.sourceType(Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED))).tenantId(tenantId)
+					.testCode(Collections.singletonList(mdmsTest.getCode())).build();
+			pagination = Pagination.builder().limit(2).sortBy(SortBy.scheduledDate).sortOrder(DESC).build();
+	TestSearchRequest testSearchRequestBasedOnScheduledDate = TestSearchRequest.builder()
+					.requestInfo(requestInfo).testSearchCriteria(testSearchCriteriaBasedOnScheduledDate)
+					.pagination(pagination).build();
+	// search from DB for any tests before frequency date
+	List<Test> testBasedOnScheduledDateListFromDb = testSearch(testSearchRequestBasedOnScheduledDate,
+					requestInfo, false).getTests();
+        Test testFromDb = testBasedOnScheduledDateListFromDb.get(0);
 
         Long scheduleDate = testFromDb.getScheduledDate();
 

@@ -112,7 +112,7 @@ public class PaymentUpdateService {
 						log.info(" the status of the application is : " + updateRequest.getFsm().getStatus());
 
 						repository.update(updateRequest, false);
-						fSMInboxService.inboxEvent(updateRequest);
+//						fSMInboxService.inboxEvent(updateRequest);
 					});
 				}
 
