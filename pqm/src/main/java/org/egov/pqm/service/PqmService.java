@@ -9,10 +9,10 @@ import static org.egov.pqm.util.Constants.SCHEMA_CODE_PLANTCONFIG;
 import static org.egov.pqm.util.Constants.SCHEMA_CODE_TEST_STANDARD;
 import static org.egov.pqm.util.Constants.SUBMIT_SAMPLE;
 import static org.egov.pqm.util.Constants.UPDATE_RESULT;
-import static org.egov.pqm.util.Constants.WFSTATUS_DRAFTED;
+import static org.egov.pqm.util.Constants.WFSTATUS_DRAFTED; 
+import static org.egov.pqm.util.Constants.WFSTATUS_SUBMITTED;
 import static org.egov.pqm.util.Constants.WFSTATUS_PENDINGRESULTS;
 import static org.egov.pqm.util.Constants.WFSTATUS_SCHEDULED;
-import static org.egov.pqm.util.Constants.WFSTATUS_SUBMITTED;
 import static org.egov.pqm.util.ErrorConstants.NO_TENANT_PRESENT_ERROR_DESC;
 import static org.egov.pqm.util.ErrorConstants.PLANT_PLANT_CONFIG_DATA_NOT_PRESENT_ERROR_DESC;
 import static org.egov.pqm.util.ErrorConstants.PQM_ANOMALY_SEARCH_ERROR;
@@ -49,7 +49,6 @@ import org.egov.pqm.validator.PqmValidator;
 import org.egov.pqm.web.model.Document;
 import org.egov.pqm.web.model.DocumentResponse;
 import org.egov.pqm.web.model.EgovPdfResp;
-import org.egov.pqm.web.model.PQMEvent;
 import org.egov.pqm.web.model.Pagination;
 import org.egov.pqm.web.model.QualityCriteria;
 import org.egov.pqm.web.model.SortBy;
@@ -480,36 +479,44 @@ public class PqmService {
 			}
 
 		} else {
-			// case 2: when pending test exist in DB
+        //case 2: when pending test exist in DB
 
-			TestSearchCriteria testSearchCriteriaBasedOnScheduledDate = TestSearchCriteria.builder()
+	TestSearchCriteria testSearchCriteriaBasedOnScheduledDate = TestSearchCriteria.builder()
 					.sourceType(Collections.singletonList(String.valueOf(SourceType.LAB_SCHEDULED))).tenantId(tenantId)
 					.testCode(Collections.singletonList(mdmsTest.getCode())).build();
 			pagination = Pagination.builder().limit(2).sortBy(SortBy.scheduledDate).sortOrder(DESC).build();
-			TestSearchRequest testSearchRequestBasedOnScheduledDate = TestSearchRequest.builder()
+	TestSearchRequest testSearchRequestBasedOnScheduledDate = TestSearchRequest.builder()
 					.requestInfo(requestInfo).testSearchCriteria(testSearchCriteriaBasedOnScheduledDate)
 					.pagination(pagination).build();
-			// search from DB for any submitted tests before frequency date
-			List<Test> testBasedOnScheduledDateListFromDb = testSearch(testSearchRequestBasedOnScheduledDate,
+	// search from DB for any tests before frequency date
+	List<Test> testBasedOnScheduledDateListFromDb = testSearch(testSearchRequestBasedOnScheduledDate,
 					requestInfo, false).getTests();
-			Test testFromDb = testBasedOnScheduledDateListFromDb.get(0);
+        Test testFromDb = testBasedOnScheduledDateListFromDb.get(0);
 
-			Long scheduleDate = testFromDb.getScheduledDate();
+        Long scheduleDate = testFromDb.getScheduledDate();
 
-			if (isPastScheduledDate(scheduleDate)) {
-				Test createTest = Test.builder().tenantId(testFromDb.getTenantId()).testCode(mdmsTest.getCode())
-						.plantCode(testFromDb.getPlantCode()).processCode(testFromDb.getProcessCode())
-						.stageCode(testFromDb.getStageCode()).materialCode(testFromDb.getMaterialCode())
-						.qualityCriteria(qualityCriteriaList).sourceType(SourceType.LAB_SCHEDULED)
-						.isActive(Boolean.TRUE).scheduledDate(instant.toEpochMilli()).build();
+        if (isPastScheduledDate(scheduleDate)) {
+          Test createTest = Test.builder()
+              .tenantId(testFromDb.getTenantId())
+              .testCode(mdmsTest.getCode())
+              .plantCode(testFromDb.getPlantCode())
+              .processCode(testFromDb.getProcessCode())
+              .stageCode(testFromDb.getStageCode())
+              .materialCode(testFromDb.getMaterialCode())
+              .qualityCriteria(qualityCriteriaList)
+              .sourceType(SourceType.LAB_SCHEDULED)
+              .isActive(Boolean.TRUE)
+              .scheduledDate(instant.toEpochMilli())
+              .build();
 
-				TestRequest testRequest = TestRequest.builder().tests(Collections.singletonList(createTest))
-						.requestInfo(requestInfo).build();
+          TestRequest testRequest = TestRequest.builder()
+              .tests(Collections.singletonList(createTest)).requestInfo(requestInfo)
+              .build();
 
-				// send to create function
-				createTestViaScheduler(testRequest);
-			}
-		}
+          //send to create function
+          createTestViaScheduler(testRequest);
+        }
+      }
 
 
     }
