@@ -107,12 +107,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>42.5.1</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.egov</groupId>
       <artifactId>mdms-client</artifactId>
       <version>0.0.4-SNAPSHOT</version>
@@ -126,9 +120,15 @@
     </dependency>
 
     <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
-    </dependency>
+       		<groupId>org.postgresql</groupId>
+       		<artifactId>postgresql</artifactId>
+       		<version>42.7.1</version>
+    	</dependency>
+    	<dependency>
+       		<groupId>org.flywaydb</groupId>
+       		<artifactId>flyway-core</artifactId>
+       		<version>9.22.3</version>      
+    	</dependency>
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>itext7-core</artifactId>
