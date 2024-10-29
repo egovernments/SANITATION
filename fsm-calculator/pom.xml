@@ -93,7 +93,6 @@
 		<!--#SM-1275 Vulnerability alert for the egovernments organization,So replace 
 			the current version with existing version -->
 
-		</dependency>
 		<dependency>
 			<groupId>org.egov</groupId>
 			<artifactId>mdms-client</artifactId>
