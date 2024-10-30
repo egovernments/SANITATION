@@ -107,3 +107,11 @@ config:
       - work-dir: 'frontend/vehicle-tracker/map_web_app/route_map'
         image-name: 'route-map'
         dockerfile: 'frontend/vehicle-tracker/map_web_app/docker/Dockerfile'
+
+  - name: 'builds/SANITATION/individual'
+    build:
+      - work-dir: 'individual'
+        image-name: 'individual'
+        dockerfile: 'build/maven/Dockerfile'
+      - work-dir: 'individual/src/main/resources/db'
+        image-name: 'individual-db'
