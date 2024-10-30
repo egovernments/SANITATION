@@ -109,7 +109,7 @@ public class InboxConfiguration {
 	@Value("${egov.internal.microservice.user.uuid}")
 	private String egovInternalMicroserviceUserUuid;
 
-	@Value("${state.level.tenant.id}")
+	@Value("${parent.level.tenant.id}")
 	private String parentLevelTenantId;
 
 	// ES Config
