@@ -39,6 +39,7 @@ import static org.egov.inbox.util.DSSConstants.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Slf4j
+@Service
 public class ElasticSearchService {
 
     @Autowired
