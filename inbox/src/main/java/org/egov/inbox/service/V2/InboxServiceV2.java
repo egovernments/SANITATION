@@ -6,7 +6,6 @@ import static org.egov.inbox.util.InboxConstants.AUDIT_DETAILS_KEY;
 import static org.egov.inbox.util.InboxConstants.BUSINESSSERVICE_KEY;
 import static org.egov.inbox.util.InboxConstants.BUSINESS_SERVICE_PATH;
 import static org.egov.inbox.util.InboxConstants.COUNT_CONSTANT;
-import static org.egov.inbox.util.InboxConstants.COUNT_PATH;
 import static org.egov.inbox.util.InboxConstants.CREATED_TIME_KEY;
 import static org.egov.inbox.util.InboxConstants.CURRENT_PROCESS_INSTANCE_CONSTANT;
 import static org.egov.inbox.util.InboxConstants.DATA_KEY;
@@ -33,9 +32,9 @@ import org.egov.hash.HashService;
 import org.egov.inbox.config.InboxConfiguration;
 import org.egov.inbox.repository.ServiceRequestRepository;
 import org.egov.inbox.repository.builder.V2.InboxQueryBuilder;
-import org.egov.inbox.service.ElasticSearchService;
 import org.egov.inbox.service.WorkflowService;
 import org.egov.inbox.service.V2.validator.ValidatorDefaultImplementation;
+import org.egov.inbox.util.ElasticSearchUtil;
 import org.egov.inbox.util.MDMSUtil;
 import org.egov.inbox.web.model.Inbox;
 import org.egov.inbox.web.model.InboxRequest;
@@ -93,7 +92,7 @@ public class InboxServiceV2 {
     private HashService hashService;
     
     @Autowired
-    private ElasticSearchService elasticSearchService;
+    private ElasticSearchUtil elasticSearchUtil;
 
 
     /**
@@ -169,7 +168,7 @@ public class InboxServiceV2 {
         }
 
         StringBuilder uri = getURI(indexName, SEARCH_PATH);
-        HttpHeaders headers = elasticSearchService.getHttpHeaders();
+        HttpHeaders headers = elasticSearchUtil.getHttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // Use the JSON string 'q' in the HttpEntity
@@ -221,7 +220,7 @@ public class InboxServiceV2 {
 		}
 
 		StringBuilder uri = getURI(indexName, SEARCH_PATH);
-		HttpHeaders headers = elasticSearchService.getHttpHeaders();
+		HttpHeaders headers = elasticSearchUtil.getHttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		// Use the JSON string 'q' in the HttpEntity
@@ -261,7 +260,7 @@ public class InboxServiceV2 {
         }
 
         StringBuilder uri = getURI(indexName, SEARCH_PATH);
-        HttpHeaders headers = elasticSearchService.getHttpHeaders();
+        HttpHeaders headers = elasticSearchUtil.getHttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // Use the JSON string 'q' in the HttpEntity
@@ -445,7 +444,7 @@ public class InboxServiceV2 {
             }
 
             StringBuilder uri = getURI(indexName, SEARCH_PATH);
-            HttpHeaders headers = elasticSearchService.getHttpHeaders();
+            HttpHeaders headers = elasticSearchUtil.getHttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             // Use the JSON string 'q' in the HttpEntity
@@ -512,7 +511,7 @@ public class InboxServiceV2 {
 			e.printStackTrace();
 		}
 		StringBuilder uri = getURI(index, SEARCH_PATH);
-		HttpHeaders headers = elasticSearchService.getHttpHeaders();
+		HttpHeaders headers = elasticSearchUtil.getHttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		// Use the JSON string 'q' in the HttpEntity
