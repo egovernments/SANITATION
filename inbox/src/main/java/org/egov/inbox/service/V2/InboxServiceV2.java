@@ -1,34 +1,68 @@
 package org.egov.inbox.service.V2;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.wnameless.json.flattener.JsonFlattener;
-import com.google.gson.Gson;
-import com.jayway.jsonpath.JsonPath;
-import lombok.extern.slf4j.Slf4j;
+import static org.egov.inbox.util.InboxConstants.AGGREGATIONS_KEY;
+import static org.egov.inbox.util.InboxConstants.APPLICATION_STATUS_KEY;
+import static org.egov.inbox.util.InboxConstants.AUDIT_DETAILS_KEY;
+import static org.egov.inbox.util.InboxConstants.BUSINESSSERVICE_KEY;
+import static org.egov.inbox.util.InboxConstants.BUSINESS_SERVICE_PATH;
+import static org.egov.inbox.util.InboxConstants.COUNT_CONSTANT;
+import static org.egov.inbox.util.InboxConstants.COUNT_PATH;
+import static org.egov.inbox.util.InboxConstants.CREATED_TIME_KEY;
+import static org.egov.inbox.util.InboxConstants.CURRENT_PROCESS_INSTANCE_CONSTANT;
+import static org.egov.inbox.util.InboxConstants.DATA_KEY;
+import static org.egov.inbox.util.InboxConstants.DOC_COUNT_KEY;
+import static org.egov.inbox.util.InboxConstants.HITS;
+import static org.egov.inbox.util.InboxConstants.KEY;
+import static org.egov.inbox.util.InboxConstants.LAST_MODIFIED_TIME_KEY;
+import static org.egov.inbox.util.InboxConstants.SEARCH_PATH;
+import static org.egov.inbox.util.InboxConstants.SERVICESLA_KEY;
+import static org.egov.inbox.util.InboxConstants.SOURCE_KEY;
+import static org.egov.inbox.util.InboxConstants.STATE_UUID_PATH;
+import static org.egov.inbox.util.InboxConstants.STATUSID_KEY;
+import static org.egov.inbox.util.InboxConstants.STATUS_COUNT_AGGREGATIONS_BUCKETS_PATH;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.egov.hash.HashService;
 import org.egov.inbox.config.InboxConfiguration;
 import org.egov.inbox.repository.ServiceRequestRepository;
 import org.egov.inbox.repository.builder.V2.InboxQueryBuilder;
-import org.egov.inbox.service.V2.validator.ValidatorDefaultImplementation;
+import org.egov.inbox.service.ElasticSearchService;
 import org.egov.inbox.service.WorkflowService;
+import org.egov.inbox.service.V2.validator.ValidatorDefaultImplementation;
 import org.egov.inbox.util.MDMSUtil;
 import org.egov.inbox.web.model.Inbox;
 import org.egov.inbox.web.model.InboxRequest;
 import org.egov.inbox.web.model.InboxResponse;
-import org.egov.inbox.web.model.V2.*;
+import org.egov.inbox.web.model.V2.Data;
+import org.egov.inbox.web.model.V2.Field;
+import org.egov.inbox.web.model.V2.InboxQueryConfiguration;
+import org.egov.inbox.web.model.V2.SearchRequest;
+import org.egov.inbox.web.model.V2.SearchResponse;
 import org.egov.inbox.web.model.workflow.BusinessService;
 import org.egov.inbox.web.model.workflow.ProcessInstance;
 import org.egov.inbox.web.model.workflow.ProcessInstanceSearchCriteria;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.wnameless.json.flattener.JsonFlattener;
+import com.jayway.jsonpath.JsonPath;
 
-import static org.egov.inbox.util.InboxConstants.*;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -57,6 +91,9 @@ public class InboxServiceV2 {
 
     @Autowired
     private HashService hashService;
+    
+    @Autowired
+    private ElasticSearchService elasticSearchService;
 
 
     /**
@@ -123,15 +160,23 @@ public class InboxServiceV2 {
             return new ArrayList<>();
         }
         Map<String, Object> finalQueryBody = queryBuilder.getESQuery(inboxRequest, Boolean.TRUE);
+        String q = null;
         try {
-            String q = mapper.writeValueAsString(finalQueryBody);
-            log.info("Query: "+q);
-        }
-        catch (Exception e){
+            q = mapper.writeValueAsString(finalQueryBody);  // Convert Map to JSON string
+            log.info("Query: " + q);
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
         StringBuilder uri = getURI(indexName, SEARCH_PATH);
-        Object result = serviceRequestRepository.fetchResult(uri, finalQueryBody);
+        HttpHeaders headers = elasticSearchService.getHttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Use the JSON string 'q' in the HttpEntity
+        HttpEntity<String> requestEntity = new HttpEntity<>(q, headers);
+    
+//        
+        Object result = serviceRequestRepository.fetchResult(uri, requestEntity);
         List<Inbox> inboxItemsList = parseInboxItemsFromSearchResponse(result, businessServices);
         log.info(result.toString());
         return inboxItemsList;
@@ -162,24 +207,71 @@ public class InboxServiceV2 {
         }
     }
 
-    public Integer getTotalApplicationCount(InboxRequest inboxRequest, String indexName){
+	public Integer getTotalApplicationCount(InboxRequest inboxRequest, String indexName) {
 
-        Map<String, Object> finalQueryBody = queryBuilder.getESQuery(inboxRequest, Boolean.FALSE);
-        StringBuilder uri = getURI(indexName, COUNT_PATH);
-        Map<String, Object> response = (Map<String, Object>) serviceRequestRepository.fetchResult(uri, finalQueryBody);
-        Integer totalCount = 0;
-        if(response.containsKey(COUNT_CONSTANT)){
-            totalCount = (Integer) response.get(COUNT_CONSTANT);
-        }else{
-            throw new CustomException("INBOX_COUNT_ERR", "Error occurred while executing ES count query");
-        }
-        return totalCount;
-    }
+		Map<String, Object> finalQueryBody = queryBuilder.getESQuery(inboxRequest, Boolean.FALSE);
+//        StringBuilder uri = getURI(indexName, COUNT_PATH);
+//        ---------------------------------------------
+		String q = null;
+		try {
+			q = mapper.writeValueAsString(finalQueryBody); // Convert Map to JSON string
+			log.info("Query: " + q);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		StringBuilder uri = getURI(indexName, SEARCH_PATH);
+		HttpHeaders headers = elasticSearchService.getHttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		// Use the JSON string 'q' in the HttpEntity
+		HttpEntity<String> requestEntity = new HttpEntity<>(q, headers);
+
+		Map<String, Object> response = (Map<String, Object>) serviceRequestRepository.fetchResult(uri, requestEntity);
+
+		Integer currentCount = 0;
+
+		if (response.containsKey("hits") && response.get("hits") instanceof Map
+				&& ((Map<String, Object>) response.get("hits")).containsKey("total")) {
+
+			Map<String, Object> total = (Map<String, Object>) ((Map<String, Object>) response.get("hits")).get("total");
+
+			if (total.containsKey("value")) {
+				currentCount = (Integer) total.get("value");
+				System.out.println("Total hits: " + currentCount);
+			} else {
+				throw new IllegalArgumentException("The 'value' field is missing in 'total'.");
+			}
+		} else {
+			throw new IllegalArgumentException("The 'total' field is missing in 'hits'.");
+		}
+
+		return currentCount;
+
+	}
 
     public List<HashMap<String, Object>> getStatusCountMap(InboxRequest inboxRequest, String indexName){
         Map<String, Object> finalQueryBody = queryBuilder.getStatusCountQuery(inboxRequest);
+        String q = null;
+        try {
+            q = mapper.writeValueAsString(finalQueryBody);  // Convert Map to JSON string
+            log.info("Query: " + q);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         StringBuilder uri = getURI(indexName, SEARCH_PATH);
-        Map<String, Object> response = (Map<String, Object>) serviceRequestRepository.fetchResult(uri, finalQueryBody);
+        HttpHeaders headers = elasticSearchService.getHttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Use the JSON string 'q' in the HttpEntity
+        HttpEntity<String> requestEntity = new HttpEntity<>(q, headers);
+    
+        
+        Map<String, Object> response = (Map<String, Object>) serviceRequestRepository.fetchResult(uri, requestEntity);
+        
+//        --------------------------------
+//        Map<String, Object> response = (Map<String, Object>) serviceRequestRepository.fetchResult(uri, finalQueryBody);
         Set<String> actionableStatuses = new HashSet<>(inboxRequest.getInbox().getProcessSearchCriteria().getStatus());
         HashMap<String, Object> statusCountMap = parseStatusCountMapFromAggregationResponse(response, actionableStatuses);
         List<HashMap<String, Object>> transformedStatusMap = transformStatusMap(inboxRequest, statusCountMap);
@@ -331,18 +423,60 @@ public class InboxServiceV2 {
             Long businessServiceSla = businessServiceSlaMap.get(businessService);
             inboxRequest.getInbox().getProcessSearchCriteria().setStatus(businessServiceVsUuidsBasedOnSearchCriteria.get(businessService));
             Map<String, Object> finalQueryBody = queryBuilder.getNearingSlaCountQuery(inboxRequest, businessServiceSla);
-            StringBuilder uri = getURI(indexName, COUNT_PATH);
-            Map<String, Object> response = (Map<String, Object>) serviceRequestRepository.fetchResult(uri, finalQueryBody);
-            Integer currentCount = 0;
-            if(response.containsKey(COUNT_CONSTANT)){
-                currentCount = (Integer) response.get(COUNT_CONSTANT);
-            }else{
-                throw new CustomException("INBOX_COUNT_ERR", "Error occurred while executing ES count query");
+//            StringBuilder uri = getURI(indexName, COUNT_PATH);
+//            Map<String, Object> response = (Map<String, Object>) serviceRequestRepository.fetchResult(uri, finalQueryBody);
+//            Integer currentCount = 0;
+//            if(response.containsKey(COUNT_CONSTANT)){
+//                currentCount = (Integer) response.get(COUNT_CONSTANT);
+//            }else{
+//                throw new CustomException("INBOX_COUNT_ERR", "Error occurred while executing ES count query");
+//            }
+//            totalCount += currentCount;
+//        }
+//
+//        return totalCount;
+            
+            String q = null;
+            try {
+                q = mapper.writeValueAsString(finalQueryBody);  // Convert Map to JSON string
+                log.info("Query: " + q);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            totalCount += currentCount;
-        }
 
-        return totalCount;
+            StringBuilder uri = getURI(indexName, SEARCH_PATH);
+            HttpHeaders headers = elasticSearchService.getHttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            // Use the JSON string 'q' in the HttpEntity
+            HttpEntity<String> requestEntity = new HttpEntity<>(q, headers);
+        
+            
+            Map<String, Object> response = (Map<String, Object>) serviceRequestRepository.fetchResult(uri, requestEntity);
+//    ------------------------------------------------------------------        
+            Integer currentCount = 0;
+
+            if (response.containsKey("hits") && response.get("hits") instanceof Map &&
+            	    ((Map<String, Object>) response.get("hits")).containsKey("total")) {
+
+            	    Map<String, Object> total = (Map<String, Object>) ((Map<String, Object>) response.get("hits")).get("total");
+
+            	    if (total.containsKey("value")) {
+            	    	currentCount = (Integer) total.get("value");
+            	        System.out.println("Total hits: " + currentCount);
+            	    } else {
+            	        throw new IllegalArgumentException("The 'value' field is missing in 'total'.");
+            	    }
+            	} else {
+            	    throw new IllegalArgumentException("The 'total' field is missing in 'hits'.");
+            	}
+            if (currentCount != null) {
+                totalCount += currentCount;
+            }
+
+
+        }
+		return totalCount;
 
     }
 
@@ -367,20 +501,30 @@ public class InboxServiceV2 {
         return searchResponse;
     }
 
-    private List<Data> getDataFromSimpleSearch(SearchRequest searchRequest, String index) {
-        Map<String, Object> finalQueryBody = queryBuilder.getESQueryForSimpleSearch(searchRequest, Boolean.TRUE);
-        try {
-            String q = mapper.writeValueAsString(finalQueryBody);
-            log.info("Query: "+q);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        StringBuilder uri = getURI(index, SEARCH_PATH);
-        Object result = serviceRequestRepository.fetchResult(uri, finalQueryBody);
-        List<Data> dataList = parseSearchResponseForSimpleSearch(result);
-        return dataList;
-    }
+	private List<Data> getDataFromSimpleSearch(SearchRequest searchRequest, String index) {
+		Map<String, Object> finalQueryBody = queryBuilder.getESQueryForSimpleSearch(searchRequest, Boolean.TRUE);
+		String q = null;
+
+		try {
+			q = mapper.writeValueAsString(finalQueryBody); // Convert Map to JSON string
+			log.info("Query: " + q);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		StringBuilder uri = getURI(index, SEARCH_PATH);
+		HttpHeaders headers = elasticSearchService.getHttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		// Use the JSON string 'q' in the HttpEntity
+		HttpEntity<String> requestEntity = new HttpEntity<>(q, headers);
+
+		Object result = serviceRequestRepository.fetchResult(uri, requestEntity);
+
+		// ----------------------------------------------
+//        Object result = serviceRequestRepository.fetchResult(uri, finalQueryBody);
+		List<Data> dataList = parseSearchResponseForSimpleSearch(result);
+		return dataList;
+	}
 
     private List<Data> parseSearchResponseForSimpleSearch(Object result) {
         Map<String, Object> hits = (Map<String, Object>)((Map<String, Object>) result).get(HITS);
