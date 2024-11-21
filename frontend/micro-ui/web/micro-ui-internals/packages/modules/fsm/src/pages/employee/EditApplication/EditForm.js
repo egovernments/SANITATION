@@ -1,21 +1,52 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useHistory } from "react-router-dom";
-import { FormComposer, Header, Loader } from "@egovernments/digit-ui-react-components";
+import {
+  FormComposer,
+  Header,
+  Loader,
+} from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 
 const isConventionalSpecticTank = (tankDimension) => tankDimension === "lbd";
 
-const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitationMenu }) => {
+const EditForm = ({
+  tenantId,
+  applicationData,
+  channelMenu,
+  vehicleMenu,
+  sanitationMenu,
+}) => {
   const { t } = useTranslation();
   const history = useHistory();
   const [canSubmit, setSubmitValve] = useState(false);
   const stateId = Digit.ULBService.getStateId();
-  const { data: commonFields, isLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "CommonFieldsConfig");
-  const { data: preFields, isLoading: isApplicantConfigLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PreFieldsConfig");
-  const { data: postFields, isLoading: isTripConfigLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PostFieldsConfig");
-  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
-  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("FSM_ERROR_DATA", false);
-  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
+  const { data: commonFields, isLoading } = Digit.Hooks.fsm.useMDMS(
+    stateId,
+    "FSM",
+    "CommonFieldsConfig"
+  );
+  const {
+    data: preFields,
+    isLoading: isApplicantConfigLoading,
+  } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PreFieldsConfig");
+  const {
+    data: postFields,
+    isLoading: isTripConfigLoading,
+  } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PostFieldsConfig");
+  const [
+    mutationHappened,
+    setMutationHappened,
+    clear,
+  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
+  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage(
+    "FSM_ERROR_DATA",
+    false
+  );
+  const [
+    successData,
+    setsuccessData,
+    clearSuccessData,
+  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
 
   useEffect(() => {
     setMutationHappened(false);
@@ -23,7 +54,9 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
     clearError();
   }, []);
   const defaultValues = {
-    channel: channelMenu.filter((channel) => channel.code === applicationData.source)[0],
+    channel: channelMenu.filter(
+      (channel) => channel.code === applicationData.source
+    )[0],
     applicationData: {
       applicantName: applicationData.citizen.name,
       mobileNumber: applicationData.citizen.mobileNumber,
@@ -32,7 +65,9 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
     tripData: {
       noOfTrips: applicationData.noOfTrips,
       amountPerTrip: applicationData.additionalDetails.tripAmount,
-      amount: applicationData.noOfTrips * applicationData.additionalDetails.tripAmount || undefined,
+      amount:
+        applicationData.noOfTrips *
+          applicationData.additionalDetails.tripAmount || undefined,
       vehicleType: { capacity: applicationData?.vehicleCapacity },
       vehicleCapacity: applicationData?.vehicleCapacity,
     },
@@ -42,14 +77,19 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
       pincode: applicationData.address.pincode,
       locality: {
         ...applicationData.address.locality,
-        i18nkey: `${applicationData.tenantId.toUpperCase().split(".").join("_")}_REVENUE_${applicationData.address.locality.code}`,
+        i18nkey: `${applicationData.tenantId
+          .toUpperCase()
+          .split(".")
+          .join("_")}_REVENUE_${applicationData.address.locality.code}`,
       },
       slum: applicationData.address.slumName,
       street: applicationData.address.street,
       doorNo: applicationData.address.doorNo,
       landmark: applicationData.address.landmark,
     },
-    pitType: sanitationMenu.filter((type) => type.code === applicationData.sanitationtype)[0],
+    pitType: sanitationMenu.filter(
+      (type) => type.code === applicationData.sanitationtype
+    )[0],
     pitDetail: applicationData.pitDetail,
     paymentPreference: applicationData.paymentPreference,
     advancepaymentPreference: { advanceAmount: applicationData?.advanceAmount },
@@ -61,24 +101,41 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
       formData?.subtype &&
       formData?.address?.locality?.code &&
       formData?.tripData?.vehicleType &&
-      (formData?.tripData?.amountPerTrip || formData?.tripData?.amountPerTrip === 0)
+      (formData?.tripData?.amountPerTrip ||
+        formData?.tripData?.amountPerTrip === 0)
     ) {
       setSubmitValve(true);
-      const pitDetailValues = formData?.pitDetail ? Object.values(formData?.pitDetail).filter((value) => value > 0) : null;
+      const pitDetailValues = formData?.pitDetail
+        ? Object.values(formData?.pitDetail).filter((value) => value > 0)
+        : null;
       let min = Digit.SessionStorage.get("advance_amount");
       if (formData?.pitType) {
         if (pitDetailValues === null || pitDetailValues?.length === 0) {
           setSubmitValve(true);
-        } else if (isConventionalSpecticTank(formData?.pitType?.dimension) && pitDetailValues?.length >= 3) {
+        } else if (
+          isConventionalSpecticTank(formData?.pitType?.dimension) &&
+          pitDetailValues?.length >= 3
+        ) {
           setSubmitValve(true);
-        } else if (!isConventionalSpecticTank(formData?.pitType?.dimension) && pitDetailValues?.length >= 2) {
+        } else if (
+          !isConventionalSpecticTank(formData?.pitType?.dimension) &&
+          pitDetailValues?.length >= 2
+        ) {
           setSubmitValve(true);
         } else setSubmitValve(false);
       }
-      if (formData?.tripData?.amountPerTrip !== 0 && (formData?.advancepaymentPreference?.advanceAmount > formData?.tripData?.amount || formData?.advancepaymentPreference?.advanceAmount < min)) {
+      if (
+        formData?.tripData?.amountPerTrip !== 0 &&
+        (formData?.advancepaymentPreference?.advanceAmount >
+          formData?.tripData?.amount ||
+          formData?.advancepaymentPreference?.advanceAmount < min)
+      ) {
         setSubmitValve(false);
       }
-      if (applicationData?.advanceAmount > 0 && formData?.advancepaymentPreference?.advanceAmount <= 0) {
+      if (
+        applicationData?.advanceAmount > 0 &&
+        formData?.advancepaymentPreference?.advanceAmount <= 0
+      ) {
         setSubmitValve(false);
       }
     } else {
@@ -111,7 +168,8 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
     const localityCode = data?.address?.locality?.code;
     const localityName = data?.address?.locality?.name;
     const propertyUsage = data?.subtype;
-    const advanceAmount = amount === 0 ? null : data?.advancepaymentPreference?.advanceAmount;
+    const advanceAmount =
+      amount === 0 ? null : data?.advancepaymentPreference?.advanceAmount;
     const { height, length, width, diameter } = pitDimension;
 
     const formData = {
@@ -149,11 +207,34 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
         },
         geoLocation: {
           ...applicationData.address.geoLocation,
-          latitude: data?.address?.latitude ? data?.address?.latitude : applicationData.address.geoLocation.latitude,
-          longitude: data?.address?.longitude ? data?.address?.longitude : applicationData.address.geoLocation.longitude,
+          latitude: data?.address?.latitude
+            ? data?.address?.latitude
+            : applicationData.address.geoLocation.latitude,
+          longitude: data?.address?.longitude
+            ? data?.address?.longitude
+            : applicationData.address.geoLocation.longitude,
+        },
+        additionalDetails: {
+          boundaryType:
+            propertyLocation === "FROM_GRAM_PANCHAYAT"
+              ? village?.code
+                ? "Village"
+                : "GP"
+              : "Locality",
+          gramPanchayat: {
+            code: gramPanchayat?.code,
+            name: gramPanchayat?.name,
+          },
+          village: {
+            code: village?.code ? village?.code : "",
+            name: village?.name ? village?.name : village,
+          },
         },
       },
-      advanceAmount,
+      advanceAmount:
+        typeof advanceAmount === "number"
+          ? JSON.stringify(advanceAmount)
+          : advanceAmount,
     };
 
     delete formData["responseInfo"];
@@ -166,7 +247,10 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
     history.replace(`/${window?.contextPath}/employee/fsm/response`, {
       applicationData: formData,
       key: "update",
-      action: applicationData?.applicationStatus === "CREATED" ? "SUBMIT" : "SCHEDULE",
+      action:
+        applicationData?.applicationStatus === "CREATED"
+          ? "SUBMIT"
+          : "SCHEDULE",
     });
   };
 
@@ -183,7 +267,11 @@ const EditForm = ({ tenantId, applicationData, channelMenu, vehicleMenu, sanitat
       </div>
       <FormComposer
         isDisabled={!canSubmit}
-        label={applicationData?.applicationStatus != "CREATED" ? t("ES_FSM_APPLICATION_SCHEDULE") : t("ES_FSM_APPLICATION_UPDATE")}
+        label={
+          applicationData?.applicationStatus != "CREATED"
+            ? t("ES_FSM_APPLICATION_SCHEDULE")
+            : t("ES_FSM_APPLICATION_UPDATE")
+        }
         config={configs
           .filter((i) => !i.hideInEmployee)
           .map((config) => {

@@ -6,7 +6,6 @@ import {
   Header,
 } from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
-import { config } from "./config";
 
 const isConventionalSpecticTank = (tankDimension) => tankDimension === "lbd";
 
@@ -15,7 +14,6 @@ export const NewApplication = ({ parentUrl, heading }) => {
   // const __initSubType__ = window.Digit.SessionStorage.get("subType");
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
-  const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
   // const { data: commonFields, isLoading } = useQuery('newConfig', () => fetch(`http://localhost:3002/commonFields`).then(res => res.json()))
   // const { data: postFields, isLoading: isTripConfigLoading } = useQuery('tripConfig', () => fetch(`http://localhost:3002/tripDetails`).then(res => res.json()))
   const { data: commonFields, isLoading } = Digit.Hooks.fsm.useMDMS(
@@ -23,29 +21,19 @@ export const NewApplication = ({ parentUrl, heading }) => {
     "FSM",
     "CommonFieldsConfig"
   );
-  const {
-    data: preFields,
-    isLoading: isApplicantConfigLoading,
-  } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PreFieldsConfig");
-  const {
-    data: postFields,
-    isLoading: isTripConfigLoading,
-  } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PostFieldsConfig");
+  const { data: preFields, isLoading: isApplicantConfigLoading } =
+    Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PreFieldsConfig");
+  const { data: postFields, isLoading: isTripConfigLoading } =
+    Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PostFieldsConfig");
 
-  const [
-    mutationHappened,
-    setMutationHappened,
-    clear,
-  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
+  const [mutationHappened, setMutationHappened, clear] =
+    Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
   const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage(
     "FSM_ERROR_DATA",
     false
   );
-  const [
-    successData,
-    setsuccessData,
-    clearSuccessData,
-  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
+  const [successData, setsuccessData, clearSuccessData] =
+    Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
 
   useEffect(() => {
     setMutationHappened(false);
@@ -72,9 +60,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
     if (
       formData?.propertyType &&
       formData?.subtype &&
-      (formData?.address?.locality?.code ||
-        (formData?.address?.propertyLocation?.code === "FROM_GRAM_PANCHAYAT" &&
-          formData?.address?.gramPanchayat?.code)) &&
+      formData?.address?.locality?.code &&
       formData?.tripData?.vehicleType &&
       formData?.channel &&
       (formData?.tripData?.amountPerTrip ||
@@ -147,10 +133,8 @@ export const NewApplication = ({ parentUrl, heading }) => {
         : null;
     const advanceAmount =
       amount === 0 ? null : data?.advancepaymentPreference?.advanceAmount;
-
     const gramPanchayat = data?.address.gramPanchayat;
     const village = data?.address.village;
-    const propertyLocation = data?.address?.propertyLocation?.code;
 
     const formData = {
       fsm: {
@@ -163,7 +147,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
         sanitationtype: sanitationtype,
         source: applicationChannel.code,
         additionalDetails: {
-          tripAmount: JSON.stringify(amount),
+          tripAmount: amount,
         },
         propertyUsage: data?.subtype,
         vehicleCapacity: data?.tripData?.vehicleType?.capacity,
@@ -181,44 +165,27 @@ export const NewApplication = ({ parentUrl, heading }) => {
           pincode,
           slumName: slum,
           locality: {
-            code: localityCode
-              ? localityCode
-              : village?.code
-              ? village?.code
-              : gramPanchayat?.code,
-            name: localityName
-              ? localityName
-              : village?.name
-              ? village?.name
-              : gramPanchayat?.name,
+            code: localityCode,
+            name: localityName,
           },
           geoLocation: {
             latitude: data?.address?.latitude,
             longitude: data?.address?.longitude,
           },
           additionalDetails: {
-            boundaryType:
-              propertyLocation === "FROM_GRAM_PANCHAYAT"
-                ? village?.code
-                  ? "Village"
-                  : "GP"
-                : "Locality",
             gramPanchayat: {
               code: gramPanchayat?.code,
               name: gramPanchayat?.name,
             },
             village: {
-              code: village?.code ? village?.code : "",
-              name: village?.name ? village?.name : village,
+              code: village?.code,
+              name: village?.name,
             },
           },
         },
         noOfTrips,
         paymentPreference,
-        advanceAmount:
-          typeof advanceAmount === "number"
-            ? JSON.stringify(advanceAmount)
-            : advanceAmount,
+        advanceAmount,
       },
       workflow: null,
     };

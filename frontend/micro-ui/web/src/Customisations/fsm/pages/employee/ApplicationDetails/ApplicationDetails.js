@@ -31,8 +31,6 @@ import { useQueryClient } from "react-query";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { ViewImages } from "../../../components/ViewImages";
 import getPDFData from "../../../getPDFData";
-import LocationCard from "../../../components/LocationCard";
-import { ApplicationTable } from "../../../components/ApplicationTable";
 
 const ApplicationDetails = (props) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -50,7 +48,6 @@ const ApplicationDetails = (props) => {
   const DSO = Digit.UserService.hasAccess(["FSM_DSO"]) || false;
   const [showOptions, setShowOptions] = useState(false);
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
-  const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
 
   const { tenants } = storeData || {};
 
@@ -69,10 +66,8 @@ const ApplicationDetails = (props) => {
     tenantId,
     applicationNumber,
     {},
-    props.userType,
-    { getTripData: checkvehicletrack?.vehicleTrackingStatus || false }
+    props.userType
   );
-
   const {
     isLoading: isDataLoading,
     isSuccess,
@@ -143,11 +138,8 @@ const ApplicationDetails = (props) => {
         return setShowModal(true);
       case "SUBMIT":
       case "FSM_SUBMIT":
-        // case !DSO && "SCHEDULE":
-        return history.push(
-          `/${window?.contextPath}/employee/fsm/modify-application/` +
-            applicationNumber
-        );
+      // case !DSO && "SCHEDULE":
+      //   return history.push(`/${window?.contextPath}/employee/fsm/modify-application/` + applicationNumber);
       case "PAY":
       case "FSM_PAY":
       case "ADDITIONAL_PAY_REQUEST":
@@ -194,8 +186,7 @@ const ApplicationDetails = (props) => {
   }
 
   const getTimelineCaptions = (checkpoint) => {
-    const __comment =
-      checkpoint?.comment?.split("~") || checkpoint?.wfComment?.[0]?.split("~");
+    const __comment = checkpoint?.comment?.split("~");
     const reason = __comment ? __comment[0] : null;
     const reason_comment = __comment ? __comment[1] : null;
     if (checkpoint.status === "CREATED") {
@@ -210,9 +201,7 @@ const ApplicationDetails = (props) => {
       checkpoint.status === "PENDING_APPL_FEE_PAYMENT" ||
       checkpoint.status === "DSO_REJECTED" ||
       checkpoint.status === "CANCELED" ||
-      checkpoint.status === "REJECTED" ||
-      (checkpoint.status === "PENDING_DSO_APPROVAL" &&
-        checkpoint.performedAction === "SENDBACK")
+      checkpoint.status === "REJECTED"
     ) {
       const caption = {
         date: checkpoint?.auditDetails?.created,
@@ -346,7 +335,7 @@ const ApplicationDetails = (props) => {
               optionsClassName={"employee-options-btn-className"}
               options={dowloadOptions}
               displayOptions={isDisplayDownloadMenu}
-              setShowOptions={() => {}}
+
               // displayOptions={showOptions}
               // options={dowloadOptions}
             />
@@ -397,18 +386,6 @@ const ApplicationDetails = (props) => {
                 </StatusTable>
               </React.Fragment>
             ))}
-
-            {applicationDetails?.tripList?.length > 0 && (
-              <>
-                <CardSectionHeader
-                  style={{ marginBottom: "16px", marginTop: "32px" }}
-                >
-                  {t("Trip Details")}
-                </CardSectionHeader>
-                <ApplicationTable detail={applicationDetails?.tripList} />
-              </>
-            )}
-
             {applicationData?.pitDetail?.additionalDetails?.fileStoreId?.CITIZEN
               ?.length && (
               <>
@@ -448,23 +425,6 @@ const ApplicationDetails = (props) => {
             {imageZoom ? (
               <ImageViewer imageSrc={imageZoom} onClose={onCloseImageZoom} />
             ) : null}
-
-            {applicationData?.geoLocation?.latitude &&
-              applicationData?.geoLocation?.longitude && (
-                <>
-                  <CardSectionHeader
-                    style={{ marginBottom: "16px", marginTop: "32px" }}
-                  >
-                    {t("ES_APPLICATION_DETAILS_LOCATION_GEOLOCATION")}
-                  </CardSectionHeader>
-                  <LocationCard
-                    position={{
-                      latitude: applicationData?.geoLocation?.latitude,
-                      longitude: applicationData?.geoLocation?.longitude,
-                    }}
-                  />
-                </>
-              )}
 
             <BreakLine />
             {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
@@ -527,7 +487,6 @@ const ApplicationDetails = (props) => {
               submitAction={submitAction}
               actionData={workflowDetails?.data?.timeline}
               module={workflowDetails?.data?.applicationBusinessService}
-              applicationDetails={applicationDetails}
             />
           ) : null}
           {showToast && (
