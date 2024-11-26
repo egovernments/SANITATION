@@ -16,34 +16,34 @@ spec:
         app: trackingservice-app
     spec:
       containers:
-        - name: trackingservice-app-container
-          image: egovio/trackingservice:latest
-          ports:
-            - containerPort: 8080
-          env:
-            - name: DB_JDBC_URL
-              valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: DB_JDBC_URL
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: DB_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: DB_PASSWORD
-            - name: DIGIT_FSM_URL
-              valueFrom:
-                secretKeyRef:
-                  name: digit-service-urls
-                  key: DIGIT_FSM_URL
-            - name: DIGIT_VEHICLE_TRIP_URL
-              valueFrom:
-                secretKeyRef:
-                  name: digit-service-urls
-                  key: DIGIT_VEHICLE_TRIP_URL
+      - name: trackingservice-app-container
+        image: egovio/trackingservice:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_JDBC_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_JDBC_URL
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_PASSWORD
+        - name: DIGIT_FSM_URL
+          valueFrom:
+            secretKeyRef:
+              name: digit-service-urls
+              key: DIGIT_FSM_URL
+        - name: DIGIT_VEHICLE_TRIP_URL
+          valueFrom:
+            secretKeyRef:
+              name: digit-service-urls
+              key: DIGIT_VEHICLE_TRIP_URL
 

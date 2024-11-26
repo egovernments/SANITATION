@@ -150,9 +150,10 @@
       <artifactId>spring-jdbc</artifactId>
       <version>5.3.7</version>
     </dependency>
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
+        <dependency>
+       <groupId>org.postgresql</groupId>
+       <artifactId>postgresql</artifactId>
+       <version>42.7.1</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -166,9 +167,11 @@
       <version>11.0.2</version>
     </dependency>
     <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
-    </dependency>
+    	<groupId>org.flywaydb</groupId>
+    	<artifactId>flyway-core</artifactId>
+    	<version>8.5.13</version> <!-- Compatible with Spring Boot 2.7.6 -->
+	</dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>

@@ -19,7 +19,7 @@ public class Constants {
     public static final int TRIP_PROGRESS_FETCH_LIMIT = 1000;
     public static final String FSM_TRIP_COMPLETION_STATUS = "DISPOSE";
     public static final String FSM_TRIP_SEARCH_STATUS_FILTER = "WAITING_FOR_DISPOSAL";
-    public static final String TRIP_CLOSE_SYSTEM = "System Verified";
-    public static final String TRIP_CLOSE_DRIVER = "FSTP Verified";
+    public static final String TRIP_CLOSE_SYSTEM = "System verified";
+    public static final String TRIP_CLOSE_DRIVER = "Driver initiated";
 
 }
