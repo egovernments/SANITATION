@@ -121,10 +121,11 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
+                        "/digit-ui/employee/fsm/fstp-operator-details/" +
                         row.original["applicationNo"]
                       }
                     >
+                      {" "}
                       {citizen_info?.applicationNo}
                     </Link>
                   </span>
@@ -174,16 +175,7 @@ const DesktopInbox = (props) => {
               );
               return (
                 <div>
-                  <span>
-                    {t(
-                      `${t(
-                        Digit.Utils.locale.getRevenueLocalityCode(
-                          citizen_info?.address?.locality?.code,
-                          citizen_info.tenantId
-                        )
-                      )}`
-                    )}
-                  </span>
+                  <span>{t(`${citizen_info?.address?.locality?.name}`)}</span>
                 </div>
               );
             },
@@ -201,7 +193,7 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
+                        "/digit-ui/employee/fsm/fstp-operator-details/" +
                         row.original["applicationNo"]
                       }
                     >
@@ -227,7 +219,7 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
+                        "/digit-ui/employee/fsm/fstp-operator-details/" +
                         row.original["applicationNo"]
                       }
                     >
@@ -261,7 +253,7 @@ const DesktopInbox = (props) => {
             disableSortBy: true,
             accessor: (row) =>
               row.dsoName
-                ? `${row.dsoName}`
+                ? `${row.dsoName} - ${row.tripOwner.name}`
                 : `${row.tripOwner.name}`,
           },
           {
@@ -273,81 +265,6 @@ const DesktopInbox = (props) => {
             Header: t("ES_INBOX_WASTE_COLLECTED"),
             disableSortBy: true,
             accessor: (row) => row.tripDetails[0]?.volume,
-          },
-        ];
-      case "FSM_ALERTS":
-        return [
-          {
-            Header: t("ES_INBOX_APPLICATION_NO"),
-            disableSortBy: true,
-            accessor: "tripDetails",
-            Cell: ({ row }) => {
-              const applicationNo = row.original["tripDetails"]?.[0]?.referenceNo;
-              return (
-                <div>
-                  <span className="link">
-                    <Link to={`/${window?.contextPath}/employee/fsm/application-details/` + applicationNo}>
-                      {row.original["tripDetails"].map((i) => (
-                        <div>
-                          {i.referenceNo}
-                          <br />
-                        </div>
-                      ))}
-                    </Link>
-                  </span>
-                </div>
-              );
-            },
-          },
-          {
-            Header: t("ES_INBOX_VEHICLE_LOG"),
-            accessor: "applicationNo",
-            disableSortBy: true,
-            Cell: ({ row }) => row.original["applicationNo"],
-            // {
-            //   return (
-            //     <div>
-            //       <span className="link">
-            //         <Link to={`/${window?.contextPath}/employee/fsm/fstp-operator-details/` + row.original["applicationNo"]}>{row.original["applicationNo"]}</Link>
-            //       </span>
-            //     </div>
-            //   );
-            // }
-          },
-          {
-            Header: t("ES_INBOX_DSO_NAME"),
-            disableSortBy: true,
-            accessor: (row) => (row.dsoName ? `${row.dsoName}` : `${row.tripOwner.name}`),
-          },
-          {
-            Header: t("ES_INBOX_VEHICLE_NO"),
-            disableSortBy: true,
-            accessor: (row) => row.vehicle?.registrationNumber,
-          },
-          {
-            Header: t("Alerts"),
-            disableSortBy: true,
-            Cell: ({ row }) => {
-              const allTrips = props?.alertsData?.filter((i) => i?.applicationNo === row.original["tripDetails"]?.[0]?.referenceNo)?.[0];
-              const alert = allTrips?.alert;
-              const noOfAlerts = alert.map ? alert?.length : alert;
-              return (
-                <div>
-                  <span>{noOfAlerts || "N/A"}</span>
-                </div>
-              );
-            },
-          },
-          {
-            Header: t("ES_INBOX_APPLICATION_DATE"),
-            accessor: "createdTime",
-            Cell: ({ row }) => {
-              return GetCell(
-                `${new Date(row.original.auditDetails.createdTime).getDate()}/${new Date(row.original.auditDetails.createdTime).getMonth() + 1}/${new Date(
-                  row.original.auditDetails.createdTime
-                ).getFullYear()}`
-              );
-            },
           },
         ];
       default:
@@ -421,9 +338,12 @@ const DesktopInbox = (props) => {
   let result;
   if (props.isLoading) {
     result = <Loader />;
-  } else if (props?.data?.table?.length === 0) {
+  } else if (
+    (props.isSearch && !props.shouldSearch) ||
+    props?.data?.table?.length === 0
+  ) {
     result = (
-      <Card className="margin-unset">
+      <Card style={{ marginTop: 20 }}>
         {/* TODO Change localization key */}
         {
           // t("CS_MYCOMPLAINTS_NO_COMPLAINTS")
@@ -468,38 +388,24 @@ const DesktopInbox = (props) => {
         sortParams={props.sortParams}
         totalRecords={props.totalRecords}
         isPaginationRequired={props.isPaginationRequired}
-        customTableWrapperClassName="fsm-table"
       />
     );
   }
 
-  const isEnabledFSMInboxModules = window.location.href.includes("/fsm/inbox");
-  const isEnabledFSMSearchModules =
-    window.location.href.includes("/fsm/search") ||
-    window.location.href.includes("/fsm/fstp-inbox") ||
-    window.location.href.includes("/fsm/fstp-fsm-request") ||
-    window.location.href.includes("/fsm/vehicle-tracking/alerts") ||
-    window.location.href.includes("/fsm/fstp/new-vehicle-entry");
-
-  if (isEnabledFSMInboxModules) {
-    return (
-      <div
-        className={`inbox-container ${
-          isEnabledFSMInboxModules ? "fsm-inbox-wrapper" : ""
-        }`}
-      >
-        {/* {props.userRole !== 'FSM_EMP_FSTPO' && !props.isSearch && ( */}
-        <FSMLink parentRoute={props.parentRoute} />
-        <SearchApplication
-          onSearch={props.onSearch}
-          type="desktop"
-          searchFields={props.searchFields}
-          isInboxPage={!props?.isSearch}
-          searchParams={props.searchParams}
-        />
-
+  return (
+    <div className="inbox-container">
+      {props.userRole !== "FSM_EMP_FSTPO" && !props.isSearch && (
         <div className="filters-container">
-          <div>
+          {props.userRole !== "FSM_EMP_FSTPO_REQUEST" ? (
+            <FSMLink parentRoute={props.parentRoute} />
+          ) : null}
+          <div
+            style={
+              props.userRole !== "FSM_EMP_FSTPO_REQUEST"
+                ? { marginTop: "24px" }
+                : {}
+            }
+          >
             <Filter
               searchParams={props.searchParams}
               paginationParms={props.paginationParms}
@@ -509,59 +415,27 @@ const DesktopInbox = (props) => {
             />
           </div>
         </div>
-        {/* )} */}
-        <div>
-          <div className="result">{result}</div>
+      )}
+      <div style={{ flex: 1, marginLeft: "24px" }}>
+        <SearchApplication
+          onSearch={props.onSearch}
+          type="desktop"
+          searchFields={props.searchFields}
+          isInboxPage={!props?.isSearch}
+          searchParams={props.searchParams}
+        />
+        <div
+          className="result"
+          style={{
+            marginLeft: FSTP ? "" : !props?.isSearch ? "24px" : "",
+            flex: 1,
+          }}
+        >
+          {result}
         </div>
       </div>
-    );
-  }
-  if (isEnabledFSMSearchModules) {
-    return (
-      <div className={`inbox-container`}>
-        {props.userRole !== "FSM_EMP_FSTPO" && !props.isSearch && (
-          <div className="filters-container">
-            {props.userRole !== "FSM_EMP_FSTPO_REQUEST" ? (
-              <FSMLink parentRoute={props.parentRoute} cardStyle={{marginTop: "unset"}}/>
-            ) : null}
-            { !window.location.href.includes("vehicle-tracking") && <div
-              style={
-                props.userRole !== "FSM_EMP_FSTPO_REQUEST"
-                  ? { marginTop: "24px" }
-                  : {}
-              }
-            >
-              <Filter
-                searchParams={props.searchParams}
-                paginationParms={props.paginationParms}
-                applications={props.data}
-                onFilterChange={props.onFilterChange}
-                type="desktop"
-              />
-            </div>}
-          </div>
-        )}
-        <div style={{ flex: 1, marginLeft: "24px" }}>
-          <SearchApplication
-            onSearch={props.onSearch}
-            type="desktop"
-            searchFields={props.searchFields}
-            isInboxPage={!props?.isSearch}
-            searchParams={props.searchParams}
-          />
-          <div
-            className="result"
-            style={{
-              marginLeft: FSTP ? "" : !props?.isSearch ? "24px" : "",
-              flex: 1,
-            }}
-          >
-            {result}
-          </div>
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default DesktopInbox;
