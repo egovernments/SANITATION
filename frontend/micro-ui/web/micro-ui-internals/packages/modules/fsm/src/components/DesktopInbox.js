@@ -121,7 +121,7 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        "/digit-ui/employee/fsm/fstp-operator-details/" +
+                        "/${window?.contextPath}/employee/fsm/fstp-operator-details/" +
                         row.original["applicationNo"]
                       }
                     >
@@ -193,7 +193,7 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        "/digit-ui/employee/fsm/fstp-operator-details/" +
+                        "/${window?.contextPath}/employee/fsm/fstp-operator-details/" +
                         row.original["applicationNo"]
                       }
                     >
@@ -219,7 +219,7 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        "/digit-ui/employee/fsm/fstp-operator-details/" +
+                        "/${window?.contextPath}/employee/fsm/fstp-operator-details/" +
                         row.original["applicationNo"]
                       }
                     >
