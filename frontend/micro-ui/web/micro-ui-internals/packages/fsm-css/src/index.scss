@@ -334,6 +334,16 @@ input::-webkit-calendar-picker-indicator {
 .SideBarStatic{
   margin-top: 2rem;
 }
+.action-bar-wrap{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.action-bar-wrap .card-link{
+  position: absolute;
+  left: 2em;
+}
+
 
 
 .employee-select-wrap {
