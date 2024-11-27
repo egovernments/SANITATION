@@ -35,7 +35,6 @@
     "build:fsmlibraries": "cd packages/fsm-libraries && yarn build",
     "build:components": "cd packages/react-components && yarn build",
     "build:fsm": "cd packages/modules/fsm && yarn build",
-    "build:fsm-css": "cd packages/fsm-css && yarn build",
     "build:tqm": "cd packages/modules/tqm && yarn build",
     "deploy:jenkins": "./scripts/jenkins.sh"
   },
