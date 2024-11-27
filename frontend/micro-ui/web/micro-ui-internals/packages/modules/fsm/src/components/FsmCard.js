@@ -114,7 +114,7 @@ const FSMCard = () => {
       },
       {
         label: t("ES_FSM_VIEW_REPORTS_BUTTON"),
-        link: "/employee/report/fsm/FSMFSTPPlantWithVehicleLogReport",
+        link: `${window?.location?.origin}/employee/report/fsm/FSMFSTPPlantWithVehicleLogReport`,
         hyperlink: true,
       },
     ],
@@ -122,7 +122,7 @@ const FSMCard = () => {
 
   let links = [
     {
-      link: `/${window?.contextPath}/employee/report/fsm/FSMDailyDesludingReport`,
+      link: `${window?.location?.origin}/employee/report/fsm/FSMDailyDesludingReport`,
       hyperlink: true,
       label: t("ES_FSM_VIEW_REPORTS_BUTTON"),
       roles: ["FSM_REPORT_VIEWER"],
