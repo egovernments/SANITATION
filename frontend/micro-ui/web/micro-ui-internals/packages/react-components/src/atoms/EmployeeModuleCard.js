@@ -2,20 +2,47 @@ import React, { Fragment } from "react";
 import { ArrowRightInbox } from "./svgindex";
 import { useHistory, useLocation, Link } from "react-router-dom";
 
-
-const EmployeeModuleCard = ({ Icon, moduleName, kpis = [], links = [], isCitizen = false, className, styles, longModuleName=false }) => {
+const EmployeeModuleCard = ({
+  Icon,
+  moduleName,
+  kpis = [],
+  links = [],
+  isCitizen = false,
+  className,
+  styles,
+  longModuleName = false,
+}) => {
   const history = useHistory();
 
   return (
-    <div className={className ? className : "employeeCard customEmployeeCard card-home home-action-cards"} style={styles ? styles : {}}>
+    <div
+      className={
+        className
+          ? className
+          : "employeeCard customEmployeeCard card-home home-action-cards"
+      }
+      style={styles ? styles : {}}
+    >
       <div className="complaint-links-container">
-        <div className="header" style={isCitizen ? { padding: "0px" } : longModuleName ? {alignItems:"flex-start"}:{}}>
+        <div
+          className="header"
+          style={
+            isCitizen
+              ? { padding: "0px" }
+              : longModuleName
+              ? { alignItems: "flex-start" }
+              : {}
+          }
+        >
           <span className="text removeHeight">{moduleName}</span>
           <span className="logo removeBorderRadiusLogo">{Icon}</span>
         </div>
         <div className="body" style={{ margin: "0px", padding: "0px" }}>
           {kpis.length !== 0 && (
-            <div className="flex-fit" style={isCitizen ? { paddingLeft: "17px" } : {}}>
+            <div
+              className="flex-fit"
+              style={isCitizen ? { paddingLeft: "17px" } : {}}
+            >
               {kpis.map(({ count, label, link }, index) => (
                 <div className="card-count" key={index}>
                   <div>
@@ -23,7 +50,10 @@ const EmployeeModuleCard = ({ Icon, moduleName, kpis = [], links = [], isCitizen
                   </div>
                   <div>
                     {link ? (
-                      <Link to={{ pathname:link, state: {count} }} className="employeeTotalLink">
+                      <Link
+                        to={{ pathname: link, state: { count } }}
+                        className="employeeTotalLink"
+                      >
                         {label}
                       </Link>
                     ) : null}
@@ -33,13 +63,33 @@ const EmployeeModuleCard = ({ Icon, moduleName, kpis = [], links = [], isCitizen
             </div>
           )}
           <div className="links-wrapper" style={{ width: "80%" }}>
-            {links.map(({ count, label, link }, index) => (
+            {links.map(({ count, label, link, hyperlink }, index) => (
               <span className="link" key={index}>
-                {link ? <span className="link" onClick={()=> history.push(`${link}`,{count})}>{label}</span> : null}
+                {link ? (
+                  <span
+                    className="link"
+                    onClick={() => {
+                      if (hyperlink) {
+                        // Hard reload if hyperlink is true
+                        window.location.href = link;
+                      } else {
+                        // Soft navigation using history.push for internal links
+                        history.push(`${link}`, { count });
+                      }
+                    }}
+                  >
+                    {label}
+                  </span>
+                ) : null}
                 {count ? (
                   <>
-                    <span className={"inbox-total"} onClick={()=>history.push(`${link}`)}>{count || "-"}</span>
-                    <Link to={{ pathname:link, state: {count} }}>
+                    <span
+                      className={"inbox-total"}
+                      onClick={() => history.push(`${link}`)}
+                    >
+                      {count || "-"}
+                    </span>
+                    <Link to={{ pathname: link, state: { count } }}>
                       <ArrowRightInbox />
                     </Link>
                   </>
@@ -53,15 +103,43 @@ const EmployeeModuleCard = ({ Icon, moduleName, kpis = [], links = [], isCitizen
   );
 };
 
-const ModuleCardFullWidth = ({ moduleName,  links = [], isCitizen = false, className, styles, headerStyle, subHeader, subHeaderLink }) => {
+const ModuleCardFullWidth = ({
+  moduleName,
+  links = [],
+  isCitizen = false,
+  className,
+  styles,
+  headerStyle,
+  subHeader,
+  subHeaderLink,
+}) => {
   return (
-    <div className={className ? className : "employeeCard card-home customEmployeeCard home-action-cards"} style={styles ? styles : {}}>
+    <div
+      className={
+        className
+          ? className
+          : "employeeCard card-home customEmployeeCard home-action-cards"
+      }
+      style={styles ? styles : {}}
+    >
       <div className="complaint-links-container" style={{ padding: "10px" }}>
-        <div className="header" style={isCitizen ? { padding: "0px" } : headerStyle}>
+        <div
+          className="header"
+          style={isCitizen ? { padding: "0px" } : headerStyle}
+        >
           <span className="text removeHeight">{moduleName}</span>
           <span className="link">
             <a href={subHeaderLink}>
-              <span className={"inbox-total"} style={{ display: "flex", alignItems: "center", color: "#F47738", fontWeight: "bold" }} onClick={()=>history.push(`${link}`)}>
+              <span
+                className={"inbox-total"}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#F47738",
+                  fontWeight: "bold",
+                }}
+                onClick={() => history.push(`${link}`)}
+              >
                 {subHeader || "-"}
                 <span style={{ marginLeft: "10px" }}>
                   {" "}
@@ -72,10 +150,19 @@ const ModuleCardFullWidth = ({ moduleName,  links = [], isCitizen = false, class
           </span>
         </div>
         <div className="body" style={{ margin: "0px", padding: "0px" }}>
-          <div className="links-wrapper" style={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
+          <div
+            className="links-wrapper"
+            style={{ width: "100%", display: "flex", flexWrap: "wrap" }}
+          >
             {links.map(({ count, label, link }, index) => (
               <span className="link full-employee-card-link" key={index}>
-                {link ? (link?.includes(`${window?.contextPath}/`)?<Link to={link}>{label}</Link>:<a href={link}>{label}</a>) : null}
+                {link ? (
+                  link?.includes(`${window?.contextPath}/`) ? (
+                    <Link to={link}>{label}</Link>
+                  ) : (
+                    <a href={link}>{label}</a>
+                  )
+                ) : null}
               </span>
             ))}
           </div>
