@@ -39,6 +39,8 @@ public class ErrorConstants {
   public static final String STATUS_ERROR_MESSAGE = "Result status can only be pending if workflow status is anything other than submitted";
   public static final String TEST_NOT_PRESENT_CODE= "TEST NOT PRESENT";
   public static final String TEST_NOT_PRESENT_MESSAGE= "test not present";
+  public static final String INVALID_TEST_STANDARD = "INVALID_TEST_STANDARD";
+  public static final String INVALID_TEST_STANDARD_MESSAGE = "Invalid test standard with test code ";
 
   public static final String INVALID_APPLICANT_ERROR = "INVALID_APPLICANT_ERROR";
   public static final String PQM_TP_OPERATOR_EMPLOYEE_INVALID_ERROR = "PQM_TP_OPERATOR_EMPLOYEE_INVALID_ERROR";
