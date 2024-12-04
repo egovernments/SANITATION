@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-
 import { getVehicleType } from "../utils";
-
 import {
   LabelFieldPair,
   CardLabel,
@@ -10,22 +8,16 @@ import {
   Loader,
   CardLabelError,
 } from "@egovernments/digit-ui-react-components";
-
 import { useLocation, useParams } from "react-router-dom";
+const Digit = window.Digit;
 
 const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
-
   const state = Digit.ULBService.getStateId();
-
   const { pathname: url } = useLocation();
-
   const editScreen = url.includes("/modify-application/");
-
   let { id: applicationNumber } = useParams();
-
   const userInfo = Digit.UserService.getUser();
-
   const {
     isLoading: applicationLoading,
     isError,
@@ -33,20 +25,15 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
     error,
   } = Digit.Hooks.fsm.useSearch(
     tenantId,
-
     { applicationNos: applicationNumber, uuid: userInfo.uuid },
-
     { staleTime: Infinity }
   );
-
   const { pathname } = useLocation();
-
   const presentInModifyApplication = pathname.includes("modify");
 
   const [vehicle, setVehicle] = useState({
     label: formData?.tripData?.vehicleCapacity,
   });
-
   const [billError, setError] = useState(false);
 
   const { isLoading: isVehicleMenuLoading, data: vehicleData } =
@@ -61,7 +48,6 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
     error: dsoError,
   } = Digit.Hooks.fsm.useDsoSearch(tenantId, {
     limit: -1,
-
     status: "ACTIVE",
   });
 
@@ -86,48 +72,31 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
   const inputs = [
     {
       label: "ES_NEW_APPLICATION_AMOUNT_PER_TRIP",
-
       type: "text",
-
       name: "amountPerTrip",
-
       error: t("ES_NEW_APPLICATION_AMOUNT_INVALID"),
-
       validation: {
         isRequired: true,
-
         pattern: "[0-9]{1,10}",
-
         title: t("ES_APPLICATION_BILL_SLAB_ERROR"),
       },
-
       default: formData?.tripData?.amountPerTrip,
-
       disable:
-        formData?.address?.propertyLocation.code === "FROM_GRAM_PANCHAYAT"
+        formData?.address?.propertyLocation?.code === "FROM_GRAM_PANCHAYAT"
           ? false
           : true,
-
       isMandatory: true,
     },
-
     {
       label: "ES_PAYMENT_DETAILS_TOTAL_AMOUNT",
-
       type: "text",
-
       name: "amount",
-
       validation: {
         isRequired: true,
-
         title: t("ES_APPLICATION_BILL_SLAB_ERROR"),
       },
-
       default: formData?.tripData?.amount,
-
       disable: true,
-
       isMandatory: true,
     },
   ];
@@ -139,23 +108,19 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
   function setAmount(value) {
     onSelect(config.key, {
       ...formData[config.key],
-
       amountPerTrip: value,
-
       amount: value * formData.tripData.noOfTrips,
     });
   }
 
   function selectVehicle(value) {
     setVehicle({ label: value.capacity });
-
     onSelect(config.key, { ...formData[config.key], vehicleType: value });
   }
 
   function setValue(object) {
     onSelect(config.key, { ...formData[config.key], ...object });
   }
-
   useEffect(() => {
     (async () => {
       if (formData?.tripData?.vehicleType !== vehicle) {
@@ -170,40 +135,30 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
         formData?.address?.propertyLocation?.code === "WITHIN_ULB_LIMITS"
       ) {
         const capacity = formData?.tripData?.vehicleType.capacity;
-
         const { slum: slumDetails } = formData.address;
-
         const slum = slumDetails ? "YES" : "NO";
-
         const billingDetails = await Digit.FSMService.billingSlabSearch(
           tenantId,
           {
             propertyType: formData?.subtype,
-
             capacity,
-
             slum,
           }
         );
 
         const billSlab =
           billingDetails?.billingSlab?.length && billingDetails?.billingSlab[0];
-
         if (billSlab?.price || billSlab?.price === 0) {
           setValue({
             amountPerTrip: billSlab.price,
-
             amount: billSlab.price * formData.tripData.noOfTrips,
           });
-
           setError(false);
         } else {
           setValue({
             amountPerTrip: "",
-
             amount: "",
           });
-
           setError(true);
         }
       } else if (
@@ -233,15 +188,13 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
         <LabelFieldPair key={index}>
           <CardLabel className="card-label-smaller">
             {t(input.label) + " (₹)"}
-
             {input.isMandatory ? " * " : null}
           </CardLabel>
-
           <div className="field">
             <TextInput
               type={input.type}
               onChange={(e) =>
-                index === 1 &&
+                index === 0 &&
                 formData.address.propertyLocation?.code ===
                   "FROM_GRAM_PANCHAYAT"
                   ? setAmount(e.target.value)
@@ -261,7 +214,6 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
           </div>
         </LabelFieldPair>
       ))}
-
       {billError ? (
         <CardLabelError style={{ width: "100%", textAlign: "center" }}>
           {t("ES_APPLICATION_BILL_SLAB_ERROR")}

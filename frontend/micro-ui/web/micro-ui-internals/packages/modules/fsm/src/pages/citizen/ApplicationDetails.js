@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Header,
   Card,
@@ -13,11 +13,12 @@ import {
   CardSubHeader,
   ActionBar,
   SubmitBar,
-} from '@egovernments/digit-ui-react-components';
-import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
-import getPDFData from '../../getPDFData';
-import { getVehicleType } from '../../utils';
-import { ApplicationTimeline } from '../../components/ApplicationTimeline';
+} from "@egovernments/digit-ui-react-components";
+import { Toast } from "@egovernments/digit-ui-components";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import getPDFData from "../../getPDFData";
+import { getVehicleType } from "../../utils";
+import { ApplicationTimeline } from "../../components/ApplicationTimeline";
 
 const ApplicationDetails = () => {
   const { t } = useTranslation();
@@ -26,6 +27,7 @@ const ApplicationDetails = () => {
   const { state: locState } = useLocation();
   const tenantId = locState?.tenantId || Digit.ULBService.getCurrentTenantId();
   const state = Digit.ULBService.getStateId();
+  const [paymentErrorToast, setPaymentErrorToast] = useState(false);
 
   const {
     isLoading,
@@ -33,7 +35,7 @@ const ApplicationDetails = () => {
     error,
     data: application,
     error: errorApplication,
-  } = Digit.Hooks.fsm.useApplicationDetail(t, tenantId, id, {}, 'CITIZEN');
+  } = Digit.Hooks.fsm.useApplicationDetail(t, tenantId, id, {}, "CITIZEN");
 
   const { data: paymentsHistory } = Digit.Hooks.fsm.usePaymentHistory(
     tenantId,
@@ -46,7 +48,7 @@ const ApplicationDetails = () => {
   } = Digit.Hooks.useWorkflowDetails({
     tenantId: tenantId,
     id: id,
-    moduleCode: 'FSM',
+    moduleCode: "FSM",
   });
 
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
@@ -79,53 +81,64 @@ const ApplicationDetails = () => {
       const newResponse = await Digit.PaymentService.generatePdf(
         state,
         { Payments: [paymentsHistory.Payments[0]] },
-        'fsm-receipt'
+        "fsm-receipt"
       );
       const fileStore = await Digit.PaymentService.printReciept(state, {
         fileStoreIds: newResponse.filestoreIds[0],
       });
-      window.open(fileStore[newResponse.filestoreIds[0]], '_blank');
+      window.open(fileStore[newResponse.filestoreIds[0]], "_blank");
       setShowOptions(false);
     } else {
       const fileStore = await Digit.PaymentService.printReciept(state, {
         fileStoreIds: receiptFile.filestoreIds[0],
       });
-      window.open(fileStore[receiptFile.filestoreIds[0]], '_blank');
+      window.open(fileStore[receiptFile.filestoreIds[0]], "_blank");
       setShowOptions(false);
     }
   };
 
   const dowloadOptions = [
     {
-      label: t('CS_COMMON_APPLICATION_ACKNOWLEDGEMENT'),
+      label: t("CS_COMMON_APPLICATION_ACKNOWLEDGEMENT"),
       onClick: handleDownloadPdf,
     },
   ];
 
+  const showToast = () => {
+    console.log("ERROR");
+    setPaymentErrorToast(true);
+  };
+
+  const closeToast = () => {
+    setPaymentErrorToast(false);
+  };
   const showNextActions = (nextAction) => {
     switch (nextAction) {
-      case 'PAY':
+      case "PAY":
         return (
-          <Link
-            to={{
-              pathname: `/${window?.contextPath}/citizen/payment/my-bills/FSM.TRIP_CHARGES/${id}/?tenantId=${application?.pdfData?.tenantId}`,
-              state: { tenantId: application?.pdfData?.tenantId },
-            }}
-          >
-            <SubmitBar label={t('CS_APPLICATION_DETAILS_MAKE_PAYMENT')} />
-          </Link>
+          // <Link
+          //   to={{
+          //     pathname: `/${window?.contextPath}/citizen/payment/my-bills/FSM.TRIP_CHARGES/${id}/?tenantId=${application?.pdfData?.tenantId}`,
+          //     state: { tenantId: application?.pdfData?.tenantId },
+          //   }}
+          // >
+          <SubmitBar
+            label={t("CS_APPLICATION_DETAILS_MAKE_PAYMENT")}
+            onSubmit={showToast}
+          />
+          // </Link>
         );
-      case 'RATE':
+      case "RATE":
         return (
           <Link to={`/${window?.contextPath}/citizen/fsm/rate/${id}`}>
             <SubmitBar
-              label={t('CS_FSM_RATE')}
+              label={t("CS_FSM_RATE")}
               style={{
-                border: '1px solid #F47738',
-                backgroundColor: 'white',
-                boxShadow: 'unset',
+                border: "1px solid #F47738",
+                backgroundColor: "white",
+                boxShadow: "unset",
               }}
-              headerStyle={{ color: '#F47738' }}
+              headerStyle={{ color: "#F47738" }}
             />
           </Link>
         );
@@ -135,25 +148,25 @@ const ApplicationDetails = () => {
   return (
     <React.Fragment>
       <MultiLink
-        className='multilinkWrapper'
+        className="multilinkWrapper"
         onHeadClick={handleDownloadPdf}
-        label={t('CS_COMMON_APPLICATION_ACKNOWLEDGEMENT')}
-        style={{ marginTop: '10px' }}
+        label={t("CS_COMMON_APPLICATION_ACKNOWLEDGEMENT")}
+        style={{ marginTop: "10px" }}
         // displayOptions={showOptions}
         // options={dowloadOptions}
       />
-      <div className='cardHeaderWithOptions'>
+      <div className="cardHeaderWithOptions">
         <Header>
-          {t('CS_FSM_APPLICATION_DETAIL_TITLE_APPLICATION_DETAILS')}
+          {t("CS_FSM_APPLICATION_DETAIL_TITLE_APPLICATION_DETAILS")}
         </Header>
       </div>
       {application?.applicationDetails?.map(({ title, values }, index) => {
         return (
           <Card
             style={{
-              position: 'relative',
-              marginBottom: '16px',
-              padding: '16px',
+              position: "relative",
+              marginBottom: "16px",
+              padding: "16px",
             }}
           >
             {index !== 0 && <CardSubHeader>{t(title)}</CardSubHeader>}
@@ -163,14 +176,14 @@ const ApplicationDetails = () => {
                   <Row
                     key={t(value)}
                     label={t(title)}
-                    text={t(value) || 'N/A'}
+                    text={t(value) || "N/A"}
                     // last={index === detail?.values?.length - 1}
                     // caption={value}
-                    className='border-none'
+                    className="border-none"
                     rowContainerStyle={{
                       marginBottom: 0,
-                      display: 'flex',
-                      justifyContent: 'space-between',
+                      display: "flex",
+                      justifyContent: "space-between",
                     }}
                   />
                 );
@@ -180,7 +193,7 @@ const ApplicationDetails = () => {
         );
       })}
       {!isWorkflowLoading && (
-        <Card style={{ position: 'relative', marginBottom: '80px' }}>
+        <Card style={{ position: "relative", marginBottom: "80px" }}>
           <ApplicationTimeline
             application={application?.pdfData}
             id={id}
@@ -191,18 +204,32 @@ const ApplicationDetails = () => {
       )}
       {workflowDetails?.nextActions?.length > 0 ||
       paymentsHistory?.Payments?.length > 0 ? (
-        <ActionBar style={{ zIndex: '19' }}>
+        <ActionBar style={{ zIndex: "19" }}>
           {paymentsHistory?.Payments?.length > 0 && (
             <SubmitBar
-              label={t('CS_DOWNLOAD_RECEIPT')}
+              label={t("CS_DOWNLOAD_RECEIPT")}
               onSubmit={downloadPaymentReceipt}
-              style={{ marginBottom: '12px' }}
+              style={{ marginBottom: "12px" }}
             />
           )}
           {workflowDetails?.nextActions?.length > 0 &&
             showNextActions(workflowDetails?.nextActions?.[0].action)}
         </ActionBar>
       ) : null}
+      {paymentErrorToast && (
+        <Toast
+          label={t("PAYMENT_NOT_ENABLED")}
+          populators={{
+            name: "toast",
+          }}
+          style={{
+            width: "75%",
+            left: "12.5%",
+          }}
+          type="error"
+          onClose={closeToast}
+        />
+      )}
     </React.Fragment>
   );
 };

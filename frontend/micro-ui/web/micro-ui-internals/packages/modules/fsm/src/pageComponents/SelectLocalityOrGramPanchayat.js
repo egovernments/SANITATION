@@ -20,13 +20,23 @@ const SelectLocalityOrGramPanchayat = ({
 }) => {
   const allCities = Digit.Hooks.fsm.useTenants();
   let tenantId = Digit.ULBService.getCurrentTenantId();
-  const { data: urcConfig } = Digit.Hooks.fsm.useMDMS(
+  const { data: urcConfigData } = Digit.Hooks.fsm.useMDMS(
     tenantId,
     "FSM",
     "UrcConfig"
   );
+
+  const urcConfig = urcConfigData?.FSM?.UrcConfig;
+
+  // console.log("urcConfig", urcConfig);
+  // console.log(urcConfig);
+  // console.log(urcConfig?.length > 0);
+  // // console.log(urcConfig[0].URCEnable);
+
   const isUrcEnable =
     urcConfig && urcConfig.length > 0 && urcConfig[0].URCEnable;
+
+  console.log("isUrcEnable", isUrcEnable);
   const { pincode, city, propertyLocation } = formData?.address || "";
   const cities =
     userType === "employee"
@@ -174,7 +184,7 @@ const SelectLocalityOrGramPanchayat = ({
           <div>
             <LabelFieldPair>
               <CardLabel className="card-label-smaller">
-                {t("CS_GRAM_PANCHAYAT")}
+                {t("ES_NEW_GRAM_PANCHAYAT")}
                 {config.isMandatory ? " * " : null}
               </CardLabel>
               <Dropdown
@@ -190,7 +200,7 @@ const SelectLocalityOrGramPanchayat = ({
             {villages.length > 0 && (
               <LabelFieldPair>
                 <CardLabel className="card-label-smaller">
-                  {t("CS_VILLAGE_NAME")}
+                  {t("ES_NEW_VILLAGE_NAME")}
                 </CardLabel>
                 <Dropdown
                   className="form-field"
@@ -206,7 +216,7 @@ const SelectLocalityOrGramPanchayat = ({
             {villages.length === 0 && (
               <LabelFieldPair>
                 <CardLabel className="card-label-smaller">
-                  {t("CS_VILLAGE_NAME")}
+                  {t("ES_NEW_VILLAGE_NAME")}
                 </CardLabel>
                 <div className="field">
                   <TextInput
@@ -223,7 +233,7 @@ const SelectLocalityOrGramPanchayat = ({
           isUrcEnable && (
             <LabelFieldPair>
               <CardLabel className="card-label-smaller">
-                {t("CS_CREATECOMPLAINT_MOHALLA")}
+                {t("ES_NEW_CREATECOMPLAINT_MOHALLA")}
                 {config.isMandatory ? " * " : null}
               </CardLabel>
               <Dropdown
@@ -257,7 +267,7 @@ const SelectLocalityOrGramPanchayat = ({
         {propertyLocation?.code === "WITHIN_ULB_LIMITS" ? (
           <LabelFieldPair>
             <CardLabel className="card-label-smaller">
-              {`${t("CS_CREATECOMPLAINT_MOHALLA")} *`}
+              {`${t("ES_NEW_CREATECOMPLAINT_MOHALLA")} *`}
               {/* {config.isMandatory ? " * " : null} */}
             </CardLabel>
             <Dropdown
@@ -274,7 +284,7 @@ const SelectLocalityOrGramPanchayat = ({
           <div>
             <LabelFieldPair>
               <CardLabel className="card-label-smaller">
-                {`${t("CS_GRAM_PANCHAYAT")} *`}
+                {`${t("ES_NEW_GRAM_PANCHAYAT")} *`}
                 {/* {config.isMandatory ? " * " : null} */}
               </CardLabel>
               <Dropdown
@@ -290,7 +300,7 @@ const SelectLocalityOrGramPanchayat = ({
             {villages.length > 0 && (
               <LabelFieldPair>
                 <CardLabel className="card-label-smaller">
-                  {t("CS_VILLAGE_NAME")}
+                  {t("ES_NEW_VILLAGE_NAME")}
                 </CardLabel>
                 <Dropdown
                   className="form-field"
@@ -306,7 +316,7 @@ const SelectLocalityOrGramPanchayat = ({
             {villages.length === 0 && (
               <LabelFieldPair>
                 <CardLabel className="card-label-smaller">
-                  {t("CS_VILLAGE_NAME")}
+                  {t("ES_NEW_VILLAGE_NAME")}
                 </CardLabel>
                 <div className="field">
                   <TextInput
