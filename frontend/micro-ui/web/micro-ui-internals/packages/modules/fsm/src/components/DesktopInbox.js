@@ -121,7 +121,7 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        "/${window?.contextPath}/employee/fsm/fstp-operator-details/" +
+                        `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
                         row?.original["applicationNo"]
                       }
                     >
