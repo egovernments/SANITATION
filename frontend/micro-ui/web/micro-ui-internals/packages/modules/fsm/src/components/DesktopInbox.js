@@ -275,6 +275,7 @@ const DesktopInbox = (props) => {
           {
             Header: t("CS_FILE_DESLUDGING_APPLICATION_NO"),
             Cell: ({ row }) => {
+              console.log("row", row);
               return (
                 <div>
                   <span className="link">
@@ -300,9 +301,14 @@ const DesktopInbox = (props) => {
             accessor: "createdTime",
             Cell: ({ row }) => {
               return GetCell(
-                `${row?.original?.createdTime?.getDate()}/${
-                  row?.original?.createdTime?.getMonth() + 1
-                }/${row?.original?.createdTime?.getFullYear()}`
+                `${new Date(
+                  row?.original.auditDetails.createdTime
+                )?.getDate()}/${
+                  new Date(row?.original.auditDetails.createdTime).getMonth() +
+                  1
+                }/${new Date(
+                  row?.original.auditDetails.createdTime
+                ).getFullYear()}`
               );
             },
           },
@@ -314,7 +320,7 @@ const DesktopInbox = (props) => {
                   Digit?.Utils?.locale?.getRevenueLocalityCode(
                     row?.original["locality"],
                     row?.original["tenantId"]
-                  )
+                  ) || "NA"
                 )
               );
             },
