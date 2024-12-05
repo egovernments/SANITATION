@@ -236,12 +236,13 @@ const DesktopInbox = (props) => {
             Cell: ({ row }) => {
               return GetCell(
                 `${new Date(
-                  row?.original.auditDetails.createdTime
+                  row?.original.auditDetails?.createdTime
                 )?.getDate()}/${
-                  new Date(row?.original.auditDetails.createdTime).getMonth() +
-                  1
+                  new Date(
+                    row?.original.auditDetails?.createdTime
+                  )?.getMonth() + 1
                 }/${new Date(
-                  row?.original.auditDetails.createdTime
+                  row?.original.auditDetails?.createdTime
                 ).getFullYear()}`
               );
             },
@@ -275,13 +276,12 @@ const DesktopInbox = (props) => {
           {
             Header: t("CS_FILE_DESLUDGING_APPLICATION_NO"),
             Cell: ({ row }) => {
-              console.log("row", row);
               return (
                 <div>
                   <span className="link">
                     <Link
                       to={
-                        `${props.parentRoute}/${
+                        `/${window.contextPath}/employee/fsm/${
                           DSO
                             ? "dso-application-details"
                             : "application-details"
@@ -302,12 +302,13 @@ const DesktopInbox = (props) => {
             Cell: ({ row }) => {
               return GetCell(
                 `${new Date(
-                  row?.original.auditDetails.createdTime
+                  row?.original.auditDetails?.createdTime
                 )?.getDate()}/${
-                  new Date(row?.original.auditDetails.createdTime).getMonth() +
-                  1
+                  new Date(
+                    row?.original.auditDetails?.createdTime
+                  )?.getMonth() + 1
                 }/${new Date(
-                  row?.original.auditDetails.createdTime
+                  row?.original.auditDetails?.createdTime
                 ).getFullYear()}`
               );
             },
