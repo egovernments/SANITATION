@@ -9,6 +9,7 @@ import {
   CardLabelError,
 } from "@egovernments/digit-ui-react-components";
 import { useLocation, useParams } from "react-router-dom";
+const Digit = window.Digit;
 
 const SelectTrips = ({
   t,
@@ -36,7 +37,9 @@ const SelectTrips = ({
     { staleTime: Infinity }
   );
 
-  const [vehicle, setVehicle] = useState();
+  const [vehicle, setVehicle] = useState({
+    label: formData?.tripData?.vehicleCapacity,
+  });
   const [billError, setError] = useState(false);
 
   const {
@@ -51,15 +54,10 @@ const SelectTrips = ({
     isLoading: isDsoLoading,
     isSuccess: isDsoSuccess,
     error: dsoError,
-  } = Digit.Hooks.fsm.useDsoSearch(
-    tenantId,
-    {
-      limit: -1,
-      status: "ACTIVE",
-    },
-    {},
-    t
-  );
+  } = Digit.Hooks.fsm.useDsoSearch(tenantId, {
+    limit: -1,
+    status: "ACTIVE",
+  });
 
   const [vehicleMenu, setVehicleMenu] = useState([]);
 
@@ -98,7 +96,7 @@ const SelectTrips = ({
   ];
 
   function setTripNum(value) {
-    onSelect(config.key, { ...formData[config.key], noOfTrips: Number(value) });
+    onSelect(config.key, { ...formData[config.key], noOfTrips: value });
   }
 
   function selectVehicle(value) {
@@ -111,10 +109,7 @@ const SelectTrips = ({
   }
   useEffect(() => {
     (async () => {
-      if (
-        formData?.tripData?.vehicleType !== vehicle &&
-        formData?.address?.propertyLocation?.code === "WITHIN_ULB_LIMITS"
-      ) {
+      if (formData?.tripData?.vehicleType !== vehicle) {
         setVehicle({ label: formData?.tripData?.vehicleType?.capacity });
       }
 
@@ -122,7 +117,8 @@ const SelectTrips = ({
         formData?.propertyType &&
         formData?.subtype &&
         formData?.address &&
-        formData?.tripData?.vehicleType?.capacity
+        formData?.tripData?.vehicleType?.capacity &&
+        formData?.address?.propertyLocation?.code === "WITHIN_ULB_LIMITS"
       ) {
         const capacity = formData?.tripData?.vehicleType.capacity;
         const { slum: slumDetails } = formData.address;
@@ -138,30 +134,27 @@ const SelectTrips = ({
 
         const billSlab =
           billingDetails?.billingSlab?.length && billingDetails?.billingSlab[0];
-        if (
-          (billSlab?.price || billSlab?.price === 0) &&
-          formData?.address?.propertyLocation?.code === "WITHIN_ULB_LIMITS"
-        ) {
+        if (billSlab?.price || billSlab?.price === 0) {
           setValue({
             amountPerTrip: billSlab.price,
             amount: billSlab.price * formData.tripData.noOfTrips,
           });
           setError(false);
-        } else if (
-          formData?.address?.propertyLocation?.code === "WITHIN_ULB_LIMITS"
-        ) {
-          setValue({
-            amountPerTrip: "",
-            amount: "",
-          });
-          setError(true);
         } else {
           setValue({
             amountPerTrip: "",
             amount: "",
           });
-          setError(false);
+          setError(true);
         }
+      } else if (
+        formData?.address?.propertyLocation?.code === "FROM_GRAM_PANCHAYAT" &&
+        formData.tripData.noOfTrips &&
+        formData.tripData.amountPerTrip
+      ) {
+        setValue({
+          amount: formData.tripData.amountPerTrip * formData.tripData.noOfTrips,
+        });
       }
     })();
   }, [
@@ -170,10 +163,8 @@ const SelectTrips = ({
     formData?.address,
     formData?.tripData?.vehicleType?.capacity,
     formData?.tripData?.noOfTrips,
+    formData?.address?.propertyLocation?.code,
   ]);
-
-  console.log("inputs", inputs);
-  console.log("formData", formData);
 
   return isVehicleMenuLoading && isDsoLoading ? (
     <Loader />
@@ -212,7 +203,7 @@ const SelectTrips = ({
             <TextInput
               type={input.type}
               style={{ ...styles, ...FSMTextFieldStyle }}
-              onChange={(e) => setTripNum(Number(e.target.value))}
+              onChange={(e) => setTripNum(e.target.value)}
               key={input.name}
               value={
                 input.default

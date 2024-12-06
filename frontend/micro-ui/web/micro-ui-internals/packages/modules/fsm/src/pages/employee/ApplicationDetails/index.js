@@ -193,6 +193,8 @@ const ApplicationDetails = (props) => {
     setImageZoom(null);
   }
 
+  console.log("applicationDetails", applicationDetails);
+
   const getTimelineCaptions = (checkpoint) => {
     const __comment =
       checkpoint?.comment?.split("~") || checkpoint?.wfComment?.[0]?.split("~");
@@ -387,7 +389,11 @@ const ApplicationDetails = (props) => {
                       <Row
                         key={t(value.title)}
                         label={t(value.title)}
-                        text={t(value.value) || "N/A"}
+                        text={
+                          value?.value && typeof value.value != "object"
+                            ? t(value.value)
+                            : "N/A"
+                        }
                         last={index === detail?.values?.length - 1}
                         caption={value.caption}
                         className="border-none"
