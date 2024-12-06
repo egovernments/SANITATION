@@ -168,9 +168,9 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
         formData.tripData.noOfTrips &&
         formData.tripData.amountPerTrip
       ) {
-        setValue({
-          amount: formData.tripData.amountPerTrip * formData.tripData.noOfTrips,
-        });
+        // setValue({
+        //   amount: formData.tripData.amountPerTrip * formData.tripData.noOfTrips,
+        // });
       }
     })();
   }, [
@@ -199,8 +199,8 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
                 index === 0 &&
                 formData.address.propertyLocation?.code ===
                   "FROM_GRAM_PANCHAYAT"
-                  ? setAmount(e.target.value)
-                  : setTripNum(e.target.value)
+                  ? setAmount(Number(e.target.value))
+                  : setTripNum(Number(e.target.value))
               }
               key={input.name}
               value={
