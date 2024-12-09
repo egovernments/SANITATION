@@ -108,6 +108,7 @@ const EditForm = ({
         i18nKey: "FROM_GRAM_PANCHAYAT",
         name: "From Gram Panchayat",
       },
+
       additionalDetails: {
         boundaryType: applicationData?.address?.additionalDetails?.boundaryType,
         gramPanchayat:
@@ -245,26 +246,6 @@ const EditForm = ({
         street,
         pincode,
         slumName: slum,
-        locality: {
-          ...applicationData.address.locality,
-          code:
-            propertyLocation === "FROM_GRAM_PANCHAYAT"
-              ? gramPanchayat?.code
-              : localityCode,
-          name:
-            propertyLocation === "FROM_GRAM_PANCHAYAT"
-              ? gramPanchayat?.name
-              : localityName,
-        },
-        geoLocation: {
-          ...applicationData.address.geoLocation,
-          latitude: data?.address?.latitude
-            ? data?.address?.latitude
-            : applicationData.address.geoLocation.latitude,
-          longitude: data?.address?.longitude
-            ? data?.address?.longitude
-            : applicationData.address.geoLocation.longitude,
-        },
         additionalDetails: {
           boundaryType:
             propertyLocation === "FROM_GRAM_PANCHAYAT"
@@ -284,6 +265,30 @@ const EditForm = ({
             : newVillage,
           newGramPanchayat: newGp,
           newLocality: newLocality,
+        },
+        locality: {
+          ...applicationData.address.locality,
+          code:
+            propertyLocation === "FROM_GRAM_PANCHAYAT"
+              ? applicationData?.address?.additionalDetails?.village?.code
+                ? village?.code
+                : gramPanchayat?.code
+              : localityCode,
+          name:
+            propertyLocation === "FROM_GRAM_PANCHAYAT"
+              ? applicationData?.address?.additionalDetails?.village?.name
+                ? village?.name
+                : gramPanchayat?.name
+              : localityName,
+        },
+        geoLocation: {
+          ...applicationData.address.geoLocation,
+          latitude: data?.address?.latitude
+            ? data?.address?.latitude
+            : applicationData.address.geoLocation.latitude,
+          longitude: data?.address?.longitude
+            ? data?.address?.longitude
+            : applicationData.address.geoLocation.longitude,
         },
       },
       advanceAmount:
