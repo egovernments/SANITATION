@@ -1,4 +1,5 @@
 import { FSMService } from "../../elements/FSM";
+import { useTranslation } from "react-i18next";
 
 const getVehicleDetails = (vehicles) => {
   return vehicles
@@ -6,24 +7,46 @@ const getVehicleDetails = (vehicles) => {
         return {
           name: index,
           values: [
-            { title: "ES_FSM_REGISTRY_VEHICLE_NUMBER", value: vehicle?.registrationNumber },
-            { title: "ES_FSM_REGISTRY_VEHICLE_TYPE", value: `COMMON_MASTER_VEHICLE_${vehicle?.type}` },
+            {
+              title: "ES_FSM_REGISTRY_VEHICLE_NUMBER",
+              value: vehicle?.registrationNumber,
+            },
+            {
+              title: "ES_FSM_REGISTRY_VEHICLE_TYPE",
+              value: `COMMON_MASTER_VEHICLE_${vehicle?.type}`,
+            },
             { title: "ES_FSM_REGISTRY_VEHICLE_MODEL", value: vehicle?.model },
-            { title: "ES_FSM_REGISTRY_VEHICLE_CAPACITY", value: vehicle?.tankCapacity },
+            {
+              title: "ES_FSM_REGISTRY_VEHICLE_CAPACITY",
+              value: vehicle?.tankCapacity,
+            },
             {
               title: "ES_FSM_REGISTRY_VEHICLE_POLLUTION_CERT",
-              value: vehicle?.pollutionCertiValidTill && Digit.DateUtils.ConvertEpochToDate(vehicle?.pollutionCertiValidTill),
+              value:
+                vehicle?.pollutionCertiValidTill &&
+                Digit.DateUtils.ConvertEpochToDate(
+                  vehicle?.pollutionCertiValidTill
+                ),
             },
             {
               title: "ES_FSM_REGISTRY_VEHICLE_ROAD_TAX",
-              value: vehicle?.roadTaxPaidTill && Digit.DateUtils.ConvertEpochToDate(vehicle?.roadTaxPaidTill),
+              value:
+                vehicle?.roadTaxPaidTill &&
+                Digit.DateUtils.ConvertEpochToDate(vehicle?.roadTaxPaidTill),
             },
             {
               title: "ES_FSM_REGISTRY_VEHICLE_INSURANCE",
-              value: vehicle?.InsuranceCertValidTill && Digit.DateUtils.ConvertEpochToDate(vehicle?.InsuranceCertValidTill),
+              value:
+                vehicle?.InsuranceCertValidTill &&
+                Digit.DateUtils.ConvertEpochToDate(
+                  vehicle?.InsuranceCertValidTill
+                ),
             },
             { title: "ES_FSM_REGISTRY_VEHICLE_STATUS", value: vehicle.status },
-            { title: "ES_FSM_REGISTRY_VEHICLE_ADDITIONAL_DETAILS", value: vehicle?.additionalDetails?.description },
+            {
+              title: "ES_FSM_REGISTRY_VEHICLE_ADDITIONAL_DETAILS",
+              value: vehicle?.additionalDetails?.description,
+            },
           ],
         };
       })
@@ -39,7 +62,10 @@ const getDriverDetails = (drivers) => {
           values: [
             { title: "ES_FSM_REGISTRY_DRIVER_NAME", value: driver?.name },
             // { title: "ES_FSM_REGISTRY_DRIVER_PHONE", value: driver?.owner?.mobileNumber },
-            { title: "ES_FSM_REGISTRY_DRIVER_LICENSE", value: driver?.licenseNumber },
+            {
+              title: "ES_FSM_REGISTRY_DRIVER_LICENSE",
+              value: driver?.licenseNumber,
+            },
             { title: "ES_FSM_REGISTRY_DRIVER_STATUS", value: driver?.status },
           ],
         };
@@ -50,20 +76,52 @@ const getDriverDetails = (drivers) => {
 const getWorkerDetails = (workers, t) => {
   return workers
     ? workers?.map((worker, index) => {
-        const fn_list = worker?.additionalFields?.fields?.filter((item) => item.key.startsWith("FUNCTIONAL_ROLE_") && item.key !== "FUNCTIONAL_ROLE_COUNT");
+        const fn_list = worker?.additionalFields?.fields?.filter(
+          (item) =>
+            item.key.startsWith("FUNCTIONAL_ROLE_") &&
+            item.key !== "FUNCTIONAL_ROLE_COUNT"
+        );
         return {
           name: index,
           id: worker?.individualId,
           swid: worker?.id,
           values: [
-            { title: "ES_FSM_REGISTRY_WORKER_NAME", value: worker?.name?.givenName || "N/A" },
-            { title: "ES_FSM_REGISTRY_WORKER_ID", value: worker?.individualId || "N/A" },
+            {
+              title: "ES_FSM_REGISTRY_WORKER_NAME",
+              value: worker?.name?.givenName || "N/A",
+            },
+            {
+              title: "ES_FSM_REGISTRY_WORKER_ID",
+              value: worker?.individualId || "N/A",
+            },
             { title: "ES_FSM_REGISTRY_WORKER_GENDER", value: worker?.gender },
             { title: "ES_FSM_REGISTRY_WORKER_DOB", value: worker?.dateOfBirth },
-            { title: "ES_FSM_REGISTRY_WORKER_SKILLS", value: worker?.skills?.length > 0 ? worker?.skills?.map((i) => t(`SW_SKILLS_${i.type}`))?.join(", ") : "N/A" },
-            { title: "ES_FSM_REGISTRY_WORKER_FUNCTIONAL_ROLE", value: fn_list?.length > 0 ? fn_list?.map((i) => t(`SW_ROLE_${i.value}`))?.join(", ") : "N/A" },
-            worker?.identifiers?.filter((i) => i.identifierType === "DRIVING_LICENSE_NUMBER").length > 0
-              ? { title: "ES_FSM_REGISTRY_DRIVER_LICENSE", value: worker?.identifiers?.filter((i) => i.identifierType === "DRIVING_LICENSE_NUMBER")?.[0]?.identifierId || "N/A" }
+            {
+              title: "ES_FSM_REGISTRY_WORKER_SKILLS",
+              value:
+                worker?.skills?.length > 0
+                  ? worker?.skills
+                      ?.map((i) => t(`SW_SKILLS_${i.type}`))
+                      ?.join(", ")
+                  : "N/A",
+            },
+            {
+              title: "ES_FSM_REGISTRY_WORKER_FUNCTIONAL_ROLE",
+              value:
+                fn_list?.length > 0
+                  ? fn_list?.map((i) => t(`SW_ROLE_${i.value}`))?.join(", ")
+                  : "N/A",
+            },
+            worker?.identifiers?.filter(
+              (i) => i.identifierType === "DRIVING_LICENSE_NUMBER"
+            ).length > 0
+              ? {
+                  title: "ES_FSM_REGISTRY_DRIVER_LICENSE",
+                  value:
+                    worker?.identifiers?.filter(
+                      (i) => i.identifierType === "DRIVING_LICENSE_NUMBER"
+                    )?.[0]?.identifierId || "N/A",
+                }
               : null,
             worker?.photo
               ? {
@@ -85,12 +143,27 @@ const getResponse = (data, t, workers) => {
       title: "",
       values: [
         { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_NAME", value: data?.name },
-        { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_ADDRESS", value: data?.address?.locality?.name },
-        { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_PHONE", value: data?.owner?.mobileNumber },
-        { title: "ES_FSM_REGISTRY_DETAILS_ADDITIONAL_DETAILS", value: data?.additionalDetails?.description },
+        {
+          title: "ES_FSM_REGISTRY_DETAILS_VENDOR_ADDRESS",
+          value: data?.address?.locality?.name,
+        },
+        {
+          title: "ES_FSM_REGISTRY_DETAILS_VENDOR_PHONE",
+          value: data?.owner?.mobileNumber,
+        },
+        {
+          title: "ES_FSM_REGISTRY_DETAILS_ADDITIONAL_DETAILS",
+          value: data?.additionalDetails?.description,
+        },
         {
           title: "ES_FSM_REGISTRY_AGENCY_TYPE",
-          value: data?.agencyType ? t(Digit.Utils.locale.getTransformedLocale(`FSM_VENDOR_AGENCY_TYPE_${data?.agencyType}`)) : t("ES_COMMON_NA"),
+          value: data?.agencyType
+            ? t(
+                Digit.Utils.locale.getTransformedLocale(
+                  `FSM_VENDOR_AGENCY_TYPE_${data?.agencyType}`
+                )
+              )
+            : t("ES_COMMON_NA"),
         },
       ],
     },
@@ -120,7 +193,9 @@ const DsoDetails = async (tenantId, filters = {}, t) => {
         },
         details: {
           Individual: {
-            id: dsoDetails?.vendor?.flatMap((dso) => dso?.workers?.map((i) => i.individualId)),
+            id: dsoDetails?.vendor?.flatMap((dso) =>
+              dso?.workers?.map((i) => i.individualId)
+            ),
           },
         },
       })
@@ -141,7 +216,11 @@ const DsoDetails = async (tenantId, filters = {}, t) => {
     // activeWorkers: dso.workers?.filter((worker) => worker.vendorWorkerStatus === "ACTIVE"),
     allVehicles: dso.vehicles,
     dsoDetails: dso,
-    employeeResponse: getResponse(dso, t, workers?.Individual ? workers?.Individual : null),
+    employeeResponse: getResponse(
+      dso,
+      t,
+      workers?.Individual ? workers?.Individual : null
+    ),
     vehicles: dso.vehicles
       ?.filter((vehicle) => vehicle.status === "ACTIVE")
       ?.map((vehicle) => ({

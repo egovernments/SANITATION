@@ -193,8 +193,6 @@ const ApplicationDetails = (props) => {
     setImageZoom(null);
   }
 
-  console.log("applicationDetails", applicationDetails);
-
   const getTimelineCaptions = (checkpoint) => {
     const __comment =
       checkpoint?.comment?.split("~") || checkpoint?.wfComment?.[0]?.split("~");

@@ -54,10 +54,15 @@ const SelectTrips = ({
     isLoading: isDsoLoading,
     isSuccess: isDsoSuccess,
     error: dsoError,
-  } = Digit.Hooks.fsm.useDsoSearch(tenantId, {
-    limit: -1,
-    status: "ACTIVE",
-  });
+  } = Digit.Hooks.fsm.useDsoSearch(
+    tenantId,
+    {
+      limit: -1,
+      status: "ACTIVE",
+    },
+    {},
+    t
+  );
 
   const [vehicleMenu, setVehicleMenu] = useState([]);
 

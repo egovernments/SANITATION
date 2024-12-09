@@ -144,7 +144,6 @@ const ApplicationDetails = () => {
         );
     }
   };
-
   return (
     <React.Fragment>
       <MultiLink
