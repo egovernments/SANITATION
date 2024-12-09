@@ -23,12 +23,62 @@ const DesktopInbox = (props) => {
     );
   };
 
-  function goTo(id) {
-    // history.push("/digit-ui/employee/fsm/complaint/details/" + id);
-  }
+  const isAlertPage = window.location.href.includes("vehicle-tracking/alerts");
 
   const columns = React.useMemo(() => {
-    if (props.isSearch) {
+    if (isAlertPage) {
+      return [
+        {
+          Header: t("CS_FILE_DESLUDGING_APPLICATION_NO"),
+          Cell: ({ row }) => {
+            return (
+              <div>
+                <span className="link">
+                  <Link
+                    to={
+                      `/${window.contextPath}/employee/fsm/${
+                        DSO ? "dso-application-details" : "application-details"
+                      }/` + row?.original["applicationNo"]
+                    }
+                  >
+                    {row?.original["applicationNo"]}
+                  </Link>
+                </span>
+                {/* <a onClick={() => goTo(row?.row?.original["serviceRequestId"])}>{row?.row?.original["serviceRequestId"]}</a> */}
+              </div>
+            );
+          },
+        },
+        {
+          Header: t("ES_INBOX_APPLICATION_DATE"),
+          accessor: "createdTime",
+          Cell: ({ row }) => {
+            return GetCell(
+              `${new Date(
+                row?.original.auditDetails?.createdTime
+              )?.getDate()}/${
+                new Date(row?.original.auditDetails?.createdTime)?.getMonth() +
+                1
+              }/${new Date(
+                row?.original.auditDetails?.createdTime
+              ).getFullYear()}`
+            );
+          },
+        },
+        {
+          Header: t("ES_INBOX_STATUS"),
+          Cell: (row) => {
+            return GetCell(t(`CS_COMMON_FSM_${row?.row?.original["status"]}`));
+          },
+        },
+        {
+          Header: t("ES_INBOX_SLA_DAYS_REMAINING"),
+          Cell: ({ row }) => {
+            return GetSlaCell(row?.original["sla"]);
+          },
+        },
+      ];
+    } else if (props.isSearch) {
       return [
         {
           Header: t("ES_INBOX_APPLICATION_NO"),
@@ -301,15 +351,9 @@ const DesktopInbox = (props) => {
             accessor: "createdTime",
             Cell: ({ row }) => {
               return GetCell(
-                `${new Date(
-                  row?.original.auditDetails?.createdTime
-                )?.getDate()}/${
-                  new Date(
-                    row?.original.auditDetails?.createdTime
-                  )?.getMonth() + 1
-                }/${new Date(
-                  row?.original.auditDetails?.createdTime
-                ).getFullYear()}`
+                `${row.original.createdTime.getDate()}/${
+                  row.original.createdTime.getMonth() + 1
+                }/${row.original.createdTime.getFullYear()}`
               );
             },
           },
