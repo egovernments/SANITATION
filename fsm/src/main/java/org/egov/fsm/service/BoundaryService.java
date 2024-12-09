@@ -1,13 +1,10 @@
 package org.egov.fsm.service;
 
-
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.egov.fsm.config.FSMConfiguration;
 import org.egov.fsm.repository.ServiceRequestRepository;
 import org.egov.fsm.util.FSMErrorConstants;
@@ -22,10 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
@@ -62,44 +55,27 @@ public class BoundaryService {
 			return;
 		}
 		FSM fsm = request.getFsm();
+
 		String tenantId = request.getFsm().getTenantId();
+
 		if (fsm.getAddress() == null || fsm.getAddress().getLocality() == null) {
 			throw new CustomException(FSMErrorConstants.INVALID_ADDRES, "The address or locality cannot be null");
 		}
+			
+
 		StringBuilder uri = new StringBuilder(config.getLocationHost());
 		uri.append(config.getLocationContextPath()).append(config.getLocationEndpoint());
 		uri.append("?").append("tenantId=").append(tenantId);
+		
 		if (hierarchyTypeCode != null) {
 			uri.append("&").append("hierarchyTypeCode=").append(hierarchyTypeCode);
 		}
+		/*
+		 * commented to enable urc
+		 */
+//		uri.append("&").append("boundaryType=").append("Locality");
 		uri.append("&").append("boundaryType=");
-		
-		/*Map<String, Object> additionalDetails = fsm.getAddress().getAdditionalDetails() != null
-				? (Map<String, Object>) fsm.getAddress().getAdditionalDetails()
-				: new HashMap<>();
-		if (additionalDetails != null || additionalDetails != null && additionalDetails.get("boundaryType") != null) {
-			String boundaryType = (String) additionalDetails.get("boundaryType");
-			uri.append(boundaryType);
-		} else {
-			uri.append("Locality");
-		}*/
-		
-		/*String jsonString = (String) fsm.getAddress().getAdditionalDetails();
-		Map<String, String> additionalDetails = null;
-		if (StringUtils.isNotBlank(jsonString)) {
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			JsonElement element = gson.fromJson(jsonString, JsonElement.class);
-			JsonObject jsonObj = element.getAsJsonObject();
-			additionalDetails = new Gson().fromJson(jsonObj, Map.class);
-		}
-		System.out.println(additionalDetails);
-		if (additionalDetails != null && additionalDetails.get("boundaryType") != null) {
-			String boundaryType = (String) additionalDetails.get("boundaryType");
-			uri.append(boundaryType);
-		} else {
-			uri.append("Locality");
-		}*/
-		
+
 		Object additionalDetail = fsm.getAddress().getAdditionalDetails();
 		Map<String, String> additionalDetails = null;
 		if (additionalDetail instanceof Map) {
@@ -112,28 +88,44 @@ public class BoundaryService {
 
 			uri.append("Locality");
 		}
-		
-		
 		uri.append("&").append("codes=").append(fsm.getAddress().getLocality().getCode());
+
 		RequestInfoWrapper wrapper = RequestInfoWrapper.builder().requestInfo(request.getRequestInfo()).build();
 		LinkedHashMap responseMap = (LinkedHashMap) serviceRequestRepository.fetchResult(uri, wrapper);
+		
 		if (CollectionUtils.isEmpty(responseMap)) {
 			throw new CustomException(FSMErrorConstants.BOUNDARY_ERROR,
 					"The response from location service is empty or null");
 		}
+			
+//		String jsonString = new JSONObject(responseMap).toString();
+//
+//		DocumentContext context = JsonPath.parse(jsonString);
 		String jsonString1 = new JSONObject(responseMap).toString();
+
+//		List<Boundary> boundaryResponse = context.read("$..boundary[?(@.code==\"{}\")]".replace("{}",fsm.getAddress().getLocality().getCode()));
 		DocumentContext context = JsonPath.parse(jsonString1);
+
+//		if (boundaryResponse.isEmpty() &&  CollectionUtils.isEmpty((boundaryResponse) )) {
 		List<Boundary> boundaryResponse = context
 				.read("$..boundary[?(@.code==\"{}\")]".replace("{}", fsm.getAddress().getLocality().getCode()));
 		if (boundaryResponse.isEmpty() && CollectionUtils.isEmpty((boundaryResponse))) {
 			log.debug("The boundary data was not found");
 			throw new CustomException(FSMErrorConstants.BOUNDARY_MDMS_DATA_ERROR, "The boundary data was not found");
 		}
+			
+
 		Boundary boundary = mapper.convertValue(boundaryResponse.stream().findFirst(), Boundary.class);
+		
 		if (boundary.getName().isEmpty()) {
+			
 			throw new CustomException(FSMErrorConstants.INVALID_BOUNDARY_DATA,
 					"The boundary data for the code " + fsm.getAddress().getLocality().getCode() + " is not available");
 		}
+			
+
 		fsm.getAddress().setLocality(boundary);
+
 	}
+
 }
