@@ -1,4 +1,8 @@
-import { CitizenHomeCard, CitizenTruck, Loader } from "@egovernments/digit-ui-react-components";
+import {
+  CitizenHomeCard,
+  CitizenTruck,
+  Loader,
+} from "@egovernments/digit-ui-react-components";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useRouteMatch } from "react-router-dom";
@@ -56,6 +60,7 @@ import PlusMinusInput from "./pageComponents/PlusMinusInput";
 import ConfirmationBox from "./components/Confirmation";
 import WorkflowFilter from "./components/WorkflowFilter";
 import Search from "./pages/employee/Search";
+import SelectLocalityOrGramPanchayat from "./pageComponents/SelectLocalityOrGramPanchayat";
 import AddWorker from "./pages/employee/FSMRegistry/Worker/AddWorker";
 import AddWorkerRoles from "./pageComponents/addWorkerRole";
 import SelectSWEmployeePhoneNumber from "./pageComponents/SelectSWEmployeePhoneNumber";
@@ -70,7 +75,11 @@ const FSMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "FSM";
   const { path, url } = useRouteMatch();
   const language = Digit.StoreData.getCurrentLanguage();
-  const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
+  const { isLoading, data: store } = Digit.Services.useStore({
+    stateCode,
+    moduleCode,
+    language,
+  });
 
   if (isLoading) {
     return <Loader />;
@@ -86,7 +95,10 @@ const FSMModule = ({ stateCode, userType, tenants }) => {
 
 const FSMLinks = ({ matchPath, userType }) => {
   const { t } = useTranslation();
-  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("FSM_CITIZEN_FILE_PROPERTY", {});
+  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage(
+    "FSM_CITIZEN_FILE_PROPERTY",
+    {}
+  );
 
   useEffect(() => {
     clearParams();
@@ -127,7 +139,13 @@ const FSMLinks = ({ matchPath, userType }) => {
         });
     });
 
-    return <CitizenHomeCard header={t("CS_HOME_FSM_SERVICES")} links={links} Icon={CitizenTruck} />;
+    return (
+      <CitizenHomeCard
+        header={t("CS_HOME_FSM_SERVICES")}
+        links={links}
+        Icon={CitizenTruck}
+      />
+    );
   }
 };
 
@@ -195,6 +213,7 @@ const componentsToRegister = {
   VehicleTrackingCard,
   Alerts,
   IllegalDumpingSites,
+  SelectLocalityOrGramPanchayat,
 };
 
 export const initFSMComponents = () => {
