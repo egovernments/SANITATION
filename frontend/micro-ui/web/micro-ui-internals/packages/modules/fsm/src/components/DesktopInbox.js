@@ -36,8 +36,10 @@ const DesktopInbox = (props) => {
                 <span className="link">
                   <Link
                     to={
-                      `/${window.contextPath}/employee/fsm/${
-                        DSO ? "dso-application-details" : "application-details"
+                      `/${window.contextPath}/${
+                        DSO
+                          ? "citizen/fsm/dso-application-details"
+                          : "employee/fsm/application-details"
                       }/` + row?.original["applicationNo"]
                     }
                   >
@@ -331,10 +333,10 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        `/${window.contextPath}/employee/fsm/${
+                        `/${window.contextPath}/${
                           DSO
-                            ? "dso-application-details"
-                            : "application-details"
+                            ? "citizen/fsm/dso-application-details"
+                            : "employee/fsm/application-details"
                         }/` + row?.original["applicationNo"]
                       }
                     >
