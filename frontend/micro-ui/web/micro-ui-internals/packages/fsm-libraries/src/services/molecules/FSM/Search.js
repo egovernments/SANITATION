@@ -1,12 +1,20 @@
-import { PaymentService } from "../../elements/Payment";
+import { PaymentService } from "@egovernments/digit-ui-libraries/src/services/elements/Payment";
 import { FSMService } from "../../elements/FSM";
-import { MdmsService } from "../../../services/elements/MDMS";
 import DsoDetails from "./DsoDetails";
 import {
   getPropertyTypeLocale,
   getPropertySubtypeLocale,
   getVehicleType,
 } from "../../../utils/fsm";
+import { MdmsService } from "@egovernments/digit-ui-libraries/src/services/elements/MDMS";
+import useTripTrack from "../../../hooks/vehicleTracking/useTripTrack";
+
+function mergeArraysByUniqueKey(array1, array2, key1, key2) {
+  return array1.map((obj1) => ({
+    ...obj1,
+    ...(array2.find((obj2) => obj2[key2] === obj1[key1]) || {}), // Default to an empty object if no match is found
+  }));
+}
 
 const displayPitDimension = (pitDeminsion) => {
   const result = [];
@@ -53,10 +61,26 @@ export const Search = {
     return response.fsm[0];
   },
 
+  getVehicleTripAlertsDetails: async ({ tenantId, filters = {} }) => {
+    const response = await FSMService.vehicleTripAlertsDetails(tenantId, {
+      ...filters,
+    });
+    return response;
+  },
+
   applicationDetails: async (t, tenantId, applicationNos, userType) => {
+    const checkvehicletrack = await MdmsService.getVehicleTrackingCheck(
+      tenantId,
+      "FSM",
+      "VehicleTracking"
+    );
+    const getTripData =
+      checkvehicletrack?.FSM?.VehicleTracking?.[0]?.vehicleTrackingStatus;
     const filter = { applicationNos };
     let dsoDetails = {};
     let vehicle = {};
+    let tripList;
+
     const response = await Search.application(tenantId, filter);
     const additionalDetails = response?.address?.additionalDetails;
     let receivedPayment = response?.additionalDetails?.receivedPayment;
@@ -74,7 +98,101 @@ export const Search = {
       }
     }
 
+    if (getTripData) {
+      const filters = {
+        tenantId: tenantId,
+        referenceNos: applicationNos,
+      };
+      const data = await Search.getVehicleTripAlertsDetails({
+        tenantId: tenantId,
+        filters: filters,
+      });
+      tripList = data;
+    }
+
     let paymentPreference = response?.paymentPreference;
+
+    //fetch workers
+    let workers = response?.workers?.filter(
+      (worker) => worker?.status === "ACTIVE"
+    );
+
+    //dummy data
+    // workers = [
+    //   {
+    //     tenantId: 'pg.citya',
+    //     applicationId: '1013-FSM-2023-11-24-000356',
+    //     individualId: 'eb446b2b-c79b-4b36-ac86-cc1a12d4b7e4',
+    //     workerType: 'DRIVER',
+    //     status: 'ACTIVE',
+    //   },
+    //   {
+    //     tenantId: 'pg.citya',
+    //     applicationId: '1013-FSM-2023-11-24-000356',
+    //     individualId: 'b00a79bc-4574-4749-a371-e706a404588f',
+    //     workerType: 'HELPER',
+    //     status: 'ACTIVE',
+    //   },
+    //   {
+    //     tenantId: 'pg.citya',
+    //     applicationId: '1013-FSM-2023-11-24-000356',
+    //     individualId: '9a43e3d9-2499-4272-b316-3f10a1458d29',
+    //     workerType: 'HELPER',
+    //     status: 'ACTIVE',
+    //   },
+    // ];
+    let individualServResponse = null;
+
+    if (workers?.length > 0) {
+      individualServResponse = await FSMService.workerSearch({
+        tenantId,
+        details: {
+          Individual: {
+            id: [...workers?.map((row) => row?.individualId)],
+          },
+        },
+        params: {
+          limit: 100,
+          offset: 0,
+        },
+      });
+    }
+
+    //create a driver object and SW object
+    let objectToPushInDSODetails = [];
+    if (individualServResponse) {
+      let manualIdx = 0;
+      const combinedObject = mergeArraysByUniqueKey(
+        workers,
+        individualServResponse?.Individual,
+        "individualId",
+        "id"
+      );
+
+      combinedObject?.map((worker, idx) => {
+        // if(worker?.userDetails?.roles?.some(role=> role?.code === "FSM_DRIVER")){
+        //   objectToPushInDSODetails.push({
+        //     title: 'ES_APPLICATION_DETAILS_ASSIGNED_DRIVER',
+        //     value: `${worker?.name?.givenName} | ${worker?.individualId}`,
+        //   })
+        // }
+        if (worker?.workerType === "DRIVER" && worker?.status === "ACTIVE") {
+          objectToPushInDSODetails.push({
+            title: "ES_APPLICATION_DETAILS_ASSIGNED_DRIVER",
+            value: `${worker?.name?.givenName} | ${worker?.individualId}`,
+          });
+        } else if (
+          worker?.workerType === "HELPER" &&
+          worker?.status === "ACTIVE"
+        ) {
+          manualIdx += 1;
+          objectToPushInDSODetails.push({
+            title: `ES_APPLICATION_DETAILS_ASSIGNED_SW_${manualIdx}`,
+            value: `${worker?.name?.givenName} | ${worker?.individualId}`,
+          });
+        }
+      });
+    }
 
     let slumLabel = "";
     if (
@@ -117,69 +235,26 @@ export const Search = {
 
     const vehicleMake = _vehicle?.i18nKey;
     const vehicleCapacity = _vehicle?.capacity;
-    var amountPerTrip = "";
-    var totalAmount = "";
-    const demandDetails = await PaymentService.demandSearch(
-      tenantId,
-      applicationNos,
-      "FSM.TRIP_CHARGES"
-    );
-    if (
-      additionalDetails?.boundaryType === "Village" ||
-      additionalDetails?.boundaryType === "GP"
-    ) {
-      amountPerTrip =
-        response?.additionalDetails && response?.additionalDetails?.tripAmount
-          ? response?.additionalDetails?.tripAmount
-          : "N/A";
-      totalAmount = response?.additionalDetails?.tripAmount
-        ? response?.additionalDetails?.tripAmount * response?.noOfTrips
-        : "N/A";
-    } else {
-      amountPerTrip =
-        response?.additionalDetails && response?.additionalDetails?.tripAmount
-          ? response?.additionalDetails?.tripAmount
-          : demandDetails?.Demands[0]?.demandDetails[0]?.taxAmount || "N/A";
-      // const totalAmount = response?.noOfTrips === 0 || amountPerTrip === "N/A" ? "N/A" : response?.noOfTrips * Number(amountPerTrip);
-      totalAmount =
-        demandDetails?.Demands[0]?.demandDetails
-          ?.map((detail) => detail?.taxAmount)
-          ?.reduce((a, b) => a + b) || "N/A";
+
+    let demandDetails;
+    try {
+      demandDetails = await PaymentService.demandSearch(
+        tenantId,
+        applicationNos,
+        "FSM.TRIP_CHARGES"
+      );
+    } catch (err) {
+      console.error("error while fetching payment details");
     }
-    var balancePaid =
+    const amountPerTrip =
+      response?.additionalDetails && response?.additionalDetails.tripAmount
+        ? response.additionalDetails.tripAmount
+        : demandDetails?.Demands[0]?.demandDetails[0]?.taxAmount || "N/A";
+    // const totalAmount = response?.noOfTrips === 0 || amountPerTrip === "N/A" ? "N/A" : response?.noOfTrips * Number(amountPerTrip);
+    const totalAmount =
       demandDetails?.Demands[0]?.demandDetails
-        ?.map((detail) => detail?.collectionAmount)
+        ?.map((detail) => detail?.taxAmount)
         ?.reduce((a, b) => a + b) || "N/A";
-    balancePaid = balancePaid - response?.advanceAmount;
-    const isFullPaymentDone =
-      demandDetails?.Demands[0]?.demandDetails[0]?.taxAmount ===
-      demandDetails?.Demands[0]?.demandDetails[0]?.collectionAmount;
-    const isPaymentDone =
-      demandDetails?.Demands[0]?.demandDetails.length > 1
-        ? demandDetails?.Demands[0]?.demandDetails[
-            demandDetails?.Demands[0]?.demandDetails.length - 1
-          ]?.collectionAmount > 0
-        : demandDetails?.Demands[0]?.demandDetails[0]?.collectionAmount > 0;
-
-    let sanitationWorkerDetails = [],
-      helperCount = 0; //Show sanition worker information after DSO Changes
-    if (response?.sanitationWorker?.length) {
-      response?.sanitationWorker?.map((ele, index) => {
-        if (ele.workerType === "DRIVER") {
-          sanitationWorkerDetails.push({
-            title: "ES_APPLICATION_DETAILS_ASSIGNED_DRIVER",
-            value: `${response?.sanitationWorker[index].name} | ${response?.sanitationWorker[index].garima_id}`,
-          });
-        } else {
-          helperCount = helperCount + 1;
-          sanitationWorkerDetails.push({
-            title: `ES_APPLICATION_DETAILS_ASSIGNED_SW_${helperCount}`,
-            value: `${response?.sanitationWorker[index].name} | ${response?.sanitationWorker[index].garima_id}`,
-          });
-        }
-      });
-    }
-
     const employeeResponse = [
       {
         title: "ES_TITLE_APPLICATION_DETAILS",
@@ -330,38 +405,29 @@ export const Search = {
           //   title: t("ES_NEW_APPLICATION_DISTANCE_FROM_ROAD"),
           //   value: response?.pitDetail?.distanceFromRoad,
           // },
-        ],
-      },
-      {
-        title: "ES_APPLICATION_DETAILS_TRIPS_AND_AMOUNT_DETAILS",
-        values: [
           {
             title: "ES_APPLICATION_DETAILS_PAYMENT_NO_OF_TRIPS",
             value: response?.noOfTrips === 0 ? "N/A" : response?.noOfTrips,
           },
           {
             title: "ES_APPLICATION_DETAILS_AMOUNT_PER_TRIP",
-            value:
-              amountPerTrip === "N/A" || amountPerTrip === "null"
-                ? "N/A"
-                : "₹ " + amountPerTrip,
+            value: amountPerTrip === "N/A" ? "N/A" : "₹ " + amountPerTrip,
           },
           {
             title: "ES_PAYMENT_DETAILS_TOTAL_AMOUNT",
             value:
-              totalAmount === "N/A" || totalAmount === NaN
-                ? amountPerTrip === "N/A" || amountPerTrip === "null"
+              totalAmount === "N/A"
+                ? amountPerTrip === "N/A"
                   ? "N/A"
                   : "₹ " + response?.noOfTrips * amountPerTrip
                 : "₹ " + totalAmount,
           },
           {
-            title: "ES_PAYMENT_DETAILS_ADV_AMOUNT_PAID",
-            value: !isPaymentDone ? "N/A" : "₹ " + response?.advanceAmount,
-          },
-          {
-            title: "ES_PAYMENT_DETAILS_BLS_AMOUNT_PAID",
-            value: !isPaymentDone ? "N/A" : "₹ " + balancePaid,
+            title: "ES_PAYMENT_DETAILS_ADV_AMOUNT",
+            value:
+              response?.advanceAmount === null
+                ? "N/A"
+                : "₹ " + response?.advanceAmount,
           },
         ],
       },
@@ -370,9 +436,8 @@ export const Search = {
         values: [
           {
             title: "ES_APPLICATION_DETAILS_ASSIGNED_DSO",
-            value: dsoDetails?.name || "N/A",
+            value: dsoDetails?.displayName || "N/A",
           },
-          // { title: "ES_APPLICATION_DETAILS_VEHICLE_MAKE", value: vehicleMake || "N/A" },
           {
             title: "ES_APPLICATION_DETAILS_VEHICLE_NO",
             value: vehicle?.registrationNumber || "N/A",
@@ -385,183 +450,38 @@ export const Search = {
             title: "ES_APPLICATION_DETAILS_POSSIBLE_SERVICE_DATE",
             value: displayServiceDate(response?.possibleServiceDate) || "N/A",
           },
-          ...sanitationWorkerDetails,
         ],
       },
     ];
 
-    if (userType !== "CITIZEN" && userType !== "DSO") {
-      employeeResponse.map((data) => {
-        if (
-          data.title === "ES_TITLE_APPLICANT_DETAILS" ||
-          data.title === "Applicant Details"
-        ) {
-          data.values.push({
-            title: "COMMON_APPLICANT_GENDER",
-            value: response?.citizen?.gender,
-          });
-        }
-      });
-    }
-
-    if (userType !== "CITIZEN")
-      return {
-        tenantId: response.tenantId,
-        applicationDetails: employeeResponse,
-        additionalDetails: response?.additionalDetails,
-        totalAmount: totalAmount,
-        isFullPaymentDone: isFullPaymentDone,
-      };
-
-    const citizenResp = employeeResponse.reduce((arr, curr) => {
-      return arr.concat(curr.values.filter((i) => i !== null));
-    }, []);
-
-    const citizenResponse = citizenResp.map((detail) => {
-      // detail.title = detail.title?.replace("ES_", "CS_");
-      if (!detail.map) return detail;
-      delete detail.value;
-      return detail;
-    });
-
-    return {
-      tenantId: response.tenantId,
-      applicationDetails: citizenResponse,
-      pdfData: {
-        ...response,
-        amountPerTrip,
-        totalAmount,
-        vehicleMake,
-        vehicleCapacity,
-        slumName,
-        dsoDetails,
-      },
-    };
-  },
-
-  garimaDetails: async (t, tenantId, applicationNos, userType) => {
-    const filter = { applicationNos };
-    let dsoDetails = {};
-    let vehicle = {};
-    const response = await Search.application(tenantId, filter);
-    const additionalDetails = response?.address?.additionalDetails;
-    let receivedPayment = response?.additionalDetails?.receivedPayment;
-    if (response?.dsoId) {
-      const dsoFilters = {
-        ids: response.dsoId,
-        vehicleIds: response?.vehicleId,
-      };
-      [dsoDetails] = await DsoDetails(tenantId, dsoFilters, t);
-
-      if (response?.vehicleId) {
-        vehicle = dsoDetails.vehicles.find(
-          (vehicle) => vehicle.id === response.vehicleId
-        );
-      }
-    }
-
-    let paymentPreference = response?.paymentPreference;
-
-    let slumLabel = "";
-    if (
-      response?.address?.slumName &&
-      response?.address?.locality?.code &&
-      response?.tenantId
-    ) {
-      const slumData = await MdmsService.getSlumLocalityMapping(
-        response?.tenantId,
-        "FSM",
-        "Slum"
-      );
-      if (slumData[response?.address?.locality?.code]) {
-        slumLabel = slumData[response?.address?.locality?.code].find(
-          (slum) => slum?.code === response?.address?.slumName
-        );
-      } else {
-        const slumDataArray = Object.values(slumData);
-        for (let i = 0; i < slumDataArray.length; i++) {
-          const slumFound = slumDataArray[i].find(
-            (slum) => slum.code === response?.address?.slumName
-          );
-          if (slumFound) {
-            slumLabel = slumFound;
-          }
-        }
-      }
-    }
-    const slumName = slumLabel ? slumLabel.i18nKey : "N/A";
-
-    const state = Digit.ULBService.getStateId();
-    const vehicleMenu = await MdmsService.getVehicleType(
-      state,
-      "Vehicle",
-      "VehicleType"
-    );
-    const _vehicle = vehicleMenu?.find(
-      (vehicle) => response?.vehicleType === vehicle?.code
-    );
-
-    const vehicleMake = _vehicle?.i18nKey;
-    const vehicleCapacity = _vehicle?.capacity;
-    var amountPerTrip = "";
-    var totalAmount = "";
-    const demandDetails = await PaymentService.demandSearch(
-      tenantId,
-      applicationNos,
-      "FSM.TRIP_CHARGES"
-    );
-    if (
-      additionalDetails?.boundaryType === "Village" ||
-      additionalDetails?.boundaryType === "GP"
-    ) {
-      amountPerTrip =
-        response?.additionalDetails && response?.additionalDetails?.tripAmount
-          ? response?.additionalDetails?.tripAmount
-          : "N/A";
-      totalAmount = response?.additionalDetails?.tripAmount
-        ? response?.additionalDetails?.tripAmount * response?.noOfTrips
-        : "N/A";
-    } else {
-      amountPerTrip =
-        response?.additionalDetails && response?.additionalDetails?.tripAmount
-          ? response?.additionalDetails?.tripAmount
-          : demandDetails?.Demands[0]?.demandDetails[0]?.taxAmount || "N/A";
-      // const totalAmount = response?.noOfTrips === 0 || amountPerTrip === "N/A" ? "N/A" : response?.noOfTrips * Number(amountPerTrip);
-      totalAmount =
-        demandDetails?.Demands[0]?.demandDetails
-          ?.map((detail) => detail?.taxAmount)
-          ?.reduce((a, b) => a + b) || "N/A";
-    }
-    var balancePaid =
-      demandDetails?.Demands[0]?.demandDetails
-        ?.map((detail) => detail?.collectionAmount)
-        ?.reduce((a, b) => a + b) || "N/A";
-    balancePaid = balancePaid - response?.advanceAmount;
-    const isFullPaymentDone =
-      demandDetails?.Demands[0]?.demandDetails[0]?.taxAmount ===
-      demandDetails?.Demands[0]?.demandDetails[0]?.collectionAmount;
-    const isPaymentDone =
-      demandDetails?.Demands[0]?.demandDetails.length > 1
-        ? demandDetails?.Demands[0]?.demandDetails[
-            demandDetails?.Demands[0]?.demandDetails.length - 1
-          ]?.collectionAmount > 0
-        : demandDetails?.Demands[0]?.demandDetails[0]?.collectionAmount > 0;
-
-    const employeeResponse = [
-      {
-        title: "ES_TITLE_APPLICATION_DETAILS",
+    if (objectToPushInDSODetails?.length > 0) {
+      employeeResponse[employeeResponse?.length - 1] = {
+        title: "ES_APPLICATION_DETAILS_DSO_DETAILS",
         values: [
           {
-            title: "CS_FILE_DESLUDGING_APPLICATION_NO",
-            value: response?.applicationNo,
+            title: "ES_APPLICATION_DETAILS_ASSIGNED_DSO",
+            value: dsoDetails?.displayName || "N/A",
+          },
+          ...objectToPushInDSODetails,
+          {
+            title: "ES_APPLICATION_DETAILS_VEHICLE_NO",
+            value: vehicle?.registrationNumber || "N/A",
           },
           {
-            title: "ES_APPLICATION_CHANNEL",
-            value: `ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${response?.source}`,
+            title: "ES_APPLICATION_DETAILS_VEHICLE_CAPACITY",
+            value: response?.vehicleCapacity || "N/A",
+          },
+          {
+            title: "ES_APPLICATION_DETAILS_POSSIBLE_SERVICE_DATE",
+            value: displayServiceDate(response?.possibleServiceDate) || "N/A",
           },
         ],
-      },
-    ];
+      };
+    }
+
+    employeeResponse.map(({ values }) =>
+      values.map((i) => (i === null ? values.pop(i) : i))
+    );
 
     if (userType !== "CITIZEN" && userType !== "DSO") {
       employeeResponse.map((data) => {
@@ -581,25 +501,27 @@ export const Search = {
       return {
         tenantId: response.tenantId,
         applicationDetails: employeeResponse,
+        tripList: tripList,
         additionalDetails: response?.additionalDetails,
         totalAmount: totalAmount,
-        isFullPaymentDone: isFullPaymentDone,
+        applicationDetailsResponse: { ...response },
+        dsoDetails,
       };
 
-    const citizenResp = employeeResponse.reduce((arr, curr) => {
-      return arr.concat(curr.values.filter((i) => i !== null));
-    }, []);
+    // const citizenResp = employeeResponse.reduce((arr, curr) => {
+    //   return arr.concat(curr.values.filter((i) => i !== null));
+    // }, []);
 
-    const citizenResponse = citizenResp.map((detail) => {
-      // detail.title = detail.title?.replace("ES_", "CS_");
-      if (!detail.map) return detail;
-      delete detail.value;
-      return detail;
-    });
+    // const citizenResponse = citizenResp.map((detail) => {
+    //   // detail.title = detail.title?.replace("ES_", "CS_");
+    //   if (!detail.map) return detail;
+    //   delete detail.value;
+    //   return detail;
+    // });
 
     return {
       tenantId: response.tenantId,
-      applicationDetails: citizenResponse,
+      applicationDetails: employeeResponse,
       pdfData: {
         ...response,
         amountPerTrip,
