@@ -324,6 +324,8 @@ const ApplicationDetails = (props) => {
           },
         ];
 
+  console.log("applicationDetails", applicationDetails);
+
   if (isLoading) {
     return <Loader />;
   }
@@ -374,26 +376,26 @@ const ApplicationDetails = (props) => {
                 <StatusTable>
                   {detail?.values?.map((value, index) => {
                     if (value === null) return;
-                    if (value.map === true && value.value !== "N/A") {
+                    if (value?.map === true && value.value !== "N/A") {
                       return (
                         <Row
-                          key={t(value.title)}
-                          label={t(value.title)}
-                          text={<img src={t(value.value)} alt="" />}
+                          key={t(value?.title)}
+                          label={t(value?.title)}
+                          text={<img src={t(value?.value)} alt="" />}
                         />
                       );
                     }
                     return (
                       <Row
-                        key={t(value.title)}
-                        label={t(value.title)}
+                        key={t(value?.title)}
+                        label={t(value?.title)}
                         text={
                           value?.value && typeof value.value != "object"
                             ? t(value.value)
                             : "N/A"
                         }
                         last={index === detail?.values?.length - 1}
-                        caption={value.caption}
+                        caption={value?.caption}
                         className="border-none"
                       />
                     );
