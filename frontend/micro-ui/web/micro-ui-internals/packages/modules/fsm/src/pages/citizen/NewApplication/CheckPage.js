@@ -115,10 +115,13 @@ const CheckPage = ({ onSubmit, value }) => {
             label={t("CS_CHECK_ADDRESS")}
             text={`${
               address?.doorNo?.trim() ? `${address?.doorNo?.trim()}, ` : ""
-            } ${
-              address?.street?.trim() ? `${address?.street?.trim()}, ` : ""
-            } ${t(address?.locality?.i18nkey)}, ${t(address?.city.code)}`}
+            } ${address?.street?.trim() ? `${address?.street?.trim()}, ` : ""}${
+              address?.propertyLocation?.code === "WITHIN_ULB_LIMITS"
+                ? t(address?.locality?.i18nkey)
+                : address?.gramPanchayat?.i18nkey
+            }, ${t(address?.city.code)}`}
           />
+
           {address?.landmark && (
             <Row
               className="border-none"

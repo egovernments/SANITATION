@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FormStep,
   Loader,
@@ -25,6 +25,10 @@ const SelectPaymentPreference = ({
   const [MinAmount, setMinAmount] = useState(null);
   const [totalAmount, setTotalAmount] = useState(null);
 
+  const advanceAmountRef = useRef(advanceAmount);
+  const minAmountRef = useRef(MinAmount);
+  const totalAmountRef = useRef(totalAmount);
+
   const [billError, setError] = useState(false);
 
   const inputs = [
@@ -40,22 +44,27 @@ const SelectPaymentPreference = ({
           ₹
         </div>
       ),
-      disable: MinAmount === totalAmount ? true : false,
+      disable: minAmountRef.current === totalAmountRef.current ? true : false,
       default: formData?.selectPaymentPreference?.advanceAmount,
       isMandatory: true,
     },
   ];
 
   const setAdvanceAmountValue = (value) => {
+    advanceAmountRef.current = value;
     setAdvanceAmount(value);
   };
 
   const onSkip = () => {
-    onSelect(config.key, { advanceAmount: MinAmount });
+    onSelect(config.key, { advanceAmount: minAmountRef.current });
   };
 
   const onSubmit = () => {
-    onSelect(config.key, { advanceAmount, MinAmount, totalAmount });
+    onSelect(config.key, {
+      advanceAmount: advanceAmountRef.current,
+      MinAmount: minAmountRef.current,
+      totalAmount: totalAmountRef.current,
+    });
   };
 
   useEffect(() => {
@@ -92,12 +101,15 @@ const SelectPaymentPreference = ({
             totalTripAmount: totaltripAmount,
           });
           setMinAmount(advanceBalanceAmount);
+          minAmountRef.current = advanceBalanceAmount;
           setTotalAmount(totaltripAmount);
           Digit.SessionStorage.set("total_amount", totaltripAmount);
           Digit.SessionStorage.set("advance_amount", advanceBalanceAmount);
           formData?.selectPaymentPreference?.advanceAmount
-            ? setAdvanceAmount(formData?.selectPaymentPreference?.advanceAmount)
-            : setAdvanceAmount(advanceBalanceAmount);
+            ? setAdvanceAmountValue(
+                formData?.selectPaymentPreference?.advanceAmount
+              )
+            : setAdvanceAmountValue(advanceBalanceAmount);
 
           setError(false);
         } else if (billSlab?.price === 0) {
@@ -109,7 +121,7 @@ const SelectPaymentPreference = ({
           setError(true);
         }
       } else {
-        setAdvanceAmount(0);
+        setAdvanceAmountValue(0);
         Digit.SessionStorage.set("advance_amount", 0);
       }
     })();
@@ -124,7 +136,7 @@ const SelectPaymentPreference = ({
   if (userType === "employee") {
     return null;
   }
-  let currentValue = advanceAmount;
+  let currentValue = advanceAmountRef.current;
   let max = Digit.SessionStorage.get("total_amount");
   let min = Digit.SessionStorage.get("advance_amount");
 
@@ -185,7 +197,7 @@ const SelectPaymentPreference = ({
                     key={input.name}
                     disable={input.disable}
                     onChange={(e) => setAdvanceAmountValue(e.target.value)}
-                    value={advanceAmount}
+                    value={advanceAmountRef.curr}
                     {...input.validation}
                     style={
                       currentValue > max || currentValue < min
