@@ -58,6 +58,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
   const history = useHistory();
 
   const [canSubmit, setSubmitValve] = useState(false);
+
   // const [channel, setChannel] = useState(null);
 
   const defaultValues = {
@@ -181,16 +182,18 @@ export const NewApplication = ({ parentUrl, heading }) => {
           pincode,
           slumName: slum,
           locality: {
-            code: localityCode
-              ? localityCode
-              : village?.code
-              ? village?.code
-              : gramPanchayat?.code,
-            name: localityName
-              ? localityName
-              : village?.name
-              ? village?.name
-              : gramPanchayat?.name,
+            code:
+              data?.address?.propertyLocation?.code === "WITHIN_ULB_LIMITS"
+                ? localityCode
+                : village?.code
+                ? village?.code
+                : gramPanchayat?.code,
+            name:
+              data?.address?.propertyLocation?.code === "WITHIN_ULB_LIMITS"
+                ? localityName
+                : village?.name
+                ? village?.name
+                : gramPanchayat?.name,
           },
           geoLocation: {
             latitude: data?.address?.latitude,
