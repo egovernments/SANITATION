@@ -26,6 +26,7 @@ export const FsmBreadCrumb = ({ location, defaultPath }) => {
   );
   const isVehicleLog = location?.pathname?.includes("fstp-operator-details");
   const isInbox = location?.pathname?.includes("inbox");
+
   const isFsm = location?.pathname?.includes("fsm");
   const isSearch = location?.pathname?.includes("search");
   const isRegistry = location?.pathname?.includes("registry");
@@ -89,6 +90,8 @@ export const FsmBreadCrumb = ({ location, defaultPath }) => {
           ? null
           : FSTPO
           ? `/${window?.contextPath}/employee/fsm/fstp-inbox`
+          : isVehicleLog
+          ? `/${window?.contextPath}/employee/fsm/vehicle-tracking/alerts`
           : `/${window?.contextPath}/employee`,
       query: isVehicleDetails
         ? "selectedTabs=VEHICLE"

@@ -39,7 +39,7 @@ const DesktopInbox = (props) => {
                       `/${window.contextPath}/${
                         DSO
                           ? "citizen/fsm/dso-application-details"
-                          : "employee/fsm/application-details"
+                          : "employee/fsm/fstp-operator-details"
                       }/` + row?.original["applicationNo"]
                     }
                   >
