@@ -233,6 +233,7 @@ const SelectLocalityOrGramPanchayat = ({
       });
     }
   }
+
   if (userType === "employee") {
     return (
       <div>
@@ -353,10 +354,12 @@ const SelectLocalityOrGramPanchayat = ({
         onSelect={onSubmit}
         isDisabled={
           propertyLocation?.code === "WITHIN_ULB_LIMITS"
-            ? selectedLocality &&
-              selectedLocality?.name === "Other" &&
-              !newLocality
-            : selectedGp && selectedGp?.name === "Other" && !newGp
+            ? selectedLocality?.name === "Other"
+              ? !newLocality
+              : !selectedLocality
+            : selectedGp?.name === "Other"
+            ? !newGp
+            : Object.keys(selectedGp).length === 0
         }
         t={t}
       >
