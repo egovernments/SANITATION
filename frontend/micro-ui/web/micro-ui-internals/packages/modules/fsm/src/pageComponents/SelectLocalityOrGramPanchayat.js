@@ -88,6 +88,10 @@ const SelectLocalityOrGramPanchayat = ({
   );
 
   useEffect(() => {
+    selectVillage({});
+  }, [selectedGp]);
+
+  useEffect(() => {
     if (selectedCity && fetchedLocalities) {
       let __localityList = fetchedLocalities;
       let filteredLocalityList = [];
