@@ -286,7 +286,9 @@ export const SuccessfulPayment = (props) => {
               className="primary-label-btn d-grid"
               style={{ marginLeft: "unset", marginRight: "20px" }}
               onClick={
-                IsDisconnectionFlow === "true"
+                isFSMResponse
+                  ? printDisconnectionRecipet
+                  : IsDisconnectionFlow === "true"
                   ? printDisconnectionRecipet
                   : printReciept
               }
