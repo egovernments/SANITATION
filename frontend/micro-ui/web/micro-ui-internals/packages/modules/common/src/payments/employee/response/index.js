@@ -30,6 +30,7 @@ export const SuccessfulPayment = (props) => {
 
   props.setLink(combineResponseFSM);
   let { consumerCode, receiptNumber, businessService } = useParams();
+
   const tenantId = Digit.ULBService.getCurrentTenantId();
   receiptNumber = receiptNumber.replace(/%2F/g, "/");
   const {
@@ -256,10 +257,13 @@ export const SuccessfulPayment = (props) => {
 
   const printDisconnectionRecipet = async () => {
     let tenantid = tenantId ? tenantId : Digit.ULBService.getCurrentTenantId();
-    let consumercode = window.location.href.substring(
-      window.location.href.lastIndexOf(consumerCode),
-      window.location.href.lastIndexOf("?")
-    );
+    let consumercode;
+    isFSMResponse
+      ? (consumercode = consumerCode)
+      : (consumercode = window.location.href.substring(
+          window.location.href.lastIndexOf(consumerCode),
+          window.location.href.lastIndexOf("?")
+        ));
     await Digit.Utils.downloadReceipt(
       consumercode,
       businessService,
