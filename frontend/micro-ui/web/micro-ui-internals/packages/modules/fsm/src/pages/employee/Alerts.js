@@ -20,7 +20,7 @@ const config = {
       totalCount: response?.totalCount,
       vehicleLog: response?.vehicleTrip.map((trip) => {
         const owner = trip.tripOwner;
-        const displayName = owner.name;
+        const displayName = owner?.name;
         const tripOwner = { ...owner, displayName };
         return { ...trip, tripOwner };
       }),
@@ -118,7 +118,7 @@ const Alerts = () => {
         onSearch={onSearch}
         totalRecords={0}
         isPaginationRequired={false}
-        parentRoute={parentRoute}
+        // parentRoute={parentRoute}
       />
     </div>
   );
