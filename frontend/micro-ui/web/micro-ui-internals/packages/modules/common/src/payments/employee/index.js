@@ -9,13 +9,19 @@ import { testForm } from "../../hoc/testForm-config";
 import { subFormRegistry } from "@egovernments/digit-ui-libraries";
 import { useTranslation } from "react-i18next";
 import IFrameInterface from "./IFrameInterface";
+
 subFormRegistry.addSubForm("testForm", testForm);
+
 const EmployeePayment = ({ stateCode, cityCode, moduleCode }) => {
   const userType = "employee";
   const { path: currentPath } = useRouteMatch();
+
   const { t } = useTranslation();
+
   const [link, setLink] = useState(null);
+
   const commonProps = { stateCode, cityCode, moduleCode, setLink };
+
   const isFsm =
     location?.pathname?.includes("fsm") || location?.pathname?.includes("FSM");
 
@@ -30,12 +36,12 @@ const EmployeePayment = ({ stateCode, cityCode, moduleCode }) => {
           marginBottom: "10px",
         }}
       >
-        <Link to={`/digit-ui/employee`}>{t("ES_COMMON_HOME")}</Link>
+        <Link to={`/sanitation-ui/employee`}>{t("ES_COMMON_HOME")}</Link>
         {isFsm ? (
-          <Link to={`/digit-ui/employee`}>/ {t("ES_TITLE_FSM")} </Link>
+          <Link to={`/sanitation-ui/employee`}>/ {t("ES_TITLE_FSM")} </Link>
         ) : null}
         {isFsm ? (
-          <Link to={`/digit-ui/employee/fsm/inbox`}>
+          <Link to={`/sanitation-ui/employee/fsm/inbox`}>
             / {t("ES_TITLE_INBOX")}
           </Link>
         ) : null}
@@ -60,4 +66,5 @@ const EmployeePayment = ({ stateCode, cityCode, moduleCode }) => {
     </React.Fragment>
   );
 };
+
 export default EmployeePayment;

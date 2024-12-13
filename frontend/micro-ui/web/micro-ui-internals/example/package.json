@@ -11,7 +11,7 @@
   "devDependencies": {
     "@egovernments/digit-ui-libraries": "1.6.0-fsm.1.4.0",
     "@egovernments/digit-ui-fsm-libraries": "1.5.0",
-    "@egovernments/digit-ui-module-common": "1.5.30",
+    "@egovernments/digit-ui-module-common": "1.6.0-fsm.1.4",
     "@egovernments/digit-ui-module-dss": "1.8.0-beta.1",
     "@egovernments/digit-ui-module-pgr": "1.5.0",
     "@egovernments/digit-ui-module-hrms": "1.5.20",

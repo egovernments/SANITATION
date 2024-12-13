@@ -9,7 +9,10 @@
     "packages/fsm-css",
     "example",
     "packages/react-components",
-    "packages/modules/*"
+    "packages/modules/common",
+    "packages/modules/fsm",
+    "packages/modules/tqm"
+
   ],
   "author": "Abhinav Kushwaha <abhinav.kushwaha@egovernments.org>",
   "license": "MIT",
@@ -29,6 +32,7 @@
     "dev:components": "cd packages/react-components && yarn start",
     "dev:fsm": "cd packages/modules/fsm && yarn start",
     "dev:tqm": "cd packages/modules/tqm && yarn start",
+    "dev:common": "cd packages/modules/common && yarn start",
     "dev:example": "cd example && yarn start",
     "build": "run-p build:**",
     "build:libraries": "cd packages/libraries && yarn build",
@@ -36,6 +40,7 @@
     "build:components": "cd packages/react-components && yarn build",
     "build:fsm": "cd packages/modules/fsm && yarn build",
     "build:tqm": "cd packages/modules/tqm && yarn build",
+    "build:common": "cd packages/modules/common && yarn build",
     "deploy:jenkins": "./scripts/jenkins.sh"
   },
   "devDependencies": {

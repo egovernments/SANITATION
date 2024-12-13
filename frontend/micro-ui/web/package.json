@@ -11,14 +11,16 @@
     "micro-ui-internals/packages/libraries",
     "micro-ui-internals/packages/fsm-libraries",
     "micro-ui-internals/packages/react-components",
-    "micro-ui-internals/packages/modules/*"
+    "micro-ui-internals/packages/modules/fsm",
+    "micro-ui-internals/packages/modules/tqm",
+    "micro-ui-internals/packages/modules/common"
     ],
   "homepage": "/sanitation-ui",
   "dependencies": {
     "@egovernments/digit-ui-css": "1.5.9",
     "@egovernments/digit-ui-libraries": "1.6.0-fsm.1.4.0",
     "@egovernments/digit-ui-fsm-libraries": "1.5.0",
-    "@egovernments/digit-ui-module-common": "1.5.30",
+    "@egovernments/digit-ui-module-common": "1.6.0-fsm.1.4",
     "@egovernments/digit-ui-module-dss": "1.8.0-beta.1",
     "@egovernments/digit-ui-module-hrms": "1.5.20",
     "@egovernments/digit-ui-module-engagement": "1.5.20",
