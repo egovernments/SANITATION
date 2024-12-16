@@ -20,6 +20,8 @@ const EditForm = ({
     "FSM",
     "CommonFieldsConfig"
   );
+
+  console.log("applicationData", applicationData);
   const {
     data: preFields,
     isLoading: isApplicantConfigLoading,
@@ -75,7 +77,7 @@ const EditForm = ({
     address: {
       pincode: applicationData.address.pincode,
       locality: {
-        ...applicationData.address.locality,
+        ...applicationData?.address?.locality,
         i18nkey: `${applicationData.tenantId
           .toUpperCase()
           .split(".")
@@ -249,7 +251,7 @@ const EditForm = ({
         additionalDetails: {
           boundaryType:
             propertyLocation === "FROM_GRAM_PANCHAYAT"
-              ? village?.code
+              ? applicationData?.address?.additionalDetails?.village?.code
                 ? "Village"
                 : "GP"
               : "Locality",
@@ -269,17 +271,19 @@ const EditForm = ({
         locality: {
           ...applicationData.address.locality,
           code:
-            propertyLocation === "FROM_GRAM_PANCHAYAT"
+            propertyLocation === "WITHIN_ULB_LIMITS"
+              ? applicationData?.address?.locality.code
+              : applicationData?.address?.additionalDetails?.village?.code
               ? applicationData?.address?.additionalDetails?.village?.code
-                ? village?.code
-                : gramPanchayat?.code
-              : localityCode,
+              : applicationData?.address?.additionalDetails?.gramPanchayat
+                  ?.code,
           name:
-            propertyLocation === "FROM_GRAM_PANCHAYAT"
+            propertyLocation === "WITHIN_ULB_LIMITS"
+              ? applicationData?.address?.locality.name
+              : applicationData?.address?.additionalDetails?.village?.name
               ? applicationData?.address?.additionalDetails?.village?.name
-                ? village?.name
-                : gramPanchayat?.name
-              : localityName,
+              : applicationData?.address?.additionalDetails?.gramPanchayat
+                  ?.name,
         },
         geoLocation: {
           ...applicationData.address.geoLocation,
