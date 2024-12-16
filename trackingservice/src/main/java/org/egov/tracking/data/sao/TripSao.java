@@ -67,8 +67,9 @@ public class TripSao {
     public String fetchFsmTrips(String referenceApplicationNo, String tripId, String tenantId, String authToken, String vehicleTripUrl) {
          log.info("## fetchFsmTripsForApplication is invoked");
         HttpEntity<Map<String, Object>> entity = SaoUtil.getMapHttpEntity(authToken, null);
-        StringBuilder searchUrl = new StringBuilder().append(vehicleTripUrl).append("vehicle/trip/v1/").append("_search?tenantId=").append(tenantId).append("&applicationStatus=").append(
-            Constants.FSM_TRIP_SEARCH_STATUS_FILTER);
+//        StringBuilder searchUrl = new StringBuilder().append(vehicleTripUrl).append("vehicle/trip/v1/").append("_search?tenantId=").append(tenantId).append("&applicationStatus=").append(
+//            Constants.FSM_TRIP_SEARCH_STATUS_FILTER);
+        StringBuilder searchUrl = new StringBuilder().append(vehicleTripUrl).append("vehicle/trip/v1/").append("_search?tenantId=").append(tenantId);
         if (referenceApplicationNo != null) {
             searchUrl.append("&refernceNos=").append(referenceApplicationNo);
         }
