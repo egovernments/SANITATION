@@ -114,13 +114,14 @@ export const CollectPayment = (props) => {
 
   const onSubmit = async (data) => {
     if (
-      applicationData?.address?.additionalDetails?.boundaryType === "GP" ||
-      applicationData?.address?.additionalDetails?.boundaryType === "Village"
+      (applicationData?.address?.additionalDetails?.boundaryType === "GP" ||
+        applicationData?.address?.additionalDetails?.boundaryType ===
+          "Village") &&
+      applicationData?.applicationStatus !== "DSO_INPROGRESS"
     ) {
       bill.totalAmount =
         Number(applicationData?.additionalDetails?.tripAmount) *
-          applicationData?.noOfTrips -
-        applicationData?.advanceAmount;
+        applicationData?.noOfTrips;
     } else {
       bill.totalAmount = Math.round(bill.totalAmount);
     }
@@ -254,6 +255,16 @@ export const CollectPayment = (props) => {
         recieptRequest
       );
       queryClient.invalidateQueries();
+      isFsm
+        ? history.push(
+            `${
+              props.basePath
+            }/success/${businessService}/${resposne?.Payments[0]?.paymentDetails[0]?.receiptNumber.replace(
+              /\//g,
+              "%2F"
+            )}/${resposne?.Payments[0]?.paymentDetails[0]?.bill?.consumerCode}`
+          )
+        :
       history.push(
         `${
           props.basePath
@@ -274,12 +285,10 @@ export const CollectPayment = (props) => {
     }
   };
 
-  useEffect(() => {
-    document
-      ?.getElementById("paymentInfo")
-      ?.scrollIntoView({ behavior: "smooth" });
-    document?.querySelector("#paymentInfo + .label-field-pair input")?.focus();
-  }, [selectedPaymentMode]);
+  // useEffect(() => {
+  //   document?.getElementById("paymentInfo")?.scrollIntoView({ behavior: "smooth" });
+  //   document?.querySelector("#paymentInfo + .label-field-pair input")?.focus();
+  // }, [selectedPaymentMode]);
 
   let config = [
     {
