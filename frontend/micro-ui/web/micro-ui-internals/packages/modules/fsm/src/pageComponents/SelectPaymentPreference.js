@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FormStep,
   Loader,
@@ -25,10 +25,6 @@ const SelectPaymentPreference = ({
   const [MinAmount, setMinAmount] = useState(null);
   const [totalAmount, setTotalAmount] = useState(null);
 
-  const advanceAmountRef = useRef(advanceAmount);
-  const minAmountRef = useRef(MinAmount);
-  const totalAmountRef = useRef(totalAmount);
-
   const [billError, setError] = useState(false);
 
   const inputs = [
@@ -44,27 +40,22 @@ const SelectPaymentPreference = ({
           ₹
         </div>
       ),
-      disable: minAmountRef.current === totalAmountRef.current ? true : false,
+      disable: MinAmount === totalAmount ? true : false,
       default: formData?.selectPaymentPreference?.advanceAmount,
       isMandatory: true,
     },
   ];
 
   const setAdvanceAmountValue = (value) => {
-    advanceAmountRef.current = value;
     setAdvanceAmount(value);
   };
 
   const onSkip = () => {
-    onSelect(config.key, { advanceAmount: minAmountRef.current });
+    onSelect(config.key, { advanceAmount: MinAmount });
   };
 
   const onSubmit = () => {
-    onSelect(config.key, {
-      advanceAmount: advanceAmountRef.current,
-      MinAmount: minAmountRef.current,
-      totalAmount: totalAmountRef.current,
-    });
+    onSelect(config.key, { advanceAmount });
   };
 
   useEffect(() => {
@@ -80,7 +71,9 @@ const SelectPaymentPreference = ({
         const { slum: slumDetails } = formData.address;
         const slum = slumDetails ? "YES" : "NO";
         const billingDetails = await Digit.FSMService.billingSlabSearch(
-          tenantId,
+          tenantId === formData?.address?.city?.code
+            ? tenantId
+            : formData?.address?.city?.code,
           {
             propertyType: formData?.subtype?.code,
             capacity,
@@ -97,19 +90,21 @@ const SelectPaymentPreference = ({
             billSlab.price * formData?.selectTripNo?.tripNo?.code;
           const {
             advanceAmount: advanceBalanceAmount,
-          } = await Digit.FSMService.advanceBalanceCalculate(tenantId, {
-            totalTripAmount: totaltripAmount,
-          });
+          } = await Digit.FSMService.advanceBalanceCalculate(
+            tenantId === formData?.address?.city?.code
+              ? tenantId
+              : formData?.address?.city?.code,
+            {
+              totalTripAmount: totaltripAmount,
+            }
+          );
           setMinAmount(advanceBalanceAmount);
-          minAmountRef.current = advanceBalanceAmount;
           setTotalAmount(totaltripAmount);
           Digit.SessionStorage.set("total_amount", totaltripAmount);
           Digit.SessionStorage.set("advance_amount", advanceBalanceAmount);
           formData?.selectPaymentPreference?.advanceAmount
-            ? setAdvanceAmountValue(
-                formData?.selectPaymentPreference?.advanceAmount
-              )
-            : setAdvanceAmountValue(advanceBalanceAmount);
+            ? setAdvanceAmount(formData?.selectPaymentPreference?.advanceAmount)
+            : setAdvanceAmount(advanceBalanceAmount);
 
           setError(false);
         } else if (billSlab?.price === 0) {
@@ -121,8 +116,9 @@ const SelectPaymentPreference = ({
           setError(true);
         }
       } else {
-        setAdvanceAmountValue(0);
+        setAdvanceAmount(0);
         Digit.SessionStorage.set("advance_amount", 0);
+        Digit.SessionStorage.set("amount_per_trip", null);
       }
     })();
   }, [
@@ -136,7 +132,7 @@ const SelectPaymentPreference = ({
   if (userType === "employee") {
     return null;
   }
-  let currentValue = advanceAmountRef.current;
+  let currentValue = advanceAmount;
   let max = Digit.SessionStorage.get("total_amount");
   let min = Digit.SessionStorage.get("advance_amount");
 
@@ -156,32 +152,28 @@ const SelectPaymentPreference = ({
         }
         t={t}
       >
-        <div className="fsm-citizen-payment-label-wrapper">
-          <KeyNote
-            keyValue={t("ADV_TOTAL_AMOUNT") + " (₹)"}
-            note={
-              formData?.address?.propertyLocation?.code ===
-              "FROM_GRAM_PANCHAYAT"
-                ? "N/A"
-                : max
-            }
-          />
-          {formData?.address?.propertyLocation?.code ===
-            "FROM_GRAM_PANCHAYAT" && (
-            <CardLabelError
-              style={{
-                width: "100%",
-                marginTop: "-15px",
-                fontSize: "14px",
-                marginBottom: "0px",
-              }}
-            >
-              {t("FSM_TOTAL_AMOUNT_NOTE")}
-            </CardLabelError>
-          )}{" "}
-          <KeyNote keyValue={t("FSM_ADV_MIN_PAY") + " (₹)"} note={min} />
-        </div>
-
+        <KeyNote
+          keyValue={t("ADV_TOTAL_AMOUNT") + " (₹)"}
+          note={
+            formData?.address?.propertyLocation?.code === "FROM_GRAM_PANCHAYAT"
+              ? "N/A"
+              : max
+          }
+        />
+        {formData?.address?.propertyLocation?.code ===
+          "FROM_GRAM_PANCHAYAT" && (
+          <CardLabelError
+            style={{
+              width: "100%",
+              marginTop: "-15px",
+              fontSize: "14px",
+              marginBottom: "0px",
+            }}
+          >
+            {t("FSM_TOTAL_AMOUNT_NOTE")}
+          </CardLabelError>
+        )}
+        <KeyNote keyValue={t("FSM_ADV_MIN_PAY") + " (₹)"} note={min} />
         {inputs?.map((input, index) => {
           return (
             <React.Fragment key={index}>
@@ -190,46 +182,40 @@ const SelectPaymentPreference = ({
                   {t(input.label) + " (₹)"}
                   {input.isMandatory ? " * " : null}
                 </CardLabel>
-                <div className="field" style={{ display: "flex" }}>
-                  {input.componentInFront ? input.componentInFront : null}
+                <div>
                   <TextInput
                     type={input.type}
                     key={input.name}
                     disable={input.disable}
                     onChange={(e) => setAdvanceAmountValue(e.target.value)}
-                    value={advanceAmountRef.curr}
+                    value={advanceAmount}
                     {...input.validation}
-                    style={
-                      currentValue > max || currentValue < min
-                        ? { borderColor: "red" }
-                        : {}
-                    }
                   />
+                  {currentValue > max && (
+                    <CardLabelError
+                      style={{
+                        width: "100%",
+                        marginTop: "-15px",
+                        fontSize: "14px",
+                        marginBottom: "0px",
+                      }}
+                    >
+                      {t("FSM_ADVANCE_AMOUNT_MAX")}
+                    </CardLabelError>
+                  )}
+                  {currentValue < min && (
+                    <CardLabelError
+                      style={{
+                        width: "100%",
+                        marginTop: "-15px",
+                        fontSize: "14px",
+                        marginBottom: "0px",
+                      }}
+                    >
+                      {t("FSM_ADVANCE_AMOUNT_MIN")}
+                    </CardLabelError>
+                  )}
                 </div>
-                {currentValue > max && (
-                  <CardLabelError
-                    style={{
-                      width: "100%",
-                      marginTop: "-15px",
-                      fontSize: "14px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    {t("FSM_ADVANCE_AMOUNT_MAX")}
-                  </CardLabelError>
-                )}
-                {currentValue < min && (
-                  <CardLabelError
-                    style={{
-                      width: "100%",
-                      marginTop: "-15px",
-                      fontSize: "14px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    {t("FSM_ADVANCE_AMOUNT_MIN")}
-                  </CardLabelError>
-                )}
               </LabelFieldPair>
             </React.Fragment>
           );
