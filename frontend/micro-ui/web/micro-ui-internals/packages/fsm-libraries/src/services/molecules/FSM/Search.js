@@ -499,7 +499,7 @@ export const Search = {
 
     if (userType !== "CITIZEN")
       return {
-        tenantId: response.tenantId,
+        tenantId: response?.tenantId,
         applicationDetails: employeeResponse,
         tripList: tripList,
         additionalDetails: response?.additionalDetails,
@@ -520,7 +520,7 @@ export const Search = {
     // });
 
     return {
-      tenantId: response.tenantId,
+      tenantId: response?.tenantId,
       applicationDetails: employeeResponse,
       pdfData: {
         ...response,
