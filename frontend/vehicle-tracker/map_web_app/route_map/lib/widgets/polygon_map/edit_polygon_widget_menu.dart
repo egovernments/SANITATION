@@ -9,7 +9,7 @@ Widget editPolygonMenuWidget(MapControllers controller, BuildContext context) {
   final theme = DigitTheme.instance;
 
   return Align(
-    alignment: Alignment.centerLeft,
+    alignment: Alignment.topRight,
     child: SizedBox(
       width: 350,
       child: DigitCard(
