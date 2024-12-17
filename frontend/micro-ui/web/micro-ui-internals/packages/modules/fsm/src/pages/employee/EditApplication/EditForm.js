@@ -298,6 +298,8 @@ const EditForm = ({
       advanceAmount:
         typeof advanceAmount === "number"
           ? JSON.stringify(advanceAmount)
+          : advanceAmount === null
+          ? "0"
           : advanceAmount,
     };
 

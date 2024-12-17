@@ -221,6 +221,8 @@ export const NewApplication = ({ parentUrl, heading }) => {
         advanceAmount:
           typeof advanceAmount === "number"
             ? JSON.stringify(advanceAmount)
+            : advanceAmount === null
+            ? "0"
             : advanceAmount,
       },
       workflow: null,
