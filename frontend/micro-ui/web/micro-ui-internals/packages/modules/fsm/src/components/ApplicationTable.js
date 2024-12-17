@@ -1,12 +1,20 @@
-import {Button, CloseSvg, Modal} from "@egovernments/digit-ui-react-components";
-import React, {Fragment, useState} from "react";
-import {useTranslation} from "react-i18next";
+import {
+  Button,
+  CloseSvg,
+  Modal,
+} from "@egovernments/digit-ui-react-components";
+import React, { Fragment, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
 
   // Format date as DD/MM/YY
-  const formattedDate = date.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" });
+  const formattedDate = date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+  });
 
   return dateString ? formattedDate : null;
 }
@@ -15,7 +23,11 @@ function formatTime(dateString) {
   const date = new Date(dateString);
 
   // Format time as hh:mm
-  const formattedTime = date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
+  const formattedTime = date.toLocaleTimeString("en-US", {
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return dateString ? formattedTime : null;
 }
@@ -33,7 +45,7 @@ export const ApplicationTable = ({ detail }) => {
     starttime: formatTime(i?.actualStartTime) || "N/A",
     endtime: formatTime(i?.actualEndTime) || "N/A",
     endtype: i?.tripEndType || "N/A",
-    // alerts: i?.alerts?.split(",")?.length || "0",
+    alerts: i?.alerts?.split(",")?.length || "0",
     route: i?.routeId || "N/A",
   }));
 
@@ -44,7 +56,7 @@ export const ApplicationTable = ({ detail }) => {
     { key: "starttime", label: "Start Time" },
     { key: "endtime", label: "End Time" },
     { key: "endtype", label: "End Type" },
-    // { key: "alerts", label: "Alerts" },
+    { key: "alerts", label: "Alerts" },
     { key: "route", label: "Route" },
   ];
 
@@ -92,11 +104,25 @@ export const ApplicationTable = ({ detail }) => {
                   {Object.keys(row).map((key, colIndex) => (
                     <td className="data">
                       {key === "tripstatus" ? (
-                        <span className={row[key] === "Completed" ? "sla-cell-success" : row[key] === "Ongoing" ? "sla-cell-warning" : "sla-cell-error"}>
+                        <span
+                          className={
+                            row[key] === "Completed"
+                              ? "sla-cell-success"
+                              : row[key] === "Ongoing"
+                              ? "sla-cell-warning"
+                              : "sla-cell-error"
+                          }
+                        >
                           {t(row[key] || "NA")}
                         </span>
                       ) : key === "route" ? (
-                        <Button variation="secondary" label="View Route" onButtonClick={() => onButtonClick({ id: row.tripid })} />
+                        <Button
+                          variation="secondary"
+                          label="View Route"
+                          onButtonClick={() =>
+                            onButtonClick({ id: row.tripid })
+                          }
+                        />
                       ) : (
                         row[key]
                       )}

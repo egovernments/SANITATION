@@ -28,7 +28,7 @@ const config = {
   },
 };
 
-const Alerts = () => {
+const Alerts = (props) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [searchParamsApplication, setSearchParamsApplication] = useState(null);
@@ -118,7 +118,7 @@ const Alerts = () => {
         onSearch={onSearch}
         totalRecords={0}
         isPaginationRequired={false}
-        // parentRoute={parentRoute}
+        parentRoute={props.parentRoute}
       />
     </div>
   );
