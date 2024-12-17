@@ -77,7 +77,7 @@ Widget polygonListMenuWidget(MapControllers controller, BuildContext context) {
   final theme = DigitTheme.instance;
 
   return Align(
-    alignment: Alignment.centerLeft,
+    alignment: Alignment.topRight,
     child: Container(
       width: 400,
       constraints: const BoxConstraints(maxHeight: 400),

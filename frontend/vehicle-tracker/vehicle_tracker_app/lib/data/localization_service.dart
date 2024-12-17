@@ -79,7 +79,7 @@ class LocalizationService {
   // get localization from API
   static Future<List<LocalizationMessageModel>?> getLocalicationFromAPI(String locale) async {
     final localizationUrl = "$unifiedDevApiUrl/localization/messages/v1/_search";
-    final url = "$localizationUrl?module=rainmaker-fsm&locale=$locale&tenantId=pb.amritsar";
+    final url = "$localizationUrl?module=rainmaker-fsm&locale=$locale&tenantId=pb";
 
     Map<String, dynamic> body = {
       "RequestInfo": {
