@@ -330,17 +330,13 @@ const DesktopInbox = (props) => {
             disableSortBy: true,
             Cell: ({ row }) => {
               const allTrips = props?.alertsData?.filter(
-                (i) =>
-                  i?.applicationNo ===
-                  row.original["tripDetails"]?.[0]?.referenceNo
-              )?.[0];
+                (i) => i?.tripId === row?.original?.applicationNo
+              );
 
-              const alert = allTrips?.alert;
-              let noOfAlerts;
-              noOfAlerts = alert?.map ? alert?.length : alert;
+              noOfAlerts = allTrips?.length;
               return (
                 <div>
-                  <span>{noOfAlerts || "N/A"}</span>
+                  <span>{noOfAlerts || 0}</span>
                 </div>
               );
             },
