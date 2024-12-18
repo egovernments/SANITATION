@@ -47,20 +47,20 @@ public class TestRepository {
   @Autowired
   private ServiceConfiguration config;
 
-  public void save(TestRequest testRequest) {
-    producer.push(config.getTestSaveTopic(), testRequest);
-    producer.push(config.getTestSaveEventTopic(), testRequest);
-  }
+	public void save(TestRequest testRequest) {
+		producer.push(config.getTestSaveTopic(), testRequest);
+		producer.push(config.getTestSaveEventTopic(), testRequest);
+	}
 
   public void saveAnomaly(String topic, TestRequest testRequest) {
     producer.push(topic, testRequest);
   }
 
 
-  public void update(TestRequest testRequest) {
-    producer.push(config.getTestUpdateTopic(), testRequest);
-    producer.push(config.getTestUpdateEventTopic(), testRequest);
-  }
+	public void update(TestRequest testRequest) {
+		producer.push(config.getTestUpdateTopic(), testRequest);
+		producer.push(config.getTestUpdateEventTopic(), testRequest);
+	}
 
   public void updateTestDocuments(TestRequest testRequest){
     producer.push(config.getUpdateTestDocumentsTopic(), testRequest);

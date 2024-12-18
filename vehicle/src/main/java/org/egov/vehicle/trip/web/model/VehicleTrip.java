@@ -120,7 +120,7 @@ public class VehicleTrip   {
   @SafeHtml
   @JsonProperty("applicationStatus")
   private String applicationStatus = null;
-  
+
   @SafeHtml
   @JsonProperty("endType")
   private String endType = null;

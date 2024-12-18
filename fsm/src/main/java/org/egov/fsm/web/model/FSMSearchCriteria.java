@@ -62,7 +62,7 @@ public class FSMSearchCriteria {
 
     @JsonProperty("individualIds")
     private List<String> individualIds;
-    
+
     @JsonProperty("sortBy")
     private SortBy sortBy;
     

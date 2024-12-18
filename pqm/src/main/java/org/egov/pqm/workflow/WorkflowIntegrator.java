@@ -2,17 +2,14 @@ package org.egov.pqm.workflow;
 
 import static org.egov.pqm.util.Constants.ACTION_KEY;
 import static org.egov.pqm.util.Constants.ASSIGNEE_KEY;
-import static org.egov.pqm.util.Constants.BUSINESS_ID_JOSN_KEY;
 import static org.egov.pqm.util.Constants.BUSINESS_ID_KEY;
 import static org.egov.pqm.util.Constants.BUSINESS_SERVICE_KEY;
 import static org.egov.pqm.util.Constants.COMMENT_KEY;
 import static org.egov.pqm.util.Constants.DOCUMENTS_KEY;
 import static org.egov.pqm.util.Constants.MODULE_NAME_KEY;
 import static org.egov.pqm.util.Constants.MODULE_NAME_VALUE;
-import static org.egov.pqm.util.Constants.PROCESS_INSTANCES_JOSN_KEY;
 import static org.egov.pqm.util.Constants.RATING;
 import static org.egov.pqm.util.Constants.REQUEST_INFO_KEY;
-import static org.egov.pqm.util.Constants.STATUS_JSON_KEY;
 import static org.egov.pqm.util.Constants.TENANT_ID_KEY;
 import static org.egov.pqm.util.Constants.UUID_KEY;
 import static org.egov.pqm.util.Constants.WORKFLOW_REQUEST_ARRAY_KEY;
@@ -35,7 +32,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -51,8 +47,6 @@ public class WorkflowIntegrator {
 	private RestTemplate rest;
 
 	private ServiceConfiguration config;
-	
-	private ObjectMapper mapper;
 
 	@Autowired
 	public WorkflowIntegrator(RestTemplate rest, ServiceConfiguration config) {
@@ -99,31 +93,12 @@ public class WorkflowIntegrator {
 		JSONObject workFlowRequest = new JSONObject();
 		workFlowRequest.put(REQUEST_INFO_KEY, testRequest.getRequestInfo());
 		workFlowRequest.put(WORKFLOW_REQUEST_ARRAY_KEY, array);
-//		Object response = null;
-//		ProcessInstanceResponse response1 = null;
-//
-//		try {
-//			response = rest.postForObject(config.getWfHost().concat(config.getWfTransitionPath()), workFlowRequest,
-//					String.class);
-//			response1 = mapper.convertValue(response, ProcessInstanceResponse.class);
-//
-//		}
-//		ProcessInstanceResponse response = null;
 		ProcessInstanceResponse processInstanceResponse = null;
-
 		try {
-			processInstanceResponse = rest.postForObject(config.getWfHost().concat(config.getWfTransitionPath()), workFlowRequest, ProcessInstanceResponse.class);
+			processInstanceResponse = rest.postForObject(config.getWfHost().concat(config.getWfTransitionPath()),
+					workFlowRequest, ProcessInstanceResponse.class);
 
-//		    if (response != null) {
-//		        System.out.println("Response content: " + response);
-//		        Object processInstanceResponseObject=response;
-//		        System.out.println("Response content: " + response);
-//		        processInstanceResponse = mapper.convertValue(processInstanceResponseObject, ProcessInstanceResponse.class);
-//		        System.out.println("Converted ProcessInstanceResponse: " + processInstanceResponse);
-//		    }
-		} 
-
-		catch (HttpClientErrorException e) {
+		} catch (HttpClientErrorException e) {
 
 			/*
 			 * extracting message from client error exception
@@ -157,10 +132,8 @@ public class WorkflowIntegrator {
 //			idStatusMap.put(instanceContext.read(BUSINESS_ID_JOSN_KEY), instanceContext.read(STATUS_JSON_KEY));
 //		});
 		// setting the status back to pqm object from wf response
-//		test.setWfStatus(idStatusMap.get(test.getTestId()));
 		test.setWfStatus(processInstanceResponse.getProcessInstances().get(0).getState().getApplicationStatus());
 		test.setProcessInstance(processInstanceResponse.getProcessInstances().get(0));
-
 	}
 
 

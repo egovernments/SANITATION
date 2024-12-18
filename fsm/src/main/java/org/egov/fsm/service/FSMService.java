@@ -660,7 +660,6 @@ public class FSMService {
 	 * service.
 	 * 
 	 * @param fsmRequest
-	 * @param oldFSM
 	 */
 	public void handleApplicationSubmit(FSMRequest fsmRequest) {
 
