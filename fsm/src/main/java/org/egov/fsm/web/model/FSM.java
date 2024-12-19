@@ -13,7 +13,6 @@ import org.egov.fsm.web.model.user.User;
 import org.egov.fsm.web.model.vehicle.Vehicle;
 import org.egov.fsm.web.model.worker.Worker;
 import org.egov.fsm.web.model.workflow.ProcessInstance;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -43,55 +42,53 @@ public class FSM   {
   @Valid
   private User citizen ;
 
-  @SafeHtml
   @JsonProperty("id")
   private String id ;
 
   @NotNull
-  @SafeHtml
   @Size(min=2,max=64)
   @JsonProperty("tenantId")
   private String tenantId ;
 
-  @SafeHtml
+   
   @JsonProperty("applicationNo")
   private String applicationNo ;
 
-  @SafeHtml
+   
   @JsonProperty("description")
   private String description ;
 
-  @SafeHtml
+   
   @JsonProperty("accountId")
   private String accountId ;
 
   @JsonProperty("additionalDetails")
   private Object additionalDetails ;
 
-  @SafeHtml
+   
   @JsonProperty("applicationStatus")
   private String applicationStatus ;
 
-  @SafeHtml
+   
   @JsonProperty("source")
   private String source ;
 
-  @SafeHtml
+   
   @JsonProperty("sanitationtype")
   private String sanitationtype ;
 
-  @SafeHtml
+   
   @JsonProperty("propertyUsage")
   private String propertyUsage ;
   
-  @SafeHtml
+   
   @JsonProperty("vehicleType")
   private String vehicleType ;
  
   @JsonProperty("noOfTrips")
   private Integer noOfTrips ;
   
-  @SafeHtml
+   
   @JsonProperty("vehicleCapacity")
   private String vehicleCapacity ;
 
@@ -128,7 +125,7 @@ public class FSM   {
   @JsonProperty("status")
   private StatusEnum status ;
 
-  @SafeHtml
+   
   @JsonProperty("vehicleId")
   private String vehicleId ;
   
@@ -138,7 +135,6 @@ public class FSM   {
   @JsonProperty("workers")
   private List<Worker> workers;
   
-  @SafeHtml
   @JsonProperty("dsoId")
   private String dsoId ;
   

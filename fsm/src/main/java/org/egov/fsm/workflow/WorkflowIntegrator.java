@@ -12,8 +12,6 @@ import org.egov.fsm.web.model.FSM;
 import org.egov.fsm.web.model.FSMRequest;
 import org.egov.fsm.web.model.workflow.ProcessInstanceResponse;
 import org.egov.tracer.model.CustomException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -27,8 +25,8 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
-//import net.minidev.json.JSONArray;
-//import net.minidev.json.JSONObject;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 @Service
 @Slf4j
@@ -124,7 +122,7 @@ public class WorkflowIntegrator {
 		}
 
 		obj.put(DOCUMENTSKEY, fsmRequest.getWorkflow().getVerificationDocuments());
-		((List<Object>) array).add(obj);
+		array.add(obj);
 		JSONObject workFlowRequest = new JSONObject();
 		workFlowRequest.put(REQUESTINFOKEY, fsmRequest.getRequestInfo());
 		workFlowRequest.put(WORKFLOWREQUESTARRAYKEY, array);

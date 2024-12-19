@@ -8,8 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
-import javax.validation.Valid;
-
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
 import org.egov.fsm.config.FSMConfiguration;
@@ -49,7 +47,6 @@ public class UserService {
 	@SuppressWarnings("null")
 	public void manageApplicant(FSMRequest fsmRequest) {
 		FSM fsm = fsmRequest.getFsm();
-		@Valid
 		RequestInfo requestInfo = fsmRequest.getRequestInfo();
 		User applicant = fsm.getCitizen();
 		UserDetailResponse userDetailResponse = null;

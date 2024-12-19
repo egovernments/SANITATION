@@ -2,7 +2,6 @@ package org.egov.fsm.web.model.vehicle;
 
 import org.egov.fsm.web.model.AuditDetails;
 import org.egov.fsm.web.model.user.User;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -30,33 +29,27 @@ import lombok.ToString;
 @Builder
 public class Vehicle {
 
-	@SafeHtml
 	@JsonProperty("id")
 	private String id;
 
-	@SafeHtml
 	@JsonProperty("tenantId")
 	private String tenantId;
 
 	@NonNull
-	@SafeHtml
 	@JsonProperty("registrationNumber")
 	private String registrationNumber;
 
 	@NonNull
-	@SafeHtml
 	@JsonProperty("model")
 	private String model;
 
 	@NonNull
-	@SafeHtml
 	@JsonProperty("type")
 	private String type;
 
 	@JsonProperty("tankCapacity")
 	private Double tankCapacity;
 
-	@SafeHtml
 	@JsonProperty("suctionType")
 	private String suctionType;
 
@@ -78,11 +71,9 @@ public class Vehicle {
 	@JsonProperty("additionalDetails")
 	private Object additionalDetails ;
 
-	@SafeHtml
 	@JsonProperty("source")
 	private String source;
 
-	@SafeHtml
 	@JsonProperty("ownerId")
 	private String ownerId;
 

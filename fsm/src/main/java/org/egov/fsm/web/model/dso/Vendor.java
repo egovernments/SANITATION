@@ -9,7 +9,6 @@ import org.egov.fsm.web.model.AuditDetails;
 import org.egov.fsm.web.model.location.Address;
 import org.egov.fsm.web.model.user.User;
 import org.egov.fsm.web.model.vehicle.Vehicle;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -35,15 +34,12 @@ import lombok.Setter;
 @Setter
 public class Vendor {
 
-	@SafeHtml
 	@JsonProperty("id")
 	private String id;
 
-	@SafeHtml
 	@JsonProperty("tenantId")
 	private String tenantId;
 
-	@SafeHtml
 	@JsonProperty("name")
 	private String name;
 
@@ -68,15 +64,12 @@ public class Vendor {
 	@JsonProperty("additionalDetails")
 	private Object additionalDetails;
 
-	@SafeHtml
 	@JsonProperty("source")
 	private String source;
 
-	@SafeHtml
 	@JsonProperty("description")
 	private String description;
 
-	@SafeHtml
 	@JsonProperty("ownerId")
 	private String ownerId;
 
