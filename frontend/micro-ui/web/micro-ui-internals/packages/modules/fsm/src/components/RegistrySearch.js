@@ -16,10 +16,25 @@ import DropdownStatus from "./inbox/DropdownStatus";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperator, searchFields, searchParams, isInboxPage, selectedTab }) => {
-  const storedSearchParams = isInboxPage ? Digit.SessionStorage.get("fsm/inbox/searchParams") : Digit.SessionStorage.get("fsm/search/searchParams");
+const SearchApplication = ({
+  onSearch,
+  type,
+  onClose,
+  onTabChange,
+  isFstpOperator,
+  searchFields,
+  searchParams,
+  isInboxPage,
+  selectedTab,
+}) => {
+  const storedSearchParams = isInboxPage
+    ? Digit.SessionStorage.get("fsm/inbox/searchParams")
+    : Digit.SessionStorage.get("fsm/search/searchParams");
 
-  const { data: applicationStatuses, isFetched: areApplicationStatus } = Digit.Hooks.fsm.useApplicationStatus();
+  const {
+    data: applicationStatuses,
+    isFetched: areApplicationStatus,
+  } = Digit.Hooks.fsm.useApplicationStatus();
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -43,7 +58,10 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
   };
 
   function clearSearch() {
-    const resetValues = searchFields.reduce((acc, field) => ({ ...acc, [field?.name]: "" }), {});
+    const resetValues = searchFields.reduce(
+      (acc, field) => ({ ...acc, [field?.name]: "" }),
+      {}
+    );
     reset(resetValues);
     if (isInboxPage) {
       Digit.SessionStorage.del("fsm/inbox/searchParams");
@@ -54,7 +72,9 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
   }
 
   const clearAll = (mobileView) => {
-    const mobileViewStyles = mobileView ? { margin: 0, display: "inline" } : { marginTop: "40px", marginLeft: "16px" };
+    const mobileViewStyles = mobileView
+      ? { margin: 0, display: "inline" }
+      : { marginTop: "40px", marginLeft: "16px" };
     return (
       <LinkLabel style={{ ...mobileViewStyles }} onClick={clearSearch}>
         {t("ES_COMMON_CLEAR_SEARCH")}
@@ -73,11 +93,17 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
   function onActionSelect(action) {
     switch (action) {
       case "VENDOR":
-        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vendor`);
+        return history.push(
+          `/${window?.contextPath}/employee/fsm/registry/new-vendor`
+        );
       case "VEHICLE":
-        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-vehicle`);
+        return history.push(
+          `/${window?.contextPath}/employee/fsm/registry/new-vehicle`
+        );
       case "WORKER":
-        return history.push(`/${window?.contextPath}/employee/fsm/registry/new-worker`);
+        return history.push(
+          `/${window?.contextPath}/employee/fsm/registry/new-worker`
+        );
       default:
         break;
     }
@@ -88,7 +114,9 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
       case "date":
         return (
           <Controller
-            render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
+            render={(props) => (
+              <DatePicker date={props.value} onChange={props.onChange} />
+            )}
             name={input.name}
             control={control}
             defaultValue={null}
@@ -128,27 +156,35 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
   return (
     <React.Fragment>
       <div className="search-container" style={{ width: "auto" }}>
-      <div className="search-tabs-container">
-            <div>
-              <button
-                className={selectedTab === "VENDOR" ? "search-tab-head-selected" : "search-tab-head"}
-                onClick={() => {
-                  clearSearch({});
-                  onTabChange("VENDOR");
-                }}
-              >
-                {t("ES_FSM_REGISTRY_INBOX_TAB_VENDOR")}
-              </button>
-              <button
-                className={selectedTab === "VEHICLE" ? "search-tab-head-selected" : "search-tab-head"}
-                onClick={() => {
-                  clearSearch({});
-                  onTabChange("VEHICLE");
-                }}
-              >
-                {t("ES_FSM_REGISTRY_INBOX_TAB_VEHICLE")}
-              </button>
-              {/* <button
+        <div className="search-tabs-container">
+          <div>
+            <button
+              className={
+                selectedTab === "VENDOR"
+                  ? "search-tab-head-selected"
+                  : "search-tab-head"
+              }
+              onClick={() => {
+                clearSearch({});
+                onTabChange("VENDOR");
+              }}
+            >
+              {t("ES_FSM_REGISTRY_INBOX_TAB_VENDOR")}
+            </button>
+            <button
+              className={
+                selectedTab === "VEHICLE"
+                  ? "search-tab-head-selected"
+                  : "search-tab-head"
+              }
+              onClick={() => {
+                clearSearch({});
+                onTabChange("VEHICLE");
+              }}
+            >
+              {t("ES_FSM_REGISTRY_INBOX_TAB_VEHICLE")}
+            </button>
+            {/* <button
                 className={selectedTab === "DRIVER" ? "search-tab-head-selected" : "search-tab-head"}
                 onClick={() => {
                   clearSearch({});
@@ -157,28 +193,37 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
               >
                 {t("ES_FSM_REGISTRY_INBOX_TAB_DRIVER")}
               </button> */}
-              <button
-                className={selectedTab === "WORKER" ? "search-tab-head-selected" : "search-tab-head"}
-                onClick={() => {
-                  clearSearch({});
-                  onTabChange("WORKER");
-                }}
-              >
-                {t("ES_FSM_REGISTRY_INBOX_TAB_WORKER")}
-              </button>
-            </div>
-            <div className="action-bar-wrap-registry">
-              <div className="search-add" onClick={onAddClick}>
-                {t("ES_FSM_REGISTRY_INBOX_HEADER_ADD")}
-                <div className="search-add-icon">
-                  <AddIcon className="" />
-                </div>
-              </div>
-              {showAddMenu && (
-                <Menu localeKeyPrefix={"ES_FSM_ACTION_CREATE"} options={["VENDOR", "VEHICLE", "WORKER"]} t={t} onSelect={onActionSelect} />
-              )}
-            </div>
+            <button
+              className={
+                selectedTab === "WORKER"
+                  ? "search-tab-head-selected"
+                  : "search-tab-head"
+              }
+              onClick={() => {
+                clearSearch({});
+                onTabChange("WORKER");
+              }}
+            >
+              {t("ES_FSM_REGISTRY_INBOX_TAB_WORKER")}
+            </button>
           </div>
+          <div className="action-bar-wrap-registry">
+            <div className="search-add" onClick={onAddClick}>
+              {t("ES_FSM_REGISTRY_INBOX_HEADER_ADD")}
+              <div className="search-add-icon">
+                <AddIcon className="" />
+              </div>
+            </div>
+            {showAddMenu && (
+              <Menu
+                localeKeyPrefix={"ES_FSM_ACTION_CREATE"}
+                options={["VENDOR", "VEHICLE", "DRIVER"]}
+                t={t}
+                onSelect={onActionSelect}
+              />
+            )}
+          </div>
+        </div>
         <div className="search-complaint-container">
           {(type === "mobile" || mobileView) && (
             <div className="complaint-header">
@@ -197,11 +242,24 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
           )}
           <form onSubmit={handleSubmit(onSubmitInput)}>
             <div
-              className={FSTP ? "complaint-input-container for-pt for-search" : "complaint-input-container"}
-              style={{ width: "100%", gridTemplateColumns: selectedTab === "WORKER" ? "22% 22% 22% 34%" : "33.33% 66.66% 0%" }}
+              className={
+                FSTP
+                  ? "complaint-input-container for-pt for-search"
+                  : "complaint-input-container"
+              }
+              style={{
+                width: "100%",
+                gridTemplateColumns:
+                  selectedTab === "WORKER"
+                    ? "22% 22% 22% 34%"
+                    : "33.33% 66.66% 0%",
+              }}
             >
               {searchFields?.map((input, index) => (
-                <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}>
+                <span
+                  key={index}
+                  className={index === 0 ? "complaint-input" : "mobile-input"}
+                >
                   <Label>
                     {input.label} {input.labelChildren && input.labelChildren}
                   </Label>
@@ -209,11 +267,25 @@ const SearchApplication = ({ onSearch, type, onClose, onTabChange, isFstpOperato
                 </span>
               ))}
               <div style={{ display: "flex" }}>
-                {type === "desktop" && !mobileView && <SubmitBar className="submit-bar-search" label={t("ES_COMMON_SEARCH")} submit />}
-                {type === "desktop" && !mobileView && <span className="clear-search" style={{width:"40%"}}>{clearAll()}</span>}
+                {type === "desktop" && !mobileView && (
+                  <SubmitBar
+                    className="submit-bar-search"
+                    label={t("ES_COMMON_SEARCH")}
+                    submit
+                  />
+                )}
+                {type === "desktop" && !mobileView && (
+                  <span className="clear-search" style={{ width: "40%" }}>
+                    {clearAll()}
+                  </span>
+                )}
               </div>
             </div>
-            {error ? <CardLabelError className="search-error-label">{t("ES_SEARCH_APPLICATION_ERROR")}</CardLabelError> : null}
+            {error ? (
+              <CardLabelError className="search-error-label">
+                {t("ES_SEARCH_APPLICATION_ERROR")}
+              </CardLabelError>
+            ) : null}
           </form>
         </div>
       </div>

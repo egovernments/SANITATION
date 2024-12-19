@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormComposer, Loader, Header } from "@egovernments/digit-ui-react-components";
+import {
+  FormComposer,
+  Loader,
+  Header,
+} from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
 import { config } from "./config";
 
@@ -14,13 +18,34 @@ export const NewApplication = ({ parentUrl, heading }) => {
   const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
   // const { data: commonFields, isLoading } = useQuery('newConfig', () => fetch(`http://localhost:3002/commonFields`).then(res => res.json()))
   // const { data: postFields, isLoading: isTripConfigLoading } = useQuery('tripConfig', () => fetch(`http://localhost:3002/tripDetails`).then(res => res.json()))
-  const { data: commonFields, isLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "CommonFieldsConfig");
-  const { data: preFields, isLoading: isApplicantConfigLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PreFieldsConfig");
-  const { data: postFields, isLoading: isTripConfigLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PostFieldsConfig");
+  const { data: commonFields, isLoading } = Digit.Hooks.fsm.useMDMS(
+    stateId,
+    "FSM",
+    "CommonFieldsConfig"
+  );
+  const {
+    data: preFields,
+    isLoading: isApplicantConfigLoading,
+  } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PreFieldsConfig");
+  const {
+    data: postFields,
+    isLoading: isTripConfigLoading,
+  } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PostFieldsConfig");
 
-  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
-  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("FSM_ERROR_DATA", false);
-  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
+  const [
+    mutationHappened,
+    setMutationHappened,
+    clear,
+  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
+  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage(
+    "FSM_ERROR_DATA",
+    false
+  );
+  const [
+    successData,
+    setsuccessData,
+    clearSuccessData,
+  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
 
   useEffect(() => {
     setMutationHappened(false);
@@ -47,27 +72,40 @@ export const NewApplication = ({ parentUrl, heading }) => {
     if (
       formData?.propertyType &&
       formData?.subtype &&
-      formData?.address?.locality?.code &&
+      (formData?.address?.locality?.code ||
+        (formData?.address?.propertyLocation?.code === "FROM_GRAM_PANCHAYAT" &&
+          formData?.address?.gramPanchayat?.code)) &&
       formData?.tripData?.vehicleType &&
       formData?.channel &&
-      (formData?.tripData?.amountPerTrip || formData?.tripData?.amountPerTrip === 0)
+      (formData?.tripData?.amountPerTrip ||
+        formData?.tripData?.amountPerTrip === 0)
     ) {
       setSubmitValve(true);
-      const pitDetailValues = formData?.pitDetail ? Object.values(formData?.pitDetail).filter((value) => value > 0) : null;
+      const pitDetailValues = formData?.pitDetail
+        ? Object.values(formData?.pitDetail).filter((value) => value > 0)
+        : null;
       let max = Digit.SessionStorage.get("total_amount");
       let min = Digit.SessionStorage.get("advance_amount");
       if (formData?.pitType) {
         if (pitDetailValues === null || pitDetailValues?.length === 0) {
           setSubmitValve(true);
-        } else if (isConventionalSpecticTank(formData?.pitType?.dimension) && pitDetailValues?.length >= 3) {
+        } else if (
+          isConventionalSpecticTank(formData?.pitType?.dimension) &&
+          pitDetailValues?.length >= 3
+        ) {
           setSubmitValve(true);
-        } else if (!isConventionalSpecticTank(formData?.pitType?.dimension) && pitDetailValues?.length >= 2) {
+        } else if (
+          !isConventionalSpecticTank(formData?.pitType?.dimension) &&
+          pitDetailValues?.length >= 2
+        ) {
           setSubmitValve(true);
         } else setSubmitValve(false);
       }
       if (
         formData?.tripData?.amountPerTrip !== 0 &&
-        (formData?.advancepaymentPreference?.advanceAmount < min || formData?.advancepaymentPreference?.advanceAmount > max || formData?.advancepaymentPreference?.advanceAmount === "")
+        (formData?.advancepaymentPreference?.advanceAmount < min ||
+          formData?.advancepaymentPreference?.advanceAmount > max ||
+          formData?.advancepaymentPreference?.advanceAmount === "")
       ) {
         setSubmitValve(false);
       }
@@ -101,8 +139,18 @@ export const NewApplication = ({ parentUrl, heading }) => {
     const localityCode = data?.address?.locality?.code;
     const localityName = data?.address?.locality?.name;
     const gender = data.applicationData.applicantGender;
-    const paymentPreference = amount === 0 ? null : data?.paymentPreference ? data?.paymentPreference : null;
-    const advanceAmount = amount === 0 ? null : data?.advancepaymentPreference?.advanceAmount;
+    const paymentPreference =
+      amount === 0
+        ? null
+        : data?.paymentPreference
+        ? data?.paymentPreference
+        : null;
+    const advanceAmount =
+      amount === 0 ? null : data?.advancepaymentPreference?.advanceAmount;
+
+    const gramPanchayat = data?.address.gramPanchayat;
+    const village = data?.address.village;
+    const propertyLocation = data?.address?.propertyLocation?.code;
 
     const formData = {
       fsm: {
@@ -115,7 +163,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
         sanitationtype: sanitationtype,
         source: applicationChannel.code,
         additionalDetails: {
-          tripAmount: amount,
+          tripAmount: JSON.stringify(amount),
         },
         propertyUsage: data?.subtype,
         vehicleCapacity: data?.tripData?.vehicleType?.capacity,
@@ -133,17 +181,44 @@ export const NewApplication = ({ parentUrl, heading }) => {
           pincode,
           slumName: slum,
           locality: {
-            code: localityCode,
-            name: localityName,
+            code: localityCode
+              ? localityCode
+              : village?.code
+              ? village?.code
+              : gramPanchayat?.code,
+            name: localityName
+              ? localityName
+              : village?.name
+              ? village?.name
+              : gramPanchayat?.name,
           },
           geoLocation: {
             latitude: data?.address?.latitude,
             longitude: data?.address?.longitude,
           },
+          additionalDetails: {
+            boundaryType:
+              propertyLocation === "FROM_GRAM_PANCHAYAT"
+                ? village?.code
+                  ? "Village"
+                  : "GP"
+                : "Locality",
+            gramPanchayat: {
+              code: gramPanchayat?.code,
+              name: gramPanchayat?.name,
+            },
+            village: {
+              code: village?.code ? village?.code : "",
+              name: village?.name ? village?.name : village,
+            },
+          },
         },
         noOfTrips,
         paymentPreference,
-        advanceAmount,
+        advanceAmount:
+          typeof advanceAmount === "number"
+            ? JSON.stringify(advanceAmount)
+            : advanceAmount,
       },
       workflow: null,
     };

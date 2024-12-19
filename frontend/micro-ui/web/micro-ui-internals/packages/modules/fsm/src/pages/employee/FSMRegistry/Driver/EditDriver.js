@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormComposer, Loader, Toast, Header } from "@egovernments/digit-ui-react-components";
+import {
+  FormComposer,
+  Loader,
+  Toast,
+  Header,
+} from "@egovernments/digit-ui-react-components";
 import { useHistory, useParams } from "react-router-dom";
 import { useQueryClient } from "react-query";
 import DriverConfig from "../../configs/DriverConfig";
@@ -15,19 +20,39 @@ const EditDriver = ({ parentUrl, heading }) => {
   const [driverDetails, setDriverDetails] = useState({});
   const queryClient = useQueryClient();
 
-  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
-  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("FSM_ERROR_DATA", false);
-  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
+  const [
+    mutationHappened,
+    setMutationHappened,
+    clear,
+  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
+  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage(
+    "FSM_ERROR_DATA",
+    false
+  );
+  const [
+    successData,
+    setsuccessData,
+    clearSuccessData,
+  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
 
-  const { data: driverData, isLoading: daoDataLoading, isSuccess: isDriverSuccess, error: driverError } = Digit.Hooks.fsm.useDriverDetails(
+  const {
+    data: driverData,
+    isLoading: daoDataLoading,
+    isSuccess: isDriverSuccess,
+    error: driverError,
+  } = Digit.Hooks.fsm.useDriverDetails(
     tenantId,
     { ids: dsoId },
     { staleTime: Infinity }
   );
 
-  const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useDriverUpdate(
-    tenantId
-  );
+  const {
+    isLoading: isLoading,
+    isError: vendorCreateError,
+    data: updateResponse,
+    error: updateError,
+    mutate,
+  } = Digit.Hooks.fsm.useDriverUpdate(tenantId);
 
   useEffect(() => {
     setMutationHappened(false);
@@ -43,10 +68,19 @@ const EditDriver = ({ parentUrl, heading }) => {
         driverName: driverDetails?.driverData?.name,
         license: driverDetails?.driverData?.licenseNumber,
         selectGender: driverDetails?.driverData?.owner?.gender,
-        dob: driverDetails?.driverData?.owner?.dob && Digit.DateUtils.ConvertTimestampToDate(driverDetails?.driverData?.owner?.dob, "yyyy-MM-dd"),
-        emailId: driverDetails?.driverData?.owner?.emailId === "abc@egov.com" ? "" : driverDetails?.driverData?.owner?.emailId,
-        phone: driverDetails?.driverData?.owner?.mobileNumber,
-        additionalDetails: driverDetails?.driverData?.additionalDetails?.description,
+        dob:
+          driverDetails?.driverData?.owner?.dob &&
+          Digit.DateUtils.ConvertTimestampToDate(
+            driverDetails?.driverData?.owner?.dob,
+            "yyyy-MM-dd"
+          ),
+        emailId:
+          driverDetails?.driverData?.owner?.emailId === "abc@egov.com"
+            ? ""
+            : driverDetails?.driverData?.owner?.emailId,
+        // phone: driverDetails?.driverData?.owner?.mobileNumber,
+        additionalDetails:
+          driverDetails?.driverData?.additionalDetails?.description,
       };
       setDefaultValues(values);
     }
@@ -102,7 +136,9 @@ const EditDriver = ({ parentUrl, heading }) => {
         queryClient.invalidateQueries("FSM_DRIVER_SEARCH");
         setTimeout(() => {
           closeToast();
-          history.push(`/${window?.contextPath}/employee/fsm/registry/driver-details/${dsoId}`);
+          history.push(
+            `/${window?.contextPath}/employee/fsm/registry/driver-details/${dsoId}`
+          );
         }, 5000);
       },
     });
@@ -137,7 +173,11 @@ const EditDriver = ({ parentUrl, heading }) => {
         {showToast && (
           <Toast
             error={showToast.key === "error" ? true : false}
-            label={t(showToast.key === "success" ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS` : showToast.action)}
+            label={t(
+              showToast.key === "success"
+                ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS`
+                : showToast.action
+            )}
             onClose={closeToast}
           />
         )}

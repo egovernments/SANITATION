@@ -10,13 +10,25 @@
  */
 
 export const getLocalityCode = (locality, tenantId) => {
-  if (typeof locality === "string") return locality.includes("_") ? locality : `${tenantId.replace(".", "_").toUpperCase()}_ADMIN_${locality}`;
-  else if (locality.code) return locality.code.includes("_") ? locality : `${tenantId.replace(".", "_").toUpperCase()}_ADMIN_${locality.code}`;
+  if (typeof locality === "string")
+    return locality.includes("_")
+      ? locality
+      : `${tenantId.replace(".", "_").toUpperCase()}_ADMIN_${locality}`;
+  else if (locality.code)
+    return locality.code.includes("_")
+      ? locality
+      : `${tenantId.replace(".", "_").toUpperCase()}_ADMIN_${locality.code}`;
 };
 
 export const getRevenueLocalityCode = (locality, tenantId) => {
-  if (typeof locality === "string") return locality.includes("_") ? locality : `${tenantId.replace(".", "_").toUpperCase()}_REVENUE_${locality}`;
-  else if (locality.code) return locality.code.includes("_") ? locality : `${tenantId.replace(".", "_").toUpperCase()}_REVENUE_${locality.code}`;
+  if (typeof locality === "string")
+    return locality.includes("_")
+      ? locality
+      : `${tenantId.replace(".", "_").toUpperCase()}_REVENUE_${locality}`;
+  else if (locality?.code)
+    return locality?.code.includes("_")
+      ? locality
+      : `${tenantId.replace(".", "_").toUpperCase()}_REVENUE_${locality?.code}`;
 };
 
 export const stringReplaceAll = (str = "", searcher = "", replaceWith = "") => {
@@ -29,12 +41,17 @@ export const stringReplaceAll = (str = "", searcher = "", replaceWith = "") => {
 
 /*   method to check not null  if not returns false*/
 export const checkForNotNull = (value = "") => {
-  return value && value != null && value != undefined && value != "" ? true : false;
+  return value && value != null && value != undefined && value != ""
+    ? true
+    : false;
 };
 
 export const convertDotValues = (value = "") => {
   return (
-    (checkForNotNull(value) && ((value.replaceAll && value.replaceAll(".", "_")) || (value.replace && stringReplaceAll(value, ".", "_")))) || "NA"
+    (checkForNotNull(value) &&
+      ((value.replaceAll && value.replaceAll(".", "_")) ||
+        (value.replace && stringReplaceAll(value, ".", "_")))) ||
+    "NA"
   );
 };
 
@@ -88,7 +105,11 @@ export const convertToLocaleData = (dropdownValues = [], key = "", t) => {
  */
 export const getTransformedLocale = (label) => {
   if (typeof label === "number") return label;
-  label = label?.trim();
+  else if (typeof label === "string") {
+    label = label.trim();
+  } else {
+    return "";
+  }
   return label && label.toUpperCase().replace(/[.:-\s\/]/g, "_");
 };
 
@@ -106,5 +127,7 @@ export const getTransformedLocale = (label) => {
  * @returns {Array} Returns the Array of object
  */
 export const sortDropdownNames = (options = [], optionkey = "i18nKey", t) => {
-  return options?.sort((a, b) => t(a?.[optionkey])?.localeCompare?.(t(b?.[optionkey])));
+  return options?.sort((a, b) =>
+    t(a?.[optionkey])?.localeCompare?.(t(b?.[optionkey]))
+  );
 };
