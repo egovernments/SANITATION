@@ -67,8 +67,10 @@ public class CalculationService {
 
 	@Autowired
 	private BillingService billingService;
-//	@Autowired
 
+//	public CalculationService(@Lazy DemandService demandService) {
+//        this.demandService = demandService;
+//    }
 	/**
 	 * Calculates tax estimates and creates demand
 	 * 
