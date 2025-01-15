@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormComposer, Loader, Toast, Header } from "@egovernments/digit-ui-react-components";
+import {
+  FormComposer,
+  Loader,
+  Toast,
+  Header,
+} from "@egovernments/digit-ui-react-components";
 import { useHistory, useParams } from "react-router-dom";
 import VendorConfig from "../../configs/VendorConfig";
 import { useQueryClient } from "react-query";
@@ -16,20 +21,40 @@ const EditVendor = ({ parentUrl, heading }) => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
-  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("FSM_ERROR_DATA", false);
-  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
+  const [
+    mutationHappened,
+    setMutationHappened,
+    clear,
+  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
+  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage(
+    "FSM_ERROR_DATA",
+    false
+  );
+  const [
+    successData,
+    setsuccessData,
+    clearSuccessData,
+  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
 
-  const { data: dsoData, isLoading: daoDataLoading, isSuccess: isDsoSuccess, error: dsoError } = Digit.Hooks.fsm.useDsoSearch(
+  const {
+    data: dsoData,
+    isLoading: daoDataLoading,
+    isSuccess: isDsoSuccess,
+    error: dsoError,
+  } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     { ids: dsoId },
     { staleTime: Infinity },
     t
   );
 
-  const { isLoading: isLoading, isError: vendorCreateError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useVendorUpdate(
-    tenantId
-  );
+  const {
+    isLoading: isLoading,
+    isError: vendorCreateError,
+    data: updateResponse,
+    error: updateError,
+    mutate,
+  } = Digit.Hooks.fsm.useVendorUpdate(tenantId);
 
   useEffect(() => {
     setMutationHappened(false);
@@ -49,14 +74,17 @@ const EditVendor = ({ parentUrl, heading }) => {
         landmark: dsoDetails?.dsoDetails?.address?.landmark,
         pincode: dsoDetails?.dsoDetails?.address?.pincode,
         agencyType: {
-          code: dsoDetails?.dsoDetails?.agencyType
+          code: dsoDetails?.dsoDetails?.agencyType,
         },
         buildingName: dsoDetails?.dsoDetails?.address?.buildingName,
         address: {
           pincode: dsoDetails?.dsoDetails?.address?.pincode,
           locality: {
             ...dsoDetails?.dsoDetails?.address?.locality,
-            i18nkey: `${dsoDetails?.dsoDetails?.tenantId.toUpperCase().split(".").join("_")}_REVENUE_${
+            i18nkey: `${dsoDetails?.dsoDetails?.tenantId
+              .toUpperCase()
+              .split(".")
+              .join("_")}_REVENUE_${
               dsoDetails?.dsoDetails?.address.locality.code
             }`,
           },
@@ -66,10 +94,20 @@ const EditVendor = ({ parentUrl, heading }) => {
         fatherOrHusbandName: dsoDetails?.dsoDetails?.owner?.fatherOrHusbandName,
         relationship: dsoDetails?.dsoDetails?.owner?.relationship,
         selectGender: dsoDetails?.dsoDetails?.owner?.gender,
-        dob: dsoDetails?.dsoDetails?.owner?.dob && Digit.DateUtils.ConvertTimestampToDate(dsoDetails?.dsoDetails?.owner?.dob, "yyyy-MM-dd"),
-        emailId: dsoDetails?.dsoDetails?.owner?.emailId === "abc@egov.com" ? "" : dsoDetails?.dsoDetails?.owner?.emailId,
-        correspondenceAddress: dsoDetails?.dsoDetails?.owner?.correspondenceAddress,
-        additionalDetails: dsoDetails?.dsoDetails?.additionalDetails?.description,
+        dob:
+          dsoDetails?.dsoDetails?.owner?.dob &&
+          Digit.DateUtils.ConvertTimestampToDate(
+            dsoDetails?.dsoDetails?.owner?.dob,
+            "yyyy-MM-dd"
+          ),
+        emailId:
+          dsoDetails?.dsoDetails?.owner?.emailId === "abc@egov.com"
+            ? ""
+            : dsoDetails?.dsoDetails?.owner?.emailId,
+        correspondenceAddress:
+          dsoDetails?.dsoDetails?.owner?.correspondenceAddress,
+        additionalDetails:
+          dsoDetails?.dsoDetails?.additionalDetails?.description,
       };
       setDefaultValues(values);
     }
@@ -80,7 +118,11 @@ const EditVendor = ({ parentUrl, heading }) => {
   const Config = VendorConfig(t, true);
 
   const onFormValueChange = (setValue, formData) => {
-    if (formData?.phone && formData?.address?.locality && formData?.agencyType?.code) {
+    if (
+      formData?.phone &&
+      formData?.address?.locality &&
+      formData?.agencyType?.code
+    ) {
       setSubmitValve(true);
     } else {
       setSubmitValve(false);
@@ -110,8 +152,9 @@ const EditVendor = ({ parentUrl, heading }) => {
     const additionalDetails = data?.additionalDetails;
     const gender = data?.selectGender?.code;
     const emailId = data?.emailId;
-    const dob = new Date(`${data.dob}`).getTime() || new Date(`1/1/1970`).getTime();
-    const agencyType = data?.agencyType?.code
+    const dob =
+      new Date(`${data.dob}`).getTime() || new Date(`1/1/1970`).getTime();
+    const agencyType = data?.agencyType?.code;
     const formData = {
       vendor: {
         ...dsoDetails,
@@ -168,7 +211,9 @@ const EditVendor = ({ parentUrl, heading }) => {
         queryClient.invalidateQueries("DSO_SEARCH");
         setTimeout(() => {
           closeToast();
-          history.push(`/${window?.contextPath}/employee/fsm/registry/vendor-details/${dsoId}`);
+          history.push(
+            `/${window?.contextPath}/employee/fsm/registry/vendor-details/${dsoId}`
+          );
         }, 5000);
       },
     });
@@ -200,13 +245,17 @@ const EditVendor = ({ parentUrl, heading }) => {
           onFormValueChange={onFormValueChange}
           noBreakLine={true}
           cardStyle={{
-            padding:"1rem 1.5rem"
+            padding: "1rem 1.5rem",
           }}
         />
         {showToast && (
           <Toast
             error={showToast.key === "error" ? true : false}
-            label={t(showToast.key === "success" ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS` : showToast.action)}
+            label={t(
+              showToast.key === "success"
+                ? `ES_FSM_REGISTRY_${showToast.action}_SUCCESS`
+                : showToast.action
+            )}
             onClose={closeToast}
           />
         )}
