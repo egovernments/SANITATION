@@ -18,7 +18,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
   const testcriteraData = testResponse?.testCriteria;
 
   const mdmsCriteriaData = await Digit.CustomService.getResponse({
-    url: "/mdms-v2/v2/_search",
+    url: "/egov-mdms-service/v2/_search",
     body: {
       tenantId,
       MdmsCriteria: {
