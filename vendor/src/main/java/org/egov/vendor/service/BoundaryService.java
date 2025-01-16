@@ -56,7 +56,7 @@ public class BoundaryService {
 		uri.append("?").append("tenantId=").append(tenantId);
 
 		if (hierarchyTypeCode != null) {
-			uri.append("&").append("hierarchyTypeCode=").append(hierarchyTypeCode);
+			uri.append("&").append("hierarchyType=").append(hierarchyTypeCode);
 		}
 		uri.append("&").append("boundaryType=").append("Locality");
 		uri.append("&").append("codes=").append(vendor.getAddress().getLocality().getCode());
