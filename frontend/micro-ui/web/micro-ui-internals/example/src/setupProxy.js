@@ -70,6 +70,7 @@ module.exports = function (app) {
     "/individual/",
     "/trackingservice/",
     "/fsm-calculator/v1/_advancebalancecalculate",
+    "/boundary-service",
   ].forEach((location) => app.use(location, createProxy));
   ["/pb-egov-assets"].forEach((location) => app.use(location, assetsProxy));
 };
