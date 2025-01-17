@@ -87,6 +87,8 @@ const SelectLocalityOrGramPanchayat = ({
     t
   );
 
+  console.log(`*** LOG  fetchedLocalities***`,fetchedLocalities);
+
   useEffect(() => {
     selectVillage({});
   }, [selectedGp]);
@@ -322,7 +324,7 @@ const SelectLocalityOrGramPanchayat = ({
                   isMandatory
                   selected={selectedLocality}
                   option={fetchedLocalities?.sort((a, b) =>
-                    a.name.localeCompare(b.name)
+                    a?.name?.localeCompare(b?.name)
                   )}
                   select={selectLocality}
                   optionKey="i18nkey"
