@@ -84,7 +84,7 @@ public class BoundaryService {
 		Boundary boundary = mapper.convertValue(boundaryResponse != null ? boundaryResponse.get(0) : new Boundary(),
 				Boundary.class);
 
-		if (boundary.getName() == null) {
+		if (boundary.getCode() == null) {
 
 			throw new CustomException("FSMErrorConstants.INVALID_BOUNDARY_DATA", "The boundary data for the code "
 					+ vendor.getAddress().getLocality().getCode() + " is not available");
