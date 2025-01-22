@@ -9,6 +9,7 @@ import { Link, useRouteMatch } from "react-router-dom";
 import FSMCard from "./components/FsmCard";
 import CheckSlum from "./pageComponents/CheckSlum";
 import SelectAddress from "./pageComponents/SelectAddress";
+import AddWorkerAddress from "./pageComponents/AddWorkerAddress";
 import SelectChannel from "./pageComponents/SelectChannel";
 import SelectGender from "./pageComponents/SelectGender";
 import SelectPaymentType from "./pageComponents/SelectPaymentType";
@@ -154,6 +155,7 @@ const componentsToRegister = {
   SelectPropertySubtype,
   SelectPropertyType,
   SelectAddress,
+  AddWorkerAddress,
   SelectStreet,
   SelectLandmark,
   SelectPincode,

@@ -104,6 +104,10 @@ const SearchApplication = ({
         return history.push(
           `/${window?.contextPath}/employee/fsm/registry/new-worker`
         );
+      // case "DRIVER":
+      //   return history.push(
+      //     `/${window?.contextPath}/employee/fsm/registry/new-driver`
+      //   );  
       default:
         break;
     }
@@ -217,7 +221,7 @@ const SearchApplication = ({
             {showAddMenu && (
               <Menu
                 localeKeyPrefix={"ES_FSM_ACTION_CREATE"}
-                options={["VENDOR", "VEHICLE", "DRIVER"]}
+                options={["VENDOR", "VEHICLE", "WORKER"]}
                 t={t}
                 onSelect={onActionSelect}
               />
