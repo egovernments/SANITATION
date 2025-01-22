@@ -103,6 +103,7 @@ const AddWorker = ({ parentUrl, heading }) => {
   };
 
   const onSubmit = (data) => {
+    
     const name = data?.name;
     const mobileNumber = data?.SelectEmployeePhoneNumber?.mobileNumber;
     const gender = data?.selectGender?.code;
@@ -282,7 +283,6 @@ const AddWorker = ({ parentUrl, heading }) => {
     });
   };
   const isMobile = window.Digit.Utils.browser.isMobile();
-
   return (
     <React.Fragment>
       <div>
