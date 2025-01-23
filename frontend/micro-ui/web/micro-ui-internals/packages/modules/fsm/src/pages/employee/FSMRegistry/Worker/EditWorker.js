@@ -161,6 +161,22 @@ const EditWorker = ({ parentUrl, heading }) => {
     return resultArray.length !== 0 ? resultArray : undefined;
   }
 
+  function validateLocationDetails(formData) {
+    if (!formData || !formData.address || !formData.address.propertyLocation) {
+        return null;
+    }
+
+    const { propertyLocation, locality, gramPanchayat } = formData.address;
+
+    if (propertyLocation.code === "WITHIN_ULB_LIMITS") {
+        return locality ? true : false; // Return true if locality is valid, otherwise false
+    } else if (propertyLocation.code === "FROM_GRAM_PANCHAYAT") {
+        return gramPanchayat ? true : false; // Return true if gramPanchayat is valid, otherwise false
+    }
+
+    return null; // Return null if none of the conditions are met
+}
+
   useEffect(() => {
     if (workerData && workerData?.Individual  && !isVendorLoading && vendorData ) {
       const workerDetails = workerData?.Individual?.[0];
@@ -236,7 +252,7 @@ const EditWorker = ({ parentUrl, heading }) => {
       // formData?.selectGender &&
       // formData?.dob &&
       formData?.address?.city &&
-      formData?.address?.locality &&
+      validateLocationDetails(formData) &&
       formData?.skills &&
       formData?.employementDetails?.employer &&
       formData?.employementDetails?.vendor &&

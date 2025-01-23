@@ -37,6 +37,8 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
             : {}
     );
 
+    console.log(`*** LOG formData ***`,formData);
+
 
 
 
@@ -263,6 +265,19 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
                 console.warn("fetchedLocalities is not defined or is not an array.");
             }
         } else if (formData?.address?.propertyLocation?.code === 'FROM_GRAM_PANCHAYAT') {
+
+            if (Array.isArray(fetchedGramPanchayats)) {
+                const matchedLocality = fetchedGramPanchayats.find(gramPanchayat => 
+                    gramPanchayat.code === formData?.address?.gramPanchayat?.code
+                );
+                if (matchedLocality) {
+                    setSelectedLocality(matchedLocality);
+                } else {
+                    console.warn("No matching locality found for the given code.");
+                }
+            } else {
+                console.warn("fetchedLocalities is not defined or is not an array.");
+            }
             // Handle logic for 'FROM_GRAM_PANCHAYAT' case here, if needed
         }
     }, [formData, fetchedLocalities]);
@@ -479,7 +494,8 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
                                     </LabelFieldPair>
                                 )}
                             </div>
-                        ) : <LabelFieldPair>
+                        ) :
+                         <LabelFieldPair>
 
                             {/* ULB LIMITS */}
                             <CardLabel className="card-label-smaller">

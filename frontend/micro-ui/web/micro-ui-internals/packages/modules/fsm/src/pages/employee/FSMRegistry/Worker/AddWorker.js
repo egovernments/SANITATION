@@ -67,6 +67,23 @@ const AddWorker = ({ parentUrl, heading }) => {
 
   const defaultValues = {};
 
+  function validateLocationDetails(formData) {
+    if (!formData || !formData.address || !formData.address.propertyLocation) {
+        return null;
+    }
+
+    const { propertyLocation, locality, gramPanchayat } = formData.address;
+
+    if (propertyLocation.code === "WITHIN_ULB_LIMITS") {
+        return locality ? true : false; // Return true if locality is valid, otherwise false
+    } else if (propertyLocation.code === "FROM_GRAM_PANCHAYAT") {
+        return gramPanchayat ? true : false; // Return true if gramPanchayat is valid, otherwise false
+    }
+
+    return null; // Return null if none of the conditions are met
+}
+
+
   const onFormValueChange = (setValue, formData, errors) => {
     for (let i = 0; i < formData?.AddWorkerRoles?.length; i++) {
       let key = formData?.AddWorkerRoles[i];
@@ -85,8 +102,8 @@ const AddWorker = ({ parentUrl, heading }) => {
       // formData?.selectGender &&
       // formData?.dob &&
       formData?.address?.city &&
-      formData?.address?.locality &&
       formData?.skills &&
+      validateLocationDetails(formData) &&
       formData?.employementDetails?.employer &&
       formData?.employementDetails?.vendor &&
       (!formData?.AddWorkerRoles || formData?.AddWorkerRoles?.length === 0 || (formData?.AddWorkerRoles?.length > 0 && checkRoleField)) &&
@@ -96,6 +113,9 @@ const AddWorker = ({ parentUrl, heading }) => {
     } else {
       setSubmitValve(false);
     }
+
+
+
   };
 
   const closeToast = () => {
@@ -103,7 +123,6 @@ const AddWorker = ({ parentUrl, heading }) => {
   };
 
   const onSubmit = (data) => {
-    
     const name = data?.name;
     const mobileNumber = data?.SelectEmployeePhoneNumber?.mobileNumber;
     const gender = data?.selectGender?.code;
@@ -193,11 +212,11 @@ const AddWorker = ({ parentUrl, heading }) => {
         identifiers:
           driverLicenses?.length > 0
             ? [
-                {
-                  identifierType: "DRIVING_LICENSE_NUMBER",
-                  identifierId: driverLicenses?.[0],
-                },
-              ]
+              {
+                identifierType: "DRIVING_LICENSE_NUMBER",
+                identifierId: driverLicenses?.[0],
+              },
+            ]
             : null,
         skills: skills,
         photo: photograph,
@@ -211,18 +230,18 @@ const AddWorker = ({ parentUrl, heading }) => {
           tenantId: tenantId,
           roles: roleDetails
             ? // Object.values(roleDetails[0].sys_role).map((role) => ({
-              //     code: role.code,
-              //     tenantId: tenantId,
-              //   }))
-              roleDetails
-                .map((item) => Object.values(item.sys_role))
-                .flat()
-                .reduce((result, role) => {
-                  if (!result.some((entry) => entry.code === role.code)) {
-                    result.push({ code: role.code, tenantId });
-                  }
-                  return result;
-                }, [])
+            //     code: role.code,
+            //     tenantId: tenantId,
+            //   }))
+            roleDetails
+              .map((item) => Object.values(item.sys_role))
+              .flat()
+              .reduce((result, role) => {
+                if (!result.some((entry) => entry.code === role.code)) {
+                  result.push({ code: role.code, tenantId });
+                }
+                return result;
+              }, [])
             : [{ code: "SANITATION_WORKER", tenantId }],
           type: "CITIZEN",
         },
