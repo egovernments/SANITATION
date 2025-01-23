@@ -79,7 +79,7 @@ const EditWorker = ({ parentUrl, heading }) => {
     },
     details: {
       Individual: {
-        individualId: id,
+        individualId: [id],
       },
     },
   });
