@@ -38,6 +38,8 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
     );
 
 
+
+
     function selectGramPanchayat(value) {
         setSelectedGp(value);
         const filteredVillages = fetchedGramPanchayats.filter(
@@ -53,6 +55,7 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
         }
         if (userType === "employee") {
             onSelect(config.key, { ...formData[config.key], gramPanchayat: value });
+
         }
         Digit.SessionStorage.del("locationType");
     }
@@ -81,8 +84,8 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
             formData.address.propertyLocation = inputs[0];
         }
     }
-    
-  const { pincode, city, propertyLocation } = formData?.address || "";
+
+    const { pincode, city, propertyLocation } = formData?.address || "";
     const cities =
         userType === "employee"
             ? allCities.filter((city) => city.code === tenantId)
@@ -115,9 +118,7 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
         },
         t
     );
-
     console.log(`*** LOG fetchedLocalities ***`,fetchedLocalities);
-    console.log(`*** LOG fetchedGramPanchayats  ***`,fetchedGramPanchayats);
     const { data: urcConfigData } = Digit.Hooks.fsm.useMDMS(
         tenantId,
         "FSM",
@@ -127,13 +128,10 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
 
     var isUrcEnable =
         urcConfig && urcConfig.length > 0 && urcConfig[0].URCEnable;
-    //  if(isNewWorker){
-    //    isUrcEnable =
-    //     urcConfig && urcConfig.length > 0 &&  false;
-    // }
 
-    
 
+
+// "WITHIN_ULB_LIMITS"
     const [selectLocation, setSelectLocation] = useState(() =>
         formData?.address?.propertyLocation
             ? formData?.address?.propertyLocation
@@ -198,6 +196,10 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
         }
     }, [cities]);
 
+
+ 
+
+
     useEffect(() => {
         if (selectedCity && selectLocation) {
             if (userType === "employee") {
@@ -233,9 +235,9 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
             setLocalities(() =>
                 filteredLocalityList.length > 0 ? filteredLocalityList : __localityList
             );
-            console.log(`*** LOG  localities ***`,localities);
+            // console.log(`*** LOG  localities ***`, localities);
             if (filteredLocalityList.length === 1) {
-                setSelectedLocality(filteredLocalityList[0]);
+                setSelectedLocality(filteredLocalityList[0]);              
                 if (userType === "employee") {
                     onSelect(config.key, {
                         ...formData[config.key],
@@ -246,20 +248,40 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
         }
     }, [selectedCity, selectLocation, fetchedLocalities]);
 
+    useEffect(() => {
+        if (formData?.address?.propertyLocation?.code === 'WITHIN_ULB_LIMITS') {
+            if (Array.isArray(fetchedLocalities)) {
+                const matchedLocality = fetchedLocalities.find(locality => 
+                    locality.code === formData?.address?.locality?.code
+                );
+                if (matchedLocality) {
+                    setSelectedLocality(matchedLocality);
+                } else {
+                    console.warn("No matching locality found for the given code.");
+                }
+            } else {
+                console.warn("fetchedLocalities is not defined or is not an array.");
+            }
+        } else if (formData?.address?.propertyLocation?.code === 'FROM_GRAM_PANCHAYAT') {
+            // Handle logic for 'FROM_GRAM_PANCHAYAT' case here, if needed
+        }
+    }, [formData, fetchedLocalities]);
+    
+
     if (
         userType !== "employee" &&
         propertyLocation?.code === "FROM_GRAM_PANCHAYAT"
-      ) {
+    ) {
         config.texts.cardText =
-          "CS_FILE_APPLICATION_PROPERTY_LOCATION_GRAM_PANCHAYAT_TEXT";
-      }
+            "CS_FILE_APPLICATION_PROPERTY_LOCATION_GRAM_PANCHAYAT_TEXT";
+    }
 
-      function selectVillage(value) {
+    function selectVillage(value) {
         setSelectedVillage(value);
         if (userType === "employee") {
-          onSelect(config.key, { ...formData[config.key], village: value });
+            onSelect(config.key, { ...formData[config.key], village: value });
         }
-      }  
+    }
 
     function selectCity(city) {
         setSelectedLocality(null);
@@ -372,7 +394,6 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
                             )}
                     </div>
                 ) : (
-
                     <div>
                         <LabelFieldPair>
                             <CardLabel>{`${t("ES_NEW_PROPERTY_LOCATION")} *`}</CardLabel>
@@ -389,8 +410,8 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
                             </div>
                         </LabelFieldPair>
 
-                            {/* GRAMA PANCHAYATH*/}            
-                        { propertyLocation?.code === "FROM_GRAM_PANCHAYAT" ? (
+                        {/* GRAMA PANCHAYATH*/}
+                        {propertyLocation?.code === "FROM_GRAM_PANCHAYAT" ? (
                             <div>
                                 <LabelFieldPair>
                                     <CardLabel className="card-label-smaller">
@@ -458,25 +479,25 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
                                     </LabelFieldPair>
                                 )}
                             </div>
-                        ) :   <LabelFieldPair>
+                        ) : <LabelFieldPair>
 
                             {/* ULB LIMITS */}
-                        <CardLabel className="card-label-smaller">
-                            {`${t("ES_NEW_APPLICATION_LOCATION_MOHALLA")} *`}
-                            {/* {config.isMandatory ? " * " : null} */}
-                        </CardLabel>
-                        <Dropdown
-                            className="form-field"
-                            isMandatory
-                            selected={selectedLocality}
-                            option={fetchedLocalities?.sort((a, b) =>
-                                a?.name?.localeCompare(b?.name)
-                            )}
-                            select={selectLocality}
-                            optionKey="i18nkey"
-                            t={t}
-                        />
-                    </LabelFieldPair> }
+                            <CardLabel className="card-label-smaller">
+                                {`${t("ES_NEW_APPLICATION_LOCATION_MOHALLA")} *`}
+                                {/* {config.isMandatory ? " * " : null} */}
+                            </CardLabel>
+                            <Dropdown
+                                className="form-field"
+                                isMandatory
+                                selected={selectedLocality}
+                                option={fetchedLocalities?.sort((a, b) =>
+                                    a?.name?.localeCompare(b?.name)
+                                )}
+                                select={selectLocality}
+                                optionKey="i18nkey"
+                                t={t}
+                            />
+                        </LabelFieldPair>}
 
                     </div>
                 )
