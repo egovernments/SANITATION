@@ -123,6 +123,7 @@ const AddWorker = ({ parentUrl, heading }) => {
   };
 
   const onSubmit = (data) => {
+    console.log(`*** LOG ***`,data);
     const name = data?.name;
     const mobileNumber = data?.SelectEmployeePhoneNumber?.mobileNumber;
     const gender = data?.selectGender?.code;
@@ -130,7 +131,8 @@ const AddWorker = ({ parentUrl, heading }) => {
     const photograph = data?.documents?.img_photo?.[0]?.[1]?.fileStoreId?.fileStoreId || null;
     const pincode = data?.pincode;
     const city = data?.address?.city?.name;
-    const locality = data?.address?.locality?.code;
+    const locality = data?.address?.locality?.code || data?.address?.gramPanchayat?.code ;
+
     const doorNo = data?.doorNo;
     const street = data?.street;
     const landmark = data?.landmark;

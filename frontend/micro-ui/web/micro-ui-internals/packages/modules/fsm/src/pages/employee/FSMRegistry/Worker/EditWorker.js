@@ -198,7 +198,11 @@ const EditWorker = ({ parentUrl, heading }) => {
           city: {
             code: workerDetails?.address?.[0]?.city,
           },
-          locality: { ...workerDetails?.address?.[0]?.locality },
+          
+          locality: { 
+            ...workerDetails?.address?.[0]?.locality ,
+            ...workerDetails?.address?.[0]?.gramPanchayat 
+          }
         },
         street: workerDetails?.address?.[0]?.street,
         doorNo: workerDetails?.address?.[0]?.doorNo,

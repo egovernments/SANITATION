@@ -37,8 +37,6 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
             : {}
     );
 
-    console.log(`*** LOG formData ***`,formData);
-
 
 
 
@@ -364,7 +362,7 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
                         isMandatory
                         selected={cities?.length === 1 ? cities[0] : selectedCity}
                         disable={cities?.length === 1}
-                        option={cities?.sort((a, b) => a.name.localeCompare(b.name))}
+                        option={cities?.sort((a, b) => a?.name?.localeCompare(b?.name))}
                         select={selectCity}
                         optionKey="code"
                         t={t}
@@ -438,7 +436,7 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
                                         isMandatory
                                         selected={selectedGp}
                                         option={gramPanchayats?.sort((a, b) =>
-                                            a.name.localeCompare(b.name)
+                                            a?.name?.localeCompare(b?.name)
                                         )}
                                         select={selectGramPanchayat}
                                         optionKey="i18nkey"
@@ -470,7 +468,7 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
                                             isMandatory
                                             selected={selectedVillage}
                                             option={villages?.sort((a, b) =>
-                                                a.name.localeCompare(b.name)
+                                                a?.name?.localeCompare(b?.name)
                                             )}
                                             select={selectVillage}
                                             optionKey="i18nkey"
