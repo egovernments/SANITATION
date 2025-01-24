@@ -22,8 +22,9 @@ export const LocationService = {
   getGramPanchayats: async (tenantId) => {
     const response = await ServiceRequest({
       serviceName: "getGramPanchayats",
-      url: Urls.location.gramPanchayats,
-      params: { tenantId: tenantId },
+      url: Urls.boundaryService,
+      params: { tenantId: tenantId,hierarchyType:'REVENUE-GP',boundaryType:'GP',includeChildren:true },
+      
       useCache: true,
     });
     return response;

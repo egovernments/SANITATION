@@ -87,8 +87,6 @@ const SelectLocalityOrGramPanchayat = ({
     t
   );
 
-  console.log(`*** LOG  fetchedLocalities***`,fetchedLocalities);
-
   useEffect(() => {
     selectVillage({});
   }, [selectedGp]);

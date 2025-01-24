@@ -7,9 +7,9 @@ const Urls = {
   WorkFlowProcessSearch: `/egov-workflow-v2/egov-wf/process/_search`,
   localization: `/localization/messages/v1/_search`,
   location: {
-    localities: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=ADMIN&boundaryType=Locality`,
-    revenue_localities: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=Locality`,
-    gramPanchayats: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=GP`,
+    localities: `/boundary-service/boundary-relationships/_search?hierarchyType=REVENUE-LOCALITY&boundaryType=Locality&includeChildren=true`,
+    revenue_localities: `/boundary-service/boundary-relationships/_search?hierarchyType=REVENUE-LOCALITY&boundaryType=Locality&includeChildren=true`,
+    gramPanchayats: `/boundary-service/boundary-relationships/_search?hierarchyType=REVENUE-GP&boundaryType=GP&includeChildren=true`,
   },
   boundaryService:`/boundary-service/boundary-relationships/_search`,
   pgr_search: `/pgr-services/v2/request/_search`,
