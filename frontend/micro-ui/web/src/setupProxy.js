@@ -22,8 +22,8 @@ module.exports = function (app) {
     "/vehicle",
     "/vendor",
     "/property-services",
-    "/fsm-calculator/v1/billingSlab/_search",
     "/fsm-calculator/v1/_advancebalancecalculate",
-    "/boundary-service"
+    "/boundary-service",
+     "/mdms-v2",
   ].forEach((location) => app.use(location, createProxy));
 };
