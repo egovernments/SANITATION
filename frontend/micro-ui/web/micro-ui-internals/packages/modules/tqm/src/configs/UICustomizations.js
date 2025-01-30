@@ -240,7 +240,7 @@ export const UICustomizations = {
       const tenantId = Digit.ULBService.getCurrentTenantId();
 
       return {
-        url: "/mdms-v2/v2/_search",
+        url: "/egov-mdms-service/v2/_search",
         params: { },
         body: {
           tenantId,

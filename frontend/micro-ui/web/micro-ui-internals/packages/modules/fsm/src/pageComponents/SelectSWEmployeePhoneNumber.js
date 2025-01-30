@@ -35,7 +35,7 @@ const SelectSWEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userT
     },
     details: {
       Individual: {
-        mobileNumber: checkMobile,
+        mobileNumber: [checkMobile],
       },
     },
     config: {

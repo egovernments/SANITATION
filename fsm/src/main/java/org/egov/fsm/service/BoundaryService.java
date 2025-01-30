@@ -68,7 +68,7 @@ public class BoundaryService {
 		uri.append("?").append("tenantId=").append(tenantId);
 		
 		if (hierarchyTypeCode != null) {
-			uri.append("&").append("hierarchyTypeCode=").append(hierarchyTypeCode);
+			uri.append("&").append("hierarchyType=").append(hierarchyTypeCode);
 		}
 		/*
 		 * commented to enable urc
@@ -117,7 +117,7 @@ public class BoundaryService {
 
 		Boundary boundary = mapper.convertValue(boundaryResponse.stream().findFirst(), Boundary.class);
 		
-		if (boundary.getName().isEmpty()) {
+		if (boundary.getCode().isEmpty()) {
 			
 			throw new CustomException(FSMErrorConstants.INVALID_BOUNDARY_DATA,
 					"The boundary data for the code " + fsm.getAddress().getLocality().getCode() + " is not available");

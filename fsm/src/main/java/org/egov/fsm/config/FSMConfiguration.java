@@ -77,7 +77,7 @@ public class FSMConfiguration {
 		private String updateAdhocTopic;
 
 		// Location Config
-		@Value("${egov.location.host}")
+		@Value("${boundary.service.host}")
 		private String locationHost;
 
 		@Value("${egov.location.context.path}")

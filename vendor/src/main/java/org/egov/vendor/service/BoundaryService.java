@@ -56,7 +56,7 @@ public class BoundaryService {
 		uri.append("?").append("tenantId=").append(tenantId);
 
 		if (hierarchyTypeCode != null) {
-			uri.append("&").append("hierarchyTypeCode=").append(hierarchyTypeCode);
+			uri.append("&").append("hierarchyType=").append(hierarchyTypeCode);
 		}
 		uri.append("&").append("boundaryType=").append("Locality");
 		uri.append("&").append("codes=").append(vendor.getAddress().getLocality().getCode());
@@ -84,7 +84,7 @@ public class BoundaryService {
 		Boundary boundary = mapper.convertValue(boundaryResponse != null ? boundaryResponse.get(0) : new Boundary(),
 				Boundary.class);
 
-		if (boundary.getName() == null) {
+		if (boundary.getCode() == null) {
 
 			throw new CustomException("FSMErrorConstants.INVALID_BOUNDARY_DATA", "The boundary data for the code "
 					+ vendor.getAddress().getLocality().getCode() + " is not available");

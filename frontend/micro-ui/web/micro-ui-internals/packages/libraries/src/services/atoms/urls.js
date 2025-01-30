@@ -1,16 +1,17 @@
 const Urls = {
   mdms_v2: {
-    search: "/mdms-v2/v2/_search",
+    search: "/egov-mdms-service/v2/_search",
   },
   MDMS: `/mdms-v2/v1/_search`,
   WorkFlow: `/egov-workflow-v2/egov-wf/businessservice/_search`,
   WorkFlowProcessSearch: `/egov-workflow-v2/egov-wf/process/_search`,
   localization: `/localization/messages/v1/_search`,
   location: {
-    localities: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=ADMIN&boundaryType=Locality`,
-    revenue_localities: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=Locality`,
+    localities: `/boundary-service/boundary-relationships/_search?hierarchyType=REVENUE-LOCALITY&boundaryType=Locality&includeChildren=true`,
+    revenue_localities: `/boundary-service/boundary-relationships/_search?hierarchyType=REVENUE-LOCALITY&boundaryType=Locality&includeChildren=true`,
+    gramPanchayats: `/boundary-service/boundary-relationships/_search?hierarchyType=REVENUE-GP&boundaryType=GP&includeChildren=true`,
   },
-
+  boundaryService:`/boundary-service/boundary-relationships/_search`,
   pgr_search: `/pgr-services/v2/request/_search`,
   pgr_update: `/pgr-services/v2/request/_update`,
   filter_data: `https://run.mocky.io/v3/597a50a0-90e5-4a45-b82e-8a2186b760bd`,

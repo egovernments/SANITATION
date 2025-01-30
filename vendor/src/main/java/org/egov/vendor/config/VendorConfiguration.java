@@ -92,7 +92,7 @@ public class VendorConfiguration {
 	// @Value("${egov.owner.ownername.prefix}")
 	private String ownernamePrefix;
 
-	@Value("${egov.location.host}")
+	@Value("${boundary.service.host}")
 	private String locationHost;
 
 	@Value("${egov.location.context.path}")
