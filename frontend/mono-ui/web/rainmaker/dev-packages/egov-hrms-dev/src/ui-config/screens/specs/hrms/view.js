@@ -1,5 +1,6 @@
 import {
-  getCommonContainer, getCommonHeader
+  getCommonContainer,
+  getCommonHeader,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
@@ -11,12 +12,11 @@ import { employeeReviewDetails } from "./viewResource/employee-review";
 import { hrViewFooter } from "./viewResource/footer";
 import { getEmployeeData } from "./viewResource/functions";
 
-
 export const header = getCommonContainer({
   header: getCommonHeader({
     labelName: `View Employee Information`,
-    labelKey: "HR_VIEW_HEADER"
-  })
+    labelKey: "HR_VIEW_HEADER",
+  }),
 });
 
 const tradeView = employeeReviewDetails(false);
@@ -32,17 +32,17 @@ const getMdmsData = async (action, state, dispatch, tenantId) => {
           masterDetails: [
             {
               name: "DeactivationReason",
-              filter: "[?(@.active == true)]"
-            }
-          ]
-        }
-      ]
-    }
+              filter: "[?(@.active == true)]",
+            },
+          ],
+        },
+      ],
+    },
   };
   try {
     const payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -69,7 +69,7 @@ const screenConfig = {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        className: "common-div-css"
+        className: "common-div-css",
       },
       children: {
         headerDiv: {
@@ -79,15 +79,15 @@ const screenConfig = {
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 10
+                sm: 10,
               },
-              ...header
-            }
-          }
+              ...header,
+            },
+          },
         },
         tradeView,
-        footer: hrViewFooter()
-      }
+        footer: hrViewFooter(),
+      },
     },
     // deactivateEmployee: {
     //   uiFramework: "custom-molecules-local",
@@ -105,13 +105,12 @@ const screenConfig = {
         open: false,
         maxWidth: "sm",
         screenKey: "view",
-
       },
       children: {
-        popup: deactivateEmployee
-      }
-    }
-  }
+        popup: deactivateEmployee,
+      },
+    },
+  },
 };
 
 export default screenConfig;
