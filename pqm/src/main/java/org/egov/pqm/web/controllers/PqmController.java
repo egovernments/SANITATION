@@ -43,18 +43,14 @@ public class PqmController {
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
   }
 
-  @PostMapping(value = "/_search")
-  ResponseEntity<TestResponse> search(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
-      @Valid @RequestBody TestSearchRequest testSearchRequest) {
-    TestResponse response = pqmService.testSearch(testSearchRequest,
-        requestInfoWrapper.getRequestInfo(), true);
+	@PostMapping(value = "/_search")
+	ResponseEntity<TestResponse> search(@Valid @RequestBody TestSearchRequest testSearchRequest) {
+		TestResponse response = pqmService.testSearch(testSearchRequest, testSearchRequest.getRequestInfo(), true);
 
-    response.setResponseInfo(
-        responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(),
-            true));
-//    return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
-    return new ResponseEntity<>(response, HttpStatus.OK);
-  }
+		response.setResponseInfo(
+				responseInfoFactory.createResponseInfoFromRequestInfo(testSearchRequest.getRequestInfo(), true));
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 
   @PostMapping(value = "/_scheduler", produces = {"*/*"}, consumes = {"application/json"})
   ResponseEntity<TestResponse> scheduleTest(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper ) {
