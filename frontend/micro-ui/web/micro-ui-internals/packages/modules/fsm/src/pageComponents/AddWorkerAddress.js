@@ -118,7 +118,6 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
         },
         t
     );
-    console.log(`*** LOG fetchedLocalities ***`,fetchedLocalities);
     const { data: urcConfigData } = Digit.Hooks.fsm.useMDMS(
         tenantId,
         "FSM",
@@ -550,7 +549,7 @@ const AddWorkerAddress = ({ t, config, onSelect, userType, formData }) => {
                 )}
                 <CardLabel>{`${t("MYCITY_CODE_LABEL")} *`}</CardLabel>
                 <RadioOrSelect
-                    options={cities?.sort((a, b) => a.name.localeCompare(b.name))}
+                    options={cities?.sort((a, b) => a?.name?.localeCompare(b?.name))}
                     selectedOption={cities?.length === 1 ? cities[0] : selectedCity}
                     optionKey="i18nKey"
                     onSelect={selectCity}
