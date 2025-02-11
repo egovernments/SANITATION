@@ -870,7 +870,7 @@ const FstpOperatorDetails = () => {
                       isMandatory
                       selected={selectedLocality}
                       option={localities?.sort((a, b) =>
-                        a.name.localeCompare(b.name)
+                        a?.name?.localeCompare(b?.name)
                       )}
                       select={selectLocality}
                       optionKey="i18nkey"
