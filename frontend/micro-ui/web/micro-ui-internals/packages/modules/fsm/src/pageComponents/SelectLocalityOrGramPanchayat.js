@@ -253,7 +253,7 @@ const SelectLocalityOrGramPanchayat = ({
                 isMandatory
                 selected={selectedGp}
                 option={gramPanchayats?.sort((a, b) =>
-                  a.name.localeCompare(b.name)
+                  a?.name?.localeCompare(b?.name)
                 )}
                 select={selectGramPanchayat}
                 optionKey="i18nkey"
@@ -285,7 +285,7 @@ const SelectLocalityOrGramPanchayat = ({
                   isMandatory
                   selected={selectedVillage}
                   option={villages?.sort((a, b) =>
-                    a.name.localeCompare(b.name)
+                    a?.name?.localeCompare(b?.name)
                   )}
                   select={selectVillage}
                   optionKey="i18nkey"
@@ -379,7 +379,7 @@ const SelectLocalityOrGramPanchayat = ({
                 isMandatory
                 selected={selectedLocality}
                 option={fetchedLocalities?.sort((a, b) =>
-                  a.name.localeCompare(b.name)
+                  a?.name?.localeCompare(b?.name)
                 )}
                 select={selectLocality}
                 optionKey="i18nkey"
@@ -414,7 +414,7 @@ const SelectLocalityOrGramPanchayat = ({
                 isMandatory
                 selected={selectedGp}
                 option={gramPanchayats?.sort((a, b) =>
-                  a.name.localeCompare(b.name)
+                  a?.name.localeCompare(b?.name)
                 )}
                 select={selectGramPanchayat}
                 optionKey="i18nkey"
@@ -446,7 +446,7 @@ const SelectLocalityOrGramPanchayat = ({
                   isMandatory
                   selected={selectedVillage}
                   option={villages?.sort((a, b) =>
-                    a.name.localeCompare(b.name)
+                    a?.name?.localeCompare(b?.name)
                   )}
                   select={selectVillage}
                   optionKey="i18nkey"
