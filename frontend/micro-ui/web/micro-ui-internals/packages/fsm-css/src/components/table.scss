@@ -48,6 +48,7 @@
       thead {
         th {
           padding: 20px 18px;
+          background-color: #fff !important;
           @apply font-bold align-middle text-left;
           &:first-child {
             min-width: 256px;
