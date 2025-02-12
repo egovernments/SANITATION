@@ -70,6 +70,8 @@ export const NewApplication = ({ parentUrl, heading }) => {
   };
 
   const onFormValueChange = (setValue, formData) => {
+    console.log("propertyLocation"+"*** LOG ***"  , formData);
+
     if (
       formData?.propertyType &&
       formData?.subtype &&
@@ -152,7 +154,6 @@ export const NewApplication = ({ parentUrl, heading }) => {
     const gramPanchayat = data?.address.gramPanchayat;
     const village = data?.address.village;
     const propertyLocation = data?.address?.propertyLocation?.code;
-
     const formData = {
       fsm: {
         citizen: {
@@ -201,11 +202,13 @@ export const NewApplication = ({ parentUrl, heading }) => {
           },
           additionalDetails: {
             boundaryType:
-              propertyLocation === "FROM_GRAM_PANCHAYAT"
-                ? village?.code
-                  ? "Village"
-                  : "GP"
-                : "Locality",
+            propertyLocation === "FROM_GRAM_PANCHAYAT"
+            ? gramPanchayat?.code
+              ? "GP"
+              : village?.code
+                ? "Village"
+                : null
+            : "Locality",
             gramPanchayat: {
               code: gramPanchayat?.code,
               name: gramPanchayat?.name,
