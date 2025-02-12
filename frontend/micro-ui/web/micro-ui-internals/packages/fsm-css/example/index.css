@@ -995,6 +995,7 @@ img, video {
     border-right-color: #fff; }
     .fsm-table .table thead th {
       padding: 20px 18px;
+      background-color: #fff;
       font-weight: 700;
       vertical-align: middle;
       text-align: left; }
