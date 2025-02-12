@@ -414,7 +414,7 @@ const SelectLocalityOrGramPanchayat = ({
                 isMandatory
                 selected={selectedGp}
                 option={gramPanchayats?.sort((a, b) =>
-                  a?.name.localeCompare(b?.name)
+                  a?.name?.localeCompare(b?.name)
                 )}
                 select={selectGramPanchayat}
                 optionKey="i18nkey"
