@@ -47,13 +47,16 @@ public class BoundaryService {
 	 * 
 	 * @param request
 	 *            FSMRequest for create
-	 * @param hierarchyTypeCode
-	 *            HierarchyTypeCode of the boundaries
+	 * 
 	 */
-	public void getAreaType(FSMRequest request, String hierarchyTypeCode) {
+	public void getAreaType(FSMRequest request) {
+
 		if (request.getFsm() == null) {
 			return;
 		}
+
+		String hierarchyTypeCode = getHierarchyTypeCode(request);
+
 		FSM fsm = request.getFsm();
 
 		String tenantId = request.getFsm().getTenantId();
@@ -61,12 +64,11 @@ public class BoundaryService {
 		if (fsm.getAddress() == null || fsm.getAddress().getLocality() == null) {
 			throw new CustomException(FSMErrorConstants.INVALID_ADDRES, "The address or locality cannot be null");
 		}
-			
 
 		StringBuilder uri = new StringBuilder(config.getLocationHost());
 		uri.append(config.getLocationContextPath()).append(config.getLocationEndpoint());
 		uri.append("?").append("tenantId=").append(tenantId);
-		
+
 		if (hierarchyTypeCode != null) {
 			uri.append("&").append("hierarchyType=").append(hierarchyTypeCode);
 		}
@@ -92,40 +94,55 @@ public class BoundaryService {
 
 		RequestInfoWrapper wrapper = RequestInfoWrapper.builder().requestInfo(request.getRequestInfo()).build();
 		LinkedHashMap responseMap = (LinkedHashMap) serviceRequestRepository.fetchResult(uri, wrapper);
-		
+
 		if (CollectionUtils.isEmpty(responseMap)) {
 			throw new CustomException(FSMErrorConstants.BOUNDARY_ERROR,
 					"The response from location service is empty or null");
 		}
-			
-//		String jsonString = new JSONObject(responseMap).toString();
-//
-//		DocumentContext context = JsonPath.parse(jsonString);
+
+
 		String jsonString1 = new JSONObject(responseMap).toString();
 
-//		List<Boundary> boundaryResponse = context.read("$..boundary[?(@.code==\"{}\")]".replace("{}",fsm.getAddress().getLocality().getCode()));
 		DocumentContext context = JsonPath.parse(jsonString1);
 
-//		if (boundaryResponse.isEmpty() &&  CollectionUtils.isEmpty((boundaryResponse) )) {
 		List<Boundary> boundaryResponse = context
 				.read("$..boundary[?(@.code==\"{}\")]".replace("{}", fsm.getAddress().getLocality().getCode()));
 		if (boundaryResponse.isEmpty() && CollectionUtils.isEmpty((boundaryResponse))) {
 			log.debug("The boundary data was not found");
 			throw new CustomException(FSMErrorConstants.BOUNDARY_MDMS_DATA_ERROR, "The boundary data was not found");
 		}
-			
 
 		Boundary boundary = mapper.convertValue(boundaryResponse.stream().findFirst(), Boundary.class);
-		
+
 		if (boundary.getCode().isEmpty()) {
-			
+
 			throw new CustomException(FSMErrorConstants.INVALID_BOUNDARY_DATA,
 					"The boundary data for the code " + fsm.getAddress().getLocality().getCode() + " is not available");
 		}
-			
 
 		fsm.getAddress().setLocality(boundary);
 
+	}
+
+	private String getHierarchyTypeCode(FSMRequest fsmRequest) {
+		
+		String hierarchyTypeCode = null;
+		
+		if (fsmRequest.getFsm() != null && fsmRequest.getFsm().getAddress() != null) {
+			Object additionalDetails = fsmRequest.getFsm().getAddress().getAdditionalDetails();
+
+			if (additionalDetails instanceof HashMap) {
+				HashMap<String, String> detailsMap = (HashMap<String, String>) additionalDetails;
+				String boundaryType = detailsMap.get("boundaryType");
+
+				if ("Locality".equals(boundaryType)) {
+					hierarchyTypeCode= config.getHierarchyTypeLocalityCode();
+				} else {
+					hierarchyTypeCode=config.getHierarchyTypeGpCode();
+				}
+			}
+		}
+		return hierarchyTypeCode;
 	}
 
 }
