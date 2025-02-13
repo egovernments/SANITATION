@@ -6,8 +6,10 @@
     border-right-color: #fff;
   
     thead {
-      th {
-        background-color: #fff !important;
+      tr, th {
+        background-color: #ffff !important;
+      }
+      th {        
         padding: 20px 18px;
         @apply font-bold align-middle text-left;
         &:first-child {
@@ -46,9 +48,12 @@
       border-right-color: #fff;
   
       thead {
+        tr, th {
+            background-color: #ffff !important;
+          }
+        
         th {
-          padding: 20px 18px;
-          background-color: #fff !important;
+          padding: 20px 18px;          
           @apply font-bold align-middle text-left;
           &:first-child {
             min-width: 256px;

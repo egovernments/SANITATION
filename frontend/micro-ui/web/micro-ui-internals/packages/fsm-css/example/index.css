@@ -951,8 +951,9 @@ img, video {
   border-right-width: 24px;
   border-left-color: #fff;
   border-right-color: #fff; }
+  .table thead th, .table thead tr {
+    background-color: #fff !important; }
   .table thead th {
-    background-color: #fff;
     padding: 20px 18px;
     font-weight: 700;
     vertical-align: middle;
@@ -993,9 +994,10 @@ img, video {
     border-right-width: 24px;
     border-left-color: #fff;
     border-right-color: #fff; }
+    .fsm-table .table thead th, .fsm-table .table thead tr {
+      background-color: #fff !important; }
     .fsm-table .table thead th {
       padding: 20px 18px;
-      background-color: #fff;
       font-weight: 700;
       vertical-align: middle;
       text-align: left; }
