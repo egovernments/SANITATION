@@ -141,7 +141,7 @@ public class FSMService {
 		Double tripAmount = wfIntegrator.getAdditionalDetails(fsmRequest.getFsm().getAdditionalDetails());
 
 		if ((fsmRequest.getFsm().getAdvanceAmount() != null && fsmRequest.getFsm().getAdvanceAmount().intValue() > 0)
-				|| tripAmount > 0) {
+				&& tripAmount > 0) {
 			calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
 		}
 		
