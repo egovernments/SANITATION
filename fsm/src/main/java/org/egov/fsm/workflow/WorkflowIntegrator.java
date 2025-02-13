@@ -98,7 +98,7 @@ public class WorkflowIntegrator {
 		} else if (FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
 				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())) {
 			obj.put(BUSINESSSERVICEKEY, FSMConstants.FSM_BUSINESSSERVICE);
-		} else if (fsm.getAdvanceAmount() == null && fsm.getPaymentPreference() == null	&& tripAmount <= 0) {
+		} else if ((fsm.getAdvanceAmount() == null ||fsm.getAdvanceAmount().intValue() == 0) && fsm.getPaymentPreference() == null	&& tripAmount <= 0) {
 			obj.put(BUSINESSSERVICEKEY, FSMConstants.FSM_ZERO_PRICE_SERVICE);
 		} else if (fsm.getAdvanceAmount() != null && fsm.getAdvanceAmount().intValue() > 0) {
 			obj.put(BUSINESSSERVICEKEY, FSMConstants.FSM_ADVANCE_PAY_BUSINESSSERVICE);
