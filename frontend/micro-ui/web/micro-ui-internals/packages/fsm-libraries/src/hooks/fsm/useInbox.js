@@ -81,8 +81,9 @@ const getIds = (status) => {
 };
 
 const tableData = (data) => {
+  console.log("data"+"*** LOG ***"  , data);
   let result = [];
-  if (data && data.items && data.items.length) {
+  if (data && data.items && data.items.length) {    
     data.items.map((application) => {
       result.push({
         tenantId: application?.businessObject?.tenantId || "",
@@ -91,8 +92,8 @@ const tableData = (data) => {
         createdTime: application?.businessObject?.auditDetails?.createdTime
           ? new Date(application.businessObject.auditDetails.createdTime)
           : new Date(),
-        locality: application?.businessObject?.address?.locality?.code || "",
-        status: application?.businessObject?.applicationStatus || "",
+        locality: application?.businessObject?.locality || "",
+        status: application?.ProcessInstance?.state?.applicationStatus || '',
         citizen: {
           name: application?.ProcessInstance?.assigner?.name || "",
           mobileNumber:
