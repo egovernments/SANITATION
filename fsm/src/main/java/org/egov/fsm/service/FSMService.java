@@ -433,7 +433,7 @@ public class FSMService {
 			}
 				
 
-			if (fsmRequest.getFsm().getAdvanceAmount() != null || tripAmount > 0) {
+			if (fsmRequest.getFsm().getAdvanceAmount() != null && tripAmount > 0) {
 				calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
 			}
 
