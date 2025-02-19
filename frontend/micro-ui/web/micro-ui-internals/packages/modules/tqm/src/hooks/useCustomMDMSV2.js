@@ -1,7 +1,7 @@
 export const useCustomMDMSV2 = ({ tenantId, schemaCode, select, changeQueryName = "Random",filters={},config={} }) => {
   
   const requestCriteria = {
-    url: "/egov-mdms-service/v2/_search",
+    url: "/mdms-v2/v2/_search",
     body: {
       tenantId,
       MdmsCriteria: {
