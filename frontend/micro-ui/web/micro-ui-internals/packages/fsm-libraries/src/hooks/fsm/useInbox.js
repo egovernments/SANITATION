@@ -1,7 +1,7 @@
 import React from "react";
 import useInbox from "@egovernments/digit-ui-libraries/src/hooks/useInbox";
-
 const useFSMInbox = (tenantId, filters, config = {}, overRideUUID = false) => {
+const citizenInfo = Digit.UserService.getUser();
   const {
     applicationNos,
     mobileNumber,
@@ -25,8 +25,9 @@ const useFSMInbox = (tenantId, filters, config = {}, overRideUUID = false) => {
         ? { status: getIds(filters.applicationStatus) }
         : {}),
       moduleName: "fsm",
-      assignee: dsoUUID,
+      assignee: dsoUUID || citizenInfo?.info?.uuid,
     },
+
     moduleSearchCriteria: {
       tenantId,
       ...(mobileNumber ? { mobileNumber } : {}),
@@ -81,7 +82,6 @@ const getIds = (status) => {
 };
 
 const tableData = (data) => {
-  console.log("data"+"*** LOG ***"  , data);
   let result = [];
   if (data && data.items && data.items.length) {    
     data.items.map((application) => {

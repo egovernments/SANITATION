@@ -84,15 +84,17 @@ const Inbox = ({ parentRoute, isSearch = false, isInbox = false }) => {
     },
     DSO ? true : false
   );
-
-  const inboxTotalCount = DSO
-    ? applications?.statuses.filter(
-        (e) => e.applicationstatus === "DSO_INPROGRESS"
-      )[0]?.count +
-      applications?.statuses.filter(
-        (e) => e.applicationstatus === "PENDING_DSO_APPROVAL"
-      )[0]?.count
-    : applications?.totalCount;
+  var tt = {
+    ...searchParams};
+  const inboxTotalCount = applications?.totalCount || 0;
+  // const inboxTotalCount = DSO
+  //   ? applications?.statuses.filter(
+  //       (e) => e.applicationstatus === "DSO_INPROGRESS"
+  //     )[0]?.count +
+  //     applications?.statuses.filter(
+  //       (e) => e.applicationstatus === "PENDING_DSO_APPROVAL"
+  //     )[0]?.count
+  //   : applications?.totalCount;
   const {
     isLoading: isSearchLoading,
     isIdle: isSearchIdle,
