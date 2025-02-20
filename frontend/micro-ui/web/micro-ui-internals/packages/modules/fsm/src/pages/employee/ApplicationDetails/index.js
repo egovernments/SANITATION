@@ -180,6 +180,9 @@ const ApplicationDetails = (props) => {
         queryClient.invalidateQueries("FSM_CITIZEN_SEARCH");
         const inbox = queryClient.getQueryData("FUNCTION_RESET_INBOX");
         inbox?.revalidate();
+        if(data?.fsm[0]?.processInstance?.action === "COMPLETED"){
+        window.location.reload();
+        }
       },
     });
     closeModal();
