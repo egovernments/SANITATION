@@ -86,8 +86,11 @@ public class FSMConfiguration {
 		@Value("${egov.location.endpoint}")
 		private String locationEndpoint;
 
-		@Value("${egov.location.hierarchyTypeCode}")
-		private String hierarchyTypeCode;
+		@Value("${egov.location.hierarchyTypeLocalityCode}")
+		private String hierarchyTypeLocalityCode;
+		
+		@Value("${egov.location.hierarchyTypeGpCode}")
+		private String hierarchyTypeGpCode;
 
 		@Value("${egov.fsm.default.limit}")
 		private Integer defaultLimit;

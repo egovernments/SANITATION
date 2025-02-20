@@ -303,7 +303,7 @@ public class FSMValidator {
 	}
 
 	public void validateUpdate(FSMRequest fsmRequest, List<FSM> searchResult, Object mdmsData, boolean isDsoRole) {
-		boundaryService.getAreaType(fsmRequest, config.getHierarchyTypeCode());
+		boundaryService.getAreaType(fsmRequest);
 		FSM fsm = fsmRequest.getFsm();
 
 		checkUpdateOrActionError(searchResult, fsmRequest, mdmsData, fsm);
