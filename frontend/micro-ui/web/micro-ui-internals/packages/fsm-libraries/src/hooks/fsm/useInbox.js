@@ -1,7 +1,8 @@
 import React from "react";
 import useInbox from "@egovernments/digit-ui-libraries/src/hooks/useInbox";
 const useFSMInbox = (tenantId, filters, config = {}, overRideUUID = false) => {
-const citizenInfo = Digit.UserService.getUser();
+  const citizenInfo = Digit.UserService.getUser();
+  const isDsoRoute = Digit.Utils.detectDsoRoute(window.location.pathname);
   const {
     applicationNos,
     mobileNumber,
@@ -11,6 +12,10 @@ const citizenInfo = Digit.UserService.getUser();
     sortOrder,
     dsoUUID,
   } = filters;
+  if(isDsoRoute){
+    dsoUUID = citizenInfo?.info?.uuid;
+  }
+
   const _filters = {
     tenantId,
     processSearchCriteria: {
@@ -25,7 +30,7 @@ const citizenInfo = Digit.UserService.getUser();
         ? { status: getIds(filters.applicationStatus) }
         : {}),
       moduleName: "fsm",
-      assignee: dsoUUID || citizenInfo?.info?.uuid,
+      assignee: dsoUUID,
     },
 
     moduleSearchCriteria: {
@@ -36,10 +41,10 @@ const citizenInfo = Digit.UserService.getUser();
       ...(sortOrder ? { sortOrder } : {}),
       ...(filters?.locality?.length > 0
         ? {
-            locality: filters.locality.map((item) =>
-              item.code.split("_").pop()
-            ),
-          }
+          locality: filters.locality.map((item) =>
+            item.code.split("_").pop()
+          ),
+        }
         : {}),
     },
     limit,
@@ -83,7 +88,7 @@ const getIds = (status) => {
 
 const tableData = (data) => {
   let result = [];
-  if (data && data.items && data.items.length) {    
+  if (data && data.items && data.items.length) {
     data.items.map((application) => {
       result.push({
         tenantId: application?.businessObject?.tenantId || "",
@@ -103,7 +108,7 @@ const tableData = (data) => {
         sla:
           Math.round(
             application?.ProcessInstance?.businesssServiceSla /
-              (24 * 60 * 60 * 1000)
+            (24 * 60 * 60 * 1000)
           ) || "-",
         mathsla: application?.ProcessInstance?.businesssServiceSla || "",
       });
