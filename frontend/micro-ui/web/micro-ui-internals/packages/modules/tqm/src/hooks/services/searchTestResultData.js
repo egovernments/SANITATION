@@ -11,6 +11,7 @@ export const searchTestResultData = async ({ t, id, type, tenantId }) => {
       },
       testSearchCriteria: {
         testIds: [id],
+        tenantId:tenantId
       },
     },
   });

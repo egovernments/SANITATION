@@ -277,7 +277,7 @@ export const UICustomizations = {
 
       return {
         url: "/mdms-v2/v2/_search",
-        params: {},
+        params: { },
         body: {
           tenantId,
           MdmsCriteria: {
