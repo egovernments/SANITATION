@@ -1,4 +1,4 @@
-import Input from '@material-ui/core/Input';
+import Input from "@material-ui/core/Input";
 import { withStyles } from "@material-ui/core/styles";
 import { Icon } from "components";
 import commonConfig from "config/common";
@@ -11,11 +11,10 @@ import { getLocale, setLocale, setModule } from "egov-ui-kit/utils/localStorageU
 import Label from "egov-ui-kit/utils/translationNode";
 import get from "lodash/get";
 import { Screen } from "modules/common";
-import queryString from 'query-string';
+import queryString from "query-string";
 import React from "react";
 import { connect } from "react-redux";
 // import "./index.css";
-
 
 const styles = (theme) => ({
   root: {
@@ -39,8 +38,8 @@ const styles = (theme) => ({
   },
 });
 const getLocaleDetails = () => {
-  return getQueryArg(window.location.href, "locale") || 'en_IN'
-}
+  return getQueryArg(window.location.href, "locale") || "en_IN";
+};
 class WhatsAppLocality extends React.Component {
   state = {
     searchText: "",
@@ -49,22 +48,22 @@ class WhatsAppLocality extends React.Component {
     cityname: undefined,
     phone: undefined,
     loadedLocalisation: false,
-    localisedMessages: {}
+    localisedMessages: {},
   };
 
   componentDidMount = async () => {
     localStorage.clear();
 
-    const values = queryString.parse(this.props.location.search)
-    const cityname = values.tenantId || 'pb.amritsar';
+    const values = queryString.parse(this.props.location.search);
+    const cityname = values.tenantId || "pb.amritsar";
     const phone = values.phone;
     // fetchLocalizationLabel(getLocale(), cityname ||"pb.amritsar", cityname||"pb.amritsar");
     this.setState({
       phone: phone,
-    })
+    });
     this.setState({
       cityname: cityname,
-    })
+    });
 
     let locale = getLocaleDetails();
     setLocale(locale);
@@ -80,16 +79,15 @@ class WhatsAppLocality extends React.Component {
         code: item.code,
         label: item.name,
         localisedCode: cod,
-        localisedMessage: getLocaleLabels(cod, cod, this.props.localizationLabels)
-      }
-    })
+        localisedMessage: getLocaleLabels(cod, cod, this.props.localizationLabels),
+      };
+    });
 
     this.setState({
       localitylist: localitylist,
-      data: [...localitylist]
-    })
+      data: [...localitylist],
+    });
   };
-
 
   getMDMSData = async (cityName) => {
     let mdmsBody = {
@@ -100,96 +98,76 @@ class WhatsAppLocality extends React.Component {
             moduleName: "egov-location",
             masterDetails: [
               {
-                name: "TenantBoundary", filter: `[?(@.hierarchyType.code == "ADMIN")].boundary.children.*.children.*.children.*`
-              }
-            ]
+                name: "TenantBoundary",
+                filter: `[?(@.hierarchyType.code == "ADMIN")].boundary.children.*.children.*.children.*`,
+              },
+            ],
           },
-        ]
-      }
+        ],
+      },
     };
     try {
-      const payload = await httpRequest(
-        "/egov-mdms-service/v1/_search",
-        "_search",
-        [],
-        mdmsBody
-      );
+      const payload = await httpRequest("/mdms-v2/v1/_search", "_search", [], mdmsBody);
       return payload;
-
-    } catch (e) {
-    }
+    } catch (e) {}
   };
   getLocalisation = async () => {
     let queryStr = [
-
-
       {
-        "key": 'module',
-        "value": `rainmaker-common,rainmaker-${this.state.cityname}`
+        key: "module",
+        value: `rainmaker-common,rainmaker-${this.state.cityname}`,
       },
       {
-        "key": 'locale',
-        "value": getLocaleDetails()
+        key: "locale",
+        value: getLocaleDetails(),
       },
       {
-        "key": 'tenantId',
-        "value": commonConfig.tenantId
+        key: "tenantId",
+        value: commonConfig.tenantId,
       },
-    ]
+    ];
     try {
-      const payload = await httpRequest(
-        "/localization/messages/v1/_search",
-        "_search",
-        queryStr,
-        {}
-      );
+      const payload = await httpRequest("/localization/messages/v1/_search", "_search", queryStr, {});
       let resultArray = [];
-      resultArray = payload && payload.messages || [];
+      resultArray = (payload && payload.messages) || [];
       this.props.setLocalizationLabels(getLocaleDetails(), resultArray);
       // localStorage.setItem(`localization_${getLocaleDetails()}`,payload&&payload.messages&&JSON.stringify(payload.messages)||JSON.stringify([]));
       this.setState({
         loadedLocalisation: true,
-        localisedMessages: {}
-      })
+        localisedMessages: {},
+      });
 
       return;
-
-    } catch (e) {
-    }
+    } catch (e) {}
   };
-  getConnvertedString = (code = '') => {
-    return `${this.state.cityname && this.state.cityname.split('.')[0].toUpperCase()}_${this.state.cityname && this.state.cityname.split('.')[1].toUpperCase()}_REVENUE_${code}`;
-  }
-  getListItems = items =>
+  getConnvertedString = (code = "") => {
+    return `${this.state.cityname && this.state.cityname.split(".")[0].toUpperCase()}_${
+      this.state.cityname && this.state.cityname.split(".")[1].toUpperCase()
+    }_REVENUE_${code}`;
+  };
+  getListItems = (items) =>
     items.map((item) => ({
-      primaryText: (
-        <Label
-          label={item.localisedCode}
-          fontSize="16px"
-          color="#484848"
-          labelStyle={{ fontWeight: 500 }}
-        />
-      )
-
+      primaryText: <Label label={item.localisedCode} fontSize="16px" color="#484848" labelStyle={{ fontWeight: 500 }} />,
     }));
 
-
-  onChangeText = (searchText = '', localitylist, dataSource, params,) => {
+  onChangeText = (searchText = "", localitylist, dataSource, params) => {
     this.setState({ searchText });
     let localizationLabels = this.props.localizationLabels;
-    //logic to like search on items    
-    const filterData = localitylist.filter(item => {
-      let message = localizationLabels && item.localisedCode && localizationLabels[item.localisedCode] && localizationLabels[item.localisedCode].message || item.localisedCode;
-      message = message || '';
-      return message.toLowerCase().includes(searchText.toLowerCase())
+    //logic to like search on items
+    const filterData = localitylist.filter((item) => {
+      let message =
+        (localizationLabels && item.localisedCode && localizationLabels[item.localisedCode] && localizationLabels[item.localisedCode].message) ||
+        item.localisedCode;
+      message = message || "";
+      return message.toLowerCase().includes(searchText.toLowerCase());
     });
     this.setState({
       data: filterData,
-    })
+    });
     if (searchText === "") {
       this.setState({
         data: localitylist,
-      })
+      });
     }
   };
 
@@ -204,14 +182,7 @@ class WhatsAppLocality extends React.Component {
         <div className="search-background">
           <div className="header-iconText">
             {/* <Icon id="back-navigator" action="navigation" name="arrow-back" /> */}
-            <Label
-              label="Search and choose Locality"
-              color="white"
-              fontSize={18}
-              bold={true}
-              containerStyle={{ marginLeft: 20, marginTop: -2 }}
-            />
-
+            <Label label="Search and choose Locality" color="white" fontSize={18} bold={true} containerStyle={{ marginLeft: 20, marginTop: -2 }} />
           </div>
 
           <div className={`${classes.root} dashboard-search-main-cont`}>
@@ -222,16 +193,15 @@ class WhatsAppLocality extends React.Component {
               fullWidth={true}
               //className={classes.input}
               inputProps={{
-                'aria-label': 'Description',
+                "aria-label": "Description",
               }}
               onChange={(e) => {
                 onChangeText(e.target.value, localitylist);
-
               }}
             />
           </div>
         </div>
-        {(this.state.data.length === 0 && this.state.searchText === "") &&
+        {this.state.data.length === 0 && this.state.searchText === "" && (
           <Screen className="whatsappScreen">
             <Label
               label="Please start typing to search and choose locality"
@@ -239,10 +209,8 @@ class WhatsAppLocality extends React.Component {
               color="#808080"
               labelStyle={{ fontWeight: 500, marginTop: 166, textAlign: "center" }}
             />
-
-          </Screen >
-
-        }
+          </Screen>
+        )}
         <Screen className="whatsappScreen">
           <List
             items={this.getListItems(this.state.data)}
@@ -251,36 +219,27 @@ class WhatsAppLocality extends React.Component {
               const number = this.state.phone || commonConfig.whatsappNumber;
               const name = getLocaleLabels(item.primaryText.props.label, item.primaryText.props.label, this.props.localizationLabels);
               const weblink = "https://api.whatsapp.com/send?phone=" + number + "&text=" + name;
-              window.location.href = weblink
+              window.location.href = weblink;
             }}
             listItemStyle={{ borderBottom: "1px solid grey" }}
             style={{ marginTop: 66 }}
           />
-
-
-        </Screen >
+        </Screen>
       </div>
     );
   }
 }
 
-
-
 const mapStateToProps = (state, ownProps) => {
   const { localizationLabels = {} } = state.app;
   return {
     ...ownProps,
-    localizationLabels
-  }
-}
+    localizationLabels,
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   setLocalizationLabels: (locale, localisedMessage) => dispatch(setLocalizationLabels(locale, localisedMessage)),
   fetchLocalizationLabel: (locale, moduleName, tenantId) => dispatch(fetchLocalizationLabel(locale, moduleName, tenantId)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(
-  (WhatsAppLocality)
-));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WhatsAppLocality));

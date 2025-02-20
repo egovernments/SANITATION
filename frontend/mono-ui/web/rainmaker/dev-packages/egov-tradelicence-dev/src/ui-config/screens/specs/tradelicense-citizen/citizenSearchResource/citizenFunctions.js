@@ -2,7 +2,7 @@ import { getSearchResults } from "../../../../../ui-utils/commons";
 import { httpRequest } from "../../../../../ui-utils";
 import {
   handleScreenConfigurationFieldChange as handleField,
-  prepareFinalObject
+  prepareFinalObject,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import commonConfig from "config/common.js";
 
@@ -13,15 +13,15 @@ const getMdmsData = async () => {
       moduleDetails: [
         {
           moduleName: "tenant",
-          masterDetails: [{ name: "citymodule" }]
-        }
-      ]
-    }
+          masterDetails: [{ name: "citymodule" }],
+        },
+      ],
+    },
   };
   try {
     let payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -37,7 +37,7 @@ export const fetchData = async (action, state, dispatch) => {
   let tenants =
     mdmsRes &&
     mdmsRes.MdmsRes &&
-    mdmsRes.MdmsRes.tenant.citymodule.find(item => {
+    mdmsRes.MdmsRes.tenant.citymodule.find((item) => {
       if (item.code === "TL") return true;
     });
   dispatch(

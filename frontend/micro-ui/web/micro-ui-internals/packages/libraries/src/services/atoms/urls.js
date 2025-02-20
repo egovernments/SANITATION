@@ -11,7 +11,7 @@ const Urls = {
     revenue_localities: `/boundary-service/boundary-relationships/_search?hierarchyType=REVENUE-LOCALITY&boundaryType=Locality&includeChildren=true`,
     gramPanchayats: `/boundary-service/boundary-relationships/_search?hierarchyType=REVENUE-GP&boundaryType=GP&includeChildren=true`,
   },
-  boundaryService:`/boundary-service/boundary-relationships/_search`,
+  boundaryService: `/boundary-service/boundary-relationships/_search`,
   pgr_search: `/pgr-services/v2/request/_search`,
   pgr_update: `/pgr-services/v2/request/_update`,
   filter_data: `https://run.mocky.io/v3/597a50a0-90e5-4a45-b82e-8a2186b760bd`,
