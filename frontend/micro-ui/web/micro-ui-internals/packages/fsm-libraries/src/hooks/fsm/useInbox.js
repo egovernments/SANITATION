@@ -3,7 +3,7 @@ import useInbox from "@egovernments/digit-ui-libraries/src/hooks/useInbox";
 const useFSMInbox = (tenantId, filters, config = {}, overRideUUID = false) => {
   const citizenInfo = Digit.UserService.getUser();
   const isDsoRoute = Digit.Utils.detectDsoRoute(window.location.pathname);
-  const {
+  var {
     applicationNos,
     mobileNumber,
     limit,
