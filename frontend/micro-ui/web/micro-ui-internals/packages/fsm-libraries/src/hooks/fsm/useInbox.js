@@ -13,7 +13,7 @@ const useFSMInbox = (tenantId, filters, config = {}, overRideUUID = false) => {
     dsoUUID,
   } = filters;
   if(isDsoRoute){
-    dsoUUID = citizenInfo?.info?.uuid;
+    filters[dsoUUID] = citizenInfo?.info?.uuid;
   }
 
   const _filters = {
