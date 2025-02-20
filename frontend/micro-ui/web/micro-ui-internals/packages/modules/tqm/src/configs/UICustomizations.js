@@ -494,6 +494,8 @@ export const UICustomizations = {
       const { limit, offset } = data?.state?.tableForm || {};
       data.body.testSearchCriteria = {};
       data.body.pagination = {};
+      data.body.testSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+
 
       //update testSearchCriteria
 
@@ -521,6 +523,7 @@ export const UICustomizations = {
       data.body.testSearchCriteria.wfStatus = ["SUBMITTED"];
       //sortOrder
       data.body.pagination.sortOrder = sortOrder?.value;
+
 
       if (data.body.pagination.sortOrder) {
         data.body.pagination.sortBy = "scheduledDate";
