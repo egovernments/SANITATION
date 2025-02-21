@@ -144,7 +144,6 @@ const ApplicationDetails = () => {
         );
     }
   };
-
   return (
     <React.Fragment>
       <MultiLink
@@ -170,25 +169,31 @@ const ApplicationDetails = () => {
             }}
           >
             {index !== 0 && <CardSubHeader>{t(title)}</CardSubHeader>}
-            <StatusTable>
-              {values?.map(({ title, value }, index) => {
-                return (
-                  <Row
-                    key={t(value)}
-                    label={t(title)}
-                    text={t(value) || "N/A"}
-                    // last={index === detail?.values?.length - 1}
-                    // caption={value}
-                    className="border-none"
-                    rowContainerStyle={{
-                      marginBottom: 0,
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  />
-                );
-              })}
-            </StatusTable>
+            {values && values.length > 0 && (
+              <StatusTable>
+                {values?.map((item, index) => {
+                  if (!item || typeof item !== "object") {
+                    return null;
+                  }
+                  const { title, value } = item;
+                  return (
+                    <Row
+                      key={t(value)}
+                      label={t(title)}
+                      text={t(value) || "N/A"}
+                      // last={index === detail?.values?.length - 1}
+                      // caption={value}
+                      className="border-none"
+                      rowContainerStyle={{
+                        marginBottom: 0,
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    />
+                  );
+                })}
+              </StatusTable>
+            )}
           </Card>
         );
       })}
