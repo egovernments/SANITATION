@@ -11,6 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<springdoc.version>1.6.14</springdoc.version>
 		<swagger-ui.version>4.15.5</swagger-ui.version>
+		    <lombok.version>1.18.22</lombok.version>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -153,12 +154,14 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<version>42.7.1</version>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
+		 <dependency>
+               <groupId>junit</groupId>
+               <artifactId>junit</artifactId>
+               <version>4.13.2</version>
+               <scope>test</scope>
+          </dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -168,6 +171,7 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
+			<version>9.22.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
