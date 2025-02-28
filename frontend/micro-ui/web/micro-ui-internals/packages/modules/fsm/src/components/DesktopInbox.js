@@ -173,7 +173,7 @@ const DesktopInbox = (props) => {
               );
               return (
                 <div>
-                  <span>{t(`${citizen_info?.address?.locality?.name}`)}</span>
+                  <span>{t(`${citizen_info?.address?.locality?.code}`)}</span>
                 </div>
               );
             },

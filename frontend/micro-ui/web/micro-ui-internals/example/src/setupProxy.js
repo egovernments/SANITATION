@@ -43,7 +43,7 @@ module.exports = function (app) {
     "/tl-services/v1/_create",
     "/tl-services/v1/_search",
     "/egov-url-shortening/shortener",
-    "/eus/shortener",
+    "/egov-url-shortening/shortener",
     "/inbox/v1/_search",
     "/tl-services",
     "/tl-calculator",
