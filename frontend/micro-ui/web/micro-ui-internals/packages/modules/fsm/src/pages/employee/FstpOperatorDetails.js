@@ -1019,7 +1019,7 @@ const FstpOperatorDetails = () => {
                 isMobile
                   ? {}
                   : {
-                      diplay: "flex",
+                      display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
                     }
@@ -1041,7 +1041,7 @@ const FstpOperatorDetails = () => {
                 style={
                   isMobile
                     ? { width: "100%" }
-                    : { width: "63%", marginLeft: "30%" }
+                    : { width: "63%", marginLeft: "16.15%" }
                 }
               />
             </div>
