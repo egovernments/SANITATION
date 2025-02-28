@@ -85,7 +85,7 @@ config:
         image-name: 'trackingservice'
         dockerfile: 'build/maven/Dockerfile'
       - work-dir: 'trackingservice/src/main/resources/db'
-        image-name: 'vehicle-tracking-service-db'
+        image-name: 'trackingservice-db'
 
   #Sanitation Frontend
   - name: 'builds/SANITATION/frontend/sanitation-ui'
