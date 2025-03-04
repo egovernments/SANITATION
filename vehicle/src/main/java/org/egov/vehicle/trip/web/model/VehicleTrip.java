@@ -3,21 +3,21 @@ package org.egov.vehicle.trip.web.model;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.egov.common.contract.request.User;
 import org.egov.vehicle.web.model.AuditDetails;
 import org.egov.vehicle.web.model.Vehicle;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import jakarta.annotation.Generated;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +28,7 @@ import lombok.Setter;
  * Request schema of VehicleTrip.  
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-23T12:08:13.326Z[GMT]")
+@Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-12-23T12:08:13.326Z[GMT]")
 
 @Builder
 @AllArgsConstructor
@@ -37,13 +37,11 @@ import lombok.Setter;
 @Setter
 public class VehicleTrip   {
 
-  @SafeHtml
   @JsonProperty("id")
   private String id = null;
 
   @NotNull
   @NotBlank
-  @SafeHtml
   @Size(max=64)
   @JsonProperty("tenantId")
   private String tenantId = null;
@@ -52,7 +50,6 @@ public class VehicleTrip   {
   @Valid
   private User tripOwner = null;
   
-  @SafeHtml
   @JsonProperty("tripOwnerId")
   private String tripOwnerId = null;
   
@@ -61,7 +58,6 @@ public class VehicleTrip   {
   private User driver = null;
   
   @JsonProperty("driverId")
-  @SafeHtml
   @Size(max=64)
   private String driverId = null;
   
@@ -70,11 +66,9 @@ public class VehicleTrip   {
   @Valid
   private Vehicle vehicle;
   
-  @SafeHtml
   @JsonProperty("vehicleId")
   private String vehicleId = null;
 
-  @SafeHtml
   @JsonProperty("applicationNo")
   private String applicationNo = null;
   
@@ -113,15 +107,12 @@ public class VehicleTrip   {
 
   @NotNull
   @NotBlank
-  @SafeHtml
   @JsonProperty("businessService")
   private String businessService = null;
 
-  @SafeHtml
   @JsonProperty("applicationStatus")
   private String applicationStatus = null;
-  
-  @SafeHtml
+
   @JsonProperty("endType")
   private String endType = null;
 

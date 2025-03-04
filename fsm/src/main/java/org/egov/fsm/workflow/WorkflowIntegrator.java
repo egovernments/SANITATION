@@ -98,7 +98,7 @@ public class WorkflowIntegrator {
 		} else if (FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
 				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference())) {
 			obj.put(BUSINESSSERVICEKEY, FSMConstants.FSM_BUSINESSSERVICE);
-		} else if (fsm.getAdvanceAmount() == null && fsm.getPaymentPreference() == null	&& tripAmount <= 0) {
+		} else if ((fsm.getAdvanceAmount() == null ||fsm.getAdvanceAmount().intValue() == 0) && fsm.getPaymentPreference() == null	&& tripAmount <= 0) {
 			obj.put(BUSINESSSERVICEKEY, FSMConstants.FSM_ZERO_PRICE_SERVICE);
 		} else if (fsm.getAdvanceAmount() != null && fsm.getAdvanceAmount().intValue() > 0) {
 			obj.put(BUSINESSSERVICEKEY, FSMConstants.FSM_ADVANCE_PAY_BUSINESSSERVICE);
@@ -127,7 +127,6 @@ public class WorkflowIntegrator {
 		workFlowRequest.put(REQUESTINFOKEY, fsmRequest.getRequestInfo());
 		workFlowRequest.put(WORKFLOWREQUESTARRAYKEY, array);
 		ProcessInstanceResponse processInstanceResponse = null;
-
 		try {
 			processInstanceResponse = rest.postForObject(config.getWfHost().concat(config.getWfTransitionPath()), workFlowRequest, ProcessInstanceResponse.class);
 
@@ -167,8 +166,6 @@ public class WorkflowIntegrator {
 		// setting the status back to fsm object from wf response
 		fsm.setApplicationStatus(processInstanceResponse.getProcessInstances().get(0).getState().getApplicationStatus());
 		fsm.setProcessInstance(processInstanceResponse.getProcessInstances().get(0));
-
-
 	}
 
 	/**

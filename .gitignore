@@ -1,3 +1,10 @@
 .idea
 frontend/micro-ui-internals/node_modules/*
 target/
+**/target/
+.classpath
+.project
+.settings/
+fsm/.attach_pid18052
+fsm/.attach_pid19305
+

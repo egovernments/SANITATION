@@ -18,6 +18,7 @@ import org.egov.fsm.util.FSMUtil;
 import org.egov.fsm.web.model.AuditDetails;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,7 +28,7 @@ public class PlantMappingService {
 	private FSMUtil util;
 
 	@Autowired
-	private PlantMappingValidator validaor;
+	private PlantMappingValidator validator;
 
 	@Autowired
 	private PlantMappingEnrichmentService enrichmentService;
@@ -37,6 +38,11 @@ public class PlantMappingService {
 
 	@Autowired
 	private PlantMappingRepository repository;
+	
+	public PlantMappingService(@Lazy PlantMappingValidator validator) {
+	        this.validator = validator;
+	    }
+	
 
 	public PlantMapping create(@Valid PlantMappingRequest request) {
 		RequestInfo requestInfo = request.getRequestInfo();
@@ -46,8 +52,8 @@ public class PlantMappingService {
 					"Application Request cannot be create at StateLevel");
 		}
 
-		validaor.validateCreateOrUpdate(request);
-		validaor.validatePlantMappingExists(request);
+		validator.validateCreateOrUpdate(request);
+		validator.validatePlantMappingExists(request);
 		enrichmentService.enrichCreateRequest(request);
 		repository.save(request);
 		return request.getPlantMapping();
@@ -63,7 +69,7 @@ public class PlantMappingService {
 					"FSTP employee map not found in the System" + plantMap.getId());
 		}
 
-		validaor.validateCreateOrUpdate(request);
+		validator.validateCreateOrUpdate(request);
 		List<String> ids = new ArrayList<>();
 		ids.add(plantMap.getId());
 		PlantMappingSearchCriteria criteria = PlantMappingSearchCriteria.builder().tenantId(plantMap.getTenantId())
