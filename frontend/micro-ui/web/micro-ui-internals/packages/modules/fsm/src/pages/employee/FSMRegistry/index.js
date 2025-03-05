@@ -12,7 +12,13 @@ function cleanObject(obj) {
         if (obj[key].length === 0) {
           delete obj[key];
         }
-      } else if (obj[key] === undefined || obj[key] === null || obj[key] === false || obj[key] === '' || (typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)) {
+      } else if (
+        obj[key] === undefined ||
+        obj[key] === null ||
+        obj[key] === false ||
+        obj[key] === "" ||
+        (typeof obj[key] === "object" && Object.keys(obj[key]).length === 0)
+      ) {
         delete obj[key];
       }
     }
@@ -25,7 +31,9 @@ const FSMRegistry = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const tenant = Digit.ULBService.getStateId();
   const [searchParams, setSearchParams] = useState({});
-  const [sortParams, setSortParams] = useState([{ id: "createdTime", desc: true }]);
+  const [sortParams, setSortParams] = useState([
+    { id: "createdTime", desc: true },
+  ]);
   const [pageOffset, setPageOffset] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [tab, setTab] = useState("VENDOR");
@@ -46,7 +54,13 @@ const FSMRegistry = () => {
     sortBy: sortParams?.[0]?.id,
     sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC",
   };
-  const { data: dsoData, isLoading: isLoading, isSuccess: isDsoSuccess, error: dsoError, refetch } =
+  const {
+    data: dsoData,
+    isLoading: isLoading,
+    isSuccess: isDsoSuccess,
+    error: dsoError,
+    refetch,
+  } =
     selectedTabs === "VEHICLE"
       ? Digit.Hooks.fsm.useVehiclesSearch({
           tenantId,
@@ -72,9 +86,9 @@ const FSMRegistry = () => {
           tenantId,
           details: {
             Individual: {
-              roleCodes:["SANITATION_WORKER"],
+              roleCodes: ["SANITATION_WORKER"],
               ...searchParams,
-              tenantId
+              tenantId,
             },
           },
           params: {
@@ -93,18 +107,23 @@ const FSMRegistry = () => {
           config: { enabled: false },
         });
 
-  const { data: vendorData, isLoading: isVendorLoading, isSuccess: isVendorSuccess, error: vendorError, refetch: refetchVendor } = Digit.Hooks.fsm.useDsoSearch(
+  const {
+    data: vendorData,
+    isLoading: isVendorLoading,
+    isSuccess: isVendorSuccess,
+    error: vendorError,
+    refetch: refetchVendor,
+  } = Digit.Hooks.fsm.useDsoSearch(
     tenantId,
     {
       vehicleIds: vehicleIds,
       driverIds: driverIds,
-      status: "ACTIVE",
     },
     { enabled: false },
     t
   );
-  
-  const inboxTotalCount = dsoData?.TotalCount || dsoData?.totalCount ;
+
+  const inboxTotalCount = dsoData?.TotalCount || dsoData?.totalCount;
 
   useEffect(() => {
     refetch();
@@ -151,7 +170,9 @@ const FSMRegistry = () => {
         id: dso.id,
         auditDetails: dso.auditDetails,
         drivers: dso.drivers,
-        activeDrivers: dso.drivers?.filter((driver) => driver.status === "ACTIVE"),
+        activeDrivers: dso.drivers?.filter(
+          (driver) => driver.status === "ACTIVE"
+        ),
         allVehicles: dso.vehicles,
         dsoDetails: dso,
         // activeWorkers: dso.workers?.filter((worker) => worker.vendorWorkerStatus === "ACTIVE"),
@@ -180,7 +201,9 @@ const FSMRegistry = () => {
     if (vendorData) {
       if (selectedTabs === "VEHICLE") {
         const vehicles = dsoData?.vehicle.map((data) => {
-          let vendor = vendorData.find((ele) => ele.dsoDetails?.vehicles?.find((vehicle) => vehicle.id === data.id));
+          let vendor = vendorData.find((ele) =>
+            ele.dsoDetails?.vehicles?.find((vehicle) => vehicle.id === data.id)
+          );
           if (vendor) {
             data.vendor = vendor.dsoDetails;
           }
@@ -191,7 +214,9 @@ const FSMRegistry = () => {
       }
       if (selectedTabs === "DRIVER") {
         const drivers = dsoData?.driver.map((data) => {
-          let vendor = vendorData.find((ele) => ele.dsoDetails?.drivers?.find((driver) => driver.id === data.id));
+          let vendor = vendorData.find((ele) =>
+            ele.dsoDetails?.drivers?.find((driver) => driver.id === data.id)
+          );
           if (vendor) {
             data.vendor = vendor.dsoDetails;
           }
@@ -202,11 +227,15 @@ const FSMRegistry = () => {
       }
       if (selectedTabs === "WORKER") {
         const drivers = dsoData?.Individual?.map((data) => {
-          let vendor = vendorData.find((ele) => ele.dsoDetails?.workers?.find((driver) => driver.individualId === data.id));
+          let vendor = vendorData.find((ele) =>
+            ele.dsoDetails?.workers?.find(
+              (driver) => driver.individualId === data.id
+            )
+          );
           if (vendor) {
             data.vendor = vendor.dsoDetails;
-          }else{
-            data.vendor = null
+          } else {
+            data.vendor = null;
           }
           return data;
         });
@@ -217,7 +246,7 @@ const FSMRegistry = () => {
   }, [vendorData, dsoData]);
 
   const onSearch = (params = {}) => {
-    cleanObject(params)
+    cleanObject(params);
     setSearchParams({ ...params });
   };
 
@@ -242,9 +271,15 @@ const FSMRegistry = () => {
             label: t("ES_FSM_REGISTRY_SEARCH_VEHICLE_NUMBER"),
             name: "registrationNumber",
             labelChildren: (
-              <div className="tooltip" style={{ paddingLeft: "10px", marginBottom: "-3px" }}>
+              <div
+                className="tooltip"
+                style={{ paddingLeft: "10px", marginBottom: "-3px" }}
+              >
                 <InfoIcon />
-                <span className="tooltiptext" style={{ width: "150px", left: "230%", fontSize: "14px" }}>
+                <span
+                  className="tooltiptext"
+                  style={{ width: "150px", left: "230%", fontSize: "14px" }}
+                >
                   {t("ES_FSM_VEHICLE_FORMAT_TIP")}
                 </span>
               </div>
@@ -287,7 +322,9 @@ const FSMRegistry = () => {
   const onTabChange = (tab) => {
     setTab(tab);
     if (selectedTabs !== tab) {
-      history.push(`/${window?.contextPath}/employee/fsm/registry?selectedTabs=${tab}`);
+      history.push(
+        `/${window?.contextPath}/employee/fsm/registry?selectedTabs=${tab}`
+      );
     }
   };
 

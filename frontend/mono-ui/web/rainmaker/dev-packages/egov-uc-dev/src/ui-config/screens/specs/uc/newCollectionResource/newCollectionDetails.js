@@ -1,13 +1,13 @@
 import {
   getCommonCard,
-
   getCommonContainer,
-
-  getDateField, getPattern, getTextField
+  getDateField,
+  getPattern,
+  getTextField,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   handleScreenConfigurationFieldChange as handleField,
-  prepareFinalObject
+  prepareFinalObject,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { httpRequest } from "egov-ui-framework/ui-utils/api";
 import { getTransformedLocale } from "egov-ui-framework/ui-utils/commons";
@@ -17,26 +17,23 @@ import { setServiceCategory } from "../../utils";
 
 const tenantId = getTenantId();
 
-
 const serviceTypeChange = (reqObj) => {
   let { state, value, dispatch } = reqObj;
-  dispatch(prepareFinalObject('Demands[0].businessService', value));
+  dispatch(prepareFinalObject("Demands[0].businessService", value));
   const demandId = get(
     state.screenConfiguration.preparedFinalObject,
     "Demands[0].id",
     null
   );
 
-
   if (!demandId && value) {
     const taxHeads = setTaxHeadFields(value, state, dispatch);
   }
-
-}
+};
 
 const serviceCategoryChange = (reqObj) => {
   let { state, value, dispatch } = reqObj;
-  dispatch(prepareFinalObject('Demands[0].consumerType', value));
+  dispatch(prepareFinalObject("Demands[0].consumerType", value));
   const demandId = get(
     state.screenConfiguration.preparedFinalObject,
     "Demands[0].id",
@@ -52,8 +49,7 @@ const serviceCategoryChange = (reqObj) => {
   if (!demandId && serviceData[value]) {
     const taxHeads = setTaxHeadFields(value, state, dispatch);
   }
-
-}
+};
 
 export const newCollectionDetailsCard = getCommonCard(
   {
@@ -66,16 +62,16 @@ export const newCollectionDetailsCard = getCommonCard(
           props: {
             label: {
               labelName: "City",
-              labelKey: "TL_NEW_TRADE_DETAILS_CITY_LABEL"
+              labelKey: "TL_NEW_TRADE_DETAILS_CITY_LABEL",
             },
             localePrefix: {
               moduleName: "TENANT",
-              masterName: "TENANTS"
+              masterName: "TENANTS",
             },
             optionLabel: "name",
             placeholder: {
               labelName: "Select City",
-              labelKey: "TL_SELECT_CITY"
+              labelKey: "TL_SELECT_CITY",
             },
             required: true,
             value: tenantId,
@@ -88,7 +84,7 @@ export const newCollectionDetailsCard = getCommonCard(
           jsonPath: "Demands[0].tenantId",
           gridDefination: {
             xs: 12,
-            sm: 6
+            sm: 6,
           },
           beforeFieldChange: async (action, state, dispatch) => {
             const citiesByModule = get(
@@ -96,7 +92,7 @@ export const newCollectionDetailsCard = getCommonCard(
               "common.citiesByModule.UC.tenants",
               []
             );
-            if (!citiesByModule.find(item => item.code === action.value)) {
+            if (!citiesByModule.find((item) => item.code === action.value)) {
               return action;
             }
             let requestBody = {
@@ -108,24 +104,24 @@ export const newCollectionDetailsCard = getCommonCard(
                     masterDetails: [
                       {
                         name: "BusinessService",
-                        filter: "[?(@.type=='Adhoc')]"
+                        filter: "[?(@.type=='Adhoc')]",
                       },
                       {
-                        name: "TaxHeadMaster"
+                        name: "TaxHeadMaster",
                       },
                       {
-                        name: "TaxPeriod"
-                      }
-                    ]
-                  }
-                ]
-              }
+                        name: "TaxPeriod",
+                      },
+                    ],
+                  },
+                ],
+              },
             };
             try {
               let payload = null;
               payload = await httpRequest(
                 "post",
-                "/egov-mdms-service/v1/_search",
+                "/mdms-v2/v1/_search",
                 "_search",
                 [],
                 requestBody
@@ -144,54 +140,54 @@ export const newCollectionDetailsCard = getCommonCard(
               console.log(e);
             }
             return action;
-          }
+          },
         },
         dummyDiv: {
           uiFramework: "custom-atoms",
           componentPath: "Div",
           gridDefination: {
             xs: 12,
-            sm: 6
+            sm: 6,
           },
           visible: process.env.REACT_APP_NAME === "Citizen" ? false : true,
           props: {
-            disabled: true
-          }
+            disabled: true,
+          },
         },
         ConsumerMobileNo: getTextField({
           label: {
             labelName: "Mobile No",
-            labelKey: "UC_MOBILE_NO_LABEL"
+            labelKey: "UC_MOBILE_NO_LABEL",
           },
           placeholder: {
             labelName: "Enter Mobile No",
-            labelKey: "UC_MOBILE_NO_PLACEHOLDER"
+            labelKey: "UC_MOBILE_NO_PLACEHOLDER",
           },
           iconObj: {
             label: "+91 |",
-            position: "start"
+            position: "start",
           },
           required: true,
           visible: true,
           pattern: getPattern("MobileNo"),
           errorMessage: "Invalid Mobile No.",
-          jsonPath: "Demands[0].mobileNumber"
+          jsonPath: "Demands[0].mobileNumber",
         }),
         ConsumerName: getTextField({
           label: {
             labelName: "Consumer Name",
-            labelKey: "UC_CONS_NAME_LABEL"
+            labelKey: "UC_CONS_NAME_LABEL",
           },
           placeholder: {
             labelName: "Enter Consumer Name",
-            labelKey: "UC _CONS_NAME_LABEL_PLACEHOLDER"
+            labelKey: "UC _CONS_NAME_LABEL_PLACEHOLDER",
           },
 
           required: true,
           visible: true,
           pattern: getPattern("Name"),
           errorMessage: "Invalid Name.",
-          jsonPath: "Demands[0].consumerName"
+          jsonPath: "Demands[0].consumerName",
         }),
         // serviceCategory: {
         //   uiFramework: "custom-containers-local",
@@ -331,100 +327,100 @@ export const newCollectionDetailsCard = getCommonCard(
           props: {
             dropdownFields: [
               {
-                key: 'serviceCategory',
+                key: "serviceCategory",
                 fieldType: "autosuggest",
                 callBack: serviceCategoryChange,
                 className: "applicant-details-error autocomplete-dropdown",
                 isRequired: false,
-                requiredValue: true
+                requiredValue: true,
               },
               {
-                key: 'serviceType',
+                key: "serviceType",
                 callBack: serviceTypeChange,
                 fieldType: "autosuggest",
                 className: "applicant-details-error autocomplete-dropdown",
                 isRequired: false,
-                requiredValue: true
-              }
+                requiredValue: true,
+              },
             ],
             moduleName: "BillingService",
             masterName: "BusinessService",
-            rootBlockSub: 'serviceCategories',
-            filter: "[?(@.type=='Adhoc')]"
-          }
+            rootBlockSub: "serviceCategories",
+            filter: "[?(@.type=='Adhoc')]",
+          },
         },
         fromDate: getDateField({
           label: {
             labelName: "From Date",
-            labelKey: "UC_FROM_DATE_LABEL"
+            labelKey: "UC_FROM_DATE_LABEL",
           },
           placeholder: {
             labelName: "Enter from Date",
-            labelKey: "UC_SELECT_FROM_DATE_PLACEHOLDER"
+            labelKey: "UC_SELECT_FROM_DATE_PLACEHOLDER",
           },
           gridDefination: {
             xs: 12,
-            sm: 6
+            sm: 6,
           },
           required: true,
           pattern: getPattern("Date"),
-          jsonPath: "Demands[0].taxPeriodFrom"
+          jsonPath: "Demands[0].taxPeriodFrom",
         }),
         toDate: getDateField({
           label: {
             labelName: "To Date",
-            labelKey: "UC_TO_DATE_LABEL"
+            labelKey: "UC_TO_DATE_LABEL",
           },
           placeholder: {
             labelName: "Enter to Date",
-            labelKey: "UC_SELECT_TO_DATE_PLACEHOLDER"
+            labelKey: "UC_SELECT_TO_DATE_PLACEHOLDER",
           },
           gridDefination: {
             xs: 12,
-            sm: 6
+            sm: 6,
           },
           required: true,
           pattern: getPattern("Date"),
-          jsonPath: "Demands[0].taxPeriodTo"
+          jsonPath: "Demands[0].taxPeriodTo",
         }),
         dummyDiv: {
           uiFramework: "custom-atoms",
           componentPath: "Div",
           gridDefination: {
             xs: 12,
-            sm: 6
+            sm: 6,
           },
           visible: true,
           props: {
-            disabled: true
-          }
-        }
+            disabled: true,
+          },
+        },
       },
       {
         style: {
-          overflow: "visible"
-        }
+          overflow: "visible",
+        },
       }
     ),
     commentsContainer: getCommonContainer({
       comments: getTextField({
         label: {
           labelName: "Comments",
-          labelKey: "UC_COMMENT_LABEL"
+          labelKey: "UC_COMMENT_LABEL",
         },
         placeholder: {
           labelName: "Enter Comment ",
-          labelKey: "UC_COMMENT_PLACEHOLDER"
+          labelKey: "UC_COMMENT_PLACEHOLDER",
         },
         Required: false,
-        jsonPath: "Demands[0].additionalDetails.comment"
-      })
-    })
+        jsonPath: "Demands[0].additionalDetails.comment",
+      }),
+    }),
   },
   {
     style: {
-      overflow: "visible"
-    }
+      overflow: "visible",
+    },
   }
 );
 
@@ -439,7 +435,7 @@ const resetTaxAmountFields = (state, dispatch) => {
     "screenConfig.newCollection.components.div.children.newCollectionDetailsCard.children.cardContent.children.searchContainer.children",
     {}
   );
-  const taxFieldKeys = Object.keys(taxFields).filter(item =>
+  const taxFieldKeys = Object.keys(taxFields).filter((item) =>
     item.startsWith("taxheadField_")
   );
   if (noOfPreviousTaxHeads > 0) {
@@ -463,7 +459,7 @@ const resetTaxAmountFields = (state, dispatch) => {
     }
     dispatch(prepareFinalObject(`Demands[0].demandDetails`, []));
   }
-}
+};
 
 const setTaxHeadFields = (value, state, dispatch) => {
   const serviceData = get(
@@ -477,7 +473,7 @@ const setTaxHeadFields = (value, state, dispatch) => {
     {}
   );
   const matchingTaxHeads = taxHeadMasters.filter(
-    item => item.service === value
+    (item) => item.service === value
   );
   if (matchingTaxHeads && matchingTaxHeads.length > 0) {
     //Delete previous Tax Head fields
@@ -491,7 +487,7 @@ const setTaxHeadFields = (value, state, dispatch) => {
       "screenConfig.newCollection.components.div.children.newCollectionDetailsCard.children.cardContent.children.searchContainer.children",
       {}
     );
-    const taxFieldKeys = Object.keys(taxFields).filter(item =>
+    const taxFieldKeys = Object.keys(taxFields).filter((item) =>
       item.startsWith("taxheadField_")
     );
     if (noOfPreviousTaxHeads > 0) {
@@ -537,11 +533,11 @@ const setTaxHeadFields = (value, state, dispatch) => {
           getTextField({
             label: {
               labelName: "Tax Amount",
-              labelKey: `${getTransformedLocale(item.code)}`
+              labelKey: `${getTransformedLocale(item.code)}`,
             },
             placeholder: {
               labelName: "Enter Tax Amount",
-              labelKey: "UC_AMOUNT_TO_BE_COLLECTED_PLACEHOLDER"
+              labelKey: "UC_AMOUNT_TO_BE_COLLECTED_PLACEHOLDER",
             },
             componentJsonpath: `components.div.children.newCollectionDetailsCard.children.cardContent.children.searchContainer.children.taxheadField_${item.code
               .split(".")
@@ -554,8 +550,8 @@ const setTaxHeadFields = (value, state, dispatch) => {
             props: {
               // required: true
             },
-            type:"number",
-            jsonPath: `Demands[0].demandDetails[${index}].taxAmount`
+            type: "number",
+            jsonPath: `Demands[0].demandDetails[${index}].taxAmount`,
           })
         )
       );

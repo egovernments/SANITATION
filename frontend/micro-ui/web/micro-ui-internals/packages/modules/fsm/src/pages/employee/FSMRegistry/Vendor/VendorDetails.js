@@ -356,6 +356,9 @@ const VendorDetails = (props) => {
     return <Loader />;
   }
 
+  console.log(`*** LOG  SQ***`,selectedOption?.registrationNumber
+);  console.log(`*** LOG S1***`,selectedOption?.optionsKey); 
+
   return (
     <React.Fragment>
       {!isLoading ? (
@@ -478,7 +481,7 @@ const VendorDetails = (props) => {
               }
               headerBarEnd={<CloseBtn onClick={closeModal} />}
               actionCancelLabel={t("CS_COMMON_CANCEL")}
-              isDisabled={selectedOption?.optionsKey || selectedOption?.registrationNumber ? false : true}
+              isDisabled={ selectedAction === "DELETE" ? false : selectedOption?.optionsKey || selectedOption?.registrationNumber ? false : true}
               actionCancelOnSubmit={closeModal}
               actionSaveLabel={t(selectedAction === "DELETE" ? "ES_EVENT_DELETE" : "CS_COMMON_SUBMIT")}
               actionSaveOnSubmit={handleVendorUpdate}
