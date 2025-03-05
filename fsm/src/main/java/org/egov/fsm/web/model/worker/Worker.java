@@ -1,15 +1,17 @@
 package org.egov.fsm.web.model.worker;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.Size;
+
+import org.egov.fsm.web.model.AuditDetails;
+import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.egov.fsm.web.model.AuditDetails;
-import org.hibernate.validator.constraints.SafeHtml;
-import org.springframework.validation.annotation.Validated;
 
 
 /**
@@ -23,22 +25,18 @@ import org.springframework.validation.annotation.Validated;
 @Setter
 public class Worker {
 
-  @SafeHtml
   @JsonProperty("id")
   private String id = null;
 
   @JsonProperty("tenantId")
-  @SafeHtml
   @Size(max = 64)
   private String tenantId = null;
 
   @JsonProperty("applicationId")
-  @SafeHtml
   @Size(max = 64)
   private String applicationId = null;
 
   @JsonProperty("individualId")
-  @SafeHtml
   @Size(max = 64)
   private String individualId = null;
 

@@ -1,16 +1,25 @@
 package org.egov.pqm.web.model.workflow;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
-import org.egov.common.contract.request.User;
-import org.egov.pqm.web.model.AuditDetails;
-import org.egov.pqm.web.model.Document;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.egov.common.contract.request.User;
+import org.egov.pqm.web.model.AuditDetails;
+import org.egov.pqm.web.model.Document;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 
 @Getter
@@ -64,8 +73,8 @@ public class ProcessInstance   {
         @JsonProperty("assigner")
         private User assigner;
 
-        @JsonProperty("assignee")
-        private User assignee;
+        @JsonProperty("assignes")
+        private List<User> assignes = null;
 
         @JsonProperty("nextActions")
         @Valid
@@ -105,6 +114,16 @@ public class ProcessInstance   {
         this.nextActions.add(nextActionsItem);
         return this;
         }
+        
+        public ProcessInstance addUsersItem(User usersItem) {
+            if (this.assignes == null) {
+                    this.assignes = new ArrayList<>();
+            }
+            if(!this.assignes.contains(usersItem))
+                    this.assignes.add(usersItem);
+
+            return this;
+    }
 
 }
 

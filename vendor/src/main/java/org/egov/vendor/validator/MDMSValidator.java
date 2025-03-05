@@ -26,7 +26,6 @@ public class MDMSValidator {
 
 		this.mdmsResMap = getAttributeValues(mdmsData);
 		String[] masterArray = { VendorConstants.VENDOR_AGENCY_TYPE, VendorConstants.VENDOR_PAYMENT_PREFERENCE };
-
 		validateIfMasterPresent(masterArray, this.mdmsResMap);
 
 	}
