@@ -188,6 +188,9 @@ public class FSMService {
 		else if (FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
 				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
 			businessServiceName = FSMConstants.FSM_BUSINESSSERVICE;
+		/*
+		 *Added advance amount check sum for zero advance
+		 */
 		else if ((fsm.getAdvanceAmount() == null ||fsm.getAdvanceAmount().intValue() == 0) && fsm.getPaymentPreference() == null && tripAmount <= 0)
 			businessServiceName = FSMConstants.FSM_ZERO_PRICE_SERVICE;
 		else if (fsm.getAdvanceAmount() != null && fsm.getAdvanceAmount().intValue() > 0)
