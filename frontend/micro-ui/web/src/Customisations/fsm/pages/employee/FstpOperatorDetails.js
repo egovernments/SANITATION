@@ -797,7 +797,7 @@ const FstpOperatorDetails = () => {
                   />
                 </div>
               )}
-              {selectedGp?.code !== "OTHER" && (
+              {/* {selectedGp?.code !== "OTHER" && (
                 <Row
                   rowContainerStyle={
                     isMobile &&
@@ -832,7 +832,7 @@ const FstpOperatorDetails = () => {
                   last={false}
                   labelStyle={{ fontWeight: "normal" }}
                 />
-              )}
+              )} */}
               {selectedVillage?.code === "OTHER" && (
                 <Row
                   rowContainerStyle={
