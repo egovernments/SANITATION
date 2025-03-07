@@ -83,7 +83,7 @@ public class Test {
 
   @JsonProperty("labAssignedTo")
   private String labAssignedTo;
-  
+ 
   @JsonProperty("processInstance")
   private ProcessInstance processInstance;
 }

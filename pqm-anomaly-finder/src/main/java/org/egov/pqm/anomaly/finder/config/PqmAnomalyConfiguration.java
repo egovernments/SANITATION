@@ -2,11 +2,10 @@ package org.egov.pqm.anomaly.finder.config;
 
 import java.util.TimeZone;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

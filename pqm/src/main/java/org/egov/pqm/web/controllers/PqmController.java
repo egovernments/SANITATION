@@ -43,18 +43,14 @@ public class PqmController {
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
   }
 
-  @PostMapping(value = "/_search")
-  ResponseEntity<TestResponse> search(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper,
-      @Valid @RequestBody TestSearchRequest testSearchRequest) {
-    TestResponse response = pqmService.testSearch(testSearchRequest,
-        requestInfoWrapper.getRequestInfo(), true);
+	@PostMapping(value = "/_search")
+	ResponseEntity<TestResponse> search(@Valid @RequestBody TestSearchRequest testSearchRequest) {
+		TestResponse response = pqmService.testSearch(testSearchRequest, testSearchRequest.getRequestInfo(), true);
 
-    response.setResponseInfo(
-        responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(),
-            true));
-//    return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
-    return new ResponseEntity<>(response, HttpStatus.OK);
-  }
+		response.setResponseInfo(
+				responseInfoFactory.createResponseInfoFromRequestInfo(testSearchRequest.getRequestInfo(), true));
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 
   @PostMapping(value = "/_scheduler", produces = {"*/*"}, consumes = {"application/json"})
   ResponseEntity<TestResponse> scheduleTest(@Valid @RequestBody RequestInfoWrapper requestInfoWrapper ) {
@@ -73,13 +69,12 @@ public class PqmController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-    @PostMapping(value = "/_downloadPdf")
-    public ResponseEntity<EgovPdfResp> downloadPdf(@RequestParam("testId") String testId,
-                                                    @RequestBody RequestInfo requestInfo) {
-        EgovPdfResp egovPdfResp =  pqmService.downloadPdf(requestInfo,testId);
-        return new ResponseEntity<>(egovPdfResp, HttpStatus.OK);
-    }
-
+	@PostMapping(value = "/_downloadPdf")
+	public ResponseEntity<EgovPdfResp> downloadPdf(@RequestParam("testId") String testId,
+			@Valid @RequestBody RequestInfoWrapper requestInfoWrapper) {
+		EgovPdfResp egovPdfResp = pqmService.downloadPdf(requestInfoWrapper.getRequestInfo(), testId);
+		return new ResponseEntity<>(egovPdfResp, HttpStatus.OK);
+	}
 
 
 }
