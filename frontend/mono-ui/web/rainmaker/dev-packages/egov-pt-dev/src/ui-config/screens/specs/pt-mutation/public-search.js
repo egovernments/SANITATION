@@ -1,12 +1,17 @@
 import commonConfig from "config/common.js";
-import {
-  getBreak
-} from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
-import { getBusinessServiceMdmsData, getModuleName } from "egov-ui-kit/utils/commons";
-import { getLocale, getTenantId, setModule } from "egov-ui-kit/utils/localStorageUtils";
+import {
+  getBusinessServiceMdmsData,
+  getModuleName,
+} from "egov-ui-kit/utils/commons";
+import {
+  getLocale,
+  getTenantId,
+  setModule,
+} from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "../../../../ui-utils";
 import "./index.css";
 import { searchPropertyDetails } from "./publicSearchResource/search-resources";
@@ -17,35 +22,35 @@ let enableButton = true;
 enableButton = hasButton && hasButton === "false" ? false : true;
 const tenant = getTenantId();
 
-const getMDMSData = async dispatch => {
+const getMDMSData = async (dispatch) => {
   const mdmsBody = {
     MdmsCriteria: {
       tenantId: commonConfig.tenantId,
       moduleDetails: [
         {
-          "moduleName": "PropertyTax",
-          "masterDetails": [
-
+          moduleName: "PropertyTax",
+          masterDetails: [
             {
-              "name": "UpdateNumber"
-            }
-          ]
-        }, {
-          "moduleName": "tenant",
-          "masterDetails": [
-            {
-              "name": "tenants"
+              name: "UpdateNumber",
             },
-            { "name": "citymodule" }
-          ]
-        }
-      ]
-    }
+          ],
+        },
+        {
+          moduleName: "tenant",
+          masterDetails: [
+            {
+              name: "tenants",
+            },
+            { name: "citymodule" },
+          ],
+        },
+      ],
+    },
   };
   try {
     const payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -53,7 +58,9 @@ const getMDMSData = async dispatch => {
     payload.MdmsRes.tenant.tenants =
       payload.MdmsRes.tenant.citymodule[1].tenants;
     // console.log("payload--", payload)
-    payload.MdmsRes.tenant.tenants = payload.MdmsRes.tenant.tenants.sort((t1, t2) => t1.code.localeCompare(t2.code))
+    payload.MdmsRes.tenant.tenants = payload.MdmsRes.tenant.tenants.sort(
+      (t1, t2) => t1.code.localeCompare(t2.code)
+    );
     dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
     await getBusinessServiceMdmsData(dispatch, commonConfig.tenantId, "PT");
   } catch (e) {
@@ -92,18 +99,18 @@ const screenConfig = {
         //     msevaLogo: msevaLogo
         //   }
         // },
-          linkComponent: {
-            uiFramework: "custom-atoms-local",
-            componentPath: "LinkComponent",
-            moduleName: "egov-pt",
-          },
+        linkComponent: {
+          uiFramework: "custom-atoms-local",
+          componentPath: "LinkComponent",
+          moduleName: "egov-pt",
+        },
         searchPropertyDetails,
         breakAfterSearch3: getBreak(),
         searchPropertyTable,
-        breakAfterSearch4: getBreak()
-      }
-    }
-  }
+        breakAfterSearch4: getBreak(),
+      },
+    },
+  },
 };
 
 export default screenConfig;

@@ -1,32 +1,61 @@
-
-import { getCommonCard, getCommonContainer, getCommonHeader, getStepperObject } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, unMountScreen } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  getCommonCard,
+  getCommonContainer,
+  getCommonHeader,
+  getStepperObject,
+} from "egov-ui-framework/ui-config/screens/specs/utils";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+  unMountScreen,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getCommonTenant } from "egov-ui-kit/utils/PTCommon/FormWizardUtils/formUtils";
 import cloneDeep from "lodash/cloneDeep";
 import get from "lodash/get";
 import set from "lodash/set";
 import { httpRequest } from "../../../../ui-utils";
-import { furnishNocResponse, getSearchResults, prepareDocumentsUploadData, setApplicationNumberBox } from "../../../../ui-utils/commons";
-import { getCurrentFinancialYear, setCardVisibility, showHideMutationDetailsCard } from "../utils";
+import {
+  furnishNocResponse,
+  getSearchResults,
+  prepareDocumentsUploadData,
+  setApplicationNumberBox,
+} from "../../../../ui-utils/commons";
+import {
+  getCurrentFinancialYear,
+  setCardVisibility,
+  showHideMutationDetailsCard,
+} from "../utils";
 import { footer } from "./applyResource/footer";
 import { mutationDetails } from "./applyResourceMutation/mutationDetails";
 import { documentDetails } from "./applyResourceMutation/mutationDocuments";
 import { mutationSummary } from "./applyResourceMutation/mutationSummary";
 import { registrationDetails } from "./applyResourceMutation/registrationDetails";
-import { onChangeTypeOfOwnership, transfereeDetails } from './applyResourceMutation/transfereeDetails';
+import {
+  onChangeTypeOfOwnership,
+  transfereeDetails,
+} from "./applyResourceMutation/transfereeDetails";
 import "./index.css";
 import { declarationSummary } from "./summaryResource/declarationSummary";
 import { documentsSummary } from "./summaryResource/documentsSummary";
 import { registrationSummary } from "./summaryResource/registrationSummary";
-import { transfereeInstitutionSummary, transfereeSummary } from "./summaryResource/transfereeSummary";
-import { transferorInstitutionSummary, transferorSummary } from "./summaryResource/transferorSummary";
-import { transferorInstitutionSummary as ti1, transferorSummary as ts1 } from "./summaryResource/transferorSummary1";
+import {
+  transfereeInstitutionSummary,
+  transfereeSummary,
+} from "./summaryResource/transfereeSummary";
+import {
+  transferorInstitutionSummary,
+  transferorSummary,
+} from "./summaryResource/transferorSummary";
+import {
+  transferorInstitutionSummary as ti1,
+  transferorSummary as ts1,
+} from "./summaryResource/transferorSummary1";
 
 export const stepsData = [
   { labelName: "Transfer Details", labelKey: "PT_MUTATION_TRANSFER_DETAILS" },
   { labelName: "Document Upload", labelKey: "PT_MUTATION_DOCUMENT_UPLOAD" },
-  { labelName: "Summary", labelKey: "PT_MUTATION_SUMMARY" }
+  { labelName: "Summary", labelKey: "PT_MUTATION_SUMMARY" },
 ];
 export const stepper = getStepperObject(
   { props: { activeStep: 0 } },
@@ -45,9 +74,9 @@ const applicationNumberContainer = () => {
       componentPath: "ApplicationNoContainer",
       props: {
         number: `${applicationNumber}`,
-        visibility: "hidden"
+        visibility: "hidden",
       },
-      visible: true
+      visible: true,
     };
   else return {};
 };
@@ -63,7 +92,7 @@ const applicationNumberContainer = () => {
 export const header = getCommonContainer({
   header: getCommonHeader({
     labelName: `Transfer of Ownership (${getCurrentFinancialYear()})`, //later use getFinancialYearDates
-    labelKey: "PT_MUTATION_TRANSFER_HEADER"
+    labelKey: "PT_MUTATION_TRANSFER_HEADER",
   }),
   //applicationNumber: applicationNumberContainer()
   applicationNumber: {
@@ -74,46 +103,45 @@ export const header = getCommonContainer({
       number: getQueryArg(window.location.href, "consumerCode"),
       label: {
         labelValue: "Property Tax Unique ID.",
-        labelKey: "PT_PROPERTY_TAX_UNIQUE_ID"
-      }
+        labelKey: "PT_PROPERTY_TAX_UNIQUE_ID",
+      },
     },
-    visible: true
-  }
+    visible: true,
+  },
 });
-
 
 export const formwizardFirstStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form1"
+    id: "apply_form1",
   },
   children: {
     transferorDetails: { ...ts1 },
     transferorInstitutionDetails: { ...ti1 },
     transfereeDetails,
     mutationDetails,
-    registrationDetails
-  }
+    registrationDetails,
+  },
 };
 
 export const formwizardSecondStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form2"
+    id: "apply_form2",
   },
   children: {
-    documentDetails: documentDetails
+    documentDetails: documentDetails,
   },
-  visible: false
+  visible: false,
 };
 
 export const formwizardThirdStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form3"
+    id: "apply_form3",
   },
   children: {
     summary: getCommonCard({
@@ -124,12 +152,11 @@ export const formwizardThirdStep = {
       mutationSummary: mutationSummary,
       registrationSummary: registrationSummary,
       documentsSummary: documentsSummary,
-      declarationSummary: declarationSummary
+      declarationSummary: declarationSummary,
     }),
-
   },
 
-  visible: false
+  visible: false,
 };
 
 const getPropertyData = async (action, state, dispatch) => {
@@ -140,45 +167,57 @@ const getPropertyData = async (action, state, dispatch) => {
     let queryObject = [
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId,
       },
       {
         key: "propertyIds",
-        value: consumerCode
-      }
+        value: consumerCode,
+      },
     ];
     let payload = null;
     payload = await httpRequest(
       "post",
       "/property-services/property/_search",
       "_search",
-      queryObject,
-
+      queryObject
     );
 
-    if (payload && payload.Properties && payload.Properties[0] && payload.Properties[0].owners && payload.Properties[0].owners.length > 0) {
-
+    if (
+      payload &&
+      payload.Properties &&
+      payload.Properties[0] &&
+      payload.Properties[0].owners &&
+      payload.Properties[0].owners.length > 0
+    ) {
       let owners = [];
-      payload.Properties[0].owners.map(owner => {
-        owner.documentUid = owner.documents ? owner.documents[0].documentUid : "NA";
-        owner.documentType = owner.documents ? owner.documents[0].documentType : "NA";
+      payload.Properties[0].owners.map((owner) => {
+        owner.documentUid = owner.documents
+          ? owner.documents[0].documentUid
+          : "NA";
+        owner.documentType = owner.documents
+          ? owner.documents[0].documentType
+          : "NA";
 
         if (owner.status == "ACTIVE") {
           owners.push(owner);
         }
       });
 
-
       payload.Properties[0].ownersInit = owners;
-      payload.Properties[0].ownershipCategoryInit = payload.Properties[0].ownershipCategory;
+      payload.Properties[0].ownershipCategoryInit =
+        payload.Properties[0].ownershipCategory;
     }
-    const previousPropertyUuid = payload.Properties[0].additionalDetails && payload.Properties[0].additionalDetails.previousPropertyUuid;
+    const previousPropertyUuid =
+      payload.Properties[0].additionalDetails &&
+      payload.Properties[0].additionalDetails.previousPropertyUuid;
     payload.Properties[0].additionalDetails = { previousPropertyUuid };
     dispatch(prepareFinalObject("Property", payload.Properties[0]));
 
     setCardVisibility(state, action, dispatch);
 
-    dispatch(prepareFinalObject("PropertiesTemp", cloneDeep(payload.Properties)));
+    dispatch(
+      prepareFinalObject("PropertiesTemp", cloneDeep(payload.Properties))
+    );
     dispatch(prepareFinalObject("PropertyOld", {}));
   } catch (e) {
     console.log(e);
@@ -187,42 +226,56 @@ const getPropertyData = async (action, state, dispatch) => {
 
 const getApplicationData = async (action, state, dispatch) => {
   let tenantId = getQueryArg(window.location.href, "tenantId");
-  let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
+  let applicationNumber = getQueryArg(
+    window.location.href,
+    "applicationNumber"
+  );
   try {
     let queryObject = [
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId,
       },
       {
         key: "acknowledgementIds",
-        value: applicationNumber
-      }
+        value: applicationNumber,
+      },
     ];
     let payload = null;
     payload = await httpRequest(
       "post",
       "/property-services/property/_search",
       "_search",
-      queryObject,
+      queryObject
     );
 
-    if (payload && payload.Properties && payload.Properties[0] && payload.Properties[0].owners && payload.Properties[0].owners.length > 0) {
+    if (
+      payload &&
+      payload.Properties &&
+      payload.Properties[0] &&
+      payload.Properties[0].owners &&
+      payload.Properties[0].owners.length > 0
+    ) {
       let auditResponse = await getSearchResults([
         {
           key: "tenantId",
-          value: tenantId
+          value: tenantId,
         },
-        { key: "propertyIds", value: payload.Properties[0].propertyId }, {
+        { key: "propertyIds", value: payload.Properties[0].propertyId },
+        {
           key: "audit",
-          value: true
-        }
+          value: true,
+        },
       ]);
       let inActiveOwners = [];
       let activeOwners = [];
-      payload.Properties[0].owners.map(owner => {
-        owner.documentUid = owner.documents ? owner.documents[0].documentUid : "NA";
-        owner.documentType = owner.documents ? owner.documents[0].documentType : "NA";
+      payload.Properties[0].owners.map((owner) => {
+        owner.documentUid = owner.documents
+          ? owner.documents[0].documentUid
+          : "NA";
+        owner.documentType = owner.documents
+          ? owner.documents[0].documentType
+          : "NA";
 
         if (owner.status == "ACTIVE") {
           activeOwners.push({ ...owner, status: "INACTIVE" });
@@ -234,81 +287,120 @@ const getApplicationData = async (action, state, dispatch) => {
       payload.Properties[0].owners = inActiveOwners;
       payload.Properties[0].ownersInit = inActiveOwners;
       payload.Properties[0].ownersTemp = activeOwners;
-      payload.Properties[0].ownershipCategoryInit = payload.Properties[0].ownershipCategory;
-      payload.Properties[0].ownershipCategoryTemp = payload.Properties[0].ownershipCategory;
+      payload.Properties[0].ownershipCategoryInit =
+        payload.Properties[0].ownershipCategory;
+      payload.Properties[0].ownershipCategoryTemp =
+        payload.Properties[0].ownershipCategory;
 
       payload.Properties[0].institutionTemp = payload.Properties[0].institution;
       payload.Properties[0].institutionInit = null;
       payload.Properties[0].institution = null;
-      if (!payload.Properties[0].ownershipCategoryTemp.includes("SINGLEOWNER")) {
-        onChangeTypeOfOwnership({ value: payload.Properties[0].ownershipCategoryTemp }, state, dispatch, false);
+      if (
+        !payload.Properties[0].ownershipCategoryTemp.includes("SINGLEOWNER")
+      ) {
+        onChangeTypeOfOwnership(
+          { value: payload.Properties[0].ownershipCategoryTemp },
+          state,
+          dispatch,
+          false
+        );
       }
-      if (auditResponse && Array.isArray(get(auditResponse, "Properties", [])) && get(auditResponse, "Properties", []).length > 0) {
+      if (
+        auditResponse &&
+        Array.isArray(get(auditResponse, "Properties", [])) &&
+        get(auditResponse, "Properties", []).length > 0
+      ) {
         const propertiesAudit = get(auditResponse, "Properties", []);
 
+        const previousActiveProperty = propertiesAudit
+          .filter((property) => property.status == "ACTIVE")
+          .sort(
+            (x, y) =>
+              y.auditDetails.lastModifiedTime - x.auditDetails.lastModifiedTime
+          )[0];
 
-        const previousActiveProperty = propertiesAudit.filter(property => property.status == 'ACTIVE').sort((x, y) => y.auditDetails.lastModifiedTime - x.auditDetails.lastModifiedTime)[0];
-
-        payload.Properties[0].ownershipCategoryInit = previousActiveProperty.ownershipCategory;
-        payload.Properties[0].ownershipCategory = previousActiveProperty.ownershipCategory;
-        if (payload.Properties[0].ownershipCategoryInit.startsWith("INSTITUTION")) {
-          payload.Properties[0].institutionInit = previousActiveProperty.institution;
-          payload.Properties[0].institution = previousActiveProperty.institution;
+        payload.Properties[0].ownershipCategoryInit =
+          previousActiveProperty.ownershipCategory;
+        payload.Properties[0].ownershipCategory =
+          previousActiveProperty.ownershipCategory;
+        if (
+          payload.Properties[0].ownershipCategoryInit.startsWith("INSTITUTION")
+        ) {
+          payload.Properties[0].institutionInit =
+            previousActiveProperty.institution;
+          payload.Properties[0].institution =
+            previousActiveProperty.institution;
         }
-        inActiveOwners = previousActiveProperty.owners.filter(owner => owner.status == "ACTIVE");
+        inActiveOwners = previousActiveProperty.owners.filter(
+          (owner) => owner.status == "ACTIVE"
+        );
         payload.Properties[0].owners = inActiveOwners;
         payload.Properties[0].ownersInit = inActiveOwners;
       }
-
     }
-
 
     // const previousPropertyUuid = payload.Properties[0].additionalDetails && payload.Properties[0].additionalDetails.previousPropertyUuid;
     // payload.Properties[0].additionalDetails = { previousPropertyUuid };
 
-
-    let documents = get(payload, 'Properties[0].documents', []);
-    documents = documents.map(document => {
-      return { ...document, documentType: document.documentType.includes('OWNER') ? document.documentType : `OWNER.TRANSFERREASONDOCUMENT.${document.documentType}` }
-    })
-    set(payload, 'Properties[0].documents', documents)
-    dispatch(prepareFinalObject("DocumentsPrefill", documents && Array.isArray(documents) && documents.length > 0 ? true : false));
+    let documents = get(payload, "Properties[0].documents", []);
+    documents = documents.map((document) => {
+      return {
+        ...document,
+        documentType: document.documentType.includes("OWNER")
+          ? document.documentType
+          : `OWNER.TRANSFERREASONDOCUMENT.${document.documentType}`,
+      };
+    });
+    set(payload, "Properties[0].documents", documents);
+    dispatch(
+      prepareFinalObject(
+        "DocumentsPrefill",
+        documents && Array.isArray(documents) && documents.length > 0
+          ? true
+          : false
+      )
+    );
     dispatch(prepareFinalObject("Property", payload.Properties[0]));
-    dispatch(prepareFinalObject("PropertyOld", cloneDeep(payload.Properties[0])));
+    dispatch(
+      prepareFinalObject("PropertyOld", cloneDeep(payload.Properties[0]))
+    );
     setCardVisibility(state, action, dispatch);
-    dispatch(prepareFinalObject("PropertiesTemp", cloneDeep(payload.Properties)));
+    dispatch(
+      prepareFinalObject("PropertiesTemp", cloneDeep(payload.Properties))
+    );
     // Prefilling radio buttons
     set(
       action.screenConfig,
       "components.div.children.formwizardFirstStep.children.transfereeDetails.children.cardContent.children.applicantTypeContainer.children.singleApplicantContainer.children.individualApplicantInfo.children.cardContent.children.applicantCard.children.genderRadioGroup.props.value",
       payload.Properties[0].ownersTemp[0].gender
-    )
+    );
 
     set(
       action.screenConfig,
       "components.div.children.formwizardFirstStep.children.mutationDetails.children.cardContent.children.mutationDetailsContainer.children.getMutationPendingRadioButton.props.value",
       payload.Properties[0].additionalDetails.isMutationInCourt
-    )
+    );
 
     set(
       action.screenConfig,
       "components.div.children.formwizardFirstStep.children.mutationDetails.children.cardContent.children.mutationDetailsContainer.children.getMutationStateAcquisitionRadioButton.props.value",
       payload.Properties[0].additionalDetails.isPropertyUnderGovtPossession
-    )
+    );
     set(
       action.screenConfig,
       "components.div.children.formwizardFirstStep.children.registrationDetails.children.cardContent.children.registrationDetailsContainer.children.transferReason.props.value",
       payload.Properties[0].additionalDetails.reasonForTransfer
-    )
-
-
+    );
   } catch (error) {
     console.log("mutation edit flow error ", error);
   }
+};
 
-}
-
-const getSpecialCategoryDocumentTypeMDMSData = async (action, state, dispatch) => {
+const getSpecialCategoryDocumentTypeMDMSData = async (
+  action,
+  state,
+  dispatch
+) => {
   let tenantId = getCommonTenant();
   let mdmsBody = {
     MdmsCriteria: {
@@ -316,17 +408,19 @@ const getSpecialCategoryDocumentTypeMDMSData = async (action, state, dispatch) =
       moduleDetails: [
         {
           moduleName: "PropertyTax",
-          masterDetails: [{ name: "OwnerTypeDocument" }, { name: "PropertyConfiguration" }]
-
-        }
-      ]
-    }
+          masterDetails: [
+            { name: "OwnerTypeDocument" },
+            { name: "PropertyConfiguration" },
+          ],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -335,15 +429,22 @@ const getSpecialCategoryDocumentTypeMDMSData = async (action, state, dispatch) =
     let OwnerTypeDocument = get(
       payload,
       "MdmsRes.PropertyTax.OwnerTypeDocument"
-    )
-    let propertyConfiguation = get(payload, "MdmsRes.PropertyTax.PropertyConfiguration");
-    dispatch(prepareFinalObject("applyScreenMdmsData.OwnerTypeDocument", OwnerTypeDocument));
+    );
+    let propertyConfiguation = get(
+      payload,
+      "MdmsRes.PropertyTax.PropertyConfiguration"
+    );
+    dispatch(
+      prepareFinalObject(
+        "applyScreenMdmsData.OwnerTypeDocument",
+        OwnerTypeDocument
+      )
+    );
     dispatch(prepareFinalObject("PropertyConfiguration", propertyConfiguation));
     showHideMutationDetailsCard(action, state, dispatch);
   } catch (e) {
     console.log(e);
   }
-
 };
 const getMdmsData = async (action, state, dispatch) => {
   let tenantId = getCommonTenant();
@@ -353,37 +454,40 @@ const getMdmsData = async (action, state, dispatch) => {
       moduleDetails: [
         {
           moduleName: "common-masters",
-          masterDetails: [{ name: "OwnerType" }, { name: "OwnerShipCategory" }]
+          masterDetails: [{ name: "OwnerType" }, { name: "OwnerShipCategory" }],
         },
         {
           moduleName: "firenoc",
-          masterDetails: [{ name: "BuildingType" }, { name: "FireStations" }]
+          masterDetails: [{ name: "BuildingType" }, { name: "FireStations" }],
         },
         {
           moduleName: "egov-location",
           masterDetails: [
             {
-              name: "TenantBoundary"
-            }
-          ]
+              name: "TenantBoundary",
+            },
+          ],
         },
         {
           moduleName: "tenant",
           masterDetails: [
             {
-              name: "tenants"
-            }
-          ]
+              name: "tenants",
+            },
+          ],
         },
-        { moduleName: "PropertyTax", masterDetails: [{ name: "MutationDocuments" }] }
-      ]
-    }
+        {
+          moduleName: "PropertyTax",
+          masterDetails: [{ name: "MutationDocuments" }],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -392,22 +496,25 @@ const getMdmsData = async (action, state, dispatch) => {
     let OwnerShipCategory = get(
       payload,
       "MdmsRes.common-masters.OwnerShipCategory"
-    )
-    let institutions = []
-    OwnerShipCategory = OwnerShipCategory.map(category => {
+    );
+    let institutions = [];
+    OwnerShipCategory = OwnerShipCategory.map((category) => {
       if (category.code.includes("INDIVIDUAL")) {
         return category.code;
-      }
-      else {
+      } else {
         let code = category.code.split(".");
         institutions.push({ code: code[1], parent: code[0], active: true });
         return code[0];
       }
     });
-    OwnerShipCategory = OwnerShipCategory.filter((v, i, a) => a.indexOf(v) === i)
-    OwnerShipCategory = OwnerShipCategory.map(val => { return { code: val, active: true } });
-    payload.MdmsRes['common-masters'].Institutions = institutions;
-    payload.MdmsRes['common-masters'].OwnerShipCategory = OwnerShipCategory;
+    OwnerShipCategory = OwnerShipCategory.filter(
+      (v, i, a) => a.indexOf(v) === i
+    );
+    OwnerShipCategory = OwnerShipCategory.map((val) => {
+      return { code: val, active: true };
+    });
+    payload.MdmsRes["common-masters"].Institutions = institutions;
+    payload.MdmsRes["common-masters"].OwnerShipCategory = OwnerShipCategory;
 
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
   } catch (e) {
@@ -416,20 +523,23 @@ const getMdmsData = async (action, state, dispatch) => {
 };
 
 const getMdmsTransferReasonData = async (action, state, dispatch) => {
-  let tenantId = getCommonTenant()
+  let tenantId = getCommonTenant();
   let mdmsBody = {
     MdmsCriteria: {
       tenantId: tenantId,
       moduleDetails: [
-        { moduleName: "PropertyTax", masterDetails: [{ name: "ReasonForTransfer" }] }
-      ]
-    }
+        {
+          moduleName: "PropertyTax",
+          masterDetails: [{ name: "ReasonForTransfer" }],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -440,20 +550,17 @@ const getMdmsTransferReasonData = async (action, state, dispatch) => {
   }
 };
 
-
-const getFirstListFromDotSeparated = list => {
-  list = list.map(item => {
+const getFirstListFromDotSeparated = (list) => {
+  list = list.map((item) => {
     if (item.active) {
       return item.code.split(".")[0];
     }
   });
-  list = [...new Set(list)].map(item => {
+  list = [...new Set(list)].map((item) => {
     return { code: item };
   });
   return list;
 };
-
-
 
 export const prepareEditFlow = async (
   state,
@@ -470,9 +577,9 @@ export const prepareEditFlow = async (
     let response = await getSearchResults([
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId,
       },
-      { key: "propertyIds", value: applicationNumber }
+      { key: "propertyIds", value: applicationNumber },
     ]);
     // let response = sampleSingleSearch();
 
@@ -485,7 +592,7 @@ export const prepareEditFlow = async (
     // Set no of buildings radiobutton and eventually the cards
     let noOfBuildings =
       get(response, "FireNOCs[0].fireNOCDetails.noOfBuildings", "SINGLE") ===
-        "MULTIPLE"
+      "MULTIPLE"
         ? "MULTIPLE"
         : "SINGLE";
     dispatch(
@@ -531,53 +638,40 @@ const screenConfig = {
     const tenantId = getQueryArg(window.location.href, "tenantId");
     const step = getQueryArg(window.location.href, "step");
     const isEdit = getQueryArg(window.location.href, "action") === "edit";
-    dispatch(
-      prepareFinalObject(
-        "Property",
-        {}
-      )
-    );
-    dispatch(
-      prepareFinalObject(
-        "ptmDocumentsUploadRedux",
-        {}
-      )
-    );
-    dispatch(
-      prepareFinalObject(
-        "Property.additionalDetails",
-        {}
-      )
-    );
+    dispatch(prepareFinalObject("Property", {}));
+    dispatch(prepareFinalObject("ptmDocumentsUploadRedux", {}));
+    dispatch(prepareFinalObject("Property.additionalDetails", {}));
 
     set(
       action.screenConfig,
       "components.div.children.formwizardFirstStep.children.transferorDetails.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.ownerContainer.children.ownerSpecialDocumentID.props.style.display",
-      'none'
+      "none"
     );
     set(
       action.screenConfig,
       "components.div.children.formwizardFirstStep.children.transferorDetails.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.ownerContainer.children.ownerSpecialDocumentType.props.style.display",
-      'none'
+      "none"
     );
     set(
       action.screenConfig,
       "components.div.children.formwizardThirdStep.children.summary.children.cardContent.children.transferorSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.ownerContainer.children.ownerSpecialDocumentID.props.style.display",
-      'none'
+      "none"
     );
     set(
       action.screenConfig,
       "components.div.children.formwizardThirdStep.children.summary.children.cardContent.children.transferorSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.ownerContainer.children.ownerSpecialDocumentType.props.style.display",
-      'none'
+      "none"
     );
 
-    isEdit ? getApplicationData(action, state, dispatch) : getPropertyData(action, state, dispatch);
+    isEdit
+      ? getApplicationData(action, state, dispatch)
+      : getPropertyData(action, state, dispatch);
 
     //Set Module Name
     set(state, "screenConfiguration.moduleName", "pt-mutation");
 
     // Set MDMS Data
-    getMdmsData(action, state, dispatch).then(response => {
+    getMdmsData(action, state, dispatch).then((response) => {
       // Set Dropdowns Data
       let buildingUsageTypeData = get(
         state,
@@ -596,7 +690,8 @@ const screenConfig = {
       let ownershipCategory = get(
         state,
         "screenConfiguration.preparedFinalObject.applyScreenMdmsData.common-masters.OwnerShipCategory",
-        []);
+        []
+      );
       //  ownershipCategory = getFirstListFromDotSeparated(ownershipCategory);
       dispatch(
         prepareFinalObject(
@@ -626,7 +721,7 @@ const screenConfig = {
       let formWizardNames = [
         "formwizardFirstStep",
         "formwizardSecondStep",
-        "formwizardThirdStep"
+        "formwizardThirdStep",
       ];
       for (let i = 0; i < 4; i++) {
         set(
@@ -713,7 +808,7 @@ const screenConfig = {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        className: "common-div-css"
+        className: "common-div-css",
       },
       children: {
         headerDiv: {
@@ -723,20 +818,20 @@ const screenConfig = {
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 10
+                sm: 10,
               },
-              ...header
-            }
-          }
+              ...header,
+            },
+          },
         },
         stepper,
         formwizardFirstStep,
         formwizardSecondStep,
         formwizardThirdStep,
-        footer
-      }
-    }
-  }
+        footer,
+      },
+    },
+  },
 };
 
 export default screenConfig;

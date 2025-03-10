@@ -1,25 +1,37 @@
-import { getCommonCaption, getCommonCard } from "egov-ui-framework/ui-config/screens/specs/utils";
+import {
+  getCommonCaption,
+  getCommonCard,
+} from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
 import { httpRequest } from "egov-ui-framework/ui-utils/api";
-import { getLocaleLabels, getQueryArg, getTransformedLocalStorgaeLabels } from "egov-ui-framework/ui-utils/commons";
+import {
+  getLocaleLabels,
+  getQueryArg,
+  getTransformedLocalStorgaeLabels,
+} from "egov-ui-framework/ui-utils/commons";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import set from "lodash/set";
 import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons";
 import orderBy from "lodash/orderBy";
-import { searchAndDownloadPdf, searchAndPrintPdf } from "egov-ui-kit/utils/pdfUtils/generatePDF";
+import {
+  searchAndDownloadPdf,
+  searchAndPrintPdf,
+} from "egov-ui-kit/utils/pdfUtils/generatePDF";
 
-
-export const getCommonApplyFooter = children => {
+export const getCommonApplyFooter = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Div",
     props: {
-      className: "apply-wizard-footer"
+      className: "apply-wizard-footer",
     },
-    children
+    children,
   };
 };
 
@@ -28,7 +40,7 @@ export const transformById = (payload, id) => {
     payload &&
     payload.reduce((result, item) => {
       result[item[id]] = {
-        ...item
+        ...item,
       };
 
       return result;
@@ -36,7 +48,7 @@ export const transformById = (payload, id) => {
   );
 };
 
-export const getFeesEstimateCard = props => {
+export const getFeesEstimateCard = (props) => {
   const { sourceJsonPath, ...rest } = props;
   return {
     uiFramework: "custom-containers-local",
@@ -44,8 +56,8 @@ export const getFeesEstimateCard = props => {
     componentPath: "EstimateCardContainer",
     props: {
       sourceJsonPath,
-      ...rest
-    }
+      ...rest,
+    },
   };
 };
 
@@ -69,17 +81,16 @@ export const validateFields = (
   dispatch,
   screen
   //screen = "apply"
- // screen = "newCollection"
+  // screen = "newCollection"
 ) => {
   const fields = get(
     state.screenConfiguration.screenConfig[screen],
     objectJsonPath,
     {}
   );
- console.info("children==",fields);
+  console.info("children==", fields);
   let isFormValid = true;
   for (var variable in fields) {
-    
     if (fields.hasOwnProperty(variable)) {
       if (
         fields[variable] &&
@@ -93,7 +104,7 @@ export const validateFields = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            )
+            ),
           },
           dispatch,
           true
@@ -122,11 +133,11 @@ export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
   }
 };
 
-export const getMdmsData = async queryObject => {
+export const getMdmsData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_get",
+      "mdms-v2/v1/_get",
       "",
       queryObject
     );
@@ -137,7 +148,7 @@ export const getMdmsData = async queryObject => {
   }
 };
 
-export const getEpochForDate = date => {
+export const getEpochForDate = (date) => {
   if (typeof date === "string") {
     const dateSplit = date.split("/");
     return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
@@ -156,18 +167,18 @@ export const sortByEpoch = (data, order) => {
   }
 };
 
-export const ifUserRoleExists = role => {
+export const ifUserRoleExists = (role) => {
   let userInfo = JSON.parse(getUserInfo());
   const roles = get(userInfo, "roles");
-  const roleCodes = roles ? roles.map(role => role.code) : [];
+  const roleCodes = roles ? roles.map((role) => role.code) : [];
   if (roleCodes.indexOf(role) > -1) {
     return true;
   } else return false;
 };
 
-export const convertEpochToDate = dateEpoch => {
-  if(dateEpoch==null||dateEpoch==''||dateEpoch==undefined){
-    return 'NA';
+export const convertEpochToDate = (dateEpoch) => {
+  if (dateEpoch == null || dateEpoch == "" || dateEpoch == undefined) {
+    return "NA";
   }
   const dateFromApi = new Date(dateEpoch);
   let month = dateFromApi.getMonth() + 1;
@@ -255,7 +266,7 @@ export const showHideAdhocPopup = (state, dispatch) => {
   );
 };
 
-export const getCommonGrayCard = children => {
+export const getCommonGrayCard = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -269,18 +280,18 @@ export const getCommonGrayCard = children => {
               backgroundColor: "rgb(242, 242, 242)",
               boxShadow: "none",
               borderRadius: 0,
-              overflow: "visible"
-            }
-          })
+              overflow: "visible",
+            },
+          }),
         },
         gridDefination: {
-          xs: 12
-        }
-      }
+          xs: 12,
+        },
+      },
     },
     gridDefination: {
-      xs: 12
-    }
+      xs: 12,
+    },
   };
 };
 
@@ -290,21 +301,21 @@ export const getLabelOnlyValue = (value, props = {}) => {
     componentPath: "Div",
     gridDefination: {
       xs: 6,
-      sm: 4
+      sm: 4,
     },
     props: {
       style: {
-        marginBottom: "16px"
+        marginBottom: "16px",
       },
-      ...props
+      ...props,
     },
     children: {
-      value: getCommonCaption(value)
-    }
+      value: getCommonCaption(value),
+    },
   };
 };
 
-export const getEmployeeName = async queryObject => {
+export const getEmployeeName = async (queryObject) => {
   try {
     let employeeName = "";
     const payload = await httpRequest(
@@ -322,9 +333,14 @@ export const getEmployeeName = async queryObject => {
   }
 };
 
-export const setServiceCategory = (businessServiceData, dispatch,state,setCategory=true) => {
+export const setServiceCategory = (
+  businessServiceData,
+  dispatch,
+  state,
+  setCategory = true
+) => {
   let nestedServiceData = {};
-  businessServiceData.forEach(item => {
+  businessServiceData.forEach((item) => {
     if (item.code && item.code.indexOf(".") > 0) {
       if (nestedServiceData[item.code.split(".")[0]]) {
         let child = get(
@@ -346,7 +362,7 @@ export const setServiceCategory = (businessServiceData, dispatch,state,setCatego
       set(nestedServiceData, `${item.code}`, item);
     }
   });
-  console.log("nestedServiceData",nestedServiceData);
+  console.log("nestedServiceData", nestedServiceData);
   dispatch(
     prepareFinalObject(
       "applyScreenMdmsData.nestedServiceData",
@@ -354,20 +370,21 @@ export const setServiceCategory = (businessServiceData, dispatch,state,setCatego
     )
   );
   let serviceCategories = Object.values(nestedServiceData).filter(
-    item => item.code
+    (item) => item.code
   );
-  setCategory&&dispatch(
-    prepareFinalObject(
-      "applyScreenMdmsData.serviceCategories",
-      serviceCategories
-    )
-  );
+  setCategory &&
+    dispatch(
+      prepareFinalObject(
+        "applyScreenMdmsData.serviceCategories",
+        serviceCategories
+      )
+    );
   const editingMode = get(
     state.screenConfiguration,
     "preparedFinalObject.Challan[0].id",
     null
   );
-  if(editingMode!=null){
+  if (editingMode != null) {
     dispatch(
       handleField(
         "newCollection",
@@ -395,17 +412,16 @@ export const setServiceCategory = (businessServiceData, dispatch,state,setCatego
   }
 };
 
-
-export const downloadHelpFile = async (state, dispatch) => {  
-  const helpurl = get(state.screenConfiguration.preparedFinalObject,
+export const downloadHelpFile = async (state, dispatch) => {
+  const helpurl = get(
+    state.screenConfiguration.preparedFinalObject,
     "helpFileUrl",
     ""
-  );   
+  );
   // window.open(helpurl,"_blank");
 };
 
-
-export const getTextToLocalMapping = label => {
+export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
     case "Receipt No.":
@@ -451,19 +467,18 @@ export const getTextToLocalMapping = label => {
         localisationLabels
       );
     default:
-      return getLocaleLabels(
-        label,
-        label,
-        localisationLabels
-      );
+      return getLocaleLabels(label, label, localisationLabels);
   }
 };
 
+export const downloadEchallan = (queryObj, fileName) => {
+  searchAndDownloadPdf(
+    "/egov-pdf/download/UC/mcollect-challan",
+    queryObj,
+    fileName
+  );
+};
 
-export const downloadEchallan =(queryObj,fileName)=>{
-  searchAndDownloadPdf('/egov-pdf/download/UC/mcollect-challan',queryObj,fileName)
-}
-
-export const printEchallan =(queryObj)=>{
-  searchAndPrintPdf('/egov-pdf/download/UC/mcollect-challan',queryObj)
-}
+export const printEchallan = (queryObj) => {
+  searchAndPrintPdf("/egov-pdf/download/UC/mcollect-challan", queryObj);
+};

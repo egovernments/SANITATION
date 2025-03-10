@@ -13,7 +13,7 @@ class UserLogin extends Component {
   constructor() {
     super();
     this.state = {
-      cities: []
+      cities: [],
     };
   }
   handleClick() {
@@ -39,26 +39,26 @@ class UserLogin extends Component {
   fetchoption() {
     fetch(
       window.location.origin +
-        "/egov-mdms-service/v1/_get?moduleName=tenant&masterName=tenants&tenantId=pb",
+        "/mdms-v2/v1/_get?moduleName=tenant&masterName=tenants&tenantId=pb",
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({}),
       }
     )
-      .then(response => response.json())
-      .then(response => {
-        let optionItems = response.MdmsRes.tenant.tenants.map(element => {
+      .then((response) => response.json())
+      .then((response) => {
+        let optionItems = response.MdmsRes.tenant.tenants.map((element) => {
           return { code: element.code, name: element.city.name };
         });
         this.setState({
           cities: optionItems,
-          tenantId: optionItems[0].code
+          tenantId: optionItems[0].code,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
@@ -93,11 +93,11 @@ class UserLogin extends Component {
           <label>
             Please Select City:
             <select
-              onChange={event =>
+              onChange={(event) =>
                 this.setState({ tenantId: event.target.value })
               }
             >
-              {this.state.cities.map(item => {
+              {this.state.cities.map((item) => {
                 return (
                   <option key={item.code} value={item.code}>
                     {item.name}{" "}
@@ -111,7 +111,7 @@ class UserLogin extends Component {
           <RaisedButton
             label="Submit"
             primary={true}
-            onClick={event => this.handleClick()}
+            onClick={(event) => this.handleClick()}
           />
         </center>
       </div>
@@ -119,18 +119,15 @@ class UserLogin extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   authenticated: state.auth.authenticated,
-  userInfo: state.auth.userInfo
+  userInfo: state.auth.userInfo,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   loginUser: (username, password, usertype, history) =>
     dispatch(loginUser(username, password, usertype, history)),
-  userLoginSuccess: () => dispatch(userLoginSuccess())
+  userLoginSuccess: () => dispatch(userLoginSuccess()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserLogin);
+export default connect(mapStateToProps, mapDispatchToProps)(UserLogin);

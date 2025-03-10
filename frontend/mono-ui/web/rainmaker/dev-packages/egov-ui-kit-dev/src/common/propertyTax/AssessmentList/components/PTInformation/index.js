@@ -27,8 +27,8 @@ class PTInformation extends React.Component {
   state = {
     businessServiceInfoItem: {},
     waterDetails: [],
-    sewerDetails: []
-  }
+    sewerDetails: [],
+  };
   componentDidMount = async () => {
     const mdmsBody = {
       MdmsCriteria: {
@@ -36,10 +36,10 @@ class PTInformation extends React.Component {
         moduleDetails: [
           {
             moduleName: "BillingService",
-            masterDetails: [{ name: "BusinessService" }]
-          }
-        ]
-      }
+            masterDetails: [{ name: "BusinessService" }],
+          },
+        ],
+      },
     };
     const businessServiceInfoItem = businessServiceInfo(mdmsBody, "PT");
     this.setState({ businessServiceInfoItem });
@@ -53,17 +53,12 @@ class PTInformation extends React.Component {
               {
                 name: "DuesOnPTMutation",
               },
-            ]
-          }
-        ]
-      }
-    }
-    const payload = await httpRequest(
-      "/egov-mdms-service/v1/_search",
-      "_search",
-      [],
-      requestObject
-    );
+            ],
+          },
+        ],
+      },
+    };
+    const payload = await httpRequest("/mdms-v2/v1/_search", "_search", [], requestObject);
     let waterDetails = [];
     let sewerDetails = [];
     let getDuesForPTMutation = payload && payload.MdmsRes.PropertyTax.DuesOnPTMutation;
@@ -71,7 +66,7 @@ class PTInformation extends React.Component {
       let queryObjectForConsumer = [];
       queryObjectForConsumer.push(
         { key: "searchType", value: "CONNECTION" },
-        { key: "propertyId", value: window.location.href.split('/')[6] },
+        { key: "propertyId", value: window.location.href.split("/")[6] },
         { key: "tenantId", value: getTenantId() }
       );
       getDuesForPTMutation.map(async (items) => {
@@ -81,72 +76,67 @@ class PTInformation extends React.Component {
             let bills = [];
             consumerDetails.map(async (details) => {
               try {
-                const billDetails = await fetchConsumerBill(items,
-                  [{ key: "businessService", value: items.module },
+                const billDetails = await fetchConsumerBill(items, [
+                  { key: "businessService", value: items.module },
                   { key: "consumerCode", value: details.connectionNo },
-                  { key: "tenantId", value: getTenantId() }]);
+                  { key: "tenantId", value: getTenantId() },
+                ]);
                 billDetails && bills.push(billDetails);
                 if (bills && bills.length > 0 && items.module === "WS") {
-                  bills.map(bill => {
+                  bills.map((bill) => {
                     waterDetails.push({
                       waterDue: bill.totalAmount,
                       connectionNo: bill.consumerCode,
-                      module: items.module
-                    })
-                  })
+                      module: items.module,
+                    });
+                  });
                   this.setState({ waterDetails });
                   waterDetails = [];
-                }
-                else if (bills && bills.length > 0 && items.module === "SW") {
-                  bills.map(bill => {
+                } else if (bills && bills.length > 0 && items.module === "SW") {
+                  bills.map((bill) => {
                     sewerDetails.push({
                       sewerDue: bill.totalAmount,
                       connectionNo: bill.consumerCode,
-                      module: items.module
-                    })
-                  })
+                      module: items.module,
+                    });
+                  });
                   this.setState({ sewerDetails });
                   sewerDetails = [];
                 }
               } catch (error) {
-                console.log(error)
+                console.log(error);
               }
-            })
+            });
           }
         }
-      })
+      });
     }
-  }
+  };
   updateProperty = () => {
-    let {
-      propertiesAudit,
-      properties
-    } = this.props;
+    let { propertiesAudit, properties } = this.props;
     if (propertiesAudit.length === 0) propertiesAudit.push(properties);
     let Owners = [];
     let Institution = null;
-    let ownershipCategory = '';
-    propertiesAudit.reverse().map(property => {
+    let ownershipCategory = "";
+    propertiesAudit.reverse().map((property) => {
       if (property.status == "ACTIVE") {
-        Owners = property.owners.filter(owner => owner.status == "ACTIVE");
+        Owners = property.owners.filter((owner) => owner.status == "ACTIVE");
         Institution = property.institution;
         ownershipCategory = property.ownershipCategory;
       }
-    })
+    });
     if (Owners.length == 0) {
-      Owners = propertiesAudit[0].owners.filter(owner => owner.status == "ACTIVE");
+      Owners = propertiesAudit[0].owners.filter((owner) => owner.status == "ACTIVE");
       Institution = propertiesAudit[0].institution;
       ownershipCategory = propertiesAudit[0].ownershipCategory;
     }
     return { owners: Owners, institution: Institution, ownershipCategory };
-
-
-  }
+  };
   getLogoUrl = (tenantId) => {
-    const { cities } = this.props
-    const filteredCity = cities && cities.length > 0 && cities.filter(item => item.code === tenantId);
+    const { cities } = this.props;
+    const filteredCity = cities && cities.length > 0 && cities.filter((item) => item.code === tenantId);
     return filteredCity ? get(filteredCity[0], "logoId") : "";
-  }
+  };
 
   render() {
     const {
@@ -158,7 +148,7 @@ class PTInformation extends React.Component {
       toggleSnackbarAndSetText,
       cities,
       propertiesAudit,
-      updateNumberConfig
+      updateNumberConfig,
     } = this.props;
     const { businessServiceInfoItem, waterDetails, sewerDetails } = this.state;
     let logoUrl = "";
@@ -168,8 +158,10 @@ class PTInformation extends React.Component {
       let tenantid = get(properties, "tenantId");
       // logoUrl = get(properties, "tenantId") ? this.getLogoUrl(get(properties, "tenantId")) : "";
       logoUrl = window.location.origin + `/${commonConfig.tenantId}-egov-assets/${tenantid}/logo.png`;
-      corpCity = `TENANT_TENANTS_${get(properties, "tenantId").toUpperCase().replace(/[.:-\s\/]/g, "_")}`;
-      const selectedCityObject = cities && cities.length > 0 && cities.filter(item => item.code === get(properties, "tenantId"));
+      corpCity = `TENANT_TENANTS_${get(properties, "tenantId")
+        .toUpperCase()
+        .replace(/[.:-\s\/]/g, "_")}`;
+      const selectedCityObject = cities && cities.length > 0 && cities.filter((item) => item.code === get(properties, "tenantId"));
       ulbGrade = selectedCityObject ? `ULBGRADE_${get(selectedCityObject[0], "city.ulbGrade")}` : "MUNICIPAL CORPORATION";
     }
     if (properties.status == "INWORKFLOW") {
@@ -210,15 +202,18 @@ class PTInformation extends React.Component {
                     style={{ backgroundColor: "rgb(242,242,242)", boxShadow: "none" }}
                   />
                 )}
-                <PdfHeader header={{
-                  logoUrl: logoUrl, corpCity: corpCity, ulbGrade: ulbGrade,
-                  label: "PT_PDF_SUBHEADER"
-                }}
+                <PdfHeader
+                  header={{
+                    logoUrl: logoUrl,
+                    corpCity: corpCity,
+                    ulbGrade: ulbGrade,
+                    label: "PT_PDF_SUBHEADER",
+                  }}
                   subHeader={{
                     label: "PT_PROPERTY_ID",
-                    value: `: ${get(properties, "propertyId")}`
-                  }}>
-                </PdfHeader>
+                    value: `: ${get(properties, "propertyId")}`,
+                  }}
+                ></PdfHeader>
                 <PropertyAddressInfo properties={properties} generalMDMSDataById={generalMDMSDataById}></PropertyAddressInfo>
                 <AssessmentInfo properties={properties} generalMDMSDataById={generalMDMSDataById}></AssessmentInfo>
                 <OwnerInfo
@@ -253,16 +248,8 @@ const mapStateToProps = (state) => {
 
   const { preparedFinalObject } = screenConfiguration;
   let { propertiesAudit = [] } = preparedFinalObject;
-  const updateNumberConfig = get(
-    preparedFinalObject,
-    "updateNumberConfig",
-    []
-  );
+  const updateNumberConfig = get(preparedFinalObject, "updateNumberConfig", []);
   return { cities, propertiesAudit, updateNumberConfig };
-}
+};
 
-
-export default connect(
-  mapStateToProps,
-  null
-)(PTInformation);
+export default connect(mapStateToProps, null)(PTInformation);

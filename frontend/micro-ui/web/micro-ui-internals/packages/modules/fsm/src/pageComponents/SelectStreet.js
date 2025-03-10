@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { FormStep, TextInput, LabelFieldPair, CardLabel, WrapUnMaskComponent } from "@egovernments/digit-ui-react-components";
+import {
+  FormStep,
+  TextInput,
+  LabelFieldPair,
+  CardLabel,
+  WrapUnMaskComponent,
+} from "@egovernments/digit-ui-react-components";
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash";
 import Timeline from "../components/TLTimelineInFSM";
 
-const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setError, clearErrors }) => {
+const SelectStreet = ({
+  t,
+  config,
+  onSelect,
+  userType,
+  formData,
+  formState,
+  setError,
+  clearErrors,
+}) => {
   const onSkip = () => onSelect();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const checkvehicletrack = Digit.Hooks.fsm.useVehicleTrackingCheck(tenantId);
@@ -23,15 +38,23 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
   } = useForm();
   const formValue = watch();
   const { errors } = localFormState;
-  const checkLocation = window.location.href.includes("tl/new-application") || window.location.href.includes("tl/renew-application-details");
-  const isRenewal = window.location.href.includes("edit-application") || window.location.href.includes("tl/renew-application-details");
+  const checkLocation =
+    window.location.href.includes("tl/new-application") ||
+    window.location.href.includes("tl/renew-application-details");
+  const isRenewal =
+    window.location.href.includes("edit-application") ||
+    window.location.href.includes("tl/renew-application-details");
   const [street, setStreet] = useState();
   const [doorNo, setDoorNo] = useState();
   let inputs;
   if (window.location.href.includes("tl")) {
     inputs = config.inputs;
-    config.inputs[0].disable = window.location.href.includes("edit-application");
-    config.inputs[1].disable = window.location.href.includes("edit-application");
+    config.inputs[0].disable = window.location.href.includes(
+      "edit-application"
+    );
+    config.inputs[1].disable = window.location.href.includes(
+      "edit-application"
+    );
     inputs[0].validation = { minLength: 0, maxLength: 256 };
     inputs[1].validation = { minLength: 0, maxLength: 256 };
   } else {
@@ -61,18 +84,39 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
 
   const convertValidationToRules = ({ validation, name, messages }) => {
     if (validation) {
-      let { pattern: valPattern, maxlength, minlength, required: valReq } = validation || {};
+      let { pattern: valPattern, maxlength, minlength, required: valReq } =
+        validation || {};
       let pattern = (value) => {
         if (valPattern) {
-          if (valPattern instanceof RegExp) return valPattern.test(value) ? true : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
+          if (valPattern instanceof RegExp)
+            return valPattern.test(value)
+              ? true
+              : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
           else if (typeof valPattern === "string")
-            return new RegExp(valPattern)?.test(value) ? true : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
+            return new RegExp(valPattern)?.test(value)
+              ? true
+              : messages?.pattern || `${name.toUpperCase()}_PATTERN`;
         }
         return true;
       };
-      let maxLength = (value) => (maxlength ? (value?.length <= maxlength ? true : messages?.maxlength || `${name.toUpperCase()}_MAXLENGTH`) : true);
-      let minLength = (value) => (minlength ? (value?.length >= minlength ? true : messages?.minlength || `${name.toUpperCase()}_MINLENGTH`) : true);
-      let required = (value) => (valReq ? (!!value ? true : messages?.required || `${name.toUpperCase()}_REQUIRED`) : true);
+      let maxLength = (value) =>
+        maxlength
+          ? value?.length <= maxlength
+            ? true
+            : messages?.maxlength || `${name.toUpperCase()}_MAXLENGTH`
+          : true;
+      let minLength = (value) =>
+        minlength
+          ? value?.length >= minlength
+            ? true
+            : messages?.minlength || `${name.toUpperCase()}_MINLENGTH`
+          : true;
+      let required = (value) =>
+        valReq
+          ? !!value
+            ? true
+            : messages?.required || `${name.toUpperCase()}_REQUIRED`
+          : true;
 
       return { pattern, required, minLength, maxLength };
     }
@@ -90,8 +134,13 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
 
   useEffect(() => {
     if (userType === "employee") {
-      if (Object.keys(errors).length && !_.isEqual(formState.errors[config.key]?.type || {}, errors)) setError(config.key, { type: errors });
-      else if (!Object.keys(errors).length && formState.errors[config.key]) clearErrors(config.key);
+      if (
+        Object.keys(errors).length &&
+        !_.isEqual(formState.errors[config.key]?.type || {}, errors)
+      )
+        setError(config.key, { type: errors });
+      else if (!Object.keys(errors).length && formState.errors[config.key])
+        clearErrors(config.key);
     }
   }, [errors]);
 
@@ -109,10 +158,14 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
   useEffect(() => {
     if (formData?.cpt?.details && window.location.href.includes("tl")) {
       inputs?.map((input) => {
-        if (getValues(input.name) !== formData?.cpt?.details?.address?.[input.name]) {
+        if (
+          getValues(input.name) !==
+          formData?.cpt?.details?.address?.[input.name]
+        ) {
           setValue(
             input.name,
-            formData?.cpt?.details?.address?.[input.name] === null || formData?.cpt?.details?.address?.[input.name] === ""
+            formData?.cpt?.details?.address?.[input.name] === null ||
+              formData?.cpt?.details?.address?.[input.name] === ""
               ? formData?.address?.[input.name]
                 ? formData?.address?.[input.name]
                 : ""
@@ -143,11 +196,20 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
           <div className="field">
             <Controller
               control={control}
-              defaultValue={formData?.cpt?.details?.address?.[input?.name] || formData?.address?.[input.name]}
+              defaultValue={
+                formData?.cpt?.details?.address?.[input?.name] ||
+                formData?.address?.[input.name]
+              }
               name={input.name}
               rules={{ validate: convertValidationToRules(input) }}
               render={(_props) => (
-                <div style={{ display: "flex", alignItems: "baseline", marginRight: "unset" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    marginRight: "unset",
+                  }}
+                >
                   <TextInput
                     id={input.name}
                     key={input.name}
@@ -158,7 +220,11 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
                     }}
                     onBlur={_props.onBlur}
                     // disable={isRenewal}
-                    disable={formData?.cpt?.details?.address?.[input.name] ? true : false}
+                    disable={
+                      formData?.cpt?.details?.address?.[input.name]
+                        ? true
+                        : false
+                    }
                     autoFocus={focusIndex?.index == index}
                     {...input?.validation}
                   />
@@ -168,7 +234,15 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
                         _props.onChange(e);
                       }}
                       iseyevisible={
-                        (_props.value ? _props.value?.includes("*") : formData?.cpt?.details?.address?.[input.name]?.includes("*")) ? true : false
+                        (
+                          _props.value
+                            ? _props.value?.includes("*")
+                            : formData?.cpt?.details?.address?.[
+                                input.name
+                              ]?.includes("*")
+                        )
+                          ? true
+                          : false
                       }
                       privacy={{
                         uuid: formData?.cpt?.details?.owners?.[0]?.uuid,
@@ -197,10 +271,17 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
   }
   return (
     <React.Fragment>
-      {window.location.href.includes("/tl") ? <Timeline currentStep={2} /> : <Timeline currentStep={1} flow="APPLY" />}
+      {window.location.href.includes("/tl") ? (
+        <Timeline currentStep={2} />
+      ) : (
+        <Timeline currentStep={1} flow="APPLY" />
+      )}
       <FormStep
         config={{ ...config, inputs }}
-        _defaultValues={{ street: formData?.address.street, doorNo: formData?.address.doorNo }}
+        _defaultValues={{
+          street: formData?.address?.street,
+          doorNo: formData?.address?.doorNo,
+        }}
         onChange={handleSkip}
         onSelect={(data) => onSelect(config.key, data)}
         onSkip={onSkip}

@@ -7,7 +7,7 @@ import {
   prepareFinalObject,
   showSpinner,
   toggleSnackbar,
-  toggleSpinner
+  toggleSpinner,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
 import { getUserSearchedResponse } from "egov-ui-kit/utils/commons";
@@ -17,7 +17,7 @@ import {
   getTenantId,
   getUserInfo,
   localStorageGet,
-  localStorageSet
+  localStorageSet,
 } from "egov-ui-kit/utils/localStorageUtils";
 import cloneDeep from "lodash/cloneDeep";
 import get from "lodash/get";
@@ -759,7 +759,7 @@ export const getRequiredDocData = async (
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -879,7 +879,7 @@ export const getMdmsJson = async (state, dispatch, reqObj) => {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -972,13 +972,14 @@ export const captureSource = () => {
   //Set the source of the Booking.
   if (window.mSewaApp) localStorageSet("isNative", "true");
   else localStorageSet("isNative", "false");
-  const isNative = localStorageGet("isNative")==="true";
+  const isNative = localStorageGet("isNative") === "true";
   try {
-    let source = process.env.REACT_APP_NAME === "Citizen"
-      ? (isNative
-        ? "mobileapp"
-        : "web")
-      : "ivr";
+    let source =
+      process.env.REACT_APP_NAME === "Citizen"
+        ? isNative
+          ? "mobileapp"
+          : "web"
+        : "ivr";
     return source;
   } catch (error) {
     console.error(error);

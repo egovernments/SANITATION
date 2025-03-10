@@ -1,28 +1,33 @@
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
-import { getUserInfo,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import {set,get} from "lodash";
-import { getQueryArg,getTransformedLocalStorgaeLabels ,getLocaleLabels} from "egov-ui-framework/ui-utils/commons";
-import { 
-  handleScreenConfigurationFieldChange as handleField,prepareFinalObject, 
-  toggleSnackbar 
+import { getUserInfo, getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { set, get } from "lodash";
+import {
+  getQueryArg,
+  getTransformedLocalStorgaeLabels,
+  getLocaleLabels,
+} from "egov-ui-framework/ui-utils/commons";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+  toggleSnackbar,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getCommonCard,
-  getCommonCaption
+  getCommonCaption,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { httpRequest } from "../../../../ui-utils";
 import commonConfig from "config/common.js";
-import {getRequiredDocuments} from "../../../../ui-containers-local/RequiredDocuments/reqDocs";
+import { getRequiredDocuments } from "../../../../ui-containers-local/RequiredDocuments/reqDocs";
 
-export const getCommonApplyFooter = children => {
+export const getCommonApplyFooter = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Div",
     props: {
-      className: "apply-wizard-footer"
+      className: "apply-wizard-footer",
     },
-    children
+    children,
   };
 };
 
@@ -31,7 +36,7 @@ export const transformById = (payload, id) => {
     payload &&
     payload.reduce((result, item) => {
       result[item[id]] = {
-        ...item
+        ...item,
       };
 
       return result;
@@ -39,16 +44,16 @@ export const transformById = (payload, id) => {
   );
 };
 
-export const getMdmsData = async  requestBody=> {
+export const getMdmsData = async (requestBody) => {
   try {
     const response = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_search",
+      "mdms-v2/v1/_search",
       "_search",
       [],
       requestBody
     );
-   
+
     return response;
   } catch (error) {
     return {};
@@ -95,7 +100,7 @@ export const validateFields = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            )
+            ),
           },
           dispatch,
           true
@@ -124,7 +129,7 @@ export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
   }
 };
 
-export const getEpochForDate = date => {
+export const getEpochForDate = (date) => {
   const dateSplit = date.split("/");
   return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
 };
@@ -141,16 +146,16 @@ export const sortByEpoch = (data, order) => {
   }
 };
 
-export const ifUserRoleExists = role => {
+export const ifUserRoleExists = (role) => {
   let userInfo = JSON.parse(getUserInfo());
   const roles = get(userInfo, "roles");
-  const roleCodes = roles ? roles.map(role => role.code) : [];
+  const roleCodes = roles ? roles.map((role) => role.code) : [];
   if (roleCodes.indexOf(role) > -1) {
     return true;
   } else return false;
 };
 
-export const convertEpochToDate = dateEpoch => {
+export const convertEpochToDate = (dateEpoch) => {
   const dateFromApi = new Date(dateEpoch);
   let month = dateFromApi.getMonth() + 1;
   let day = dateFromApi.getDate();
@@ -236,36 +241,44 @@ export const showHideAdhocPopup = (state, dispatch) => {
     handleField("search", "components.adhocDialog", "props.open", !toggle)
   );
 };
-export const getRequiredDocData = async (action, dispatch, moduleDetails, closePopUp) => {
+export const getRequiredDocData = async (
+  action,
+  dispatch,
+  moduleDetails,
+  closePopUp
+) => {
   let tenantId =
-    process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
+    process.env.REACT_APP_NAME === "Citizen"
+      ? JSON.parse(getUserInfo()).permanentCity
+      : getTenantId();
   let mdmsBody = {
     MdmsCriteria: {
-      tenantId:commonConfig.tenantId,
-      moduleDetails: moduleDetails
-    }
+      tenantId: commonConfig.tenantId,
+      moduleDetails: moduleDetails,
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
     );
     const moduleName = moduleDetails[0].moduleName;
-    let documents = get(
-      payload.MdmsRes,
-      `${moduleName}.documentObj`,
-      []
-    );
+    let documents = get(payload.MdmsRes, `${moduleName}.documentObj`, []);
 
     if (moduleName === "PropertyTax") {
-      payload.MdmsRes.tenant.tenants = payload.MdmsRes.tenant.citymodule[1].tenants;
+      payload.MdmsRes.tenant.tenants =
+        payload.MdmsRes.tenant.citymodule[1].tenants;
     }
-   
-    const reqDocuments = getRequiredDocuments(documents, moduleName, footerCallBackForRequiredDataModal(moduleName, closePopUp));
+
+    const reqDocuments = getRequiredDocuments(
+      documents,
+      moduleName,
+      footerCallBackForRequiredDataModal(moduleName, closePopUp)
+    );
     set(
       action,
       "screenConfig.components.adhocDialog.children.popup",
@@ -273,24 +286,25 @@ export const getRequiredDocData = async (action, dispatch, moduleDetails, closeP
     );
     dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
     return { payload, reqDocuments };
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 const footerCallBackForRequiredDataModal = (moduleName, closePopUp) => {
-  const connectionNumber = getQueryArg( window.location.href, "connectionNumber");
-  const tenantId = getQueryArg( window.location.href, "tenantId");
+  const connectionNumber = getQueryArg(
+    window.location.href,
+    "connectionNumber"
+  );
+  const tenantId = getQueryArg(window.location.href, "tenantId");
   const businessService = connectionNumber.includes("WS") ? "WS" : "SW";
 
   switch (moduleName) {
-   
     case "BillAmendment":
       return (state, dispatch) => {
         const applyUrl = `/bill-amend/apply?connectionNumber=${connectionNumber}&tenantId=${tenantId}&businessService=${businessService}`;
         dispatch(setRoute(applyUrl));
       };
-    }
-}
-export const getCommonGrayCard = children => {
+  }
+};
+export const getCommonGrayCard = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -304,18 +318,18 @@ export const getCommonGrayCard = children => {
               backgroundColor: "rgb(242, 242, 242)",
               boxShadow: "none",
               borderRadius: 0,
-              overflow: "visible"
-            }
-          })
+              overflow: "visible",
+            },
+          }),
         },
         gridDefination: {
-          xs: 12
-        }
-      }
+          xs: 12,
+        },
+      },
     },
     gridDefination: {
-      xs: 12
-    }
+      xs: 12,
+    },
   };
 };
 
@@ -325,30 +339,32 @@ export const getLabelOnlyValue = (value, props = {}) => {
     componentPath: "Div",
     gridDefination: {
       xs: 6,
-      sm: 4
+      sm: 4,
     },
     props: {
       style: {
-        marginBottom: "16px"
+        marginBottom: "16px",
       },
-      ...props
+      ...props,
     },
     children: {
-      value: getCommonCaption(value)
-    }
+      value: getCommonCaption(value),
+    },
   };
 };
 
-
-export const onActionClick = (rowData) =>{
-  switch(rowData[8]){
-    case "PAY" : return "";
-    case "DOWNLOAD RECEIPT" : ""
-    case "GENERATE NEW RECEIPT" : ""
+export const onActionClick = (rowData) => {
+  switch (rowData[8]) {
+    case "PAY":
+      return "";
+    case "DOWNLOAD RECEIPT":
+      "";
+    case "GENERATE NEW RECEIPT":
+      "";
   }
-}
+};
 
-export const getTextToLocalMapping = label => {
+export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
     case "Bill No.":
@@ -405,14 +421,14 @@ export const getTextToLocalMapping = label => {
         localisationLabels
       );
 
-   case "Owner Name":
+    case "Owner Name":
       return getLocaleLabels(
         "Owner Name",
         "ABG_COMMON_TABLE_COL_OWN_NAME",
         localisationLabels
       );
 
-  case "Download":
+    case "Download":
       return getLocaleLabels(
         "Download",
         "ABG_COMMON_TABLE_COL_DOWNLOAD_BUTTON"
@@ -425,75 +441,71 @@ export const getTextToLocalMapping = label => {
         localisationLabels
       );
 
-      case "ACTIVE":
+    case "ACTIVE":
       return getLocaleLabels(
         "Pending",
         "BILL_GENIE_ACTIVE_LABEL",
         localisationLabels
       );
 
-      case "CANCELLED":
+    case "CANCELLED":
       return getLocaleLabels(
         "Cancelled",
         "BILL_GENIE_CANCELLED_LABEL",
         localisationLabels
       );
 
-      case "PAID":
+    case "PAID":
       return getLocaleLabels(
         "Paid",
         "BILL_GENIE_PAID_LABEL",
         localisationLabels
       );
-      case "PAY":
-      case "PARTIALLY PAID":
-      return getLocaleLabels(
-        "PAY",
-        "BILL_GENIE_PAY",
-        localisationLabels
-      );
-      case "EXPIRED":
+    case "PAY":
+    case "PARTIALLY PAID":
+      return getLocaleLabels("PAY", "BILL_GENIE_PAY", localisationLabels);
+    case "EXPIRED":
       return getLocaleLabels(
         "Expired",
         "BILL_GENIE_EXPIRED",
         localisationLabels
       );
-      case "GENERATE NEW BILL":
+    case "GENERATE NEW BILL":
       return getLocaleLabels(
         "GENERATE NEW BILL",
         "BILL_GENIE_GENERATE_NEW_BILL",
         localisationLabels
       );
 
-      case "DOWNLOAD RECEIPT":
-        return getLocaleLabels(
-          "DOWNLOAD RECEIPT",
-          "BILL_GENIE_DOWNLOAD_RECEIPT",
-          localisationLabels
-        );
-      case "Search Results for Bill":
-        return getLocaleLabels(
-          "Search Results for Bill",
-          "BILL_GENIE_SEARCH_TABLE_HEADER",
-          localisationLabels
-        );
-      case "PARTIALLY_PAID":
-      case "PARTIALLY PAID":
-        return getLocaleLabels(
-            "Partially Paid",
-            "BILL_GENIE_PARTIALLY_PAID",
-            localisationLabels
-          ); 
-      case "BILL_GENIE_GROUP_SEARCH_HEADER" : 
-          return getLocaleLabels(
-            "Search Results for Group Bills",
-            "BILL_GENIE_GROUP_SEARCH_HEADER",
-            localisationLabels
-          ); 
+    case "DOWNLOAD RECEIPT":
+      return getLocaleLabels(
+        "DOWNLOAD RECEIPT",
+        "BILL_GENIE_DOWNLOAD_RECEIPT",
+        localisationLabels
+      );
+    case "Search Results for Bill":
+      return getLocaleLabels(
+        "Search Results for Bill",
+        "BILL_GENIE_SEARCH_TABLE_HEADER",
+        localisationLabels
+      );
+    case "PARTIALLY_PAID":
+    case "PARTIALLY PAID":
+      return getLocaleLabels(
+        "Partially Paid",
+        "BILL_GENIE_PARTIALLY_PAID",
+        localisationLabels
+      );
+    case "BILL_GENIE_GROUP_SEARCH_HEADER":
+      return getLocaleLabels(
+        "Search Results for Group Bills",
+        "BILL_GENIE_GROUP_SEARCH_HEADER",
+        localisationLabels
+      );
   }
 };
 
-export const getFetchBill = async(state, dispatch, action, queryObject) => {
+export const getFetchBill = async (state, dispatch, action, queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -511,9 +523,9 @@ export const getFetchBill = async(state, dispatch, action, queryObject) => {
       )
     );
   }
-}
+};
 
-export const searchBill = async(state, dispatch, action, queryObject) => {
+export const searchBill = async (state, dispatch, action, queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -521,8 +533,12 @@ export const searchBill = async(state, dispatch, action, queryObject) => {
       "",
       queryObject
     );
-    const billdetails=get(response,'Bill[0].billDetails',[]);
-    set(response,'Bill[0].billDetails',billdetails.sort((x,y)=>y.fromPeriod-x.fromPeriod));
+    const billdetails = get(response, "Bill[0].billDetails", []);
+    set(
+      response,
+      "Bill[0].billDetails",
+      billdetails.sort((x, y) => y.fromPeriod - x.fromPeriod)
+    );
     return response;
   } catch (error) {
     dispatch(
@@ -533,7 +549,7 @@ export const searchBill = async(state, dispatch, action, queryObject) => {
       )
     );
   }
-}
+};
 
 export const showApplyCityPicker = (state, dispatch) => {
   let toggle = get(
@@ -546,20 +562,33 @@ export const showApplyCityPicker = (state, dispatch) => {
   );
 };
 
-export const onDemandRevisionBasis = async (state, dispatch, isFromOk = true, check = false) => {
+export const onDemandRevisionBasis = async (
+  state,
+  dispatch,
+  isFromOk = true,
+  check = false
+) => {
   let demandRevisionBasis = get(
     state.screenConfiguration.preparedFinalObject,
-    "Amendment.amendmentReason", ""
+    "Amendment.amendmentReason",
+    ""
   );
   let previousDemandRevBasisValue = get(
     state.screenConfiguration.preparedFinalObject,
-    "AmendmentTemp.amendmentReason", ""
+    "AmendmentTemp.amendmentReason",
+    ""
   );
 
-  if (previousDemandRevBasisValue !== demandRevisionBasis && previousDemandRevBasisValue != "" && isFromOk && check) {
-    dispatch(handleField("apply", "components.billAmdAlertDialog", "props.open", true));
+  if (
+    previousDemandRevBasisValue !== demandRevisionBasis &&
+    previousDemandRevBasisValue != "" &&
+    isFromOk &&
+    check
+  ) {
+    dispatch(
+      handleField("apply", "components.billAmdAlertDialog", "props.open", true)
+    );
   } else if (previousDemandRevBasisValue == demandRevisionBasis && isFromOk) {
-
   } else {
     let demandArray = [];
     switch (demandRevisionBasis) {
@@ -1126,14 +1155,22 @@ export const onDemandRevisionBasis = async (state, dispatch, isFromOk = true, ch
         break;
     }
   }
-}
+};
 
 export const procedToNextStep = async (state, dispatch) => {
-  const demandRevBasisValue = get( state.screenConfiguration.preparedFinalObject, "Amendment.amendmentReason", "");
+  const demandRevBasisValue = get(
+    state.screenConfiguration.preparedFinalObject,
+    "Amendment.amendmentReason",
+    ""
+  );
   dispatch(prepareFinalObject("documentsUploadRedux", {}));
   dispatch(prepareFinalObject("documentsContract", []));
-  dispatch(prepareFinalObject("AmendmentTemp.amendmentReason", demandRevBasisValue));
-  dispatch(prepareFinalObject("AmendmentTemp.isPreviousDemandRevBasisValue", true));
+  dispatch(
+    prepareFinalObject("AmendmentTemp.amendmentReason", demandRevBasisValue)
+  );
+  dispatch(
+    prepareFinalObject("AmendmentTemp.isPreviousDemandRevBasisValue", true)
+  );
   dispatch(
     handleField(
       "apply",
@@ -1151,11 +1188,17 @@ export const procedToNextStep = async (state, dispatch) => {
   dispatch(
     handleField("apply", "components.billAmdAlertDialog", "props.open", !toggle)
   );
-}
+};
 
 export const cancelPopUp = async (state, dispatch) => {
-  const previousDemandRevBasisValue = get( state.screenConfiguration.preparedFinalObject, "AmendmentTemp.amendmentReason", "");
-  dispatch(prepareFinalObject("AmendmentTemp.isPreviousDemandRevBasisValue", false));
+  const previousDemandRevBasisValue = get(
+    state.screenConfiguration.preparedFinalObject,
+    "AmendmentTemp.amendmentReason",
+    ""
+  );
+  dispatch(
+    prepareFinalObject("AmendmentTemp.isPreviousDemandRevBasisValue", false)
+  );
   dispatch(
     handleField(
       "apply",
@@ -1172,4 +1215,4 @@ export const cancelPopUp = async (state, dispatch) => {
   dispatch(
     handleField("apply", "components.billAmdAlertDialog", "props.open", !toggle)
   );
-}
+};

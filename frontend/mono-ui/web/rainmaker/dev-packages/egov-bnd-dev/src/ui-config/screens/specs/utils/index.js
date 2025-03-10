@@ -125,7 +125,7 @@ export const getMdmsData = async (requestBody) => {
   try {
     const response = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_search",
+      "mdms-v2/v1/_search",
       "_search",
       [],
       requestBody
@@ -638,7 +638,7 @@ export const loadMdmsData = async (action, state, dispatch) => {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       requestBody
@@ -688,7 +688,7 @@ export const loadHospitals = async (
   try {
     payload = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_search",
+      "mdms-v2/v1/_search",
       "_search",
       queryParams,
       requestBody

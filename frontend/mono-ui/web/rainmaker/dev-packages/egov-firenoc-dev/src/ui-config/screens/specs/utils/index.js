@@ -1,25 +1,40 @@
 import commonConfig from "config/common.js";
-import { getCommonCaption, getCommonCard, getPattern } from "egov-ui-framework/ui-config/screens/specs/utils";
+import {
+  getCommonCaption,
+  getCommonCard,
+  getPattern,
+} from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+  toggleSnackbar,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
-import { getLocaleLabels, getQueryArg, getTransformedLocalStorgaeLabels } from "egov-ui-framework/ui-utils/commons";
+import {
+  getLocaleLabels,
+  getQueryArg,
+  getTransformedLocalStorgaeLabels,
+} from "egov-ui-framework/ui-utils/commons";
 import { getPaymentSearchAPI } from "egov-ui-kit/utils/commons";
-import { getUserInfo, localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
+import {
+  getUserInfo,
+  localStorageGet,
+} from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import isUndefined from "lodash/isUndefined";
 import set from "lodash/set";
 import { httpRequest } from "../../../../ui-utils/api";
 
-export const getCommonApplyFooter = children => {
+export const getCommonApplyFooter = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Div",
     props: {
-      className: "apply-wizard-footer"
+      className: "apply-wizard-footer",
     },
-    children
+    children,
   };
 };
 
@@ -28,7 +43,7 @@ export const transformById = (payload, id) => {
     payload &&
     payload.reduce((result, item) => {
       result[item[id]] = {
-        ...item
+        ...item,
       };
 
       return result;
@@ -65,7 +80,8 @@ export const validateFields = (
   for (var variable in fields) {
     if (fields.hasOwnProperty(variable)) {
       if (
-        fields[variable] && fields[variable].componentPath != "DynamicMdmsContainer" &&
+        fields[variable] &&
+        fields[variable].componentPath != "DynamicMdmsContainer" &&
         fields[variable].props &&
         (fields[variable].props.disabled === undefined ||
           !fields[variable].props.disabled) &&
@@ -76,23 +92,28 @@ export const validateFields = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            )
+            ),
           },
           dispatch,
           true
         )
       ) {
         isFormValid = false;
-      } else if (fields[variable] && fields[variable].componentPath == "DynamicMdmsContainer" && fields[variable].props) {
-        let { masterName, moduleName, rootBlockSub, dropdownFields } = fields[variable].props;
+      } else if (
+        fields[variable] &&
+        fields[variable].componentPath == "DynamicMdmsContainer" &&
+        fields[variable].props
+      ) {
+        let { masterName, moduleName, rootBlockSub, dropdownFields } =
+          fields[variable].props;
         let isIndex = fields[variable].index || 0;
         dropdownFields.forEach((item, i) => {
           let isValid = get(
             state.screenConfiguration.preparedFinalObject,
             `DynamicMdms.${moduleName}.${rootBlockSub}.selectedValues[${isIndex}].${item.key}`,
-            ''
+            ""
           );
-          if (isValid == '' || isValid == 'none') {
+          if (isValid == "" || isValid == "none") {
             isFormValid = false;
             dispatch(
               handleField(
@@ -104,7 +125,6 @@ export const validateFields = (
             );
           }
         });
-
       }
     }
   }
@@ -127,7 +147,7 @@ export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
   }
 };
 
-export const getEpochForDate = date => {
+export const getEpochForDate = (date) => {
   const dateSplit = date.split("/");
   return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
 };
@@ -144,16 +164,16 @@ export const sortByEpoch = (data, order) => {
   }
 };
 
-export const ifUserRoleExists = role => {
+export const ifUserRoleExists = (role) => {
   let userInfo = JSON.parse(getUserInfo());
   const roles = get(userInfo, "roles");
-  const roleCodes = roles ? roles.map(role => role.code) : [];
+  const roleCodes = roles ? roles.map((role) => role.code) : [];
   if (roleCodes.indexOf(role) > -1) {
     return true;
   } else return false;
 };
 
-export const convertEpochToDate = dateEpoch => {
+export const convertEpochToDate = (dateEpoch) => {
   const dateFromApi = new Date(dateEpoch);
   let month = dateFromApi.getMonth() + 1;
   let day = dateFromApi.getDate();
@@ -240,7 +260,7 @@ export const showHideAdhocPopup = (state, dispatch, screenKey) => {
   );
 };
 
-export const getCommonGrayCard = children => {
+export const getCommonGrayCard = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -254,18 +274,18 @@ export const getCommonGrayCard = children => {
               backgroundColor: "rgb(242, 242, 242)",
               boxShadow: "none",
               borderRadius: 0,
-              overflow: "visible"
-            }
-          })
+              overflow: "visible",
+            },
+          }),
         },
         gridDefination: {
-          xs: 12
-        }
-      }
+          xs: 12,
+        },
+      },
     },
     gridDefination: {
-      xs: 12
-    }
+      xs: 12,
+    },
   };
 };
 
@@ -275,21 +295,21 @@ export const getLabelOnlyValue = (value, props = {}) => {
     componentPath: "Div",
     gridDefination: {
       xs: 6,
-      sm: 4
+      sm: 4,
     },
     props: {
       style: {
-        marginBottom: "16px"
+        marginBottom: "16px",
       },
-      ...props
+      ...props,
     },
     children: {
-      value: getCommonCaption(value)
-    }
+      value: getCommonCaption(value),
+    },
   };
 };
 
-export const convertDateTimeToEpoch = dateTimeString => {
+export const convertDateTimeToEpoch = (dateTimeString) => {
   //example input format : "26-07-2018 17:43:21"
   try {
     const parts = dateTimeString.match(
@@ -315,7 +335,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
           true,
           {
             labelName: "Incorrect Number!",
-            labelKey: "ERR_MOBILE_NUMBER_INCORRECT"
+            labelKey: "ERR_MOBILE_NUMBER_INCORRECT",
           },
           "error"
         )
@@ -340,7 +360,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
           true,
           {
             labelName: "Owner has been added already!",
-            labelKey: "ERR_OWNER_ALREADY_ADDED_TOGGLE_MSG"
+            labelKey: "ERR_OWNER_ALREADY_ADDED_TOGGLE_MSG",
           },
           "error"
         )
@@ -350,7 +370,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
 
     //Same no search in whole array
     const matchingOwnerIndex = owners.findIndex(
-      item => item && item.userName === ownerNo
+      (item) => item && item.userName === ownerNo
     );
     if (matchingOwnerIndex > -1) {
       if (
@@ -373,7 +393,10 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         //Delete if current card was not part of oldOwners array - no need to save.
         if (
           oldOwnersArr.findIndex(
-            item => item && owners[cardIndex] && owners[cardIndex].userName === item.userName
+            (item) =>
+              item &&
+              owners[cardIndex] &&
+              owners[cardIndex].userName === item.userName
           ) == -1
         ) {
           owners.splice(cardIndex, 1);
@@ -390,7 +413,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
             true,
             {
               labelName: "Owner already added!",
-              labelKey: "ERR_OWNER_ALREADY_ADDED_1"
+              labelKey: "ERR_OWNER_ALREADY_ADDED_1",
             },
             "error"
           )
@@ -406,7 +429,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         [],
         {
           tenantId: commonConfig.tenantId,
-          userName: `${ownerNo}`
+          userName: `${ownerNo}`,
         }
       );
       if (payload && payload.user && payload.user.hasOwnProperty("length")) {
@@ -416,7 +439,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
               true,
               {
                 labelName: "This mobile number is not registered!",
-                labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED"
+                labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED",
               },
               "info"
             )
@@ -478,7 +501,8 @@ export const validateOwners = (state, dispatch) => {
     "INDIVIDUAL.SINGLEOWNER"
   );
   if (ownership === "INDIVIDUAL.SINGLEOWNER") {
-    ownersJsonPath = "components.div.children.formwizardThirdStep.children.applicantDetails.children.cardContent.children.applicantTypeContainer.children.singleApplicantContainer.children.individualApplicantInfo.children.cardContent.children.applicantCard.children";
+    ownersJsonPath =
+      "components.div.children.formwizardThirdStep.children.applicantDetails.children.cardContent.children.applicantTypeContainer.children.singleApplicantContainer.children.individualApplicantInfo.children.cardContent.children.applicantCard.children";
     owners = get(
       state.screenConfiguration.screenConfig.apply,
       ownersJsonPath,
@@ -486,7 +510,8 @@ export const validateOwners = (state, dispatch) => {
     );
     applyRequiredValidation(owners, state, dispatch);
   } else if (ownership === "INDIVIDUAL.MULTIPLEOWNERS") {
-    ownersJsonPath = "components.div.children.formwizardThirdStep.children.applicantDetails.children.cardContent.children.applicantTypeContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items";
+    ownersJsonPath =
+      "components.div.children.formwizardThirdStep.children.applicantDetails.children.cardContent.children.applicantTypeContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items";
 
     owners = get(
       state.screenConfiguration.screenConfig.apply,
@@ -494,11 +519,14 @@ export const validateOwners = (state, dispatch) => {
       []
     );
     for (let i = 0; i < owners.length; i++) {
-      let obj = owners[i]["item" + i].children.cardContent.children.applicantCard.children;
+      let obj =
+        owners[i]["item" + i].children.cardContent.children.applicantCard
+          .children;
       applyRequiredValidation(obj, state, dispatch);
     }
   } else {
-    ownersJsonPath = "components.div.children.formwizardThirdStep.children.applicantDetails.children.cardContent.children.applicantTypeContainer.children.institutionContainer.children.institutionInfo.children.cardContent.children.applicantCard.children";
+    ownersJsonPath =
+      "components.div.children.formwizardThirdStep.children.applicantDetails.children.cardContent.children.applicantTypeContainer.children.institutionContainer.children.institutionInfo.children.cardContent.children.applicantCard.children";
     owners = get(
       state.screenConfiguration.screenConfig.apply,
       ownersJsonPath,
@@ -506,48 +534,31 @@ export const validateOwners = (state, dispatch) => {
     );
     applyRequiredValidation(owners, state, dispatch);
   }
-}
+};
 
 export const applyRequiredValidation = (obj, state, dispatch) => {
   Object.keys(obj).map((item) => {
     let jsonPath = obj[item].jsonPath;
     let componentJsonpath = obj[item].componentJsonpath;
     let isFieldValid = obj[item].isFieldValid;
-    let value = get(state.screenConfiguration.preparedFinalObject, jsonPath, null);
+    let value = get(
+      state.screenConfiguration.preparedFinalObject,
+      jsonPath,
+      null
+    );
     if (value && !isFieldValid) {
-      dispatch(
-        handleField(
-          "apply",
-          componentJsonpath,
-          "props.error",
-          false
-        )
-      );
-      dispatch(
-        handleField(
-          "apply",
-          componentJsonpath,
-          "props.helperText",
-          ""
-        )
-      );
-      dispatch(
-        handleField(
-          "apply",
-          componentJsonpath,
-          "isFieldValid",
-          true
-        )
-      );
+      dispatch(handleField("apply", componentJsonpath, "props.error", false));
+      dispatch(handleField("apply", componentJsonpath, "props.helperText", ""));
+      dispatch(handleField("apply", componentJsonpath, "isFieldValid", true));
     }
-  })
-}
+  });
+};
 
-export const getReceiptData = async queryObject => {
+export const getReceiptData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
-      getPaymentSearchAPI('FIRENOC'),
+      getPaymentSearchAPI("FIRENOC"),
       "",
       queryObject
     );
@@ -558,11 +569,11 @@ export const getReceiptData = async queryObject => {
   }
 };
 
-export const getMdmsData = async queryObject => {
+export const getMdmsData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_get",
+      "mdms-v2/v1/_get",
       "",
       queryObject
     );
@@ -573,11 +584,11 @@ export const getMdmsData = async queryObject => {
   }
 };
 
-export const searchMdmsData = async mdmsBody => {
+export const searchMdmsData = async (mdmsBody) => {
   try {
     const response = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_search",
+      "mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -589,10 +600,7 @@ export const searchMdmsData = async mdmsBody => {
   }
 };
 
-
-
-
-export const getBill = async queryObject => {
+export const getBill = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -611,12 +619,12 @@ export const searchBill = async (dispatch, applicationNumber, tenantId) => {
     let queryObject = [
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId,
       },
       {
         key: "consumerCodes",
-        value: applicationNumber
-      }
+        value: applicationNumber,
+      },
     ];
 
     // Get Receipt
@@ -631,12 +639,12 @@ export const searchBill = async (dispatch, applicationNumber, tenantId) => {
     const response = await getBill([
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId,
       },
       {
         key: "applicationNumber",
-        value: applicationNumber
-      }
+        value: applicationNumber,
+      },
     ]);
 
     // If pending payment then get bill else get receipt
@@ -664,18 +672,25 @@ const isApplicationPaid = (currentStatus, workflowCode) => {
   // if (currentStatus === "CITIZENACTIONREQUIRED") {
   //   return true;
   // }
-  const businessServiceData = JSON.parse(localStorageGet("businessServiceData"));
+  const businessServiceData = JSON.parse(
+    localStorageGet("businessServiceData")
+  );
 
   if (!isEmpty(businessServiceData)) {
-    const tlBusinessService = JSON.parse(localStorageGet("businessServiceData")).filter(item => item.businessService === workflowCode)
-    const states = tlBusinessService && tlBusinessService.length > 0 && tlBusinessService[0].states;
+    const tlBusinessService = JSON.parse(
+      localStorageGet("businessServiceData")
+    ).filter((item) => item.businessService === workflowCode);
+    const states =
+      tlBusinessService &&
+      tlBusinessService.length > 0 &&
+      tlBusinessService[0].states;
     for (var i = 0; i < states.length; i++) {
       if (states[i].state === currentStatus) {
         break;
       }
       if (
         states[i].actions &&
-        states[i].actions.filter(item => item.action === "PAY").length > 0
+        states[i].actions.filter((item) => item.action === "PAY").length > 0
       ) {
         isPAID = true;
         break;
@@ -694,16 +709,15 @@ export const createEstimateData = (billObject, dispatch) => {
   let fees =
     billDetails &&
     billDetails[0].billAccountDetails &&
-    billDetails[0].billAccountDetails.map(item => {
+    billDetails[0].billAccountDetails.map((item) => {
       return {
         name: { labelName: item.taxHeadCode, labelKey: item.taxHeadCode },
         value: item.amount,
-        info: { labelName: item.taxHeadCode, labelKey: item.taxHeadCode }
+        info: { labelName: item.taxHeadCode, labelKey: item.taxHeadCode },
       };
     });
   return fees;
 };
-
 
 export const createBill = async (queryObject, dispatch) => {
   try {
@@ -715,7 +729,7 @@ export const createBill = async (queryObject, dispatch) => {
     );
     return response;
   } catch (error) {
-    if(error.code!="EG_BS_BILL_NO_DEMANDS_FOUND"){
+    if (error.code != "EG_BS_BILL_NO_DEMANDS_FOUND") {
       dispatch(
         toggleSnackbar(
           true,
@@ -728,36 +742,55 @@ export const createBill = async (queryObject, dispatch) => {
   }
 };
 
-export const generateBill = async (dispatch, applicationNumber, tenantId, status) => {
+export const generateBill = async (
+  dispatch,
+  applicationNumber,
+  tenantId,
+  status
+) => {
   try {
     if (applicationNumber && tenantId && status) {
       const queryObj = [
         {
           key: "tenantId",
-          value: tenantId
+          value: tenantId,
         },
         {
           key: "consumerCode",
-          value: applicationNumber
+          value: applicationNumber,
         },
-        { key: "businessService", value: "FIRENOC" }
+        { key: "businessService", value: "FIRENOC" },
       ];
       const billQueryObj = [
         {
           key: "tenantId",
-          value: tenantId
+          value: tenantId,
         },
         {
           key: "consumerCodes",
-          value: applicationNumber
-        }
+          value: applicationNumber,
+        },
       ];
       const isPAID = isApplicationPaid(status, "FIRENOC");
-      const payload = isPAID ? await getReceiptData(billQueryObj) : await createBill(queryObj, dispatch);
-      let estimateData = payload ? isPAID ? payload && payload.Payments && payload.Payments.length > 0 && createEstimateData(payload.Payments[0].paymentDetails[0].bill, dispatch) : payload && createEstimateData(payload.Bill[0], dispatch) : [];
+      const payload = isPAID
+        ? await getReceiptData(billQueryObj)
+        : await createBill(queryObj, dispatch);
+      let estimateData = payload
+        ? isPAID
+          ? payload &&
+            payload.Payments &&
+            payload.Payments.length > 0 &&
+            createEstimateData(
+              payload.Payments[0].paymentDetails[0].bill,
+              dispatch
+            )
+          : payload && createEstimateData(payload.Bill[0], dispatch)
+        : [];
       estimateData = estimateData || [];
       set(estimateData, "payStatus", isPAID);
-      dispatch(prepareFinalObject("applyScreenMdmsData.estimateCardData", estimateData));
+      dispatch(
+        prepareFinalObject("applyScreenMdmsData.estimateCardData", estimateData)
+      );
       // if (payload && payload.Bill[0]) {
       //   dispatch(prepareFinalObject("ReceiptTemp[0].Bill", payload.Bill));
       //   const estimateData = createEstimateData(payload.Bill[0]);
@@ -845,7 +878,7 @@ export const resetFields = (state, dispatch) => {
 //     let payload = null;
 //     payload = await httpRequest(
 //       "post",
-//       "/egov-mdms-service/v1/_search",
+//       "/mdms-v2/v1/_search",
 //       "_search",
 //       [],
 //       mdmsBody
@@ -856,7 +889,7 @@ export const resetFields = (state, dispatch) => {
 //   }
 // };
 
-export const getTextToLocalMapping = label => {
+export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
     case "Application No":
@@ -950,6 +983,6 @@ export const getTextToLocalMapping = label => {
   }
 };
 
-export const checkValueForNA = value => {
-  return value == null || value == undefined || value == '' ? "NA" : value;
+export const checkValueForNA = (value) => {
+  return value == null || value == undefined || value == "" ? "NA" : value;
 };

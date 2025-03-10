@@ -54,24 +54,42 @@ const ApplicationDetails = (props) => {
 
   const { tenants } = storeData || {};
 
-  const { data: paymentsHistory } = Digit.Hooks.fsm.usePaymentHistory(tenantId, applicationNumber);
+  const { data: paymentsHistory } = Digit.Hooks.fsm.usePaymentHistory(
+    tenantId,
+    applicationNumber
+  );
 
-  const { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.fsm.useApplicationDetail(
+  const {
+    isLoading,
+    isError,
+    data: applicationDetails,
+    error,
+  } = Digit.Hooks.fsm.useApplicationDetail(
     t,
     tenantId,
     applicationNumber,
     {},
     props.userType,
-    {getTripData: checkvehicletrack?.vehicleTrackingStatus || false }
+    { getTripData: checkvehicletrack?.vehicleTrackingStatus || false }
   );
 
-  const { isLoading: isDataLoading, isSuccess, data: applicationData } = Digit.Hooks.fsm.useSearch(
+  const {
+    isLoading: isDataLoading,
+    isSuccess,
+    data: applicationData,
+  } = Digit.Hooks.fsm.useSearch(
     tenantId,
     { applicationNos: applicationNumber },
     { staleTime: Infinity }
   );
 
-  const { isLoading: updatingApplication, isError: updateApplicationError, data: updateResponse, error: updateError, mutate } = Digit.Hooks.fsm.useApplicationActions(tenantId);
+  const {
+    isLoading: updatingApplication,
+    isError: updateApplicationError,
+    data: updateResponse,
+    error: updateError,
+    mutate,
+  } = Digit.Hooks.fsm.useApplicationActions(tenantId);
 
   const workflowDetails = Digit.Hooks.useWorkflowDetails({
     tenantId: applicationDetails?.tenantId || tenantId,
@@ -83,7 +101,9 @@ const ApplicationDetails = (props) => {
         ? "PAY_LATER_SERVICE"
         : applicationData?.advanceAmount > 0
         ? "FSM_ADVANCE_PAY_SERVICE"
-        : applicationData?.paymentPreference === null && applicationData?.additionalDetails?.tripAmount === 0 && applicationData?.advanceAmount === null
+        : applicationData?.paymentPreference === null &&
+          applicationData?.additionalDetails?.tripAmount === 0 &&
+          applicationData?.advanceAmount === null
         ? "FSM_ZERO_PAY_SERVICE"
         : "FSM",
     role: DSO ? "FSM_DSO" : "FSM_EMPLOYEE",
@@ -123,12 +143,17 @@ const ApplicationDetails = (props) => {
         return setShowModal(true);
       case "SUBMIT":
       case "FSM_SUBMIT":
-      case !DSO && "SCHEDULE":
-        return history.push(`/${window?.contextPath}/employee/fsm/modify-application/` + applicationNumber);
+        // case !DSO && "SCHEDULE":
+        return history.push(
+          `/${window?.contextPath}/employee/fsm/modify-application/` +
+            applicationNumber
+        );
       case "PAY":
       case "FSM_PAY":
       case "ADDITIONAL_PAY_REQUEST":
-        return history.push(`/${window?.contextPath}/employee/payment/collect/FSM.TRIP_CHARGES/${applicationNumber}?workflow=FSM`);
+        return history.push(
+          `/${window?.contextPath}/employee/payment/collect/FSM.TRIP_CHARGES/${applicationNumber}?workflow=FSM`
+        );
       default:
         break;
     }
@@ -155,6 +180,9 @@ const ApplicationDetails = (props) => {
         queryClient.invalidateQueries("FSM_CITIZEN_SEARCH");
         const inbox = queryClient.getQueryData("FUNCTION_RESET_INBOX");
         inbox?.revalidate();
+        if(data?.fsm[0]?.processInstance?.action === "COMPLETED"){
+        window.location.reload();
+        }
       },
     });
     closeModal();
@@ -169,7 +197,8 @@ const ApplicationDetails = (props) => {
   }
 
   const getTimelineCaptions = (checkpoint) => {
-    const __comment = checkpoint?.comment?.split("~") || checkpoint?.wfComment?.[0]?.split("~");
+    const __comment =
+      checkpoint?.comment?.split("~") || checkpoint?.wfComment?.[0]?.split("~");
     const reason = __comment ? __comment[0] : null;
     const reason_comment = __comment ? __comment[1] : null;
     if (checkpoint.status === "CREATED") {
@@ -185,7 +214,8 @@ const ApplicationDetails = (props) => {
       checkpoint.status === "DSO_REJECTED" ||
       checkpoint.status === "CANCELED" ||
       checkpoint.status === "REJECTED" ||
-      (checkpoint.status === "PENDING_DSO_APPROVAL" && checkpoint.performedAction === "SENDBACK")
+      (checkpoint.status === "PENDING_DSO_APPROVAL" &&
+        checkpoint.performedAction === "SENDBACK")
     ) {
       const caption = {
         date: checkpoint?.auditDetails?.created,
@@ -198,14 +228,24 @@ const ApplicationDetails = (props) => {
       const caption = {
         name: checkpoint?.assigner,
         mobileNumber: checkpoint?.assigner?.mobileNumber,
-        date: `${t("CS_FSM_EXPECTED_DATE")} ${Digit.DateUtils.ConvertTimestampToDate(applicationData?.possibleServiceDate)}`,
+        date: `${t(
+          "CS_FSM_EXPECTED_DATE"
+        )} ${Digit.DateUtils.ConvertTimestampToDate(
+          applicationData?.possibleServiceDate
+        )}`,
       };
       return <TLCaption data={caption} />;
     } else if (checkpoint.status === "COMPLETED") {
       return (
         <div>
-          <Rating withText={true} text={t(`ES_FSM_YOU_RATED`)} currentRating={checkpoint.rating} />
-          <Link to={`/${window?.contextPath}/employee/fsm/rate-view/${applicationNumber}`}>
+          <Rating
+            withText={true}
+            text={t(`ES_FSM_YOU_RATED`)}
+            currentRating={checkpoint.rating}
+          />
+          <Link
+            to={`/${window?.contextPath}/employee/fsm/rate-view/${applicationNumber}`}
+          >
             <ActionLinks>{t("CS_FSM_RATE_VIEW")}</ActionLinks>
           </Link>
         </div>
@@ -221,14 +261,23 @@ const ApplicationDetails = (props) => {
         name: checkpoint?.assigner,
         mobileNumber: checkpoint?.assigner?.mobileNumber,
       };
-      if (checkpoint?.numberOfTrips) caption.comment = `${t("NUMBER_OF_TRIPS")}: ${checkpoint?.numberOfTrips}`;
+      if (checkpoint?.numberOfTrips)
+        caption.comment = `${t("NUMBER_OF_TRIPS")}: ${
+          checkpoint?.numberOfTrips
+        }`;
       return <TLCaption data={caption} />;
     }
   };
 
   const handleDownloadPdf = async () => {
-    const tenantInfo = tenants.find((tenant) => tenant.code === applicationDetails?.tenantId);
-    const data = getPDFData({ ...applicationDetails?.applicationDetailsResponse }, tenantInfo, t);
+    const tenantInfo = tenants.find(
+      (tenant) => tenant.code === applicationDetails?.tenantId
+    );
+    const data = getPDFData(
+      { ...applicationDetails?.applicationDetailsResponse },
+      tenantInfo,
+      t
+    );
     Digit.Utils.pdf.generate(data);
     setShowOptions(false);
   };
@@ -239,7 +288,11 @@ const ApplicationDetails = (props) => {
     };
 
     if (!receiptFile?.fileStoreIds?.[0]) {
-      const newResponse = await Digit.PaymentService.generatePdf(state, { Payments: [paymentsHistory.Payments[0]] }, "fsm-receipt");
+      const newResponse = await Digit.PaymentService.generatePdf(
+        state,
+        { Payments: [paymentsHistory.Payments[0]] },
+        "fsm-receipt"
+      );
       const fileStore = await Digit.PaymentService.printReciept(state, {
         fileStoreIds: newResponse.filestoreIds[0],
       });
@@ -274,6 +327,8 @@ const ApplicationDetails = (props) => {
           },
         ];
 
+  console.log("applicationDetails", applicationDetails);
+
   if (isLoading) {
     return <Loader />;
   }
@@ -283,10 +338,14 @@ const ApplicationDetails = (props) => {
       {!isLoading ? (
         <React.Fragment>
           <div className="employee-application-details">
-            <Header style={{ marginBottom: "16px" }}>{t("ES_TITLE_APPLICATION_DETAILS")}</Header>
+            <Header style={{ marginBottom: "16px" }}>
+              {t("ES_TITLE_APPLICATION_DETAILS")}
+            </Header>
             <MultiLink
               className="multilinkWrapper employee-mulitlink-main-div"
-              onHeadClick={() => setIsDisplayDownloadMenu(!isDisplayDownloadMenu)}
+              onHeadClick={() =>
+                setIsDisplayDownloadMenu(!isDisplayDownloadMenu)
+              }
               style={{ marginTop: "10px" }}
               downloadBtnClassName={"employee-download-btn-className"}
               optionsClassName={"employee-options-btn-className"}
@@ -311,21 +370,35 @@ const ApplicationDetails = (props) => {
             {applicationDetails?.applicationDetails.map((detail, index) => (
               <React.Fragment key={index}>
                 {index === 0 ? null : ( // <CardSubHeader style={{ marginBottom: "16px" }}>{t(detail.title)}</CardSubHeader>
-                  <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t(detail.title)}</CardSectionHeader>
+                  <CardSectionHeader
+                    style={{ marginBottom: "16px", marginTop: "32px" }}
+                  >
+                    {t(detail.title)}
+                  </CardSectionHeader>
                 )}
                 <StatusTable>
                   {detail?.values?.map((value, index) => {
                     if (value === null) return;
-                    if (value.map === true && value.value !== "N/A") {
-                      return <Row key={t(value.title)} label={t(value.title)} text={<img src={t(value.value)} alt="" />} />;
+                    if (value?.map === true && value.value !== "N/A") {
+                      return (
+                        <Row
+                          key={t(value?.title)}
+                          label={t(value?.title)}
+                          text={<img src={t(value?.value)} alt="" />}
+                        />
+                      );
                     }
                     return (
                       <Row
-                        key={t(value.title)}
-                        label={t(value.title)}
-                        text={t(value.value) || "N/A"}
+                        key={t(value?.title)}
+                        label={t(value?.title)}
+                        text={
+                          value?.value && typeof value.value != "object"
+                            ? t(value.value)
+                            : "N/A"
+                        }
                         last={index === detail?.values?.length - 1}
-                        caption={value.caption}
+                        caption={value?.caption}
                         className="border-none"
                       />
                     );
@@ -336,66 +409,117 @@ const ApplicationDetails = (props) => {
 
             {applicationDetails?.tripList?.length > 0 && (
               <>
-                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t("Trip Details")}</CardSectionHeader>
+                <CardSectionHeader
+                  style={{ marginBottom: "16px", marginTop: "32px" }}
+                >
+                  {t("Trip Details")}
+                </CardSectionHeader>
                 <ApplicationTable detail={applicationDetails?.tripList} />
               </>
             )}
-            
-            {applicationData?.pitDetail?.additionalDetails?.fileStoreId?.CITIZEN?.length && (
+
+            {applicationData?.pitDetail?.additionalDetails?.fileStoreId?.CITIZEN
+              ?.length && (
               <>
-                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t("ES_FSM_SUB_HEADING_CITIZEN_UPLOADS")}</CardSectionHeader>
+                <CardSectionHeader
+                  style={{ marginBottom: "16px", marginTop: "32px" }}
+                >
+                  {t("ES_FSM_SUB_HEADING_CITIZEN_UPLOADS")}
+                </CardSectionHeader>
                 <ViewImages
-                  fileStoreIds={applicationData?.pitDetail?.additionalDetails?.fileStoreId?.CITIZEN}
+                  fileStoreIds={
+                    applicationData?.pitDetail?.additionalDetails?.fileStoreId
+                      ?.CITIZEN
+                  }
                   tenantId={state}
                   onClick={(source, index) => zoomImageWrapper(source, index)}
                 />
               </>
             )}
-            {applicationData?.pitDetail?.additionalDetails?.fileStoreId?.FSM_DSO?.length && (
+            {applicationData?.pitDetail?.additionalDetails?.fileStoreId?.FSM_DSO
+              ?.length && (
               <>
-                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t("ES_FSM_SUB_HEADING_DSO_UPLOADS")}</CardSectionHeader>
+                <CardSectionHeader
+                  style={{ marginBottom: "16px", marginTop: "32px" }}
+                >
+                  {t("ES_FSM_SUB_HEADING_DSO_UPLOADS")}
+                </CardSectionHeader>
                 <ViewImages
-                  fileStoreIds={applicationData?.pitDetail?.additionalDetails?.fileStoreId?.FSM_DSO}
+                  fileStoreIds={
+                    applicationData?.pitDetail?.additionalDetails?.fileStoreId
+                      ?.FSM_DSO
+                  }
                   tenantId={tenantId}
                   onClick={(source, index) => zoomImageWrapper(source, index)}
                 />
               </>
             )}
-            {imageZoom ? <ImageViewer imageSrc={imageZoom} onClose={onCloseImageZoom} /> : null}
+            {imageZoom ? (
+              <ImageViewer imageSrc={imageZoom} onClose={onCloseImageZoom} />
+            ) : null}
 
-            {applicationData?.geoLocation?.latitude && applicationData?.geoLocation?.longitude && (
-              <>
-                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t("ES_APPLICATION_DETAILS_LOCATION_GEOLOCATION")}</CardSectionHeader>
-                <LocationCard position={{ latitude: applicationData?.geoLocation?.latitude, longitude: applicationData?.geoLocation?.longitude }} />
-              </>
-            )}
+            {applicationData?.geoLocation?.latitude &&
+              applicationData?.geoLocation?.longitude && (
+                <>
+                  <CardSectionHeader
+                    style={{ marginBottom: "16px", marginTop: "32px" }}
+                  >
+                    {t("ES_APPLICATION_DETAILS_LOCATION_GEOLOCATION")}
+                  </CardSectionHeader>
+                  <LocationCard
+                    position={{
+                      latitude: applicationData?.geoLocation?.latitude,
+                      longitude: applicationData?.geoLocation?.longitude,
+                    }}
+                  />
+                </>
+              )}
 
             <BreakLine />
             {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
             {!workflowDetails?.isLoading && !isDataLoading && (
               <Fragment>
-                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>{t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}</CardSectionHeader>
-                {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
+                <CardSectionHeader
+                  style={{ marginBottom: "16px", marginTop: "32px" }}
+                >
+                  {t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
+                </CardSectionHeader>
+                {workflowDetails?.data?.timeline &&
+                workflowDetails?.data?.timeline?.length === 1 ? (
                   <CheckPoint
                     isCompleted={true}
-                    label={t("CS_COMMON_" + workflowDetails?.data?.timeline[0]?.status)}
-                    customChild={getTimelineCaptions(workflowDetails?.data?.timeline[0])}
+                    label={t(
+                      "CS_COMMON_" + workflowDetails?.data?.timeline[0]?.status
+                    )}
+                    customChild={getTimelineCaptions(
+                      workflowDetails?.data?.timeline[0]
+                    )}
                   />
                 ) : (
                   <ConnectingCheckPoints>
                     {workflowDetails?.data?.timeline &&
-                      workflowDetails?.data?.timeline.map((checkpoint, index, arr) => {
-                        return (
-                          <React.Fragment key={index}>
-                            <CheckPoint
-                              keyValue={index}
-                              isCompleted={index === 0}
-                              label={t("CS_COMMON_FSM_" + `${checkpoint.performedAction === "UPDATE" ? "UPDATE_" : ""}` + checkpoint.status)}
-                              customChild={getTimelineCaptions(checkpoint)}
-                            />
-                          </React.Fragment>
-                        );
-                      })}
+                      workflowDetails?.data?.timeline.map(
+                        (checkpoint, index, arr) => {
+                          return (
+                            <React.Fragment key={index}>
+                              <CheckPoint
+                                keyValue={index}
+                                isCompleted={index === 0}
+                                label={t(
+                                  "CS_COMMON_FSM_" +
+                                    `${
+                                      checkpoint.performedAction === "UPDATE"
+                                        ? "UPDATE_"
+                                        : ""
+                                    }` +
+                                    checkpoint.status
+                                )}
+                                customChild={getTimelineCaptions(checkpoint)}
+                              />
+                            </React.Fragment>
+                          );
+                        }
+                      )}
                   </ConnectingCheckPoints>
                 )}
               </Fragment>
@@ -418,23 +542,47 @@ const ApplicationDetails = (props) => {
           {showToast && (
             <Toast
               error={showToast.key === "error" ? true : false}
-              label={t(showToast.key === "success" ? `ES_FSM_${showToast.action}_UPDATE_SUCCESS` : showToast.action)}
+              label={t(
+                showToast.key === "success"
+                  ? `ES_FSM_${showToast.action}_UPDATE_SUCCESS`
+                  : showToast.action
+              )}
               onClose={closeToast}
             />
           )}
-          {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length === 1 && workflowDetails?.data?.nextActions?.[0]?.action !== "RATE" && (
-            <ActionBar style={{ zIndex: "19" }}>
-              <SubmitBar label={t(`ES_FSM_${workflowDetails?.data?.nextActions[0].action}`)} onSubmit={() => onActionSelect(workflowDetails?.data?.nextActions[0].action)} />
-            </ActionBar>
-          )}
-          {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length > 1 && (
-            <ActionBar style={{ zIndex: "19" }}>
-              {displayMenu && workflowDetails?.data?.nextActions ? (
-                <Menu localeKeyPrefix={"ES_FSM"} options={workflowDetails?.data?.nextActions.map((action) => action.action)} t={t} onSelect={onActionSelect} />
-              ) : null}
-              <SubmitBar label={t("ES_COMMON_TAKE_ACTION")} onSubmit={() => setDisplayMenu(!displayMenu)} />
-            </ActionBar>
-          )}
+          {!workflowDetails?.isLoading &&
+            workflowDetails?.data?.nextActions?.length === 1 &&
+            workflowDetails?.data?.nextActions?.[0]?.action !== "RATE" && (
+              <ActionBar style={{ zIndex: "19" }}>
+                <SubmitBar
+                  label={t(
+                    `ES_FSM_${workflowDetails?.data?.nextActions[0].action}`
+                  )}
+                  onSubmit={() =>
+                    onActionSelect(workflowDetails?.data?.nextActions[0].action)
+                  }
+                />
+              </ActionBar>
+            )}
+          {!workflowDetails?.isLoading &&
+            workflowDetails?.data?.nextActions?.length > 1 && (
+              <ActionBar style={{ zIndex: "19" }}>
+                {displayMenu && workflowDetails?.data?.nextActions ? (
+                  <Menu
+                    localeKeyPrefix={"ES_FSM"}
+                    options={workflowDetails?.data?.nextActions.map(
+                      (action) => action.action
+                    )}
+                    t={t}
+                    onSelect={onActionSelect}
+                  />
+                ) : null}
+                <SubmitBar
+                  label={t("ES_COMMON_TAKE_ACTION")}
+                  onSubmit={() => setDisplayMenu(!displayMenu)}
+                />
+              </ActionBar>
+            )}
         </React.Fragment>
       ) : (
         <Loader />

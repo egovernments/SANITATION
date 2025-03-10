@@ -1,13 +1,31 @@
 import commonConfig from "config/common.js";
-import { getCommonCard, getCommonContainer, getCommonHeader, getCommonParagraph, getCommonTitle, getStepperObject } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, unMountScreen } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  getCommonCard,
+  getCommonContainer,
+  getCommonHeader,
+  getCommonParagraph,
+  getCommonTitle,
+  getStepperObject,
+} from "egov-ui-framework/ui-config/screens/specs/utils";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+  unMountScreen,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import set from "lodash/set";
 import { httpRequest } from "../../../../ui-utils";
-import { getBoundaryData, updatePFOforSearchResults } from "../../../../ui-utils/commons";
-import { getAllDataFromBillingSlab, getCurrentFinancialYear, pageResetAndChange } from "../utils";
+import {
+  getBoundaryData,
+  updatePFOforSearchResults,
+} from "../../../../ui-utils/commons";
+import {
+  getAllDataFromBillingSlab,
+  getCurrentFinancialYear,
+  pageResetAndChange,
+} from "../utils";
 import { documentList } from "./applyResource/documentList";
 import { footer } from "./applyResource/footer";
 import { tradeDetails } from "./applyResource/tradeDetails";
@@ -15,12 +33,11 @@ import { tradeLocationDetails } from "./applyResource/tradeLocationDetails";
 import { tradeOwnerDetails } from "./applyResource/tradeOwnerDetails";
 import { tradeReviewDetails } from "./applyResource/tradeReviewDetails";
 
-
 export const stepsData = [
   { labelName: "Trade Details", labelKey: "TL_COMMON_TR_DETAILS" },
   { labelName: "Owner Details", labelKey: "TL_COMMON_OWN_DETAILS" },
   { labelName: "Documents", labelKey: "TL_COMMON_DOCS" },
-  { labelName: "Summary", labelKey: "TL_COMMON_SUMMARY" }
+  { labelName: "Summary", labelKey: "TL_COMMON_SUMMARY" },
 ];
 export const stepper = getStepperObject(
   { props: { activeStep: 0 } },
@@ -30,44 +47,49 @@ export const header = getCommonContainer({
   header:
     getQueryArg(window.location.href, "action") !== "edit"
       ? getCommonHeader({
-        labelName: `Apply for New Trade License ${process.env.REACT_APP_NAME === "Citizen"
-            ? "(" + getCurrentFinancialYear() + ")"
-            : ""
+          labelName: `Apply for New Trade License ${
+            process.env.REACT_APP_NAME === "Citizen"
+              ? "(" + getCurrentFinancialYear() + ")"
+              : ""
           }`,
-        // dynamicArray: getQueryArg(window.location.href, "action") === "EDITRENEWAL" ? [getnextFinancialYear(getCurrentFinancialYear())]:[getCurrentFinancialYear()],
-        labelKey: getQueryArg(window.location.href, "action") === "EDITRENEWAL" || getQueryArg(window.location.href, "workflowService") === "EDITRENEWAL" ? "TL_COMMON_APPL_RENEWAL_LICENSE_YEAR" : "TL_COMMON_APPL_NEW_LICENSE_YEAR"
-
-      })
+          // dynamicArray: getQueryArg(window.location.href, "action") === "EDITRENEWAL" ? [getnextFinancialYear(getCurrentFinancialYear())]:[getCurrentFinancialYear()],
+          labelKey:
+            getQueryArg(window.location.href, "action") === "EDITRENEWAL" ||
+            getQueryArg(window.location.href, "workflowService") ===
+              "EDITRENEWAL"
+              ? "TL_COMMON_APPL_RENEWAL_LICENSE_YEAR"
+              : "TL_COMMON_APPL_NEW_LICENSE_YEAR",
+        })
       : {},
   applicationNumber: {
     uiFramework: "custom-atoms-local",
     moduleName: "egov-tradelicence",
     componentPath: "ApplicationNoContainer",
     props: {
-      number: "NA"
+      number: "NA",
     },
-    visible: false
-  }
+    visible: false,
+  },
 });
 
 export const tradeDocumentDetails = getCommonCard({
   header: getCommonTitle(
     {
       labelName: "Required Documents",
-      labelKey: "TL_NEW-UPLOAD-DOCS_HEADER"
+      labelKey: "TL_NEW-UPLOAD-DOCS_HEADER",
     },
     {
       style: {
-        marginBottom: 18
-      }
+        marginBottom: 18,
+      },
     }
   ),
   paragraph: getCommonParagraph({
     labelName:
       "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
-    labelKey: "TL_NEW-UPLOAD-DOCS_SUBHEADER"
+    labelKey: "TL_NEW-UPLOAD-DOCS_SUBHEADER",
   }),
-  documentList
+  documentList,
 });
 
 export const getMdmsData = async (action, state, dispatch) => {
@@ -80,8 +102,8 @@ export const getMdmsData = async (action, state, dispatch) => {
           masterDetails: [
             { name: "AccessoriesCategory" },
             { name: "ApplicationType" },
-            { name: "documentObj" }
-          ]
+            { name: "documentObj" },
+          ],
         },
         {
           moduleName: "common-masters",
@@ -89,29 +111,29 @@ export const getMdmsData = async (action, state, dispatch) => {
             { name: "OwnerType" },
             { name: "DocumentType" },
             { name: "UOM" },
-            { name: "StructureType" }
-          ]
+            { name: "StructureType" },
+          ],
         },
         {
           moduleName: "tenant",
           masterDetails: [
             {
-              name: "tenants"
-            }
-          ]
+              name: "tenants",
+            },
+          ],
         },
         {
           moduleName: "egf-master",
-          masterDetails: [{ name: "FinancialYear" }]
-        }
-      ]
-    }
+          masterDetails: [{ name: "FinancialYear" }],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -129,7 +151,7 @@ export const getMdmsData = async (action, state, dispatch) => {
       payload,
       "MdmsRes.egf-master.FinancialYear",
       []
-    ).filter(item => item.module === "TL" && item.active === true);
+    ).filter((item) => item.module === "TL" && item.active === true);
     set(payload, "MdmsRes.egf-master.FinancialYear", financialYearData);
   } catch (e) {
     console.log(e);
@@ -143,13 +165,12 @@ export const getData = async (action, state, dispatch) => {
   const applicationNo = queryValue
     ? queryValue
     : get(
-      state.screenConfiguration.preparedFinalObject,
-      "Licenses[0].oldLicenseNumber",
-      null
-    );
+        state.screenConfiguration.preparedFinalObject,
+        "Licenses[0].oldLicenseNumber",
+        null
+      );
   await getMdmsData(action, state, dispatch);
   await getAllDataFromBillingSlab(getTenantId(), dispatch);
-
 
   if (applicationNo) {
     //Edit/Update Flow ----
@@ -158,9 +179,13 @@ export const getData = async (action, state, dispatch) => {
       "Licenses[0].tradeLicenseDetail.additionalDetail.applicationType",
       null
     );
-    const isEditRenewal = getQueryArg(window.location.href, "action") === "EDITRENEWAL";
+    const isEditRenewal =
+      getQueryArg(window.location.href, "action") === "EDITRENEWAL";
 
-    if (getQueryArg(window.location.href, "action") !== "edit" && !isEditRenewal) {
+    if (
+      getQueryArg(window.location.href, "action") !== "edit" &&
+      !isEditRenewal
+    ) {
       dispatch(
         prepareFinalObject("Licenses", [
           {
@@ -168,15 +193,21 @@ export const getData = async (action, state, dispatch) => {
             oldLicenseNumber: queryValue ? "" : applicationNo,
             tradeLicenseDetail: {
               additionalDetail: {
-                applicationType: applicationType ? applicationType : "NEW"
-              }
-            }
-          }
+                applicationType: applicationType ? applicationType : "NEW",
+              },
+            },
+          },
         ])
       );
     }
     // dispatch(prepareFinalObject("LicensesTemp", []));
-    await updatePFOforSearchResults(action, state, dispatch, applicationNo, tenantId);
+    await updatePFOforSearchResults(
+      action,
+      state,
+      dispatch,
+      applicationNo,
+      tenantId
+    );
 
     if (!queryValue) {
       const oldApplicationNo = get(
@@ -230,48 +261,48 @@ export const formwizardFirstStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form1"
+    id: "apply_form1",
   },
   children: {
     tradeDetails,
-    tradeLocationDetails
-  }
+    tradeLocationDetails,
+  },
 };
 
 export const formwizardSecondStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form2"
+    id: "apply_form2",
   },
   children: {
-    tradeOwnerDetails
+    tradeOwnerDetails,
   },
-  visible: false
+  visible: false,
 };
 
 export const formwizardThirdStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form3"
+    id: "apply_form3",
   },
   children: {
-    tradeDocumentDetails
+    tradeDocumentDetails,
   },
-  visible: false
+  visible: false,
 };
 
 export const formwizardFourthStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form4"
+    id: "apply_form4",
   },
   children: {
-    tradeReviewDetails
+    tradeReviewDetails,
   },
-  visible: false
+  visible: false,
 };
 
 const screenConfig = {
@@ -283,13 +314,13 @@ const screenConfig = {
     dispatch(unMountScreen("search"));
     dispatch(unMountScreen("search-preview"));
     const tenantId = getTenantId();
-    const URL = window.location.href
-    const URLsplit = URL.split("/")
+    const URL = window.location.href;
+    const URLsplit = URL.split("/");
     if (URLsplit[URLsplit.length - 1] == "apply") {
-      pageResetAndChange(state, dispatch, tenantId)
+      pageResetAndChange(state, dispatch, tenantId);
     }
     // dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));
-    getData(action, state, dispatch).then(responseAction => {
+    getData(action, state, dispatch).then((responseAction) => {
       const queryObj = [{ key: "tenantId", value: tenantId }];
       getBoundaryData(action, state, dispatch, queryObj);
       let props = get(
@@ -312,7 +343,7 @@ const screenConfig = {
       );
       const mohallaLocalePrefix = {
         moduleName: tenantId,
-        masterName: "REVENUE"
+        masterName: "REVENUE",
       };
       set(
         action.screenConfig,
@@ -325,7 +356,6 @@ const screenConfig = {
         "components.div.children.formwizardFirstStep.children.tradeDetails.children.cardContent.children.tradeDetailsConatiner.children.tradeLicenseType.props.value",
         "PERMANENT"
       );
-
     });
     //hardcoding license type to permanent
     if (getQueryArg(window.location.href, "action") == null) {
@@ -349,7 +379,7 @@ const screenConfig = {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        className: "common-div-css"
+        className: "common-div-css",
       },
       children: {
         headerDiv: {
@@ -359,19 +389,19 @@ const screenConfig = {
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 10
+                sm: 10,
               },
-              ...header
-            }
-          }
+              ...header,
+            },
+          },
         },
         stepper,
         formwizardFirstStep,
         formwizardSecondStep,
         formwizardThirdStep,
         formwizardFourthStep,
-        footer
-      }
+        footer,
+      },
     },
     breakUpDialog: {
       uiFramework: "custom-containers-local",
@@ -380,10 +410,10 @@ const screenConfig = {
       props: {
         open: false,
         maxWidth: "md",
-        screenKey: "apply"
-      }
-    }
-  }
+        screenKey: "apply",
+      },
+    },
+  },
 };
 
 export default screenConfig;

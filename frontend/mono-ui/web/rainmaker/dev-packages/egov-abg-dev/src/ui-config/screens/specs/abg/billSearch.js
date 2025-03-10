@@ -1,5 +1,12 @@
-import { getBreak, getCommonHeader, getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  getBreak,
+  getCommonHeader,
+  getLabel,
+} from "egov-ui-framework/ui-config/screens/specs/utils";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "../../../../ui-utils";
@@ -9,7 +16,7 @@ import "./index.css";
 
 const header = getCommonHeader({
   labelName: "Universal Bill",
-  labelKey: "ABG_UNIVERSAL_BILL_COMMON_HEADER"
+  labelKey: "ABG_UNIVERSAL_BILL_COMMON_HEADER",
 });
 const hasButton = getQueryArg(window.location.href, "hasButton");
 let enableButton = true;
@@ -25,46 +32,48 @@ const getMDMSData = async (action, state, dispatch) => {
           moduleName: "BillingService",
           masterDetails: [
             {
-              name: "BusinessService"
-            }
-          ]
+              name: "BusinessService",
+            },
+          ],
         },
         {
           moduleName: "common-masters",
           masterDetails: [
             {
-              name: "uiCommonPay"
-            }
-          ]
+              name: "uiCommonPay",
+            },
+          ],
         },
         {
           moduleName: "tenant",
           masterDetails: [
             {
-              name: "tenants"
-            }
-          ]
-        }
-      ]
-    }
+              name: "tenants",
+            },
+          ],
+        },
+      ],
+    },
   };
   try {
     const payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
     );
-    payload.MdmsRes.BillingService.BusinessService = payload.MdmsRes.BillingService.BusinessService.filter(service => service.billGineiURL)
-  //   payload.MdmsRes.BillingService.BusinessService = payload.MdmsRes.BillingService.BusinessService.map(service => {if(!service.billGineiURL){
-  //     // service.billGineiURL= "egov-searcher/bill-genie/mcollectbills/_get"
-  //   }
-  //   return {...service}
-  // });
+    payload.MdmsRes.BillingService.BusinessService =
+      payload.MdmsRes.BillingService.BusinessService.filter(
+        (service) => service.billGineiURL
+      );
+    //   payload.MdmsRes.BillingService.BusinessService = payload.MdmsRes.BillingService.BusinessService.map(service => {if(!service.billGineiURL){
+    //     // service.billGineiURL= "egov-searcher/bill-genie/mcollectbills/_get"
+    //   }
+    //   return {...service}
+    // });
     dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 const getData = async (action, state, dispatch) => {
@@ -76,18 +85,18 @@ const billSearchAndResult = {
   name: "billSearch",
   beforeInitScreen: (action, state, dispatch) => {
     getData(action, state, dispatch);
-    const tenantId = process.env.REACT_APP_NAME === "Employee" ? getTenantId() : JSON.parse(getUserInfo()).permanentCity;
+    const tenantId =
+      process.env.REACT_APP_NAME === "Employee"
+        ? getTenantId()
+        : JSON.parse(getUserInfo()).permanentCity;
     if (tenantId) {
       dispatch(prepareFinalObject("searchScreen", { tenantId: tenantId }));
-      const ulbComponentJsonPath = "components.div.children.billSearchCard.children.cardContent.children.searchContainer.children.ulb";
-      const disableUlb = process.env.REACT_APP_NAME === "Citizen" ? false : true;
+      const ulbComponentJsonPath =
+        "components.div.children.billSearchCard.children.cardContent.children.searchContainer.children.ulb";
+      const disableUlb =
+        process.env.REACT_APP_NAME === "Citizen" ? false : true;
       dispatch(
-        handleField(
-          "billSearch",
-          ulbComponentJsonPath,
-          "props.value",
-          tenantId
-        )
+        handleField("billSearch", ulbComponentJsonPath, "props.value", tenantId)
       );
       dispatch(
         handleField(
@@ -107,7 +116,7 @@ const billSearchAndResult = {
       componentPath: "Form",
       props: {
         className: "common-div-css",
-        id: "billSearch"
+        id: "billSearch",
       },
       children: {
         headerDiv: {
@@ -118,16 +127,16 @@ const billSearchAndResult = {
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 6
+                sm: 6,
               },
-              ...header
+              ...header,
             },
             groupBillButton: {
               componentPath: "Button",
               gridDefination: {
                 xs: 12,
                 sm: 6,
-                align: "right"
+                align: "right",
               },
               visible: enableButton,
               props: {
@@ -137,32 +146,32 @@ const billSearchAndResult = {
                   color: "white",
                   borderRadius: "2px",
                   width: "250px",
-                  height: "48px"
-                }
+                  height: "48px",
+                },
               },
               children: {
                 ButtonLabel: getLabel({
                   labelName: "Group Bills",
-                  labelKey: "ABG_COMMON_HEADER"
-                })
+                  labelKey: "ABG_COMMON_HEADER",
+                }),
               },
               onClickDefination: {
                 action: "page_change",
                 path:
                   process.env.REACT_APP_SELF_RUNNING === "true"
                     ? `/egov-ui-framework/abg/groupBills`
-                    : `/abg/groupBills`
+                    : `/abg/groupBills`,
               },
-              visible: process.env.REACT_APP_NAME === "Citizen" ? false : true
-            }
-          }
+              visible: process.env.REACT_APP_NAME === "Citizen" ? false : true,
+            },
+          },
         },
         billSearchCard,
         breakAfterSearch: getBreak(),
-        searchResults
-      }
-    }
-  }
+        searchResults,
+      },
+    },
+  },
 };
 
 export default billSearchAndResult;

@@ -6,24 +6,46 @@ const getVehicleDetails = (vehicles) => {
         return {
           name: index,
           values: [
-            { title: "ES_FSM_REGISTRY_VEHICLE_NUMBER", value: vehicle?.registrationNumber },
-            { title: "ES_FSM_REGISTRY_VEHICLE_TYPE", value: `COMMON_MASTER_VEHICLE_${vehicle?.type}` },
+            {
+              title: "ES_FSM_REGISTRY_VEHICLE_NUMBER",
+              value: vehicle?.registrationNumber,
+            },
+            {
+              title: "ES_FSM_REGISTRY_VEHICLE_TYPE",
+              value: `COMMON_MASTER_VEHICLE_${vehicle?.type}`,
+            },
             { title: "ES_FSM_REGISTRY_VEHICLE_MODEL", value: vehicle?.model },
-            { title: "ES_FSM_REGISTRY_VEHICLE_CAPACITY", value: vehicle?.tankCapacity },
+            {
+              title: "ES_FSM_REGISTRY_VEHICLE_CAPACITY",
+              value: vehicle?.tankCapacity,
+            },
             {
               title: "ES_FSM_REGISTRY_VEHICLE_POLLUTION_CERT",
-              value: vehicle?.pollutionCertiValidTill && Digit.DateUtils.ConvertEpochToDate(vehicle?.pollutionCertiValidTill),
+              value:
+                vehicle?.pollutionCertiValidTill &&
+                Digit.DateUtils.ConvertEpochToDate(
+                  vehicle?.pollutionCertiValidTill
+                ),
             },
             {
               title: "ES_FSM_REGISTRY_VEHICLE_ROAD_TAX",
-              value: vehicle?.roadTaxPaidTill && Digit.DateUtils.ConvertEpochToDate(vehicle?.roadTaxPaidTill),
+              value:
+                vehicle?.roadTaxPaidTill &&
+                Digit.DateUtils.ConvertEpochToDate(vehicle?.roadTaxPaidTill),
             },
             {
               title: "ES_FSM_REGISTRY_VEHICLE_INSURANCE",
-              value: vehicle?.InsuranceCertValidTill && Digit.DateUtils.ConvertEpochToDate(vehicle?.InsuranceCertValidTill),
+              value:
+                vehicle?.InsuranceCertValidTill &&
+                Digit.DateUtils.ConvertEpochToDate(
+                  vehicle?.InsuranceCertValidTill
+                ),
             },
             { title: "ES_FSM_REGISTRY_VEHICLE_STATUS", value: vehicle.status },
-            { title: "ES_FSM_REGISTRY_VEHICLE_ADDITIONAL_DETAILS", value: vehicle?.additionalDetails?.description },
+            {
+              title: "ES_FSM_REGISTRY_VEHICLE_ADDITIONAL_DETAILS",
+              value: vehicle?.additionalDetails?.description,
+            },
           ],
         };
       })
@@ -38,8 +60,11 @@ const getDriverDetails = (drivers) => {
           id: driver?.id,
           values: [
             { title: "ES_FSM_REGISTRY_DRIVER_NAME", value: driver?.name },
-            { title: "ES_FSM_REGISTRY_DRIVER_PHONE", value: driver?.owner?.mobileNumber },
-            { title: "ES_FSM_REGISTRY_DRIVER_LICENSE", value: driver?.licenseNumber },
+            // { title: "ES_FSM_REGISTRY_DRIVER_PHONE", value: driver?.owner?.mobileNumber },
+            {
+              title: "ES_FSM_REGISTRY_DRIVER_LICENSE",
+              value: driver?.licenseNumber,
+            },
             { title: "ES_FSM_REGISTRY_DRIVER_STATUS", value: driver?.status },
           ],
         };
@@ -53,9 +78,18 @@ const getResponse = (data) => {
       title: "",
       values: [
         { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_NAME", value: data?.name },
-        { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_ADDRESS", value: data?.address?.locality?.name },
-        { title: "ES_FSM_REGISTRY_DETAILS_VENDOR_PHONE", value: data?.owner?.mobileNumber },
-        { title: "ES_FSM_REGISTRY_DETAILS_ADDITIONAL_DETAILS", value: data?.additionalDetails?.description },
+        {
+          title: "ES_FSM_REGISTRY_DETAILS_VENDOR_ADDRESS",
+          value: data?.address?.locality?.name,
+        },
+        {
+          title: "ES_FSM_REGISTRY_DETAILS_VENDOR_PHONE",
+          value: data?.owner?.mobileNumber,
+        },
+        {
+          title: "ES_FSM_REGISTRY_DETAILS_ADDITIONAL_DETAILS",
+          value: data?.additionalDetails?.description,
+        },
       ],
     },
     {

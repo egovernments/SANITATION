@@ -295,8 +295,7 @@ export const getCurrentAddress = async () => {
         }
       }
     });
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const mapCompIDToName = (IDObj, compID) => {
@@ -719,8 +718,7 @@ export const hasTokenExpired = (status, data) => {
 };
 
 const getEndpointfromUrl = (url, name) => {
-  if(url&&url.includes("digit-ui")  )
-  {
+  if (url && url.includes("digit-ui")) {
     return url;
   }
   let result = url.split(`${name}=`)[1];
@@ -933,8 +931,7 @@ export const getApplicationType = async (applicationNumber, tenantId, creationRe
         return payload.ProcessInstances[0].businessService;
       }
     }
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 export const isDocumentValid = (docUploaded, requiredDocCount) => {
@@ -1021,24 +1018,22 @@ export const openPdf = async (link, openIn = "_blank") => {
   }
 };
 
-
-export const downloadFromLink = async (link,filename="help.pdf") => {
+export const downloadFromLink = async (link, filename = "help.pdf") => {
   if (window && window.mSewaApp && window.mSewaApp.isMsewaApp && window.mSewaApp.isMsewaApp()) {
     downloadPdf(link, "_self");
   } else {
     const link = document.createElement("a");
     // create a blobURI pointing to our Blob
-    link.href = link
+    link.href = link;
     link.download = filename;
     // some browser needs the anchor to be in the doc
     document.body.append(link);
     link.click();
     link.remove();
     // in case the Blob uses a lot of memory
-    setTimeout(() => URL.revokeObjectURL(link.href), 7000)
+    setTimeout(() => URL.revokeObjectURL(link.href), 7000);
   }
 };
-
 
 export const getModuleName = () => {
   const pathName = window.location.pathname;
@@ -1103,19 +1098,15 @@ export const getModuleName = () => {
     return "rainmaker-bpa,rainmaker-bpareg";
   } else if (pathName.indexOf("noc") > -1) {
     return "rainmaker-common-noc";
-  } else if (
-    pathName.indexOf("birth") > -1 ||
-    pathName.indexOf("death") > -1 ||
-    pathName.indexOf("bnd") > -1 
-  ) {
+  } else if (pathName.indexOf("birth") > -1 || pathName.indexOf("death") > -1 || pathName.indexOf("bnd") > -1) {
     return "rainmaker-bnd";
-  }else {
+  } else {
     return "rainmaker-common";
   }
 };
 
 export const businessServiceInfo = async (mdmsBody, businessService) => {
-  const payload = await httpRequest("/egov-mdms-service/v1/_search", "_search", [], mdmsBody);
+  const payload = await httpRequest("/mdms-v2/v1/_search", "_search", [], mdmsBody);
   let businessServiceInfoItem = null;
   const businessServiceArray = payload.MdmsRes.BillingService.BusinessService;
   businessServiceArray &&
@@ -1153,8 +1144,7 @@ export const getBusinessServiceMdmsData = async (dispatch, tenantId, businessSer
   try {
     const businessServiceItem = await businessServiceInfo(mdmsBody, businessService);
     dispatch(prepareFinalObject("businessServiceInfo", businessServiceItem));
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 export const getPaymentSearchAPI = (businessService = "", isCitizenbusinessService = false) => {

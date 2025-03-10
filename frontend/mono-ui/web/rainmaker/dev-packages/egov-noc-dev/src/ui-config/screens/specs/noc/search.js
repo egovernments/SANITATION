@@ -1,10 +1,9 @@
 import commonConfig from "config/common.js";
 import {
-  getBreak, getCommonHeader
+  getBreak,
+  getCommonHeader,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import {
-  prepareFinalObject
-} from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import { httpRequest } from "../../../../ui-utils/api";
@@ -13,14 +12,14 @@ import { searchResults } from "./searchResource/searchResults";
 
 const header = getCommonHeader({
   labelName: "NOC Application",
-  labelKey: "NOC_APPLICATION_HEADER"
+  labelKey: "NOC_APPLICATION_HEADER",
 });
 
 export const getNOCMdmsData = async (action, state, dispatch, mdmsBody) => {
   try {
     let payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -40,30 +39,35 @@ const getMdmsData = async (action, state, dispatch) => {
           moduleName: "NOC",
           masterDetails: [
             {
-              name: "NocType"
-            }
-          ]
-        }
-      ]
-    }
+              name: "NocType",
+            },
+          ],
+        },
+      ],
+    },
   };
 
   let payload = await getNOCMdmsData(action, state, dispatch, mdmsBody);
   dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
-  setNocTypeResponse(action, state, dispatch)
+  setNocTypeResponse(action, state, dispatch);
 };
 
 const setNocTypeResponse = (action, state, dispatch) => {
   let userInfo = JSON.parse(getUserInfo());
-  let nocData = get(state.screenConfiguration.preparedFinalObject, "applyScreenMdmsData.NOC.NocType", []);
-  userInfo.roles && userInfo.roles.map(role => {
-    nocData.map(nocType => {
-      if (role.code === nocType.NocUserRole) {
-        dispatch(prepareFinalObject("nocType", nocType.code));
-      }
-    })
-  })
-}
+  let nocData = get(
+    state.screenConfiguration.preparedFinalObject,
+    "applyScreenMdmsData.NOC.NocType",
+    []
+  );
+  userInfo.roles &&
+    userInfo.roles.map((role) => {
+      nocData.map((nocType) => {
+        if (role.code === nocType.NocUserRole) {
+          dispatch(prepareFinalObject("nocType", nocType.code));
+        }
+      });
+    });
+};
 
 const BpaSearchAndResult = {
   uiFramework: "material-ui",
@@ -79,7 +83,7 @@ const BpaSearchAndResult = {
       componentPath: "Form",
       props: {
         className: "common-div-css",
-        id: "search"
+        id: "search",
       },
       children: {
         headerDiv: {
@@ -90,18 +94,18 @@ const BpaSearchAndResult = {
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 6
+                sm: 6,
               },
-              ...header
+              ...header,
             },
-          }
+          },
         },
         nocApplication,
         breakAfterSearch: getBreak(),
-        searchResults
-      }
-    }
-  }
+        searchResults,
+      },
+    },
+  },
 };
 
 export default BpaSearchAndResult;

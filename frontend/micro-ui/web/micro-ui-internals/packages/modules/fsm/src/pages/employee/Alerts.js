@@ -1,9 +1,18 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { CardHeader, Header, Loader } from "@egovernments/digit-ui-react-components";
+import {
+  CardHeader,
+  Header,
+  Loader,
+} from "@egovernments/digit-ui-react-components";
 import DesktopInbox from "../../components/DesktopInbox";
 import MobileInbox from "../../components/MobileInbox";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import {
+  useHistory,
+  useParams,
+  useRouteMatch,
+  useLocation,
+} from "react-router-dom";
 
 const config = {
   select: (response) => {
@@ -11,7 +20,7 @@ const config = {
       totalCount: response?.totalCount,
       vehicleLog: response?.vehicleTrip.map((trip) => {
         const owner = trip.tripOwner;
-        const displayName = owner.name;
+        const displayName = owner?.name;
         const tripOwner = { ...owner, displayName };
         return { ...trip, tripOwner };
       }),
@@ -19,12 +28,17 @@ const config = {
   },
 };
 
-const Alerts = () => {
+const Alerts = (props) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [searchParamsApplication, setSearchParamsApplication] = useState(null);
   const [alerts, setAlerts] = useState(null);
   const [filterData, setFilterData] = useState(null);
+
+  const { path: currentPath } = useRouteMatch();
+  const splitParts = currentPath.split("/");
+
+  const parentRoute = splitParts.slice(0, 4).join("/");
 
   const requestCriteria = {
     url: "/trackingservice/api/v3/trip/_alerts",
@@ -33,9 +47,17 @@ const Alerts = () => {
       tenantId: tenantId,
     },
   };
-  const { isLoading, data: alertsData, revalidate } = Digit.Hooks.useCustomAPIHook(requestCriteria);
+  const {
+    isLoading,
+    data: alertsData,
+    revalidate,
+  } = Digit.Hooks.useCustomAPIHook(requestCriteria);
 
-  const { isLoading: isSearchLoading, data: { totalCount, vehicleLog } = {}, isSuccess } = Digit.Hooks.fsm.useVehicleSearch({
+  const {
+    isLoading: isSearchLoading,
+    data: { totalCount, vehicleLog } = {},
+    isSuccess,
+  } = Digit.Hooks.fsm.useVehicleSearch({
     tenantId,
     filters: searchParamsApplication,
     config,
@@ -60,7 +82,9 @@ const Alerts = () => {
     setSearchParamsApplication({
       refernceNos: params?.applicationNos,
     });
-    const filterAlerts = isSearch ? alerts.filter((i) => i.applicationNo === params.applicationNos) : null;
+    const filterAlerts = isSearch
+      ? alerts.filter((i) => i.applicationNo === params.applicationNos)
+      : null;
     if (!isSearch) {
       setFilterData(null);
     }
@@ -94,6 +118,7 @@ const Alerts = () => {
         onSearch={onSearch}
         totalRecords={0}
         isPaginationRequired={false}
+        parentRoute={props.parentRoute}
       />
     </div>
   );

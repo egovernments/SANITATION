@@ -27,7 +27,7 @@ export const FILE_UPLOAD = {
 
 export const CATEGORY = {
   GET: {
-    URL: "egov-mdms-service/v1/_search",
+    URL: "mdms-v2/v1/_search",
     ACTION: "_search",
   },
 };
@@ -80,7 +80,7 @@ export const CITIZEN = {
 
 export const MDMS = {
   GET: {
-    URL: "/egov-mdms-service/v1/_search",
+    URL: "/mdms-v2/v1/_search",
     ACTION: "_search",
   },
 };
@@ -101,14 +101,14 @@ export const SPEC = {
 
 export const CITY = {
   GET: {
-    URL: "/egov-mdms-service/v1/_search",
+    URL: "/mdms-v2/v1/_search",
     ACTION: "_search",
   },
 };
 
 export const FLOOR = {
   GET: {
-    URL: "/egov-mdms-service/v1/_search",
+    URL: "/mdms-v2/v1/_search",
     ACTION: "_search",
   },
 };
@@ -135,8 +135,7 @@ export const INBOXESCALTEDRECORDS = {
     URL: "/egov-workflow-v2/egov-wf/escalate/_search",
     ACTION: "_search",
   },
-}; 
-
+};
 
 export const PROPERTY = {
   GET: {

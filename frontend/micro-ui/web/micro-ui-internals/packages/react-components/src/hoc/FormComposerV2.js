@@ -841,10 +841,10 @@ export const FormComposerV2 = (props) => {
         </HorizontalNav>
       )}
       {!props.submitInForm && props.label && (
-        <ActionBar style={props.secondaryActionLabel ? { display: "flex", flexDirection: "row-reverse" } : {}}>
-          <SubmitBar label={t(props.label)} submit="submit" disabled={isDisabled} />
+        <ActionBar style={props.secondaryActionLabel ? { display: "flex", } : {}}>
+          <SubmitBar label={t(props.label)} submit="submit" disabled={isDisabled} style={ props.secondaryActionLabel && {marginRight: "10px"} }/>
           {props.secondaryActionLabel && (
-            <div className="primary-label-btn" style={{ width: "fit-content", border: "1px solid", padding: "0.4rem", marginRight: "10px" }} onClick={onSecondayActionClick}>
+            <div className="primary-label-btn" style={{ width: "fit-content", border: "1px solid", padding: "0.4rem", }} onClick={onSecondayActionClick}>
               {t(props.secondaryActionLabel)}
             </div>
           )}

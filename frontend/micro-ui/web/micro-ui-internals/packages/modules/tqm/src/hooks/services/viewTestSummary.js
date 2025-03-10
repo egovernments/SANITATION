@@ -8,6 +8,7 @@ export const viewTestSummary = async ({ tenantId, t, id }) => {
       },
       testSearchCriteria: {
         testIds: [id],
+        tenantId:tenantId
       },
     },
   });
