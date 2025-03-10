@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>org.egov</groupId>
 	<artifactId>vehicle</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.4.0-SNAPSHOT</version>
 	<name>vehicle</name>
 	<description>Demo project for Spring Boot</description>
 
