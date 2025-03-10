@@ -2,8 +2,7 @@ package org.egov.tracking.controller;
 
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Generated;
-import lombok.extern.slf4j.Slf4j;
+
 import org.egov.tracking.service.ConfigService;
 import org.egov.tracking.util.JsonUtil;
 import org.egov.tracking.util.TrackingApiUtil;
@@ -17,6 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
+
+import jakarta.annotation.Generated;
+import lombok.extern.slf4j.Slf4j;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T17:17:16.820768500+05:30[Asia/Calcutta]")
 @Controller

@@ -27,7 +27,7 @@ public class PlantMappingService {
 	private FSMUtil util;
 
 	@Autowired
-	private PlantMappingValidator validaor;
+	private PlantMappingValidator validator;
 
 	@Autowired
 	private PlantMappingEnrichmentService enrichmentService;
@@ -46,8 +46,8 @@ public class PlantMappingService {
 					"Application Request cannot be create at StateLevel");
 		}
 
-		validaor.validateCreateOrUpdate(request);
-		validaor.validatePlantMappingExists(request);
+		validator.validateCreateOrUpdate(request);
+		validator.validatePlantMappingExists(request);
 		enrichmentService.enrichCreateRequest(request);
 		repository.save(request);
 		return request.getPlantMapping();
@@ -63,7 +63,7 @@ public class PlantMappingService {
 					"FSTP employee map not found in the System" + plantMap.getId());
 		}
 
-		validaor.validateCreateOrUpdate(request);
+		validator.validateCreateOrUpdate(request);
 		List<String> ids = new ArrayList<>();
 		ids.add(plantMap.getId());
 		PlantMappingSearchCriteria criteria = PlantMappingSearchCriteria.builder().tenantId(plantMap.getTenantId())

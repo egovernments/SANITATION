@@ -22,6 +22,7 @@ import org.egov.fsm.web.model.user.UserDetailResponse;
 import org.egov.fsm.web.model.user.UserSearchRequest;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,10 @@ public class PlantMappingValidator {
 
 	@Autowired
 	private PlantMappingService plantMappingService;
+	
+//	public PlantMappingValidator(@Lazy PlantMappingService service) {
+//        this.com = service;
+//    }
 
 	public void validateCreateOrUpdate(@Valid PlantMappingRequest request) {
 

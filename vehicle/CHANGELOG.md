@@ -2,6 +2,11 @@
 # Changelog
 All notable changes to this module will be documented in this file.
 
+## 1.4.0 - 2025-03-10
+- Upgraded to LTS Support .  
+- Migration of mdms v1 to mdms v2 .
+- Urabn Rural convergance (URC)
+
 ## 1.3.0 - 2023-03-31
 
  - Introduced seperate tab for vehicle.

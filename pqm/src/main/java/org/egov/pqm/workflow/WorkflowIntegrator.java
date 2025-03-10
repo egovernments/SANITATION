@@ -1,17 +1,30 @@
 package org.egov.pqm.workflow;
 
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.PathNotFoundException;
-import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
-import org.egov.common.contract.request.RequestInfo;
+import static org.egov.pqm.util.Constants.ACTION_KEY;
+import static org.egov.pqm.util.Constants.ASSIGNEE_KEY;
+import static org.egov.pqm.util.Constants.BUSINESS_ID_KEY;
+import static org.egov.pqm.util.Constants.BUSINESS_SERVICE_KEY;
+import static org.egov.pqm.util.Constants.COMMENT_KEY;
+import static org.egov.pqm.util.Constants.DOCUMENTS_KEY;
+import static org.egov.pqm.util.Constants.MODULE_NAME_KEY;
+import static org.egov.pqm.util.Constants.MODULE_NAME_VALUE;
+import static org.egov.pqm.util.Constants.RATING;
+import static org.egov.pqm.util.Constants.REQUEST_INFO_KEY;
+import static org.egov.pqm.util.Constants.TENANT_ID_KEY;
+import static org.egov.pqm.util.Constants.UUID_KEY;
+import static org.egov.pqm.util.Constants.WORKFLOW_REQUEST_ARRAY_KEY;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.egov.pqm.config.ServiceConfiguration;
 import org.egov.pqm.util.Constants;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.web.model.Test;
 import org.egov.pqm.web.model.TestRequest;
-import org.egov.pqm.config.ServiceConfiguration;
+import org.egov.pqm.web.model.workflow.ProcessInstanceResponse;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +32,13 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
 
-import static org.egov.pqm.util.Constants.*;
+import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 @Service
 @Slf4j
@@ -79,10 +93,11 @@ public class WorkflowIntegrator {
 		JSONObject workFlowRequest = new JSONObject();
 		workFlowRequest.put(REQUEST_INFO_KEY, testRequest.getRequestInfo());
 		workFlowRequest.put(WORKFLOW_REQUEST_ARRAY_KEY, array);
-		String response = null;
+		ProcessInstanceResponse processInstanceResponse = null;
 		try {
-			response = rest.postForObject(config.getWfHost().concat(config.getWfTransitionPath()), workFlowRequest,
-					String.class);
+			processInstanceResponse = rest.postForObject(config.getWfHost().concat(config.getWfTransitionPath()),
+					workFlowRequest, ProcessInstanceResponse.class);
+
 		} catch (HttpClientErrorException e) {
 
 			/*
@@ -108,17 +123,17 @@ public class WorkflowIntegrator {
 		 * on success result from work-flow read the data and set the status back to pqm
 		 * object
 		 */
-		DocumentContext responseContext = JsonPath.parse(response);
-		List<Map<String, Object>> responseArray = responseContext.read(PROCESS_INSTANCES_JOSN_KEY);
-		Map<String, String> idStatusMap = new HashMap<>();
-		responseArray.forEach(object -> {
-
-			DocumentContext instanceContext = JsonPath.parse(object);
-			idStatusMap.put(instanceContext.read(BUSINESS_ID_JOSN_KEY), instanceContext.read(STATUS_JSON_KEY));
-		});
+//		DocumentContext responseContext = JsonPath.parse(response);
+//		List<Map<String, Object>> responseArray = responseContext.read(PROCESS_INSTANCES_JOSN_KEY);
+//		Map<String, String> idStatusMap = new HashMap<>();
+//		responseArray.forEach(object -> {
+//
+//			DocumentContext instanceContext = JsonPath.parse(object);
+//			idStatusMap.put(instanceContext.read(BUSINESS_ID_JOSN_KEY), instanceContext.read(STATUS_JSON_KEY));
+//		});
 		// setting the status back to pqm object from wf response
-		test.setWfStatus(idStatusMap.get(test.getTestId()));
-
+		test.setWfStatus(processInstanceResponse.getProcessInstances().get(0).getState().getApplicationStatus());
+		test.setProcessInstance(processInstanceResponse.getProcessInstances().get(0));
 	}
 
 
