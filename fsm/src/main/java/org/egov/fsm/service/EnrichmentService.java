@@ -97,7 +97,7 @@ public class EnrichmentService {
 	}
 
 	private void setApplicationDetails(FSMRequest fsmRequest, RequestInfo requestInfo) {
-		boundaryService.getAreaType(fsmRequest, config.getHierarchyTypeCode());
+		boundaryService.getAreaType(fsmRequest);
 		fsmRequest.getFsm().setStatus(FSM.StatusEnum.ACTIVE);
 		fsmRequest.getFsm().setApplicationStatus(FSMConstants.DRAFT);
 		AuditDetails auditDetails = fsmUtil.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
@@ -250,7 +250,7 @@ public class EnrichmentService {
 	private void enrichBoundarys(List<FSM> fsms, RequestInfo requestInfo) {
 		fsms.forEach(fsm -> {
 			try {
-				boundaryService.getAreaType(new FSMRequest(requestInfo, fsm, null), config.getHierarchyTypeCode());
+				boundaryService.getAreaType(new FSMRequest(requestInfo, fsm, null));
 			} catch (CustomException ce) {
 				log.debug(ce.getMessage());
 				log.info("Bound data not found for FSM" + fsm.getApplicationNo());

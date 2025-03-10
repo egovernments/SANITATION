@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this module will be documented in this file.
 
+## 1.3.0 - 2025-03-10
+- Upgraded to LTS Support .  
+- Migration of mdms v1 to mdms v2 .
+
 ## 1.2.0 - 2023-03-31
 - Enhance the demand generate Process.
 - Generating demand on every time when the trip is update.

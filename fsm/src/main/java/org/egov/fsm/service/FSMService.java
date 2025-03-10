@@ -141,11 +141,11 @@ public class FSMService {
 		Double tripAmount = wfIntegrator.getAdditionalDetails(fsmRequest.getFsm().getAdditionalDetails());
 
 		if ((fsmRequest.getFsm().getAdvanceAmount() != null && fsmRequest.getFsm().getAdvanceAmount().intValue() > 0)
-				|| tripAmount > 0) {
+				&& tripAmount > 0) {
 			calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
 		}
 		
-		fSMInboxService.inboxEvent(fsmRequest);
+//		fSMInboxService.inboxEvent(fsmRequest);
 		return fsmRequest.getFsm();
 	}
 
@@ -188,7 +188,10 @@ public class FSMService {
 		else if (FSMConstants.FSM_PAYMENT_PREFERENCE_PRE_PAY
 				.equalsIgnoreCase(fsmRequest.getFsm().getPaymentPreference()))
 			businessServiceName = FSMConstants.FSM_BUSINESSSERVICE;
-		else if (fsm.getAdvanceAmount() == null && fsm.getPaymentPreference() == null && tripAmount <= 0)
+		/*
+		 *Added advance amount check sum for zero advance
+		 */
+		else if ((fsm.getAdvanceAmount() == null ||fsm.getAdvanceAmount().intValue() == 0) && fsm.getPaymentPreference() == null && tripAmount <= 0)
 			businessServiceName = FSMConstants.FSM_ZERO_PRICE_SERVICE;
 		else if (fsm.getAdvanceAmount() != null && fsm.getAdvanceAmount().intValue() > 0)
 			businessServiceName = FSMConstants.FSM_ADVANCE_PAY_BUSINESSSERVICE;
@@ -218,7 +221,7 @@ public class FSMService {
 
 		createOrUpdateFsmApplicationWorkers(fsmRequest);
 		repository.update(fsmRequest, workflowService.isStateUpdatable(fsm.getApplicationStatus(), businessService));
-		fSMInboxService.inboxEvent( fsmRequest);
+//		fSMInboxService.inboxEvent( fsmRequest);
 		return fsmRequest.getFsm();
 	}
 
@@ -433,7 +436,7 @@ public class FSMService {
 			}
 				
 
-			if (fsmRequest.getFsm().getAdvanceAmount() != null || tripAmount > 0) {
+			if (fsmRequest.getFsm().getAdvanceAmount() != null && tripAmount > 0) {
 				calculationService.addCalculation(fsmRequest, FSMConstants.APPLICATION_FEE);
 			}
 

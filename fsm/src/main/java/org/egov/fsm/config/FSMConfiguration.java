@@ -1,14 +1,16 @@
 package org.egov.fsm.config;
 
 import java.util.TimeZone;
-import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @AllArgsConstructor
@@ -75,7 +77,7 @@ public class FSMConfiguration {
 		private String updateAdhocTopic;
 
 		// Location Config
-		@Value("${egov.location.host}")
+		@Value("${boundary.service.host}")
 		private String locationHost;
 
 		@Value("${egov.location.context.path}")
@@ -84,8 +86,11 @@ public class FSMConfiguration {
 		@Value("${egov.location.endpoint}")
 		private String locationEndpoint;
 
-		@Value("${egov.location.hierarchyTypeCode}")
-		private String hierarchyTypeCode;
+		@Value("${egov.location.hierarchyTypeLocalityCode}")
+		private String hierarchyTypeLocalityCode;
+		
+		@Value("${egov.location.hierarchyTypeGpCode}")
+		private String hierarchyTypeGpCode;
 
 		@Value("${egov.fsm.default.limit}")
 		private Integer defaultLimit;
@@ -288,10 +293,13 @@ public class FSMConfiguration {
 		@Value("${fsm.event.kafka.topic}")
 		private String fsmEventTopic;
 
-	@Value("${persister.create.fsm.worker.topic}")
-	private String createFsmWorkerTopic;
+		@Value("${fsm.event.index.kafka.topic}")
+		private String fsmEventIndexKafkaTopic;
+		
+		@Value("${persister.create.fsm.worker.topic}")
+		private String createFsmWorkerTopic;
 
-	@Value("${persister.update.fsm.worker.topic}")
-	private String updateFsmWorkerTopic;
+		@Value("${persister.update.fsm.worker.topic}")
+		private String updateFsmWorkerTopic;
 
 }

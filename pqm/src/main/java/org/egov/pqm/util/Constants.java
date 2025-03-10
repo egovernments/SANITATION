@@ -81,6 +81,7 @@ public class Constants {
   public static final String SAVE_AS_DRAFT = "SAVE_AS_DRAFT";
   public static final String WFSTATUS_SUBMITTED = "SUBMITTED";
   public static final String WFSTATUS_PENDINGRESULTS = "PENDINGRESULTS";
+  public static final String WFSTATUS_DRAFTED = "DRAFTED";
 
   public static final String WFSTATUS_SCHEDULED = "SCHEDULED";
 

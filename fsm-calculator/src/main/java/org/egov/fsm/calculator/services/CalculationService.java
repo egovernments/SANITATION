@@ -67,8 +67,10 @@ public class CalculationService {
 
 	@Autowired
 	private BillingService billingService;
-//	@Autowired
 
+//	public CalculationService(@Lazy DemandService demandService) {
+//        this.demandService = demandService;
+//    }
 	/**
 	 * Calculates tax estimates and creates demand
 	 * 
@@ -309,7 +311,7 @@ public class CalculationService {
 				: new HashMap<>();
 		if (oldAdditionalDetails != null
 				|| oldAdditionalDetails != null && oldAdditionalDetails.get("tripAmount") != null) {
-			amount = BigDecimal.valueOf(Double.valueOf((String) oldAdditionalDetails.get("tripAmount")));
+			amount = new BigDecimal(String.valueOf(oldAdditionalDetails.get("tripAmount")));
 
 			// fetch advance amount from fsm application
 		} else {

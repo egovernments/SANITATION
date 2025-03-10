@@ -2,6 +2,14 @@
 # Changelog
 All notable changes to this module will be documented in this file.
 
+## 1.4.0 - 2025-03-10
+- Upgraded to LTS Support .  
+- Migration of mdms v1 to mdms v2 .
+- Locality service has been changed to Boundary Service for better integration.
+- Urabn Rural convergance (URC)
+- Inbox V2 improvements for better user experience.
+- Bug fixes.
+
 ## 1.3.0 - 2023-03-31
 - Introduce two new workflow in the system .  
 - FSM_ADVANCE_PAY_SERVICE and FSM_ZERO_PAY_SERVICE .

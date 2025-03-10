@@ -4,16 +4,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import org.egov.vendor.web.model.AuditDetails;
-import org.egov.vendor.web.model.Vendor;
 import org.egov.vendor.web.model.user.User;
-import org.egov.vendor.web.model.vehicle.Vehicle.StatusEnum;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import jakarta.annotation.Generated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +24,7 @@ import lombok.Setter;
  * Capture the Driver information in the system.
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-06T05:34:12.238Z[GMT]")
+@Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-06T05:34:12.238Z[GMT]")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -34,17 +32,14 @@ import lombok.Setter;
 @Setter
 public class Driver {
 
-	@SafeHtml
 	@JsonProperty("id")
 	private String id = null;
 
 	@JsonProperty("tenantId")
-	@SafeHtml
 	@Size(max=64)
 	private String tenantId = null;
 
 	@JsonProperty("name")
-	@SafeHtml
 	@Size(max=128)
 	private String name = null;
 
@@ -53,18 +48,15 @@ public class Driver {
 	private User owner = null;
 	
 	@JsonProperty("ownerId")
-	@SafeHtml  
 	@Size(max=64)
 	private String ownerId = null;
 
 	@JsonProperty("additionalDetails")
 	private Object additionalDetails = null;
 
-	@SafeHtml
 	@JsonProperty("description")
 	private String description = null;
 	
-	@SafeHtml
 	@JsonProperty("licenseNumber")
 	private String licenseNumber = null;
 	

@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this module will be documented in this file.
 
+## 1.1.0 - 2025-03-10
+- Upgraded to LTS Support .  
+- Inbox V2 improvements for better user experience.
+- Schedular Issue fixes.
+
 ## 1.0.0
 
 - Create Adhoc tests
