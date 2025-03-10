@@ -35,6 +35,20 @@ const FstpServiceRequest = () => {
   const [tripDetail, setTripDetail] = useState(null);
   const userInfo = Digit.UserService.getUser();
   let isMobile = window.Digit.Utils.browser.isMobile();
+  const [selectedCity, setSelectedCity] = useState(
+    Digit.SessionStorage.get("Employee.tenantId") || null
+  );
+
+  var { data: fetchedGramPanchayats } = Digit.Hooks.useBoundaryLocalities(
+    selectedCity,
+    "gramPanchayats",
+    {
+      enabled: !!selectedCity,
+    },
+    t
+  );
+
+  console.log(`*** LOG ***`,fetchedGramPanchayats);
 
   const { isLoading: isVehiclesLoading, data: vehicles } = Digit.Hooks.fsm.useVehiclesSearch({
     tenantId,
@@ -108,6 +122,7 @@ const FstpServiceRequest = () => {
 
   const handleFilterChange = (filterParam) => {
     // filtering application based on locality from UI side
+    console.log(`*** LOG tripDetails***`,tripDetails);
     let tempTripDetails = tripDetails;
     let filterTripDetails = tempTripDetails.filter((i) =>
       i?.address?.locality?.code.includes(filterParam?.locality?.[0]?.code ? filterParam?.locality?.[0].code : "")
