@@ -576,6 +576,8 @@ const FstpOperatorDetails = () => {
     setSelectedLocality(locality);
   }
 
+  console.log(`*** LOG ***`,tripDetails);
+
   return (
     <div>
       <Header styles={{ marginLeft: "16px" }}>
@@ -680,10 +682,10 @@ const FstpOperatorDetails = () => {
                 key={t("CS_GRAM_PANCHAYAT")}
                 label={`${t("CS_GRAM_PANCHAYAT")} * `}
                 text={
-                  tripDetails && tripDetails.length > 0 ? (
-                    tripDetails[0]?.address?.additionalDetails?.gramPanchayat
-                      ?.name
-                  ) : (
+                  // tripDetails[0].address.additionalDetails.gramPanchayat.code
+                  tripDetails.length === 0  ? 
+                  
+                  (
                     <Dropdown
                       className="form-field"
                       isMandatory
@@ -694,7 +696,9 @@ const FstpOperatorDetails = () => {
                       style={{ width: "100%" }}
                       t={t}
                     />
-                  )
+                  ):(
+                    `${t(tripDetails[0].address.additionalDetails.gramPanchayat.code)}` || 'N/A'
+                  ) 
                 }
                 last={false}
                 labelStyle={{ fontWeight: "normal" }}
@@ -777,32 +781,32 @@ const FstpOperatorDetails = () => {
                   }
                   key={t("CS_VILLAGE_NAME")}
                   label={`${t("CS_VILLAGE_NAME")}`}
-                  text={
-                    tripDetails && tripDetails.length > 0 ? (
-                      tripDetails[0]?.address?.additionalDetails?.village
-                        ?.name ? (
-                        tripDetails[0]?.address?.additionalDetails?.village
-                          ?.name
-                      ) : (
-                        "N/A"
-                      )
-                    ) : villages.length > 0 ? (
-                      <Dropdown
-                        className="form-field"
-                        isMandatory
-                        selected={selectedVillage}
-                        option={villages}
-                        select={selectVillage}
-                        optionKey="i18nkey"
-                        style={{ width: "100%" }}
-                        t={t}
-                      />
-                    ) : (
-                      <TextInput
-                        onChange={(e) => onChangeVillage(e.target.value)}
-                        value={newVillage}
-                      />
-                    )
+                  text={ `${t(tripDetails[0]?.address?.additionalDetails?.locality?.code)}` || "N/A"
+                    // tripDetails && tripDetails.length > 0 ? (
+                    //   tripDetails[0]?.address?.additionalDetails?.village
+                    //     ?.name ? (
+                    //     tripDetails[0]?.address?.additionalDetails?.village
+                    //       ?.name
+                    //   ) : (
+                    //     "N/A"
+                    //   )
+                    // ) : villages.length > 0 ? (
+                    //   <Dropdown
+                    //     className="form-field"
+                    //     isMandatory
+                    //     selected={selectedVillage}
+                    //     option={villages}
+                    //     select={selectVillage}
+                    //     optionKey="i18nkey"
+                    //     style={{ width: "100%" }}
+                    //     t={t}
+                    //   />
+                    // ) : (
+                    //   <TextInput
+                    //     onChange={(e) => onChangeVillage(e.target.value)}
+                    //     value={newVillage}
+                    //   />
+                    // )
                   }
                   last={false}
                   labelStyle={{ fontWeight: "normal" }}
@@ -863,7 +867,7 @@ const FstpOperatorDetails = () => {
                 label={`${t("ES_INBOX_LOCALITY")} * `}
                 text={
                   tripDetails && tripDetails.length > 0 ? (
-                    tripDetails[0]?.address?.locality?.name
+                    `${t(tripDetails[0]?.address?.locality?.code)}`
                   ) : (
                     <Dropdown
                       className="form-field"

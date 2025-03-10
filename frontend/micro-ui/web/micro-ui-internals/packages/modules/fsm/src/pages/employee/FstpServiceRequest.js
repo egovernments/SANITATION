@@ -110,7 +110,7 @@ const FstpServiceRequest = () => {
     // filtering application based on locality from UI side
     let tempTripDetails = tripDetails;
     let filterTripDetails = tempTripDetails.filter((i) =>
-      i?.address?.locality?.name.includes(filterParam?.locality?.[0]?.name ? filterParam?.locality?.[0].name : "")
+      i?.address?.locality?.code.includes(filterParam?.locality?.[0]?.code ? filterParam?.locality?.[0].code : "")
     );
     setTripDetail(filterTripDetails);
     setFilterParam(filterParam);
