@@ -33,7 +33,7 @@
           },
           "isAdvanceAllowed": {
             "type": "boolean",
-            "deault": false
+            "default": false
           },
           "minAmountPayable": {
             "type": "number",
