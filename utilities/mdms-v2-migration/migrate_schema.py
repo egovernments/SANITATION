@@ -49,9 +49,20 @@ def create_schema(schema_path, tenantId, is_portforward = True):
 
 def create_all_schema(schema_folder, tenantId, is_portforward = True):
 
-    for item in Path(schema_folder).iterdir():
-        if item.is_file():
-            create_schema(item, tenantId, is_portforward)
+    try:
++        path = Path(schema_folder)
++        if not path.exists():
++            print(f"Error: Directory {schema_folder} does not exist")
++            return
++        if not path.is_dir():
++            print(f"Error: {schema_folder} is not a directory")
++            return
++            
++        for item in path.iterdir():
++            if item.is_file():
++                create_schema(item, tenantId, is_portforward)
++    except Exception as e:
++        print(f"Error processing schema directory {schema_folder}: {str(e)}")
 
 # create_schema("schema/pqm.json", tenantId="as")
 # create_all_schema("schema", tenantId="as")
