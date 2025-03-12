@@ -1,0 +1,642 @@
+[
+    {
+      "tenantId": "pg",
+      "code": "PQM.BenchmarkRule",
+      "description": "Benchmark rules for quality evaluation",
+      "definition": {
+        "type": "object",
+        "title": "Benchmark rule schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.QualityTestLab",
+      "description": "Lab that performs quality of material",
+      "definition": {
+        "type": "object",
+        "title": "Lab schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.Material",
+      "description": "Materials which are involved in processes",
+      "definition": {
+        "type": "object",
+        "title": "Material schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.Parameter",
+      "description": "Type of a parameter",
+      "definition": {
+        "type": "object",
+        "title": "Parameter schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.PlantType",
+      "description": "Type of plant",
+      "definition": {
+        "type": "object",
+        "title": "Plant type schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.ProcessType",
+      "description": "Type of a process",
+      "definition": {
+        "type": "object",
+        "title": "Process type schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.Unit",
+      "description": "Unit of measurement for parameter",
+      "definition": {
+        "type": "object",
+        "title": "Unit Of Measurement schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.WasteType",
+      "description": "Type of waste going under process",
+      "definition": {
+        "type": "object",
+        "title": "Waste type schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.SourceType",
+      "description": "Type of test result source",
+      "definition": {
+        "type": "object",
+        "title": "Source type schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.Stage",
+      "description": "Stage of a process",
+      "definition": {
+        "type": "object",
+        "title": "Stage schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name",
+          "output"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "input": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "output": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "x-ref-schema": [
+          {
+            "fieldPath": "input.*",
+            "schemaCode": "PQM.Material"
+          },
+          {
+            "fieldPath": "output.*",
+            "schemaCode": "PQM.Material"
+          }
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.Process",
+      "description": "Definition of a process",
+      "definition": {
+        "type": "object",
+        "title": "Process schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "type",
+          "name",
+          "stages",
+          "wasteType"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "stageCode"
+              ],
+              "properties": {
+                "order": {
+                  "type": "integer",
+                  "maximum": 100,
+                  "minimum": 1,
+                  "multipleOf": 1
+                },
+                "stageCode": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "wasteType": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "x-ref-schema": [
+          {
+            "fieldPath": "type",
+            "schemaCode": "PQM.ProcessType"
+          },
+          {
+            "fieldPath": "wasteType",
+            "schemaCode": "PQM.WasteType"
+          },
+          {
+            "fieldPath": "stages.*.stageCode",
+            "schemaCode": "PQM.Stage"
+          }
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.Plant",
+      "description": "Details of a plant",
+      "definition": {
+        "type": "object",
+        "title": "Plant schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name",
+          "plantType",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "ULBS": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "PlusCode": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "string"
+          },
+          "longitude": {
+            "type": "string"
+          },
+          "plantType": {
+            "type": "string"
+          },
+          "processes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "default": null
+            }
+          },
+          "wasteType": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "default": null
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "plantConfig": {
+            "type": "string",
+            "default": null
+          },
+          "PlantLocation": {
+            "type": "string"
+          },
+          "PlantOperationalTimings": {
+            "type": "string"
+          },
+          "PlantOperationalCapacityKLD": {
+            "type": "string"
+          }
+        },
+        "x-ref-schema": [
+          {
+            "fieldPath": "plantType",
+            "schemaCode": "PQM.PlantType"
+          },
+          {
+            "fieldPath": "wasteType.*",
+            "schemaCode": "PQM.WasteType"
+          },
+          {
+            "fieldPath": "processes.*",
+            "schemaCode": "PQM.Process"
+          },
+          {
+            "fieldPath": "plantConfig",
+            "schemaCode": "PQM.PlantConfig"
+          }
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.QualityCriteria",
+      "description": "Quality criteria for a materials of a process",
+      "definition": {
+        "type": "object",
+        "title": "Quality criteria schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "parameter",
+          "unit",
+          "benchmarkRule",
+          "benchmarkValues"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "parameter": {
+            "type": "string"
+          },
+          "benchmarkRule": {
+            "type": "string"
+          },
+          "benchmarkValues": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "maximum": 999999.99,
+              "minimum": -999999.99
+            },
+            "maxItems": 2,
+            "minItems": 1
+          },
+          "allowedDeviation": {
+            "type": "number",
+            "multipleOf": 1.0E-6
+          }
+        },
+        "x-ref-schema": [
+          {
+            "fieldPath": "parameter",
+            "schemaCode": "PQM.Parameter"
+          },
+          {
+            "fieldPath": "unit",
+            "schemaCode": "PQM.Unit"
+          },
+          {
+            "fieldPath": "benchmarkRule",
+            "schemaCode": "PQM.BenchmarkRule"
+          }
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.TestStandard",
+      "description": "Definition of a test standard",
+      "definition": {
+        "type": "object",
+        "title": "Test standard schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "plant",
+          "process",
+          "stage",
+          "material",
+          "qualityCriteria",
+          "frequency",
+          "sourceType"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "plant": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string"
+          },
+          "process": {
+            "type": "string"
+          },
+          "material": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "string",
+            "pattern": "^(?!00)\\d{1,3}$"
+          },
+          "sourceType": {
+            "type": "string"
+          },
+          "qualityCriteria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "x-ref-schema": [
+          {
+            "fieldPath": "plant",
+            "schemaCode": "PQM.Plant"
+          },
+          {
+            "fieldPath": "process",
+            "schemaCode": "PQM.Process"
+          },
+          {
+            "fieldPath": "stage",
+            "schemaCode": "PQM.Stage"
+          },
+          {
+            "fieldPath": "material",
+            "schemaCode": "PQM.Material"
+          },
+          {
+            "fieldPath": "qualityCriteria.*",
+            "schemaCode": "PQM.QualityCriteria"
+          },
+          {
+            "fieldPath": "sourceType",
+            "schemaCode": "PQM.SourceType"
+          }
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "tenantId": "pg",
+      "code": "PQM.PlantConfig",
+      "description": "Plant config for maintaining plant level settings",
+      "definition": {
+        "type": "object",
+        "title": "PlantConfig schema",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "pendingTestsToDisplayWithinDays",
+          "manualTestPendingEscalationDays"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "manualTestPendingEscalationDays": {
+            "type": "number",
+            "maximum": 365,
+            "minimum": 1,
+            "multipleOf": 1
+          },
+          "pendingTestsToDisplayWithinDays": {
+            "type": "number",
+            "maximum": 365,
+            "minimum": 0,
+            "multipleOf": 1
+          }
+        }
+      },
+      "isActive": true
+    }
+  ]

@@ -1,0 +1,12 @@
+[
+    {
+      "code": "AERATION",
+      "name": "Aeration",
+      "input": [
+        "EFFLUENT_INTERIM"
+      ],
+      "output": [
+        "EFFLUENT_TREATED"
+      ]
+    }
+  ]

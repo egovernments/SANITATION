@@ -1,0 +1,22 @@
+[
+    {
+      "code": "TDS",
+      "name": "TDS"
+    },
+    {
+      "code": "TSS",
+      "name": "TSS"
+    },
+    {
+      "code": "COD",
+      "name": "COD"
+    },
+    {
+      "code": "BOD",
+      "name": "BOD"
+    },
+    {
+      "code": "PH",
+      "name": "pH"
+    }
+  ]

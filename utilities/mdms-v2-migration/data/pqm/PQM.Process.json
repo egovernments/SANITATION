@@ -1,0 +1,13 @@
+[
+    {
+      "code": "DEWATS_TECHNOLOGY",
+      "name": "DEWATS TECHNOLOGY",
+      "type": "DEWATS",
+      "stages": [
+        {
+          "stageCode": "AERATION"
+        }
+      ],
+      "wasteType": "FAECAL_SLUDGE"
+    }
+  ]
