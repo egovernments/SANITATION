@@ -16,8 +16,15 @@ def create_schema(schema_path, tenantId, is_portforward = True):
     
     base_url = base_url + ENDPOINTS["schemaCreate"]
 
-    with open(schema_path) as f:
-        schema_data = json.load(f)
+    try:
++        with open(schema_path) as f:
++            schema_data = json.load(f)
++    except FileNotFoundError:
++        print(f"Error: Schema file {schema_path} not found")
++        return
++    except json.JSONDecodeError:
++        print(f"Error: Invalid JSON in schema file {schema_path}")
++        return
 
     for schema in schema_data:
         
@@ -26,14 +33,19 @@ def create_schema(schema_path, tenantId, is_portforward = True):
         body = schemaCreate.SchemaCreate(RequestInfo=REQINFO, 
                                 SchemaDefinition=schema).model_dump(by_alias=True)
 
-        response = utils.make_request(method="POST",
-                        url=base_url,
-                        payload=body)
-
-        utils.log_response(response)
-
-        print(response.request.body, type(response.request.body))
-        print(base_url, "\n", schema["code"], "\n")
+        try:
++            response = utils.make_request(method="POST",
++                            url=base_url,
++                            payload=body)
++            
++            utils.log_response(response)
++            
++            if response.status_code >= 400:
++                print(f"Error creating schema {schema['code']}: {response.text}")
++            else:
++                print(f"Successfully created schema {schema['code']}")
++        except Exception as e:
++            print(f"Error making request for schema {schema['code']}: {str(e)}")
 
 def create_all_schema(schema_folder, tenantId, is_portforward = True):
 
