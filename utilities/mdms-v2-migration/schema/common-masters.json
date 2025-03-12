@@ -1,0 +1,54 @@
+[
+    {
+        "tenantId": "pg",
+        "code": "common-masters.howItWorks",
+        "description": "common-masters howItWorks",
+        "definition": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "type": "object",
+            "properties": {
+                "moduleCode": {
+                    "type": "string"
+                },
+                "videosJson": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "headerLabel": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "en_IN": {
+                                    "type": "string"
+                                },
+                                "hi_IN": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "headerLabel",
+                                "description",
+                                "en_IN",
+                                "hi_IN"
+                            ]
+                        }
+                    ]
+                },
+                "screenHeader": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "moduleCode"
+            ],
+            "x-unique": [
+                "moduleCode"
+            ]
+        },
+        "isActive": true
+    }
+]

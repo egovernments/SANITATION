@@ -1,0 +1,1176 @@
+[
+  {
+    "tenantId": "pg",
+    "code": "FSM.PostFieldsConfig",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "head"
+      ],
+      "x-unique": [
+        "head"
+      ],
+      "properties": {
+        "body": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "component": {
+                "type": "string"
+              },
+              "withoutLabel": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "head": {
+          "type": "string"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.PreFieldsConfig",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "head"
+      ],
+      "x-unique": [
+        "head"
+      ],
+      "properties": {
+        "body": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "nextStep": {
+                "type": "string"
+              },
+              "component": {
+                "type": "string"
+              },
+              "isMandatory": {
+                "type": "boolean"
+              },
+              "withoutLabel": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "head": {
+          "type": "string"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.Config",
+    "description": "Fsm Config",
+    "definition": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "WFState": {
+          "type": "string"
+        },
+        "override": {
+          "type": "boolean"
+        },
+        "default": {
+          "type": "integer"
+        },
+        "overrideField": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "active": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.ReassignReason",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.DocumentConfig",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "module"
+      ],
+      "x-unique": [
+        "module"
+      ],
+      "properties": {
+        "module": {
+          "type": "string"
+        },
+        "documents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "active"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "active": {
+                "type": "boolean"
+              },
+              "isMandatory": {
+                "type": "boolean"
+              },
+              "maxSizeInMB": {
+                "type": "number"
+              },
+              "showTextInput": {
+                "type": "boolean"
+              },
+              "maxFilesAllowed": {
+                "type": "number"
+              },
+              "allowedFileTypes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "bannerLabel": {
+          "type": "string"
+        },
+        "maxSizeInMB": {
+          "type": "number"
+        },
+        "allowedFileTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.PaymentType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.PitType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "dimension": {
+          "type": "string"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.ApplicationType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.CheckList",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.ReceivedPaymentType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.RejectionReason",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.SanitationType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.TripNumber",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "i18nKey": {
+          "type": "string"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.VehicleType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "make": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "amount": {
+          "type": "string"
+        },
+        "capacity": {
+          "type": "string"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.SanitationWorkerEmploymentType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active",
+        "id"
+      ],
+      "x-unique": [
+        "code",
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.SanitationWorkerFunctionalRoles",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active",
+        "id"
+      ],
+      "x-unique": [
+        "code",
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.SanitationWorkerSkills",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active",
+        "id"
+      ],
+      "x-unique": [
+        "code",
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.AdvancePayment",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "name",
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "advanceAmount": {
+          "type": "string"
+        },
+        "advancePercentage": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.ApplicationChannel",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "name",
+        "code",
+        "active",
+        "citizenOnly"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "citizenOnly": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.CancelReason",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "name",
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.CancellationFee",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "name",
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "cancellationAmount": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.SanitationWorkerEmployer",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active",
+        "id"
+      ],
+      "x-unique": [
+        "code",
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.DeclineReason",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active",
+        "name"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.FSTPPlantInfo",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "PlantCode",
+        "active",
+        "PlantName",
+        "latitude",
+        "longitude",
+        "PlantOperationalCapacityKLD",
+        "ULBS"
+      ],
+      "x-unique": [
+        "PlantCode",
+        "active"
+      ],
+      "properties": {
+        "ULBS": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "PlusCode": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "string"
+        },
+        "PlantCode": {
+          "type": "string"
+        },
+        "PlantName": {
+          "type": "string"
+        },
+        "PlantType": {
+          "type": "string"
+        },
+        "longitude": {
+          "type": "string"
+        },
+        "PlantLocation": {
+          "type": "string"
+        },
+        "PlantOperationalTimings": {
+          "type": "string"
+        },
+        "PlantOperationalCapacityKLD": {
+          "type": "string"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.PeriodicService",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "timeLimit",
+        "isSchedularConfiguration"
+      ],
+      "x-unique": [
+        "timeLimit"
+      ],
+      "properties": {
+        "timeLimit": {
+          "type": "number"
+        },
+        "isSchedularConfiguration": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.PropertyType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active",
+        "minAmount",
+        "maxAmount"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "maxAmount": {
+          "type": "string"
+        },
+        "minAmount": {
+          "type": "string"
+        },
+        "propertyType": {
+          "type": "string"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.Slum",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "locality": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.VehicleTracking",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "vehicleTrackingStatus"
+      ],
+      "x-unique": [
+        "vehicleTrackingStatus"
+      ],
+      "properties": {
+        "vehicleTrackingStatus": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.ZeroPricing",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "zeroPricingStatus"
+      ],
+      "x-unique": [
+        "zeroPricingStatus"
+      ],
+      "properties": {
+        "zeroPricingStatus": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.UrcConfig",
+    "description": "  ",
+    "definition": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Generated schema for Root",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number"
+        },
+        "URCEnable": {
+          "type": "boolean"
+        },
+        "villageHierarchyAvailable": {
+          "type": "boolean"
+        }
+      },
+      "x-unique": [
+        "code"
+      ],
+      "required": [
+        "code",
+        "URCEnable",
+        "villageHierarchyAvailable"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "FSM.CommonFieldsConfig",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "head"
+      ],
+      "x-unique": [
+        "head"
+      ],
+      "properties": {
+        "body": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "type",
+              "key",
+              "component"
+            ],
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "route": {
+                "type": "string"
+              },
+              "texts": {
+                "type": "object",
+                "required": [
+                  "header",
+                  "submitBarLabel"
+                ],
+                "properties": {
+                  "header": {
+                    "type": "string"
+                  },
+                  "cardText": {
+                    "type": "string"
+                  },
+                  "skipText": {
+                    "type": "string"
+                  },
+                  "skipLabel": {
+                    "type": "string"
+                  },
+                  "headerCaption": {
+                    "type": "string"
+                  },
+                  "submitBarLabel": {
+                    "type": "string"
+                  }
+                }
+              },
+              "nextStep": {
+                "type": "string"
+              },
+              "component": {
+                "type": "string"
+              },
+              "isMandatory": {
+                "type": "boolean"
+              },
+              "withoutLabel": {
+                "type": "boolean"
+              },
+              "hideInEmployee": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "head": {
+          "type": "string"
+        },
+        "hideInEmployee": {
+          "type": "boolean"
+        }
+      }
+    },
+    "isActive": true
+  }
+]

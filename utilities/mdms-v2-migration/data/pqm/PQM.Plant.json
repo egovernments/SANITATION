@@ -1,0 +1,39 @@
+[
+    {
+          "ULBS": "pg.citya,pg.cityb",
+          "code": "CTA001",
+          "name": "CityA FSTP",
+          "active": true,
+          "PlusCode": "JQ2R+7G Khapar Kheri, Punjab",
+          "plantType": "FEACAL_SLUDGE_TREATMENT_PLANT",
+          "processes": [
+              "DEWATS_TECHNOLOGY"
+          ],
+          "wasteType": [
+              "FAECAL_SLUDGE"
+          ],
+          "plantConfig": "PLANT_CONFIGURATION_UPYOG",
+          "PlantLocation": "CityA",
+          "PlantOperationalTimings": "10.00am-08.00pm",
+          "PlantOperationalCapacityKLD": "50"
+      },
+  
+      {
+          "PlantCode": "CTC002",
+          "PlantName": "CityC SeTPP",
+          "active": true,
+          "PlantType": "SeTP",
+          "PlantLocation": "CityC",
+          "processes": [
+              "DEWATS_TECHNOLOGY"
+          ],
+          "wasteType": [
+              "FAECAL_SLUDGE"
+          ],
+          "plantConfig": "",
+          "PlusCode": "MPFQ+V2 Sahibzada Ajit Singh Nagar, Punjab",
+          "PlantOperationalTimings": "10.00am-06.00pm",
+          "PlantOperationalCapacityKLD": "100",
+          "ULBS": "pg.cityc,pg.cityd,pg.citye"
+      }
+  ]

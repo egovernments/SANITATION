@@ -1,0 +1,22 @@
+[
+    {
+      "code": "DRY_SLUDGE_COMPOSTING",
+      "name": "Dry sludge ready for co-composting"
+    },
+    {
+      "code": "THICKENED_SLUDGE",
+      "name": "Thickened Sludge"
+    },
+    {
+      "code": "EFFLUENT_TREATED",
+      "name": "Treated Effluent"
+    },
+    {
+      "code": "EFFLUENT_INTERIM",
+      "name": "Effluent (interim)"
+    },
+    {
+      "code": "RAW_SLUDGE",
+      "name": "Raw Sludge from Septic Tanks"
+    }
+  ]

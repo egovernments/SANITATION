@@ -1,0 +1,10 @@
+[
+    {
+      "code": "CO_TREATMENT_PLANT",
+      "name": "Co-Treatment Plant"
+    },
+    {
+      "code": "FEACAL_SLUDGE_TREATMENT_PLANT",
+      "name": "Faecal Sludge Treatment Plant"
+    }
+  ]

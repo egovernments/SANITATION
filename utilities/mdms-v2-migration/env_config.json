@@ -1,0 +1,15 @@
+{
+    "host": "{domain_url}",
+    "localhost": "http://localhost:8082",
+    "stateCode": "pg",
+    "cityCode": "citya",
+    "auth_header": {
+      "authorization": "Basic ZWdvdi11c2VyLWNsaWVudDo="
+    },
+  "credentials": {
++      "username": "${MDMS_USERNAME}",
++      "password": "${MDMS_PASSWORD}",
++      "userTenant": "${MDMS_USER_TENANT}",
++      "type": "${MDMS_USER_TYPE}"
++    }
+  }

@@ -1,0 +1,50 @@
+[
+    {
+      "code": "TDS",
+      "unit": "MGPL",
+      "parameter": "TDS",
+      "benchmarkRule": "LSTOREQ",
+      "benchmarkValues": [
+        50
+      ]
+    },
+    {
+      "code": "TSS",
+      "unit": "MGPL",
+      "parameter": "TSS",
+      "benchmarkRule": "LSTOREQ",
+      "benchmarkValues": [
+        50
+      ]
+    },
+    {
+      "code": "COD",
+      "unit": "MGPL",
+      "parameter": "COD",
+      "benchmarkRule": "LSTOREQ",
+      "benchmarkValues": [
+        50
+      ],
+      "allowedDeviation": 0
+    },
+    {
+      "code": "BOD",
+      "unit": "MGPL",
+      "parameter": "BOD",
+      "benchmarkRule": "LSTOREQ",
+      "benchmarkValues": [
+        30
+      ]
+    },
+    {
+      "code": "PH",
+      "unit": "NA",
+      "parameter": "PH",
+      "benchmarkRule": "BTW",
+      "benchmarkValues": [
+        6.5,
+        7.5
+      ],
+      "allowedDeviation": 0
+    }
+  ]
