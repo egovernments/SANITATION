@@ -12,15 +12,15 @@ const getI18nKeys = (localitiesWithLocalizationKeys) => {
 };
 
 const getLocalities = (tenantBoundry) => {
-  console.log("tenantBoundaru", tenantBoundry);
+  console.log(`*** LOG ***`,tenantBoundry);
   const adminCode = ADMIN_CODE(tenantBoundry);
-  console.log("adminCode", adminCode);
   const localitiesWithLocalizationKeys = tenantBoundry.boundary.map(
     (boundaryObj) => ({
       ...boundaryObj,
       i18nkey: adminCode + "_" + boundaryObj.code,
     })
   );
+  console.log(`*** LOG ***`,localitiesWithLocalizationKeys);
   return localitiesWithLocalizationKeys;
 };
 

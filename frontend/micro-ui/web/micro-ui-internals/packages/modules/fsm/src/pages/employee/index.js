@@ -53,6 +53,7 @@ export const FsmBreadCrumb = ({ location, defaultPath }) => {
   const [id, setId] = useState(false);
   const searchParams = new URLSearchParams(location.search);
   const paramId = searchParams.get("id");
+
   useEffect(() => {
     if (!search) {
       setSearch(isSearch);
@@ -75,7 +76,7 @@ export const FsmBreadCrumb = ({ location, defaultPath }) => {
       show: isFsm,
     },
     {
-      path:
+      path:        
         isVendorDetails ||
         isVehicleDetails ||
         isWorkerDetails ||
@@ -124,7 +125,7 @@ export const FsmBreadCrumb = ({ location, defaultPath }) => {
         : "",
       content: t("ES_TITLE_INBOX"),
       show: (isFsm && isInbox) || isSearch || isApplicationDetails,
-      isBack: true,
+      isBack: false,
     },
     {
       path:
