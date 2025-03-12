@@ -1,0 +1,4993 @@
+[
+    {
+      "tenantId": "as",
+      "code": "ACCESSCONTROL-ACTIONS-TEST.actions-test",
+      "description": "ACCESSCONTROL-ACTIONS-TEST.actions-test",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "id",
+          "name",
+          "url",
+          "displayName",
+          "orderNumber",
+          "enabled",
+          "serviceCode",
+          "path"
+        ],
+        "x-unique": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "url": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string",
+            "default": "null"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": true
+          },
+          "leftIcon": {
+            "type": "string"
+          },
+          "rightIcon": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "orderNumber": {
+            "type": "number",
+            "default": 0
+          },
+          "serviceCode": {
+            "type": "string",
+            "default": ""
+          },
+          "parentModule": {
+            "type": "string"
+          },
+          "navigationURL": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ACCESSCONTROL-ROLEACTIONS.roleactions",
+      "description": "ACCESSCONTROL-ROLEACTIONS.roleactions",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rolecode",
+          "actionid",
+          "tenantId"
+        ],
+        "x-unique": [
+          "rolecode",
+          "actionid"
+        ],
+        "properties": {
+          "actionid": {
+            "type": "number"
+          },
+          "rolecode": {
+            "type": "string"
+          },
+          "tenantId": {
+            "enum": [
+              "as"
+            ],
+            "type": "string",
+            "default": "as"
+          },
+          "actioncode": {
+            "type": "string"
+          }
+        },
+        "x-ref-schema": [
+          {
+            "fieldPath": "rolecode",
+            "schemaCode": "ACCESSCONTROL-ROLES.roles"
+          },
+          {
+            "fieldPath": "actionid",
+            "schemaCode": "ACCESSCONTROL-ACTIONS-TEST.actions-test"
+          }
+        ]
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ACCESSCONTROL-ROLES.roles",
+      "description": "ACCESSCONTROL-ROLES.roles",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "BillingService.BusinessService",
+      "description": "BillingService.BusinessService",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "businessService",
+          "code",
+          "collectionModesNotAllowed",
+          "partPaymentAllowed",
+          "isAdvanceAllowed"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "billGineiURL": {
+            "type": "string"
+          },
+          "businessService": {
+            "type": "string"
+          },
+          "demandUpdateTime": {
+            "type": "number"
+          },
+          "isAdvanceAllowed": {
+            "type": "boolean"
+          },
+          "partPaymentAllowed": {
+            "type": "boolean"
+          },
+          "isBillAmendmentEnabled": {
+            "type": "boolean"
+          },
+          "isVoucherCreationEnabled": {
+            "type": "boolean"
+          },
+          "collectionModesNotAllowed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "x-ref-schema": []
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "BillingService.PaymentService",
+      "description": "BillingService.PaymentService",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "businessService",
+          "code",
+          "collectionModesNotAllowed",
+          "partPaymentAllowed",
+          "isAdvanceAllowed",
+          "demandUpdateTime",
+          "isVoucherCreationEnabled",
+          "billGineiURL",
+          "isBillAmendmentEnabled"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "billGineiURL": {
+            "type": "string"
+          },
+          "businessService": {
+            "type": "string"
+          },
+          "demandUpdateTime": {
+            "type": "number"
+          },
+          "isAdvanceAllowed": {
+            "type": "boolean"
+          },
+          "partPaymentAllowed": {
+            "type": "boolean"
+          },
+          "isBillAmendmentEnabled": {
+            "type": "boolean"
+          },
+          "isVoucherCreationEnabled": {
+            "type": "boolean"
+          },
+          "collectionModesNotAllowed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "x-ref-schema": []
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "BillingService.TaxHeadMaster",
+      "description": "BillingService.TaxHeadMaster",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "category",
+          "service",
+          "name",
+          "code",
+          "isDebit",
+          "isActualDemand",
+          "order",
+          "isRequired"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "string"
+          },
+          "isDebit": {
+            "type": "boolean"
+          },
+          "service": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "isRequired": {
+            "type": "boolean"
+          },
+          "isActualDemand": {
+            "type": "boolean"
+          }
+        },
+        "x-ref-schema": [
+          {
+            "fieldPath": "service",
+            "schemaCode": "BillingService.BusinessService"
+          }
+        ]
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "BillingService.TaxPeriod",
+      "description": "BillingService.TaxPeriod",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "fromDate",
+          "toDate",
+          "periodCycle",
+          "service",
+          "code",
+          "financialYear"
+        ],
+        "x-unique": [
+          "code",
+          "financialYear"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "toDate": {
+            "type": "number"
+          },
+          "service": {
+            "type": "string"
+          },
+          "fromDate": {
+            "type": "number"
+          },
+          "periodCycle": {
+            "type": "string"
+          },
+          "financialYear": {
+            "type": "string"
+          }
+        },
+        "x-ref-schema": [
+          {
+            "fieldPath": "service",
+            "schemaCode": "BillingService.BusinessService"
+          }
+        ]
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.AppVersion",
+      "description": "common-masters.AppVersion",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "latestAppVersion",
+          "latestAppVersionIos",
+          "packageName"
+        ],
+        "x-unique": [
+          "packageName",
+          "latestAppVersionIos",
+          "latestAppVersion"
+        ],
+        "properties": {
+          "packageName": {
+            "type": "string"
+          },
+          "latestAppVersion": {
+            "type": "string"
+          },
+          "latestAppVersionIos": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.CancelCurrentBillReasons",
+      "description": "common-masters.CancelCurrentBillReasons",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.CancelReceiptReason",
+      "description": "common-masters.CancelReceiptReason",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.CronJobAPIConfig",
+      "description": "common-masters.CronJobAPIConfig",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "jobName",
+          "active",
+          "method",
+          "url",
+          "payload",
+          "header"
+        ],
+        "x-unique": [
+          "jobName",
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "active": {
+            "type": "string"
+          },
+          "header": {
+            "type": "object",
+            "required": [
+              "Content-Type"
+            ],
+            "properties": {
+              "Content-Type": {
+                "type": "string"
+              }
+            }
+          },
+          "method": {
+            "type": "string"
+          },
+          "jobName": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "object",
+            "required": [
+              "RequestInfo"
+            ],
+            "properties": {
+              "RequestInfo": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.Department",
+      "description": "common-masters.Department",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.Designation",
+      "description": "common-masters.Designation",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name",
+          "description",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "department": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.DocumentType",
+      "description": "common-masters.DocumentType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          },
+          "maxFileSize": {
+            "type": "number"
+          },
+          "allowedFormat": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.GenderType",
+      "description": "common-masters.GenderType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.IdFormat",
+      "description": "common-masters.IdFormat",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "format",
+          "idname"
+        ],
+        "x-unique": [
+          "idname"
+        ],
+        "properties": {
+          "format": {
+            "type": "string"
+          },
+          "idname": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.mapping",
+      "description": "common-masters.mapping",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "departments",
+          "designation"
+        ],
+        "x-unique": [
+          "departments"
+        ],
+        "properties": {
+          "departments": {
+            "type": "string"
+          },
+          "designation": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.OwnerShipCategory",
+      "description": "common-masters.OwnerShipCategory",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.OwnerType",
+      "description": "common-masters.OwnerType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.ReceiptStatus",
+      "description": "common-masters.ReceiptStatus",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.StateInfo",
+      "description": "common-masters.StateInfo",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "qrCodeURL",
+          "bannerUrl",
+          "logoUrl",
+          "logoUrlWhite",
+          "stateLogoURL",
+          "hasLocalisation",
+          "enableWhatsApp",
+          "defaultUrl",
+          "languages",
+          "stateLevelReports",
+          "localizationModules"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "logoUrl": {
+            "type": "string"
+          },
+          "bannerUrl": {
+            "type": "string"
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "label",
+                "value"
+              ],
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "qrCodeURL": {
+            "type": "string"
+          },
+          "defaultUrl": {
+            "type": "object",
+            "required": [
+              "citizen",
+              "employee"
+            ],
+            "properties": {
+              "citizen": {
+                "type": "string"
+              },
+              "employee": {
+                "type": "string"
+              }
+            }
+          },
+          "logoUrlWhite": {
+            "type": "string"
+          },
+          "stateLogoURL": {
+            "type": "string"
+          },
+          "enableWhatsApp": {
+            "type": "boolean"
+          },
+          "hasLocalisation": {
+            "type": "boolean"
+          },
+          "stateLevelReports": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "label",
+                "url"
+              ],
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "localizationModules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "label",
+                "value"
+              ],
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.StructureType",
+      "description": "common-masters.StructureType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.TablePaginationOptions",
+      "description": "common-masters.TablePaginationOptions",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rowsPerPageOptions",
+          "defaultValue"
+        ],
+        "x-unique": [
+          "defaultValue"
+        ],
+        "properties": {
+          "defaultValue": {
+            "type": "integer"
+          },
+          "rowsPerPageOptions": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.uiCommonConstants",
+      "description": "common-masters.uiCommonConstants",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "id",
+          "dashboard"
+        ],
+        "x-unique": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "dashboard": {
+            "type": "object",
+            "required": [
+              "iframe-routes"
+            ],
+            "properties": {
+              "iframe-routes": {
+                "type": "object",
+                "required": [
+                  "pgr"
+                ],
+                "properties": {
+                  "pgr": {
+                    "type": "object",
+                    "required": [
+                      "routePath",
+                      "isOrigin",
+                      "domain",
+                      "title"
+                    ],
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "domain": {
+                        "type": "string"
+                      },
+                      "isOrigin": {
+                        "type": "boolean"
+                      },
+                      "routePath": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.uiCommonPay",
+      "description": "common-masters.uiCommonPay",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "headerBandLabel",
+          "receiptKey",
+          "billKey",
+          "cancelReceipt",
+          "cancelBill",
+          "arrears",
+          "buttons"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "arrears": {
+            "type": "boolean",
+            "default": true
+          },
+          "billKey": {
+            "type": "string"
+          },
+          "buttons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "label",
+                "citizenUrl",
+                "employeeUrl"
+              ],
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "citizenUrl": {
+                  "type": "string"
+                },
+                "employeeUrl": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "pdfModule": {
+            "type": "string"
+          },
+          "cancelBill": {
+            "type": "boolean",
+            "default": true
+          },
+          "receiptKey": {
+            "type": "string"
+          },
+          "cancelReceipt": {
+            "type": "boolean",
+            "default": true
+          },
+          "headerBandLabel": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.UOM",
+      "description": "common-masters.UOM",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "common-masters.wfSlaConfig",
+      "description": "common-masters.wfSlaConfig",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "slotPercentage",
+          "positiveSlabColor",
+          "negativeSlabColor",
+          "middleSlabColor"
+        ],
+        "x-unique": [
+          "slotPercentage"
+        ],
+        "properties": {
+          "slotPercentage": {
+            "type": "number"
+          },
+          "middleSlabColor": {
+            "type": "string"
+          },
+          "negativeSlabColor": {
+            "type": "string"
+          },
+          "positiveSlabColor": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "commonUiConfig.LoginConfig",
+      "description": "commonUiConfig.LoginConfig",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "id",
+          "texts",
+          "inputs"
+        ],
+        "x-unique": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "texts": {
+            "type": "object",
+            "required": [
+              "header",
+              "submitButtonLabel",
+              "secondaryButtonLabel"
+            ],
+            "properties": {
+              "header": {
+                "type": "string"
+              },
+              "submitButtonLabel": {
+                "type": "string"
+              },
+              "secondaryButtonLabel": {
+                "type": "string"
+              }
+            }
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "label",
+                "type",
+                "populators",
+                "isMandatory"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "populators": {
+                  "type": "object",
+                  "required": [
+                    "name"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "validation": {
+                      "type": "object",
+                      "required": [
+                        "maxlength",
+                        "required"
+                      ],
+                      "properties": {
+                        "required": {
+                          "type": "boolean"
+                        },
+                        "maxlength": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                },
+                "isMandatory": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "DataSecurity.DecryptionABAC",
+      "description": "DataSecurity.DecryptionABAC",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "key",
+          "roleAttributeAccessList"
+        ],
+        "x-unique": [
+          "key"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "roleAttributeAccessList": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "roleCode",
+                "attributeAccessList"
+              ],
+              "properties": {
+                "roleCode": {
+                  "type": "string"
+                },
+                "attributeAccessList": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "attribute",
+                      "accessType"
+                    ],
+                    "properties": {
+                      "attribute": {
+                        "type": "object",
+                        "required": [
+                          "jsonPath"
+                        ],
+                        "properties": {
+                          "jsonPath": {
+                            "type": "string"
+                          },
+                          "maskingTechnique": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "accessType": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "DataSecurity.EncryptionPolicy",
+      "description": "DataSecurity.EncryptionPolicy",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "key",
+          "attributeList"
+        ],
+        "x-unique": [
+          "key"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "attributeList": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "jsonPath",
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "jsonPath": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "DataSecurity.MaskingPatterns",
+      "description": "DataSecurity.MaskingPatterns",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "patternId",
+          "pattern"
+        ],
+        "x-unique": [
+          "patternId"
+        ],
+        "properties": {
+          "pattern": {
+            "type": "string"
+          },
+          "patternId": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "DataSecurity.SecurityPolicy",
+      "description": "DataSecurity.SecurityPolicy",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "model",
+          "uniqueIdentifier",
+          "attributes",
+          "roleBasedDecryptionPolicy"
+        ],
+        "x-unique": [
+          "model"
+        ],
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "jsonPath",
+                "patternId",
+                "defaultVisibility"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "jsonPath": {
+                  "type": "string"
+                },
+                "patternId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "defaultVisibility": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "uniqueIdentifier": {
+            "type": "object",
+            "required": [
+              "name",
+              "jsonPath"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "jsonPath": {
+                "type": "string"
+              }
+            }
+          },
+          "roleBasedDecryptionPolicy": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "roles",
+                "attributeAccessList"
+              ],
+              "properties": {
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "attributeAccessList": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "attribute",
+                      "firstLevelVisibility",
+                      "secondLevelVisibility"
+                    ],
+                    "properties": {
+                      "attribute": {
+                        "type": "string"
+                      },
+                      "firstLevelVisibility": {
+                        "type": "string"
+                      },
+                      "secondLevelVisibility": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "DIGIT-UI.ApiCachingSettings",
+      "description": "DIGIT-UI.ApiCachingSettings",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generatedschema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "serviceName",
+          "cacheTimeInSecs"
+        ],
+        "x-unique": [
+          "serviceName"
+        ],
+        "properties": {
+          "serviceName": {
+            "type": "string"
+          },
+          "moduleSettings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "moduleName",
+                "cacheTimeInSecs"
+              ],
+              "properties": {
+                "moduleName": {
+                  "type": "string"
+                },
+                "cacheTimeInSecs": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "cacheTimeInSecs": {
+            "type": "number"
+          },
+          "debounceTimeInMS": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "egf-master.FinancialYear",
+      "description": "egf-master.FinancialYear",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "tenantId",
+          "finYearRange",
+          "name",
+          "code",
+          "startingDate",
+          "endingDate",
+          "active",
+          "isActiveForPosting",
+          "isClosed",
+          "transferClosingBalance",
+          "module"
+        ],
+        "x-unique": [
+          "module",
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+          },
+          "name": {
+            "type": "string",
+            "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          },
+          "module": {
+            "enum": [
+              "PT",
+              "TL",
+              "WS",
+              "SW",
+              "FIRENOC"
+            ],
+            "type": "string"
+          },
+          "isClosed": {
+            "type": "boolean",
+            "default": false
+          },
+          "tenantId": {
+            "enum": [
+              "as"
+            ],
+            "type": "string",
+            "default": "as"
+          },
+          "endingDate": {
+            "type": "number"
+          },
+          "finYearRange": {
+            "type": "string",
+            "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+          },
+          "startingDate": {
+            "type": "number"
+          },
+          "isActiveForPosting": {
+            "type": "boolean",
+            "default": true
+          },
+          "transferClosingBalance": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "egov-hrms.DeactivationReason",
+      "description": "egov-hrms.DeactivationReason",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "egov-hrms.Degree",
+      "description": "egov-hrms.Degree",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "egov-hrms.EmployeeStatus",
+      "description": "egov-hrms.EmployeeStatus",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "egov-hrms.EmployeeType",
+      "description": "egov-hrms.EmployeeType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "egov-hrms.EmploymentTest",
+      "description": "egov-hrms.EmploymentTest",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "egov-hrms.HRMSConfig",
+      "description": "egov-hrms.HRMSConfig",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "isCurrentAssignment",
+          "department",
+          "employeeType",
+          "designation"
+        ],
+        "x-unique": [
+          "department",
+          "employeeType"
+        ],
+        "properties": {
+          "department": {
+            "type": "string"
+          },
+          "designation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "isStateUser"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "isStateUser": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "employeeType": {
+            "type": "string"
+          },
+          "isCurrentAssignment": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "egov-hrms.Specalization",
+      "description": "egov-hrms.Specalization",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "Expense.ExpenseType",
+      "description": "Expense.ExpenseType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schemafor Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active",
+          "taxHeadCode"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "taxHeadCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "FinanceModule.AccountCodeTemplate",
+      "description": "FinanceModule.AccountCodeTemplate",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name",
+          "description",
+          "module",
+          "debitCodeDetails",
+          "creditCodeDetails",
+          "netPayable"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "module": {
+            "type": "string"
+          },
+          "subModule": {
+            "type": "string"
+          },
+          "netPayable": {
+            "type": "object",
+            "required": [
+              "glcode"
+            ],
+            "properties": {
+              "glcode": {
+                "type": "number"
+              }
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "subledgerType": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "debitCodeDetails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "glcode"
+              ],
+              "properties": {
+                "glcode": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "creditCodeDetails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "glcode"
+              ],
+              "properties": {
+                "glcode": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "FinanceModule.BusinessServiceMapping",
+      "description": "FinanceModule.BusinessServiceMapping",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "voucherCreationEnabled",
+          "fund",
+          "function",
+          "department",
+          "functionary",
+          "scheme",
+          "subscheme",
+          "validFrom",
+          "validTo"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "fund": {
+            "type": "string"
+          },
+          "scheme": {
+            "type": "string"
+          },
+          "validTo": {
+            "type": "number"
+          },
+          "function": {
+            "type": "string"
+          },
+          "subscheme": {
+            "type": "string"
+          },
+          "validFrom": {
+            "type": "number"
+          },
+          "department": {
+            "type": "string"
+          },
+          "functionary": {
+            "type": "string"
+          },
+          "serviceAttributeKey": {
+            "type": "string"
+          },
+          "serviceAttributeUrl": {
+            "type": "string"
+          },
+          "voucherCreationEnabled": {
+            "type": "boolean"
+          },
+          "serviceAttributeTaxHead": {
+            "type": "string"
+          },
+          "serviceAttributeMappingEnabled": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "FinanceModule.FinanceInstrumentStatusMapping",
+      "description": "FinanceModule.FinanceInstrumentStatusMapping",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name",
+          "description"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "FinanceModule.InstrumentGLcodeMapping",
+      "description": "FinanceModule.InstrumentGLcodeMapping",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "instrumenttype",
+          "glcode",
+          "validFrom",
+          "validTo"
+        ],
+        "x-unique": [
+          "instrumenttype",
+          "glcode",
+          "validFrom",
+          "validTo"
+        ],
+        "properties": {
+          "glcode": {
+            "type": "string"
+          },
+          "validTo": {
+            "type": "number"
+          },
+          "validFrom": {
+            "type": "number"
+          },
+          "instrumenttype": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "FinanceModule.TaxHeadMasterGlCodeMapping",
+      "description": "FinanceModule.TaxHeadMasterGlCodeMapping",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "billingservicecode",
+          "taxhead",
+          "glcode",
+          "validFrom",
+          "validTo"
+        ],
+        "x-unique": [
+          "taxhead",
+          "glcode",
+          "validFrom",
+          "validTo"
+        ],
+        "properties": {
+          "glcode": {
+            "type": "string"
+          },
+          "taxhead": {
+            "type": "string"
+          },
+          "validTo": {
+            "type": "number"
+          },
+          "validFrom": {
+            "type": "number"
+          },
+          "serviceAttribute": {
+            "type": "string"
+          },
+          "billingservicecode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "mseva.EventCategories",
+      "description": "mseva.EventCategories",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "eventType",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "eventType": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "mseva.EventTypes",
+      "description": "mseva.EventTypes",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.CancerCess",
+      "description": "PropertyTax.CancerCess",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rate",
+          "fromFY"
+        ],
+        "x-unique": [
+          "fromFY"
+        ],
+        "properties": {
+          "rate": {
+            "type": "integer"
+          },
+          "fromFY": {
+            "type": "string"
+          },
+          "maxAmount": {
+            "type": "null"
+          },
+          "minAmount": {
+            "type": "null"
+          },
+          "flatAmount": {
+            "type": "null"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.ConstructionSubType",
+      "description": "PropertyTax.ConstructionSubType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "id",
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.ConstructionType",
+      "description": "PropertyTax.ConstructionType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "id",
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.FireCess",
+      "description": "PropertyTax.FireCess",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rate",
+          "fromFY",
+          "dynamicFirecess",
+          "dynamicRates"
+        ],
+        "x-unique": [
+          "fromFY"
+        ],
+        "properties": {
+          "rate": {
+            "type": "integer"
+          },
+          "fromFY": {
+            "type": "string"
+          },
+          "maxAmount": {
+            "type": "null"
+          },
+          "minAmount": {
+            "type": "null"
+          },
+          "flatAmount": {
+            "type": "null"
+          },
+          "dynamicRates": {
+            "type": "object",
+            "required": [
+              "firecess_inflammable",
+              "firecess_building_height",
+              "firecess_category_major"
+            ],
+            "properties": {
+              "firecess_inflammable": {
+                "type": "integer"
+              },
+              "firecess_category_major": {
+                "type": "integer"
+              },
+              "firecess_building_height": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false
+          },
+          "dynamicFirecess": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.Floor",
+      "description": "PropertyTax.Floor",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "description",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.Interest",
+      "description": "PropertyTax.Interest",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rate",
+          "fromFY",
+          "startingDay"
+        ],
+        "x-unique": [
+          "fromFY",
+          "startingDay"
+        ],
+        "properties": {
+          "rate": {
+            "type": "integer"
+          },
+          "fromFY": {
+            "type": "string"
+          },
+          "maxAmount": {
+            "type": "null"
+          },
+          "minAmount": {
+            "type": "null"
+          },
+          "flatAmount": {
+            "type": "null"
+          },
+          "startingDay": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.MutationPenalty",
+      "description": "PropertyTax.MutationPenalty",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rate",
+          "fromFY",
+          "startingDay",
+          "mutationPaymentPeriodInMonth"
+        ],
+        "x-unique": [
+          "fromFY",
+          "startingDay"
+        ],
+        "properties": {
+          "rate": {
+            "type": "integer"
+          },
+          "fromFY": {
+            "type": "string"
+          },
+          "minAmount": {
+            "type": "null"
+          },
+          "flatAmount": {
+            "type": "null"
+          },
+          "startingDay": {
+            "type": "string"
+          },
+          "mutationPaymentPeriodInMonth": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.MutationReason",
+      "description": "PropertyTax.MutationReason",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.MutationRebate",
+      "description": "PropertyTax.MutationRebate",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rate",
+          "fromFY",
+          "endingDay",
+          "mutationPaymentPeriodInMonth"
+        ],
+        "x-unique": [
+          "fromFY",
+          "endingDay"
+        ],
+        "properties": {
+          "rate": {
+            "type": "integer"
+          },
+          "fromFY": {
+            "type": "string"
+          },
+          "endingDay": {
+            "type": "string"
+          },
+          "maxAmount": {
+            "type": "null"
+          },
+          "flatAmount": {
+            "type": "null"
+          },
+          "mutationPaymentPeriodInMonth": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.OccupancyType",
+      "description": "PropertyTax.OccupancyType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.OwnerShipCategory",
+      "description": "PropertyTax.OwnerShipCategory",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.OwnerType",
+      "description": "PropertyTax.OwnerType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active",
+          "fromFY"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          },
+          "fromFY": {
+            "type": "string",
+            "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+          },
+          "exemption": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "rate": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "default": 0
+              },
+              "maxAmount": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "default": 0
+              },
+              "flatAmount": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "default": 0
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.OwnerTypeDocument",
+      "description": "PropertyTax.OwnerTypeDocument",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "ownerTypeCode",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "ownerTypeCode": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.PropertySubType",
+      "description": "PropertyTax.PropertySubType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active",
+          "propertyType"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "propertyType": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.PropertyType",
+      "description": "PropertyTax.PropertyType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.PTApplication",
+      "description": "PropertyTax.PTApplication",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "creationReason",
+          "businessService",
+          "action",
+          "editAction"
+        ],
+        "x-unique": [
+          "creationReason"
+        ],
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "editAction": {
+            "type": "string"
+          },
+          "creationReason": {
+            "type": "string"
+          },
+          "businessService": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.PTWorkflow",
+      "description": "PropertyTax.PTWorkflow",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "businessService",
+          "initialAction",
+          "inWorkflowStatusAllowed",
+          "enable"
+        ],
+        "x-unique": [
+          "businessService"
+        ],
+        "properties": {
+          "enable": {
+            "type": "boolean"
+          },
+          "initialAction": {
+            "type": "string"
+          },
+          "businessService": {
+            "type": "string"
+          },
+          "inWorkflowStatusAllowed": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.ReasonForTransfer",
+      "description": "PropertyTax.ReasonForTransfer",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.Rebate",
+      "description": "PropertyTax.Rebate",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rate",
+          "fromFY",
+          "endingDay",
+          "mutationPaymentPeriodInMonth"
+        ],
+        "x-unique": [
+          "fromFY"
+        ],
+        "properties": {
+          "rate": {
+            "type": "integer"
+          },
+          "fromFY": {
+            "type": "string"
+          },
+          "endingDay": {
+            "type": "string"
+          },
+          "maxAmount": {
+            "type": "null"
+          },
+          "flatAmount": {
+            "type": "null"
+          },
+          "mutationPaymentPeriodInMonth": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.RentalDetails",
+      "description": "PropertyTax.RentalDetails",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.SubOwnerShipCategory",
+      "description": "PropertyTax.SubOwnerShipCategory",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active",
+          "ownerShipCategory"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "ownerShipCategory": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.UsageCategory",
+      "description": "PropertyTax.UsageCategory",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active",
+          "fromFY"
+        ],
+        "x-unique": [
+          "fromFY",
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          },
+          "fromFY": {
+            "type": "string",
+            "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+          },
+          "exemption": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "rate": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "default": 0
+              },
+              "maxAmount": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "default": 0
+              },
+              "flatAmount": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "default": 0
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.UsageCategoryMajor",
+      "description": "PropertyTax.UsageCategoryMajor",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active",
+          "fromFY"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "fromFY": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "PropertyTax.UsageCategoryMinor",
+      "description": "PropertyTax.UsageCategoryMinor",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active",
+          "fromFY",
+          "usageCategoryMajor",
+          "exemption"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "fromFY": {
+            "type": "string"
+          },
+          "exemption": {
+            "type": "object",
+            "required": [
+              "rate",
+              "maxAmount",
+              "flatAmount"
+            ],
+            "properties": {
+              "rate": {
+                "type": "integer"
+              },
+              "maxAmount": {
+                "type": "integer"
+              },
+              "flatAmount": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false
+          },
+          "usageCategoryMajor": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "pspcl-integration.accountNumberGpMapping",
+      "description": "pspcl-integration.accountNumberGpMapping",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "accountNumber",
+          "departmentEntityName",
+          "departmentEntityCode"
+        ],
+        "x-unique": [
+          "accountNumber",
+          "departmentEntityCode"
+        ],
+        "properties": {
+          "accountNumber": {
+            "type": "string"
+          },
+          "departmentEntityCode": {
+            "type": "string"
+          },
+          "departmentEntityName": {
+            "type": "string"
+          }
+        },
+        "x-ref-schema": []
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "tenant.citymodule",
+      "description": "tenant.citymodule",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "module",
+          "code",
+          "active",
+          "order",
+          "tenants"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "order": {
+            "type": "number"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "module": {
+            "type": "string"
+          },
+          "tenants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "tenant.tenants",
+      "description": "tenant.tenants",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name",
+          "description",
+          "OfficeTimings",
+          "city",
+          "address",
+          "blockcode",
+          "blockname",
+          "villageCode",
+          "villageName",
+          "districtCode",
+          "districtName",
+          "panchayatcode",
+          "panchayatname"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "city": {
+            "type": "object",
+            "required": [
+              "name",
+              "code",
+              "ddrName",
+              "projectId",
+              "blockcode",
+              "blockname",
+              "villageCode",
+              "villageName",
+              "districtCode",
+              "districtName",
+              "panchayatcode",
+              "panchayatname"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "default": ""
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "default": ""
+              },
+              "captcha": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "default": ""
+              },
+              "ddrName": {
+                "type": "string",
+                "default": ""
+              },
+              "latitude": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "ulbGrade": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "default": ""
+              },
+              "blockcode": {
+                "type": "string"
+              },
+              "blockname": {
+                "type": "string"
+              },
+              "localName": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "default": ""
+              },
+              "longitude": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "projectId": {
+                "type": "string",
+                "default": ""
+              },
+              "regionName": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "default": ""
+              },
+              "villageCode": {
+                "type": "string",
+                "default": ""
+              },
+              "villageName": {
+                "type": "string",
+                "default": ""
+              },
+              "districtCode": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "default": ""
+              },
+              "districtName": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "default": ""
+              },
+              "panchayatcode": {
+                "type": "string"
+              },
+              "panchayatname": {
+                "type": "string"
+              },
+              "shapeFileLocation": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "logoId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "address": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "emailId": {
+            "type": "string"
+          },
+          "imageId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "pincode": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "blockcode": {
+            "type": "string"
+          },
+          "blockname": {
+            "type": "string"
+          },
+          "domainUrl": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "pdfHeader": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "twitterUrl": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "facebookUrl": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "villageCode": {
+            "type": "string"
+          },
+          "villageName": {
+            "type": "string"
+          },
+          "districtCode": {
+            "type": "string"
+          },
+          "districtName": {
+            "type": "string"
+          },
+          "OfficeTimings": {
+            "type": "object",
+            "required": [
+              "Mon - Fri"
+            ],
+            "properties": {
+              "Mon - Fri": {
+                "type": "string",
+                "default": ""
+              }
+            }
+          },
+          "contactNumber": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "panchayatcode": {
+            "type": "string"
+          },
+          "panchayatname": {
+            "type": "string"
+          },
+          "pdfContactDetails": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "x-ui-schema": {
+          "ui:order": [
+            "code",
+            "name",
+            "logoId",
+            "emailId",
+            "imageId",
+            "address",
+            "domainUrl",
+            "pdfHeader",
+            "districtCode",
+            "districtName",
+            "blockcode",
+            "blockname",
+            "panchayatcode",
+            "panchayatname",
+            "villageName",
+            "villageCode",
+            "twitterUrl",
+            "facebookUrl",
+            "description",
+            "contactNumber",
+            "pdfContactDetails",
+            "pincode",
+            "city",
+            "OfficeTimings"
+          ]
+        },
+        "x-ref-schema": []
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "Workflow.AutoEscalation",
+      "description": "Workflow.AutoEscalation",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "businessService",
+          "module",
+          "state",
+          "action",
+          "active",
+          "stateSLA",
+          "businessSLA",
+          "topic"
+        ],
+        "x-unique": [
+          "businessService"
+        ],
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "active": {
+            "type": "string"
+          },
+          "module": {
+            "type": "string"
+          },
+          "stateSLA": {
+            "type": "number"
+          },
+          "businessSLA": {
+            "type": "number"
+          },
+          "businessService": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "Workflow.AutoEscalationStatesToIgnore",
+      "description": "Workflow.AutoEscalationStatesToIgnore",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "businessService",
+          "module",
+          "state"
+        ],
+        "x-unique": [
+          "businessService"
+        ],
+        "properties": {
+          "state": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "module": {
+            "type": "string"
+          },
+          "businessService": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "Workflow.BusinessService",
+      "description": "Workflow.BusinessService",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "tenantId",
+          "uuid",
+          "businessService",
+          "getUri",
+          "postUri",
+          "states"
+        ],
+        "x-unique": [
+          "businessService"
+        ],
+        "properties": {
+          "uuid": {
+            "type": "string"
+          },
+          "getUri": {
+            "type": "string"
+          },
+          "states": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "businessServiceId",
+                "state",
+                "applicableNextStates",
+                "applicableActions",
+                "docUploadRequired",
+                "UpdateAllowed",
+                "isTerminateState",
+                "isStartState",
+                "uuid",
+                "tenantId",
+                "actions"
+              ],
+              "properties": {
+                "uuid": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "stateId",
+                      "action",
+                      "nextStateId",
+                      "roles",
+                      "tenantId",
+                      "uuid"
+                    ],
+                    "properties": {
+                      "uuid": {
+                        "type": "string"
+                      },
+                      "roles": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string"
+                      },
+                      "stateId": {
+                        "type": "string"
+                      },
+                      "tenantId": {
+                        "type": "string"
+                      },
+                      "nextStateId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "tenantId": {
+                  "type": "string"
+                },
+                "isStartState": {
+                  "type": "string"
+                },
+                "UpdateAllowed": {
+                  "type": "string"
+                },
+                "isTerminateState": {
+                  "type": "string"
+                },
+                "applicableActions": {
+                  "type": "string"
+                },
+                "businessServiceId": {
+                  "type": "string"
+                },
+                "docUploadRequired": {
+                  "type": "string"
+                },
+                "applicableNextStates": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "postUri": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "businessService": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "Workflow.BusinessServiceConfig",
+      "description": "Workflow.BusinessServiceConfig",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "isStateLevel"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "isStateLevel": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "Workflow.BusinessServiceMasterConfig",
+      "description": "Workflow.BusinessServiceMasterConfig",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "businessService",
+          "active",
+          "isStatelevel"
+        ],
+        "x-unique": [
+          "businessService"
+        ],
+        "properties": {
+          "active": {
+            "type": "string"
+          },
+          "isStatelevel": {
+            "type": "string"
+          },
+          "businessService": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.CalculationAttribute",
+      "description": "ws-services-calculation.CalculationAttribute",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "attribute",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              "METERED",
+              "NONMETERED"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          },
+          "attribute": {
+            "enum": [
+              "Water consumption",
+              "Flat"
+            ],
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.FeeSlab",
+      "description": "ws-services-calculation.FeeSlab",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "formFee",
+          "scrutinyFee",
+          "meterCost",
+          "other",
+          "taxpercentage",
+          "isActive"
+        ],
+        "x-unique": [
+          "formFee",
+          "scrutinyFee",
+          "meterCost",
+          "other",
+          "taxpercentage"
+        ],
+        "properties": {
+          "other": {
+            "type": "number"
+          },
+          "formFee": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "meterCost": {
+            "type": "number"
+          },
+          "scrutinyFee": {
+            "type": "number"
+          },
+          "taxpercentage": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.Interest",
+      "description": "ws-services-calculation.Interest",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rate",
+          "applicableAfterDays",
+          "fromFY",
+          "startingDay"
+        ],
+        "x-unique": [
+          "rate",
+          "fromFY",
+          "startingDay"
+        ],
+        "properties": {
+          "rate": {
+            "type": "number",
+            "minimum": 0
+          },
+          "fromFY": {
+            "type": "string",
+            "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+          },
+          "maxAmount": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minAmount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "flatAmount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "startingDay": {
+            "type": "string",
+            "format": "date"
+          },
+          "applicableAfterDays": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.MeterStatus",
+      "description": "ws-services-calculation.MeterStatus",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.Penalty",
+      "description": "ws-services-calculation.Penalty",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "type",
+          "subType",
+          "rate",
+          "applicableAfterDays",
+          "fromFY",
+          "startingDay"
+        ],
+        "x-unique": [
+          "startingDay",
+          "fromFY"
+        ],
+        "properties": {
+          "rate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "type": {
+            "type": "string"
+          },
+          "amount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "fromFY": {
+            "type": "string",
+            "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+          },
+          "subType": {
+            "type": "string"
+          },
+          "minAmount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "flatAmount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "startingDay": {
+            "type": "string",
+            "pattern": "^\\d\\d/\\d\\d/\\d\\d\\d\\d$"
+          },
+          "applicableAfterDays": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.PipeSize",
+      "description": "ws-services-calculation.PipeSize",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "id",
+          "size",
+          "isActive"
+        ],
+        "x-unique": [
+          "size"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "size": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.PlotSizeSlab",
+      "description": "ws-services-calculation.PlotSizeSlab",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "id",
+          "from",
+          "to",
+          "unitCost",
+          "isActive"
+        ],
+        "x-unique": [
+          "from",
+          "to",
+          "unitCost"
+        ],
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "to": {
+            "type": "number"
+          },
+          "from": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "unitCost": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.PropertyUsageType",
+      "description": "ws-services-calculation.PropertyUsageType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "unitCost",
+          "isActive"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "unitCost": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.Rebate",
+      "description": "ws-services-calculation.Rebate",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rate",
+          "fromFY",
+          "endingDay"
+        ],
+        "x-unique": [
+          "rate",
+          "fromFY",
+          "endingDay"
+        ],
+        "properties": {
+          "rate": {
+            "type": "number",
+            "minimum": 0
+          },
+          "fromFY": {
+            "type": "string",
+            "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+          },
+          "endingDay": {
+            "type": "string",
+            "format": "date"
+          },
+          "maxAmount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "flatAmount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.RoadType",
+      "description": "ws-services-calculation.RoadType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "unitCost",
+          "isActive"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "unitCost": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.WaterCess",
+      "description": "ws-services-calculation.WaterCess",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "rate",
+          "fromFY"
+        ],
+        "x-unique": [
+          "rate",
+          "fromFY"
+        ],
+        "properties": {
+          "rate": {
+            "type": "number",
+            "minimum": 0
+          },
+          "fromFY": {
+            "type": "string",
+            "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+          },
+          "maxAmount": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minAmount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "flatAmount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.WCBillingSlab",
+      "description": "ws-services-calculation.WCBillingSlab",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "connectionType"
+              ],
+              "properties": {
+                "connectionType": {
+                  "const": "Metered"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "slabs"
+              ],
+              "properties": {
+                "calculationAttribute": {
+                  "enum": [
+                    "Water consumption"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "connectionType"
+              ],
+              "properties": {
+                "connectionType": {
+                  "const": "Non_Metered"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "minimumCharge"
+              ],
+              "properties": {
+                "slabs": false,
+                "calculationAttribute": {
+                  "enum": [
+                    "Flat"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "id",
+          "buildingType",
+          "calculationAttribute",
+          "connectionType"
+        ],
+        "x-unique": [
+          "id",
+          "buildingType",
+          "connectionType",
+          "calculationAttribute"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slabs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "from",
+                "to",
+                "charge"
+              ],
+              "properties": {
+                "to": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "from": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "charge": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "x-ui-schema": {
+                "ui:order": [
+                  "from",
+                  "to",
+                  "charge"
+                ]
+              }
+            }
+          },
+          "buildingType": {
+            "enum": [
+              "RESIDENTIAL",
+              "COMMERCIAL",
+              "NONRESIDENTIAL",
+              "Commercial and Government",
+              "Partly Commercial",
+              "Government",
+              "MIXED",
+              "PUBLICSECTOR",
+              "Commercial"
+            ],
+            "type": "string"
+          },
+          "minimumCharge": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "connectionType": {
+            "enum": [
+              "Metered",
+              "Non_Metered",
+              ""
+            ],
+            "type": "string"
+          },
+          "calculationAttribute": {
+            "enum": [
+              "Flat",
+              "Water consumption",
+              "No. of taps",
+              "Pipe Size"
+            ],
+            "type": "string"
+          }
+        },
+        "x-ui-schema": {
+          "ui:order": [
+            "id",
+            "buildingType",
+            "connectionType",
+            "calculationAttribute",
+            "minimumCharge",
+            "slabs"
+          ]
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.WS_CHARGE",
+      "description": "ws-services-calculation.WS_CHARGE",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "description"
+        ],
+        "x-unique": [
+          "description"
+        ],
+        "properties": {
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.WS_Round_Off",
+      "description": "ws-services-calculation.WS_Round_Off",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "description"
+        ],
+        "x-unique": [
+          "description"
+        ],
+        "properties": {
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.WS_TIME_INTEREST",
+      "description": "ws-services-calculation.WS_TIME_INTEREST",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "description"
+        ],
+        "x-unique": [
+          "description"
+        ],
+        "properties": {
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.WS_TIME_PENALTY",
+      "description": "ws-services-calculation.WS_TIME_PENALTY",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "description"
+        ],
+        "x-unique": [
+          "description"
+        ],
+        "properties": {
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-calculation.WS_WATER_CESS",
+      "description": "ws-services-calculation.WS_WATER_CESS",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "description"
+        ],
+        "x-unique": [
+          "description"
+        ],
+        "properties": {
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.ApplicationType",
+      "description": "ws-services-masters.ApplicationType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "id",
+          "code",
+          "name",
+          "businessService"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "id": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "businessService": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.billingPeriod",
+      "description": "ws-services-masters.billingPeriod",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "active",
+          "connectionType",
+          "billingCycle",
+          "demandEndDateMillis",
+          "demandExpiryDate",
+          "demandGenerationDateMillis"
+        ],
+        "x-unique": [
+          "connectionType",
+          "billingCycle"
+        ],
+        "properties": {
+          "active": {
+            "type": "boolean"
+          },
+          "billingCycle": {
+            "type": "string"
+          },
+          "connectionType": {
+            "type": "string"
+          },
+          "demandExpiryDate": {
+            "type": "number"
+          },
+          "demandEndDateMillis": {
+            "type": "number"
+          },
+          "demandGenerationDateMillis": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.Category",
+      "description": "ws-services-masters.Category",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.CheckList",
+      "description": "ws-services-masters.CheckList",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name",
+          "active",
+          "required",
+          "type",
+          "options"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.connectionCategory",
+      "description": "ws-services-masters.connectionCategory",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "applicationDocument": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "verificationDocument": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.connectionType",
+      "description": "ws-services-masters.connectionType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.Documents",
+      "description": "ws-services-masters.Documents",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "documentType",
+          "required",
+          "active",
+          "hasDropdown",
+          "dropdownData",
+          "description"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          },
+          "hasDropdown": {
+            "type": "boolean"
+          },
+          "documentType": {
+            "type": "string"
+          },
+          "dropdownData": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "active"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.ModifyConnectionDocuments",
+      "description": "ws-services-masters.ModifyConnectionDocuments",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "documentType",
+          "required",
+          "active",
+          "hasDropdown",
+          "dropdownData",
+          "description"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          },
+          "hasDropdown": {
+            "type": "boolean"
+          },
+          "documentType": {
+            "type": "string"
+          },
+          "dropdownData": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "active"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.PropertySearch",
+      "description": "ws-services-masters.PropertySearch",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "enabled"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.schemeType",
+      "description": "ws-services-masters.schemeType",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.SubCategory",
+      "description": "ws-services-masters.SubCategory",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.waterSource",
+      "description": "ws-services-masters.waterSource",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "name",
+          "code",
+          "active"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tenantId": "as",
+      "code": "ws-services-masters.WSServiceRoles",
+      "description": "ws-services-masters.WSServiceRoles",
+      "isActive": true,
+      "definition": {
+        "type": "object",
+        "title": "Generated schema for Root",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "required": [
+          "code",
+          "name"
+        ],
+        "x-unique": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "x-ref-schema": [
+          {
+            "fieldPath": "code",
+            "schemaCode": "ACCESSCONTROL-ROLES.roles"
+          }
+        ]
+      }
+    }
+  ]

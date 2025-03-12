@@ -1,0 +1,34 @@
+[
+  {
+    "code": "VETERANS",
+    "active": true
+  },
+  {
+    "code": "DISABLEDINDIVIDUALS",
+    "active": true
+  },
+  {
+    "code": "MINORITYAPPLICANTS",
+    "active": true
+  },
+  {
+    "code": "LGBTQ+INDIVIDUALS",
+    "active": true
+  },
+  {
+    "code": "ECONOMICALLYDISADVANTAGED",
+    "active": true
+  },
+  {
+    "code": "REFUGEESANDASYLUMSEEKERS",
+    "active": true
+  },
+  {
+    "code": "RETURNINGCITIZENS(FORMERLYINCARCERATED)",
+    "active": true
+  },
+  {
+    "code": "NATIVEAMERICANORINDIGENOUSPEOPLES",
+    "active": true
+  }
+]

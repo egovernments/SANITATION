@@ -1,0 +1,507 @@
+[
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.CalculationType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "tradeType",
+        "accessory",
+        "financialYear",
+        "active"
+      ],
+      "x-unique": [
+        "tradeType",
+        "accessory",
+        "financialYear"
+      ],
+      "properties": {
+        "active": {
+          "type": "boolean"
+        },
+        "accessory": {
+          "type": "string"
+        },
+        "tradeType": {
+          "type": "string"
+        },
+        "financialYear": {
+          "type": "string"
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.TradeType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "name",
+        "code",
+        "applicationDocument",
+        "active",
+        "type"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "uom": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "validityPeriod": {
+          "type": "null"
+        },
+        "applicationDocument": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "applicationType",
+              "documentList"
+            ],
+            "properties": {
+              "documentList": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "applicationType": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "verificationDocument": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.AccessoriesCategory",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "uom",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "uom": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "code": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.CommonFieldsConfig",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "head",
+        "body"
+      ],
+      "x-unique": [
+        "head"
+      ],
+      "properties": {
+        "body": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "key"
+            ],
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "route": {
+                "type": "string"
+              },
+              "texts": {
+                "type": "object",
+                "required": [
+                  "header"
+                ],
+                "properties": {
+                  "header": {
+                    "type": "string"
+                  },
+                  "cardText": {
+                    "type": "string"
+                  },
+                  "skipText": {
+                    "type": "string"
+                  },
+                  "headerCaption": {
+                    "type": "string"
+                  },
+                  "submitBarLabel": {
+                    "type": "string"
+                  }
+                }
+              },
+              "nextStep": {},
+              "component": {
+                "type": "string"
+              },
+              "isMandatory": {
+                "type": "boolean"
+              },
+              "withoutLabel": {
+                "type": "boolean"
+              },
+              "hideInEmployee": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "head": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.documentObj",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "allowedDocs",
+        "tradeType"
+      ],
+      "x-unique": [
+        "tradeType"
+      ],
+      "properties": {
+        "tradeType": {
+          "type": "string"
+        },
+        "allowedDocs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "documentType",
+              "applicationType",
+              "required"
+            ],
+            "properties": {
+              "required": {
+                "type": "boolean"
+              },
+              "documentType": {
+                "type": "string"
+              },
+              "applicationType": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.ReminderPeriods",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "tenantId",
+        "reminderInterval"
+      ],
+      "x-unique": [
+        "tenantId"
+      ],
+      "properties": {
+        "tenantId": {
+          "type": "string"
+        },
+        "reminderInterval": {
+          "type": "integer",
+          "default": 691200000
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.Penalty",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "rate",
+        "minAmount",
+        "flatAmount",
+        "fromFY",
+        "startingDay"
+      ],
+      "x-unique": [
+        "fromFY",
+        "startingDay"
+      ],
+      "properties": {
+        "rate": {
+          "type": "integer",
+          "default": 10,
+          "minimum": 0
+        },
+        "fromFY": {
+          "type": "string",
+          "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+        },
+        "minAmount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "flatAmount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "startingDay": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.Documents",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "documentType",
+        "required",
+        "active",
+        "dropdownData",
+        "description"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean",
+          "default": true
+        },
+        "required": {
+          "type": "boolean",
+          "default": true
+        },
+        "description": {
+          "type": "string"
+        },
+        "documentType": {
+          "type": "string"
+        },
+        "dropdownData": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "active"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "active": {
+                "type": "boolean",
+                "default": false
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.ApplicationType",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "code",
+        "active"
+      ],
+      "x-unique": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.TradeRenewal",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "renewalPeriod"
+      ],
+      "x-unique": [
+        "renewalPeriod"
+      ],
+      "properties": {
+        "renewalPeriod": {
+          "type": "integer",
+          "default": 7889400000,
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  },
+  {
+    "tenantId": "pg",
+    "code": "TradeLicense.Rebate",
+    "description": "  ",
+    "definition": {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "rate",
+        "flatAmount",
+        "fromFY",
+        "endingDay"
+      ],
+      "x-unique": [
+        "fromFY",
+        "endingDay"
+      ],
+      "properties": {
+        "rate": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fromFY": {
+          "type": "string",
+          "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+        },
+        "endingDay": {
+          "type": "string",
+          "format": "date"
+        },
+        "maxAmount": {
+          "type": [
+            "null",
+            "integer"
+          ],
+          "minimum": 0
+        },
+        "flatAmount": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "isActive": true
+  }
+]

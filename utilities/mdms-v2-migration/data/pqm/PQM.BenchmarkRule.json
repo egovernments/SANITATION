@@ -1,0 +1,34 @@
+[
+    {
+      "code": "GTR",
+      "name": "Greater Than"
+    },
+    {
+      "code": "LST",
+      "name": "Less Than"
+    },
+    {
+      "code": "BTW",
+      "name": "Between"
+    },
+    {
+      "code": "OSD",
+      "name": "Outside Range"
+    },
+    {
+      "code": "EQ",
+      "name": "Equals"
+    },
+    {
+      "code": "NEQ",
+      "name": "Not Equals"
+    },
+    {
+      "code": "GTROREQ",
+      "name": "Greater Than Or Equals"
+    },
+    {
+      "code": "LSTOREQ",
+      "name": "Less Than Or Equals"
+    }
+  ]
