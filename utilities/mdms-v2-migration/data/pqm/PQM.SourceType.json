@@ -1,0 +1,12 @@
+[
+    {
+      "code": "LAB_ADHOC",
+      "name": "LAB Adhoc",
+      "description": "Ad-hoc test created while inspection"
+    },
+    {
+      "code": "LAB_SCHEDULED",
+      "name": "LAB SCHEDULED",
+      "description": "Frequency of testing that is scheduled (in case of Odisha, it's on fort-nighly basis.)"
+    }
+  ]

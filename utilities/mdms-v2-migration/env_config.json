@@ -1,0 +1,15 @@
+{
+    "host": "https://unified-qa.digit.org",
+    "localhost": "http://localhost:8082",
+    "stateCode": "pg",
+    "cityCode": "citya",
+    "auth_header": {
+      "authorization": "Basic ZWdvdi11c2VyLWNsaWVudDo="
+    },
+    "credentials": {
+      "username": "MDMSADA",
+      "password": "eGov@123",
+      "userTenant": "pg",
+      "type": "EMPLOYEE"
+    }
+  }
