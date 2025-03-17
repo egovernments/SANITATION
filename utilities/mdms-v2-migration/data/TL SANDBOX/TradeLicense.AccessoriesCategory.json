@@ -1,17 +1,17 @@
 [
     {
       "code": "ACC-1",
-      "uom": "Compressors",
+      "uom": "GROSSUNITS",
       "active": true
     },
     {
       "code": "ACC-2",
-      "uom": "ELECTRICMOTORS",
+      "uom": "GROSSUNITS",
       "active": true
     },
     {
       "code": "ACC-3",
-      "uom": "PUMP",
+      "uom": "GROSSUNITS",
       "active": true
     }
   ]

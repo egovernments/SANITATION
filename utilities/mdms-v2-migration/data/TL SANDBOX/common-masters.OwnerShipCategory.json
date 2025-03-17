@@ -1,0 +1,54 @@
+[
+  {
+    "code": "LEGALOWNERSHIP-BASED.PRIVATELYOWNED",
+    "active": true
+  },
+  {
+    "code": "LEGALOWNERSHIP-BASED.GOVERNMENT-OWNED",
+    "active": true
+  },
+  {
+    "code": "LEGALOWNERSHIP-BASED.COMMUNITY/COOPERATIVE-OWNED",
+    "active": true
+  },
+  {
+    "code": "LEGALOWNERSHIP-BASED.PUBLIC-PRIVATEPARTNERSHIP(PPP)",
+    "active": true
+  },
+  {
+    "code": "TENURE-BASED.FREEHOLDOWNERSHIP",
+    "active": true
+  },
+  {
+    "code": "TENURE-BASED.LEASEHOLD/RENTED",
+    "active": true
+  },
+  {
+    "code": "TENURE-BASED.CONCESSIONAGREEMENT",
+    "active": true
+  },
+  {
+    "code": "TENURE-BASED.FRANCHISE-BASED",
+    "active": true
+  },
+  {
+    "code": "TENURE-BASED.TEMPORARYOCCUPATIONLICENSE(TOL)",
+    "active": true
+  },
+  {
+    "code": "OPERATIONALCONTROL-BASED.OWNER-OPERATED",
+    "active": true
+  },
+  {
+    "code": "OPERATIONALCONTROL-BASED.TENANT-OPERATED",
+    "active": true
+  },
+  {
+    "code": "OPERATIONALCONTROL-BASED.SHARED/CO-WORKINGSPACES",
+    "active": true
+  },
+  {
+    "code": "OPERATIONALCONTROL-BASED.INCUBATION/ACCELERATORSPACES",
+    "active": true
+  }
+]

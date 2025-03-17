@@ -1,0 +1,4980 @@
+[
+  {
+    "name": "Solar Panel Installation & Maintenance",
+    "code": "ENERGY&UTILITIES.SOLAR&RENEWABLEENERGY.TST-1",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Wind & Hydropower Energy Solutions",
+    "code": "ENERGY&UTILITIES.SOLAR&RENEWABLEENERGY.TST-2",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Biomass & Biofuel Production",
+    "code": "ENERGY&UTILITIES.SOLAR&RENEWABLEENERGY.TST-3",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Energy Storage & Battery Solutions",
+    "code": "ENERGY&UTILITIES.SOLAR&RENEWABLEENERGY.TST-4",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "LPG Cylinder Distribution & Retail",
+    "code": "ENERGY&UTILITIES.PETROLEUM&GASDISTRIBUTION.TST-5",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Fuel Station & Diesel Supply Services",
+    "code": "ENERGY&UTILITIES.PETROLEUM&GASDISTRIBUTION.TST-6",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Industrial Gas Distribution (Oxygen, Nitrogen, etc.)",
+    "code": "ENERGY&UTILITIES.PETROLEUM&GASDISTRIBUTION.TST-7",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Pipeline Transportation of Petroleum",
+    "code": "ENERGY&UTILITIES.PETROLEUM&GASDISTRIBUTION.TST-8",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "High-Voltage Transformer Maintenance",
+    "code": "ENERGY&UTILITIES.ELECTRICALSUPPLY&GRIDSERVICES.TST-9",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Smart Meter & Grid Automation Services",
+    "code": "ENERGY&UTILITIES.ELECTRICALSUPPLY&GRIDSERVICES.TST-10",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Backup Power & Generator Solutions",
+    "code": "ENERGY&UTILITIES.ELECTRICALSUPPLY&GRIDSERVICES.TST-11",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Electric Vehicle (EV) Charging Infrastructure",
+    "code": "ENERGY&UTILITIES.ELECTRICALSUPPLY&GRIDSERVICES.TST-12",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "E-Waste Recycling & Disposal",
+    "code": "ENERGY&UTILITIES.WASTEMANAGEMENT&RECYCLING.TST-13",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Organic Waste Composting Services",
+    "code": "ENERGY&UTILITIES.WASTEMANAGEMENT&RECYCLING.TST-14",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Plastic & Metal Recycling Plants",
+    "code": "ENERGY&UTILITIES.WASTEMANAGEMENT&RECYCLING.TST-15",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Hazardous & Medical Waste Disposal",
+    "code": "ENERGY&UTILITIES.WASTEMANAGEMENT&RECYCLING.TST-16",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Desalination & Water Purification Plants",
+    "code": "ENERGY&UTILITIES.WATERSUPPLY&TREATMENTSERVICES.TST-17",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Rainwater Harvesting & Groundwater Recharge",
+    "code": "ENERGY&UTILITIES.WATERSUPPLY&TREATMENTSERVICES.TST-18",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Wastewater Treatment & Reuse Systems",
+    "code": "ENERGY&UTILITIES.WATERSUPPLY&TREATMENTSERVICES.TST-19",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Industrial Water Filtration Solutions",
+    "code": "ENERGY&UTILITIES.WATERSUPPLY&TREATMENTSERVICES.TST-20",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Fine Dining Restaurants",
+    "code": "FOOD&BEVERAGESERVICES.RESTAURANTS&CAFÉS.TST-21",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Themed Cafes & Coffee Shops",
+    "code": "FOOD&BEVERAGESERVICES.RESTAURANTS&CAFÉS.TST-22",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Cloud Kitchen & Virtual Restaurants",
+    "code": "FOOD&BEVERAGESERVICES.RESTAURANTS&CAFÉS.TST-23",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Health & Organic Food Cafes",
+    "code": "FOOD&BEVERAGESERVICES.RESTAURANTS&CAFÉS.TST-24",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Mobile Food Trucks & Kiosks",
+    "code": "FOOD&BEVERAGESERVICES.STREETFOOD&FOODSTALLS.TST-25",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Seasonal & Night Market Vendors",
+    "code": "FOOD&BEVERAGESERVICES.STREETFOOD&FOODSTALLS.TST-26",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Regional Specialty & Ethnic Cuisine Stalls",
+    "code": "FOOD&BEVERAGESERVICES.STREETFOOD&FOODSTALLS.TST-27",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Festival & Event-Based Pop-Up Food Stalls",
+    "code": "FOOD&BEVERAGESERVICES.STREETFOOD&FOODSTALLS.TST-28",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Corporate & Wedding Catering Services",
+    "code": "FOOD&BEVERAGESERVICES.CATERINGSERVICES.TST-29",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Corporate & Office Catering",
+    "code": "FOOD&BEVERAGESERVICES.CATERINGSERVICES.TST-30",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Airline & Railway Catering Services",
+    "code": "FOOD&BEVERAGESERVICES.CATERINGSERVICES.TST-31",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "School & Institutional Meal Services",
+    "code": "FOOD&BEVERAGESERVICES.CATERINGSERVICES.TST-32",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Specialty Cake & Pastry Shops",
+    "code": "FOOD&BEVERAGESERVICES.BAKERIES&CONFECTIONERIES.TST-33",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Bread & Pastry Production Units",
+    "code": "FOOD&BEVERAGESERVICES.BAKERIES&CONFECTIONERIES.TST-34",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Chocolate & Confectionery Manufacturing",
+    "code": "FOOD&BEVERAGESERVICES.BAKERIES&CONFECTIONERIES.TST-35",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Gluten-Free & Health-Based Bakeries",
+    "code": "FOOD&BEVERAGESERVICES.BAKERIES&CONFECTIONERIES.TST-36",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Craft Beer & Microbreweries",
+    "code": "FOOD&BEVERAGESERVICES.BREWERIES,WINERIES&DISTILLERIES.TST-37",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Wine & Vineyard-Based Businesses",
+    "code": "FOOD&BEVERAGESERVICES.BREWERIES,WINERIES&DISTILLERIES.TST-38",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Whiskey & Spirits Distillation Units",
+    "code": "FOOD&BEVERAGESERVICES.BREWERIES,WINERIES&DISTILLERIES.TST-39",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Kombucha & Non-Alcoholic Beverage Breweries",
+    "code": "FOOD&BEVERAGESERVICES.BREWERIES,WINERIES&DISTILLERIES.TST-40",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Frozen & Packaged Meat Processing Units",
+    "code": "FOOD&BEVERAGESERVICES.MEAT&SEAFOODPROCESSING.TST-41",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Halal & Kosher Meat Production",
+    "code": "FOOD&BEVERAGESERVICES.MEAT&SEAFOODPROCESSING.TST-42",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Seafood Processing & Export Units",
+    "code": "FOOD&BEVERAGESERVICES.MEAT&SEAFOODPROCESSING.TST-43",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Poultry & Dairy-Based Processing Units",
+    "code": "FOOD&BEVERAGESERVICES.MEAT&SEAFOODPROCESSING.TST-44",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Eco-Friendly & Sustainable Clothing",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.TEXTILE&GARMENTPRODUCTION.TST-45",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Sportswear & Activewear Manufacturing",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.TEXTILE&GARMENTPRODUCTION.TST-46",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Traditional & Handwoven Fabric Industries",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.TEXTILE&GARMENTPRODUCTION.TST-47",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Industrial & Protective Workwear Production",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.TEXTILE&GARMENTPRODUCTION.TST-48",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Precision Sheet Metal Cutting & Welding",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.METALFABRICATION&ENGINEERING.TST-49",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Structural Steel & Aluminum Fabrication",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.METALFABRICATION&ENGINEERING.TST-50",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Custom Metal Parts & Component Manufacturing",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.METALFABRICATION&ENGINEERING.TST-51",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Heavy Machinery & Equipment Fabrication",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.METALFABRICATION&ENGINEERING.TST-52",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Herbal Medicine Production",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.CHEMICAL&PHARMACEUTICALMANUFACTURING.TST-53",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Generic & Specialty Drug Manufacturing",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.CHEMICAL&PHARMACEUTICALMANUFACTURING.TST-54",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Agricultural Fertilizer & Pesticide Production",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.CHEMICAL&PHARMACEUTICALMANUFACTURING.TST-55",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Industrial & Cleaning Chemical Manufacturing",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.CHEMICAL&PHARMACEUTICALMANUFACTURING.TST-56",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Electric Vehicle (EV) Repair & Servicing",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.AUTOMOBILEASSEMBLY&REPAIRS.TST-57",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Auto Spare Parts & Accessories Production",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.AUTOMOBILEASSEMBLY&REPAIRS.TST-58",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Heavy-Duty Truck & Bus Maintenance Services",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.AUTOMOBILEASSEMBLY&REPAIRS.TST-59",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Car Body Painting & Denting Workshops",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.AUTOMOBILEASSEMBLY&REPAIRS.TST-60",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Precast Concrete & Modular Construction Components",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.CONSTRUCTIONMATERIALSMANUFACTURING.TST-61",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Sustainable & Eco-Friendly Building Materials",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.CONSTRUCTIONMATERIALSMANUFACTURING.TST-62",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Glass, Tiles & Flooring Material Production",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.CONSTRUCTIONMATERIALSMANUFACTURING.TST-63",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Roofing & Insulation Material Manufacturing",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.CONSTRUCTIONMATERIALSMANUFACTURING.TST-64",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Biodegradable Packaging Solutions",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.PAPER&PACKAGINGPRODUCTS.TST-65",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Recycled Paper & Stationery Production",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.PAPER&PACKAGINGPRODUCTS.TST-66",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Corrugated Box & Industrial Packaging",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.PAPER&PACKAGINGPRODUCTS.TST-67",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Custom Branding & Specialty Packaging",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.PAPER&PACKAGINGPRODUCTS.TST-68",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Smart Home & IoT Devices Manufacturing",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.ELECTRONICS&ELECTRICALEQUIPMENT.TST-69",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Industrial & Consumer Electronics Production",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.ELECTRONICS&ELECTRICALEQUIPMENT.TST-70",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "LED Lighting & Energy-Efficient Appliances",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.ELECTRONICS&ELECTRICALEQUIPMENT.TST-71",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Mobile Phone & Computer Parts Assembly",
+    "code": "MANUFACTURING&INDUSTRIALTRADES.ELECTRONICS&ELECTRICALEQUIPMENT.TST-72",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Intellectual Property & Patent Law Firms",
+    "code": "SERVICES&PROFESSIONALTRADES.LEGAL&CONSULTANCYSERVICES.TST-73",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Corporate & Business Law Firms",
+    "code": "SERVICES&PROFESSIONALTRADES.LEGAL&CONSULTANCYSERVICES.TST-74",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Immigration & Visa Consultancy",
+    "code": "SERVICES&PROFESSIONALTRADES.LEGAL&CONSULTANCYSERVICES.TST-75",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Alternative Dispute Resolution & Mediation",
+    "code": "SERVICES&PROFESSIONALTRADES.LEGAL&CONSULTANCYSERVICES.TST-76",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Forensic Accounting & Fraud Investigation",
+    "code": "SERVICES&PROFESSIONALTRADES.ACCOUNTING&TAXSERVICES.TST-77",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Small Business & Startup Tax Advisory",
+    "code": "SERVICES&PROFESSIONALTRADES.ACCOUNTING&TAXSERVICES.TST-78",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Financial Planning & Wealth Management",
+    "code": "SERVICES&PROFESSIONALTRADES.ACCOUNTING&TAXSERVICES.TST-79",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Payroll Processing & HR Tax Services",
+    "code": "SERVICES&PROFESSIONALTRADES.ACCOUNTING&TAXSERVICES.TST-80",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Cybersecurity & Data Protection Services",
+    "code": "SERVICES&PROFESSIONALTRADES.INFORMATIONTECHNOLOGY&SOFTWAREDEVELOPMENT.TST-81",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Custom Enterprise Software & SaaS Development",
+    "code": "SERVICES&PROFESSIONALTRADES.INFORMATIONTECHNOLOGY&SOFTWAREDEVELOPMENT.TST-82",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "AI & Machine Learning Solutions",
+    "code": "SERVICES&PROFESSIONALTRADES.INFORMATIONTECHNOLOGY&SOFTWAREDEVELOPMENT.TST-83",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "IT Infrastructure & Cloud Computing Services",
+    "code": "SERVICES&PROFESSIONALTRADES.INFORMATIONTECHNOLOGY&SOFTWAREDEVELOPMENT.TST-84",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Influencer & Digital Marketing Agencies",
+    "code": "SERVICES&PROFESSIONALTRADES.ADVERTISING&MEDIAAGENCIES.TST-85",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Branding & Graphic Design Studios",
+    "code": "SERVICES&PROFESSIONALTRADES.ADVERTISING&MEDIAAGENCIES.TST-86",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Video Production & Animation Companies",
+    "code": "SERVICES&PROFESSIONALTRADES.ADVERTISING&MEDIAAGENCIES.TST-87",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Outdoor & Billboard Advertising Services",
+    "code": "SERVICES&PROFESSIONALTRADES.ADVERTISING&MEDIAAGENCIES.TST-88",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Coding Bootcamps & IT Certification Training",
+    "code": "SERVICES&PROFESSIONALTRADES.EDUCATION&TRAININGCENTERS.TST-89",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Vocational & Skill Development Institutes",
+    "code": "SERVICES&PROFESSIONALTRADES.EDUCATION&TRAININGCENTERS.TST-90",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Corporate Training & Leadership Development",
+    "code": "SERVICES&PROFESSIONALTRADES.EDUCATION&TRAININGCENTERS.TST-91",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Online & E-Learning Platforms",
+    "code": "SERVICES&PROFESSIONALTRADES.EDUCATION&TRAININGCENTERS.TST-92",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Medical & Therapeutic Services",
+    "code": "SERVICES&PROFESSIONALTRADES.HEALTH&WELLNESS.TST-93",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Holistic & Alternative Wellness Centers",
+    "code": "SERVICES&PROFESSIONALTRADES.HEALTH&WELLNESS.TST-94",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Hospitals",
+    "code": "SERVICES&PROFESSIONALTRADES.HEALTH&WELLNESS.TST-95",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Beauty & Skincare Clinics",
+    "code": "SERVICES&PROFESSIONALTRADES.HEALTH&WELLNESS.TST-96",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "High-Rise Apartment & Condominium Developers",
+    "code": "CONSTRUCTION&REALESTATE.RESIDENTIAL&COMMERCIALBUILDERS.TST-97",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Smart & Sustainable Housing Construction",
+    "code": "CONSTRUCTION&REALESTATE.RESIDENTIAL&COMMERCIALBUILDERS.TST-98",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Industrial & Warehouse Construction Services",
+    "code": "CONSTRUCTION&REALESTATE.RESIDENTIAL&COMMERCIALBUILDERS.TST-99",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Commercial Office Space & Mall Developers",
+    "code": "CONSTRUCTION&REALESTATE.RESIDENTIAL&COMMERCIALBUILDERS.TST-100",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Smart Home & Automated Interior Solution",
+    "code": "CONSTRUCTION&REALESTATE.INTERIORDESIGN&RENOVATIONSERVICES.TST-101",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Custom Furniture & Home Décor Services",
+    "code": "CONSTRUCTION&REALESTATE.INTERIORDESIGN&RENOVATIONSERVICES.TST-102",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Office & Retail Space Remodeling",
+    "code": "CONSTRUCTION&REALESTATE.INTERIORDESIGN&RENOVATIONSERVICES.TST-103",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Eco-Friendly & Minimalist Interior Design",
+    "code": "CONSTRUCTION&REALESTATE.INTERIORDESIGN&RENOVATIONSERVICES.TST-104",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Solar-Powered Plumbing & Water Heating Systems",
+    "code": "CONSTRUCTION&REALESTATE.PLUMBING&ELECTRICALCONTRACTORS.TST-105",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Smart Home & Energy-Efficient Electrical Installations",
+    "code": "CONSTRUCTION&REALESTATE.PLUMBING&ELECTRICALCONTRACTORS.TST-106",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Industrial HVAC & Refrigeration Services",
+    "code": "CONSTRUCTION&REALESTATE.PLUMBING&ELECTRICALCONTRACTORS.TST-107",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Fire Safety & Sprinkler System Installations",
+    "code": "CONSTRUCTION&REALESTATE.PLUMBING&ELECTRICALCONTRACTORS.TST-108",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Cold Chain Logistics & Temperature-Controlled Storage",
+    "code": "TRANSPORTATION&LOGISTICS.FREIGHT&CARGOSERVICES.TST-109",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Bulk Cargo & Container Shipping Services",
+    "code": "TRANSPORTATION&LOGISTICS.FREIGHT&CARGOSERVICES.TST-110",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Air Freight & Express Cargo Handling",
+    "code": "TRANSPORTATION&LOGISTICS.FREIGHT&CARGOSERVICES.TST-111",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Last-Mile & E-Commerce Delivery Logistics",
+    "code": "TRANSPORTATION&LOGISTICS.FREIGHT&CARGOSERVICES.TST-112",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Electric & Hybrid Car Ride-Sharing Fleets",
+    "code": "TRANSPORTATION&LOGISTICS.TAXI&RIDE-SHARINGSERVICES.TST-113",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Luxury & Chauffeur-Driven Car Services",
+    "code": "TRANSPORTATION&LOGISTICS.TAXI&RIDE-SHARINGSERVICES.TST-114",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Bike & Scooter Ride-Sharing Platforms",
+    "code": "TRANSPORTATION&LOGISTICS.TAXI&RIDE-SHARINGSERVICES.TST-115",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Accessible Transportation for Elderly & Disabled",
+    "code": "TRANSPORTATION&LOGISTICS.TAXI&RIDE-SHARINGSERVICES.TST-116",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Last-Mile Delivery Services",
+    "code": "TRANSPORTATION&LOGISTICS.COURIER&DELIVERYSERVICES.TST-117",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Cross-Border & International Shipping",
+    "code": "TRANSPORTATION&LOGISTICS.COURIER&DELIVERYSERVICES.TST-118",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Same-Day & Express Parcel Services",
+    "code": "TRANSPORTATION&LOGISTICS.COURIER&DELIVERYSERVICES.TST-119",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "E-Commerce Fulfillment & Logistics Support",
+    "code": "TRANSPORTATION&LOGISTICS.COURIER&DELIVERYSERVICES.TST-120",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Chauffeur-Driven Car Rental Services",
+    "code": "TRANSPORTATION&LOGISTICS.CARRENTALS&LEASING.TST-121",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Luxury & Sports Car Rental Services",
+    "code": "TRANSPORTATION&LOGISTICS.CARRENTALS&LEASING.TST-122",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Corporate Fleet Leasing Solutions",
+    "code": "TRANSPORTATION&LOGISTICS.CARRENTALS&LEASING.TST-123",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Short-Term & Subscription-Based Car Rentals",
+    "code": "TRANSPORTATION&LOGISTICS.CARRENTALS&LEASING.TST-124",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Sustainable & Low-Emission Cargo Shipping",
+    "code": "TRANSPORTATION&LOGISTICS.SHIPPING&MARITIMETRADE.TST-125",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Cruise & Passenger Ferry Services",
+    "code": "TRANSPORTATION&LOGISTICS.SHIPPING&MARITIMETRADE.TST-126",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Port & Dockyard Operations Management",
+    "code": "TRANSPORTATION&LOGISTICS.SHIPPING&MARITIMETRADE.TST-127",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Fishing & Marine Export Businesses",
+    "code": "TRANSPORTATION&LOGISTICS.SHIPPING&MARITIMETRADE.TST-128",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Private Jet & Air Taxi Services",
+    "code": "TRANSPORTATION&LOGISTICS.AVIATION&AIRTRANSPORTSERVICES.TST-129",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Cargo & Logistics Airline Operators",
+    "code": "TRANSPORTATION&LOGISTICS.AVIATION&AIRTRANSPORTSERVICES.TST-130",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  },
+  {
+    "name": "Charter & Regional Airline Operators",
+    "code": "TRANSPORTATION&LOGISTICS.AVIATION&AIRTRANSPORTSERVICES.TST-131",
+    "uom": "GROSSUNITS",
+    "applicationDocument": [
+      {
+        "applicationType": "NEW",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE"
+        ]
+      },
+      {
+        "applicationType": "RENEWAL",
+        "documentList": [
+          "IDENTIFICATIONPROOF",
+          "TRADEPREMISESPROOF",
+          "OWNERPHOTO",
+          "MISCDOCUMENTS",
+          "BUSINESSREGISTRATIONCERTIFICATE",
+          "TAXIDENTIFICATIONNUMBER",
+          "ENVIRONMENTALCLEARANCECERTIFICATE",
+          "FIRE&SAFETYCERTIFICATE",
+          "OLDLICENCENO"
+        ]
+      }
+    ],
+    "verificationDocument": [],
+    "active": true,
+    "type": "TL",
+    "validityPeriod": null
+  }
+]
