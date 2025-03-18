@@ -1,7 +1,4 @@
-{
-  "tenantId": "pg",
-  "moduleName": "BillingService",
-  "TaxPeriod": [
+[
     {
       "fromDate": 1267381800,
       "toDate": 1903804199,
@@ -11,4 +8,3 @@
       "financialYear": "2020-30"
     }
   ]
-}
