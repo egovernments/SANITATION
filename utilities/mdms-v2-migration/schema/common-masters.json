@@ -50,5 +50,161 @@
             ]
         },
         "isActive": true
+    },
+    {
+        "tenantId": "pg",
+        "code": "common-masters.OwnerShipCategory",
+        "description": "  ",
+        "definition": {
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "required": [
+                "code",
+                "active"
+            ],
+            "x-unique": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "isActive": true
+    },
+    {
+        "tenantId": "pg",
+        "code": "common-masters.StructureType",
+        "description": "  ",
+        "definition": {
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "required": [
+                "code",
+                "active"
+            ],
+            "x-unique": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "isActive": true
+    },
+    {
+        "tenantId": "pg",
+        "code": "common-masters.OwnerType",
+        "description": "  ",
+        "definition": {
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "required": [
+                "code",
+                "active"
+            ],
+            "x-unique": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "isActive": true
+    },
+    {
+        "tenantId": "pg",
+        "code": "common-masters.GenderType",
+        "description": "  ",
+        "definition": {
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "required": [
+                "code",
+                "active"
+            ],
+            "x-unique": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "isActive": true
+    },
+    {
+        "tenantId": "pg",
+        "code": "common-masters.IdFormat",
+        "description": "  ",
+        "definition": {
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "required": [
+                "format",
+                "idname"
+            ],
+            "x-unique": [
+                "idname"
+            ],
+            "properties": {
+                "format": {
+                    "type": "string"
+                },
+                "idname": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "isActive": true
+    },
+    {
+        "tenantId": "pg",
+        "code": "common-masters.UOM",
+        "description": "  ",
+        "definition": {
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "required": [
+                "code",
+                "active"
+            ],
+            "x-unique": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "isActive": true
     }
 ]
