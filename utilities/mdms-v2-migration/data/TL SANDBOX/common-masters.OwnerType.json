@@ -18,17 +18,5 @@
   {
     "code": "ECONOMICALLYDISADVANTAGED",
     "active": true
-  },
-  {
-    "code": "REFUGEESANDASYLUMSEEKERS",
-    "active": true
-  },
-  {
-    "code": "RETURNINGCITIZENS(FORMERLYINCARCERATED)",
-    "active": true
-  },
-  {
-    "code": "NATIVEAMERICANORINDIGENOUSPEOPLES",
-    "active": true
   }
 ]
