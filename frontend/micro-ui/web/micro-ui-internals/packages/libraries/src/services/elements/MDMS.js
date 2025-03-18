@@ -1,9 +1,9 @@
 //HAVE TO CHANGE THI
 // import { stringReplaceAll } from "@egovernments/digit-ui-module-pt";
-import { ApiCacheService } from '../atoms/ApiCacheService';
-import Urls from '../atoms/urls';
-import { Request, ServiceRequest } from '../atoms/Utils/Request';
-import { PersistantStorage } from '../atoms/Utils/Storage';
+import { ApiCacheService } from "../atoms/ApiCacheService";
+import Urls from "../atoms/urls";
+import { Request, ServiceRequest } from "../atoms/Utils/Request";
+import { PersistantStorage } from "../atoms/Utils/Storage";
 
 // export const stringReplaceAll = (str = '', searcher = '', replaceWith = '') => {
 //   if (searcher == '') return str;y
@@ -39,7 +39,7 @@ const GetCitiesWithi18nKeys = (MdmsRes, moduleCode) => {
       emailId,
       address,
       contactNumber,
-      i18nKey: 'TENANT_TENANTS_' + code.replace('.', '_').toUpperCase(),
+      i18nKey: "TENANT_TENANTS_" + code.replace(".", "_").toUpperCase(),
     }))
     .sort((cityA, cityB) => {
       const na = cityA.name.toLowerCase(),
@@ -54,22 +54,22 @@ const initRequestBody = (tenantId) => ({
     tenantId,
     moduleDetails: [
       {
-        moduleName: 'common-masters',
+        moduleName: "common-masters",
         masterDetails: [
-          { name: 'Department' },
-          { name: 'Designation' },
-          { name: 'StateInfo' },
-          { name: 'wfSlaConfig' },
-          { name: 'uiHomePage' },
+          { name: "Department" },
+          { name: "Designation" },
+          { name: "StateInfo" },
+          { name: "wfSlaConfig" },
+          { name: "uiHomePage" },
         ],
       },
       {
-        moduleName: 'tenant',
-        masterDetails: [{ name: 'tenants' }, { name: 'citymodule' }],
+        moduleName: "tenant",
+        masterDetails: [{ name: "tenants" }, { name: "citymodule" }],
       },
       {
-        moduleName: 'DIGIT-UI',
-        masterDetails: [{ name: 'ApiCachingSettings' }],
+        moduleName: "DIGIT-UI",
+        masterDetails: [{ name: "ApiCachingSettings" }],
       },
     ],
   },
@@ -128,7 +128,7 @@ const getReceiptKey = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'uiCommonPay',
+            name: "uiCommonPay",
           },
         ],
       },
@@ -144,24 +144,24 @@ const getBillsGenieKey = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'BusinessService',
+            name: "BusinessService",
           },
         ],
       },
       {
-        moduleName: 'tenant',
-        masterDetails: [{ name: 'tenants' }, { name: 'citymodule' }],
+        moduleName: "tenant",
+        masterDetails: [{ name: "tenants" }, { name: "citymodule" }],
       },
       {
-        moduleName: 'common-masters',
-        masterDetails: [{ name: 'uiCommonPay' }],
+        moduleName: "common-masters",
+        masterDetails: [{ name: "uiCommonPay" }],
       },
     ],
   },
 });
 
 const getModuleServiceDefsCriteria = (tenantId, moduleCode) => ({
-  type: 'serviceDefs',
+  type: "serviceDefs",
   details: {
     tenantId: tenantId,
     moduleDetails: [
@@ -169,7 +169,7 @@ const getModuleServiceDefsCriteria = (tenantId, moduleCode) => ({
         moduleName: `RAINMAKER-${moduleCode}`,
         masterDetails: [
           {
-            name: 'ServiceDefs',
+            name: "ServiceDefs",
           },
         ],
       },
@@ -178,7 +178,7 @@ const getModuleServiceDefsCriteria = (tenantId, moduleCode) => ({
 });
 
 const getSanitationTypeCriteria = (tenantId, moduleCode) => ({
-  type: 'SanitationType',
+  type: "SanitationType",
   details: {
     tenantId: tenantId,
     moduleDetails: [
@@ -186,7 +186,7 @@ const getSanitationTypeCriteria = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'SanitationType',
+            name: "SanitationType",
             filter: null,
           },
         ],
@@ -196,7 +196,7 @@ const getSanitationTypeCriteria = (tenantId, moduleCode) => ({
 });
 
 const getPitTypeCriteria = (tenantId, moduleCode) => ({
-  type: 'PitType',
+  type: "PitType",
   details: {
     tenantId,
     moduleDetails: [
@@ -204,7 +204,7 @@ const getPitTypeCriteria = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'PitType',
+            name: "PitType",
             filter: null,
           },
         ],
@@ -214,7 +214,7 @@ const getPitTypeCriteria = (tenantId, moduleCode) => ({
 });
 
 const getApplicationChannelCriteria = (tenantId, moduleCode) => ({
-  type: 'ApplicationChannel',
+  type: "ApplicationChannel",
   details: {
     tenantId: tenantId,
     moduleDetails: [
@@ -222,7 +222,25 @@ const getApplicationChannelCriteria = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'ApplicationChannel',
+            name: "ApplicationChannel",
+            filter: null,
+          },
+        ],
+      },
+    ],
+  },
+});
+
+const getUrcConfigCriteria = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId: tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [
+          {
+            name: "UrcConfig",
             filter: null,
           },
         ],
@@ -240,7 +258,7 @@ const getPropertyTypeCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'PropertyType',
+            name: "PropertyType",
             filter: null,
           },
         ],
@@ -258,7 +276,7 @@ const getPropertyUsageCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'PropertyType',
+            name: "PropertyType",
             filter: null,
           },
         ],
@@ -276,7 +294,7 @@ const getCommonFieldsCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'CommonFieldsConfig',
+            name: "CommonFieldsConfig",
             filter: null,
           },
         ],
@@ -294,7 +312,7 @@ const getPreFieldsCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'PreFieldsConfig',
+            name: "PreFieldsConfig",
             filter: null,
           },
         ],
@@ -312,7 +330,7 @@ const getPostFieldsCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'PostFieldsConfig',
+            name: "PostFieldsConfig",
             filter: null,
           },
         ],
@@ -322,7 +340,7 @@ const getPostFieldsCriteria = (tenantId, moduleCode, type) => ({
 });
 
 const getConfig = (tenantId, moduleCode) => ({
-  type: 'Config',
+  type: "Config",
   details: {
     tenantId,
     moduleDetails: [
@@ -330,7 +348,7 @@ const getConfig = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'Config',
+            name: "Config",
           },
         ],
       },
@@ -347,7 +365,7 @@ const getVehicleTypeCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'VehicleMakeModel',
+            name: "VehicleMakeModel",
             filter: null,
           },
         ],
@@ -364,7 +382,7 @@ const getChecklistCriteria = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'CheckList',
+            name: "CheckList",
             filter: null,
           },
         ],
@@ -382,7 +400,7 @@ const getSlumLocalityCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'Slum',
+            name: "Slum",
           },
         ],
       },
@@ -399,14 +417,13 @@ const getVehicleTrackingCheckCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'VehicleTracking',
+            name: "VehicleTracking",
           },
         ],
       },
     ],
   },
 });
-
 
 const getPropertyOwnerTypeCriteria = (tenantId, moduleCode, type) => ({
   type,
@@ -415,7 +432,7 @@ const getPropertyOwnerTypeCriteria = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'OwnerType' }],
+        masterDetails: [{ name: "OwnerType" }],
       },
     ],
   },
@@ -432,7 +449,7 @@ const getSubPropertyOwnerShipCategoryCriteria = (
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'SubOwnerShipCategory' }],
+        masterDetails: [{ name: "SubOwnerShipCategory" }],
       },
     ],
   },
@@ -444,7 +461,7 @@ const getPropertyOwnerShipCategoryCriteria = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'OwnerShipCategory' }],
+        masterDetails: [{ name: "OwnerShipCategory" }],
       },
     ],
   },
@@ -457,7 +474,7 @@ const getTradeOwnerShipCategoryCriteria = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'OwnerShipCategory' }],
+        masterDetails: [{ name: "OwnerShipCategory" }],
       },
     ],
   },
@@ -471,7 +488,7 @@ const getDocumentRequiredScreenCategory = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'Documents',
+            name: "Documents",
           },
         ],
       },
@@ -487,7 +504,7 @@ const getDefaultMapConfig = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'MapConfig',
+            name: "MapConfig",
           },
         ],
       },
@@ -502,7 +519,7 @@ const getUsageCategoryList = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'UsageCategory' }],
+        masterDetails: [{ name: "UsageCategory" }],
       },
     ],
   },
@@ -515,7 +532,7 @@ const getPTPropertyTypeList = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'PropertyType' }],
+        masterDetails: [{ name: "PropertyType" }],
       },
     ],
   },
@@ -528,7 +545,7 @@ const getTLStructureTypeList = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'StructureType' }],
+        masterDetails: [{ name: "StructureType" }],
       },
     ],
   },
@@ -541,7 +558,7 @@ const getTLAccessoriesTypeList = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'AccessoriesCategory' }],
+        masterDetails: [{ name: "AccessoriesCategory" }],
       },
     ],
   },
@@ -555,7 +572,7 @@ const getTLFinancialYearList = (tenantId, moduleCode, type) => ({
       {
         moduleName: moduleCode,
         masterDetails: [
-          { name: 'FinancialYear', filter: `[?(@.module == "TL")]` },
+          { name: "FinancialYear", filter: `[?(@.module == "TL")]` },
         ],
       },
     ],
@@ -569,7 +586,7 @@ const getPTFloorList = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'Floor' }],
+        masterDetails: [{ name: "Floor" }],
       },
     ],
   },
@@ -593,14 +610,14 @@ const getReasonCriteria = (tenantId, moduleCode, type, payload) => ({
 const getBillingServiceForBusinessServiceCriteria = (filter) => ({
   moduleDetails: [
     {
-      moduleName: 'BillingService',
+      moduleName: "BillingService",
       masterDetails: [
-        { name: 'BusinessService', filter },
+        { name: "BusinessService", filter },
         {
-          name: 'TaxHeadMaster',
+          name: "TaxHeadMaster",
         },
         {
-          name: 'TaxPeriod',
+          name: "TaxPeriod",
         },
       ],
     },
@@ -616,7 +633,7 @@ const getRoleStatusCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'RoleStatusMapping',
+            name: "RoleStatusMapping",
             filter: null,
           },
         ],
@@ -632,7 +649,7 @@ const getRentalDetailsCategoryCriteria = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'RentalDetails',
+            name: "RentalDetails",
           },
         ],
       },
@@ -648,7 +665,7 @@ const getChargeSlabsCategoryCriteria = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'ChargeSlabs',
+            name: "ChargeSlabs",
           },
         ],
       },
@@ -665,7 +682,7 @@ const getGenderTypeList = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'GenderType',
+            name: "GenderType",
           },
         ],
       },
@@ -676,10 +693,10 @@ const getGenderTypeList = (tenantId, moduleCode, type) => ({
 const getMeterStatusTypeList = (tenantId) => ({
   moduleDetails: [
     {
-      moduleName: 'ws-services-calculation',
+      moduleName: "ws-services-calculation",
       masterDetails: [
         {
-          name: 'MeterStatus',
+          name: "MeterStatus",
           filter: `$.*.name`,
         },
       ],
@@ -690,11 +707,11 @@ const getMeterStatusTypeList = (tenantId) => ({
 const getBillingPeriodValidation = (tenantId) => ({
   moduleDetails: [
     {
-      moduleName: 'ws-services-masters',
+      moduleName: "ws-services-masters",
       masterDetails: [
         {
-          name: 'billingPeriod',
-          filter: '*',
+          name: "billingPeriod",
+          filter: "*",
         },
       ],
     },
@@ -709,7 +726,7 @@ const getDssDashboardCriteria = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'dashboard-config',
+            name: "dashboard-config",
           },
         ],
       },
@@ -729,7 +746,7 @@ const getMCollectBillingServiceCriteria = (
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'BusinessService', filter: filter }],
+        masterDetails: [{ name: "BusinessService", filter: filter }],
       },
     ],
   },
@@ -742,7 +759,7 @@ const getTradeUnitsDataList = (tenantId, moduleCode, type, filter) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'TradeType', filter: filter }],
+        masterDetails: [{ name: "TradeType", filter: filter }],
       },
     ],
   },
@@ -755,7 +772,7 @@ const getMCollectApplicationStatusCriteria = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'applicationStatus' }],
+        masterDetails: [{ name: "applicationStatus" }],
       },
     ],
   },
@@ -764,23 +781,23 @@ const getMCollectApplicationStatusCriteria = (tenantId, moduleCode, type) => ({
 const getHrmsEmployeeRolesandDesignations = () => ({
   moduleDetails: [
     {
-      moduleName: 'common-masters',
+      moduleName: "common-masters",
       masterDetails: [
-        { name: 'Department', filter: '[?(@.active == true)]' },
-        { name: 'Designation', filter: '[?(@.active == true)]' },
+        { name: "Department", filter: "[?(@.active == true)]" },
+        { name: "Designation", filter: "[?(@.active == true)]" },
       ],
     },
     {
-      moduleName: 'tenant',
-      masterDetails: [{ name: 'tenants' }],
+      moduleName: "tenant",
+      masterDetails: [{ name: "tenants" }],
     },
     {
-      moduleName: 'ACCESSCONTROL-ROLES',
-      masterDetails: [{ name: 'roles', filter: "$.[?(@.code!='CITIZEN')]" }],
+      moduleName: "ACCESSCONTROL-ROLES",
+      masterDetails: [{ name: "roles", filter: "$.[?(@.code!='CITIZEN')]" }],
     },
     {
-      moduleName: 'egov-location',
-      masterDetails: [{ name: 'TenantBoundary' }],
+      moduleName: "egov-location",
+      masterDetails: [{ name: "TenantBoundary" }],
     },
   ],
 });
@@ -791,7 +808,7 @@ const getFSTPPlantCriteria = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'FSTPPlantInfo' }],
+        masterDetails: [{ name: "FSTPPlantInfo" }],
       },
     ],
   },
@@ -803,7 +820,7 @@ const getCancelReceiptReason = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'CancelReceiptReason' }],
+        masterDetails: [{ name: "CancelReceiptReason" }],
       },
     ],
   },
@@ -815,7 +832,7 @@ const getReceiptStatus = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'ReceiptStatus' }],
+        masterDetails: [{ name: "ReceiptStatus" }],
       },
     ],
   },
@@ -827,7 +844,7 @@ const getCancelReceiptReasonAndStatus = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: 'ReceiptStatus' }, { name: 'uiCommonPay' }],
+        masterDetails: [{ name: "ReceiptStatus" }, { name: "uiCommonPay" }],
       },
     ],
   },
@@ -842,7 +859,7 @@ const getDocumentTypesCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'DocTypeMapping',
+            name: "DocTypeMapping",
           },
         ],
       },
@@ -859,7 +876,7 @@ const getTradeTypeRoleCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'TradeTypetoRoleMapping',
+            name: "TradeTypetoRoleMapping",
           },
         ],
       },
@@ -876,7 +893,7 @@ const getFSTPORejectionReasonCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'FSTPORejectionReason',
+            name: "FSTPORejectionReason",
             filter: null,
           },
         ],
@@ -894,7 +911,7 @@ const getFSMPaymentTypeCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'PaymentType',
+            name: "PaymentType",
             filter: null,
           },
         ],
@@ -912,7 +929,7 @@ const getFSMTripNumberCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'TripNumber',
+            name: "TripNumber",
             filter: null,
           },
         ],
@@ -930,7 +947,7 @@ const getFSMReceivedPaymentTypeCriteria = (tenantId, moduleCode, type) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: 'ReceivedPaymentType',
+            name: "ReceivedPaymentType",
             filter: null,
           },
         ],
@@ -945,10 +962,10 @@ const getWSTaxHeadMasterCritera = (tenantId, moduleCode, type) => ({
     tenantId: tenantId,
     moduleDetails: [
       {
-        moduleName: 'BillingService',
+        moduleName: "BillingService",
         masterDetails: [
           {
-            name: 'TaxHeadMaster',
+            name: "TaxHeadMaster",
             filter: null,
           },
         ],
@@ -960,10 +977,10 @@ const getWSTaxHeadMasterCritera = (tenantId, moduleCode, type) => ({
 const getHowItWorksJSON = (tenantId) => ({
   moduleDetails: [
     {
-      moduleName: 'common-masters',
+      moduleName: "common-masters",
       masterDetails: [
         {
-          name: 'howItWorks',
+          name: "howItWorks",
         },
       ],
     },
@@ -973,10 +990,10 @@ const getHowItWorksJSON = (tenantId) => ({
 const getFAQsJSON = (tenantId) => ({
   moduleDetails: [
     {
-      moduleName: 'common-masters',
+      moduleName: "common-masters",
       masterDetails: [
         {
-          name: 'faqs',
+          name: "faqs",
         },
       ],
     },
@@ -985,10 +1002,10 @@ const getFAQsJSON = (tenantId) => ({
 const getDSSFAQsJSON = (tenantId) => ({
   moduleDetails: [
     {
-      moduleName: 'dss-dashboard',
+      moduleName: "dss-dashboard",
       masterDetails: [
         {
-          name: 'FAQs',
+          name: "FAQs",
         },
       ],
     },
@@ -997,10 +1014,10 @@ const getDSSFAQsJSON = (tenantId) => ({
 const getDSSAboutJSON = (tenantId) => ({
   moduleDetails: [
     {
-      moduleName: 'dss-dashboard',
+      moduleName: "dss-dashboard",
       masterDetails: [
         {
-          name: 'About',
+          name: "About",
         },
       ],
     },
@@ -1010,10 +1027,10 @@ const getDSSAboutJSON = (tenantId) => ({
 const getStaticData = () => ({
   moduleDetails: [
     {
-      moduleName: 'common-masters',
+      moduleName: "common-masters",
       masterDetails: [
         {
-          name: 'StaticData',
+          name: "StaticData",
         },
       ],
     },
@@ -1021,7 +1038,7 @@ const getStaticData = () => ({
 });
 
 const GetEgovLocations = (MdmsRes) => {
-  return MdmsRes['egov-location'].TenantBoundary[0].boundary.children.map(
+  return MdmsRes["egov-location"].TenantBoundary[0].boundary.children.map(
     (obj) => ({
       name: obj.localname,
       i18nKey: obj.localname,
@@ -1033,24 +1050,26 @@ const GetServiceDefs = (MdmsRes, moduleCode) =>
   MdmsRes[`RAINMAKER-${moduleCode}`].ServiceDefs.filter((def) => def.active);
 
 const GetSanitationType = (MdmsRes) =>
-  MdmsRes['FSM'].SanitationType.filter((type) => type.active);
+  MdmsRes["FSM"].SanitationType.filter((type) => type.active);
 
 const GetPitType = (MdmsRes) =>
-  MdmsRes['FSM'].PitType.filter((item) => item.active).map((type) => ({
+  MdmsRes["FSM"].PitType.filter((item) => item.active).map((type) => ({
     ...type,
     i18nKey: `PITTYPE_MASTERS_${type.code}`,
   }));
 
 const GetApplicationChannel = (MdmsRes) =>
-  MdmsRes['FSM'].ApplicationChannel.filter((type) => type.active).map(
+  MdmsRes["FSM"].ApplicationChannel.filter((type) => type.active).map(
     (channel) => ({
       ...channel,
       i18nKey: `ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${channel.code}`,
     })
   );
 
+const getUrcConfig = (MdmsRes) => MdmsRes["FSM"].UrcConfig;
+
 const GetPropertyType = (MdmsRes) =>
-  MdmsRes['FSM'].PropertyType.filter(
+  MdmsRes["FSM"].PropertyType.filter(
     (property) => property.active && !property.propertyType
   ).map((item) => ({
     ...item,
@@ -1059,7 +1078,7 @@ const GetPropertyType = (MdmsRes) =>
   }));
 
 const GetPropertySubtype = (MdmsRes) =>
-  MdmsRes['FSM'].PropertyType.filter(
+  MdmsRes["FSM"].PropertyType.filter(
     (property) => property.active && property.propertyType
   ).map((item) => ({
     ...item,
@@ -1068,7 +1087,7 @@ const GetPropertySubtype = (MdmsRes) =>
   }));
 
 const GetVehicleType = (MdmsRes) =>
-  MdmsRes['Vehicle'].VehicleMakeModel.filter((vehicle) => vehicle.active)
+  MdmsRes["Vehicle"].VehicleMakeModel.filter((vehicle) => vehicle.active)
     .filter((vehicle) => vehicle.make)
     .map((vehicleDetails) => {
       return {
@@ -1078,7 +1097,7 @@ const GetVehicleType = (MdmsRes) =>
     });
 
 const GetVehicleMakeModel = (MdmsRes) =>
-  MdmsRes['Vehicle'].VehicleMakeModel.filter((vehicle) => vehicle.active).map(
+  MdmsRes["Vehicle"].VehicleMakeModel.filter((vehicle) => vehicle.active).map(
     (vehicleDetails) => {
       return {
         ...vehicleDetails,
@@ -1088,7 +1107,7 @@ const GetVehicleMakeModel = (MdmsRes) =>
   );
 
 const GetSlumLocalityMapping = (MdmsRes, tenantId) =>
-  MdmsRes['FSM'].Slum.filter((type) => type.active).reduce((prev, curr) => {
+  MdmsRes["FSM"].Slum.filter((type) => type.active).reduce((prev, curr) => {
     return prev[curr.locality]
       ? {
           ...prev,
@@ -1096,7 +1115,7 @@ const GetSlumLocalityMapping = (MdmsRes, tenantId) =>
             ...prev[curr.locality],
             {
               ...curr,
-              i18nKey: `${tenantId.toUpperCase().replace('.', '_')}_${
+              i18nKey: `${tenantId.toUpperCase().replace(".", "_")}_${
                 curr.locality
               }_${curr.code}`,
             },
@@ -1107,7 +1126,7 @@ const GetSlumLocalityMapping = (MdmsRes, tenantId) =>
           [curr.locality]: [
             {
               ...curr,
-              i18nKey: `${tenantId.toUpperCase().replace('.', '_')}_${
+              i18nKey: `${tenantId.toUpperCase().replace(".", "_")}_${
                 curr.locality
               }_${curr.code}`,
             },
@@ -1116,7 +1135,7 @@ const GetSlumLocalityMapping = (MdmsRes, tenantId) =>
   }, {});
 
 const GetPropertyOwnerShipCategory = (MdmsRes) =>
-  MdmsRes['PropertyTax'].OwnerShipCategory.filter(
+  MdmsRes["PropertyTax"].OwnerShipCategory.filter(
     (ownerShip) => ownerShip.active
   ).map((ownerShipDetails) => {
     return {
@@ -1126,7 +1145,7 @@ const GetPropertyOwnerShipCategory = (MdmsRes) =>
   });
 
 const GetTradeOwnerShipCategory = (MdmsRes) =>
-  MdmsRes['common-masters'].OwnerShipCategory.filter(
+  MdmsRes["common-masters"].OwnerShipCategory.filter(
     (ownerShip) => ownerShip.active
   ).map((ownerShipDetails) => {
     return {
@@ -1136,7 +1155,7 @@ const GetTradeOwnerShipCategory = (MdmsRes) =>
   });
 
 const GetPropertyOwnerType = (MdmsRes) =>
-  MdmsRes['PropertyTax'].OwnerType.filter((owner) => owner.active).map(
+  MdmsRes["PropertyTax"].OwnerType.filter((owner) => owner.active).map(
     (ownerDetails) => {
       return {
         ...ownerDetails,
@@ -1146,7 +1165,7 @@ const GetPropertyOwnerType = (MdmsRes) =>
   );
 
 const getSubPropertyOwnerShipCategory = (MdmsRes) => {
-  MdmsRes['PropertyTax'].SubOwnerShipCategory.filter(
+  MdmsRes["PropertyTax"].SubOwnerShipCategory.filter(
     (category) => category.active
   ).map((subOwnerShipDetails) => {
     return {
@@ -1155,13 +1174,13 @@ const getSubPropertyOwnerShipCategory = (MdmsRes) => {
     };
   });
   sessionStorage.setItem(
-    'getSubPropertyOwnerShipCategory',
+    "getSubPropertyOwnerShipCategory",
     JSON.stringify(MdmsRes)
   );
 };
 
 const getDocumentRequiredScreen = (MdmsRes) => {
-  MdmsRes['PropertyTax'].Documents.filter((Documents) => Documents.active).map(
+  MdmsRes["PropertyTax"].Documents.filter((Documents) => Documents.active).map(
     (dropdownData) => {
       return {
         ...Documents,
@@ -1172,7 +1191,7 @@ const getDocumentRequiredScreen = (MdmsRes) => {
 };
 
 const getTLDocumentRequiredScreen = (MdmsRes) => {
-  MdmsRes['TradeLicense'].Documents.filter((Documents) => Documents.active).map(
+  MdmsRes["TradeLicense"].Documents.filter((Documents) => Documents.active).map(
     (dropdownData) => {
       return {
         ...Documents,
@@ -1183,7 +1202,7 @@ const getTLDocumentRequiredScreen = (MdmsRes) => {
 };
 
 const getMapConfig = (MdmsRes) => {
-  MdmsRes['PropertyTax'].MapConfig.filter((MapConfig) => MapConfig).map(
+  MdmsRes["PropertyTax"].MapConfig.filter((MapConfig) => MapConfig).map(
     (MapData) => {
       return {
         ...MapConfig,
@@ -1194,7 +1213,7 @@ const getMapConfig = (MdmsRes) => {
 };
 
 const getUsageCategory = (MdmsRes) =>
-  MdmsRes['PropertyTax'].UsageCategory.filter(
+  MdmsRes["PropertyTax"].UsageCategory.filter(
     (UsageCategory) => UsageCategory.active
   ).map((UsageCategorylist) => {
     return {
@@ -1204,50 +1223,50 @@ const getUsageCategory = (MdmsRes) =>
   });
 
 const getPTPropertyType = (MdmsRes) =>
-  MdmsRes['PropertyTax'].UsageCategory.filter(
+  MdmsRes["PropertyTax"].UsageCategory.filter(
     (PropertyType) => PropertyType.active
   ).map((PTPropertyTypelist) => {
     return {
       ...UsageCategorylist,
       i18nKey: `COMMON_PROPTYPE_${Digit.Utils.locale.stringReplaceAll(
         PTPropertyTypelist.code,
-        '.',
-        '_'
+        ".",
+        "_"
       )}`,
     };
   });
 
 const getTLStructureType = (MdmsRes) =>
-  MdmsRes['common-masters'].StructureType.filter(
+  MdmsRes["common-masters"].StructureType.filter(
     (StructureType) => StructureType.active
   ).map((TLStructureTypeList) => {
     return {
       ...TLStructureTypeList,
       i18nKey: `COMMON_MASTERS_STRUCTURETYPE_${Digit.Utils.locale.stringReplaceAll(
         TLStructureTypeList.code,
-        '.',
-        '_'
+        ".",
+        "_"
       )}`,
     };
   });
 
 const getTLAccessoriesType = (MdmsRes) =>
-  MdmsRes['TradeLicense'].AccessoriesCategory.filter(
+  MdmsRes["TradeLicense"].AccessoriesCategory.filter(
     (AccessoriesCategory) => AccessoriesCategory.active
   ).map((TLAccessoryTypeList) => {
     return {
       ...TLAccessoryTypeList,
       i18nKey: `TRADELICENSE_ACCESSORIESCATEGORY_${Digit.Utils.locale.stringReplaceAll(
         TLAccessoryTypeList.code,
-        '.',
-        '_'
+        ".",
+        "_"
       )}`,
     };
   });
 
 const getTLFinancialYear = (MdmsRes) =>
-  MdmsRes['egf-master'].FinancialYear.filter(
-    (FinancialYear) => FinancialYear.active && FinancialYear.module === 'TL'
+  MdmsRes["egf-master"].FinancialYear.filter(
+    (FinancialYear) => FinancialYear.active && FinancialYear.module === "TL"
   ).map((FinancialYearList) => {
     return {
       ...FinancialYearList,
@@ -1255,7 +1274,7 @@ const getTLFinancialYear = (MdmsRes) =>
     };
   });
 const getFloorList = (MdmsRes) =>
-  MdmsRes['PropertyTax'].Floor.filter((PTFloor) => PTFloor.active).map(
+  MdmsRes["PropertyTax"].Floor.filter((PTFloor) => PTFloor.active).map(
     (PTFloorlist) => {
       return {
         ...PTFloorlist,
@@ -1278,7 +1297,7 @@ const GetReasonType = (MdmsRes, type, moduleCode) =>
   );
 
 const getRentalDetailsCategory = (MdmsRes) => {
-  MdmsRes['PropertyTax'].RentalDetails.filter(
+  MdmsRes["PropertyTax"].RentalDetails.filter(
     (category) => category.active
   ).map((RentalDetailsInfo) => {
     return {
@@ -1289,7 +1308,7 @@ const getRentalDetailsCategory = (MdmsRes) => {
 };
 
 const getChargeSlabsCategory = (MdmsRes) => {
-  MdmsRes['PropertyTax'].ChargeSlabs.filter((category) => category.active).map(
+  MdmsRes["PropertyTax"].ChargeSlabs.filter((category) => category.active).map(
     (ChargeSlabsInfo) => {
       return {
         ...ChargeSlabsInfo,
@@ -1299,7 +1318,7 @@ const getChargeSlabsCategory = (MdmsRes) => {
 };
 
 const getGenderType = (MdmsRes) => {
-  return MdmsRes['common-masters'].GenderType.filter(
+  return MdmsRes["common-masters"].GenderType.filter(
     (GenderType) => GenderType.active
   ).map((genderDetails) => {
     return {
@@ -1311,7 +1330,7 @@ const getGenderType = (MdmsRes) => {
 };
 
 const TLGenderType = (MdmsRes) => {
-  MdmsRes['common-masters'].GenderType.filter(
+  MdmsRes["common-masters"].GenderType.filter(
     (GenderType) => GenderType.active
   ).map((genders) => {
     return {
@@ -1322,7 +1341,7 @@ const TLGenderType = (MdmsRes) => {
 };
 
 const PTGenderType = (MdmsRes) => {
-  MdmsRes['common-masters'].GenderType.filter(
+  MdmsRes["common-masters"].GenderType.filter(
     (GenderType) => GenderType.active
   ).map((formGender) => {
     return {
@@ -1333,7 +1352,7 @@ const PTGenderType = (MdmsRes) => {
 };
 
 const HRGenderType = (MdmsRes) => {
-  MdmsRes['common-masters'].GenderType.filter(
+  MdmsRes["common-masters"].GenderType.filter(
     (GenderType) => GenderType.active
   ).map((comGender) => {
     return {
@@ -1344,7 +1363,7 @@ const HRGenderType = (MdmsRes) => {
 };
 
 const GetMCollectBusinessService = (MdmsRes) =>
-  MdmsRes['BillingService'].BusinessService.map((businesServiceDetails) => {
+  MdmsRes["BillingService"].BusinessService.map((businesServiceDetails) => {
     return {
       ...businesServiceDetails,
       i18nKey: `BILLINGSERVICE_BUSINESSSERVICE_${businesServiceDetails.code}`,
@@ -1352,7 +1371,7 @@ const GetMCollectBusinessService = (MdmsRes) =>
   });
 
 const GetMCollectApplicationStatus = (MdmsRes) =>
-  MdmsRes['mCollect'].applcationStatus.map((appStatusDetails) => {
+  MdmsRes["mCollect"].applcationStatus.map((appStatusDetails) => {
     return {
       ...appStatusDetails,
       i18nKey: `BILLINGSERVICE_BUSINESSSERVICE_${appStatusDetails.code}`,
@@ -1360,7 +1379,7 @@ const GetMCollectApplicationStatus = (MdmsRes) =>
   });
 
 const getFSMGenderType = (MdmsRes) => {
-  return MdmsRes['common-masters'].GenderType.map((genderDetails) => {
+  return MdmsRes["common-masters"].GenderType.map((genderDetails) => {
     return {
       ...genderDetails,
       i18nKey: `COMMON_GENDER_${genderDetails.code}`,
@@ -1369,7 +1388,7 @@ const getFSMGenderType = (MdmsRes) => {
 };
 
 const GetFSTPORejectionReason = (MdmsRes) => {
-  return MdmsRes['Vehicle'].FSTPORejectionReason.filter(
+  return MdmsRes["Vehicle"].FSTPORejectionReason.filter(
     (reason) => reason.active
   ).map((reasonDetails) => {
     return {
@@ -1380,7 +1399,7 @@ const GetFSTPORejectionReason = (MdmsRes) => {
 };
 
 const GetPaymentType = (MdmsRes) => {
-  return MdmsRes['FSM'].PaymentType.filter((option) => option.active).map(
+  return MdmsRes["FSM"].PaymentType.filter((option) => option.active).map(
     (reasonDetails) => {
       return {
         ...reasonDetails,
@@ -1391,7 +1410,7 @@ const GetPaymentType = (MdmsRes) => {
 };
 
 const GetTripNumber = (MdmsRes) => {
-  return MdmsRes['FSM'].TripNumber.filter((option) => option.active).map(
+  return MdmsRes["FSM"].TripNumber.filter((option) => option.active).map(
     (reasonDetails) => {
       return {
         ...reasonDetails,
@@ -1402,7 +1421,7 @@ const GetTripNumber = (MdmsRes) => {
 };
 
 const GetReceivedPaymentType = (MdmsRes) => {
-  return MdmsRes['FSM'].ReceivedPaymentType.filter(
+  return MdmsRes["FSM"].ReceivedPaymentType.filter(
     (option) => option.active
   ).map((reasonDetails) => {
     return {
@@ -1413,117 +1432,117 @@ const GetReceivedPaymentType = (MdmsRes) => {
 };
 
 const getDssDashboard = (MdmsRes) =>
-  MdmsRes['dss-dashboard']['dashboard-config'];
+  MdmsRes["dss-dashboard"]["dashboard-config"];
 
-const GetRoleStatusMapping = (MdmsRes) => MdmsRes['DIGIT-UI'].RoleStatusMapping;
+const GetRoleStatusMapping = (MdmsRes) => MdmsRes["DIGIT-UI"].RoleStatusMapping;
 const GetCommonFields = (MdmsRes, moduleCode) =>
-  moduleCode.toUpperCase() === 'PROPERTYTAX'
-    ? MdmsRes['PropertyTax'].CommonFieldsConfig
-    : MdmsRes['FSM'].CommonFieldsConfig;
+  moduleCode.toUpperCase() === "PROPERTYTAX"
+    ? MdmsRes["PropertyTax"].CommonFieldsConfig
+    : MdmsRes["FSM"].CommonFieldsConfig;
 
-const GetPreFields = (MdmsRes) => MdmsRes['FSM'].PreFieldsConfig;
+const GetPreFields = (MdmsRes) => MdmsRes["FSM"].PreFieldsConfig;
 
-const GetPostFields = (MdmsRes) => MdmsRes['FSM'].PostFieldsConfig;
+const GetPostFields = (MdmsRes) => MdmsRes["FSM"].PostFieldsConfig;
 
-const GetFSTPPlantInfo = (MdmsRes) => MdmsRes['FSM'].FSTPPlantInfo;
+const GetFSTPPlantInfo = (MdmsRes) => MdmsRes["FSM"].FSTPPlantInfo;
 
-const GetDocumentsTypes = (MdmsRes) => MdmsRes['BPA'].DocTypeMapping;
+const GetDocumentsTypes = (MdmsRes) => MdmsRes["BPA"].DocTypeMapping;
 
-const GetChecklist = (MdmsRes) => MdmsRes['BPA'].CheckList;
+const GetChecklist = (MdmsRes) => MdmsRes["BPA"].CheckList;
 
 const transformResponse = (type, MdmsRes, moduleCode, tenantId) => {
   switch (type) {
-    case 'citymodule':
+    case "citymodule":
       return GetCitiesWithi18nKeys(MdmsRes, moduleCode);
-    case 'egovLocation':
+    case "egovLocation":
       return GetEgovLocations(MdmsRes);
-    case 'serviceDefs':
+    case "serviceDefs":
       return GetServiceDefs(MdmsRes, moduleCode);
-    case 'ApplicationChannel':
+    case "ApplicationChannel":
       return GetApplicationChannel(MdmsRes);
-    case 'SanitationType':
+    case "SanitationType":
       return GetSanitationType(MdmsRes);
-    case 'PropertyType':
+    case "PropertyType":
       return GetPropertyType(MdmsRes);
-    case 'PropertySubtype':
+    case "PropertySubtype":
       return GetPropertySubtype(MdmsRes);
-    case 'PitType':
+    case "PitType":
       return GetPitType(MdmsRes);
-    case 'VehicleType':
+    case "VehicleType":
       return GetVehicleType(MdmsRes);
-    case 'VehicleMakeModel':
+    case "VehicleMakeModel":
       return GetVehicleMakeModel(MdmsRes);
-    case 'Slum':
+    case "Slum":
       return GetSlumLocalityMapping(MdmsRes, tenantId);
-    case 'OwnerShipCategory':
+    case "OwnerShipCategory":
       return GetPropertyOwnerShipCategory(MdmsRes);
-    case 'TLOwnerShipCategory':
+    case "TLOwnerShipCategory":
       return GetTradeOwnerShipCategory(MdmsRes);
-    case 'OwnerType':
+    case "OwnerType":
       return GetPropertyOwnerType(MdmsRes);
-    case 'SubOwnerShipCategory':
+    case "SubOwnerShipCategory":
       return getSubPropertyOwnerShipCategory(MdmsRes);
-    case 'Documents':
+    case "Documents":
       return getDocumentRequiredScreen(MdmsRes);
-    case 'TLDocuments':
+    case "TLDocuments":
       return getTLDocumentRequiredScreen(MdmsRes);
-    case 'MapConfig':
+    case "MapConfig":
       return getMapConfig(MdmsRes);
-    case 'UsageCategory':
+    case "UsageCategory":
       return getUsageCategory(MdmsRes);
-    case 'PTPropertyType':
+    case "PTPropertyType":
       return getPTPropertyType(MdmsRes);
-    case 'StructureType':
+    case "StructureType":
       return getTLStructureType(MdmsRes);
-    case 'AccessoryCategory':
+    case "AccessoryCategory":
       return getTLAccessoriesType(MdmsRes);
-    case 'FinancialYear':
+    case "FinancialYear":
       return getTLFinancialYear(MdmsRes);
-    case 'Floor':
+    case "Floor":
       return getFloorList(MdmsRes);
-    case 'Reason':
+    case "Reason":
       return GetReasonType(MdmsRes, type, moduleCode);
-    case 'RoleStatusMapping':
+    case "RoleStatusMapping":
       return GetRoleStatusMapping(MdmsRes);
-    case 'CommonFieldsConfig':
+    case "CommonFieldsConfig":
       return GetCommonFields(MdmsRes, moduleCode);
-    case 'PreFieldsConfig':
+    case "PreFieldsConfig":
       return GetPreFields(MdmsRes);
-    case 'PostFieldsConfig':
+    case "PostFieldsConfig":
       return GetPostFields(MdmsRes);
-    case 'RentalDeatils':
+    case "RentalDeatils":
       return getRentalDetailsCategory(MdmsRes);
-    case 'ChargeSlabs':
+    case "ChargeSlabs":
       return getChargeSlabsCategory(MdmsRes);
-    case 'DssDashboard':
+    case "DssDashboard":
       return getDssDashboard(MdmsRes);
-    case 'BusinessService':
+    case "BusinessService":
       return GetMCollectBusinessService(MdmsRes);
-    case 'applcatonStatus':
+    case "applcatonStatus":
       return GetMCollectApplicationStatus(MdmsRes);
-    case 'FSTPPlantInfo':
+    case "FSTPPlantInfo":
       return GetFSTPPlantInfo(MdmsRes);
-    case 'GenderType':
+    case "GenderType":
       return getGenderType(MdmsRes);
-    case 'TLGendertype':
+    case "TLGendertype":
       return TLGenderType(MdmsRes);
-    case 'PTGenderType':
+    case "PTGenderType":
       return PTGenderType(MdmsRes);
-    case 'HRGenderType':
+    case "HRGenderType":
       return HRGenderType(MdmsRes);
-    case 'DocumentTypes':
+    case "DocumentTypes":
       return GetDocumentsTypes(MdmsRes);
-    case 'CheckList':
+    case "CheckList":
       return GetChecklist(MdmsRes);
-    case 'FSMGenderType':
+    case "FSMGenderType":
       return getFSMGenderType(MdmsRes);
-    case 'FSTPORejectionReason':
+    case "FSTPORejectionReason":
       return GetFSTPORejectionReason(MdmsRes);
-    case 'PaymentType':
+    case "PaymentType":
       return GetPaymentType(MdmsRes);
-    case 'TripNumber':
+    case "TripNumber":
       return GetTripNumber(MdmsRes);
-    case 'ReceivedPaymentType':
+    case "ReceivedPaymentType":
       return GetReceivedPaymentType(MdmsRes);
     default:
       return MdmsRes;
@@ -1610,7 +1629,7 @@ const debouncedCall = (
 export const MdmsService = {
   init: (stateCode) =>
     ServiceRequest({
-      serviceName: 'mdmsInit',
+      serviceName: "mdmsInit",
       url: Urls.MDMS,
       data: initRequestBody(stateCode),
       useCache: true,
@@ -1620,7 +1639,7 @@ export const MdmsService = {
     return new Promise((resolve, reject) =>
       debouncedCall(
         {
-          serviceName: 'mdmsCall',
+          serviceName: "mdmsCall",
           url: Urls.MDMS,
           data: getCriteria(tenantId, details),
           useCache: true,
@@ -1670,6 +1689,13 @@ export const MdmsService = {
     return MdmsService.getDataByCriteria(
       tenantId,
       getApplicationChannelCriteria(tenantId, moduleCode),
+      moduleCode
+    );
+  },
+  getUrcConfig: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(
+      tenantId,
+      getUrcConfigCriteria(tenantId, moduleCode, type),
       moduleCode
     );
   },

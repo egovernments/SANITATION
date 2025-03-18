@@ -95,7 +95,7 @@ const WorkerConfig = ({ t, disabled = false, skillsOption = [], defaultSkill = [
         },
         {
           route: "address",
-          component: "SelectAddress",
+          component: "AddWorkerAddress",
           withoutLabel: true,
           texts: {
             headerCaption: "CS_FILE_APPLICATION_PROPERTY_LOCATION_LABEL",
