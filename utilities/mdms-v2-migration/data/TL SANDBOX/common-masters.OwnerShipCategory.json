@@ -1,54 +1,46 @@
 [
-  {
-    "code": "LEGALOWNERSHIP-BASED.PRIVATELYOWNED",
-    "active": true
-  },
-  {
-    "code": "LEGALOWNERSHIP-BASED.GOVERNMENT-OWNED",
-    "active": true
-  },
-  {
-    "code": "LEGALOWNERSHIP-BASED.COMMUNITY/COOPERATIVE-OWNED",
-    "active": true
-  },
-  {
-    "code": "LEGALOWNERSHIP-BASED.PUBLIC-PRIVATEPARTNERSHIP(PPP)",
-    "active": true
-  },
-  {
-    "code": "TENURE-BASED.FREEHOLDOWNERSHIP",
-    "active": true
-  },
-  {
-    "code": "TENURE-BASED.LEASEHOLD/RENTED",
-    "active": true
-  },
-  {
-    "code": "TENURE-BASED.CONCESSIONAGREEMENT",
-    "active": true
-  },
-  {
-    "code": "TENURE-BASED.FRANCHISE-BASED",
-    "active": true
-  },
-  {
-    "code": "TENURE-BASED.TEMPORARYOCCUPATIONLICENSE(TOL)",
-    "active": true
-  },
-  {
-    "code": "OPERATIONALCONTROL-BASED.OWNER-OPERATED",
-    "active": true
-  },
-  {
-    "code": "OPERATIONALCONTROL-BASED.TENANT-OPERATED",
-    "active": true
-  },
-  {
-    "code": "OPERATIONALCONTROL-BASED.SHARED/CO-WORKINGSPACES",
-    "active": true
-  },
-  {
-    "code": "OPERATIONALCONTROL-BASED.INCUBATION/ACCELERATORSPACES",
-    "active": true
-  }
-]
+    {
+      "code": "INDIVIDUAL.SINGLEOWNER",
+      "active": true
+    },
+    {
+      "code": "INDIVIDUAL.MULTIPLEOWNERS",
+      "active": true
+    },
+    {
+      "code": "INSTITUTIONALPRIVATE.PRIVATECOMPANY",
+      "active": true
+    },
+    {
+      "code": "INSTITUTIONALPRIVATE.NGO",
+      "active": true
+    },
+    {
+      "code": "INSTITUTIONALPRIVATE.PRIVATETRUST",
+      "active": true
+    },
+    {
+      "code": "INSTITUTIONALPRIVATE.PRIVATEBOARD",
+      "active": true
+    },
+    {
+      "code": "INSTITUTIONALPRIVATE.OTHERSPRIVATEINSTITUITION",
+      "active": true
+    },
+    {
+      "code": "INSTITUTIONALGOVERNMENT.ULBGOVERNMENT",
+      "active": true
+    },
+    {
+      "code": "INSTITUTIONALGOVERNMENT.STATEGOVERNMENT",
+      "active": true
+    },
+    {
+      "code": "INSTITUTIONALGOVERNMENT.CENTRALGOVERNMENT",
+      "active": true
+    },
+    {
+      "code": "INSTITUTIONALGOVERNMENT.OTHERGOVERNMENTINSTITUITION",
+      "active": true
+    }
+  ]
