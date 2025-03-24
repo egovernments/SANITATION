@@ -24,7 +24,6 @@ import { UICustomizations } from "./UICustomizations";
 import "@egovernments/digit-ui-fsm-css/example/index.css";
 
 var Digit = window.Digit || {};
-
 const enabledModules = [
   "DSS",
   // "Works",
@@ -41,24 +40,18 @@ const initTokens = (stateCode) => {
     window.sessionStorage.getItem("userType") ||
     process.env.REACT_APP_USER_TYPE ||
     "CITIZEN";
-
   const token =
     window.localStorage.getItem("token") ||
     process.env[`REACT_APP_${userType}_TOKEN`];
-
   const citizenInfo = window.localStorage.getItem("Citizen.user-info");
-
   const citizenTenantId =
     window.localStorage.getItem("Citizen.tenant-id") || stateCode;
-
   const employeeInfo = window.localStorage.getItem("Employee.user-info");
   const employeeTenantId = window.localStorage.getItem("Employee.tenant-id");
-
   const userTypeInfo =
     userType === "CITIZEN" || userType === "QACT" ? "citizen" : "employee";
   window.Digit.SessionStorage.set("user_type", userTypeInfo);
   window.Digit.SessionStorage.set("userType", userTypeInfo);
-
   if (userType !== "CITIZEN") {
     window.Digit.SessionStorage.set("User", {
       access_token: token,
@@ -67,23 +60,19 @@ const initTokens = (stateCode) => {
   } else {
     // if (!window.Digit.SessionStorage.get("User")?.extraRoleInfo) window.Digit.SessionStorage.set("User", { access_token: token, info: citizenInfo });
   }
-
   window.Digit.SessionStorage.set("Citizen.tenantId", citizenTenantId);
-
   if (employeeTenantId && employeeTenantId.length)
     window.Digit.SessionStorage.set("Employee.tenantId", employeeTenantId);
 };
 
 const initDigitUI = () => {
   window.contextPath =
-    window?.globalConfigs?.getConfig("CONTEXT_PATH") || "sanitation-ui";
-
+  window?.globalConfigs?.getConfig("CONTEXT_PATH") || "sanitation-ui";
   window.Digit.ComponentRegistryService.setupRegistry({
     ...paymentConfigs,
     PaymentModule,
     PaymentLinks,
   });
-
   // initPGRComponents();
   initCoreComponents();
   initDSSComponents();
@@ -103,14 +92,11 @@ const initDigitUI = () => {
     },
     commonUiConfig: UICustomizations,
   };
-
   //calling it here so that UICustomizations inside tqm gets added after the common Customizations are added
   initTQMComponents();
-
   const stateCode =
     window?.globalConfigs?.getConfig("STATE_LEVEL_TENANT_ID") || "pb";
   initTokens(stateCode);
-
   const registry = window?.Digit.ComponentRegistryService.getRegistry();
   ReactDOM.render(
     <DigitUI
@@ -126,3 +112,5 @@ initLibraries().then(() => {
   initFSMLibraries();
   initDigitUI();
 });
+
+//
