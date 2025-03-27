@@ -106,4 +106,6 @@ public class CalculatorConstants {
 	public static final String CANCELLATIONAMOUNT ="cancellationAmount";
 	public static final String CANCELLATIONPERCENTAGE ="cancellationPercentage";
 
+	/* * added this variable for central Instance */
+	public static String SCHEMA_REPLACE_STRING = "{schema}"; 
 }

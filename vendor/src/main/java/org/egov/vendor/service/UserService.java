@@ -120,7 +120,7 @@ public class UserService {
 				// validateVendorExists(userDetailResponse.getUser());
 				List<String> ownerIds = userDetailResponse.getUser().stream().map(User::getUuid)
 						.collect(Collectors.toList());
-				int count = vendorRepository.getExistingVenodrsCount(ownerIds);
+				int count = vendorRepository.getExistingVenodrsCount(ownerIds, vendorRequest.getVendor().getTenantId());
 				log.debug("userDetailResponse SIZE==>" + userDetailResponse.getUser().size());
 
 				for (int i = 0; i < userDetailResponse.getUser().size(); i++) {
@@ -167,7 +167,7 @@ public class UserService {
 
 	public void validateVendorExists(List<User> user) {
 		List<String> ownerIds = user.stream().map(User::getUuid).collect(Collectors.toList());
-		int count = vendorRepository.getExistingVenodrsCount(ownerIds);
+		int count = vendorRepository.getExistingVenodrsCount(ownerIds,user.get(0).getTenantId());
 
 		if (count > 0) {
 			throw new CustomException(VendorErrorConstants.ALREADY_VENDOR_EXIST,

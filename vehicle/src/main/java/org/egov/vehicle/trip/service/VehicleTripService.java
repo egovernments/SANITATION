@@ -108,7 +108,7 @@ public class VehicleTripService {
 
 		if (criteria.getRefernceNos() != null && !CollectionUtils.isEmpty(criteria.getRefernceNos())) {
 
-			List<String> tripIds = vehicleLogRepository.getTripFromRefrences(criteria.getRefernceNos());
+			List<String> tripIds = vehicleLogRepository.getTripFromRefrences(criteria.getRefernceNos(), criteria.getTenantId());
 			if (CollectionUtils.isEmpty(tripIds)) {
 				return VehicleTripResponse.builder().build();
 			} else {
@@ -122,7 +122,7 @@ public class VehicleTripService {
 
 		VehicleTripResponse response = vehicleLogRepository.getVehicleLogData(criteria);
 		response.getVehicleTrip().forEach(trip -> {
-			trip.setTripDetails(vehicleLogRepository.getTrpiDetails(trip.getId()));
+			trip.setTripDetails(vehicleLogRepository.getTrpiDetails(trip.getId(),criteria.getTenantId()));
 		});
 		vehicleLogEnrichmentService.enrichSearch(response.getVehicleTrip(), requestInfo);
 		return response;
@@ -154,7 +154,7 @@ public class VehicleTripService {
 
 		List<VehicleTrip> vehicleTripLogs = vehicleLogRepository.getVehicleTripPlainSearch(vehicleTripcriteria);
 		vehicleTripLogs.forEach(trip -> {
-			trip.setTripDetails(vehicleLogRepository.getTrpiDetails(trip.getId()));
+			trip.setTripDetails(vehicleLogRepository.getTrpiDetails(trip.getId(), criteria.getTenantId()));
 		});
 		vehicleLogEnrichmentService.enrichSearch(vehicleTripLogs, requestInfo);
 		return vehicleTripLogs;

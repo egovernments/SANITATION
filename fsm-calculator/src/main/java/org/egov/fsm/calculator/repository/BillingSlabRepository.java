@@ -8,6 +8,7 @@ import org.egov.fsm.calculator.config.BillingSlabConfig;
 import org.egov.fsm.calculator.kafka.broker.BillingSlabProducer;
 import org.egov.fsm.calculator.repository.querybuilder.BillingSlabQueryBuilder;
 import org.egov.fsm.calculator.repository.rowmapper.BillingSlabRowMapper;
+import org.egov.fsm.calculator.utils.BillingSlabUtil;
 import org.egov.fsm.calculator.utils.CalculatorConstants;
 import org.egov.fsm.calculator.web.models.BillingSlab;
 import org.egov.fsm.calculator.web.models.BillingSlabRequest;
@@ -37,13 +38,16 @@ public class BillingSlabRepository {
 
 	@Autowired
 	private BillingSlabRowMapper mapper;
+	
+	@Autowired
+	private BillingSlabUtil billingSlabUtil;
 
 	public void save(BillingSlabRequest request) {
-		producer.push(config.getSaveBillingSlabTopic(), request);
+		producer.push(request.getBillingSlab().getTenantId(), config.getSaveBillingSlabTopic(), request);
 	}
 
 	public void update(BillingSlabRequest request) {
-		producer.push(config.getUpdateBillingSlabTopic(), request);
+		producer.push(request.getBillingSlab().getTenantId(), config.getUpdateBillingSlabTopic(), request);
 	}
 
 	public Integer getDataCount(String query, List<Object> preparedStmtList) {
@@ -72,6 +76,7 @@ public class BillingSlabRepository {
 		List<BillingSlab> billingSlabList = null;
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = queryBuilder.getBillingSlabSearchQuery(criteria, preparedStmtList);
+	    query = billingSlabUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		log.info("Billing slab QUERY :: " + query);
 		try {
 			billingSlabList = jdbcTemplate.query(query, preparedStmtList.toArray(), mapper);

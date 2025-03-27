@@ -39,4 +39,11 @@ public class BillingSlabConfig {
 	
 	@Value("${employee.allowed.search.params}")
 	private String allowedEmployeeSearchParameters;
+	
+	// Central instance configs
+    @Value("${state.level.tenantid.length}")
+    private Integer stateLevelTenantIdLength;
+
+    @Value("${is.environment.central.instance}")
+    private Boolean isEnvironmentCentralInstance;
 }

@@ -17,6 +17,7 @@ import org.egov.vehicle.trip.querybuilder.VehicleTripQueryBuilder;
 import org.egov.vehicle.trip.repository.VehicleTripRepository;
 import org.egov.vehicle.trip.service.VehicleTripFSMService;
 import org.egov.vehicle.trip.util.VehicleTripConstants;
+import org.egov.vehicle.trip.util.VehicleTripUtil;
 import org.egov.vehicle.trip.web.model.PlantMapping;
 import org.egov.vehicle.trip.web.model.VehicleTrip;
 import org.egov.vehicle.trip.web.model.VehicleTripDetail;
@@ -66,6 +67,9 @@ public class VehicleTripValidator {
 
 	@Autowired
 	private VehicleUtil util;
+	
+	@Autowired
+	private VehicleTripUtil vehicleTripUtil;
 
 	@Autowired
 	private MDMSValidator mdmsValidator;
@@ -351,6 +355,7 @@ public class VehicleTripValidator {
 
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = queryBuilder.getVehicleLogExistQuery(vehicleTrip.getId(), preparedStmtList);
+	    query = vehicleTripUtil.replaceSchemaPlaceholder(query, vehicleTrip.getTenantId());
 		int vehicleLogCount = vehicleTripRepository.getDataCount(query, preparedStmtList);
 		log.info("vehicleLogCount :: " + vehicleLogCount);
 		if (vehicleLogCount <= 0) {
@@ -387,7 +392,7 @@ public class VehicleTripValidator {
 		if (tripSearchCriteria.getRefernceNos() != null
 				&& !CollectionUtils.isEmpty(tripSearchCriteria.getRefernceNos())) {
 
-			List<String> tripIds = vehicleTripRepository.getTripFromRefrences(tripSearchCriteria.getRefernceNos());
+			List<String> tripIds = vehicleTripRepository.getTripFromRefrences(tripSearchCriteria.getRefernceNos(), tripSearchCriteria.getTenantId());
 
 			if (CollectionUtils.isEmpty(tripSearchCriteria.getIds())) {
 				tripSearchCriteria.setIds(tripIds);
@@ -417,6 +422,16 @@ public class VehicleTripValidator {
 		if (StringUtils.isEmpty(criteria.getTenantId())) {
 			throw new CustomException(VehicleTripConstants.INVALID_SEARCH, "TenantId is mandatory in search");
 		}
+		
+		/** Central Instance Validation of tenantid **/
+		if (config.getIsEnvironmentCentralInstance() && criteria.getTenantId() == null)
+			throw new CustomException("EG_PT_INVALID_SEARCH", " TenantId is mandatory for search ");
+
+		else if (config.getIsEnvironmentCentralInstance()
+				&& criteria.getTenantId().split("\\.").length < config.getStateLevelTenantIdLength())
+			throw new CustomException("EG_PT_INVALID_SEARCH",
+					" TenantId should be mandatorily " + config.getStateLevelTenantIdLength() + " levels for search");
+
 		String allowedParamStr = config.getAllowedVehicleLogSearchParameters();
 		if (StringUtils.isEmpty(allowedParamStr) && !criteria.isEmpty())
 			throw new CustomException(VehicleTripConstants.INVALID_SEARCH, "No search parameters are expected");

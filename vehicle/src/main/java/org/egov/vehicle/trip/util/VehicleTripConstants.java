@@ -53,4 +53,6 @@ public class VehicleTripConstants {
 	public static final CharSequence FSM_DRIVER = "FSM_DRIVER";
 	public static final CharSequence FSM_DSO = "FSM_DSO";
 
+	public static String SCHEMA_REPLACE_STRING = "{schema}"; 
+
 }

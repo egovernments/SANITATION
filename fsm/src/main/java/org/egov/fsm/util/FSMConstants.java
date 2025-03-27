@@ -226,5 +226,7 @@ public class FSMConstants {
 	public static final String FSM_LATER_PAY_SERVICE = "PAY_LATER_SERVICE";
 	public static final String WAITING_FOR_DISPOSAL = "WAITING_FOR_DISPOSAL";
 
+	/* * added this variable for central Instance */	
+	public static String SCHEMA_REPLACE_STRING = "{SCHEMA}";
 	
 }

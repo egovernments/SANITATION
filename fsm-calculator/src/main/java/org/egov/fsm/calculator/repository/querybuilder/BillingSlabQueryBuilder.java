@@ -13,12 +13,12 @@ import org.springframework.util.StringUtils;
 @Component
 public class BillingSlabQueryBuilder {
 
-	private static final String QUERY_BILLINGSLAB_COMBINATION_COUNT = "SELECT count(*) FROM eg_billing_slab where tenantid=? AND capacityfrom=? AND capacityto=? AND propertytype=? AND slum=?";
-	private static final String QUERY_BILLINGSLAB_COMBINATION_FOR_UPDATE_COUNT = "SELECT count(*) FROM eg_billing_slab where tenantid=? AND capacityfrom=? AND capacityto=? AND propertytype=? AND slum=? AND id!=?";
-	private static final String QUERY_BILLINGSLAB_EXIST = "SELECT count(*) FROM eg_billing_slab where id =?";
-	private static final String QUERY_BILLING_SLAB_SEARCH = "SELECT * FROM eg_billing_slab where tenantid=?";
+	private static final String QUERY_BILLINGSLAB_COMBINATION_COUNT = "SELECT count(*) FROM {schema}.eg_billing_slab where tenantid=? AND capacityfrom=? AND capacityto=? AND propertytype=? AND slum=?";
+	private static final String QUERY_BILLINGSLAB_COMBINATION_FOR_UPDATE_COUNT = "SELECT count(*) FROM {schema}.eg_billing_slab where tenantid=? AND capacityfrom=? AND capacityto=? AND propertytype=? AND slum=? AND id!=?";
+	private static final String QUERY_BILLINGSLAB_EXIST = "SELECT count(*) FROM {schema}.eg_billing_slab where id =?";
+	private static final String QUERY_BILLING_SLAB_SEARCH = "SELECT * FROM {schema}.eg_billing_slab where tenantid=?";
 	private static final String PAGINATION_WRAPPER = "{} {orderby} OFFSET ? LIMIT ?";
-	private static final String QUERY_PROPERTY_AND_SUBPROPERTY_TYPE_EXIST = "SELECT count(*) FROM eg_zero_pricing where LOWER(propertyType) =? AND LOWER(subPropertytype) =?";
+	private static final String QUERY_PROPERTY_AND_SUBPROPERTY_TYPE_EXIST = "SELECT count(*) FROM {schema}.eg_zero_pricing where LOWER(propertyType) =? AND LOWER(subPropertytype) =?";
 
 	@Autowired
 	private BillingSlabConfig config;

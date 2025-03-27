@@ -48,7 +48,7 @@ public class NotificationService {
 
 			enrichSMSRequest(vehicleTripRequest, smsRequests);
 			if (!CollectionUtils.isEmpty(smsRequests))
-				util.sendSMS(smsRequests, config.getIsSMSEnabled());
+				util.sendSMS(smsRequests, config.getIsSMSEnabled(),vehicleTripRequest.getVehicleTrip().get(0).getTenantId());
 
 		}
 

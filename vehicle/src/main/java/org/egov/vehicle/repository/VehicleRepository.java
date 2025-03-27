@@ -15,6 +15,7 @@ import org.egov.vehicle.trip.repository.rowmapper.TripDetailRowMapper;
 import org.egov.vehicle.trip.web.model.VehicleTripDetail;
 import org.egov.vehicle.trip.web.model.VehicleTripSearchCriteria;
 import org.egov.vehicle.util.ErrorConstants;
+import org.egov.vehicle.util.VehicleUtil;
 import org.egov.vehicle.web.model.Vehicle;
 import org.egov.vehicle.web.model.VehicleRequest;
 import org.egov.vehicle.web.model.VehicleResponse;
@@ -48,6 +49,9 @@ public class VehicleRepository {
 
 	@Autowired
 	private TripDetailRowMapper vehicleTripMapper;
+	
+	@Autowired
+	private VehicleUtil vehicleUtil;
 
 	private static final String QUERY_SEARCH_VEHICLE_LOG = " SELECT applicationstatus,count(applicationstatus) FROM eg_vehicle_trip ";
 
@@ -55,17 +59,18 @@ public class VehicleRepository {
 			+ "itemendtime, volume from eg_vehicle_trip_detail ";
 
 	public void save(VehicleRequest vehicleRequest) {
-		vehicleProducer.push(config.getSaveTopic(), vehicleRequest);
+		vehicleProducer.push(vehicleRequest.getVehicle().getTenantId(),	config.getSaveTopic(), vehicleRequest);
 	}
 
 	public void update(VehicleRequest vehicleRequest) {
-		vehicleProducer.push(config.getUpdateTopic(), vehicleRequest);
+		vehicleProducer.push(vehicleRequest.getVehicle().getTenantId(), config.getUpdateTopic(), vehicleRequest);
 	}
 
 	public VehicleResponse getVehicleData(@Valid VehicleSearchCriteria criteria) {
 
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = queryBuilder.getSearchQuery(criteria, preparedStmtList);
+	    query = vehicleUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		List<Vehicle> vehicles = jdbcTemplate.query(query, preparedStmtList.toArray(), rowMapper);
 		return VehicleResponse.builder().vehicle(vehicles).totalCount(Integer.valueOf(rowMapper.getFullCount()))
 				.build();
@@ -74,6 +79,7 @@ public class VehicleRepository {
 	public Integer getVehicleCount(VehicleRequest vehicleRequest, String status) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = queryBuilder.vehicleExistsQuery(vehicleRequest, preparedStmtList);
+	    query = vehicleUtil.replaceSchemaPlaceholder(query, vehicleRequest.getVehicle().getTenantId());
 		preparedStmtList.add(status);
 		Integer count = null;
 		try {
@@ -98,6 +104,7 @@ public class VehicleRepository {
 
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = queryBuilder.getVehicleIdsWithNoVendorQuery(criteria, preparedStmtList);
+	    query = vehicleUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
 	}
 
@@ -107,6 +114,7 @@ public class VehicleRepository {
 
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = queryBuilder.getVehicleLikeQuery(criteria, preparedStmtList);
+	    query = vehicleUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		log.info("Query: " + query);
 		log.info("PS: " + preparedStmtList);
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), rowMapper);
@@ -115,6 +123,7 @@ public class VehicleRepository {
 	public List<Map<String, Object>> fetchStatusCount(VehicleSearchCriteria criteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = getSearchQuery(criteria, preparedStmtList);
+	    query = vehicleUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		return jdbcTemplate.queryForList(query, preparedStmtList.toArray());
 	}
 
@@ -130,6 +139,7 @@ public class VehicleRepository {
 		}
 		List<VehicleTripDetail> vehicleTrips = new ArrayList();
 		try {
+//			builder = vehicleUtil.replaceSchemaPlaceholder(builder, vehicleTripSearchCriteria.getTenantId());
 			vehicleTrips = jdbcTemplate.query(builder.toString(), preparedStmtList.toArray(), vehicleTripMapper);
 		} catch (IllegalArgumentException e) {
 			throw new CustomException(ErrorConstants.PARSING_ERROR, "Failed to parse response of VehicleTripIntance");

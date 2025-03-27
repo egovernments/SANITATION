@@ -12,6 +12,7 @@ import org.egov.vehicle.producer.VehicleProducer;
 import org.egov.vehicle.trip.querybuilder.VehicleTripQueryBuilder;
 import org.egov.vehicle.trip.repository.rowmapper.TripDetailRowMapper;
 import org.egov.vehicle.trip.repository.rowmapper.VehicleTripRowMapper;
+import org.egov.vehicle.trip.util.VehicleTripUtil;
 import org.egov.vehicle.trip.web.model.VehicleTrip;
 import org.egov.vehicle.trip.web.model.VehicleTripDetail;
 import org.egov.vehicle.trip.web.model.VehicleTripRequest;
@@ -45,8 +46,11 @@ public class VehicleTripRepository {
 	@Autowired
 	private VehicleTripQueryBuilder queryBuilder;
 
+	@Autowired
+	private VehicleTripUtil vehicleTripUtil;
+	
 	public void save(VehicleTripRequest request) {
-		producer.push(config.getSaveVehicleLogTopic(), request);
+		producer.push(request.getVehicleTrip().get(0).getTenantId(), config.getSaveVehicleLogTopic(), request);
 	}
 
 	public void update(RequestInfo requestInfo, VehicleTrip trip, boolean isStateUpdatable) {
@@ -59,11 +63,11 @@ public class VehicleTripRepository {
 			tripForStatusUpdate.add(trip);
 		}
 		if (tripForUpdate != null) {
-			producer.push(config.getUpdateVehicleLogTopic(), new VehicleTripRequest(requestInfo, tripForUpdate, null));
+			producer.push(trip.getTenantId(), config.getUpdateVehicleLogTopic(), new VehicleTripRequest(requestInfo, tripForUpdate, null));
 		}
 
 		if (tripForStatusUpdate != null)
-			producer.push(config.getUpdateWorkflowVehicleLogTopic(),
+			producer.push(trip.getTenantId(), config.getUpdateWorkflowVehicleLogTopic(),
 					new VehicleTripRequest(requestInfo, tripForStatusUpdate, null));
 	}
 
@@ -81,15 +85,17 @@ public class VehicleTripRepository {
 		List<VehicleTrip> vehicleTrips = null;
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = queryBuilder.getVehicleLogSearchQuery(criteria, preparedStmtList);
+	    query = vehicleTripUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		vehicleTrips = jdbcTemplate.query(query, preparedStmtList.toArray(), mapper);
 		return VehicleTripResponse.builder().vehicleTrip(vehicleTrips)
 				.totalCount(Integer.valueOf(mapper.getFullCount())).build();
 	}
 
-	public List<VehicleTripDetail> getTrpiDetails(String tripId) {
+	public List<VehicleTripDetail> getTrpiDetails(String tripId, String tenantId) {
 		List<VehicleTripDetail> tripDetails = null;
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = queryBuilder.getTripDetailSarchQuery(tripId, preparedStmtList);
+	    query = vehicleTripUtil.replaceSchemaPlaceholder(query, tenantId);
 		try {
 			tripDetails = jdbcTemplate.query(query, preparedStmtList.toArray(), detailMapper);
 		} catch (Exception e) {
@@ -99,10 +105,11 @@ public class VehicleTripRepository {
 		return tripDetails;
 	}
 
-	public List<String> getTripFromRefrences(List<String> refernceNos) {
+	public List<String> getTripFromRefrences(List<String> refernceNos, String tenantId) {
 
 		List<String> ids = null;
 		String query = queryBuilder.getTripIdFromReferenceNosQuery(refernceNos);
+	    query = vehicleTripUtil.replaceSchemaPlaceholder(query, tenantId);
 		try {
 			ids = jdbcTemplate.queryForList(query, String.class);
 		} catch (Exception e) {
@@ -117,8 +124,9 @@ public class VehicleTripRepository {
 		List<Object> preparedStmtList = new ArrayList<>();
 		preparedStmtList.add(criteria.getOffset());
 		preparedStmtList.add(criteria.getLimit());
-		return jdbcTemplate.query("SELECT id from eg_vehicle_trip ORDER BY createdtime offset " + " ? " + "limit ? ",
-				preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
+		String query = "SELECT id from {schema}.eg_vehicle_trip ORDER BY createdtime offset " + " ? " + "limit ? ";
+		query = vehicleTripUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
+		return jdbcTemplate.query(query, preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
 	}
 
 	public List<VehicleTrip> getVehicleTripPlainSearch(VehicleTripSearchCriteria criteria) {
@@ -127,6 +135,7 @@ public class VehicleTripRepository {
 
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = queryBuilder.getvehicleTripLikeQuery(criteria, preparedStmtList);
+	    query = vehicleTripUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		log.info("Query: " + query);
 		log.info("PS: " + preparedStmtList);
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), mapper);

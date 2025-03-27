@@ -40,6 +40,10 @@ public class FSMUtil {
 
 	@Autowired
 	private FSMConfiguration config;
+	
+	
+	
+	public static String SCHEMA_REPLACE_STRING = "{schema}"; /** * Method to fetch the state name from the tenantId * * @param query * @param tenantId * @return */
 
 	public void defaultJsonPathConfig() {
 		Configuration.setDefaults(new Configuration.Defaults() {
@@ -244,4 +248,16 @@ public class FSMUtil {
 		return serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
 
 	}
+	
+	/* * central Instance enhancement */
+	public String replaceSchemaPlaceholder(String query, String tenantId) {
+	    String finalQuery = null;
+	    if (tenantId.contains(".")) {
+	        String schemaName = tenantId.split("\\.")[1];
+	        finalQuery = query.replace(FSMConstants.SCHEMA_REPLACE_STRING, schemaName);
+	    } else {
+	        finalQuery = query.replace(FSMConstants.SCHEMA_REPLACE_STRING.concat("."), "");
+	    }
+	    return finalQuery;
+	} 
 }

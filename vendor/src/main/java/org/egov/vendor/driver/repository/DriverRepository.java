@@ -46,11 +46,11 @@ public class DriverRepository {
 	private WorkerRowMapper workerRowMapper;
 
 	public void save(DriverRequest driverRequest) {
-		producer.push(configuration.getSaveDriverTopic(), driverRequest);
+		producer.push(driverRequest.getDriver().getTenantId(), configuration.getSaveDriverTopic(), driverRequest);
 	}
 
 	public void update(DriverRequest driverRequest) {
-		producer.push(configuration.getUpdateDriverTopic(), driverRequest);
+		producer.push(driverRequest.getDriver().getTenantId(), configuration.getUpdateDriverTopic(), driverRequest);
 	}
 
 	public DriverResponse getDriverData(DriverSearchCriteria driverSearchCriteria) {

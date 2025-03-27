@@ -17,18 +17,18 @@ public class FSMAuditQueryBuilder {
 	private static final String QUERY = "select fsm.*,fsm_address.*,fsm_geo.*,fsm_pit.*,fsm.id as fsm_id, fsm.createdby as fsm_createdby,"
 			+ "  fsm.lastmodifiedby as fsm_lastmodifiedby, fsm.createdtime as fsm_createdtime, fsm.lastmodifiedtime as fsm_lastmodifiedtime,"
 			+ "	 fsm.additionaldetails,fsm_address.id as fsm_address_id,fsm_geo.id as fsm_geo_id,"
-			+ "	 fsm_pit.id as fsm_pit_id" + "	 FROM eg_fsm_application fsm"
-			+ "	 INNER JOIN   eg_fsm_address fsm_address on fsm_address.fsm_id = fsm.id"
-			+ "	 LEFT OUTER JOIN  eg_fsm_geolocation fsm_geo on fsm_geo.address_id = fsm_address.id"
-			+ "	 LEFT OUTER JOIN  eg_fsm_pit_detail fsm_pit on fsm_pit.fsm_id = fsm.id where fsm.tenantid=?";
+			+ "	 fsm_pit.id as fsm_pit_id" + "	 FROM {schema}.eg_fsm_application fsm"
+			+ "	 INNER JOIN   {schema}.eg_fsm_address fsm_address on fsm_address.fsm_id = fsm.id"
+			+ "	 LEFT OUTER JOIN  {schema}.eg_fsm_geolocation fsm_geo on fsm_geo.address_id = fsm_address.id"
+			+ "	 LEFT OUTER JOIN  {schema}.eg_fsm_pit_detail fsm_pit on fsm_pit.fsm_id = fsm.id where fsm.tenantid=?";
 	
 	private static final String AUDIT_QUERY = "select fsm.*,fsm_address.*,fsm_geo.*,fsm_pit.*,fsm.id as fsm_id, fsm.createdby as fsm_createdby,"
 			+ "  fsm.lastmodifiedby as fsm_lastmodifiedby, fsm.createdtime as fsm_createdtime, fsm.lastmodifiedtime as fsm_lastmodifiedtime,"
 			+ "	 fsm.additionaldetails,fsm_address.id as fsm_address_id, fsm_geo.id as fsm_geo_id,"
-			+ "	 fsm_pit.id as fsm_pit_id	 FROM eg_fsm_application_auditlog fsm"
-			+ "	 LEFT OUTER JOIN   eg_fsm_address_auditlog fsm_address on fsm_address.fsm_id = fsm.id	 and fsm_address.lastmodifiedtime=fsm.lastmodifiedtime"
-			+ "	 LEFT OUTER JOIN  eg_fsm_geolocation_auditlog fsm_geo on fsm_geo.address_id = fsm_address.id	 and fsm_address.lastmodifiedtime=fsm_geo.lastmodifiedtime"
-			+ "	 LEFT OUTER JOIN  eg_fsm_pit_detail_auditlog fsm_pit on fsm_pit.fsm_id = fsm.id  and fsm_pit.lastmodifiedtime=fsm.lastmodifiedtime where fsm.tenantid=?";
+			+ "	 fsm_pit.id as fsm_pit_id	 FROM {schema}.eg_fsm_application_auditlog fsm"
+			+ "	 LEFT OUTER JOIN   {schema}.eg_fsm_address_auditlog fsm_address on fsm_address.fsm_id = fsm.id	 and fsm_address.lastmodifiedtime=fsm.lastmodifiedtime"
+			+ "	 LEFT OUTER JOIN  {schema}.eg_fsm_geolocation_auditlog fsm_geo on fsm_geo.address_id = fsm_address.id	 and fsm_address.lastmodifiedtime=fsm_geo.lastmodifiedtime"
+			+ "	 LEFT OUTER JOIN  {schema}.eg_fsm_pit_detail_auditlog fsm_pit on fsm_pit.fsm_id = fsm.id  and fsm_pit.lastmodifiedtime=fsm.lastmodifiedtime where fsm.tenantid=?";
 	
 	private static final String FSM_ID = " AND fsm.id=?";
 	private static final String APPLICATION_NO = " AND fsm.applicationno=?";

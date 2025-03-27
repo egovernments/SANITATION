@@ -2,6 +2,7 @@ package org.egov.fsm.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.egov.fsm.util.FSMUtil;
 import org.egov.fsm.web.model.vehicle.trip.VehicleTripSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,10 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 public class FSMInboxRepository {
 
         @Autowired
-    		private JdbcTemplate jdbcTemplate;
+    	private JdbcTemplate jdbcTemplate;
+        
+       @Autowired
+       private FSMUtil fsmUtil;
 
 
-    	private static final String QUERY_VEHICLE_STATE = "select fsm.applicationno from eg_fsm_application fsm , eg_vehicle_trip_detail vhd, eg_vehicle_trip vh, eg_wf_state_v2 wfs "
+    	private static final String QUERY_VEHICLE_STATE = "select fsm.applicationno from {schema}.eg_fsm_application fsm , {schema}.eg_vehicle_trip_detail vhd, {schema}.eg_vehicle_trip vh, {schema}.eg_wf_state_v2 wfs "
     			+ " where fsm.applicationno=vhd.referenceno and vh.id=vhd.trip_id and vh.applicationstatus=wfs.applicationstatus  ";
 
 		public List<String> fetchVehicleStateMap(VehicleTripSearchCriteria vehicleTripSearchCriteria) {
@@ -32,7 +36,7 @@ public class FSMInboxRepository {
 
 			String query = addPaginationClause(builder,preparedStmtList,vehicleTripSearchCriteria);
 			log.info("query from 	fetchVehicleStateMap :::: " + query);
-
+		    query = fsmUtil.replaceSchemaPlaceholder(query, vehicleTripSearchCriteria.getTenantId());
 			return jdbcTemplate.queryForList(query, preparedStmtList.toArray(), String.class);
 		}
 

@@ -16,6 +16,7 @@ import org.egov.fsm.repository.rowmapper.FSMRowMapper;
 import org.egov.fsm.repository.rowmapper.TripDetailRowMapper;
 import org.egov.fsm.util.FSMAuditUtil;
 import org.egov.fsm.util.FSMConstants;
+import org.egov.fsm.util.FSMUtil;
 import org.egov.fsm.web.model.FSM;
 import org.egov.fsm.web.model.FSMAuditSearchCriteria;
 import org.egov.fsm.web.model.FSMRequest;
@@ -59,10 +60,13 @@ public class FSMRepository {
 
 	@Autowired
 	private TripDetailRowMapper detailMapper;
+	
+	@Autowired
+    private FSMUtil fsmUtil;
 
 		public void save(FSMRequest fsmRequest) {
-			producer.push(config.getSaveTopic(), fsmRequest);
-			producer.push(config.getFsmEventIndexKafkaTopic(), fsmRequest);
+			producer.push(fsmRequest.getFsm().getTenantId(),config.getSaveTopic(), fsmRequest);
+			producer.push(fsmRequest.getFsm().getTenantId(),config.getFsmEventIndexKafkaTopic(), fsmRequest);
 		}
 
 	public void update(FSMRequest fsmRequest, boolean isStateUpdatable) {
@@ -79,19 +83,20 @@ public class FSMRepository {
 			fsmForStatusUpdate = fsm;
 		}
 		if (fsmForUpdate != null) {
-			producer.push(config.getUpdateTopic(), new FSMRequest(requestInfo, fsmForUpdate, fsmRequest.getWorkflow()));
-	        producer.push(config.getFsmEventIndexKafkaTopic(), fsmRequest);
+			producer.push(fsmRequest.getFsm().getTenantId(),config.getUpdateTopic(), new FSMRequest(requestInfo, fsmForUpdate, fsmRequest.getWorkflow()));
+	        producer.push(fsmRequest.getFsm().getTenantId(),config.getFsmEventIndexKafkaTopic(), fsmRequest);
 		}
 		if (fsmForStatusUpdate != null) {
-			producer.push(config.getUpdateWorkflowTopic(),
+			producer.push(fsmRequest.getFsm().getTenantId(),config.getUpdateWorkflowTopic(),
 					new FSMRequest(requestInfo, fsmForStatusUpdate, fsmRequest.getWorkflow()));
-	        producer.push(config.getFsmEventIndexKafkaTopic(), fsmRequest);
+	        producer.push(fsmRequest.getFsm().getTenantId(),config.getFsmEventIndexKafkaTopic(), fsmRequest);
 		}
 	}
 
 	public FSMResponse getFSMData(FSMSearchCriteria fsmSearchCriteria, String dsoId) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = fsmQueryBuilder.getFSMSearchQuery(fsmSearchCriteria, dsoId, preparedStmtList);
+	    query = fsmUtil.replaceSchemaPlaceholder(query, fsmSearchCriteria.getTenantId());
 		List<FSM> fsms = jdbcTemplate.query(query, preparedStmtList.toArray(), fsmRowMapper);
 		return FSMResponse.builder().fsm(fsms).totalCount(fsmRowMapper.getFullCount()).build();
 	}
@@ -99,12 +104,14 @@ public class FSMRepository {
 	public List<FSMAuditUtil> getFSMActualData(FSMAuditSearchCriteria criteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = auditQueryBuilder.getFSMActualDataQuery(criteria, preparedStmtList);
+	    query = fsmUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), auditRowMapper);
 	}
 
 	public List<FSMAuditUtil> getFSMAuditData(FSMAuditSearchCriteria criteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = auditQueryBuilder.getFSMAuditDataQuery(criteria, preparedStmtList);
+	    query = fsmUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), auditRowMapper);
 	}
 
@@ -125,6 +132,7 @@ public class FSMRepository {
 
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = fsmQueryBuilder.getFSMLikeQuery(criteria, preparedStmtList);
+	    query = fsmUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		log.info("Query: " + query);
 		log.info("PS: " + preparedStmtList);
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), fsmRowMapper);
@@ -191,7 +199,7 @@ public class FSMRepository {
 	//commented as  vehicleTripList is handled while calling updateVehicleToInActive function
 	public void updateVehicleToInActive(List<VehicleTrip> vehicleTripList) {
 		if (vehicleTripList != null) {
-			producer.push(config.getVehicleUpdateTripToInactive(), new VehicleTripRequest(new RequestInfo(), vehicleTripList,null));
+			producer.push(vehicleTripList.get(0).getTenantId(),config.getVehicleUpdateTripToInactive(), new VehicleTripRequest(new RequestInfo(), vehicleTripList,null));
 		}
 	}
 	

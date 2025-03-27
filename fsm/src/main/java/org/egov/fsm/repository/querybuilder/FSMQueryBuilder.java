@@ -21,22 +21,22 @@ public class FSMQueryBuilder {
 			+ "  fsm.lastmodifiedby as fsm_lastmodifiedby, fsm.createdtime as fsm_createdtime, fsm.lastmodifiedtime as fsm_lastmodifiedtime,"
 			+ "	 fsm.additionaldetails,fsm_address.id as fsm_address_id, fsm_address.additionaldetails as addressAdditionalDetails, fsm_geo.id as fsm_geo_id,"
 			+ "	 fsm_pit.id as fsm_pit_id, fsm_pit.additionalDetails as fsm_pit_additionalDetails"
-			+ "	 FROM eg_fsm_application fsm"
-			+ "	 INNER JOIN   eg_fsm_address fsm_address on fsm_address.fsm_id = fsm.id"
-			+ "	 LEFT OUTER JOIN  eg_fsm_geolocation fsm_geo on fsm_geo.address_id = fsm_address.id"
-			+ "	 LEFT OUTER JOIN  eg_fsm_pit_detail fsm_pit on fsm_pit.fsm_id = fsm.id";
+			+ "	 FROM {schema}.eg_fsm_application fsm"
+			+ "	 INNER JOIN   {schema}.eg_fsm_address fsm_address on fsm_address.fsm_id = fsm.id"
+			+ "	 LEFT OUTER JOIN  {schema}.eg_fsm_geolocation fsm_geo on fsm_geo.address_id = fsm_address.id"
+			+ "	 LEFT OUTER JOIN  {schema}.eg_fsm_pit_detail fsm_pit on fsm_pit.fsm_id = fsm.id";
 
 	private static final String PAGINATION_WRAPPER = "{} {orderby} {pagination}";
 
-	public static final String GET_PERIODIC_ELGIABLE_APPLICATIONS = "select applicationno from eg_fsm_application ";
+	public static final String GET_PERIODIC_ELGIABLE_APPLICATIONS = "select applicationno from {schema}.eg_fsm_application ";
 
-	public static final String GET_UNIQUE_TENANTS = "select distinct(tenantid) from eg_fsm_application";
+	public static final String GET_UNIQUE_TENANTS = "select distinct(tenantid) from {schema}.eg_fsm_application";
 
-	public static final String GET_APPLICATION_LIST = "select applicationno from eg_fsm_application where oldapplicationno=? and tenantid=?";
+	public static final String GET_APPLICATION_LIST = "select applicationno from {schema}.eg_fsm_application where oldapplicationno=? and tenantid=?";
 
-	public static final String GET_VEHICLE_TRIPS_LIST = "SELECT * FROM eg_vehicle_trip_detail WHERE referenceno= ? and status='ACTIVE' order by createdtime desc ";
+	public static final String GET_VEHICLE_TRIPS_LIST = "SELECT * FROM {schema}.eg_vehicle_trip_detail WHERE referenceno= ? and status='ACTIVE' order by createdtime desc ";
 
-	public static final String GET_WAITING_FOR_DISPOSAL_VEHICLE_TRIPS_LIST = "SELECT * FROM eg_vehicle_trip_detail WHERE trip_id IN ( SELECT id FROM eg_vehicle_trip WHERE applicationstatus = 'WAITING_FOR_DISPOSAL')AND status = 'ACTIVE' AND referenceno = ? ORDER BY createdtime DESC ";
+	public static final String GET_WAITING_FOR_DISPOSAL_VEHICLE_TRIPS_LIST = "SELECT * FROM {schema}.eg_vehicle_trip_detail WHERE trip_id IN ( SELECT id FROM eg_vehicle_trip WHERE applicationstatus = 'WAITING_FOR_DISPOSAL')AND status = 'ACTIVE' AND referenceno = ? ORDER BY createdtime DESC ";
 
 	public String getFSMSearchQuery(FSMSearchCriteria criteria, String dsoId, List<Object> preparedStmtList) {
 

@@ -67,7 +67,7 @@ public class FSMInboxService {
 			log.info("PROCESS INSTANCE NOT FOUND!!");
 		FSMEvent fsmEvent = new FSMEvent(fsmRequest);
 		fsmEvent.getFsmRequest().getFsm().setProcessInstance(processInstance);
-		producer.push(config.getFsmEventTopic(), fsmEvent);
+		producer.push(fsmRequest.getFsm().getTenantId(),config.getFsmEventTopic(), fsmEvent);
 	}
 
 }

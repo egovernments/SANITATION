@@ -15,7 +15,7 @@ public class PlantMappingQueryBuilder {
 	@Autowired
 	private FSMConfiguration config;
 	
-	private static final String QUERY = "select count(*) OVER() AS full_count, * from eg_fsm_plantmapping plantmapping ";
+	private static final String QUERY = "select count(*) OVER() AS full_count, * from {schema}.eg_fsm_plantmapping plantmapping ";
 
 	private static final String PAGINATION_WRAPPER = "{} {orderby} {pagination}";
 
