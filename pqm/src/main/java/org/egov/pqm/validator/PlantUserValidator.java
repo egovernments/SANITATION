@@ -4,13 +4,16 @@ import static org.egov.pqm.util.Constants.PQM_SCHEMA_CODE_PLANT;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.egov.pqm.config.ServiceConfiguration;
+import org.egov.pqm.error.Error;
 import org.egov.pqm.repository.PlantUserRepository;
 import org.egov.pqm.service.UserService;
 import org.egov.pqm.util.ErrorConstants;
 import org.egov.pqm.util.PlantUserConstants;
+import org.egov.pqm.web.model.TestSearchRequest;
 import org.egov.pqm.web.model.plant.user.PlantUser;
 import org.egov.pqm.web.model.plant.user.PlantUserRequest;
 import org.egov.pqm.web.model.plant.user.PlantUserResponse;
@@ -196,5 +199,18 @@ public class PlantUserValidator {
 	    StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
 	    return userService.userCall(userSearchRequest, uri);
 	}
+  
+  public void validateSearchCriteria(PlantUserSearchRequest plantUserSearchRequest) {
+	   
+	    if(config.getIsEnvironmentCentralInstance() && plantUserSearchRequest.getPlantUserSearchCriteria().getTenantId() == null) 
+	    	  throw new CustomException("EG_PT_INVALID_SEARCH",
+	    	                                      " TenantId is mandatory for search ");
+	    	                                      
+	    	else if(config.getIsEnvironmentCentralInstance() 
+	    	    && plantUserSearchRequest.getPlantUserSearchCriteria().getTenantId().split("\\.").length < config.getStateLevelTenantIdLength())
+	    	 throw new CustomException("EG_PT_INVALID_SEARCH",
+	    	       " TenantId should be mandatorily " + config.getStateLevelTenantIdLength() + " levels for search");
+
+	  }
 
 }

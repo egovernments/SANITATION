@@ -49,6 +49,7 @@ public class AnomalyFinderService {
 	}
 	
 	public List<PqmAnomaly> anomalySearch(@Valid PqmAnomalySearchCriteria criteria) {
+		testAnomalyFinderValidator.validateSearchCriteria(criteria);
         return anomalyRepository.getAnomalyDataForCriteria(criteria);
 	}
 	

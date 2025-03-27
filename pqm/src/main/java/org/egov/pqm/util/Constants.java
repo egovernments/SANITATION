@@ -106,6 +106,5 @@ public class Constants {
   public static final Object SEARCH_MODULE_MDMS = "rainmaker-mdms";
   public static final Object TQM_LOC_SEARCH_MODULE = "rainmaker-tqm";
 
-
-
+  public static String SCHEMA_REPLACE_STRING = "{schema}"; 
 }

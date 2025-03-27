@@ -21,14 +21,14 @@ public class TestQueryBuilder {
   @Autowired
   private ServiceConfiguration config;
 
-  private static final String QUERY = "select count(*) OVER() AS full_count,test.* from eg_pqm_tests test";
+  private static final String QUERY = "select count(*) OVER() AS full_count,test.* from {schema}.eg_pqm_tests test";
 
 
   private static final String PAGINATION_WRAPPER = "{} {orderby} {pagination}";
 
-  private static final String DOCUMENT_QUERY = "select * from eg_pqm_test_result_documents";
+  private static final String DOCUMENT_QUERY = "select * from {schema}.eg_pqm_test_result_documents";
 
-  private static final String QUALITYCRITERIA_QUERY = "select * from eg_pqm_test_criteria_results";
+  private static final String QUALITYCRITERIA_QUERY = "select * from {schema}.eg_pqm_test_criteria_results";
 
   public String getPqmSearchQuery(TestSearchRequest testSearchRequest,
       List<Object> preparedStmtList) {

@@ -186,6 +186,15 @@ public class PqmValidator {
       throw Error.mandatory_field_missing.getBuilder("TestSearchRequest", "testSearchCriteria",
           "TestSearchCriteria").build();
     }
+    if(config.getIsEnvironmentCentralInstance() && testSearchRequest.getTestSearchCriteria().getTenantId() == null) 
+    	  throw new CustomException("EG_PT_INVALID_SEARCH",
+    	                                      " TenantId is mandatory for search ");
+    	                                      
+    	else if(config.getIsEnvironmentCentralInstance() 
+    	    && testSearchRequest.getTestSearchCriteria().getTenantId().split("\\.").length < config.getStateLevelTenantIdLength())
+    	 throw new CustomException("EG_PT_INVALID_SEARCH",
+    	       " TenantId should be mandatorily " + config.getStateLevelTenantIdLength() + " levels for search");
+
   }
 
   private void validateUserRole(RequestInfo requestInfo, List<String> roles) {

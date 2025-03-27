@@ -9,7 +9,7 @@ import org.springframework.util.CollectionUtils;
 @Component
 public class AnomalyFinderQueryBuilder {
 
-	private static final String ANOMALYFINDER_QUERY = "select * from eg_pqm_anomaly_details anomaly";
+	private static final String ANOMALYFINDER_QUERY = "select * from {schema}.eg_pqm_anomaly_details anomaly";
 
 	public String anomalySearchQuery(List<String> testIdLists, List<Object> preparedStmtList) {
 		StringBuilder builder = new StringBuilder(ANOMALYFINDER_QUERY);
@@ -93,7 +93,7 @@ public class AnomalyFinderQueryBuilder {
 
 		if (criteria.getLimit() != null && criteria.getLimit() != 0) {
 			builder.append(
-					"and anomaly.id in (select id from eg_pqm_anomaly_details where tenantid= ? order by id offset ? limit ?)");
+					"and anomaly.id in (select id from {schema}.eg_pqm_anomaly_details where tenantid= ? order by id offset ? limit ?)");
 			preparedStmtList.add(criteria.getTenantId());
 			preparedStmtList.add(criteria.getOffset());
 			preparedStmtList.add(criteria.getLimit());
