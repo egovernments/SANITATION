@@ -15,6 +15,5 @@ public class AnomalyFinderConstants {
 	public static final String NOTIF_TEST_RESULT_NOT_SUBMITTED = "NOTIF_TEST_RESULT_NOT_SUBMITTED";
 
 	public static final String NOTIF_TEST_RESULT_NOT_AS_PER_BENCHMARK = "NOTIF_TEST_RESULT_NOT_AS_PER_BENCHMARK";
-	public static String SCHEMA_REPLACE_STRING = "{schema}";
 	
 }

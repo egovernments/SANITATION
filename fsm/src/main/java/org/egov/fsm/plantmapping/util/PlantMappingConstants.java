@@ -23,5 +23,4 @@ public final class  PlantMappingConstants {
 
 	public static final String INVALID_SEARCH = "INVALID_SEARCH";
 	
-	public static String SCHEMA_REPLACE_STRING = "{SCHEMA}";
 }

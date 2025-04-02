@@ -1,5 +1,8 @@
 package org.egov.fsm.plantmapping.util;
 
+import org.egov.common.utils.MultiStateInstanceUtil;
+import org.egov.tracer.model.CustomException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -7,16 +10,31 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class PlantMappingUtils {
+	
+	private MultiStateInstanceUtil multiStateInstanceUtil;
 
-	/* * central Instance enhancement */
-	public String replaceSchemaPlaceholder(String query, String tenantId) {
-	    String finalQuery = null;
-	    if (tenantId.contains(".")) {
-	        String schemaName = tenantId.split("\\.")[1];
-	        finalQuery = query.replace(PlantMappingConstants.SCHEMA_REPLACE_STRING, schemaName);
-	    } else {
-	        finalQuery = query.replace(PlantMappingConstants.SCHEMA_REPLACE_STRING.concat("."), "");
-	    }
-	    return finalQuery;
-	} 
+    @Autowired
+    public PlantMappingUtils(MultiStateInstanceUtil multiStateInstanceUtil) {
+        this.multiStateInstanceUtil = multiStateInstanceUtil;
+    }
+
+	/**
+     * Method to fetch the state name from the tenantId
+     *
+     * @param query
+     * @param tenantId
+     * @return
+     */
+    public String replaceSchemaPlaceholder(String query, String tenantId) {
+
+        String finalQuery = null;
+
+        try {
+            finalQuery = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+        }
+        catch (Exception e){
+            throw new CustomException("INVALID_TENANTID","Invalid tenantId: "+tenantId);
+        }
+        return finalQuery;
+    }
 }

@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.User;
+import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.fsm.config.FSMConfiguration;
 import org.egov.fsm.repository.ServiceRequestRepository;
 import org.egov.fsm.web.model.AuditDetails;
@@ -19,6 +20,7 @@ import org.egov.mdms.model.MasterDetail;
 import org.egov.mdms.model.MdmsCriteria;
 import org.egov.mdms.model.MdmsCriteriaReq;
 import org.egov.mdms.model.ModuleDetail;
+import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -41,10 +43,14 @@ public class FSMUtil {
 	@Autowired
 	private FSMConfiguration config;
 	
-	
-	
-	public static String SCHEMA_REPLACE_STRING = "{schema}"; /** * Method to fetch the state name from the tenantId * * @param query * @param tenantId * @return */
+	private MultiStateInstanceUtil multiStateInstanceUtil;
 
+    @Autowired
+    public FSMUtil(MultiStateInstanceUtil multiStateInstanceUtil) {
+        this.multiStateInstanceUtil = multiStateInstanceUtil;
+    }
+
+	
 	public void defaultJsonPathConfig() {
 		Configuration.setDefaults(new Configuration.Defaults() {
 
@@ -248,16 +254,23 @@ public class FSMUtil {
 		return serviceRequestRepository.fetchResult(getMdmsSearchUrl(), mdmsCriteriaReq);
 
 	}
-	
-	/* * central Instance enhancement */
-	public String replaceSchemaPlaceholder(String query, String tenantId) {
-	    String finalQuery = null;
-	    if (tenantId.contains(".")) {
-	        String schemaName = tenantId.split("\\.")[1];
-	        finalQuery = query.replace(FSMConstants.SCHEMA_REPLACE_STRING, schemaName);
-	    } else {
-	        finalQuery = query.replace(FSMConstants.SCHEMA_REPLACE_STRING.concat("."), "");
-	    }
-	    return finalQuery;
-	} 
+	/**
+     * Method to fetch the state name from the tenantId
+     *
+     * @param query
+     * @param tenantId
+     * @return
+     */
+    public String replaceSchemaPlaceholder(String query, String tenantId) {
+
+        String finalQuery = null;
+
+        try {
+            finalQuery = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+        }
+        catch (Exception e){
+            throw new CustomException("INVALID_TENANTID","Invalid tenantId: "+tenantId);
+        }
+        return finalQuery;
+    }
 }

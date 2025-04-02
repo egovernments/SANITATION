@@ -85,6 +85,4 @@ public class VendorConstants {
 
 	public static final String DRIVING_LICENSE_NUMBER_IDENTIFIER = "DRIVING_LICENSE_NUMBER";
 
-	public static String SCHEMA_REPLACE_STRING = "{schema}"; 
-
 }
