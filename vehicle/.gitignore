@@ -140,7 +140,6 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-.settings/
 
 # External tool builders
 .externalToolBuilders/
@@ -213,13 +212,3 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
-### Java template
-# Compiled class file
-*.class
-
-# Eclipse m2e generated files
-# Eclipse Core
-.project
-
-# Ignore Gradle GUI config
-gradle-app.setting
