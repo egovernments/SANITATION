@@ -162,5 +162,12 @@ public class VendorConfiguration {
 
 	@Value("${egov.enc.decrypt.endpoint}")
 	private String decryptionEndpoint;
+	
+	// Central instance configs
+    @Value("${state.level.tenantid.length}")
+    private Integer stateLevelTenantIdLength;
+
+    @Value("${is.environment.central.instance}")
+    private Boolean isEnvironmentCentralInstance;
 
 }

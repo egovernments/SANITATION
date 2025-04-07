@@ -155,6 +155,11 @@ public class ServiceConfiguration {
   @Value("${egov.pdfservice.host}")
   private String pdfServiceHost;
 
+  //Central instance configs
+  @Value("${state.level.tenantid.length}")
+  private Integer stateLevelTenantIdLength;
 
+  @Value("${is.environment.central.instance}")
+  private Boolean isEnvironmentCentralInstance;
 
 }

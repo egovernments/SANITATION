@@ -23,10 +23,10 @@ public class QueryBuilder {
 	VehicleConfiguration config;
 
 	private static final String PAGINATION_WRAPPER = "{} {orderby} {pagination}";
-	private static final String QUERY = " SELECT count(*) OVER() AS full_count, * FROM eg_vehicle ";
-	private static final String VEH_EXISTS_QUERY = " SELECT COUNT(*) FROM eg_vehicle WHERE tenantid=? AND registrationNumber=? AND STATUS= ?";
+	private static final String QUERY = " SELECT count(*) OVER() AS full_count, * FROM {schema}.eg_vehicle ";
+	private static final String VEH_EXISTS_QUERY = " SELECT COUNT(*) FROM {schema}.eg_vehicle WHERE tenantid=? AND registrationNumber=? AND STATUS= ?";
 
-	private static final String VEHICLE_NO_VENDOR_QUERY = " SELECT DISTINCT (vehicle.id) FROM EG_VEHICLE vehicle LEFT JOIN eg_vendor_vehicle vendor_vehicle ON vehicle.id=vendor_vehicle.vechile_id";
+	private static final String VEHICLE_NO_VENDOR_QUERY = " SELECT DISTINCT (vehicle.id) FROM {schema}.EG_VEHICLE vehicle LEFT JOIN eg_vendor_vehicle vendor_vehicle ON vehicle.id=vendor_vehicle.vechile_id";
 
 	/**
 	 * 
@@ -261,7 +261,7 @@ public class QueryBuilder {
 
 		if (criteria.getLimit() != null && criteria.getLimit() != 0) {
 			builder.append(
-					"and vehicle.id in (select id from eg_vehicle where tenantid= ? order by id offset ? limit ?)");
+					"and vehicle.id in (select id from {schema}.eg_vehicle where tenantid= ? order by id offset ? limit ?)");
 			preparedStmtList.add(criteria.getTenantId());
 			preparedStmtList.add(criteria.getOffset());
 			preparedStmtList.add(criteria.getLimit());

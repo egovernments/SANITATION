@@ -39,6 +39,7 @@ public class PlantUserService {
   }
 
   public PlantUserResponse search(PlantUserSearchRequest plantUserSearchRequest) {
-    return plantUserRepository.search(plantUserSearchRequest);
+	  plantUserValidator.validateSearchCriteria(plantUserSearchRequest);
+	  return plantUserRepository.search(plantUserSearchRequest);
   }
 }

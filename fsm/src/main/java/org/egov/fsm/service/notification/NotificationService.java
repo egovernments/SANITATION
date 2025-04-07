@@ -64,7 +64,7 @@ public class NotificationService {
 		if (null != config.getIsSMSEnabled() && config.getIsSMSEnabled()) {
 			enrichSMSRequest(fsmRequest, smsRequests);
 			if (!CollectionUtils.isEmpty(smsRequests))
-				util.sendSMS(smsRequests, config.getIsSMSEnabled());
+				util.sendSMS(smsRequests, config.getIsSMSEnabled(),fsmRequest.getFsm().getTenantId());
 
 		}
 		if (null != config.getIsUserEventsNotificationEnabled() && config.getIsUserEventsNotificationEnabled()) {

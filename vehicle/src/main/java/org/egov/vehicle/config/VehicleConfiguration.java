@@ -175,5 +175,10 @@ public class VehicleConfiguration {
 		@Value("${egov.ui.fsm.new.link}")
 		private String newFsmLink;
 		
-			
+		// Central instance configs
+	    @Value("${state.level.tenantid.length}")
+	    private Integer stateLevelTenantIdLength;
+
+	    @Value("${is.environment.central.instance}")
+	    private Boolean isEnvironmentCentralInstance;
 }

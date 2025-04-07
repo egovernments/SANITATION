@@ -86,4 +86,11 @@ public class PqmAnomalyConfiguration {
 	@Value("${egov.pqm.anomaly.testNotSubmitted.kafka.topic}")
 	private String testNotSubmitted;
 
+	// Central instance configs
+	@Value("${state.level.tenantid.length}")
+	private Integer stateLevelTenantIdLength;
+
+	@Value("${is.environment.central.instance}")
+	private Boolean isEnvironmentCentralInstance;
+
 }

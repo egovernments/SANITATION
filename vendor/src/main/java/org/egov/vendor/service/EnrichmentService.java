@@ -198,7 +198,7 @@ public class EnrichmentService {
 	}
 
 	private void addDrivers(RequestInfo requestInfo, Vendor vendor, String tenantId) {
-		List<String> driverIds = vendorRepository.getDrivers(vendor.getId(), VendorConstants.ACTIVE);
+		List<String> driverIds = vendorRepository.getDrivers(vendor.getId(), VendorConstants.ACTIVE ,tenantId);
 
 		if (!CollectionUtils.isEmpty(driverIds)) {
 			List<String> statusData = new ArrayList<>();
@@ -227,7 +227,7 @@ public class EnrichmentService {
 	}
 
 	private void addWorkers(RequestInfo requestInfo, Vendor vendor, String tenantId) {
-		List<String> individualIds = vendorRepository.getWorkers(vendor.getId(), VendorConstants.ACTIVE);
+		List<String> individualIds = vendorRepository.getWorkers(vendor.getId(), VendorConstants.ACTIVE, tenantId);
 
 		if (!CollectionUtils.isEmpty(individualIds)) {
 			List<String> statusData = new ArrayList<>();
@@ -241,7 +241,7 @@ public class EnrichmentService {
 	}
 
 	private void addVehicles(RequestInfo requestInfo, Vendor vendor, String tenantId) {
-		List<String> vehicleIds = vendorRepository.getVehicles(vendor.getId(), "ACTIVE");
+		List<String> vehicleIds = vendorRepository.getVehicles(vendor.getId(), "ACTIVE", tenantId);
 		if (!CollectionUtils.isEmpty(vehicleIds)) {
 			List<String> statusData = new ArrayList<>();
 			statusData.add(VendorConstants.ACTIVE);

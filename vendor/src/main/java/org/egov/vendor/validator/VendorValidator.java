@@ -62,7 +62,15 @@ public class VendorValidator {
 			throw new CustomException(VendorErrorConstants.INVALID_SEARCH, VendorConstants.TENANT_ID_MANDATORY);
 		if (criteria.getTenantId() == null)
 			throw new CustomException(VendorErrorConstants.INVALID_SEARCH, VendorConstants.TENANT_ID_MANDATORY);
+		
+		/* Central Instance Enhancement */
+		if (config.getIsEnvironmentCentralInstance() && criteria.getTenantId() == null)
+			throw new CustomException("EG_PT_INVALID_SEARCH", " TenantId is mandatory for search ");
 
+		else if (config.getIsEnvironmentCentralInstance()
+				&& criteria.getTenantId().split("\\.").length < config.getStateLevelTenantIdLength())
+			throw new CustomException("EG_PT_INVALID_SEARCH",
+					" TenantId should be mandatorily " + config.getStateLevelTenantIdLength() + " levels for search");
 		String allowedParamStr = null;
 
 		// I am in doute

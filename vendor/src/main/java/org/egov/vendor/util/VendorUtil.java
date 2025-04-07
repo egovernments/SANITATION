@@ -1,17 +1,21 @@
 package org.egov.vendor.util;
 
+import static org.egov.vendor.util.VendorConstants.FSM_MODULE;
+import static org.egov.vendor.util.VendorConstants.VENDOR_MODULE;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.kafka.common.protocol.types.Field;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.mdms.model.MasterDetail;
 import org.egov.mdms.model.MdmsCriteria;
 import org.egov.mdms.model.MdmsCriteriaReq;
 import org.egov.mdms.model.ModuleDetail;
+import org.egov.tracer.model.CustomException;
 import org.egov.vendor.config.VendorConfiguration;
 import org.egov.vendor.repository.ServiceRequestRepository;
 import org.egov.vendor.web.model.AuditDetails;
@@ -25,9 +29,6 @@ import com.jayway.jsonpath.spi.json.JsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 import com.jayway.jsonpath.spi.mapper.MappingProvider;
 
-import static org.egov.vendor.util.VendorConstants.FSM_MODULE;
-import static org.egov.vendor.util.VendorConstants.VENDOR_MODULE;
-
 @Component
 public class VendorUtil {
 
@@ -36,6 +37,13 @@ public class VendorUtil {
 
 	@Autowired
 	private VendorConfiguration vendorConfiguration;
+	
+	private MultiStateInstanceUtil multiStateInstanceUtil;
+
+	@Autowired
+	public VendorUtil(MultiStateInstanceUtil multiStateInstanceUtil) {
+		this.multiStateInstanceUtil = multiStateInstanceUtil;
+	}
 
 	public void defaultJsonPathConfig() {
 		Configuration.setDefaults(new Configuration.Defaults() {
@@ -123,5 +131,24 @@ public class VendorUtil {
 					.build();
 		else
 			return AuditDetails.builder().lastModifiedBy(by).lastModifiedTime(time).build();
+	}
+
+	/**
+	 * Method to fetch the state name from the tenantId
+	 *
+	 * @param query
+	 * @param tenantId
+	 * @return
+	 */
+	public String replaceSchemaPlaceholder(String query, String tenantId) {
+
+		String finalQuery = null;
+
+		try {
+			finalQuery = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+		} catch (Exception e) {
+			throw new CustomException("INVALID_TENANTID", "Invalid tenantId: " + tenantId);
+		}
+		return finalQuery;
 	}
 }

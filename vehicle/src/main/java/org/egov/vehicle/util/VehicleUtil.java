@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.mdms.model.MasterDetail;
 import org.egov.mdms.model.MdmsCriteria;
 import org.egov.mdms.model.MdmsCriteriaReq;
 import org.egov.mdms.model.ModuleDetail;
+import org.egov.tracer.model.CustomException;
 import org.egov.vehicle.config.VehicleConfiguration;
 import org.egov.vehicle.repository.ServiceRequestRepository;
 import org.egov.vehicle.web.model.AuditDetails;
@@ -31,6 +33,13 @@ public class VehicleUtil {
 
 	@Autowired
 	ServiceRequestRepository serviceRequestRepository;
+
+	private MultiStateInstanceUtil multiStateInstanceUtil;
+
+	@Autowired
+	public VehicleUtil(MultiStateInstanceUtil multiStateInstanceUtil) {
+		this.multiStateInstanceUtil = multiStateInstanceUtil;
+	}
 
 	public void defaultJsonPathConfig() {
 		Configuration.setDefaults(new Configuration.Defaults() {
@@ -129,6 +138,25 @@ public class VehicleUtil {
 
 		return moduleDtls;
 
+	}
+
+	/**
+	 * Method to fetch the state name from the tenantId
+	 *
+	 * @param query
+	 * @param tenantId
+	 * @return
+	 */
+	public String replaceSchemaPlaceholder(String query, String tenantId) {
+
+		String finalQuery = null;
+
+		try {
+			finalQuery = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+		} catch (Exception e) {
+			throw new CustomException("INVALID_TENANTID", "Invalid tenantId: " + tenantId);
+		}
+		return finalQuery;
 	}
 
 }

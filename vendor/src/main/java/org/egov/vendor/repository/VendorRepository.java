@@ -10,6 +10,7 @@ import org.egov.vendor.config.VendorConfiguration;
 import org.egov.vendor.producer.Producer;
 import org.egov.vendor.repository.querybuilder.VendorQueryBuilder;
 import org.egov.vendor.repository.rowmapper.VendorRowMapper;
+import org.egov.vendor.util.VendorUtil;
 import org.egov.vendor.web.model.Vendor;
 import org.egov.vendor.web.model.VendorRequest;
 import org.egov.vendor.web.model.VendorResponse;
@@ -39,82 +40,89 @@ public class VendorRepository {
 
 	@Autowired
 	private VendorRowMapper vendorrowMapper;
+	
+	@Autowired
+	private VendorUtil vendorUtil;
 
 	public void save(VendorRequest vendorRequest) {
-		producer.push(configuration.getSaveTopic(), vendorRequest);
+		producer.push(vendorRequest.getVendor().getTenantId(), configuration.getSaveTopic(), vendorRequest);
 	}
 
 	public void update(VendorRequest vendorRequest) {
-		producer.push(configuration.getUpdateTopic(), vendorRequest);
+		producer.push(vendorRequest.getVendor().getTenantId(), configuration.getUpdateTopic(), vendorRequest);
 	}
 
 	public void updateVendorVehicleDriver(VendorRequest vendorRequest) {
-		producer.push(configuration.getSaveVendorVehicleDriverTopic(), vendorRequest);
+		producer.push(vendorRequest.getVendor().getTenantId(), configuration.getSaveVendorVehicleDriverTopic(), vendorRequest);
 	}
 
 	public VendorResponse getVendorData(VendorSearchCriteria vendorSearchCriteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = vendorQueryBuilder.getVendorSearchQuery(vendorSearchCriteria, preparedStmtList);
-		log.info("Get vendors query ::=>" + query.toString());
+	    query = vendorUtil.replaceSchemaPlaceholder(query, vendorSearchCriteria.getTenantId());
+	    log.info("Get vendors query ::=>" + query.toString());
 		List<Vendor> vendorData = jdbcTemplate.query(query, preparedStmtList.toArray(), vendorrowMapper);
 		return VendorResponse.builder().vendor(vendorData).totalCount(Integer.valueOf(vendorrowMapper.getFullCount()))
 				.build();
 	}
 
-	public List<String> getDrivers(String id, String status) {
+	public List<String> getDrivers(String id, String status, String tenantId) {
 		List<String> ids = null;
 		List<Object> preparedStmtList = new ArrayList<>();
 		preparedStmtList.add(id);
 		preparedStmtList.add(status);
-		ids = jdbcTemplate.queryForList(vendorQueryBuilder.getDriverSearchQuery(), preparedStmtList.toArray(),
-				String.class);
+		String query = vendorQueryBuilder.getDriverSearchQuery();
+		query = vendorUtil.replaceSchemaPlaceholder(query, tenantId);
+		ids = jdbcTemplate.queryForList(query, preparedStmtList.toArray(), String.class);
 		return ids;
 	}
 
-	public List<String> getWorkers(String id, String status) {
+	public List<String> getWorkers(String id, String status, String tenantId) {
 		List<String> ids = null;
 		List<Object> preparedStmtList = new ArrayList<>();
 		preparedStmtList.add(id);
 		preparedStmtList.add(status);
-		ids = jdbcTemplate.queryForList(vendorQueryBuilder.getWorkerSearchQuery(), preparedStmtList.toArray(),
-				String.class);
+		String query = vendorQueryBuilder.getWorkerSearchQuery();
+		query = vendorUtil.replaceSchemaPlaceholder(query, tenantId);
+		ids = jdbcTemplate.queryForList(query, preparedStmtList.toArray(), String.class);
 		return ids;
 	}
 
-	public List<String> getVehicles(String id, String status) {
+	public List<String> getVehicles(String id, String status, String tenantId) {
 		List<String> ids = null;
 		List<Object> preparedStmtList = new ArrayList<>();
 		preparedStmtList.add(id);
 		preparedStmtList.add(status);
-		ids = jdbcTemplate.queryForList(vendorQueryBuilder.getVehicleSearchQuery(), preparedStmtList.toArray(),
-				String.class);
+		String query = vendorQueryBuilder.getVehicleSearchQuery();
+		query = vendorUtil.replaceSchemaPlaceholder(query, tenantId);
+		ids = jdbcTemplate.queryForList(query, preparedStmtList.toArray(), String.class);
 		return ids;
 	}
 
 	public List<String> getVendorWithVehicles(VendorSearchCriteria vendorSearchCriteria) {
 		List<String> vendorIds = null;
 		List<Object> preparedStmtList = new ArrayList<>();
-		vendorIds = jdbcTemplate.queryForList(
-				vendorQueryBuilder.vendorsForVehicles(vendorSearchCriteria, preparedStmtList),
-				preparedStmtList.toArray(), String.class);
+		String query = vendorQueryBuilder.vendorsForVehicles(vendorSearchCriteria, preparedStmtList);
+		query = vendorUtil.replaceSchemaPlaceholder(query, vendorSearchCriteria.getTenantId());
+		vendorIds = jdbcTemplate.queryForList(query, preparedStmtList.toArray(), String.class);
 		return vendorIds;
 	}
 
 	public List<String> getVendorWithDrivers(VendorSearchCriteria vendorSearchCriteria) {
 		List<String> vendorIds = null;
 		List<Object> preparedStmtList = new ArrayList<>();
-		vendorIds = jdbcTemplate.queryForList(
-				vendorQueryBuilder.vendorsForDrivers(vendorSearchCriteria, preparedStmtList),
-				preparedStmtList.toArray(), String.class);
+		String query = vendorQueryBuilder.vendorsForDrivers(vendorSearchCriteria, preparedStmtList);
+		query = vendorUtil.replaceSchemaPlaceholder(query, vendorSearchCriteria.getTenantId());
+		vendorIds = jdbcTemplate.queryForList(query, preparedStmtList.toArray(), String.class);
 		return vendorIds;
 	}
 
 	public List<String> getVendorWithWorker(VendorSearchCriteria vendorSearchCriteria) {
 		List<String> vendorIds = null;
 		List<Object> preparedStmtList = new ArrayList<>();
-		vendorIds = jdbcTemplate.queryForList(
-				vendorQueryBuilder.vendorsFoWorkers(vendorSearchCriteria, preparedStmtList),
-				preparedStmtList.toArray(), String.class);
+		String query = vendorQueryBuilder.vendorsFoWorkers(vendorSearchCriteria, preparedStmtList);
+		query = vendorUtil.replaceSchemaPlaceholder(query, vendorSearchCriteria.getTenantId());
+		vendorIds = jdbcTemplate.queryForList(query, preparedStmtList.toArray(), String.class);
 		return vendorIds;
 	}
 
@@ -122,8 +130,9 @@ public class VendorRepository {
 		List<Object> preparedStmtList = new ArrayList<>();
 		preparedStmtList.add(criteria.getOffset());
 		preparedStmtList.add(criteria.getLimit());
-		return jdbcTemplate.query("SELECT id from eg_vendor ORDER BY createdtime offset " + " ? " + "limit ? ",
-				preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
+		String query = "SELECT id from {schema}.eg_vendor ORDER BY createdtime offset " + " ? " + "limit ? ";
+		query = vendorUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
+		return jdbcTemplate.query(query, preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
 	}
 
 	public List<Vendor> getVendorPlainSearch(VendorSearchCriteria criteria) {
@@ -133,16 +142,18 @@ public class VendorRepository {
 
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = vendorQueryBuilder.getVendorLikeQuery(criteria, preparedStmtList);
+	    query = vendorUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
+		query = vendorUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		log.info("Query: " + query);
 		log.info("PS: " + preparedStmtList);
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), vendorrowMapper);
 	}
 
-	public int getExistingVenodrsCount(List<String> ownerIdList) {
+	public int getExistingVenodrsCount(List<String> ownerIdList , String tenantId) {
 		List<Object> preparedStmtList = new ArrayList<>();
 
 		String query = vendorQueryBuilder.getvendorCount(ownerIdList, preparedStmtList);
-
+	    query = vendorUtil.replaceSchemaPlaceholder(query, tenantId);
 		return jdbcTemplate.queryForObject(query, preparedStmtList.toArray(), Integer.class);
 
 	}

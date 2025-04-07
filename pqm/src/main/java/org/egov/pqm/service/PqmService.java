@@ -137,8 +137,7 @@ public class PqmService {
     List<String> idList = testResponse.getTests().stream().map(Test::getTestId)
         .collect(Collectors.toList());
 
-    List<QualityCriteria> qualityCriteriaList = repository.getQualityCriteriaData(idList);
-
+    List<QualityCriteria> qualityCriteriaList = repository.getQualityCriteriaData(idList, testSearchRequest.getTestSearchCriteria().getTenantId());
     testList = testResponse.getTests().stream().map(test -> {
       List<QualityCriteria> QualityCriterias = qualityCriteriaList.stream()
           .filter(qualityCriteria -> test.getTestId().equalsIgnoreCase(qualityCriteria.getTestId()))
@@ -147,7 +146,7 @@ public class PqmService {
       return test;
     }).collect(Collectors.toList());
 
-    DocumentResponse documentResponse = repository.getDocumentData(idList);
+    DocumentResponse documentResponse = repository.getDocumentData(idList, testSearchRequest.getTestSearchCriteria().getTenantId());
     List<Document> documentList = documentResponse.getDocuments();
 
     testList = testResponse.getTests().stream().map(test -> {
@@ -270,7 +269,7 @@ public class PqmService {
   private void updateTestDocuments(TestRequest testRequest){
     Test test = testRequest.getTests().get(0);
     DocumentResponse documentResponse = repository.getDocumentData(
-        Collections.singletonList(test.getTestId()));
+        Collections.singletonList(test.getTestId()), testRequest.getTests().get(0).getTenantId());
     if(Objects.isNull(documentResponse) || Objects.isNull(documentResponse.getDocuments())){
       return;
     }

@@ -11,7 +11,7 @@ import org.springframework.util.CollectionUtils;
 @Component
 public class FsmWorkerQueryBuilder {
 
-  private static final String WORKER_SEARCH_QUERY = "SELECT count(*) OVER() AS full_count, worker.* FROM eg_fsm_application_worker worker";
+  private static final String WORKER_SEARCH_QUERY = "SELECT count(*) OVER() AS full_count, worker.* FROM {schema}.eg_fsm_application_worker worker";
   private static final String PAGINATION_WRAPPER = "{} {orderby} {pagination}";
 
   @Autowired

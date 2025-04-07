@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
 public class PlantUserQueryBuilder {
 
     private static final String QUERY =
-            "SELECT COUNT(*) OVER() AS total_count, plant_user.* FROM eq_plant_user_map plant_user";
+            "SELECT COUNT(*) OVER() AS total_count, plant_user.* FROM {schema}.eq_plant_user_map plant_user";
     private static final String PAGINATION_WRAPPER = "{} {order_by} {pagination}";
 
     @Autowired

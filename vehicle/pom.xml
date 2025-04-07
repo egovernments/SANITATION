@@ -114,8 +114,6 @@
 			<artifactId>jakarta.el</artifactId>
 			<version>4.0.2</version> <!-- For Expression Language support -->
 		</dependency>
-
-
 	</dependencies>
 	<repositories>
 		<repository>

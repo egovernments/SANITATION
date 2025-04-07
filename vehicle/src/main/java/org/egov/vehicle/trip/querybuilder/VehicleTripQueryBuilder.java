@@ -15,11 +15,11 @@ import org.springframework.util.StringUtils;
 @Component
 public class VehicleTripQueryBuilder {
 
-	private static final String QUERY_VEHICLE_LOG_EXIST = "SELECT count(*) FROM eg_vehicle_trip where id =? AND status='ACTIVE'";
-	private static final String QUERY_SEARCH_VEHICLE_LOG = "select count(*) OVER() AS full_count, * from eg_vehicle_trip WHERE tenantid like ?";
+	private static final String QUERY_VEHICLE_LOG_EXIST = "SELECT count(*) FROM {schema}.eg_vehicle_trip where id =? AND status='ACTIVE'";
+	private static final String QUERY_SEARCH_VEHICLE_LOG = "select count(*) OVER() AS full_count, * from {schema}.eg_vehicle_trip WHERE tenantid like ?";
 	private static final String PAGINATION_WRAPPER = "{} {orderby}  OFFSET ? LIMIT ?";
-	private static final String QUERY_TRIP_FROM_REF = "SELECT trip_id from eg_vehicle_trip_detail WHERE  status='ACTIVE' and referenceno in ( %s )";
-	private static final String QUERY_TRIP_DTL = "SELECT * FROM eg_vehicle_trip_detail WHERE status='ACTIVE' and trip_id = ? ";
+	private static final String QUERY_TRIP_FROM_REF = "SELECT trip_id from {schema}.eg_vehicle_trip_detail WHERE  status='ACTIVE' and referenceno in ( %s )";
+	private static final String QUERY_TRIP_DTL = "SELECT * FROM {schema}.eg_vehicle_trip_detail WHERE status='ACTIVE' and trip_id = ? ";
 
 	@Autowired
 	private VehicleConfiguration config;
@@ -199,7 +199,7 @@ public class VehicleTripQueryBuilder {
 
 		if (criteria.getLimit() != null && criteria.getLimit() != 0) {
 			builder.append(
-					"and vehicletrip.id in (select id from eg_vehicle_trip where tenantid like ? order by id offset ? limit ?)");
+					"and vehicletrip.id in (select id from {schema}.eg_vehicle_trip where tenantid like ? order by id offset ? limit ?)");
 			if (criteria.getTenantId() != null) {
 				if (criteria.getTenantId().split("\\.").length == 1) {
 

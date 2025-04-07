@@ -214,7 +214,7 @@ public class NotificationUtil {
 	 * @param request
 	 */
 	public void sendEventNotification(EventRequest request) {
-		pqmAnomalyFinderProducer.push(pqmAnomalyConfiguration.getSaveUserEventsTopic(), request);
+		pqmAnomalyFinderProducer.push(request.getEvents().get(0).getTenantId(), pqmAnomalyConfiguration.getSaveUserEventsTopic(), request);
 
 		log.debug("STAKEHOLDER:: " + request.getEvents().get(0).getDescription());
 	}

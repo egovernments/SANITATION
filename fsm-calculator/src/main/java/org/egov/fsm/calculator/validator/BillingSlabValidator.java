@@ -72,6 +72,7 @@ public class BillingSlabValidator {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String queryForBillingSlab = queryBuilder.getBillingSlabExistQuery(request.getBillingSlab().getId(),
 				preparedStmtList);
+		queryForBillingSlab = util.replaceSchemaPlaceholder(queryForBillingSlab, request.getBillingSlab().getTenantId());
 		int count = repository.getDataCount(queryForBillingSlab, preparedStmtList);
 		if (count <= 0) {
 			throw new CustomException(CalculatorConstants.INVALID_BILLING_SLAB_ERROR, "Billing Slab not found");
@@ -82,7 +83,8 @@ public class BillingSlabValidator {
 				request.getBillingSlab().getCapacityFrom(), request.getBillingSlab().getCapacityTo(),
 				request.getBillingSlab().getPropertyType(), request.getBillingSlab().getSlum().toString(),
 				request.getBillingSlab().getId(), preparedStmtList);
-
+		
+		query = util.replaceSchemaPlaceholder(query, request.getBillingSlab().getTenantId());
 		int combinationCount = repository.getDataCount(query, preparedStmtList);
 		if (combinationCount >= 1) {
 			throw new CustomException(CalculatorConstants.INVALID_BILLING_SLAB_ERROR,
@@ -175,6 +177,15 @@ public class BillingSlabValidator {
 			List<String> allowedParams = Arrays.asList(allowedParamStr.split(","));
 			validateSearchParams(criteria, allowedParams);
 		}
+		
+		if(config.getIsEnvironmentCentralInstance() && criteria.getTenantId() == null) 
+			  throw new CustomException("EG_PT_INVALID_SEARCH",
+			                                      " TenantId is mandatory for search ");
+			                                      
+			else if(config.getIsEnvironmentCentralInstance() 
+			    && criteria.getTenantId().split("\\.").length < config.getStateLevelTenantIdLength())
+			 throw new CustomException("EG_PT_INVALID_SEARCH",
+			       " TenantId should be mandatorily " + config.getStateLevelTenantIdLength() + " levels for search");
 	}
 
 	/**

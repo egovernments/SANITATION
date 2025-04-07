@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.fsm.calculator.config.CalculatorConfig;
 import org.egov.fsm.calculator.repository.ServiceRequestRepository;
 import org.egov.fsm.calculator.web.models.AuditDetails;
@@ -15,6 +16,7 @@ import org.egov.mdms.model.MasterDetail;
 import org.egov.mdms.model.MdmsCriteria;
 import org.egov.mdms.model.MdmsCriteriaReq;
 import org.egov.mdms.model.ModuleDetail;
+import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +37,13 @@ public class BillingSlabUtil {
 
 	@Autowired
 	private CalculatorConfig config;
+	
+	private MultiStateInstanceUtil multiStateInstanceUtil;
+
+    @Autowired
+    public BillingSlabUtil(MultiStateInstanceUtil multiStateInstanceUtil) {
+        this.multiStateInstanceUtil = multiStateInstanceUtil;
+    }
 
 	public void defaultJsonPathConfig() {
 		Configuration.setDefaults(new Configuration.Defaults() {
@@ -127,5 +136,24 @@ public class BillingSlabUtil {
 
 		return Arrays.asList(fsmMasterMDtl);
 
+	}
+	
+	/**
+	 * Method to fetch the state name from the tenantId
+	 *
+	 * @param query
+	 * @param tenantId
+	 * @return
+	 */
+	public String replaceSchemaPlaceholder(String query, String tenantId) {
+
+		String finalQuery = null;
+
+		try {
+			finalQuery = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+		} catch (Exception e) {
+			throw new CustomException("INVALID_TENANTID", "Invalid tenantId: " + tenantId);
+		}
+		return finalQuery;
 	}
 }
