@@ -96,74 +96,74 @@
     "tenantId": "pg",
     "code": "FSM.Config",
     "description": "Fsm Config",
-    "definition": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "string"
-        },
-        "WFState": {
-          "type": "string"
-        },
-        "override": {
-          "type": "boolean"
-        },
-        "default": {
-          "type": "integer"
-        },
-        "overrideField": {
-          "type": "array",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            }
-          ]
-        },
-        "active": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "code",
-        "active"
-      ],
-      "x-unique": [
-        "code"
-      ]
+    "definition":       {
+"$schema": "http://json-schema.org/draft-04/schema#",
+"type": "object",
+"properties": {
+"code": {
+  "type": "string"
+},
+"WFState": {
+  "type": "string"
+},
+"override": {
+  "type": "boolean"
+},
+"default": {
+  "type": "integer"
+},
+"overrideField": {
+  "type": "array",
+  "items": [
+    {
+      "type": "string"
     },
+    {
+      "type": "string"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "string"
+    }
+  ]
+},
+"active": {
+  "type": "boolean"
+}
+},
+"required": [
+"code",
+"active"
+],
+"x-unique": [
+            "code"
+        ]
+},
     "isActive": true
-  },
+},
   {
     "tenantId": "pg",
     "code": "FSM.ReassignReason",
