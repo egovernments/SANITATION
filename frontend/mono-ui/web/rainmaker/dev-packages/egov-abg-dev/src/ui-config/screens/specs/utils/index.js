@@ -1,24 +1,35 @@
 import {
-  getCommonCaption, getCommonCard
+  getCommonCaption,
+  getCommonCard,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
-import { getLocaleLabels, getQueryArg, getTransformedLocalStorgaeLabels } from "egov-ui-framework/ui-utils/commons";
+import {
+  getLocaleLabels,
+  getQueryArg,
+  getTransformedLocalStorgaeLabels,
+} from "egov-ui-framework/ui-utils/commons";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { set } from "lodash";
 import get from "lodash/get";
 import { httpRequest } from "../../../../ui-utils";
-import { generateMultipleBill, generateMultipleBills } from "../utils/receiptPdf";
+import {
+  generateMultipleBill,
+  generateMultipleBills,
+} from "../utils/receiptPdf";
 
-export const getCommonApplyFooter = children => {
+export const getCommonApplyFooter = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Div",
     props: {
-      className: "apply-wizard-footer"
+      className: "apply-wizard-footer",
     },
-    children
+    children,
   };
 };
 
@@ -27,7 +38,7 @@ export const transformById = (payload, id) => {
     payload &&
     payload.reduce((result, item) => {
       result[item[id]] = {
-        ...item
+        ...item,
       };
 
       return result;
@@ -35,11 +46,11 @@ export const transformById = (payload, id) => {
   );
 };
 
-export const getMdmsData = async requestBody => {
+export const getMdmsData = async (requestBody) => {
   try {
     const response = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_search",
+      "mdms-v2/v1/_search",
       "_search",
       [],
       requestBody
@@ -91,7 +102,7 @@ export const validateFields = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            )
+            ),
           },
           dispatch,
           true
@@ -120,7 +131,7 @@ export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
   }
 };
 
-export const getEpochForDate = date => {
+export const getEpochForDate = (date) => {
   const dateSplit = date.split("/");
   return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
 };
@@ -137,17 +148,17 @@ export const sortByEpoch = (data, order) => {
   }
 };
 
-export const ifUserRoleExists = role => {
+export const ifUserRoleExists = (role) => {
   let userInfo = JSON.parse(getUserInfo());
   const roles = get(userInfo, "roles");
-  const roleCodes = roles ? roles.map(role => role.code) : [];
+  const roleCodes = roles ? roles.map((role) => role.code) : [];
   if (roleCodes.indexOf(role) > -1) {
     return true;
   } else return false;
 };
 
-export const convertEpochToDate = dateEpoch => {
-  if (dateEpoch == null || dateEpoch == undefined || dateEpoch == '') {
+export const convertEpochToDate = (dateEpoch) => {
+  if (dateEpoch == null || dateEpoch == undefined || dateEpoch == "") {
     return "NA";
   }
   const dateFromApi = new Date(dateEpoch);
@@ -236,7 +247,7 @@ export const showHideAdhocPopup = (state, dispatch) => {
   );
 };
 
-export const getCommonGrayCard = children => {
+export const getCommonGrayCard = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -250,18 +261,18 @@ export const getCommonGrayCard = children => {
               backgroundColor: "rgb(242, 242, 242)",
               boxShadow: "none",
               borderRadius: 0,
-              overflow: "visible"
-            }
-          })
+              overflow: "visible",
+            },
+          }),
         },
         gridDefination: {
-          xs: 12
-        }
-      }
+          xs: 12,
+        },
+      },
     },
     gridDefination: {
-      xs: 12
-    }
+      xs: 12,
+    },
   };
 };
 
@@ -271,30 +282,32 @@ export const getLabelOnlyValue = (value, props = {}) => {
     componentPath: "Div",
     gridDefination: {
       xs: 6,
-      sm: 4
+      sm: 4,
     },
     props: {
       style: {
-        marginBottom: "16px"
+        marginBottom: "16px",
       },
-      ...props
+      ...props,
     },
     children: {
-      value: getCommonCaption(value)
-    }
+      value: getCommonCaption(value),
+    },
   };
 };
 
-
 export const onActionClick = (rowData) => {
   switch (rowData[8]) {
-    case "PAY": return "";
-    case "DOWNLOAD RECEIPT": ""
-    case "GENERATE NEW RECEIPT": ""
+    case "PAY":
+      return "";
+    case "DOWNLOAD RECEIPT":
+      "";
+    case "GENERATE NEW RECEIPT":
+      "";
   }
-}
+};
 
-export const getTextToLocalMapping = label => {
+export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
     case "Bill No.":
@@ -393,11 +406,7 @@ export const getTextToLocalMapping = label => {
       );
     case "PAY":
     case "PARTIALLY PAID":
-      return getLocaleLabels(
-        "PAY",
-        "BILL_GENIE_PAY",
-        localisationLabels
-      );
+      return getLocaleLabels("PAY", "BILL_GENIE_PAY", localisationLabels);
     case "EXPIRED":
       return getLocaleLabels(
         "Expired",
@@ -445,10 +454,9 @@ export const getTextToLocalMapping = label => {
   }
 };
 
-
 export const setServiceCategory = (businessServiceData, dispatch) => {
   let nestedServiceData = {};
-  businessServiceData.forEach(item => {
+  businessServiceData.forEach((item) => {
     if (item.code && item.code.indexOf(".") > 0) {
       if (nestedServiceData[item.code.split(".")[0]]) {
         let child = get(
@@ -477,7 +485,7 @@ export const setServiceCategory = (businessServiceData, dispatch) => {
     )
   );
   let serviceCategories = Object.values(nestedServiceData).filter(
-    item => item.code
+    (item) => item.code
   );
   dispatch(
     prepareFinalObject(
@@ -486,8 +494,8 @@ export const setServiceCategory = (businessServiceData, dispatch) => {
     )
   );
 };
-export const checkValueForNA = value => {
-  return value == null || value == undefined || value == '' ? "NA" : value;
+export const checkValueForNA = (value) => {
+  return value == null || value == undefined || value == "" ? "NA" : value;
 };
 
 export const getMergeAndDownloadList = (state, dispatch, dataLength = 0) => {
@@ -496,7 +504,11 @@ export const getMergeAndDownloadList = (state, dispatch, dataLength = 0) => {
     "searchDetailsOfGroupBills",
     {}
   );
-  if (searchScreenObject.businesService && searchScreenObject.tenantId && searchScreenObject.locality) {
+  if (
+    searchScreenObject.businesService &&
+    searchScreenObject.tenantId &&
+    searchScreenObject.locality
+  ) {
     switch (searchScreenObject.businesService) {
       case "WS":
         dispatch(
@@ -506,13 +518,42 @@ export const getMergeAndDownloadList = (state, dispatch, dataLength = 0) => {
             "props.data.menu",
             [
               {
-                label: { labelName: "WATER CONNECTION", labelKey: "ABG_GROUP_BILLS_WATER_CONNECTION_BUTTON", },
-                link: () => { generateMultipleBills(state, dispatch, searchScreenObject.tenantId, searchScreenObject.locality, false, "WS", searchScreenObject.consumerCode); }
+                label: {
+                  labelName: "WATER CONNECTION",
+                  labelKey: "ABG_GROUP_BILLS_WATER_CONNECTION_BUTTON",
+                },
+                link: () => {
+                  generateMultipleBills(
+                    state,
+                    dispatch,
+                    searchScreenObject.tenantId,
+                    searchScreenObject.locality,
+                    false,
+                    "WS",
+                    searchScreenObject.consumerCode
+                  );
+                },
               },
               {
-                label: { labelName: "WATER & SEWERAGE CONNECTION", labelKey: parseInt(dataLength) == 1 ? "ABG_GROUP_BILLS_SINGLAR_WATER_AND_SEWERAGE_CONNECTION_BUTTON" : "ABG_GROUP_BILLS_WATER_AND_SEWERAGE_CONNECTION_BUTTON" },
-                link: () => { generateMultipleBills(state, dispatch, searchScreenObject.tenantId, searchScreenObject.locality, true, "WS", searchScreenObject.consumerCode); }
-              }
+                label: {
+                  labelName: "WATER & SEWERAGE CONNECTION",
+                  labelKey:
+                    parseInt(dataLength) == 1
+                      ? "ABG_GROUP_BILLS_SINGLAR_WATER_AND_SEWERAGE_CONNECTION_BUTTON"
+                      : "ABG_GROUP_BILLS_WATER_AND_SEWERAGE_CONNECTION_BUTTON",
+                },
+                link: () => {
+                  generateMultipleBills(
+                    state,
+                    dispatch,
+                    searchScreenObject.tenantId,
+                    searchScreenObject.locality,
+                    true,
+                    "WS",
+                    searchScreenObject.consumerCode
+                  );
+                },
+              },
             ]
           )
         );
@@ -525,13 +566,42 @@ export const getMergeAndDownloadList = (state, dispatch, dataLength = 0) => {
             "props.data.menu",
             [
               {
-                label: { labelName: "SEWERAGE CONNECTION", labelKey: "ABG_GROUP_BILLS_SEWERAGE_CONNECTION_BUTTON", },
-                link: () => { generateMultipleBills(state, dispatch, searchScreenObject.tenantId, searchScreenObject.locality, false, "SW", searchScreenObject.consumerCode); }
+                label: {
+                  labelName: "SEWERAGE CONNECTION",
+                  labelKey: "ABG_GROUP_BILLS_SEWERAGE_CONNECTION_BUTTON",
+                },
+                link: () => {
+                  generateMultipleBills(
+                    state,
+                    dispatch,
+                    searchScreenObject.tenantId,
+                    searchScreenObject.locality,
+                    false,
+                    "SW",
+                    searchScreenObject.consumerCode
+                  );
+                },
               },
               {
-                label: { labelName: "WATER & SEWERAGE CONNECTION", labelKey: parseInt(dataLength) == 1 ? "ABG_GROUP_BILLS_SINGLAR_WATER_AND_SEWERAGE_CONNECTION_BUTTON" : "ABG_GROUP_BILLS_WATER_AND_SEWERAGE_CONNECTION_BUTTON" },
-                link: () => { generateMultipleBills(state, dispatch, searchScreenObject.tenantId, searchScreenObject.locality, true, "SW", searchScreenObject.consumerCode); }
-              }
+                label: {
+                  labelName: "WATER & SEWERAGE CONNECTION",
+                  labelKey:
+                    parseInt(dataLength) == 1
+                      ? "ABG_GROUP_BILLS_SINGLAR_WATER_AND_SEWERAGE_CONNECTION_BUTTON"
+                      : "ABG_GROUP_BILLS_WATER_AND_SEWERAGE_CONNECTION_BUTTON",
+                },
+                link: () => {
+                  generateMultipleBills(
+                    state,
+                    dispatch,
+                    searchScreenObject.tenantId,
+                    searchScreenObject.locality,
+                    true,
+                    "SW",
+                    searchScreenObject.consumerCode
+                  );
+                },
+              },
             ]
           )
         );
@@ -542,15 +612,22 @@ export const getMergeAndDownloadList = (state, dispatch, dataLength = 0) => {
             "groupBills",
             "components.div.children.mergeDownloadButton.children.mergeButton",
             "props.data.menu",
-            [ {
-              label: { labelName: "SEWERAGE CONNECTION", labelKey: "ABG_GROUP_BILLS_MERGE_AND_DOWNLOAD_BUTTON", },
-              link: () => { generateMultipleBill(state, dispatch); }
-            },]
+            [
+              {
+                label: {
+                  labelName: "SEWERAGE CONNECTION",
+                  labelKey: "ABG_GROUP_BILLS_MERGE_AND_DOWNLOAD_BUTTON",
+                },
+                link: () => {
+                  generateMultipleBill(state, dispatch);
+                },
+              },
+            ]
           )
         );
     }
   }
-}
+};
 
 export const createEstimateData = async (
   billData,
@@ -559,15 +636,15 @@ export const createEstimateData = async (
   href = {},
   getFromReceipt
 ) => {
-  const payload = billData
-  const estimateData = payload
+  const payload = billData;
+  const estimateData = payload;
   dispatch(prepareFinalObject(jsonPath, estimateData));
   var event = new CustomEvent("estimateLoaded", { detail: true });
   window.parent.document.dispatchEvent(event);
   return payload;
 };
 
-export const getFeesEstimateCard = props => {
+export const getFeesEstimateCard = (props) => {
   const { sourceJsonPath, ...rest } = props;
   return {
     uiFramework: "custom-containers-local",
@@ -575,7 +652,7 @@ export const getFeesEstimateCard = props => {
     componentPath: "EstimateCardContainer",
     props: {
       sourceJsonPath,
-      ...rest
-    }
+      ...rest,
+    },
   };
 };

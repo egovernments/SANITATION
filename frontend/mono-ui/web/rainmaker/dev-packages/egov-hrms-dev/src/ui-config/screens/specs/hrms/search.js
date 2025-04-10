@@ -1,9 +1,12 @@
 import {
   getBreak,
   getCommonHeader,
-  getLabel
+  getLabel,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  prepareFinalObject,
+  handleScreenConfigurationFieldChange as handleField,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import set from "lodash/set";
@@ -20,7 +23,7 @@ enableButton = hasButton && hasButton === "false" ? false : true;
 
 const header = getCommonHeader({
   labelName: "Employee Management",
-  labelKey: "HR_COMMON_HEADER"
+  labelKey: "HR_COMMON_HEADER",
 });
 
 const getMDMSData = async (action, state, dispatch) => {
@@ -33,50 +36,55 @@ const getMDMSData = async (action, state, dispatch) => {
           moduleName: "common-masters",
           masterDetails: [
             { name: "Department", filter: "[?(@.active == true)]" },
-            { name: "Designation", filter: "[?(@.active == true)]" }
-          ]
+            { name: "Designation", filter: "[?(@.active == true)]" },
+          ],
         },
         {
           moduleName: "egov-hrms",
           masterDetails: [
             {
               name: "Degree",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "EmployeeStatus",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "EmployeeType",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "DeactivationReason",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "EmploymentTest",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "Specalization",
-              filter: "[?(@.active == true)]"
-            }
-          ]
+              filter: "[?(@.active == true)]",
+            },
+          ],
         },
         {
           moduleName: "tenant",
-          masterDetails: [{ name: "tenants" }]
+          masterDetails: [{ name: "tenants" }],
         },
-        {"moduleName":"ACCESSCONTROL-ROLES","masterDetails":[{"name":"roles","filter":"$.[?(@.code!='CITIZEN')]"}]}
-      ]
-    }
+        {
+          moduleName: "ACCESSCONTROL-ROLES",
+          masterDetails: [
+            { name: "roles", filter: "$.[?(@.code!='CITIZEN')]" },
+          ],
+        },
+      ],
+    },
   };
   try {
     const payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -112,9 +120,30 @@ const adminCityPickerCheck = (state, dispatch) => {
   let adminRoles = getAdminRole(state);
   if (adminRoles.hasAdminRole) {
     dispatch(prepareFinalObject("hrmsPickerFlag", true));
-    dispatch(handleField("search", "components.cityPickerDialog.children.dialogContent.children.popup.children.cityPicker.children.cityDropdown", "props.value", ""));
-    dispatch(handleField("search", "components.cityPickerDialog.children.dialogContent.children.popup.children.cityPicker.children.cityDropdown", "props.required", true));
-    dispatch(handleField("search", "components.cityPickerDialog.children.dialogContent.children.popup.children.cityPicker.children.cityDropdown", "required", true));
+    dispatch(
+      handleField(
+        "search",
+        "components.cityPickerDialog.children.dialogContent.children.popup.children.cityPicker.children.cityDropdown",
+        "props.value",
+        ""
+      )
+    );
+    dispatch(
+      handleField(
+        "search",
+        "components.cityPickerDialog.children.dialogContent.children.popup.children.cityPicker.children.cityDropdown",
+        "props.required",
+        true
+      )
+    );
+    dispatch(
+      handleField(
+        "search",
+        "components.cityPickerDialog.children.dialogContent.children.popup.children.cityPicker.children.cityDropdown",
+        "required",
+        true
+      )
+    );
     showCityPicker(state, dispatch);
   } else {
     dispatch(prepareFinalObject("hrmsPickerFlag", false));
@@ -137,7 +166,7 @@ const employeeSearchAndResult = {
       componentPath: "Form",
       props: {
         className: "common-div-css",
-        id: "search"
+        id: "search",
       },
       children: {
         headerDiv: {
@@ -148,16 +177,16 @@ const employeeSearchAndResult = {
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 6
+                sm: 6,
               },
-              ...header
+              ...header,
             },
             newApplicationButton: {
               componentPath: "Button",
               gridDefination: {
                 xs: 12,
                 sm: 6,
-                align: "right"
+                align: "right",
               },
               visible: enableButton,
               props: {
@@ -167,8 +196,8 @@ const employeeSearchAndResult = {
                   color: "white",
                   borderRadius: "2px",
                   width: "250px",
-                  height: "48px"
-                }
+                  height: "48px",
+                },
               },
 
               children: {
@@ -178,54 +207,54 @@ const employeeSearchAndResult = {
                   props: {
                     iconName: "add",
                     style: {
-                      fontSize: "24px"
-                    }
-                  }
+                      fontSize: "24px",
+                    },
+                  },
                 },
 
                 buttonLabel: getLabel({
                   labelName: "Add Employee",
-                  labelKey: "HR_ADD_NEW_EMPLOYEE_BUTTON"
-                })
+                  labelKey: "HR_ADD_NEW_EMPLOYEE_BUTTON",
+                }),
               },
               onClickDefination: {
                 action: "condition",
-                callBack: adminCityPickerCheck
+                callBack: adminCityPickerCheck,
               },
               roleDefination: {
                 rolePath: "user-info.roles",
-                roles: ["SUPERUSER", "HRMS_ADMIN"]
-              }
-            }
-          }
+                roles: ["SUPERUSER", "HRMS_ADMIN"],
+              },
+            },
+          },
         },
         searchForm,
         breakAfterSearch: getBreak(),
-        searchResults
-      }
+        searchResults,
+      },
     },
     cityPickerDialog: {
       componentPath: "Dialog",
       props: {
         open: false,
         className: "hrmsCityPickerDialog",
-        style: { overflow: "visible" }
+        style: { overflow: "visible" },
       },
       children: {
         dialogContent: {
           componentPath: "DialogContent",
           props: {
             style: {
-              overflow: "visible"
-            }
+              overflow: "visible",
+            },
           },
           children: {
-            popup: cityPicker
-          }
-        }
-      }
-    }
-  }
+            popup: cityPicker,
+          },
+        },
+      },
+    },
+  },
 };
 
 export default employeeSearchAndResult;

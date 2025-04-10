@@ -36,7 +36,7 @@ export const getFinancialYearDates = (format, et) => {
         financialDates.startDate = `${date.getFullYear().toString()}-04-01`;
         financialDates.endDate = `${(date.getFullYear() + 1).toString()}-03-31`;
         break;
-      default: 
+      default:
     }
   } else {
     switch (format) {
@@ -48,7 +48,7 @@ export const getFinancialYearDates = (format, et) => {
         financialDates.startDate = `${(date.getFullYear() - 1).toString()}-04-01`;
         financialDates.endDate = `${date.getFullYear().toString()}-03-31`;
         break;
-      default:  
+      default:
     }
   }
   return financialDates;
@@ -171,8 +171,7 @@ export const getEventsByType = async (queryObj) => {
     if (payload) {
       return payload.events;
     }
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 export const footer = (eventType = "BROADCAST") => {
@@ -261,11 +260,10 @@ export const getMdmsData = async (action, state, dispatch) => {
   };
   try {
     let payload = null;
-    payload = await httpRequest("post", "/egov-mdms-service/v1/_search", "_search", [], mdmsBody);
+    payload = await httpRequest("post", "/mdms-v2/v1/_search", "_search", [], mdmsBody);
     const localities = get(state.screenConfiguration, "preparedFinalObject.applyScreenMdmsData.tenant.localities", []);
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 export const getSingleMessage = async (state, dispatch, messageTenant, uuid) => {
@@ -285,15 +283,9 @@ export const getSingleMessage = async (state, dispatch, messageTenant, uuid) => 
   const toEpochDate = get(messageResponse[0], "eventDetails.toDate");
 
   if (get(messageResponse[0], "eventType") === "EVENTSONGROUND") {
-    const fromTime = new Date(fromEpochDate)
-      .toString()
-      .split(" ")[4]
-      .substring(0, 5);
+    const fromTime = new Date(fromEpochDate).toString().split(" ")[4].substring(0, 5);
     set(messageResponse[0], "eventDetails.fromTime", fromTime);
-    const toTime = new Date(toEpochDate)
-      .toString()
-      .split(" ")[4]
-      .substring(0, 5);
+    const toTime = new Date(toEpochDate).toString().split(" ")[4].substring(0, 5);
     set(messageResponse[0], "eventDetails.toTime", toTime);
   }
   messageResponse && dispatch(prepareFinalObject("events[0]", messageResponse[0]));
