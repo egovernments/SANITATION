@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const Breadcrumb = (props) => {
+
+  console.log(`*** LOG props?.crumbs***`,props?.crumbs);
   function isLast(index) {
     return index === props.crumbs.length - 1;
   }
@@ -14,7 +16,7 @@ const Breadcrumb = (props) => {
           return (
             <li key={ci} style={{ ...props.style }} className="bread-crumb--item">
               <span style={{ cursor: "pointer" }} onClick={() => window.history.back()}>
-                {crumb.content}
+                {crumb.content} 
               </span>
             </li>
           );

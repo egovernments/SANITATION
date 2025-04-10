@@ -7,7 +7,7 @@ const useConfig = (tenantId) => {
       (finalObject, itemConfig) =>
         Object.assign(finalObject, {
           [itemConfig.code]: {
-            override: itemConfig.override,
+            override: itemConfig.overrideField,
             default: itemConfig.default,
             state: itemConfig.WFState,
           },

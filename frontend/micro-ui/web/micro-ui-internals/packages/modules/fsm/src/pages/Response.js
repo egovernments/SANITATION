@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Banner,
@@ -9,12 +9,12 @@ import {
   Toast,
   ActionBar,
   Menu,
-} from '@egovernments/digit-ui-react-components';
-import { Link, useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
-import getPDFData from '../getPDFData';
-import { getVehicleType } from '../utils';
+} from "@egovernments/digit-ui-react-components";
+import { Link, useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useQueryClient } from "react-query";
+import getPDFData from "../getPDFData";
+import { getVehicleType } from "../utils";
 
 const GetMessage = (type, action, isSuccess, isEmployee, t, data) => {
   const zeroPricing =
@@ -22,32 +22,32 @@ const GetMessage = (type, action, isSuccess, isEmployee, t, data) => {
     data?.additionalDetails?.tripAmount === null ||
     false;
   const advanceZero = data?.advanceAmount === 0 || false;
-  if (action === 'RATE' && isSuccess === true && type === 'ACTION') {
-    return t('FSM_RATE_SUBMITTED');
+  if (action === "RATE" && isSuccess === true && type === "ACTION") {
+    return t("FSM_RATE_SUBMITTED");
   }
   return t(
-    `${isEmployee ? 'E' : 'C'}S_FSM_RESPONSE_${
-      action ? action : 'CREATE'
-    }_${type}${isSuccess ? '' : '_ERROR'}${
-      action ? '' : advanceZero ? '_POST_PAY' : zeroPricing ? '_ZERO_PAY' : ''
+    `${isEmployee ? "E" : "C"}S_FSM_RESPONSE_${
+      action ? action : "CREATE"
+    }_${type}${isSuccess ? "" : "_ERROR"}${
+      action ? "" : advanceZero ? "_POST_PAY" : zeroPricing ? "_ZERO_PAY" : ""
     }`
   );
 };
 
 const GetActionMessage = (action, isSuccess, isEmployee, t) => {
-  return GetMessage('ACTION', action, isSuccess, isEmployee, t);
+  return GetMessage("ACTION", action, isSuccess, isEmployee, t);
 };
 
 const GetLabel = (action, isSuccess, isEmployee, t) => {
-  return GetMessage('LABEL', action, isSuccess, isEmployee, t);
+  return GetMessage("LABEL", action, isSuccess, isEmployee, t);
 };
 
 const DisplayText = (action, isSuccess, isEmployee, t, data) => {
-  return GetMessage('DISPLAY', action, isSuccess, isEmployee, t, data);
+  return GetMessage("DISPLAY", action, isSuccess, isEmployee, t, data);
 };
 
 const BannerPicker = (props) => {
-  let actionMessage = props?.action ? props.action : 'CREATE';
+  let actionMessage = props?.action ? props.action : "CREATE";
 
   let labelMessage = GetLabel(
     props.data?.fsm?.[0].applicationStatus || props.action,
@@ -59,9 +59,9 @@ const BannerPicker = (props) => {
   if (
     props.errorInfo &&
     props.errorInfo !== null &&
-    props.errorInfo !== '' &&
-    typeof props.errorInfo === 'string' &&
-    props.action !== 'SCHEDULE'
+    props.errorInfo !== "" &&
+    typeof props.errorInfo === "string" &&
+    props.action !== "SCHEDULE"
   ) {
     labelMessage = props.errorInfo;
   }
@@ -86,18 +86,18 @@ const Response = (props) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const paymentAccess = Digit.UserService.hasAccess('FSM_COLLECTOR');
-  const FSM_EDITOR = Digit.UserService.hasAccess('FSM_EDITOR_EMP') || false;
+  const paymentAccess = Digit.UserService.hasAccess("FSM_COLLECTOR");
+  const FSM_EDITOR = Digit.UserService.hasAccess("FSM_EDITOR_EMP") || false;
   const isCitizen =
-    Digit.UserService.hasAccess('CITIZEN') ||
-    window.location.pathname.includes('citizen') ||
+    Digit.UserService.hasAccess("CITIZEN") ||
+    window.location.pathname.includes("citizen") ||
     false;
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
   const { state } = props.location;
 
   const mutation =
-    state.key === 'update'
+    state.key === "update"
       ? Digit.Hooks.fsm.useApplicationActions(tenantId)
       : Digit.Hooks.fsm.useDesludging(tenantId);
 
@@ -107,22 +107,22 @@ const Response = (props) => {
     mutationHappened,
     setMutationHappened,
     clear,
-  ] = Digit.Hooks.useSessionStorage('FSM_MUTATION_HAPPENED', false);
+  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
   const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage(
-    'FSM_ERROR_DATA',
+    "FSM_ERROR_DATA",
     false
   );
   const [
     successData,
     setsuccessData,
     clearSuccessData,
-  ] = Digit.Hooks.useSessionStorage('FSM_MUTATION_SUCCESS_DATA', false);
+  ] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
   const [displayMenu, setDisplayMenu] = useState(false);
   const [selectedAction, setSelectedAction] = useState(null);
 
   const onError = (error, variables) => {
     setErrorInfo(
-      error?.response?.data?.Errors[0]?.code || error?.message || 'ERROR'
+      error?.response?.data?.Errors[0]?.code || error?.message || "ERROR"
     );
     setMutationHappened(true);
   };
@@ -142,8 +142,8 @@ const Response = (props) => {
   );
   const { data: vehicleMenu } = Digit.Hooks.fsm.useMDMS(
     stateId,
-    'Vehicle',
-    'VehicleType',
+    "Vehicle",
+    "VehicleType",
     { staleTime: Infinity }
   );
   const Data = mutation?.data || successData;
@@ -182,26 +182,26 @@ const Response = (props) => {
       const newResponse = await Digit.PaymentService.generatePdf(
         stateId,
         { Payments: [paymentsHistory.Payments[0]] },
-        'fsm-receipt'
+        "fsm-receipt"
       );
       const fileStore = await Digit.PaymentService.printReciept(stateId, {
         fileStoreIds: newResponse.filestoreIds[0],
       });
-      window.open(fileStore[newResponse.filestoreIds[0]], '_blank');
+      window.open(fileStore[newResponse.filestoreIds[0]], "_blank");
       setShowOptions(false);
     } else {
       const fileStore = await Digit.PaymentService.printReciept(stateId, {
         fileStoreIds: receiptFile.filestoreIds[0],
       });
-      window.open(fileStore[receiptFile.filestoreIds[0]], '_blank');
+      window.open(fileStore[receiptFile.filestoreIds[0]], "_blank");
       setShowOptions(false);
     }
   };
 
   const handleResponse = () => {
-    if (Data?.fsm?.[0].paymentPreference === 'POST_PAY') {
+    if (Data?.fsm?.[0].paymentPreference === "POST_PAY") {
       setShowToast({
-        key: 'error',
+        key: "error",
         action: `ES_FSM_PAYMENT_BEFORE_SCHEDULE_FAILURE`,
       });
       setTimeout(() => {
@@ -211,7 +211,7 @@ const Response = (props) => {
       history.push(
         `/${window?.contextPath}/employee/payment/collect/FSM.TRIP_CHARGES/${
           state?.applicationData?.applicationNo || Data?.fsm?.[0].applicationNo
-        }`
+        }?workflow=FSM`
       );
     }
   };
@@ -224,10 +224,10 @@ const Response = (props) => {
     const onSuccess = () => {
       queryClient.clear();
       setMutationHappened(true);
-      window.history.replaceState({}, 'FSM_CREATE_RESPONSE');
+      window.history.replaceState({}, "FSM_CREATE_RESPONSE");
     };
     if (!mutationHappened && !errorInfo) {
-      if (state.key === 'update') {
+      if (state?.key === "update") {
         mutation.mutate(
           {
             fsm: state.applicationData,
@@ -257,7 +257,7 @@ const Response = (props) => {
 
   const handleGeneratePdf = () => {
     if (
-      Data?.fsm?.[0].applicationStatus === 'COMPLETED' &&
+      Data?.fsm?.[0].applicationStatus === "COMPLETED" &&
       Data?.fsm?.[0].advanceAmount !== null
     ) {
       return downloadPaymentReceipt;
@@ -267,25 +267,25 @@ const Response = (props) => {
 
   const generatePdfLabel = () => {
     if (
-      Data?.fsm?.[0].applicationStatus === 'COMPLETED' &&
+      Data?.fsm?.[0].applicationStatus === "COMPLETED" &&
       Data?.fsm?.[0].advanceAmount !== null
     ) {
-      return t('CS_COMMON_PAYMENT_RECEIPT');
+      return t("CS_COMMON_PAYMENT_RECEIPT");
     }
-    return t('CS_COMMON_DOWNLOAD');
+    return t("CS_COMMON_DOWNLOAD");
   };
 
   useEffect(() => {
     switch (selectedAction) {
-      case 'GO_TO_HOME':
+      case "GO_TO_HOME":
         return isCitizen
           ? history.push(`/${window?.contextPath}/citizen`)
           : history.push(`/${window?.contextPath}/employee`);
-      case 'ASSIGN_TO_DSO':
+      case "ASSIGN_TO_DSO":
         return history.push(
           `/${window?.contextPath}/employee/fsm/application-details/${getApplicationNo}`
         );
-      case 'PAY':
+      case "PAY":
         return handleResponse();
     }
   }, [selectedAction]);
@@ -293,20 +293,20 @@ const Response = (props) => {
   if (mutation.isLoading || (mutation.isIdle && !mutationHappened)) {
     return <Loader />;
   }
-  let ACTIONS = ['GO_TO_HOME'];
+  let ACTIONS = ["GO_TO_HOME"];
   if (
-    Data?.fsm?.[0].applicationStatus === 'PENDING_APPL_FEE_PAYMENT' &&
+    Data?.fsm?.[0].applicationStatus === "PENDING_APPL_FEE_PAYMENT" &&
     paymentAccess
   ) {
-    ACTIONS = [...ACTIONS, 'PAY'];
-  } else if (Data?.fsm?.[0].applicationStatus === 'ASSING_DSO' && FSM_EDITOR) {
-    ACTIONS = [...ACTIONS, 'ASSIGN_TO_DSO'];
+    ACTIONS = [...ACTIONS, "PAY"];
+  } else if (Data?.fsm?.[0].applicationStatus === "ASSING_DSO" && FSM_EDITOR) {
+    ACTIONS = [...ACTIONS, "ASSIGN_TO_DSO"];
   }
 
   const isSuccess = !successData ? mutation?.isSuccess : true;
   if (isCitizen) {
     return (
-      <Card className='fsm-citizen-reponse-page'>
+      <Card className="fsm-citizen-reponse-page">
         <BannerPicker
           t={t}
           data={Data}
@@ -315,20 +315,20 @@ const Response = (props) => {
           isLoading={
             (mutation.isIdle && !mutationHappened) || mutation?.isLoading
           }
-          isEmployee={props.parentRoute.includes('employee')}
+          isEmployee={props.parentRoute.includes("employee")}
           errorInfo={errorInfo}
         />
         <CardText>
           {DisplayText(
             state.action,
             isSuccess,
-            props.parentRoute.includes('employee'),
+            props.parentRoute.includes("employee"),
             t,
             Data?.fsm?.[0]
           )}
         </CardText>
 
-        {isSuccess && state?.action !== 'RATE' && (
+        {isSuccess && state?.action !== "RATE" && (
           // <LinkButton
           //         label={
           //           <div className="response-download-button">
@@ -346,7 +346,7 @@ const Response = (props) => {
           <SubmitBar onSubmit={handleGeneratePdf()} />
         )}
         {ACTIONS.length === 1 ? (
-          <div className='fsm-response-button-wrap'>
+          <div className="fsm-response-button-wrap">
             <SubmitBar
               label={t(`ES_COMMON_${ACTIONS[0]}`)}
               onSubmit={() => onActionSelect(ACTIONS[0])}
@@ -357,7 +357,7 @@ const Response = (props) => {
           <ActionBar>
             {displayMenu ? (
               <Menu
-                localeKeyPrefix={'ES_COMMON'}
+                localeKeyPrefix={"ES_COMMON"}
                 options={ACTIONS}
                 t={t}
                 onSelect={onActionSelect}
@@ -365,7 +365,7 @@ const Response = (props) => {
             ) : null}
             {ACTIONS.length !== 1 ? (
               <SubmitBar
-                label={t('ES_COMMON_TAKE_ACTION')}
+                label={t("ES_COMMON_TAKE_ACTION")}
                 onSubmit={() => setDisplayMenu(!displayMenu)}
               />
             ) : null}
@@ -374,9 +374,9 @@ const Response = (props) => {
 
         {showToast && (
           <Toast
-            error={showToast.key === 'error' ? true : false}
+            error={showToast.key === "error" ? true : false}
             label={t(
-              showToast.key === 'success'
+              showToast.key === "success"
                 ? showToast.action
                 : `ES_FSM_PAYMENT_BEFORE_SCHEDULE_FAILURE`
             )}
@@ -396,14 +396,14 @@ const Response = (props) => {
           isLoading={
             (mutation.isIdle && !mutationHappened) || mutation?.isLoading
           }
-          isEmployee={props.parentRoute.includes('employee')}
+          isEmployee={props.parentRoute.includes("employee")}
           errorInfo={errorInfo}
         />
         <CardText>
           {DisplayText(
             state.action,
             isSuccess,
-            props.parentRoute.includes('employee'),
+            props.parentRoute.includes("employee"),
             t,
             Data?.fsm?.[0]
           )}
@@ -411,29 +411,29 @@ const Response = (props) => {
         {isSuccess && (
           <LinkButton
             label={
-              <div className='response-download-button'>
+              <div className="response-download-button">
                 <span>
                   <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='#f47738'
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="#f47738"
                   >
-                    <path d='M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z' />
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
                   </svg>
                 </span>
-                <span className='download-button'>{generatePdfLabel()} </span>
+                <span className="download-button">{generatePdfLabel()} </span>
               </div>
             }
-            style={{ width: '100px' }}
+            style={{ width: "100px" }}
             onClick={handleGeneratePdf()}
           />
         )}
         <ActionBar>
           {displayMenu ? (
             <Menu
-              localeKeyPrefix={'ES_COMMON'}
+              localeKeyPrefix={"ES_COMMON"}
               options={ACTIONS}
               t={t}
               onSelect={onActionSelect}
@@ -446,7 +446,7 @@ const Response = (props) => {
             />
           ) : (
             <SubmitBar
-              label={t('ES_COMMON_TAKE_ACTION')}
+              label={t("ES_COMMON_TAKE_ACTION")}
               onSubmit={() => setDisplayMenu(!displayMenu)}
             />
           )}
@@ -454,9 +454,9 @@ const Response = (props) => {
 
         {showToast && (
           <Toast
-            error={showToast.key === 'error' ? true : false}
+            error={showToast.key === "error" ? true : false}
             label={t(
-              showToast.key === 'success'
+              showToast.key === "success"
                 ? showToast.action
                 : `ES_FSM_PAYMENT_BEFORE_SCHEDULE_FAILURE`
             )}
