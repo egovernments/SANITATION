@@ -104,19 +104,31 @@
         subtree: true
       });
     }
-  
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+
+    function handlePageLoad() {
+      // Attempt to update breadcrumb links right away
       if (!updateBreadcrumbLinks()) {
-        startObserver();
+        startObserver(); // If not updated, start observing for DOM changes
       }
-    } else {
-      document.addEventListener('DOMContentLoaded', function() {
-        if (!updateBreadcrumbLinks()) {
-          startObserver();
-        }
-      });
     }
+
+    // Check for page load (initial load or hash change)
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', handlePageLoad);
+    } else {
+      handlePageLoad();
+    }
+
+    // Listen for page navigation or hash change
+    window.addEventListener('popstate', function() {
+      handlePageLoad(); // Re-check the breadcrumb links when navigating back/forward
+    });
+
+    // Listen for hash change events (e.g., when using a single-page application)
+    window.addEventListener('hashchange', function() {
+      handlePageLoad(); // Re-check the breadcrumb links when the hash changes
+    });
   })();
-  </script>
+</script>
   
 </html>
