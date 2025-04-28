@@ -50,5 +50,190 @@
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
 </body>
-
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM fully loaded and parsed, checking URL...");
+    if (window.location.pathname.includes('/employee/dss/dashboard/fsm')) {
+      console.log("URL matched: /employee/dss/dashboard/fsm");
+      const breadcrumb = document.querySelector('ol[class*="bread-crumb"]');
+      if (breadcrumb) {
+        console.log("Breadcrumb found, checking links...");
+        const links = breadcrumb.querySelectorAll('a');
+        let updated = false;
+        links.forEach(link => {
+          if (link.href.includes('/digit-ui/')) {
+            const oldHref = link.href;
+            link.href = link.href.replace('/digit-ui/', '/sanitation-ui/');
+            console.log(`Updated link: ${oldHref} -> ${link.href}`);
+            updated = true;
+          }
+        });
+        if (!updated) {
+          console.log("No links needed updating.");
+        }
+      } else {
+        console.log("Breadcrumb element not found.");
+      }
+    } else {
+      console.log("URL does not match. No action taken.");
+    }
+  });
+</script>
+<script>
+  (function() {
+    console.log("Script loaded, setting up MutationObserver...");
+  
+    function updateBreadcrumbLinks() {
+      if (window.location.pathname.includes('/employee/dss/dashboard/fsm')) {
+        console.log("URL matched: /employee/dss/dashboard/fsm");
+  
+        // Try multiple selectors in case of variations
+        const breadcrumb = document.querySelector('[class*="bread-crumb"], ol.breadcrumb, nav.breadcrumb, ul.breadcrumb');
+        if (breadcrumb) {
+          console.log("Breadcrumb found:", breadcrumb);
+          const links = breadcrumb.querySelectorAll('a');
+          if (links.length === 0) {
+            console.log("No links inside breadcrumb!");
+            return false;
+          }
+          let updated = false;
+          links.forEach(link => {
+            if (link.href.includes('/digit-ui/')) {
+              const oldHref = link.href;
+              link.href = link.href.replace('/digit-ui/', '/sanitation-ui/');
+              console.log(`Updated link: ${oldHref} -> ${link.href}`);
+              updated = true;
+            }
+          });
+          if (!updated) {
+            console.log("No breadcrumb links needed updating.");
+          }
+          return true; // Successfully updated
+        } else {
+          console.log("Breadcrumb element not found. Retrying...");
+        }
+      } else {
+        console.log("URL does not match. No action taken.");
+      }
+      return false; // Not updated yet
+    }
+  
+    function startObserver() {
+      const observer = new MutationObserver((mutations, obs) => {
+        if (updateBreadcrumbLinks()) {
+          console.log("Breadcrumb updated via MutationObserver. Stopping observer.");
+          obs.disconnect(); // Stop observing once done
+        }
+      });
+  
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+  
+      console.log("MutationObserver is watching the DOM...");
+    }
+  
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      if (!updateBreadcrumbLinks()) {
+        startObserver();
+      } else {
+        console.log("Breadcrumb updated immediately after script load.");
+      }
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        if (!updateBreadcrumbLinks()) {
+          startObserver();
+        } else {
+          console.log("Breadcrumb updated after DOMContentLoaded.");
+        }
+      });
+    }
+  })();
+  </script>
+<script>
+  (function() {
+    console.log("Script loaded, setting up MutationObserver...");
+  
+    function updateBreadcrumbLinks() {
+      const currentPath = window.location.pathname;
+      if (currentPath.includes('/employee/dss/dashboard/fsm')) {
+        console.log("URL matched: /employee/dss/dashboard/fsm");
+  
+        const breadcrumb = document.querySelector('[class*="bread-crumb"], ol.breadcrumb, nav.breadcrumb, ul.breadcrumb');
+        if (breadcrumb) {
+          console.log("Breadcrumb found:", breadcrumb);
+          const links = breadcrumb.querySelectorAll('a');
+          if (links.length === 0) {
+            console.log("No links inside breadcrumb!");
+            return false;
+          }
+  
+          let updated = false;
+          links.forEach(link => {
+            const oldHref = link.href;
+  
+            // 1. Replace digit-ui with sanitation-ui
+            if (link.href.includes('/digit-ui/')) {
+              link.href = link.href.replace('/digit-ui/', '/sanitation-ui/employee');
+              console.log(`Updated link: ${oldHref} -> ${link.href}`);
+              updated = true;
+            }
+  
+            // 2. Remove link if it points to /landing
+            if (link.href.includes('/landing')) {
+              const linkItem = link.closest('li') || link; // Try removing whole <li> if exists
+              console.log(`Removing breadcrumb link to /landing: ${link.href}`);
+              linkItem.remove();
+              updated = true;
+            }
+          });
+  
+          if (!updated) {
+            console.log("No breadcrumb links needed updating or removing.");
+          }
+          return true; // Successfully updated
+        } else {
+          console.log("Breadcrumb element not found. Retrying...");
+        }
+      } else {
+        console.log("URL does not match. No action taken.");
+      }
+      return false; // Not updated yet
+    }
+  
+    function startObserver() {
+      const observer = new MutationObserver((mutations, obs) => {
+        if (updateBreadcrumbLinks()) {
+          console.log("Breadcrumb updated via MutationObserver. Stopping observer.");
+          obs.disconnect(); // Stop observing once done
+        }
+      });
+  
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+  
+      console.log("MutationObserver is watching the DOM...");
+    }
+  
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      if (!updateBreadcrumbLinks()) {
+        startObserver();
+      } else {
+        console.log("Breadcrumb updated immediately after script load.");
+      }
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        if (!updateBreadcrumbLinks()) {
+          startObserver();
+        } else {
+          console.log("Breadcrumb updated after DOMContentLoaded.");
+        }
+      });
+    }
+  })();
+  </script>
+    
 </html>
