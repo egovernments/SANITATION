@@ -52,7 +52,6 @@
 </body>
 <script>
   (function() {
-  
     function updateBreadcrumbLinks() {
       const currentPath = window.location.pathname;
       if (currentPath.includes('/employee/dss/dashboard/fsm')) {
@@ -66,28 +65,29 @@
   
           let updated = false;
           links.forEach(link => {
-            const oldHref = link.href;
-  
-            // 1. Replace digit-ui with sanitation-ui
-            if (link.href.includes('/digit-ui/')) {
-              link.href = link.href.replace('/digit-ui/', '/sanitation-ui/');
-              updated = true;
-            }
-  
-            // 2. Remove link if it points to /landing
+            // Remove link if it points to /landing
             if (link.href.includes('/landing')) {
-              const linkItem = link.closest('li') || link; // Try removing whole <li> if exists
+              const linkItem = link.closest('li') || link; // Remove the whole <li> if it exists
               linkItem.remove();
+              updated = true;
+            } else {
+              // Disable href to prevent normal navigation for other links
+              link.removeAttribute('href');
+              link.style.cursor = 'pointer'; // Make it look clickable
+              link.title = 'Go back'; // Optional: tooltip on hover
+              
+              // Add click event to go back
+              link.addEventListener('click', function(event) {
+                event.preventDefault();
+                history.back(); // Go back to the previous page
+              });
+  
               updated = true;
             }
           });
   
-          if (!updated) {
-          }
-          return true; // Successfully updated
-        } else {
+          return updated;
         }
-      } else {
       }
       return false; // Not updated yet
     }
@@ -103,22 +103,20 @@
         childList: true,
         subtree: true
       });
-  
     }
   
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
       if (!updateBreadcrumbLinks()) {
         startObserver();
-      } else {
       }
     } else {
       document.addEventListener('DOMContentLoaded', function() {
         if (!updateBreadcrumbLinks()) {
           startObserver();
-        } else {
         }
       });
     }
   })();
   </script>
+  
 </html>
