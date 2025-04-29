@@ -49,86 +49,121 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-</body>
-<script>
-  (function() {
-    function updateBreadcrumbLinks() {
-      const currentPath = window.location.pathname;
-      if (currentPath.includes('/employee/dss/dashboard/fsm')) {
-  
-        const breadcrumb = document.querySelector('[class*="bread-crumb"], ol.breadcrumb, nav.breadcrumb, ul.breadcrumb');
-        if (breadcrumb) {
-          const links = breadcrumb.querySelectorAll('a');
-          if (links.length === 0) {
-            return false;
-          }
-  
-          let updated = false;
-          links.forEach(link => {
-            // Remove link if it points to /landing
-            if (link.href.includes('/landing')) {
-              const linkItem = link.closest('li') || link; // Remove the whole <li> if it exists
-              linkItem.remove();
-              updated = true;
-            } else {
-              // Disable href to prevent normal navigation for other links
-              link.removeAttribute('href');
-              link.style.cursor = 'pointer'; // Make it look clickable
-              link.title = 'Go back'; // Optional: tooltip on hover
-              
-              // Add click event to go back
-              link.addEventListener('click', function(event) {
-                event.preventDefault();
-                history.back(); // Go back to the previous page
+    <script>
+      (function () {
+        function updateBreadcrumbLinks() {
+          const currentPath = window.location.pathname;
+          if (currentPath.includes("/employee/dss/dashboard/fsm")) {
+            const breadcrumb = document.querySelector(
+              '[class*="bread-crumb"], ol.breadcrumb, nav.breadcrumb, ul.breadcrumb'
+            );
+            if (breadcrumb) {
+              const links = breadcrumb.querySelectorAll("a");
+              if (links.length === 0) return false;
+    
+              let updated = false;
+              links.forEach((link) => {
+                if (link.href.includes("/landing")) {
+                  const linkItem = link.closest("li") || link;
+                  linkItem.remove();
+                  updated = true;
+                } else {
+                  if (!link.dataset.modified) {
+                    link.removeAttribute("href");
+                    link.style.cursor = "pointer";
+                    link.title = "Go back";
+    
+                    link.addEventListener("click", function (event) {
+                      event.preventDefault();
+    
+                      const expectedPath = "/sanitation-ui/employee";
+                      const expectedUrl = window.location.origin + expectedPath;
+                      const storedReferrer = sessionStorage.getItem("lastVisitedPage");
+    
+                      const shouldGoBack = storedReferrer === expectedUrl;
+    
+                      if (shouldGoBack) {
+                        history.back();
+                      } else {
+                        window.location.href = expectedUrl;
+                      }
+                    });
+    
+                    link.dataset.modified = "true";
+                  }
+                  updated = true;
+                }
               });
-  
-              updated = true;
+    
+              return updated;
             }
+          }
+          return false;
+        }
+    
+        function startObserver() {
+          const observer = new MutationObserver(() => {
+            updateBreadcrumbLinks();
           });
-  
-          return updated;
+    
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+          });
+    
+          setTimeout(() => observer.disconnect(), 10000);
         }
-      }
-      return false; // Not updated yet
-    }
-  
-    function startObserver() {
-      const observer = new MutationObserver((mutations, obs) => {
-        if (updateBreadcrumbLinks()) {
-          obs.disconnect(); // Stop observing once done
+    
+        function handlePageLoad() {
+          if (!updateBreadcrumbLinks()) {
+            startObserver();
+          }
         }
-      });
-  
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-    }
-
-    function handlePageLoad() {
-      // Attempt to update breadcrumb links right away
-      if (!updateBreadcrumbLinks()) {
-        startObserver(); // If not updated, start observing for DOM changes
-      }
-    }
-
-    // Check for page load (initial load or hash change)
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', handlePageLoad);
-    } else {
-      handlePageLoad();
-    }
-
-    // Listen for page navigation or hash change
-    window.addEventListener('popstate', function() {
-      handlePageLoad(); // Re-check the breadcrumb links when navigating back/forward
-    });
-
-    // Listen for hash change events (e.g., when using a single-page application)
-    window.addEventListener('hashchange', function() {
-      handlePageLoad(); // Re-check the breadcrumb links when the hash changes
-    });
-  })();
-</script>
-  
+    
+        // Track navigation for SPAs and normal loads
+        function trackPageVisit() {
+          sessionStorage.setItem("lastVisitedPage", window.location.href);
+        }
+    
+        // Trigger on initial load
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", () => {
+            trackPageVisit();
+            handlePageLoad();
+          });
+        } else {
+          trackPageVisit();
+          handlePageLoad();
+        }
+    
+        // Track on navigation events
+        window.addEventListener("popstate", () => {
+          trackPageVisit();
+          handlePageLoad();
+        });
+        window.addEventListener("hashchange", () => {
+          trackPageVisit();
+          handlePageLoad();
+        });
+    
+        // Patch pushState and replaceState for SPA navigation tracking
+        (function (history) {
+          const origPush = history.pushState;
+          const origReplace = history.replaceState;
+    
+          history.pushState = function () {
+            trackPageVisit();
+            origPush.apply(this, arguments);
+            handlePageLoad();
+          };
+    
+          history.replaceState = function () {
+            trackPageVisit();
+            origReplace.apply(this, arguments);
+            handlePageLoad();
+          };
+        })(window.history);
+      })();
+    </script>    
+</body>
 </html>
