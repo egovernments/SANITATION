@@ -21,10 +21,10 @@ public class VendorQueryBuilder {
 			+ "  vendor.createdby as vendor_createdby,vendor.lastmodifiedby as vendor_lastmodifiedby,"
 			+ "  vendor.createdtime as vendor_createdtime," + "  vendor.lastmodifiedtime as vendor_lastmodifiedtime,"
 			+ "  vendor.additionaldetails as vendor_additionaldetails,"
-			+ "  vendor_address.id as vendor_address_id FROM eg_vendor vendor"
-			+ "  INNER JOIN eg_vendor_address vendor_address on  vendor_address.vendor_id=vendor.id"
-			+ "  LEFT OUTER JOIN eg_vendor_driver vendor_driver on  vendor_driver.vendor_id=vendor_address.id"
-			+ "  LEFT OUTER JOIN eg_vendor_vehicle vendor_vehicle on "
+			+ "  vendor_address.id as vendor_address_id FROM {schema}.eg_vendor vendor"
+			+ "  INNER JOIN {schema}.eg_vendor_address vendor_address on  vendor_address.vendor_id=vendor.id"
+			+ "  LEFT OUTER JOIN {schema}.eg_vendor_driver vendor_driver on  vendor_driver.vendor_id=vendor_address.id"
+			+ "  LEFT OUTER JOIN {schema}.eg_vendor_vehicle vendor_vehicle on "
 			+ "  vendor_vehicle.vendor_id=vendor_driver.vendor_id";
 
 	private static final String PAGINATION_WRAPPER = "SELECT * FROM "
@@ -32,21 +32,21 @@ public class VendorQueryBuilder {
 			+ " result) result_offset " + " limit ? offset ?";
 
 	private static final String DRIVER_VEHICLE_QUERY = "SELECT %s FROM %s where %s = ? AND %s = ?";
-	private static final String VEHICLE_EXISTS = "SELECT vendor_id FROM eg_vendor_vehicle where vechile_id IN ";
-	private static final String DRIVER_EXISTS = "SELECT vendor_id FROM eg_vendor_driver where driver_id IN ";
+	private static final String VEHICLE_EXISTS = "SELECT vendor_id FROM {schema}.eg_vendor_vehicle where vechile_id IN ";
+	private static final String DRIVER_EXISTS = "SELECT vendor_id FROM {schema}.eg_vendor_driver where driver_id IN ";
 
-	private static final String WORKER_EXISTS = "SELECT vendor_id FROM eg_vendor_sanitation_worker where individual_id IN ";
-	private static final String WORKERS_QUERY = "select individual_id from eg_vendor_sanitation_worker where vendor_id=? AND vendor_sw_status = ?";
+	private static final String WORKER_EXISTS = "SELECT vendor_id FROM {schema}.eg_vendor_sanitation_worker where individual_id IN ";
+	private static final String WORKERS_QUERY = "select individual_id from {schema}.eg_vendor_sanitation_worker where vendor_id=? AND vendor_sw_status = ?";
 
 	private static final String DRIVER_ID = "driver_id";
 	private static final String VEHICLE_ID = "vechile_id";
 	private static final String VENDOR_ID = "vendor_id";
 	private static final String VENDOR_DRIVER_STATUS = "vendorDriverStatus";
 	private static final String VENDOR_VEHICLE_STATUS = "vendorVehicleStatus";
-	private static final String VENDOR_DRIVER = "eg_vendor_driver";
-	private static final String VENDOR_VEHICLE = "eg_vendor_vehicle";
+	private static final String VENDOR_DRIVER = "{schema}.eg_vendor_driver";
+	private static final String VENDOR_VEHICLE = "{schema}.eg_vendor_vehicle";
 
-	public static final String VENDOR_COUNT = "select count(*) from eg_vendor where owner_id IN ";
+	public static final String VENDOR_COUNT = "select count(*) from {schema}.eg_vendor where owner_id IN ";
 
 	public String getDriverSearchQuery() {
 		return String.format(DRIVER_VEHICLE_QUERY, DRIVER_ID, VENDOR_DRIVER, VENDOR_ID, VENDOR_DRIVER_STATUS);
@@ -269,7 +269,7 @@ public class VendorQueryBuilder {
 
 		if (criteria.getLimit() != null && criteria.getLimit() != 0) {
 			builder.append(
-					"and vendor.id in (select id from eg_vendor where tenantid like ? order by id offset ? limit ?)");
+					"and vendor.id in (select id from {schema}.eg_vendor where tenantid like ? order by id offset ? limit ?)");
 			if (criteria.getTenantId() != null) {
 				if (criteria.getTenantId().split("\\.").length == 1) {
 
