@@ -23,12 +23,64 @@ const DesktopInbox = (props) => {
     );
   };
 
-  function goTo(id) {
-    // history.push("/digit-ui/employee/fsm/complaint/details/" + id);
-  }
+  const isAlertPage = window.location.href.includes("vehicle-tracking/alerts");
 
   const columns = React.useMemo(() => {
-    if (props.isSearch) {
+    if (isAlertPage) {
+      return [
+        {
+          Header: t("CS_FILE_DESLUDGING_APPLICATION_NO"),
+          Cell: ({ row }) => {
+            return (
+              <div>
+                <span className="link">
+                  <Link
+                    to={
+                      `/${window.contextPath}/${
+                        DSO
+                          ? "citizen/fsm/dso-application-details"
+                          : "employee/fsm/application-details"
+                      }/` + row?.original["applicationNo"]
+                    }
+                  >
+                    {row?.original["applicationNo"]}
+                  </Link>
+                </span>
+                {/* <a onClick={() => goTo(row?.row?.original["serviceRequestId"])}>{row?.row?.original["serviceRequestId"]}</a> */}
+              </div>
+            );
+          },
+        },
+        {
+          Header: t("ES_INBOX_APPLICATION_DATE"),
+          accessor: "createdTime",
+          Cell: ({ row }) => {
+            return GetCell(
+              `${new Date(
+                row?.original.auditDetails?.createdTime
+              )?.getDate()}/${
+                new Date(row?.original.auditDetails?.createdTime)?.getMonth() +
+                1
+              }/${new Date(
+                row?.original.auditDetails?.createdTime
+              ).getFullYear()}`
+            );
+          },
+        },
+        {
+          Header: t("ES_INBOX_STATUS"),
+          Cell: (row) => {
+            return GetCell(t(`CS_COMMON_FSM_${row?.row?.original["status"]}`));
+          },
+        },
+        {
+          Header: t("ES_INBOX_SLA_DAYS_REMAINING"),
+          Cell: ({ row }) => {
+            return GetSlaCell(row?.original["sla"]);
+          },
+        },
+      ];
+    } else if (props.isSearch) {
       return [
         {
           Header: t("ES_INBOX_APPLICATION_NO"),
@@ -42,13 +94,13 @@ const DesktopInbox = (props) => {
                     to={
                       `${props.parentRoute}/${
                         DSO ? "dso-application-details" : "application-details"
-                      }/` + row.original["applicationNo"]
+                      }/` + row?.original["applicationNo"]
                     }
                   >
-                    {row.original["applicationNo"]}
+                    {row?.original["applicationNo"]}
                   </Link>
                 </span>
-                {/* <a onClick={() => goTo(row.row.original["serviceRequestId"])}>{row.row.original["serviceRequestId"]}</a> */}
+                {/* <a onClick={() => goTo(row?.row?.original["serviceRequestId"])}>{row?.row?.original["serviceRequestId"]}</a> */}
               </div>
             );
           },
@@ -56,18 +108,18 @@ const DesktopInbox = (props) => {
         {
           Header: t("ES_APPLICATION_DETAILS_APPLICANT_NAME"),
           disableSortBy: true,
-          accessor: (row) => GetCell(row.citizen?.name || ""),
+          accessor: (row) => GetCell(row?.citizen?.name || ""),
         },
         {
           Header: t("ES_APPLICATION_DETAILS_APPLICANT_MOBILE_NO"),
           disableSortBy: true,
-          accessor: (row) => GetCell(row.citizen?.mobileNumber || ""),
+          accessor: (row) => GetCell(row?.citizen?.mobileNumber || ""),
         },
         {
           Header: t("ES_APPLICATION_DETAILS_PROPERTY_TYPE"),
           accessor: (row) => {
             const key = t(
-              `PROPERTYTYPE_MASTERS_${row.propertyUsage.split(".")[0]}`
+              `PROPERTYTYPE_MASTERS_${row?.propertyUsage?.split(".")[0]}`
             );
             return key;
           },
@@ -76,7 +128,7 @@ const DesktopInbox = (props) => {
         {
           Header: t("ES_APPLICATION_DETAILS_PROPERTY_SUB-TYPE"),
           accessor: (row) => {
-            const key = t(`PROPERTYTYPE_MASTERS_${row.propertyUsage}`);
+            const key = t(`PROPERTYTYPE_MASTERS_${row?.propertyUsage}`);
             return key;
           },
           disableSortBy: true,
@@ -86,9 +138,9 @@ const DesktopInbox = (props) => {
           accessor: (row) =>
             GetCell(
               t(
-                Digit.Utils.locale.getRevenueLocalityCode(
-                  row.address.locality.code,
-                  row.tenantId
+                Digit.Utils.locale?.getRevenueLocalityCode(
+                  row?.address?.locality?.code,
+                  row?.tenantId
                 )
               )
             ),
@@ -97,7 +149,7 @@ const DesktopInbox = (props) => {
         {
           Header: t("ES_INBOX_STATUS"),
           accessor: (row) => {
-            return GetCell(t(`CS_COMMON_FSM_${row.applicationStatus}`));
+            return GetCell(t(`CS_COMMON_FSM_${row?.applicationStatus}`));
           },
           disableSortBy: true,
         },
@@ -114,15 +166,15 @@ const DesktopInbox = (props) => {
               // fetching out citizen info
               let citizen_info = props?.fstprequest?.find(
                 (i) =>
-                  row.original.tripDetails[0].referenceNo === i.applicationNo
+                  row?.original.tripDetails[0].referenceNo === i.applicationNo
               );
               return (
                 <div>
                   <span className="link">
                     <Link
                       to={
-                        "/${window?.contextPath}/employee/fsm/fstp-operator-details/" +
-                        row.original["applicationNo"]
+                        `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
+                        row?.original["applicationNo"]
                       }
                     >
                       {" "}
@@ -139,7 +191,7 @@ const DesktopInbox = (props) => {
             Cell: ({ row }) => {
               let citizen_info = props?.fstprequest?.find(
                 (i) =>
-                  row.original.tripDetails[0].referenceNo === i.applicationNo
+                  row?.original.tripDetails[0].referenceNo === i.applicationNo
               );
               return (
                 <div>
@@ -155,7 +207,7 @@ const DesktopInbox = (props) => {
             Cell: ({ row }) => {
               let citizen_info = props?.fstprequest?.find(
                 (i) =>
-                  row.original.tripDetails[0].referenceNo === i.applicationNo
+                  row?.original.tripDetails[0].referenceNo === i.applicationNo
               );
               return (
                 <div>
@@ -171,7 +223,7 @@ const DesktopInbox = (props) => {
             Cell: ({ row }) => {
               let citizen_info = props?.fstprequest?.find(
                 (i) =>
-                  row.original.tripDetails[0].referenceNo === i.applicationNo
+                  row?.original.tripDetails[0].referenceNo === i.applicationNo
               );
               return (
                 <div>
@@ -193,11 +245,11 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        "/${window?.contextPath}/employee/fsm/fstp-operator-details/" +
-                        row.original["applicationNo"]
+                        `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
+                        row?.original["applicationNo"]
                       }
                     >
-                      {row.original["tripDetails"].map((i) => (
+                      {row?.original["tripDetails"].map((i) => (
                         <div>
                           {i.referenceNo}
                           <br />
@@ -219,11 +271,11 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        "/${window?.contextPath}/employee/fsm/fstp-operator-details/" +
-                        row.original["applicationNo"]
+                        `/${window?.contextPath}/employee/fsm/fstp-operator-details/` +
+                        row?.original["applicationNo"]
                       }
                     >
-                      {row.original["applicationNo"]}
+                      {row?.original["applicationNo"]}
                     </Link>
                   </span>
                 </div>
@@ -235,10 +287,14 @@ const DesktopInbox = (props) => {
             accessor: "createdTime",
             Cell: ({ row }) => {
               return GetCell(
-                `${new Date(row.original.auditDetails.createdTime).getDate()}/${
-                  new Date(row.original.auditDetails.createdTime).getMonth() + 1
+                `${new Date(
+                  row?.original.auditDetails?.createdTime
+                )?.getDate()}/${
+                  new Date(
+                    row?.original.auditDetails?.createdTime
+                  )?.getMonth() + 1
                 }/${new Date(
-                  row.original.auditDetails.createdTime
+                  row?.original.auditDetails?.createdTime
                 ).getFullYear()}`
               );
             },
@@ -246,25 +302,25 @@ const DesktopInbox = (props) => {
           {
             Header: t("ES_INBOX_VEHICLE_NO"),
             disableSortBy: true,
-            accessor: (row) => row.vehicle?.registrationNumber,
+            accessor: (row) => row?.vehicle?.registrationNumber,
           },
           {
             Header: t("ES_INBOX_DSO_NAME"),
             disableSortBy: true,
             accessor: (row) =>
-              row.dsoName
-                ? `${row.dsoName} - ${row.tripOwner.name}`
-                : `${row.tripOwner.name}`,
+              row?.dsoName
+                ? `${row?.dsoName} - ${row?.tripOwner.name}`
+                : `${row?.tripOwner.name}`,
           },
           {
             Header: t("ES_INBOX_VEHICLE_STATUS"),
             disableSortBy: true,
-            accessor: (row) => row.status,
+            accessor: (row) => row?.status,
           },
           {
             Header: t("ES_INBOX_WASTE_COLLECTED"),
             disableSortBy: true,
-            accessor: (row) => row.tripDetails[0]?.volume,
+            accessor: (row) => row?.tripDetails[0]?.volume,
           },
         ];
       default:
@@ -277,17 +333,17 @@ const DesktopInbox = (props) => {
                   <span className="link">
                     <Link
                       to={
-                        `${props.parentRoute}/${
+                        `/${window.contextPath}/${
                           DSO
-                            ? "dso-application-details"
-                            : "application-details"
-                        }/` + row.original["applicationNo"]
+                            ? "citizen/fsm/dso-application-details"
+                            : "employee/fsm/application-details"
+                        }/` + row?.original["applicationNo"]
                       }
                     >
-                      {row.original["applicationNo"]}
+                      {row?.original["applicationNo"]}
                     </Link>
                   </span>
-                  {/* <a onClick={() => goTo(row.row.original["serviceRequestId"])}>{row.row.original["serviceRequestId"]}</a> */}
+                  {/* <a onClick={() => goTo(row?.row?.original["serviceRequestId"])}>{row?.row?.original["serviceRequestId"]}</a> */}
                 </div>
               );
             },
@@ -308,27 +364,29 @@ const DesktopInbox = (props) => {
             Cell: ({ row }) => {
               return GetCell(
                 t(
-                  Digit.Utils.locale.getRevenueLocalityCode(
-                    row.original["locality"],
-                    row.original["tenantId"]
-                  )
+                  Digit?.Utils?.locale?.getRevenueLocalityCode(
+                    row?.original["locality"],
+                    row?.original["tenantId"]
+                  ) || "NA"
                 )
               );
             },
             // Cell: (row) => {
-            //   return GetCell(t(`CS_COMMON_${row.row.original["status"]}`));
+            //   return GetCell(t(`CS_COMMON_${row?.row?.original["status"]}`));
             // },
           },
           {
             Header: t("ES_INBOX_STATUS"),
             Cell: (row) => {
-              return GetCell(t(`CS_COMMON_FSM_${row.row.original["status"]}`));
+              return GetCell(
+                t(`CS_COMMON_FSM_${row?.row?.original["status"]}`)
+              );
             },
           },
           {
             Header: t("ES_INBOX_SLA_DAYS_REMAINING"),
             Cell: ({ row }) => {
-              return GetSlaCell(row.original["sla"]);
+              return GetSlaCell(row?.original["sla"]);
             },
           },
         ];
