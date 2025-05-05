@@ -16,6 +16,9 @@ import org.egov.vendor.driver.web.model.DriverSearchCriteria;
 import org.egov.vendor.driver.web.model.Worker;
 import org.egov.vendor.driver.web.model.WorkerSearchCriteria;
 import org.egov.vendor.producer.Producer;
+import org.egov.vendor.util.VendorUtil;
+import org.egov.vendor.web.model.Vendor;
+import org.egov.vendor.web.model.VendorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
@@ -44,6 +47,9 @@ public class DriverRepository {
 
 	@Autowired
 	private WorkerRowMapper workerRowMapper;
+	
+	@Autowired
+	private VendorUtil vendorUtil;
 
 	public void save(DriverRequest driverRequest) {
 		producer.push(driverRequest.getDriver().getTenantId(), configuration.getSaveDriverTopic(), driverRequest);
@@ -56,6 +62,7 @@ public class DriverRepository {
 	public DriverResponse getDriverData(DriverSearchCriteria driverSearchCriteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = driverQueryBuilder.getDriverSearchQuery(driverSearchCriteria, preparedStmtList);
+		 query = vendorUtil.replaceSchemaPlaceholder(query, driverSearchCriteria.getTenantId());
 		log.info("DriverSearch Query" + query);
 		List<Driver> driverData = jdbcTemplate.query(query, preparedStmtList.toArray(), driverRowMapper);
 		return DriverResponse.builder().driver(driverData).totalCount(Integer.valueOf(driverRowMapper.getFullCount()))
@@ -65,6 +72,7 @@ public class DriverRepository {
 	public List<Worker> getWorkersData(WorkerSearchCriteria workerSearchCriteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = driverQueryBuilder.getWorkerSearchQuery(workerSearchCriteria, preparedStmtList);
+		 query = vendorUtil.replaceSchemaPlaceholder(query, workerSearchCriteria.getTenantId());
 		log.info("Workers Search Query" + query);
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), workerRowMapper);
 	}
@@ -72,6 +80,7 @@ public class DriverRepository {
 	public List<String> fetchDriverIdsWithNoVendor(@Valid DriverSearchCriteria criteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = driverQueryBuilder.getDriverIdsWithNoVendorQuery(criteria, preparedStmtList);
+		query = vendorUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		log.info("DriverQuery:: " + query);
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), new SingleColumnRowMapper<>(String.class));
 	}
