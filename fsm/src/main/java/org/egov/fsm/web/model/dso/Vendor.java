@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
+
 
 import org.egov.fsm.web.model.AuditDetails;
 import org.egov.fsm.web.model.location.Address;
 import org.egov.fsm.web.model.user.User;
 import org.egov.fsm.web.model.vehicle.Vehicle;
+import org.egov.fsm.web.model.worker.Worker;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -22,6 +25,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+
 /**
  * Capture the vendor information in the system.
  */
@@ -34,20 +39,24 @@ import lombok.Setter;
 @Setter
 public class Vendor {
 
+
 	@JsonProperty("id")
-	private String id;
+	private String id = null;
 
 	@JsonProperty("tenantId")
-	private String tenantId;
+	@Size(max=64)
+	private String tenantId = null;
 
 	@JsonProperty("name")
-	private String name;
+	@Size(max=128)
+	private String name = null;
 
 	@JsonProperty("address")
-	private Address address;
+	private Address address = null;
 
 	@JsonProperty("owner")
-	private User owner;
+	@Valid
+	private User owner = null;
 
 	@JsonProperty("vehicles")
 	@Valid
@@ -55,31 +64,43 @@ public class Vendor {
 
 	@JsonProperty("drivers")
 	@Valid
-	private List<Driver> drivers;
+	private List<Driver> drivers = null;
 
 	@JsonProperty("workers")
 	@Valid
-	private List<VendorWorker> workers;
+	private List<Worker> workers = null;
 
 	@JsonProperty("additionalDetails")
-	private Object additionalDetails;
+	private Object additionalDetails = null;
+
 
 	@JsonProperty("source")
-	private String source;
+	private String source = null;
+
 
 	@JsonProperty("description")
-	private String description;
+	private String description = null;
 
 	@JsonProperty("ownerId")
-	private String ownerId;
+	@Size(max=64)
+	private String ownerId = null;
+
+	@JsonProperty("agencyType")
+	@Size(max=128)
+	private String agencyType = null;
+
+	@JsonProperty("paymentPreference")
+	@Size(max=128)
+	private String paymentPreference = null;
+
 
 	/**
 	 * Inactive records will be consider as soft deleted
 	 */
 	public enum StatusEnum {
 		ACTIVE("ACTIVE"),
-
-		INACTIVE("INACTIVE");
+		INACTIVE("INACTIVE"),
+		DISABLED("DISABLED");
 
 		private String value;
 
@@ -106,9 +127,9 @@ public class Vendor {
 	}
 
 	@JsonProperty("status")
-	private StatusEnum status;
+	private StatusEnum status = null;
 
 	@JsonProperty("auditDetails")
-	private AuditDetails auditDetails;
+	private AuditDetails auditDetails = null;
 
 }
