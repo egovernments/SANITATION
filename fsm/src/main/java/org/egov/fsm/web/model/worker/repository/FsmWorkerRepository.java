@@ -33,28 +33,28 @@ public class FsmWorkerRepository {
 
   @Autowired
   private FSMConfiguration config;
-  
+
   @Autowired
   private FSMUtil fsmUtil;
 
   public List<Worker> create(List<Worker> workers) {
     producer.push(workers.get(0).getTenantId(), config.getCreateFsmWorkerTopic(), WorkerRequest.builder()
-        .workers(workers)
-        .build());
+            .workers(workers)
+            .build());
     return workers;
   }
 
   public List<Worker> update(List<Worker> workers) {
     producer.push(workers.get(0).getTenantId(),config.getUpdateFsmWorkerTopic(), WorkerRequest.builder()
-        .workers(workers)
-        .build());
+            .workers(workers)
+            .build());
     return workers;
   }
 
   public List<Worker> getWorkersData(WorkerSearchCriteria workerSearchCriteria) {
     List<Object> preparedStmtList = new ArrayList<>();
     String query = fsmWorkerQueryBuilder.getWorkerSearchQuery(workerSearchCriteria,
-        preparedStmtList);
+            preparedStmtList);
     query = fsmUtil.replaceSchemaPlaceholder(query, workerSearchCriteria.getTenantId());
     log.info("Workers Search Query" + query);
     return jdbcTemplate.query(query, preparedStmtList.toArray(), fsmWorkerRowMapper);

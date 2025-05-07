@@ -213,11 +213,3 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
-
-### Java template
-# Compiled class file
-*.class
-
-# Eclipse m2e generated files
-# Eclipse Core
-.project

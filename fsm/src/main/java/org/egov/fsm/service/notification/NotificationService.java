@@ -56,7 +56,7 @@ public class NotificationService {
 
 	/**
 	 * Creates and send the sms based on the fsmRequest
-	 * 
+	 *
 	 * @param request The fsmRequest listenend on the kafka topic
 	 */
 	public void process(FSMRequest fsmRequest) {
@@ -79,9 +79,9 @@ public class NotificationService {
 	/**
 	 * Creates and registers an event at the egov-user-event service at defined
 	 * trigger points as that of sms notifs.
-	 * 
+	 *
 	 * Assumption - The fsmRequest received will always contain only one fsm.
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 */
@@ -125,7 +125,7 @@ public class NotificationService {
 
 	/**
 	 * Fetches UUIDs of CITIZENs based on the phone number.
-	 * 
+	 *
 	 * @param mobileNumbers
 	 * @param requestInfo
 	 * @param tenantId
@@ -161,7 +161,7 @@ public class NotificationService {
 
 	/**
 	 * Enriches the smsRequest with the customized messages
-	 * 
+	 *
 	 * @param request     The fsmRequest from kafka topic
 	 * @param smsRequests List of SMSRequets
 	 */
@@ -178,7 +178,7 @@ public class NotificationService {
 
 		messageCode = validatePaymentAndLocalization(fsmRequest, fsm, localizationMessageKey);
 
-		
+
 		if (!FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY.equalsIgnoreCase(fsm.getPaymentPreference())) {
 			if (fsm.getAdvanceAmount() != null
 					&& fsm.getApplicationStatus().equalsIgnoreCase(FSMConstants.WF_STATUS_PENDING_APPL_FEE_PAYMENT)) {
@@ -188,7 +188,7 @@ public class NotificationService {
 			}
 
 		}
-		
+
 		log.info("Printing the value of final messageCode:: " + messageCode);
 
 		UserDetailResponse userDetailResponse = getUserList(fsmRequest);
@@ -233,7 +233,7 @@ public class NotificationService {
 	}
 
 	private void enrichCheckStatus(FSM fsm, String localizationMessages, FSMRequest fsmRequest,
-			List<SMSRequest> smsRequests) {
+								   List<SMSRequest> smsRequests) {
 		if (!FSMConstants.FSM_PAYMENT_PREFERENCE_POST_PAY.equalsIgnoreCase(fsm.getPaymentPreference())
 				&& fsm.getApplicationStatus().equalsIgnoreCase(FSMConstants.WF_STATUS_PENDING_APPL_FEE_PAYMENT)
 				&& fsm.getSource() != null
@@ -253,7 +253,7 @@ public class NotificationService {
 	/**
 	 * To get the Users to whom we need to send the sms notifications or event
 	 * notifications.
-	 * 
+	 *
 	 * @param fsmRequest
 	 * @return
 	 */
@@ -270,7 +270,7 @@ public class NotificationService {
 
 	/**
 	 * Creates and send the SMS if vehicle capacity has been updated
-	 * 
+	 *
 	 * @param request
 	 */
 	public void process(FSMRequest fsmRequest, FSM oldFSM) {
@@ -282,7 +282,7 @@ public class NotificationService {
 
 		if (null != oldFSM.getVehicleCapacity() && null != newFSM.getVehicleCapacity()
 				&& ((!newFSM.getVehicleCapacity().equalsIgnoreCase(oldFSM.getVehicleCapacity()))
-						|| (!newFSM.getNoOfTrips().equals(oldFSM.getNoOfTrips())))) {
+				|| (!newFSM.getNoOfTrips().equals(oldFSM.getNoOfTrips())))) {
 
 			log.info("Vehicle Capacity or no of trips is updated sending SMS here::");
 

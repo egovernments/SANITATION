@@ -149,7 +149,7 @@ public class FSMQueryBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param query            prepared Query
 	 * @param preparedStmtList values to be replased on the query
 	 * @param criteria         fsm search criteria
@@ -214,7 +214,7 @@ public class FSMQueryBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param builder
 	 * @param criteria
 	 */
@@ -265,7 +265,7 @@ public class FSMQueryBuilder {
 	}
 
 	private String addPaginationClause(StringBuilder builder, List<Object> preparedStmtList,
-			FSMSearchCriteria criteria) {
+									   FSMSearchCriteria criteria) {
 
 		if (criteria.getLimit() != null && criteria.getLimit() != 0) {
 			builder.append(
@@ -293,7 +293,7 @@ public class FSMQueryBuilder {
 	}
 
 	public String getTripDetailSarchQuery(String referenceNumber, int numOfRecords, List<Object> preparedStmtList,
-			Boolean waitingForDisposal) {
+										  Boolean waitingForDisposal) {
 		StringBuilder builder = new StringBuilder(GET_WAITING_FOR_DISPOSAL_VEHICLE_TRIPS_LIST);
 		preparedStmtList.add(referenceNumber);
 		if (numOfRecords != 0) {

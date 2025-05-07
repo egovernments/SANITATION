@@ -22,5 +22,4 @@ public final class  PlantMappingConstants {
 	public static final String INVALID_UUID = "EMPLOYEE_UUID_REQUIRED";
 
 	public static final String INVALID_SEARCH = "INVALID_SEARCH";
-	
 }

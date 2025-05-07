@@ -10,15 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class PlantMappingUtils {
-	
-	private MultiStateInstanceUtil multiStateInstanceUtil;
+
+    private MultiStateInstanceUtil multiStateInstanceUtil;
 
     @Autowired
     public PlantMappingUtils(MultiStateInstanceUtil multiStateInstanceUtil) {
         this.multiStateInstanceUtil = multiStateInstanceUtil;
     }
 
-	/**
+    /**
      * Method to fetch the state name from the tenantId
      *
      * @param query

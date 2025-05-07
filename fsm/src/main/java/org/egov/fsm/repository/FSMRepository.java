@@ -60,14 +60,14 @@ public class FSMRepository {
 
 	@Autowired
 	private TripDetailRowMapper detailMapper;
-	
-	@Autowired
-    private FSMUtil fsmUtil;
 
-		public void save(FSMRequest fsmRequest) {
-			producer.push(fsmRequest.getFsm().getTenantId(),config.getSaveTopic(), fsmRequest);
-			producer.push(fsmRequest.getFsm().getTenantId(),config.getFsmEventIndexKafkaTopic(), fsmRequest);
-		}
+	@Autowired
+	private FSMUtil fsmUtil;
+
+	public void save(FSMRequest fsmRequest) {
+		producer.push(fsmRequest.getFsm().getTenantId(),config.getSaveTopic(), fsmRequest);
+		producer.push(fsmRequest.getFsm().getTenantId(),config.getFsmEventIndexKafkaTopic(), fsmRequest);
+	}
 
 	public void update(FSMRequest fsmRequest, boolean isStateUpdatable) {
 		RequestInfo requestInfo = fsmRequest.getRequestInfo();
@@ -84,19 +84,19 @@ public class FSMRepository {
 		}
 		if (fsmForUpdate != null) {
 			producer.push(fsmRequest.getFsm().getTenantId(),config.getUpdateTopic(), new FSMRequest(requestInfo, fsmForUpdate, fsmRequest.getWorkflow()));
-	        producer.push(fsmRequest.getFsm().getTenantId(),config.getFsmEventIndexKafkaTopic(), fsmRequest);
+			producer.push(fsmRequest.getFsm().getTenantId(),config.getFsmEventIndexKafkaTopic(), fsmRequest);
 		}
 		if (fsmForStatusUpdate != null) {
 			producer.push(fsmRequest.getFsm().getTenantId(),config.getUpdateWorkflowTopic(),
 					new FSMRequest(requestInfo, fsmForStatusUpdate, fsmRequest.getWorkflow()));
-	        producer.push(fsmRequest.getFsm().getTenantId(),config.getFsmEventIndexKafkaTopic(), fsmRequest);
+			producer.push(fsmRequest.getFsm().getTenantId(),config.getFsmEventIndexKafkaTopic(), fsmRequest);
 		}
 	}
 
 	public FSMResponse getFSMData(FSMSearchCriteria fsmSearchCriteria, String dsoId) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = fsmQueryBuilder.getFSMSearchQuery(fsmSearchCriteria, dsoId, preparedStmtList);
-	    query = fsmUtil.replaceSchemaPlaceholder(query, fsmSearchCriteria.getTenantId());
+		query = fsmUtil.replaceSchemaPlaceholder(query, fsmSearchCriteria.getTenantId());
 		List<FSM> fsms = jdbcTemplate.query(query, preparedStmtList.toArray(), fsmRowMapper);
 		return FSMResponse.builder().fsm(fsms).totalCount(fsmRowMapper.getFullCount()).build();
 	}
@@ -104,14 +104,14 @@ public class FSMRepository {
 	public List<FSMAuditUtil> getFSMActualData(FSMAuditSearchCriteria criteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = auditQueryBuilder.getFSMActualDataQuery(criteria, preparedStmtList);
-	    query = fsmUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
+		query = fsmUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), auditRowMapper);
 	}
 
 	public List<FSMAuditUtil> getFSMAuditData(FSMAuditSearchCriteria criteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = auditQueryBuilder.getFSMAuditDataQuery(criteria, preparedStmtList);
-	    query = fsmUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
+		query = fsmUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), auditRowMapper);
 	}
 
@@ -132,7 +132,7 @@ public class FSMRepository {
 
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = fsmQueryBuilder.getFSMLikeQuery(criteria, preparedStmtList);
-	    query = fsmUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
+		query = fsmUtil.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		log.info("Query: " + query);
 		log.info("PS: " + preparedStmtList);
 		return jdbcTemplate.query(query, preparedStmtList.toArray(), fsmRowMapper);
@@ -150,12 +150,12 @@ public class FSMRepository {
 				preparedStmtList.toArray());
 
 	}
-	
-	
+
+
 
 	/***
 	 * This method will return unique tenantid's
-	 * 
+	 *
 	 * @return tenant list
 	 */
 
@@ -192,16 +192,16 @@ public class FSMRepository {
 
 		return tripDetails;
 	}
-/**
- * This function is to update the trip status to inactive while decreasing the trips during trip update
- * @param vehicleTripList
- */
+	/**
+	 * This function is to update the trip status to inactive while decreasing the trips during trip update
+	 * @param vehicleTripList
+	 */
 	//commented as  vehicleTripList is handled while calling updateVehicleToInActive function
 	public void updateVehicleToInActive(List<VehicleTrip> vehicleTripList) {
 		if (vehicleTripList != null) {
 			producer.push(vehicleTripList.get(0).getTenantId(),config.getVehicleUpdateTripToInactive(), new VehicleTripRequest(new RequestInfo(), vehicleTripList,null));
 		}
 	}
-	
+
 
 }

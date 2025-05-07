@@ -22,10 +22,10 @@ public class PlantMappingRepository {
 
 	@Autowired
 	private FSMProducer producer;
-	
+
 	@Autowired
 	private PlantMappingConfiguration config;
-	
+
 	@Autowired
 	private PlantMappingQueryBuilder queryBuilder;
 
@@ -34,10 +34,10 @@ public class PlantMappingRepository {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
+
 	@Autowired
 	private PlantMappingUtils plantMappingUtils;
-	
+
 	public void save(PlantMappingRequest request) {
 		producer.push(request.getPlantMapping().getTenantId(), config.getSaveTopic(), request);
 	}
@@ -45,7 +45,7 @@ public class PlantMappingRepository {
 	public PlantMappingResponse getPlantMappingData(PlantMappingSearchCriteria criteria) {
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = queryBuilder.getPlantMapSearchQuery(criteria, preparedStmtList);
-	    query = plantMappingUtils.replaceSchemaPlaceholder(query, criteria.getTenantId());
+		query = plantMappingUtils.replaceSchemaPlaceholder(query, criteria.getTenantId());
 		List<PlantMapping> plantmaps = jdbcTemplate.query(query, preparedStmtList.toArray(), rowMapper);
 		return PlantMappingResponse.builder().plantMapping(plantmaps).build();
 	}

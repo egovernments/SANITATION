@@ -301,12 +301,5 @@ public class FSMConfiguration {
 
 		@Value("${persister.update.fsm.worker.topic}")
 		private String updateFsmWorkerTopic;
-		
-		// Central instance configs
-	    @Value("${state.level.tenantid.length}")
-	    private Integer stateLevelTenantIdLength;
-
-	    @Value("${is.environment.central.instance}")
-	    private Boolean isEnvironmentCentralInstance;
 
 }

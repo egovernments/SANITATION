@@ -58,7 +58,7 @@ public class NotificationUtil {
 
 	@Autowired
 	public NotificationUtil(FSMConfiguration config, ServiceRequestRepository serviceRequestRepository,
-			FSMProducer producer, DSOService dsoService, RestTemplate restTemplate, WorkflowService workflowService) {
+							FSMProducer producer, DSOService dsoService, RestTemplate restTemplate, WorkflowService workflowService) {
 		this.config = config;
 		this.serviceRequestRepository = serviceRequestRepository;
 		this.producer = producer;
@@ -73,7 +73,7 @@ public class NotificationUtil {
 
 	/**
 	 * Creates customized message based on fsm
-	 * 
+	 *
 	 * @param fsm                 The fsm for which message is to be sent
 	 * @param localizationMessage The messages from localization
 	 * @return customized message based on fsm
@@ -122,7 +122,7 @@ public class NotificationUtil {
 	}
 
 	private String callFSMReasonsAndPaymentLink(String message, FSMRequest fsmRequest, String localizationMessage,
-			FSM fsm) {
+												FSM fsm) {
 		if (message.contains("{FSM_DSO_REJECT_REASON}")) {
 
 			String reasonComment = fsmRequest.getWorkflow().getComments();
@@ -202,7 +202,7 @@ public class NotificationUtil {
 			BigDecimal amount;
 			if (fsm.getAdvanceAmount() != null
 					&& (fsm.getApplicationStatus().equalsIgnoreCase(FSMConstants.WF_STATUS_PENDING_APPL_FEE_PAYMENT)
-							|| fsm.getApplicationStatus().equalsIgnoreCase(FSMConstants.ASSIGN_DSO))) {
+					|| fsm.getApplicationStatus().equalsIgnoreCase(FSMConstants.ASSIGN_DSO))) {
 				amount = fsm.getAdvanceAmount();
 			}
 
@@ -254,7 +254,7 @@ public class NotificationUtil {
 
 	/**
 	 * Creates customized message for initiate
-	 * 
+	 *
 	 * @param bpa     tenantId of the bpa
 	 * @param message Message from localization for initiate
 	 * @return customized message for initiate
@@ -267,7 +267,7 @@ public class NotificationUtil {
 
 	/**
 	 * Extracts message for the specific code
-	 * 
+	 *
 	 * @param notificationCode    The code for which message is required
 	 * @param localizationMessage The localization messages
 	 * @return message for the specific code
@@ -294,7 +294,7 @@ public class NotificationUtil {
 
 	/**
 	 * Fetches the amount to be paid from getBill API
-	 * 
+	 *
 	 * @param requestInfo The RequestInfo of the request
 	 * @param FSM         The FSM object for which
 	 * @return
@@ -336,7 +336,7 @@ public class NotificationUtil {
 
 	/**
 	 * Creates the uri for getBill by adding query params from the license
-	 * 
+	 *
 	 * @param license The TradeLicense for which getBill has to be called
 	 * @return The uri for the getBill
 	 */
@@ -354,7 +354,7 @@ public class NotificationUtil {
 
 	/**
 	 * Returns the uri for the localization call
-	 * 
+	 *
 	 * @param tenantId TenantId of the propertyRequest
 	 * @return The uri for localization search call
 	 */
@@ -377,7 +377,7 @@ public class NotificationUtil {
 
 	/**
 	 * Fetches messages from localization service
-	 * 
+	 *
 	 * @param tenantId    tenantId of the fsm
 	 * @param requestInfo The requestInfo of the request
 	 * @return Localization messages for the module
@@ -392,7 +392,7 @@ public class NotificationUtil {
 
 	/**
 	 * Send the SMSRequest on the SMSNotification kafka topic
-	 * 
+	 *
 	 * @param smsRequestList The list of SMSRequest to be sent
 	 */
 	public void sendSMS(List<SMSRequest> smsRequestList, boolean isSMSEnabled ,String tenantId) {
@@ -408,7 +408,7 @@ public class NotificationUtil {
 
 	/**
 	 * Creates sms request for the each owners
-	 * 
+	 *
 	 * @param message                 The message for the specific fsm
 	 * @param mobileNumberToOwnerName Map of mobileNumber to OwnerName
 	 * @return List of SMSRequest
@@ -425,7 +425,7 @@ public class NotificationUtil {
 
 	/**
 	 * Pushes the event request to Kafka Queue.
-	 * 
+	 *
 	 * @param request
 	 */
 	public void sendEventNotification(EventRequest request) {
@@ -436,7 +436,7 @@ public class NotificationUtil {
 
 	/**
 	 * Method to shortent the url returns the same url if shortening fails
-	 * 
+	 *
 	 * @param url
 	 */
 	public String getShortenedUrl(String url) {

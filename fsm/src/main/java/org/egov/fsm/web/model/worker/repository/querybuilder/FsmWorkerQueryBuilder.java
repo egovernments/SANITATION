@@ -72,7 +72,7 @@ public class FsmWorkerQueryBuilder {
   }
 
   private String addPaginationWrapper(String query, List<Object> preparedStmtList,
-      WorkerSearchCriteria criteria) {
+                                      WorkerSearchCriteria criteria) {
     int limit = config.getDefaultLimit();
     int offset = config.getDefaultOffset();
     String finalQuery = PAGINATION_WRAPPER.replace("{}", query);

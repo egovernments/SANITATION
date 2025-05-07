@@ -42,15 +42,15 @@ public class FSMUtil {
 
 	@Autowired
 	private FSMConfiguration config;
-	
+
 	private MultiStateInstanceUtil multiStateInstanceUtil;
 
-    @Autowired
-    public FSMUtil(MultiStateInstanceUtil multiStateInstanceUtil) {
-        this.multiStateInstanceUtil = multiStateInstanceUtil;
-    }
+	@Autowired
+	public FSMUtil(MultiStateInstanceUtil multiStateInstanceUtil) {
+		this.multiStateInstanceUtil = multiStateInstanceUtil;
+	}
 
-	
+
 	public void defaultJsonPathConfig() {
 		Configuration.setDefaults(new Configuration.Defaults() {
 
@@ -92,7 +92,7 @@ public class FSMUtil {
 
 	/**
 	 * makes mdms call with the given criteria and reutrn mdms data
-	 * 
+	 *
 	 * @param requestInfo
 	 * @param tenantId
 	 * @return
@@ -113,7 +113,7 @@ public class FSMUtil {
 
 	/**
 	 * prepares the mdms request object
-	 * 
+	 *
 	 * @param requestInfo
 	 * @param tenantId
 	 * @return
@@ -165,7 +165,7 @@ public class FSMUtil {
 
 	/**
 	 * Check if the logged in user has the role for the FSM application tenantId
-	 * 
+	 *
 	 * @param fsmRequest
 	 * @param role
 	 * @return
@@ -181,7 +181,7 @@ public class FSMUtil {
 
 	/**
 	 * Check if the logged in user has the role for the FSM application tenantId
-	 * 
+	 *
 	 * @param fsmRequest
 	 * @param role
 	 * @return
@@ -196,7 +196,7 @@ public class FSMUtil {
 
 	/**
 	 * Checks if the user has role allowed for the action
-	 * 
+	 *
 	 * @param userRoles The roles available with the user
 	 * @pram role The role to verified
 	 * @return True if user can perform the action else false
@@ -210,7 +210,7 @@ public class FSMUtil {
 
 	/**
 	 * Gets the map of tenantId to roles the user is assigned
-	 * 
+	 *
 	 * @param requestInfo RequestInfo of the request
 	 * @return Map of tenantId to roles for user in the requestInfo
 	 */
@@ -231,7 +231,7 @@ public class FSMUtil {
 
 	/***
 	 * This method will return specfic master data of fsm module based on input
-	 * 
+	 *
 	 * @param mastername
 	 * @param tenantId
 	 * @param requestInfo
@@ -255,22 +255,22 @@ public class FSMUtil {
 
 	}
 	/**
-     * Method to fetch the state name from the tenantId
-     *
-     * @param query
-     * @param tenantId
-     * @return
-     */
-    public String replaceSchemaPlaceholder(String query, String tenantId) {
+	 * Method to fetch the state name from the tenantId
+	 *
+	 * @param query
+	 * @param tenantId
+	 * @return
+	 */
+	public String replaceSchemaPlaceholder(String query, String tenantId) {
 
-        String finalQuery = null;
+		String finalQuery = null;
 
-        try {
-            finalQuery = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
-        }
-        catch (Exception e){
-            throw new CustomException("INVALID_TENANTID","Invalid tenantId: "+tenantId);
-        }
-        return finalQuery;
-    }
+		try {
+			finalQuery = multiStateInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+		}
+		catch (Exception e){
+			throw new CustomException("INVALID_TENANTID","Invalid tenantId: "+tenantId);
+		}
+		return finalQuery;
+	}
 }

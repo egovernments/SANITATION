@@ -10,11 +10,11 @@ import org.springframework.util.CollectionUtils;
 
 @Component
 public class PlantMappingQueryBuilder {
-	
+
 
 	@Autowired
 	private FSMConfiguration config;
-	
+
 	private static final String QUERY = "select count(*) OVER() AS full_count, * from {schema}.eg_fsm_plantmapping plantmapping ";
 
 	private static final String PAGINATION_WRAPPER = "{} {orderby} {pagination}";
@@ -34,7 +34,7 @@ public class PlantMappingQueryBuilder {
 				preparedStmtList.add(criteria.getTenantId());
 			}
 		}
-		
+
 
 		List<String> employeeUuid = criteria.getEmployeeUuid();
 		if (!CollectionUtils.isEmpty(employeeUuid)) {
@@ -49,14 +49,14 @@ public class PlantMappingQueryBuilder {
 			builder.append(" plantmapping.plantcode = ?");
 			preparedStmtList.add(criteria.getPlantCode());
 		}
-		
+
 		List<String> ids = criteria.getIds();
 		if (!CollectionUtils.isEmpty(ids)) {
 			addClauseIfRequired(preparedStmtList, builder);
 			builder.append(" plantmapping.id IN (").append(createQuery(ids)).append(")");
 			addToPreparedStatement(preparedStmtList, ids);
 		}
-		
+
 		return addPaginationWrapper(builder.toString(), preparedStmtList);
 	}
 
@@ -67,28 +67,28 @@ public class PlantMappingQueryBuilder {
 
 	}
 
-		private Object createQuery(List<String> ids) {
-			StringBuilder builder = new StringBuilder();
-			int length = ids.size();
-			for (int i = 0; i < length; i++) {
-				builder.append(" ?");
-				if (i != length - 1)
-					builder.append(",");
-			}
-			return builder.toString();
+	private Object createQuery(List<String> ids) {
+		StringBuilder builder = new StringBuilder();
+		int length = ids.size();
+		for (int i = 0; i < length; i++) {
+			builder.append(" ?");
+			if (i != length - 1)
+				builder.append(",");
 		}
+		return builder.toString();
+	}
 
 
 	private void addClauseIfRequired(List<Object> preparedStmtList, StringBuilder builder) {
-			if (preparedStmtList.isEmpty())
-				builder.append(" WHERE ");
-			else {
-				builder.append(" AND");
-			}
+		if (preparedStmtList.isEmpty())
+			builder.append(" WHERE ");
+		else {
+			builder.append(" AND");
 		}
-	
+	}
+
 	/**
-	 * 
+	 *
 	 * @param query
 	 *            prepared Query
 	 * @param preparedStmtList
@@ -98,21 +98,21 @@ public class PlantMappingQueryBuilder {
 	 * @return the query by replacing the placeholders with preparedStmtList
 	 */
 	private String addPaginationWrapper(String query, List<Object> preparedStmtList) {
-//		
+//
 		int limit = config.getDefaultLimit();
 		int offset = config.getDefaultOffset();
 		String finalQuery = PAGINATION_WRAPPER.replace("{}", query);
 		StringBuilder orderQuery = new StringBuilder();
-		finalQuery = finalQuery.replace("{orderby}", orderQuery.toString()); 
-		
+		finalQuery = finalQuery.replace("{orderby}", orderQuery.toString());
+
 		if (limit == -1) {
-			finalQuery = finalQuery.replace("{pagination}", ""); 
+			finalQuery = finalQuery.replace("{pagination}", "");
 		} else {
-			finalQuery = finalQuery.replace("{pagination}", " offset ?  limit ?  "); 
+			finalQuery = finalQuery.replace("{pagination}", " offset ?  limit ?  ");
 			preparedStmtList.add(offset);
 			preparedStmtList.add(limit );
 		}
-		
+
 		return finalQuery;
 
 	}
