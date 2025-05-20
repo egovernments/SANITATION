@@ -87,8 +87,13 @@
   
                   link.addEventListener("click", function (event) {
                     event.preventDefault();
-  
-                    const expectedPath = "/sanitation-ui/employee";
+
+                    let expectedPath = null;
+                    if (currentPath.includes("/employee/dss/dashboard/fsm")) {
+                      expectedPath = "/sanitation-ui/employee";
+                    } else if (currentPath.includes("/employee/dss/dashboard/pqm")) {
+                      expectedPath = "/sanitation-ui/employee/tqm/landing";
+                    }
                     const expectedUrl = window.location.origin + expectedPath;
                     const storedReferrer = sessionStorage.getItem("lastVisitedPage");
   
