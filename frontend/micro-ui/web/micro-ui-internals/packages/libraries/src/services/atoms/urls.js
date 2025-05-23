@@ -62,6 +62,7 @@ const Urls = {
     plantUserCreate: "/pqm-service/plant/user/v1/_create",
     plantUserUpdate: "/pqm-service/plant/user/v1/_update",
     vehicleTripAlertsDetails: "/trackingservice/api/v3/trip/_searchfsm",
+    vehicleTripAlertsCount: "/trackingservice/api/v3/trip/_alerts",
   },
 
   payment: {
