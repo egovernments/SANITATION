@@ -1,16 +1,19 @@
 import {
   dispatchMultipleFieldChangeAction,
-  getLabel
+  getLabel,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  prepareFinalObject,
+  toggleSnackbar,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import get from "lodash/get";
 import { httpRequest } from "../../../../../ui-utils";
 import {
   createUpdateNocApplication,
   prepareDocumentsUploadData,
-  setDocsForEditFlow
+  setDocsForEditFlow,
 } from "../../../../../ui-utils/commons";
 import { getCommonApplyFooter, validateFields } from "../../utils";
 import "./index.css";
@@ -40,7 +43,6 @@ const moveToReview = (state, dispatch) => {
     let isDocumentRequired = get(documentsFormat[i], "isDocumentRequired");
     // let isDocumentTypeRequired = get(documentsFormat[i], "isDocumentTypeRequired");
     let isDocumentTypeRequired = false;
-
 
     let documents = get(documentsFormat[i], "documents");
     if (isDocumentRequired) {
@@ -92,14 +94,14 @@ const getMdmsData = async (state, dispatch) => {
     MdmsCriteria: {
       tenantId: tenantId,
       moduleDetails: [
-        { moduleName: "FireNoc", masterDetails: [{ name: "Documents" }] }
-      ]
-    }
+        { moduleName: "FireNoc", masterDetails: [{ name: "Documents" }] },
+      ],
+    },
   };
   try {
     let payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -181,8 +183,7 @@ const callBackForNext = async (state, dispatch) => {
       isFormValid = false;
       hasFieldToaster = true;
     }
-    setDocsForEditFlow(state, dispatch)
-
+    setDocsForEditFlow(state, dispatch);
   }
 
   if (activeStep === 2) {
@@ -266,53 +267,73 @@ const callBackForNext = async (state, dispatch) => {
   if (activeStep === 3) {
     const tenantId = getQueryArg(window.location.href, "tenantId");
     if (getQueryArg(window.location.href, "action") === "edit") {
-
-
-
       let ownerDocs = [];
       let buildDocs = [];
       let docs = [];
-      let docsForEdit = {}
-      const documentsUploadRedux = get(state,
+      let docsForEdit = {};
+      const documentsUploadRedux = get(
+        state,
         "screenConfiguration.preparedFinalObject.documentsUploadRedux",
         {}
       );
       Object.keys(documentsUploadRedux).map((key, index) => {
-        if (documentsUploadRedux[key].documents && Array.isArray(documentsUploadRedux[key].documents) && documentsUploadRedux[key].documents.length > 0) {
+        if (
+          documentsUploadRedux[key].documents &&
+          Array.isArray(documentsUploadRedux[key].documents) &&
+          documentsUploadRedux[key].documents.length > 0
+        ) {
           let documentObj = {
-            fileName: documentsUploadRedux[key].documents[0].fileName || `Document - ${index + 1}`,
+            fileName:
+              documentsUploadRedux[key].documents[0].fileName ||
+              `Document - ${index + 1}`,
 
             fileUrl: documentsUploadRedux[key].documents[0].fileUrl,
             documentType: documentsUploadRedux[key].documents[0].documentType,
             fileStoreId: documentsUploadRedux[key].documents[0].fileStoreId,
-            tenantId: tenantId
+            tenantId: tenantId,
           };
           if (documentsUploadRedux[key].documentType == "OWNER") {
-
-            ownerDocs.push({ ...documentObj })
-            docsForEdit[documentsUploadRedux[key].documentCode] = { ...documentObj };
+            ownerDocs.push({ ...documentObj });
+            docsForEdit[documentsUploadRedux[key].documentCode] = {
+              ...documentObj,
+            };
           } else if (documentsUploadRedux[key].documentType == "BUILDING") {
-            let key1 = documentsUploadRedux[key].documentSubCode ? documentsUploadRedux[key].documentSubCode : documentsUploadRedux[key].documentCode
-            buildDocs.push({ ...documentObj, documentType: key1 })
+            let key1 = documentsUploadRedux[key].documentSubCode
+              ? documentsUploadRedux[key].documentSubCode
+              : documentsUploadRedux[key].documentCode;
+            buildDocs.push({ ...documentObj, documentType: key1 });
             docsForEdit[key1] = { ...documentObj };
           }
-          docs.push({ ...documentObj })
-
+          docs.push({ ...documentObj });
         }
-      })
-      dispatch(prepareFinalObject("FireNOCs[0].fireNOCDetails.applicantDetails.additionalDetail.documents", [...ownerDocs]));
-      dispatch(prepareFinalObject("FireNOCs[0].fireNOCDetails.buildings[0].applicationDocuments", [...buildDocs]));
-      dispatch(prepareFinalObject("FireNOCs[0].fireNOCDetails.additionalDetail.ownerAuditionalDetail", [...ownerDocs]));
-      dispatch(prepareFinalObject("FireNOCs[0].fireNOCDetails.additionalDetail.documents", [...docs]));
-
-
-
+      });
+      dispatch(
+        prepareFinalObject(
+          "FireNOCs[0].fireNOCDetails.applicantDetails.additionalDetail.documents",
+          [...ownerDocs]
+        )
+      );
+      dispatch(
+        prepareFinalObject(
+          "FireNOCs[0].fireNOCDetails.buildings[0].applicationDocuments",
+          [...buildDocs]
+        )
+      );
+      dispatch(
+        prepareFinalObject(
+          "FireNOCs[0].fireNOCDetails.additionalDetail.ownerAuditionalDetail",
+          [...ownerDocs]
+        )
+      );
+      dispatch(
+        prepareFinalObject(
+          "FireNOCs[0].fireNOCDetails.additionalDetail.documents",
+          [...docs]
+        )
+      );
 
       //EDIT FLOW
-      const businessId = getQueryArg(
-        window.location.href,
-        "applicationNumber"
-      );
+      const businessId = getQueryArg(window.location.href, "applicationNumber");
 
       dispatch(
         setRoute(
@@ -321,11 +342,10 @@ const callBackForNext = async (state, dispatch) => {
       );
       const updateMessage = {
         labelName: "Rates will be updated on submission",
-        labelKey: "TL_COMMON_EDIT_UPDATE_MESSAGE"
+        labelKey: "TL_COMMON_EDIT_UPDATE_MESSAGE",
       };
       dispatch(toggleSnackbar(true, updateMessage, "info"));
-    }
-    else {
+    } else {
       moveToReview(state, dispatch);
     }
   }
@@ -346,33 +366,30 @@ const callBackForNext = async (state, dispatch) => {
         responseStatus = get(response, "status", "");
       }
       responseStatus === "success" && changeStep(state, dispatch);
-    }
-    else if (isMultiownerSelected) {
+    } else if (isMultiownerSelected) {
       let errorMessage = {
         labelName: "Please add all the owner details!",
-        labelKey: "ERR_FILL_MULTIPLE_OWNER"
+        labelKey: "ERR_FILL_MULTIPLE_OWNER",
       };
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
-
-    }
-    else if (hasFieldToaster) {
+    } else if (hasFieldToaster) {
       let errorMessage = {
         labelName: "Please fill all mandatory fields and upload the documents!",
-        labelKey: "ERR_UPLOAD_MANDATORY_DOCUMENTS_TOAST"
+        labelKey: "ERR_UPLOAD_MANDATORY_DOCUMENTS_TOAST",
       };
       switch (activeStep) {
         case 1:
           errorMessage = {
             labelName:
               "Please check the Missing/Invalid field for Property Details, then proceed!",
-            labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_PROPERTY_TOAST"
+            labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_PROPERTY_TOAST",
           };
           break;
         case 2:
           errorMessage = {
             labelName:
               "Please fill all mandatory fields for Applicant Details, then proceed!",
-            labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_APPLICANT_TOAST"
+            labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_APPLICANT_TOAST",
           };
           break;
       }
@@ -414,23 +431,23 @@ export const changeStep = (
     {
       path: "components.div.children.stepper.props",
       property: "activeStep",
-      value: activeStep
+      value: activeStep,
     },
     {
       path: "components.div.children.footer.children.previousButton",
       property: "visible",
-      value: isPreviousButtonVisible
+      value: isPreviousButtonVisible,
     },
     {
       path: "components.div.children.footer.children.nextButton",
       property: "visible",
-      value: isNextButtonVisible
+      value: isNextButtonVisible,
     },
     {
       path: "components.div.children.footer.children.payButton",
       property: "visible",
-      value: isPayButtonVisible
-    }
+      value: isPayButtonVisible,
+    },
   ];
   dispatchMultipleFieldChangeAction("apply", actionDefination, dispatch);
   renderSteps(activeStep, dispatch);
@@ -476,38 +493,38 @@ export const renderSteps = (activeStep, dispatch) => {
   }
 };
 
-export const getActionDefinationForStepper = path => {
+export const getActionDefinationForStepper = (path) => {
   const actionDefination = [
     {
       path: "components.div.children.formwizardFirstStep",
       property: "visible",
-      value: true
+      value: true,
     },
     {
       path: "components.div.children.formwizardSecondStep",
       property: "visible",
-      value: false
+      value: false,
     },
     {
       path: "components.div.children.formwizardThirdStep",
       property: "visible",
-      value: false
+      value: false,
     },
     {
       path: "components.div.children.formwizardFourthStep",
       property: "visible",
-      value: false
-    }
+      value: false,
+    },
   ];
   for (var i = 0; i < actionDefination.length; i++) {
     actionDefination[i] = {
       ...actionDefination[i],
-      value: false
+      value: false,
     };
     if (path === actionDefination[i].path) {
       actionDefination[i] = {
         ...actionDefination[i],
-        value: true
+        value: true,
       };
     }
   }
@@ -527,27 +544,27 @@ export const footer = getCommonApplyFooter({
       style: {
         // minWidth: "200px",
         height: "48px",
-        marginRight: "16px"
-      }
+        marginRight: "16px",
+      },
     },
     children: {
       previousButtonIcon: {
         uiFramework: "custom-atoms",
         componentPath: "Icon",
         props: {
-          iconName: "keyboard_arrow_left"
-        }
+          iconName: "keyboard_arrow_left",
+        },
       },
       previousButtonLabel: getLabel({
         labelName: "Previous Step",
-        labelKey: "NOC_COMMON_BUTTON_PREV_STEP"
-      })
+        labelKey: "NOC_COMMON_BUTTON_PREV_STEP",
+      }),
     },
     onClickDefination: {
       action: "condition",
-      callBack: callBackForPrevious
+      callBack: callBackForPrevious,
     },
-    visible: false
+    visible: false,
   },
   nextButton: {
     componentPath: "Button",
@@ -557,26 +574,26 @@ export const footer = getCommonApplyFooter({
       style: {
         // minWidth: "200px",
         height: "48px",
-        marginRight: "45px"
-      }
+        marginRight: "45px",
+      },
     },
     children: {
       nextButtonLabel: getLabel({
         labelName: "Next Step",
-        labelKey: "NOC_COMMON_BUTTON_NXT_STEP"
+        labelKey: "NOC_COMMON_BUTTON_NXT_STEP",
       }),
       nextButtonIcon: {
         uiFramework: "custom-atoms",
         componentPath: "Icon",
         props: {
-          iconName: "keyboard_arrow_right"
-        }
-      }
+          iconName: "keyboard_arrow_right",
+        },
+      },
     },
     onClickDefination: {
       action: "condition",
-      callBack: callBackForNext
-    }
+      callBack: callBackForNext,
+    },
   },
   payButton: {
     componentPath: "Button",
@@ -586,26 +603,26 @@ export const footer = getCommonApplyFooter({
       style: {
         //minWidth: "200px",
         height: "48px",
-        marginRight: "45px"
-      }
+        marginRight: "45px",
+      },
     },
     children: {
       submitButtonLabel: getLabel({
         labelName: "Submit",
-        labelKey: "NOC_COMMON_BUTTON_SUBMIT"
+        labelKey: "NOC_COMMON_BUTTON_SUBMIT",
       }),
       submitButtonIcon: {
         uiFramework: "custom-atoms",
         componentPath: "Icon",
         props: {
-          iconName: "keyboard_arrow_right"
-        }
-      }
+          iconName: "keyboard_arrow_right",
+        },
+      },
     },
     onClickDefination: {
       action: "condition",
-      callBack: callBackForNext
+      callBack: callBackForNext,
     },
-    visible: false
-  }
+    visible: false,
+  },
 });
