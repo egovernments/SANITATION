@@ -1,14 +1,32 @@
-import { download, downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons";
 import {
-  getCommonCaption, getCommonCard, getLabelWithValue, getPattern
+  download,
+  downloadReceiptFromFilestoreID,
+} from "egov-common/ui-utils/commons";
+import {
+  getCommonCaption,
+  getCommonCard,
+  getLabelWithValue,
+  getPattern,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+  toggleSnackbar,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
 import {
-  getFileUrl, getFileUrlFromAPI, getLocaleLabels, getQueryArg, getTransformedLocale, getTransformedLocalStorgaeLabels
+  getFileUrl,
+  getFileUrlFromAPI,
+  getLocaleLabels,
+  getQueryArg,
+  getTransformedLocale,
+  getTransformedLocalStorgaeLabels,
 } from "egov-ui-framework/ui-utils/commons";
-import { getPaymentSearchAPI, getUserSearchedResponse } from "egov-ui-kit/utils/commons";
+import {
+  getPaymentSearchAPI,
+  getUserSearchedResponse,
+} from "egov-ui-kit/utils/commons";
 import { getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import jp from "jsonpath";
 import get from "lodash/get";
@@ -18,14 +36,14 @@ import store from "ui-redux/store";
 import { httpRequest } from "../../../../ui-utils/api";
 import { getSearchResults } from "../../../../ui-utils/commons";
 
-export const getCommonApplyFooter = children => {
+export const getCommonApplyFooter = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Div",
     props: {
-      className: "pt-apply-wizard-footer"
+      className: "pt-apply-wizard-footer",
     },
-    children
+    children,
   };
 };
 
@@ -34,7 +52,7 @@ export const transformById = (payload, id) => {
     payload &&
     payload.reduce((result, item) => {
       result[item[id]] = {
-        ...item
+        ...item,
       };
 
       return result;
@@ -85,7 +103,7 @@ export const validateFields = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            )
+            ),
           },
           dispatch,
           true
@@ -114,7 +132,7 @@ export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
   }
 };
 
-export const getEpochForDate = date => {
+export const getEpochForDate = (date) => {
   const dateSplit = date.split("/");
   return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
 };
@@ -131,16 +149,16 @@ export const sortByEpoch = (data, order) => {
   }
 };
 
-export const ifUserRoleExists = role => {
+export const ifUserRoleExists = (role) => {
   let userInfo = JSON.parse(getUserInfo());
   const roles = get(userInfo, "roles");
-  const roleCodes = roles ? roles.map(role => role.code) : [];
+  const roleCodes = roles ? roles.map((role) => role.code) : [];
   if (roleCodes.indexOf(role) > -1) {
     return true;
   } else return false;
 };
 
-export const convertEpochToDate = dateEpoch => {
+export const convertEpochToDate = (dateEpoch) => {
   const dateFromApi = new Date(dateEpoch);
   let month = dateFromApi.getMonth() + 1;
   let day = dateFromApi.getDate();
@@ -202,14 +220,8 @@ export const getFinancialYearDates = (format, et) => {
 };
 
 export const gotoApplyWithStep = (state, dispatch, step) => {
-  const applicationNumber = getQueryArg(
-    window.location.href,
-    "consumerCode"
-  );
-  const tenantId = getQueryArg(
-    window.location.href,
-    "tenantId"
-  );
+  const applicationNumber = getQueryArg(window.location.href, "consumerCode");
+  const tenantId = getQueryArg(window.location.href, "tenantId");
   const applicationNumberQueryString = applicationNumber
     ? `consumerCode=${applicationNumber}&tenantId=${tenantId}`
     : ``;
@@ -221,15 +233,11 @@ export const gotoApplyWithStep = (state, dispatch, step) => {
 };
 
 export const showHideAdhocPopup = (state, dispatch, screenKey) => {
-
-
   // let link = `/property-tax/assessment-form`;
   // let moduleName = process.env.REACT_APP_NAME === "Citizen" ? '/citizen' : '/employee';
   // window.location.href = process.env.NODE_ENV === "production" ? moduleName + link : link;
 
-
   // dispatch(setRoute(`/property-tax/assessment-form`));
-
 
   let toggle = get(
     state.screenConfiguration.screenConfig[screenKey],
@@ -241,7 +249,7 @@ export const showHideAdhocPopup = (state, dispatch, screenKey) => {
   );
 };
 
-export const getCommonGrayCard = children => {
+export const getCommonGrayCard = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -255,18 +263,18 @@ export const getCommonGrayCard = children => {
               backgroundColor: "rgb(242, 242, 242)",
               boxShadow: "none",
               borderRadius: 0,
-              overflow: "visible"
-            }
-          })
+              overflow: "visible",
+            },
+          }),
         },
         gridDefination: {
-          xs: 12
-        }
-      }
+          xs: 12,
+        },
+      },
     },
     gridDefination: {
-      xs: 12
-    }
+      xs: 12,
+    },
   };
 };
 
@@ -276,21 +284,21 @@ export const getLabelOnlyValue = (value, props = {}) => {
     componentPath: "Div",
     gridDefination: {
       xs: 6,
-      sm: 4
+      sm: 4,
     },
     props: {
       style: {
-        marginBottom: "16px"
+        marginBottom: "16px",
       },
-      ...props
+      ...props,
     },
     children: {
-      value: getCommonCaption(value)
-    }
+      value: getCommonCaption(value),
+    },
   };
 };
 
-export const convertDateTimeToEpoch = dateTimeString => {
+export const convertDateTimeToEpoch = (dateTimeString) => {
   //example input format : "26-07-2018 17:43:21"
   try {
     const parts = dateTimeString.match(
@@ -316,7 +324,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
           true,
           {
             labelName: "Incorrect Number!",
-            labelKey: "ERR_MOBILE_NUMBER_INCORRECT"
+            labelKey: "ERR_MOBILE_NUMBER_INCORRECT",
           },
           "error"
         )
@@ -341,7 +349,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
           true,
           {
             labelName: "Owner has been added already!",
-            labelKey: "ERR_OWNER_ALREADY_ADDED_TOGGLE_MSG"
+            labelKey: "ERR_OWNER_ALREADY_ADDED_TOGGLE_MSG",
           },
           "error"
         )
@@ -351,7 +359,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
 
     //Same no search in whole array
     const matchingOwnerIndex = owners.findIndex(
-      item => item.userName === ownerNo
+      (item) => item.userName === ownerNo
     );
     if (matchingOwnerIndex > -1) {
       if (
@@ -374,7 +382,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         //Delete if current card was not part of oldOwners array - no need to save.
         if (
           oldOwnersArr.findIndex(
-            item => owners[cardIndex].userName === item.userName
+            (item) => owners[cardIndex].userName === item.userName
           ) == -1
         ) {
           owners.splice(cardIndex, 1);
@@ -391,7 +399,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
             true,
             {
               labelName: "Owner already added!",
-              labelKey: "ERR_OWNER_ALREADY_ADDED_1"
+              labelKey: "ERR_OWNER_ALREADY_ADDED_1",
             },
             "error"
           )
@@ -407,7 +415,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         [],
         {
           tenantId: "pb",
-          userName: `${ownerNo}`
+          userName: `${ownerNo}`,
         }
       );
       if (payload && payload.user && payload.user.hasOwnProperty("length")) {
@@ -417,7 +425,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
               true,
               {
                 labelName: "This mobile number is not registered!",
-                labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED"
+                labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED",
               },
               "info"
             )
@@ -469,7 +477,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
   }
 };
 
-export const getReceiptData = async queryObject => {
+export const getReceiptData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -484,11 +492,11 @@ export const getReceiptData = async queryObject => {
   }
 };
 
-export const getMdmsData = async queryObject => {
+export const getMdmsData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_get",
+      "mdms-v2/v1/_get",
       "",
       queryObject
     );
@@ -500,7 +508,7 @@ export const getMdmsData = async queryObject => {
 };
 
 // Get user data from uuid API call
-export const getUserDataFromUuid = async bodyObject => {
+export const getUserDataFromUuid = async (bodyObject) => {
   try {
     // const response = await httpRequest(
     //   "post",
@@ -518,7 +526,7 @@ export const getUserDataFromUuid = async bodyObject => {
   }
 };
 
-export const getBill = async queryObject => {
+export const getBill = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -537,12 +545,12 @@ export const searchBill = async (dispatch, applicationNumber, tenantId) => {
     let queryObject = [
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId,
       },
       {
         key: "consumerCode",
-        value: applicationNumber
-      }
+        value: applicationNumber,
+      },
     ];
 
     // Get Receipt
@@ -557,12 +565,12 @@ export const searchBill = async (dispatch, applicationNumber, tenantId) => {
     const response = await getBill([
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId,
       },
       {
         key: "applicationNumber",
-        value: applicationNumber
-      }
+        value: applicationNumber,
+      },
     ]);
 
     // If pending payment then get bill else get receipt
@@ -585,16 +593,16 @@ export const searchBill = async (dispatch, applicationNumber, tenantId) => {
   }
 };
 
-export const createEstimateData = billObject => {
+export const createEstimateData = (billObject) => {
   const billDetails = billObject && billObject.billDetails;
   let fees =
     billDetails &&
     billDetails[0].billAccountDetails &&
-    billDetails[0].billAccountDetails.map(item => {
+    billDetails[0].billAccountDetails.map((item) => {
       return {
         name: { labelName: item.taxHeadCode, labelKey: item.taxHeadCode },
         value: item.amount,
-        info: { labelName: item.taxHeadCode, labelKey: item.taxHeadCode }
+        info: { labelName: item.taxHeadCode, labelKey: item.taxHeadCode },
       };
     });
   return fees;
@@ -606,12 +614,12 @@ export const generateBill = async (dispatch, applicationNumber, tenantId) => {
       const queryObj = [
         {
           key: "tenantId",
-          value: tenantId
+          value: tenantId,
         },
         {
           key: "applicationNumber",
-          value: applicationNumber
-        }
+          value: applicationNumber,
+        },
       ];
       const payload = await getBill(queryObj);
       // let payload = sampleGetBill();
@@ -702,16 +710,16 @@ export const getRequiredDocData = async (action, state, dispatch) => {
       moduleDetails: [
         {
           moduleName: "PropertyTax",
-          masterDetails: [{ name: "MutationDocuments" }]
-        }
-      ]
-    }
+          masterDetails: [{ name: "MutationDocuments" }],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -722,7 +730,7 @@ export const getRequiredDocData = async (action, state, dispatch) => {
   }
 };
 
-export const getTextToLocalMapping = label => {
+export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
     case "Unique Property ID":
@@ -766,7 +774,11 @@ export const getTextToLocalMapping = label => {
       );
 
     case "Guardian Name":
-      return getLocaleLabels("Guardian Name", "PT_GUARDIAN_NAME", localisationLabels);
+      return getLocaleLabels(
+        "Guardian Name",
+        "PT_GUARDIAN_NAME",
+        localisationLabels
+      );
     case "Existing Property Id":
       return getLocaleLabels(
         "Existing Property Id",
@@ -855,11 +867,7 @@ export const getTextToLocalMapping = label => {
         localisationLabels
       );
     case "INWORKFLOW":
-      return getLocaleLabels(
-        "In Workflow",
-        "INWORKFLOW",
-        localisationLabels
-      );
+      return getLocaleLabels("In Workflow", "INWORKFLOW", localisationLabels);
     case "Property ID":
       return getLocaleLabels(
         "Property ID",
@@ -867,18 +875,14 @@ export const getTextToLocalMapping = label => {
         localisationLabels
       );
     default:
-      return getLocaleLabels(
-        label,
-        label,
-        localisationLabels
-      );
+      return getLocaleLabels(label, label, localisationLabels);
   }
 };
 
-export const checkValueForNA = value => {
-  return value == null || value == undefined || value == '' ? "NA" : value;
+export const checkValueForNA = (value) => {
+  return value == null || value == undefined || value == "" ? "NA" : value;
 };
-export const fetchBill = async queryObject => {
+export const fetchBill = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -891,14 +895,15 @@ export const fetchBill = async queryObject => {
     console.log(error);
   }
 };
-export const getpayments = async queryObject => {
-
-  let businessService = '';
-  queryObject && Array.isArray(queryObject) && queryObject.map(query => {
-    if (query.key == "businessService") {
-      businessService = query.value;
-    }
-  })
+export const getpayments = async (queryObject) => {
+  let businessService = "";
+  queryObject &&
+    Array.isArray(queryObject) &&
+    queryObject.map((query) => {
+      if (query.key == "businessService") {
+        businessService = query.value;
+      }
+    });
 
   try {
     const response = await httpRequest(
@@ -913,11 +918,17 @@ export const getpayments = async queryObject => {
   }
 };
 
-export const downloadCertificateForm = async (oldProperties, pdfcode, tenantId, applicationNumber, mode = 'download') => {
+export const downloadCertificateForm = async (
+  oldProperties,
+  pdfcode,
+  tenantId,
+  applicationNumber,
+  mode = "download"
+) => {
   const queryStr = [
     { key: "key", value: pdfcode },
-    { key: "tenantId", value: tenantId }
-  ]
+    { key: "tenantId", value: tenantId },
+  ];
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",
@@ -927,65 +938,75 @@ export const downloadCertificateForm = async (oldProperties, pdfcode, tenantId, 
   const response = await getSearchResults([
     {
       key: "tenantId",
-      value: tenantId
+      value: tenantId,
     },
-    { key: "acknowledgementIds", value: applicationNumber }
+    { key: "acknowledgementIds", value: applicationNumber },
   ]);
   const Properties = get(response, "Properties", oldProperties);
-  const document = get(Properties[0], "documents").filter(item => item.documentType == "PTMUTATION");
-  const oldFileStoreId = document && get(document[0], "fileStoreId")
+  const document = get(Properties[0], "documents").filter(
+    (item) => item.documentType == "PTMUTATION"
+  );
+  const oldFileStoreId = document && get(document[0], "fileStoreId");
   if (oldFileStoreId) {
-    downloadReceiptFromFilestoreID(oldFileStoreId, mode, tenantId)
-  }
-  else {
-
+    downloadReceiptFromFilestoreID(oldFileStoreId, mode, tenantId);
+  } else {
     try {
-      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Properties }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
-        .then(res => {
-          res.filestoreIds[0]
-          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
-            res.filestoreIds.map(fileStoreId => {
-              downloadReceiptFromFilestoreID(fileStoreId, mode, tenantId)
-            })
-          } else {
-            console.log("Error In Acknowledgement form Download");
-          }
-        });
+      httpRequest(
+        "post",
+        DOWNLOADRECEIPT.GET.URL,
+        DOWNLOADRECEIPT.GET.ACTION,
+        queryStr,
+        { Properties },
+        { Accept: "application/json" },
+        { responseType: "arraybuffer" }
+      ).then((res) => {
+        res.filestoreIds[0];
+        if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+          res.filestoreIds.map((fileStoreId) => {
+            downloadReceiptFromFilestoreID(fileStoreId, mode, tenantId);
+          });
+        } else {
+          console.log("Error In Acknowledgement form Download");
+        }
+      });
     } catch (exception) {
-      alert('Some Error Occured while downloading Acknowledgement form!');
+      alert("Some Error Occured while downloading Acknowledgement form!");
     }
   }
-}
+};
 
-export const downloadReceitForm = async (tenantId, applicationNumber, mode = 'download') => {
-
+export const downloadReceitForm = async (
+  tenantId,
+  applicationNumber,
+  mode = "download"
+) => {
   let queryObj = [
     {
       key: "tenantId",
-      value: tenantId
+      value: tenantId,
     },
     {
       key: "consumerCodes",
-      value: applicationNumber
+      value: applicationNumber,
     },
     {
       key: "businessService",
-      value: 'PT.MUTATION'
+      value: "PT.MUTATION",
     },
-
   ];
 
-  download(queryObj, mode, "consolidatedreceipt",'PAYMENT')
-}
+  download(queryObj, mode, "consolidatedreceipt", "PAYMENT");
+};
 export const getLabelIfNotNull = (label, value, props) => {
   const labelObj = getLabelWithValue(label, value, props);
   return labelObj;
-}
-
-
+};
 
 export const showHideMutationDetailsCard = (action, state, dispatch) => {
-  const isMutationDetailsCard = get(state, "screenConfiguration.preparedFinalObject.PropertyConfiguration[0].Mutation.MutationDetails");
+  const isMutationDetailsCard = get(
+    state,
+    "screenConfiguration.preparedFinalObject.PropertyConfiguration[0].Mutation.MutationDetails"
+  );
   dispatch(
     handleField(
       "apply",
@@ -1010,8 +1031,7 @@ export const showHideMutationDetailsCard = (action, state, dispatch) => {
       !isMutationDetailsCard
     )
   );
-}
-
+};
 
 export const prepareDocumentsView = async (state, dispatch) => {
   let documentsPreview = [];
@@ -1019,13 +1039,14 @@ export const prepareDocumentsView = async (state, dispatch) => {
   let allDocuments =
     state.screenConfiguration.preparedFinalObject.Property.documents;
 
-  allDocuments && allDocuments.forEach(doc => {
-    documentsPreview.push({
-      title: getTransformedLocale(doc.documentType),
-      fileStoreId: doc.fileStoreId,
-      linkText: "View"
+  allDocuments &&
+    allDocuments.forEach((doc) => {
+      documentsPreview.push({
+        title: getTransformedLocale(doc.documentType),
+        fileStoreId: doc.fileStoreId,
+        linkText: "View",
+      });
     });
-  });
   let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
   let fileUrls =
     fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
@@ -1051,32 +1072,35 @@ export const prepareDocumentsView = async (state, dispatch) => {
 };
 
 export const setCardVisibility = (state, action, dispatch) => {
-  let owners = get(state, "screenConfiguration.preparedFinalObject.Property.owners");
+  let owners = get(
+    state,
+    "screenConfiguration.preparedFinalObject.Property.owners"
+  );
   if (owners && owners.length > 0) {
-    owners.map(owner => {
-      if (owner.ownerType != 'NONE' && owner.status == "ACTIVE") {
+    owners.map((owner) => {
+      if (owner.ownerType != "NONE" && owner.status == "ACTIVE") {
         set(
           action.screenConfig,
           "components.div.children.formwizardFirstStep.children.transferorDetails.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.ownerContainer.children.ownerSpecialDocumentID.props.style.display",
-          'block'
+          "block"
         );
         set(
           action.screenConfig,
           "components.div.children.formwizardFirstStep.children.transferorDetails.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.ownerContainer.children.ownerSpecialDocumentType.props.style.display",
-          'block'
+          "block"
         );
         set(
           action.screenConfig,
           "components.div.children.formwizardThirdStep.children.summary.children.cardContent.children.transferorSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.ownerContainer.children.ownerSpecialDocumentID.props.style.display",
-          'block'
+          "block"
         );
         set(
           action.screenConfig,
           "components.div.children.formwizardThirdStep.children.summary.children.cardContent.children.transferorSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.ownerContainer.children.ownerSpecialDocumentType.props.style.display",
-          'block'
+          "block"
         );
       }
-    })
+    });
   }
   if (
     get(
@@ -1119,8 +1143,9 @@ export const setCardVisibility = (state, action, dispatch) => {
       { display: "none" }
     );
     set(
-      action.screenConfig, "components.div.children.formwizardThirdStep.children.summary.children.cardContent.children.transferorInstitutionSummary.props.style",
+      action.screenConfig,
+      "components.div.children.formwizardThirdStep.children.summary.children.cardContent.children.transferorInstitutionSummary.props.style",
       { display: "none" }
     );
   }
-}
+};
