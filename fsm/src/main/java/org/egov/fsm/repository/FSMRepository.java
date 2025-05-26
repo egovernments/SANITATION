@@ -173,14 +173,20 @@ public class FSMRepository {
 		return jdbcTemplate.queryForList(baseQuery.toString(), String.class, preparedStmtList.toArray());
 	}
 
-	public List<VehicleTripDetail> getTrpiDetails(String tripId, int numOfRecords, Boolean waitingForDisposal) {
+	public List<VehicleTripDetail> getTrpiDetails(String tripId, int numOfRecords, Boolean waitingForDisposal ,String tenantId) {
 		List<VehicleTripDetail> tripDetails = null;
 		List<Object> preparedStmtList = new ArrayList<>();
 		String query = null;
 		if (waitingForDisposal)
+		{
 			query = fsmQueryBuilder.getTripDetailSarchQuery(tripId, numOfRecords, preparedStmtList, waitingForDisposal);
+			query = fsmUtil.replaceSchemaPlaceholder(query, tenantId);
+		}
 		else
+		{
 			query = fsmQueryBuilder.getTripDetailSarchQuery(tripId, numOfRecords, preparedStmtList);
+			query = fsmUtil.replaceSchemaPlaceholder(query, tenantId);
+		}
 		log.info("query for decreseTrip:: " + numOfRecords + ":: query :: " + query);
 		try {
 			tripDetails = jdbcTemplate.query(query, preparedStmtList.toArray(), detailMapper);

@@ -93,7 +93,7 @@ public class VehicleTripService {
 			increaseUpdateTripDetails(fsmRequest.getFsm().getNoOfTrips(), fsmRequest, fsm);
 		} else {
 
-			List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0, false);
+			List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0, false, fsm.getTenantId() );
 			log.info("vehicleTripDetails :: " + vehicleTripDetails.size());
 			if (!vehicleTripDetails.isEmpty() && oldNumberOfTrips < fsm.getNoOfTrips()) {
 				remainingNumberOfTrips = fsm.getNoOfTrips() - oldNumberOfTrips;
@@ -180,7 +180,7 @@ public class VehicleTripService {
 	private void decreaseTripWhileUpdate(FSMRequest fsmRequest, FSM fsm, Integer remainingNumberOfTrips) {
 		log.debug("fsmRequest.getWorkflow().getAction()-->" + fsmRequest.getWorkflow().getAction());
 		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(),
-				remainingNumberOfTrips, true);
+				remainingNumberOfTrips, true,fsm.getTenantId());
 
 		if (vehicleTripDetails != null && !vehicleTripDetails.isEmpty()) {
 			List<VehicleTrip> vehicleTripList = new ArrayList<>();
@@ -328,7 +328,7 @@ public class VehicleTripService {
 	}
 
 	public void ValidatedecreaseTripWhileUpdate(FSMRequest fsmRequest, FSM fsm) {
-		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0, false);
+		List<VehicleTripDetail> vehicleTripDetails = fsmRepository.getTrpiDetails(fsm.getApplicationNo(), 0, false, fsm.getTenantId());
 
 		Integer remainingNumberOfTrips = fsm.getNoOfTrips() - fsmRequest.getFsm().getNoOfTrips();
 		List<VehicleTrip> vehicleTrips = getVehicleTrips(fsmRequest, FSMConstants.WAITING_FOR_DISPOSAL, true);
