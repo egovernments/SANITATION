@@ -5,9 +5,9 @@ export const UploadServices = {
     const formData = new FormData();
 
     formData.append("file", filedata, filedata.name);
-    formData.append("tenantId", tenantId);
+    // formData.append("tenantId", tenantId);
     formData.append("module", module);
-    let tenantInfo=window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")?`?tenantId=${tenantId}`:"";
+    let tenantInfo=window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")?`?tenantId=${tenantId}`:`?tenantId=${tenantId}`;
     var config = {
       method: "post",
       url:`${Urls.FileStore}${tenantInfo}`,   
@@ -22,9 +22,9 @@ export const UploadServices = {
     const formData = new FormData();
     const filesArray = Array.from(filesData)
     filesArray?.forEach((fileData, index) => fileData ? formData.append("file", fileData, fileData.name) : null);
-    formData.append("tenantId", tenantId);
+    // formData.append("tenantId", tenantId);
     formData.append("module", module);
-    let tenantInfo=window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")?`?tenantId=${tenantId}`:"";
+    let tenantInfo=window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")?`?tenantId=${tenantId}`:`?tenantId=${tenantId}`;
     var config = {
       method: "post",
       url:`${Urls.FileStore}${tenantInfo}`, 
@@ -36,7 +36,7 @@ export const UploadServices = {
   },
 
   Filefetch: async (filesArray, tenantId) => {
-    let tenantInfo=window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")?`?tenantId=${tenantId}`:"";
+    let tenantInfo=window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")?`?tenantId=${tenantId}`:`?tenantId=${tenantId}`;
     var config = {
       method: "get",
       url:`${Urls.FileFetch}${tenantInfo}`, 
