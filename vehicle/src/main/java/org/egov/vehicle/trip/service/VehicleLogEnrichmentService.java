@@ -227,6 +227,7 @@ public class VehicleLogEnrichmentService {
 		List ids = new ArrayList<String>();
 		ids.add(trip.getVehicleId());
 		vsc.setIds(ids);
+		vsc.setTenantId(trip.getTenantId());
 		List<Vehicle> vehicles = vehicleRepository.getVehicleData(vsc).getVehicle();
 		if (!CollectionUtils.isEmpty(vehicles)) {
 			trip.setVehicle(vehicles.get(0));
