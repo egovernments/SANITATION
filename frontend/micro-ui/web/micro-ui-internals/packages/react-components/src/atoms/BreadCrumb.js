@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 const Breadcrumb = (props) => {
 
-  console.log(`*** LOG props?.crumbs***`,props?.crumbs);
   function isLast(index) {
     return index === props.crumbs.length - 1;
   }
