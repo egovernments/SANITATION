@@ -88,6 +88,8 @@ const FSMRegistry = () => {
             Individual: {
               roleCodes: ["SANITATION_WORKER"],
               ...searchParams,
+              individualId: searchParams?.individualId && [searchParams.individualId],
+              mobileNumber: searchParams?.mobileNumber && [searchParams.mobileNumber],
               tenantId,
             },
           },
