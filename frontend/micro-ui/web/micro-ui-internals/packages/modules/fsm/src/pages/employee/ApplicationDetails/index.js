@@ -327,7 +327,6 @@ const ApplicationDetails = (props) => {
           },
         ];
 
-  console.log("applicationDetails", applicationDetails);
 
   if (isLoading) {
     return <Loader />;

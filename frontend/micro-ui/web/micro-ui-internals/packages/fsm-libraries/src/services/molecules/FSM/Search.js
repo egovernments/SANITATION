@@ -68,6 +68,13 @@ export const Search = {
     return response;
   },
 
+  getVehicleTripAlertsCount: async ({ tenantId, filters = {} }) => {
+    const response = await FSMService.vehicleTripAlertsCount(tenantId, {
+      ...filters,
+    });
+    return response;
+  },
+
   applicationDetails: async (t, tenantId, applicationNos, userType) => {
     const checkvehicletrack = await MdmsService.getVehicleTrackingCheck(
       tenantId,
@@ -80,6 +87,7 @@ export const Search = {
     let dsoDetails = {};
     let vehicle = {};
     let tripList;
+    let alertsData;
 
     const response = await Search.application(tenantId, filter);
     const additionalDetails = response?.address?.additionalDetails;
@@ -109,6 +117,27 @@ export const Search = {
       });
       tripList = data;
     }
+
+    if (getTripData) {
+      const filters = {
+        tenantId: tenantId,
+        applicationNos: applicationNos,
+      }
+      const alertsResponse = await Search.getVehicleTripAlertsCount({
+        tenantId: tenantId,
+        filters: filters,
+      })
+      alertsData = alertsResponse;
+    }
+
+    tripList?.forEach((trip) => {
+      trip.noOfAlerts = 0
+      alertsData?.forEach((alert) => {
+        if (trip.referenceNo === alert.applicationNo && trip.id === alert.tripId) {
+          trip.noOfAlerts += 1;
+        }
+      })
+    })
 
     let paymentPreference = response?.paymentPreference;
 

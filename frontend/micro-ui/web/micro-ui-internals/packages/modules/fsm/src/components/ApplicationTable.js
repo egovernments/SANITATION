@@ -45,7 +45,7 @@ export const ApplicationTable = ({ detail }) => {
     starttime: formatTime(i?.actualStartTime) || "N/A",
     endtime: formatTime(i?.actualEndTime) || "N/A",
     endtype: i?.tripEndType || "N/A",
-    alerts: i?.alerts?.split(",")?.length || "0",
+    alerts: i?.noOfAlerts || "0",
     route: i?.routeId || "N/A",
   }));
 
