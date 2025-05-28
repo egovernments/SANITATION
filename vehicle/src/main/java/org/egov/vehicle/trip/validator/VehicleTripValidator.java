@@ -265,7 +265,7 @@ public class VehicleTripValidator {
 	private void callBusinessServiceToDispose(VehicleTrip vehicleTrip, VehicleTripRequest request,
 			ArrayList<String> ids) {
 		ids.add(vehicleTrip.getVehicleId());
-		VehicleSearchCriteria criteria = VehicleSearchCriteria.builder().ids(ids).build();
+		VehicleSearchCriteria criteria = VehicleSearchCriteria.builder().ids(ids).tenantId(vehicleTrip.getTenantId()).build();
 		Vehicle vehicle = repository.getVehicleData(criteria).getVehicle().get(0);
 		if (vehicleTrip.getVolumeCarried() == null || vehicleTrip.getVolumeCarried() <= 0) {
 			throw new CustomException(VehicleTripConstants.INVALID_VOLUME, "Invalid volume carried");
