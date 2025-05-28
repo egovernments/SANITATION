@@ -304,6 +304,7 @@ public class PqmService {
                     Test.builder()
                         .documents(toUpdate)
                         .qualityCriteria(test.getQualityCriteria())
+                            .tenantId(test.getTenantId())
                         .build()
                 )
             ).build()
