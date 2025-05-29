@@ -110,6 +110,9 @@ public class FSMConfiguration {
 		@Value("${kafka.topics.receipt.create}")
 		private String receiptCreateTopic;
 
+		@Value("${kafka.topics.receipt.create.pattern}")
+		private String receiptTopicPattern;
+
 		@Value("${egov.receipt.businessservice}")
 		private String businessService;
 
