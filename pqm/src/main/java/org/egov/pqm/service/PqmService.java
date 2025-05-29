@@ -582,7 +582,7 @@ public class PqmService {
 
   public EgovPdfResp downloadPdf(RequestInfo requestInfo, String testId)
   {
-    TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().testId(testId).build();
+    TestSearchCriteria testSearchCriteria = TestSearchCriteria.builder().testId(testId).tenantId(requestInfo.getUserInfo().getTenantId()).build();
     Pagination pagination = Pagination.builder().build();
     TestSearchRequest testSearchRequest = TestSearchRequest.builder().requestInfo(requestInfo).testSearchCriteria(testSearchCriteria).pagination(pagination).build();
     TestResponse testResponse = testSearch(testSearchRequest,requestInfo,Boolean.FALSE);
