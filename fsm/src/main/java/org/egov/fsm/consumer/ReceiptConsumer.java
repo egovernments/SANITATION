@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.egov.fsm.config.FSMConfiguration;
 import org.egov.fsm.service.PaymentUpdateService;
+import org.jboss.logging.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -26,7 +27,7 @@ public class ReceiptConsumer {
 		this.paymentUpdateService = paymentUpdateService;
 	}
 
-	@KafkaListener(topics = { "${kafka.topics.receipt.create.pattern}" })
+	@KafkaListener(topicPattern = "${kafka.topics.receipt.create.pattern}")
 	public void listenPayments(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
 		log.info("Reached the method for updating the status from payment pending to Assign DSO::@@@");
 
