@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ReceiptConsumer {
 
-	private PaymentUpdateService paymentUpdateService;
+	private final PaymentUpdateService paymentUpdateService;
 
 	@Autowired
 	private FSMConfiguration config;
@@ -28,14 +28,10 @@ public class ReceiptConsumer {
 	}
 
 	@KafkaListener(topicPattern = "${kafka.topics.receipt.create.pattern}")
-	public void listenPayments(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
-		log.info("Reached the method for updating the status from payment pending to Assign DSO::@@@");
-
-		if (topic.matches(config.getReceiptTopicPattern())) {
-			// Adding in MDC so that tracer can add it in header
-//			MDC.put(PTConstants.TENANTID_MDC_STRING, stateLevelTenantID);
-			paymentUpdateService.process(record);
-		}
-
+	public void listenPayments(final HashMap<String, Object> record,
+							   @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
+		log.info("Received payment message on topic: {}", topic);
+		paymentUpdateService.process(record);
 	}
+
 }
