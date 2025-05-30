@@ -108,7 +108,8 @@ export const Request = async ({
 
   const headers1 = {
     "Content-Type": "application/json",
-    Accept: window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE") ? "application/pdf,application/json" : "application/pdf",
+    // Accept: window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE") ? "application/pdf,application/json" : "application/pdf",
+    Accept: "application/pdf,application/json",
   };
 
   if (authHeader) headers = { ...headers, ...authHeaders() };
