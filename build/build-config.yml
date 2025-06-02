@@ -88,8 +88,30 @@ config:
         image-name: 'trackingservice-db'
 
   #Sanitation Frontend
-  - name: 'builds/SANITATION/frontend/sanitation-ui'
-    build:
-      - work-dir: 'frontend/micro-ui/'
-        image-name: 'sanitation-ui'
-        dockerfile: 'frontend/micro-ui/web/docker/Dockerfile'
+- name: 'builds/SANITATION/frontend/sanitation-ui'
+  build:
+    - work-dir: 'frontend/micro-ui/'
+      image-name: 'sanitation-ui'
+      dockerfile: 'frontend/micro-ui/web/docker/Dockerfile'
+
+#TQM Frontend
+- name: 'builds/SANITATION/frontend/tqm-ui'
+  build:
+    - work-dir: 'frontend/tqm-ui/'
+      image-name: 'tqm-ui'
+      dockerfile: 'frontend/tqm-ui/web/docker/Dockerfile'
+
+#Vehicle tracking web app
+- name: 'builds/SANITATION/route_map'
+  build:
+    - work-dir: 'frontend/vehicle-tracker/map_web_app/route_map'
+      image-name: 'route-map'
+      dockerfile: 'frontend/vehicle-tracker/map_web_app/docker/Dockerfile'
+
+- name: 'builds/SANITATION/individual'
+  build:
+    - work-dir: 'individual'
+      image-name: 'individual'
+      dockerfile: 'build/maven/Dockerfile'
+    - work-dir: 'individual/src/main/resources/db'
+      image-name: 'individual-db'      
