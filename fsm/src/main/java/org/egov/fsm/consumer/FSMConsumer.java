@@ -20,9 +20,8 @@ public class FSMConsumer {
 
 	@Autowired
 	private NotificationService notificationService;
-	
-	@KafkaListener(topics = { "${persister.save.fsm.topic}", "${persister.update.fsm.topic}",
-			"${persister.update.fsm.workflow.topic}" ,"${persister.update.fsm.adhoc.topic}"})
+
+	@KafkaListener(topicPattern = "#{'${persister.save.fsm.topic.pattern},${persister.update.fsm.topic.pattern},${persister.update.fsm.workflow.topic.pattern},${persister.update.fsm.adhoc.topic.pattern}'.split(',')}")
 	public void listen(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
 		ObjectMapper mapper = new ObjectMapper();
 		FSMRequest fsmRequest = new FSMRequest();
