@@ -22,7 +22,7 @@ public class PqmAnomalyFinderConsumer {
 	@Autowired
 	private AnomalyFinderService anomalyFinderService;
 
-	@KafkaListener(topicPattern = "#{'${persister.save.pqm.topic.pattern},${egov.pqm.anomaly.testNotSubmitted.kafka.topic.pattern}'.split(',')}")
+	@KafkaListener(topicPattern = "${pqm.kafka.topic.pattern}")
 	public void listen(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
 		ObjectMapper mapper = new ObjectMapper();
 		TestRequest testRequest = new TestRequest();
