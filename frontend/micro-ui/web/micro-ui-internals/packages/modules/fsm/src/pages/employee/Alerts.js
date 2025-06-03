@@ -18,7 +18,7 @@ const config = {
   select: (response) => {
     return {
       totalCount: response?.totalCount,
-      vehicleLog: response?.vehicleTrip.map((trip) => {
+      vehicleLog: response?.vehicleTrip?.map((trip) => {
         const owner = trip.tripOwner;
         const displayName = owner?.name;
         const tripOwner = { ...owner, displayName };
