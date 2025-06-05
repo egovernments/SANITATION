@@ -43,13 +43,13 @@ public class EnrichmentService {
 
       AnomalyType anomalyType = null;
 
-      if (topic.equalsIgnoreCase(pqmAnomalyConfiguration.getNotAsPerBenchMark())) {
+      String normalizedTopic = topic.toLowerCase();
+
+      if (normalizedTopic.endsWith(pqmAnomalyConfiguration.getNotAsPerBenchMark().toLowerCase())) {
         anomalyType = AnomalyType.LAB_RESULTS_NOT_AS_PER_BENCHMARK;
-      }
-      if (topic.equalsIgnoreCase(pqmAnomalyConfiguration.getTestNotSubmitted())) {
+      } else if (normalizedTopic.endsWith(pqmAnomalyConfiguration.getTestNotSubmitted().toLowerCase())) {
         anomalyType = AnomalyType.TEST_RESULT_NOT_SUBMITTED;
       }
-
       pqmAnomalys.add(PqmAnomaly.builder()
           .id(UUID.randomUUID().toString())
           .testId(test.getTestId())
