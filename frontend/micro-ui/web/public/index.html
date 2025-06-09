@@ -54,8 +54,7 @@
   (function () {
     function updateBreadcrumbLinks() {
       const currentPath = window.location.pathname;
-          if (links.length === 0) return false;
-      if (currentPath.includes("/employee/dss/dashboard/fsm") || currentPath.includes("/employee/dss/dashboard/pqm") ) {
+      if (currentPath.includes("/employee/dss/dashboard/fsm")|| currentPath.includes("/employee/dss/dashboard/pqm")) {
         const breadcrumb = document.querySelector(
           '[class*="bread-crumb"], ol.breadcrumb, nav.breadcrumb, ul.breadcrumb'
         );
@@ -166,5 +165,5 @@
       };
     })(window.history);
   })();
-</script>
+</script> 
 </html>
