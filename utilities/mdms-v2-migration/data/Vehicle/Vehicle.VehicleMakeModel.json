@@ -1,0 +1,12 @@
+[
+  {"code": "MAHINDRA", "name": "Mahindra", "active": true},
+  {"code": "MAHINDRA.BOLERO_PICKUP", "make": "MAHINDRA", "name": "Bolero Pickup", "active": true, "amount": "500", "capacity": "5000"},
+  {"code": "TATA", "name": "TATA", "active": true},
+  {"code": "TATA.LPT709/34", "make": "TATA", "name": "TATA LPT709/34", "active": true, "amount": "200", "capacity": "2000"},
+  {"code": "TATA.407", "make": "TATA", "name": "TATA 407", "active": true, "amount": "100", "capacity": "1000"},
+  {"code": "TAFE", "name": "TAFE", "active": true},
+  {"code": "TAFE.TRACTOR_45DI", "make": "TAFE", "name": "TAFE Tractor 45DI", "active": true, "amount": "1000", "capacity": "10000"},
+  {"code": "SONALIKA", "name": "Sonalika", "active": true},
+  {"code": "SONALIKA.TRACTOR_35DI", "make": "SONALIKA", "name": "Sonalika Tractor 35DI", "active": true, "amount": "1000", "capacity": "8000"}
+
+]

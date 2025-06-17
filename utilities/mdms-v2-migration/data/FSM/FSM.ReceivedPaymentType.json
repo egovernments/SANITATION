@@ -1,0 +1,6 @@
+[
+  {"code": "PAYED_IN_CASH", "name": "Payed in Cash", "active": true},
+  {"code": "PAYED_IN_COUNTER", "name": "Payed in Counter", "active": true},
+  {"code": "NETBANKING", "name": "Netbanking", "active": true}
+
+]

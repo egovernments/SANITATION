@@ -1,0 +1,180 @@
+{
+    "tenantId": "pg.cityc",
+    "moduleName": "egov-location",
+    "TenantBoundary": [
+        {
+            "hierarchyType": {
+                "code": "REVENUE",
+                "name": "REVENUE"
+            },
+            "boundary": {
+                "id": 1,
+                "boundaryNum": 1,
+                "name": "CityA",
+                "localname": "CityA",
+                "longitude": null,
+                "latitude": null,
+                "label": "City",
+                "code": "pg.cityc",
+                "children": [
+                    {
+                        "id": 2,
+                        "boundaryNum": 1,
+                        "name": "Zone 1",
+                        "localname": "Zone1",
+                        "longitude": null,
+                        "latitude": null,
+                        "label": "Zone",
+                        "code": "Z1",
+                        "children": [
+                            {
+                                "id": 3,
+                                "boundaryNum": 1,
+                                "name": "Block 1",
+                                "localname": "Block1",
+                                "longitude": null,
+                                "latitude": null,
+                                "label": "Block",
+                                "code": "B1",
+                                "children": [
+                                    {
+                                        "id": 4,
+                                        "boundaryNum": 1,
+                                        "name": "Heritage Square",
+                                        "localname": "Heritage Square",
+                                        "longitude": 74.871552,
+                                        "latitude": 31.63089,
+                                        "label": "Locality",
+                                        "code": "SUN01",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    },
+                                    {
+                                        "id": 5,
+                                        "boundaryNum": 1,
+                                        "name": "Evergreen Park",
+                                        "localname": "Evergreen Park",
+                                        "longitude": null,
+                                        "latitude": null,
+                                        "label": "Locality",
+                                        "code": "SUN02",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    },
+                                    {
+                                        "id": 6,
+                                        "boundaryNum": 1,
+                                        "name": "Maplewood",
+                                        "localname": "Maplewood",
+                                        "longitude": null,
+                                        "latitude": null,
+                                        "label": "Locality",
+                                        "code": "SUN03",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "hierarchyType": {
+                "code": "ADMIN",
+                "name": "ADMIN"
+            },
+            "boundary": {
+                "id": 1,
+                "boundaryNum": 1,
+                "name": "CityA",
+                "localname": "CityA",
+                "longitude": null,
+                "latitude": null,
+                "label": "City",
+                "code": "pg.cityc",
+                "children": [
+                    {
+                        "id": 2,
+                        "boundaryNum": 1,
+                        "name": "Zone 1",
+                        "localname": "Zone1",
+                        "longitude": null,
+                        "latitude": null,
+                        "label": "Zone",
+                        "code": "Z1",
+                        "children": [
+                            {
+                                "id": 3,
+                                "boundaryNum": 1,
+                                "name": "Block 1",
+                                "localname": "Block1",
+                                "longitude": null,
+                                "latitude": null,
+                                "label": "Block",
+                                "code": "B1",
+                                "children": [
+                                    {
+                                        "id": 4,
+                                        "boundaryNum": 1,
+                                        "name": "Heritage Square",
+                                        "localname": "Heritage Square",
+                                        "longitude": 74.871552,
+                                        "latitude": 31.63089,
+                                        "label": "Locality",
+                                        "code": "SUN01",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    },
+                                    {
+                                        "id": 5,
+                                        "boundaryNum": 1,
+                                        "name": "Evergreen Park",
+                                        "localname": "Evergreen Park",
+                                        "longitude": null,
+                                        "latitude": null,
+                                        "label": "Locality",
+                                        "code": "SUN02",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    },
+                                    {
+                                        "id": 6,
+                                        "boundaryNum": 1,
+                                        "name": "Maplewood",
+                                        "localname": "Maplewood",
+                                        "longitude": null,
+                                        "latitude": null,
+                                        "label": "Locality",
+                                        "code": "SUN03",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

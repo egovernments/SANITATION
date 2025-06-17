@@ -1,0 +1,9 @@
+[
+  {
+    "tenantId": "pg",
+    "code": "dss-dashboard.dashboard-config",
+    "description": "dss-dashboard dashboard-config",
+    "isActive": true,
+    "definition": {"type": "object", "title": "Generated schema for Root", "$schema": "http://json-schema.org/draft-07/schema#", "required": ["id"], "x-unique": ["id"], "properties": {"id": {"type": "number"}, "SERVICES": {"type": "array", "items": {}}, "MAP_CONFIG": {"type": "array", "items": {}}, "MODULE_LEVEL": {"type": "array", "items": {"type": "object", "required": ["dashboard"], "properties": {"dashboard": {}}}}, "CHART_COLOR_CODE": {"type": "array", "items": {"type": "string"}}}}
+  }
+]

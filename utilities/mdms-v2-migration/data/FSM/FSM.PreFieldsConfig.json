@@ -1,0 +1,3 @@
+[
+  {"body": [{"key": "channel", "type": "component", "label": "ES_NEW_APPLICATION_APPLICATION_CHANNEL", "nextStep": "applicantName", "component": "SelectChannel", "isMandatory": true}, {"key": "applicationData", "type": "component", "component": "SelectName", "withoutLabel": true}], "head": "ES_TITLE_APPLICANT_DETAILS"}
+]

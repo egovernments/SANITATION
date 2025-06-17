@@ -1,0 +1,94 @@
+[
+  {
+    "tenantId": "pg",
+    "code": "commonUiConfig.LoginConfig",
+    "description": "commonUiConfig.LoginConfig",
+    "isActive": true,
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "id",
+        "texts",
+        "inputs"
+      ],
+      "x-unique": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "texts": {
+          "type": "object",
+          "required": [
+            "header",
+            "submitButtonLabel",
+            "secondaryButtonLabel"
+          ],
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "submitButtonLabel": {
+              "type": "string"
+            },
+            "secondaryButtonLabel": {
+              "type": "string"
+            }
+          }
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "type",
+              "populators",
+              "isMandatory"
+            ],
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "populators": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "validation": {
+                    "type": "object",
+                    "required": [
+                      "maxlength",
+                      "required"
+                    ],
+                    "properties": {
+                      "required": {
+                        "type": "boolean"
+                      },
+                      "maxlength": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              },
+              "isMandatory": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,5 @@
+[
+  {"id": 389, "url": "sanitation-ui-card", "code": "", "name": "CS_HOME_APPLY_FOR_DESLUDGING", "path": "", "enabled": true, "sidebar": "digit-ui-links", "leftIcon": "FSMIcon", "rightIcon": "", "sidebarURL": "/sanitation-ui/citizen/fsm-home", "displayName": "Apply for Emptying of Septic Tank/Pit", "orderNumber": 1, "queryParams": "", "serviceCode": "", "parentModule": "FSM", "navigationURL": "/sanitation-ui/citizen/fsm/new-application"},
+  {"id": 390, "url": "sanitation-ui-card", "code": "", "name": "CS_HOME_MY_APPLICATIONS", "path": "", "enabled": true, "sidebar": "digit-ui-links", "leftIcon": "FSMIcon", "rightIcon": "", "sidebarURL": "/sanitation-ui/citizen/fsm-home", "displayName": "My Applications", "orderNumber": 6, "queryParams": "", "serviceCode": "", "parentModule": "FSM", "navigationURL": "/sanitation-ui/citizen/fsm/my-applications"}
+
+]

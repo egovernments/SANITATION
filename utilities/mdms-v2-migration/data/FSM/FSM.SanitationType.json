@@ -1,0 +1,9 @@
+[
+  {"code": "CONVENTIONAL_SINGLE_PIT", "name": "Conventional septic tanks with single pit", "active": true},
+  {"code": "CONVENTIONAL_DUAL_PIT", "name": "Conventional septic tank with dual pit", "active": true},
+  {"code": "IMPROVED_UPFLOW", "name": "Improved septic tank - Upflow Anaerabic filter", "active": true},
+  {"code": "IMPROVED_PACKED", "name": "Improved septic tank - Packaged contact aeration type", "active": true},
+  {"code": "JOHAKASU_SYSTEMS", "name": "Johakasu systems", "active": true},
+  {"code": "BIO_DIGESTER", "name": "Bio digester", "active": true}
+
+]

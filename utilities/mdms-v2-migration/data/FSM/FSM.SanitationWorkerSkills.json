@@ -1,0 +1,4 @@
+[
+  {"id": 1, "code": "DRIVING", "name": "Driving", "active": true},
+  {"id": 2, "code": "OPERATOR", "name": "Lab Operator", "active": true}
+]

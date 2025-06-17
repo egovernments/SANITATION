@@ -1,0 +1,207 @@
+{
+    "tenantId": "pg.cityb",
+    "moduleName": "egov-location",
+    "TenantBoundary": [
+        {
+            "hierarchyType": {
+                "code": "REVENUE",
+                "name": "REVENUE"
+            },
+            "boundary": {
+                "id": 1,
+                "boundaryNum": 1,
+                "name": "CityA",
+                "localname": "CityA",
+                "longitude": null,
+                "latitude": null,
+                "label": "City",
+                "code": "pg.cityb",
+                "children": [
+                    {
+                        "id": 2,
+                        "boundaryNum": 1,
+                        "name": "Zone 1",
+                        "localname": "Zone1",
+                        "longitude": null,
+                        "latitude": null,
+                        "label": "Zone",
+                        "code": "Z1",
+                        "children": [
+                            {
+                                "id": 3,
+                                "boundaryNum": 1,
+                                "name": "Block 1",
+                                "localname": "Block1",
+                                "longitude": null,
+                                "latitude": null,
+                                "label": "Block",
+                                "code": "B1",
+                                "children": [
+                                    {
+                                        "id": 4,
+                                        "boundaryNum": 1,
+                                        "name": "Innovation Park",
+                                        "localname": "Innovation Park",
+                                        "longitude": 74.871552,
+                                        "latitude": 31.63089,
+                                        "label": "Locality",
+                                        "code": "SUN01",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    },
+                                    {
+                                        "id": 5,
+                                        "boundaryNum": 1,
+                                        "name": "Financial District",
+                                        "localname": "Financial District",
+                                        "longitude": null,
+                                        "latitude": null,
+                                        "label": "Locality",
+                                        "code": "SUN02",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    },
+                                    {
+                                        "id": 6,
+                                        "boundaryNum": 1,
+                                        "name": "Trade & Logistics Park",
+                                        "localname": "Trade & Logistics Park",
+                                        "longitude": null,
+                                        "latitude": null,
+                                        "label": "Locality",
+                                        "code": "SUN03",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    },
+                                    {
+                                        "id": 7,
+                                        "boundaryNum": 1,
+                                        "name": "Manufacturing Crescent",
+                                        "localname": "Manufacturing Crescent",
+                                        "longitude": null,
+                                        "latitude": null,
+                                        "label": "Locality",
+                                        "code": "SUN04",
+                                        "area": "Area3",
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "hierarchyType": {
+                "code": "ADMIN",
+                "name": "ADMIN"
+            },
+            "boundary": {
+                "id": 1,
+                "boundaryNum": 1,
+                "name": "CityA",
+                "localname": "CityA",
+                "longitude": null,
+                "latitude": null,
+                "label": "City",
+                "code": "pg.cityb",
+                "children": [
+                    {
+                        "id": 2,
+                        "boundaryNum": 1,
+                        "name": "Zone 1",
+                        "localname": "Zone1",
+                        "longitude": null,
+                        "latitude": null,
+                        "label": "Zone",
+                        "code": "Z1",
+                        "children": [
+                            {
+                                "id": 3,
+                                "boundaryNum": 1,
+                                "name": "Block 1",
+                                "localname": "Block1",
+                                "longitude": null,
+                                "latitude": null,
+                                "label": "Block",
+                                "code": "B1",
+                                "children": [
+                                    {
+                                        "id": 4,
+                                        "boundaryNum": 1,
+                                        "name": "Innovation Park",
+                                        "localname": "Innovation Park",
+                                        "longitude": 74.871552,
+                                        "latitude": 31.63089,
+                                        "label": "Locality",
+                                        "code": "SUN01",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    },
+                                    {
+                                        "id": 5,
+                                        "boundaryNum": 1,
+                                        "name": "Financial District",
+                                        "localname": "Financial District",
+                                        "longitude": null,
+                                        "latitude": null,
+                                        "label": "Locality",
+                                        "code": "SUN02",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    },
+                                    {
+                                        "id": 6,
+                                        "boundaryNum": 1,
+                                        "name": "Trade & Logistics Park",
+                                        "localname": "Trade & Logistics Park",
+                                        "longitude": null,
+                                        "latitude": null,
+                                        "label": "Locality",
+                                        "code": "SUN03",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    },
+                                    {
+                                        "id": 7,
+                                        "boundaryNum": 1,
+                                        "name": "Manufacturing Crescent",
+                                        "localname": "Manufacturing Crescent",
+                                        "longitude": null,
+                                        "latitude": null,
+                                        "label": "Locality",
+                                        "code": "SUN04",
+                                        "pincode": [
+                                            143001
+                                        ],
+                                        "area": "Area1",
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

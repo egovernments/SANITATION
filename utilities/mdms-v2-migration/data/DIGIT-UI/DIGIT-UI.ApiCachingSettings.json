@@ -1,0 +1,4 @@
+[
+  {"serviceName": "mdms-v2", "moduleSettings": [{"moduleName": "FSM", "cacheTimeInSecs": 7200}], "cacheTimeInSecs": 3600, "debounceTimeInMS": 100},
+  {"serviceName": "localization", "cacheTimeInSecs": 86400}
+]
