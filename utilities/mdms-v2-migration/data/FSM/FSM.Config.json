@@ -1,0 +1,6 @@
+[
+  {"code": "ALLOW_MODIFY", "active": true, "WFState": "CREATED", "overrideField": ["propertyUsage", "vehicleType", "sanitationtype", "address.pincode", "address.city", "address.locality", "address.street", "address.doorNo", "address.landmark", "address.slumName", "pitDetail"]},
+  {"code": "noOfTrips", "active": true, "default": 1, "override": true},
+  {"code": "slumName", "active": true, "override": true},
+  {"code": "additionalDetails.tripAmount", "active": true, "override": true}
+]

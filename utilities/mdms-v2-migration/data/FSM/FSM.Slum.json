@@ -1,0 +1,14 @@
+[
+  {"code": "SL0001", "name": "Kathagada juanga sahi", "active": true, "locality": "SUN20"},
+  {"code": "SL0002", "name": "Kathagada Parbatia Sahi", "active": true, "locality": "SUN20"},
+  {"code": "SL0003", "name": "Gangadhar Sahi", "active": true, "locality": "SUN35"},
+  {"code": "SL0004", "name": "Pandab Nagar", "active": true, "locality": "SUN35"},
+  {"code": "SL0005", "name": "Haridakhandi Harijana sahi", "active": true, "locality": "SUN35"},
+  {"code": "SL0006", "name": "Haridakhandi Kadalibada Sahi", "active": true, "locality": "SUN55"},
+  {"code": "SL0007", "name": "Haridakhandi Bada sahi", "active": true, "locality": "SUN55"},
+  {"code": "SL0012", "name": "Raju Dhoba Sahi", "active": true, "locality": "SUN08"},
+  {"code": "SL0011", "name": "Damba Sahi", "active": true, "locality": "SUN18"},
+  {"code": "SL0010", "name": "Surya Nagar", "active": true, "locality": "SUN18"},
+  {"code": "SL0008", "name": "Haridakhandi Redika Sahi", "active": true, "locality": "SUN55"},
+  {"code": "SL0009", "name": "Golapali Sahi", "active": true, "locality": "SUN18"}
+]

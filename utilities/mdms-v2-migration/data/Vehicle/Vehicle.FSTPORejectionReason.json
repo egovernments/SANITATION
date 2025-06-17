@@ -1,0 +1,6 @@
+[
+  {"code": "SEPTAGE_SOURCE", "name": "Septage Source", "active": true},
+  {"code": "OUTSIDE_OPERATIONAL_HOURS", "name": "Outside operational hours", "active": true},
+  {"code": "UNDER_MAINTENANCE", "name": "Under Maintenance", "active": true},
+  {"code": "OTHERS", "name": "Others", "active": true}
+]

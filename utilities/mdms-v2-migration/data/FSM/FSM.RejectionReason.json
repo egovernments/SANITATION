@@ -1,0 +1,4 @@
+[
+  {"code": "CANNOT_CONTACT_APPLICANT", "name": "Not able to contact applicant", "active": true},
+  {"code": "OTHERS", "name": "Others", "active": true}
+]

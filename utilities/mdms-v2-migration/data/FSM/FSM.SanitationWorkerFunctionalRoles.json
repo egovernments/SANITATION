@@ -1,0 +1,4 @@
+[
+  {"id": 1, "code": "DRIVER", "name": "Driver", "active": true, "allowedSystemRoles": [{"code": "CITIZEN", "name": "Citizen", "isDefault": true}, {"code": "SANITATION_WORKER", "name": "Sanitation Worker", "isDefault": true}, {"code": "FSM_DRIVER", "name": "FSM Driver", "isDefault": false}]},
+  {"id": 2, "code": "SANITATION_HELPER", "name": "Sanitation Helper", "active": true, "allowedSystemRoles": [{"code": "CITIZEN", "name": "Citizen", "isDefault": true}, {"code": "SANITATION_WORKER", "name": "Sanitation Worker", "isDefault": true}, {"code": "SANITATION_HELPER", "name": "Sanitation Helper", "isDefault": false}]}
+]
