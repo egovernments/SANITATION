@@ -1,0 +1,4 @@
+[
+  {"code": "ADHOC", "name": "Adhoc Service", "active": true},
+  {"code": "PERIODIC", "name": "Periodic Service", "active": true}
+]

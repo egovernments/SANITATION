@@ -1,0 +1,11 @@
+[
+  {"pattern": ".(?=.{4})", "patternId": "001"},
+  {"pattern": "\\B[a-zA-Z0-9]", "patternId": "002"},
+  {"pattern": ".(?=.{2})", "patternId": "003"},
+  {"pattern": "(?<=.)[^@\\n](?=[^@\\n]*?@)|(?:(?<=@.)|(?!^)\\G(?=[^@\\n]*$)).(?!$)", "patternId": "004"},
+  {"pattern": "[A-Za-zÀ-ȕ0-9(),-_., ]", "patternId": "005"},
+  {"pattern": "\\w(?=(?:[ \\w]*\\w){2}$)", "patternId": "006"},
+  {"pattern": "(?<=.).(?=.{3})", "patternId": "007"},
+  {"pattern": "(?<=.).(?=.{2})", "patternId": "008"}
+
+]

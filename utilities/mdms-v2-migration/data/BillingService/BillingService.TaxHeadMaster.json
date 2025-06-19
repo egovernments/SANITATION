@@ -1,0 +1,19 @@
+[
+  {"code": "PT_OWNER_EXEMPTION", "name": "Pt owner exemption", "order": "5", "isDebit": false, "service": "PT", "category": "TAX", "isRequired": false, "isActualDemand": true},
+  {"code": "PT_TIME_REBATE", "name": "Pt time rebate", "order": "2", "isDebit": false, "service": "PT", "category": "TAX", "isRequired": false, "isActualDemand": true},
+  {"code": "PT_UNIT_USAGE_EXEMPTION", "name": "Pt unit usage excemption", "order": "6", "isDebit": false, "service": "PT", "category": "TAX", "isRequired": false, "isActualDemand": true},
+  {"code": "PT_ADHOC_PENALTY", "name": "Pt adhoc penalty", "order": "0", "isDebit": false, "service": "PT", "category": "TAX", "isRequired": false, "isActualDemand": false},
+  {"code": "PT_TAX", "name": "propertytax", "order": "0", "isDebit": false, "service": "PT", "category": "TAX", "isRequired": false, "isActualDemand": true},
+  {"code": "PT_FIRE_CESS", "name": "Pt fire cess", "order": "7", "isDebit": false, "service": "PT", "category": "TAX", "isRequired": false, "isActualDemand": true},
+  {"code": "PT_CANCER_CESS", "name": "Pt cancer cess", "order": "1", "isDebit": false, "service": "PT", "category": "TAX", "isRequired": false, "isActualDemand": true},
+  {"code": "PT_TIME_PENALTY", "name": "Pt time penalty", "order": "3", "isDebit": false, "service": "PT", "category": "TAX", "isRequired": false, "isActualDemand": true},
+  {"code": "PT_TIME_INTEREST", "name": "Pt time interest", "order": "4", "isDebit": false, "service": "PT", "category": "TAX", "isRequired": false, "isActualDemand": true},
+  {"code": "PT_ROUNDOFF", "name": "pt decimal roundOff", "order": "8", "isDebit": false, "service": "PT", "category": "TAX", "isRequired": false, "isActualDemand": true},
+  {"code": "WS_ADVANCE_CARRYFORWARD", "name": "Ws advance carry forward", "order": "0", "isDebit": true, "service": "WS", "category": "ADVANCE_COLLECTION", "isRequired": false, "isActualDemand": false},
+  {"code": "TL_RENEWAL_TAX", "name": "TL Renewal Tax", "order": "2", "isDebit": false, "service": "TL", "category": "FEE", "isRequired": false, "isActualDemand": true},
+  {"code": "TL_RENEWAL_REBATE", "name": "TL Renewal Rebate", "order": "0", "isDebit": true, "service": "TL", "category": "REBATE", "isRequired": false, "isActualDemand": false},
+  {"code": "TL_RENEWAL_PENALTY", "name": "TL Renewal Penalty", "order": "1", "isDebit": false, "service": "TL", "category": "PENALTY", "isRequired": false, "isActualDemand": false},
+  {"code": "TL_RENEWAL_ADHOC_REBATE", "name": "TL Renewal adhoc rebate", "order": "0", "isDebit": true, "service": "TL", "category": "TAX", "isRequired": false, "isActualDemand": false},
+  {"code": "TL_RENEWAL_ADHOC_PENALTY", "name": "TL Renewal adhoc penalty", "order": "1", "isDebit": false, "service": "TL", "category": "TAX", "isRequired": false, "isActualDemand": false},
+  {"code": "SW_ADVANCE_CARRYFORWARD", "name": "Sw advance carry forward", "order": "0", "isDebit": true, "service": "SW", "category": "ADVANCE_COLLECTION", "isRequired": false, "isActualDemand": false}
+]

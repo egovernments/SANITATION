@@ -1,0 +1,11 @@
+[
+  {"code": 1, "name": "One", "active": true, "i18nKey": "ES_FSM_TRIP_ONE"},
+  {"code": 2, "name": "Two", "active": true, "i18nKey": "ES_FSM_TRIP_TWO"},
+  {"code": 3, "name": "Three", "active": true, "i18nKey": "ES_FSM_TRIP_THREE"},
+  {"code": 4, "name": "Four", "active": true, "i18nKey": "ES_FSM_TRIP_FOUR"},
+  {"code": 5, "name": "Five", "active": true, "i18nKey": "ES_FSM_TRIP_FIVE"},
+  {"code": 6, "name": "Six", "active": true, "i18nKey": "ES_FSM_TRIP_SIX"},
+  {"code": 7, "name": "Seven", "active": true, "i18nKey": "ES_FSM_TRIP_Seven"},
+  {"code": 8, "name": "Eight", "active": true, "i18nKey": "ES_FSM_TRIP_EIGHT"},
+  {"code": 9, "name": "Nine", "active": true, "i18nKey": "ES_FSM_TRIP_NINE"}
+]

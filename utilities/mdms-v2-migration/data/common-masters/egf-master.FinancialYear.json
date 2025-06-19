@@ -1,0 +1,72 @@
+[
+  {
+    "id": "01",
+    "tenantId": "pg",
+    "finYearRange": "2023-24",
+    "name": "2023-24",
+    "code": "2023-24",
+    "startingDate": 1677609000,
+    "endingDate": 1714501799,
+    "active": true,
+    "isActiveForPosting": false,
+    "isClosed": false,
+    "transferClosingBalance": false,
+    "module": "TL"
+  },
+  {
+    "id": "02",
+    "tenantId": "pg",
+    "finYearRange": "2024-25",
+    "name": "2024-25",
+    "code": "2024-25",
+    "startingDate": 1709231400,
+    "endingDate": 1746037799,
+    "active": true,
+    "isActiveForPosting": false,
+    "isClosed": false,
+    "transferClosingBalance": false,
+    "module": "TL"
+  },
+  {
+    "id": "03",
+    "tenantId": "pg",
+    "finYearRange": "2025-26",
+    "name": "2025-26",
+    "code": "2025-26",
+    "startingDate": 1740767400,
+    "endingDate": 1777573799,
+    "active": true,
+    "isActiveForPosting": false,
+    "isClosed": false,
+    "transferClosingBalance": false,
+    "module": "TL"
+  },
+  {
+    "id": "04",
+    "tenantId": "pg",
+    "finYearRange": "2026-27",
+    "name": "2026-27",
+    "code": "2026-27",
+    "startingDate": 1772303400,
+    "endingDate": 1809109799,
+    "active": true,
+    "isActiveForPosting": false,
+    "isClosed": false,
+    "transferClosingBalance": false,
+    "module": "TL"
+  },
+  {
+    "id": "05",
+    "tenantId": "pg",
+    "finYearRange": "2027-28",
+    "name": "2027-28",
+    "code": "2027-28",
+    "startingDate": 1803839400,
+    "endingDate": 1840732199,
+    "active": true,
+    "isActiveForPosting": false,
+    "isClosed": false,
+    "transferClosingBalance": false,
+    "module": "TL"
+  }
+]

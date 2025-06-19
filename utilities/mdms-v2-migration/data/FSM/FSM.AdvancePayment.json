@@ -1,0 +1,4 @@
+[
+  {"code": "FIXEDVALUE", "name": "FixedValue", "active": true, "advanceAmount": "0"},
+  {"code": "PERCENTAGEVALUE", "name": "PercentageValue", "active": false, "advancePercentage": "50"}
+]

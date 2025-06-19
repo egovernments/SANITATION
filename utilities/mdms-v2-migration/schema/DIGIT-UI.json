@@ -1,0 +1,49 @@
+[
+  {
+    "tenantId": "pg",
+    "code": "DIGIT-UI.ApiCachingSettings",
+    "description": "DIGIT-UI.ApiCachingSettings",
+    "isActive": true,
+    "definition": {
+      "type": "object",
+      "title": "Generatedschema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "serviceName",
+        "cacheTimeInSecs"
+      ],
+      "x-unique": [
+        "serviceName"
+      ],
+      "properties": {
+        "serviceName": {
+          "type": "string"
+        },
+        "moduleSettings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "moduleName",
+              "cacheTimeInSecs"
+            ],
+            "properties": {
+              "moduleName": {
+                "type": "string"
+              },
+              "cacheTimeInSecs": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "cacheTimeInSecs": {
+          "type": "number"
+        },
+        "debounceTimeInMS": {
+          "type": "number"
+        }
+      }
+    }
+  }
+]

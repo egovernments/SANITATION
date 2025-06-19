@@ -1,0 +1,5 @@
+[
+  {"code": "TELEPHONE", "name": "Telephone", "active": true, "citizenOnly": false},
+  {"code": "COUNTER", "name": "Counter", "active": true, "citizenOnly": false},
+  {"code": "ONLINE", "name": "Online", "active": true, "citizenOnly": true}
+]

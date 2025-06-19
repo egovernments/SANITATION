@@ -1,0 +1,9 @@
+[
+  {"code": "SUV", "name": "SUV1", "active": true},
+  {"code": "MAHINDRA.BOLERO_PICKUP", "make": "MAHINDRA", "name": "Bolero Pickup", "active": true, "amount": "500", "capacity": "5000 Ltrs"},
+  {"code": "TATA.LPT709/34", "name": "TATA LPT709/34", "active": true, "amount": "200", "capacity": "2000 Ltrs"},
+  {"code": "TATA.407", "name": "TATA 407", "active": true, "amount": "100", "capacity": "1000 Ltrs"},
+  {"code": "TAFE.TRACTOR_45DI", "name": "TAFE Tractor 45DI", "active": true, "amount": "1000", "capacity": "10000 Ltrs"},
+  {"code": "SONALIKA.TRACTOR_35DI", "name": "Sonalika Tractor 35DI", "active": true, "amount": "800", "capacity": "8000 Ltrs"},
+  {"code": "SKODA", "make": "SKODA", "name": "SKODA1", "active": true, "amount": "1000", "capacity": "8000"}
+]

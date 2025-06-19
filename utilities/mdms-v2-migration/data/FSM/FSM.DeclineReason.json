@@ -1,0 +1,5 @@
+[
+  {"code": "VEHICLE_REPAIR", "name": "Vehicle is under repair", "active": true},
+  {"code": "ROAD_INACCESS", "name": "Inaccessible road", "active": true},
+
+]
