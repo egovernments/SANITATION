@@ -1,0 +1,83 @@
+[
+  {
+    "tenantId": "as",
+    "code": "egf-master.FinancialYear",
+    "description": "egf-master.FinancialYear",
+    "isActive": true,
+    "definition": {
+      "type": "object",
+      "title": "Generated schema for Root",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "required": [
+        "tenantId",
+        "finYearRange",
+        "name",
+        "code",
+        "startingDate",
+        "endingDate",
+        "active",
+        "isActiveForPosting",
+        "isClosed",
+        "transferClosingBalance",
+        "module"
+      ],
+      "x-unique": [
+        "module",
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+        },
+        "active": {
+          "type": "boolean",
+          "default": true
+        },
+        "module": {
+          "enum": [
+            "PT",
+            "TL",
+            "WS",
+            "SW",
+            "FIRENOC"
+          ],
+          "type": "string"
+        },
+        "isClosed": {
+          "type": "boolean",
+          "default": false
+        },
+        "tenantId": {
+          "enum": [
+            "as"
+          ],
+          "type": "string",
+          "default": "as"
+        },
+        "endingDate": {
+          "type": "number"
+        },
+        "finYearRange": {
+          "type": "string",
+          "pattern": "^\\d\\d\\d\\d-\\d\\d$"
+        },
+        "startingDate": {
+          "type": "number"
+        },
+        "isActiveForPosting": {
+          "type": "boolean",
+          "default": true
+        },
+        "transferClosingBalance": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  }
+]

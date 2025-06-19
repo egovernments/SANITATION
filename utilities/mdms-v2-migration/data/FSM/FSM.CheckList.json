@@ -1,0 +1,3 @@
+[
+  {"code": "SAFETY_GEARS_USED", "type": "MULTI_SELECT", "active": true, "options": ["EYE_GEAR", "HAND_GLOVES", "NOSE_MASK"], "required": true}
+]

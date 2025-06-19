@@ -1,0 +1,4 @@
+[
+  {"ULBS": "pg.citya", "active": true, "PlusCode": "VM3C+VQM Bengaluru, Karnataka", "latitude": "12.976746", "PlantCode": "CTA001", "PlantName": "CityA FSTP", "PlantType": "FSTP", "longitude": "77.575278", "PlantLocation": "CityA", "PlantOperationalTimings": "10.00am-08.00pm", "PlantOperationalCapacityKLD": "50"},
+  {"ULBS": "pg.cityb", "active": true, "PlusCode": "MPFQ+V2 Sahibzada Ajit Singh Nagar, Punjab", "latitude": "12.9292015", "PlantCode": "CTB001", "PlantName": "CityB SeTPP", "PlantType": "SeTP", "longitude": "77.6212001", "PlantLocation": "CityB", "PlantOperationalTimings": "10.00am-06.00pm", "PlantOperationalCapacityKLD": "100"}
+]

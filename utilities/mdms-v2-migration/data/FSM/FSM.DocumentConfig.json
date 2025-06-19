@@ -1,0 +1,4 @@
+[
+  {"module": "UPDATE TEST", "documents": [{"code": "Update_Test_Results_Documents", "name": "doc_test_results_documents", "active": true, "isMandatory": false, "maxSizeInMB": 5, "showTextInput": false, "maxFilesAllowed": 1, "allowedFileTypes": ["pdf", "doc", "docx", "xlsx", "xls", "jpeg", "jpg", "png"]}], "bannerLabel": "COMMON_FILE_COMPONENT_BANNER", "maxSizeInMB": 5, "allowedFileTypes": ["pdf", "doc", "docx", "xlsx", "xls", "jpeg", "jpg", "png"]},
+  {"module": "Photograph", "documents": [{"code": "PHOTOGRAPH", "name": "img_photo", "active": true, "isMandatory": false, "maxSizeInMB": 10, "showTextInput": false, "maxFilesAllowed": 1, "allowedFileTypes": ["jpeg", "jpg", "png"]}], "hideHeader": true, "maxSizeInMB": 10, "allowedFileTypes": ["jpeg", "jpg", "png"]}
+]

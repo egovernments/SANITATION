@@ -1,0 +1,22 @@
+[
+  {"code": "QuickPayLinks", "order": 1, "active": true, "module": "QuickPayLinks", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}]},
+  {"code": "Finance", "order": 4, "active": false, "module": "Finance", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "FireNoc", "order": 2, "active": true, "module": "FireNoc", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "UC", "order": 2, "active": false, "module": "UC", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "PGR.WHATSAPP", "order": 4, "active": false, "module": "PGR.WHATSAPP", "tenants": [{"code": "pg.citya"}]},
+  {"code": "Payment", "order": 1, "active": true, "module": "Payment", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "Receipts", "order": 3, "active": true, "module": "Receipts", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "NOC", "order": 2, "active": true, "module": "NOC", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "DSS", "order": 6, "active": true, "module": "DSS", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "Engagement", "order": 3, "active": true, "module": "Engagement", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "MCollect", "order": 1, "active": true, "module": "MCollect", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "HRMS", "order": 2, "active": true, "module": "HRMS", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "CommonPT", "order": 3, "active": true, "module": "CommonPT", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "NDSS", "order": 5, "active": true, "module": "NDSS", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "SW", "order": 1, "active": true, "module": "SW", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}]},
+  {"code": "BillAmendment", "order": 1, "active": true, "module": "BillAmendment", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}]},
+  {"code": "Workbench", "order": 13, "active": true, "module": "Workbench", "tenants": [{"code": "pg.citya"}, {"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.cityd"}, {"code": "pg.citye"}]},
+  {"code": "FSM", "order": 2, "active": true, "module": "FSM", "tenants": [{"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.citya"}]},
+  {"code": "Tqm", "order": 14, "active": true, "module": "Tqm", "tenants": [{"code": "pg.cityb"}, {"code": "pg.cityc"}, {"code": "pg.citya"}]}
+
+]
