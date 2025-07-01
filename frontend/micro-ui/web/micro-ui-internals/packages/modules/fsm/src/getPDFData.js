@@ -30,6 +30,12 @@ const getAdvanceAmount = (advanceAmount) => {
   return `₹ ${advanceAmount}`;
 };
 
+function toCamelCaseWithFirstUpper(str) {
+  return str
+    .toLowerCase()
+    .replace(/(?:^|[-_ ]+)(\w)/g, (_, c) => c.toUpperCase());
+}
+
 const getPDFData = (application, tenantInfo, t) => {
   const { additionalDetails } = application;
 
@@ -37,10 +43,12 @@ const getPDFData = (application, tenantInfo, t) => {
   const totalAmount = amountPerTrip * application?.noOfTrips;
   const advanceAmountDue = application?.advanceAmount;
 
+  const cityName = t(application?.address?.city);
+
   return {
     t: t,
     tenantId: tenantInfo?.code,
-    name: `${t(tenantInfo?.i18nKey)} ${t(`ULBGRADE_${tenantInfo?.city?.ulbGrade.toUpperCase().replace(" ", "_").replace(".", "_")}`)}`,
+    name: `${t(tenantInfo?.i18nKey)} ${toCamelCaseWithFirstUpper(t(`ULBGRADE_${tenantInfo?.city?.ulbGrade.toUpperCase().replace(" ", "_").replace(".", "_")}`))}`,
     email: tenantInfo?.emailId,
     phoneNumber: tenantInfo?.contactNumber,
     heading: t("PDF_HEADER_DESLUDGING_REQUEST_ACKNOWLEDGEMENT"),
@@ -77,7 +85,7 @@ const getPDFData = (application, tenantInfo, t) => {
         title: t("CS_APPLICATION_DETAILS_PROPERTY_LOCATION_DETAILS"),
         values: [
           { title: t("CS_APPLICATION_DETAILS_PINCODE"), value: application?.address?.pincode || "N/A" },
-          { title: t("CS_APPLICATION_DETAILS_CITY"), value: application?.address?.city || "N/A" },
+          { title: t("CS_APPLICATION_DETAILS_CITY"), value:  `${t(tenantInfo?.i18nKey)}` || "N/A" },
           {
             title: t("CS_APPLICATION_DETAILS_MOHALLA"),
             value: t(`${application?.tenantId?.toUpperCase().split(".").join("_")}_REVENUE_${application?.address?.locality?.code}`) || "N/A",
