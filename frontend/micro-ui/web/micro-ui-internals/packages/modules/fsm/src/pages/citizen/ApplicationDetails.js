@@ -214,7 +214,7 @@ const ApplicationDetails = () => {
             <SubmitBar
               label={t("CS_DOWNLOAD_RECEIPT")}
               onSubmit={downloadPaymentReceipt}
-              style={{ marginBottom: "12px" }}
+            
             />
           )}
           {workflowDetails?.nextActions?.length > 0 &&
