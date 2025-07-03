@@ -51,7 +51,9 @@
   },
   "resolutions": {
     "**/styled-components": "5.0.0",
-    "**/@babel/traverse":"7.25.9"
+    "**/@babel/traverse":"7.25.9",
+    "minimatch": "^3.0.4",
+    "glob": "^7.1.2"
   },
   "husky": {},
   "lint-staged": {
