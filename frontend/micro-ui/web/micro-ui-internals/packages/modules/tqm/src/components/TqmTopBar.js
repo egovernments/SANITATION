@@ -52,6 +52,7 @@ const TqmTopBar = ({
   );
 
   const isPlantOperatorLoggedIn = Digit.Utils.tqm.isPlantOperatorLoggedIn();
+  const fromSandbox = Digit.SessionStorage.get("fromSandbox");
 
   if (isPlantOperatorLoggedIn && mobileView) {
     return (
@@ -154,7 +155,7 @@ const TqmTopBar = ({
               <div className="left">
                 {showLanguageChange && <ChangeLanguage dropdown={true} />}
               </div>
-              {userDetails?.access_token && (
+              {!fromSandbox && userDetails?.access_token && (
                 <div className="left">
                   <Dropdown
                     option={userOptions}
@@ -259,7 +260,7 @@ const TqmTopBar = ({
             <div className="left">
               {showLanguageChange && <ChangeLanguage dropdown={true} />}
             </div>
-            {userDetails?.access_token && (
+            {!fromSandbox && userDetails?.access_token && (
               <div className="left">
                 <Dropdown
                   option={userOptions}
