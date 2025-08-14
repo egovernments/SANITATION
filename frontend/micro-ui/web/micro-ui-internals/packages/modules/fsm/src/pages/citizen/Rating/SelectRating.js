@@ -144,7 +144,6 @@ const SelectRating = ({ parentRoute }) => {
     className: "hhh",
   }));
 
-  console.log("inputs",inputs);
   const config = {
     texts: {
       header: t("CS_APPLICATION_DETAILS_RATE_US"),
