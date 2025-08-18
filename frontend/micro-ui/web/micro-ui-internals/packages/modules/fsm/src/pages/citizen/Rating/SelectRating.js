@@ -13,7 +13,7 @@ const SelectRating = ({ parentRoute }) => {
   const mutation = Digit.Hooks.fsm.useApplicationUpdate(tenantId);
   const [answers, setAnswers] = useState({});
   const [ratingError, setRatingError] = useState(false);
-  const [checkError, setCheckError] = useState(false);
+  // const [checkError, setCheckError] = useState(false);
   const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
   const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("FSM_ERROR_DATA", false);
   const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
@@ -24,34 +24,57 @@ const SelectRating = ({ parentRoute }) => {
     clearError();
   }, []);
 
-  function handleSubmit(data) {
-    const { rating, comments, SAFETY_GEARS_USED } = data;
-    if (rating === 0 || SAFETY_GEARS_USED.length === 0) {
-      rating === 0 ? setRatingError(true) : setRatingError(false);
-      SAFETY_GEARS_USED.length === 0 ? setCheckError(true) : setCheckError(false);
-      return;
-    }
-    const allAnswers = { ...data, ...answers };
-    let checklist = Object.keys(allAnswers).reduce((acc, key) => {
-      if (key === "comments" || key === "rating") {
-        return acc;
-      }
-      acc.push({ code: key, value: Array.isArray(allAnswers[key]) ? allAnswers[key].join(",") : allAnswers[key] });
-      return acc;
-    }, []);
 
+  function handleSubmit(data) {
+  const { rating, comments } = data;
+
+  // 1. Validate that a rating has been given
+  if (!rating || rating === 0) {
+    setRatingError(true);
+    return;
+  }
+  setRatingError(false); 
+
+  const allAnswers = { ...data, ...answers };
+
+  // 2. Build the checklist array, but only include items that have a selected value.
+  const checklist = Object.keys(allAnswers).reduce((acc, key) => {
+    // Filter out non-checklist keys
+    if (key === "comments" || key === "rating") {
+      return acc;
+    }
+
+    const value = allAnswers[key];
+
+    if (value && (!Array.isArray(value) || value.length > 0)) {
+      acc.push({
+        code: key,
+        value: Array.isArray(value) ? value.join(",") : value,
+      });
+    }
+    return acc;
+  }, []);
+
+  if (checklist.length > 0) {
     application.additionalDetails = {
       ...application.additionalDetails,
       CheckList: checklist,
     };
-
-    history.push(`${parentRoute}/response`, {
-      applicationData: application,
-      key: "update",
-      action: "RATE",
-      actionData: { rating, comments },
-    });
+  } else {
+    application.additionalDetails = {
+      ...application.additionalDetails,
+      CheckList: [],
+    };
   }
+
+  
+  history.push(`${parentRoute}/response`, {
+    applicationData: application,
+    key: "update",
+    action: "RATE",
+    actionData: { rating, comments },
+  });
+}
 
   const handleSelect = (type, key) => {
     if (type === "DROP_DOWN") {
@@ -117,7 +140,7 @@ const SelectRating = ({ parentRoute }) => {
     selectedOption: getSelectedOption(item.type, item.code, getOption(item.type, item.options)),
     name: item.code,
     label: item.code === "SPILLAGE" ? t("CS_FSM_APPLICATION_RATE_HELP_TEXT") : item.code,
-    error: checkError ? <CardLabelError>{t("CS_FEEDBACK_SELECT_ERROR")}</CardLabelError> : null,
+    // error: checkError ? <CardLabelError>{t("CS_FEEDBACK_SELECT_ERROR")}</CardLabelError> : null,
     className: "hhh",
   }));
 
