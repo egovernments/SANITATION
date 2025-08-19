@@ -103,6 +103,16 @@ input::-webkit-calendar-picker-indicator {
 .CitizenHomeCard {
   border-radius: 4px;
 }
+.CitizenHomeCard .links {
+  display: flex;
+  align-items: center;
+}
+.CitizenHomeCard .links .linksWrapper {
+  margin-right: 50px; 
+}
+.CitizenHomeCard .links .linksWrapper:last-child {
+  margin-right: 0;
+}
 .fsm-citizen-wrapper {
   min-height: 100vh;
   .card {
