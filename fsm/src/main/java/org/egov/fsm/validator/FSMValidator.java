@@ -519,24 +519,27 @@ public class FSMValidator {
 		List<Map<String, String>> requestCheckList = (List<Map<String, String>>) additonalDetails
 				.get(FSMConstants.MDMS_CHECKLIST);
 		List<Map<String, Object>> mdmsCheckList = JsonPath.read(mdmsData, FSMConstants.REQ_CHECKLIST_PATH);
-		if (!mdmsCheckList.isEmpty() && (requestCheckList == null || requestCheckList.isEmpty())) {
-			errorMap.put(FSMErrorConstants.INVALID_CHECKLIST, " Mandatory checlist is not provided!");
-		}
-		mdmsCheckList.forEach(mdmsClItem -> {
-			Map<String, String> reqClItem = null;
-			for (int j = 0; j < requestCheckList.size(); j++) {
-				if (requestCheckList.get(j).get("code").equalsIgnoreCase((String) mdmsClItem.get("code"))) {
-					reqClItem = requestCheckList.get(j);
-				}
-			}
-			if (reqClItem != null) {
-				checkListOptions(reqClItem, mdmsClItem, errorMap);
+//		if (!mdmsCheckList.isEmpty() && (requestCheckList == null || requestCheckList.isEmpty())) {
+//			errorMap.put(FSMErrorConstants.INVALID_CHECKLIST, " Mandatory checlist is not provided!");
+//		}
+    if (requestCheckList != null && !requestCheckList.isEmpty()
+        && mdmsCheckList != null && !mdmsCheckList.isEmpty()) {
+      mdmsCheckList.forEach(mdmsClItem -> {
+        Map<String, String> reqClItem = null;
+        for (int j = 0; j < requestCheckList.size(); j++) {
+          if (requestCheckList.get(j).get("code").equalsIgnoreCase((String) mdmsClItem.get("code"))) {
+            reqClItem = requestCheckList.get(j);
+          }
+        }
+        if (reqClItem != null) {
+          checkListOptions(reqClItem, mdmsClItem, errorMap);
 
-			} else {
-				errorMap.put(FSMErrorConstants.INVALID_CHECKLIST,
-						" Required CheckList " + mdmsClItem.get("code") + " is not answered ");
-			}
-		});
+        } else {
+          errorMap.put(FSMErrorConstants.INVALID_CHECKLIST,
+              " Required CheckList " + mdmsClItem.get("code") + " is not answered ");
+        }
+      });
+    }
 
 		if (!errorMap.isEmpty())
 			throw new CustomException(errorMap);
