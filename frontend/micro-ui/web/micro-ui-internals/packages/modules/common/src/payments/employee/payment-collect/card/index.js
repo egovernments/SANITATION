@@ -43,8 +43,38 @@ const CardDetailsComponent = ({ ...props }) => {
 
   return (
     <React.Fragment>
-       <div className="label-field-pair">
-        <h2 className="card-label">{`${t("NOC_PAYMENT_CARD_LAST_DIGITS_LABEL")} *`}</h2>
+      <div className="label-field-pair">
+        <h2 className="card-label">{`${t("NOC_PAYMENT_TRANS_NO_LABEL")} *`}</h2>
+        <div className="field">
+          <div className="field-container">
+            <input
+              className="employee-card-input"
+              value={transactionNumber}
+              type="text"
+              name="transactionNumber"
+              required
+              onChange={(e) => setTransactionNumber(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="label-field-pair">
+        <h2 className="card-label">{`${t("NOC_PAYMENT_RENTR_TRANS_LABEL")} *`}</h2>
+        <div className="field">
+          <div className="field-container">
+            <input
+              className="employee-card-input"
+              value={reTransanctionNumber}
+              type="text"
+              name="reTransactionNumber"
+              required
+              onChange={(e) => setReTransanctionNumber(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="label-field-pair">
+        <h2 className="card-label">{`${t("NOC_PAYMENT_LAST_4_DIGITS_LABEL") || "Last 4 Digits of Card"} *`}</h2>
         <div className="field">
           <div className="field-container">
             <input
@@ -60,37 +90,6 @@ const CardDetailsComponent = ({ ...props }) => {
           </div>
         </div>
       </div>
-      <div className="label-field-pair">
-        <h2 className="card-label">{`${t("NOC_PAYMENT_TRANS_NO_LABEL")} *`}</h2>
-        <div className="field">
-          <div className="field-container">
-            <input
-              className="employee-card-input"
-              value={transactionNumber}
-              type="text"
-              name="instrumentNumber"
-              required
-              onChange={(e) => setTransactionNumber(e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="label-field-pair">
-        <h2 className="card-label">{`${t("NOC_PAYMENT_RENTR_TRANS_LABEL")} *`}</h2>
-        <div className="field">
-          <div className="field-container">
-            <input
-              className="employee-card-input"
-              value={reTransanctionNumber}
-              type="text"
-              name="instrumentNumber"
-              required
-              onChange={(e) => setReTransanctionNumber(e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-     
     </React.Fragment>
   );
 };
