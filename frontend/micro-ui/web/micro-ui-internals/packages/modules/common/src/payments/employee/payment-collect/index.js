@@ -125,7 +125,7 @@ export const CollectPayment = (props) => {
     } else {
       bill.totalAmount = Math.round(bill.totalAmount);
     }
-    data.paidBy = data.paidBy.code;
+    // data.paidBy = data.paidBy.code;
 
     if (
       BillDetailsFormConfig({ consumerCode, businessService }, t)[
@@ -235,7 +235,6 @@ export const CollectPayment = (props) => {
         setTimeout(() => setToast(null), 5000);
         return;
       }
-      delete recieptRequest.Payment.last4Digits;
       delete recieptRequest.Payment.reTransanctionNumber;
     }
 
