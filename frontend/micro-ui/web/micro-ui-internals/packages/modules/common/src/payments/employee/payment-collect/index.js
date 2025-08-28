@@ -151,7 +151,6 @@ export const CollectPayment = (props) => {
 
     const { ManualRecieptDetails, paymentModeDetails, ...rest } = data;
     const { errorObj, ...details } = paymentModeDetails || {};
-
     let recieptRequest = {
       Payment: {
         mobileNumber: data.payerMobile,
@@ -172,9 +171,11 @@ export const CollectPayment = (props) => {
           : data?.amount?.amount,
         paymentMode: data.paymentMode.code,
         payerName: data.payerName,
-        paidBy: data.paidBy,
+        paidBy: typeof data.paidBy === 'object' ? data.paidBy.code : data.paidBy,
       },
     };
+
+    debugger;
     if (
       advanceBill !== null &&
       applicationData?.applicationStatus === "PENDING_APPL_FEE_PAYMENT" &&
@@ -475,6 +476,7 @@ export const CollectPayment = (props) => {
         }
         // isDisabled={BillDetailsFormConfig({ consumerCode }, t)[businessService] ? !}
         onFormValueChange={(setValue, formValue) => {
+          console.log(`*** LOG ***`,formValue);
           if (!isEqual(formValue.paymentMode, selectedPaymentMode)) {
             setFormState(formValue);
             setPaymentMode(formState.paymentMode);
