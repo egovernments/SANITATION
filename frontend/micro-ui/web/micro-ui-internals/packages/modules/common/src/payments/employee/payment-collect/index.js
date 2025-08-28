@@ -172,7 +172,7 @@ export const CollectPayment = (props) => {
           : data?.amount?.amount,
         paymentMode: data.paymentMode.code,
         payerName: data.payerName,
-        paidBy: "OWNER",
+        paidBy: data.paidBy,
       },
     };
     if (
