@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Loader, ShippingTruck, EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
+import {
+  Loader,
+  ShippingTruck,
+  EmployeeModuleCard,
+} from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
+import { assign } from "lodash";
 
 const svgIcon = (
-  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+  >
     <path d="M0 0h24v24H0z" fill="none"></path>
-    <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z" fill="white"></path>
+    <path
+      d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z"
+      fill="white"
+    ></path>
   </svg>
 );
 
@@ -17,19 +30,24 @@ const DsoDashboard = () => {
   const [loader, setLoader] = useState(true);
   const [isDsoLoaded, setIsDsoLoaded] = useState(false);
 
+  const citizenInfo = Digit.UserService.getUser();
 
   // fetch Status codes for DSO_ACTIONS
 
   const filters = {
-    limit:10,
-    offset:0,
+    limit: 10,
+    offset: 0,
     uuid: { code: "ASSIGNED_TO_ME", name: t("ES_INBOX_ASSIGNED_TO_ME") },
     sortBy: "createdTime",
     sortOrder: "DESC",
     total: true,
+    dsoUUID: citizenInfo?.info?.uuid,
   };
 
-  const { data:vendorDetails, isFetching: vendorDetailsFetching } = Digit.Hooks.fsm.useVendorDetail();
+  const {
+    data: vendorDetails,
+    isFetching: vendorDetailsFetching,
+  } = Digit.Hooks.fsm.useVendorDetail();
 
   useEffect(() => {
     if (vendorDetails?.vendor) {
@@ -39,14 +57,28 @@ const DsoDashboard = () => {
     }
   }, [vendorDetails]);
 
-  const { data: inbox, isFetching: inboxFetching } = Digit.Hooks.fsm.useInbox(tenantId, { ...filters }, {
-    enabled: isDsoLoaded,
-  }, true );
-  const info = useMemo( () => ({
-    [t("ES_COMPLETION_PENDING")]: inbox?.statuses.filter(e => e.applicationstatus === "DSO_INPROGRESS")[0]?.count || 0,
-    [t("ES_VEHICLE_ASSIGNMENT_PENDING")]: inbox?.statuses.filter(e => e.applicationstatus === "PENDING_DSO_APPROVAL")[0]?.count || 0,
-  }),[inbox?.totalCount]);
+  const { data: inbox, isFetching: inboxFetching } = Digit.Hooks.fsm.useInbox(
+    tenantId,
+    { ...filters },
+    {
+      enabled: isDsoLoaded,
+    },
+    true
+  );
 
+  const info = useMemo(
+    () => ({
+      [t("ES_COMPLETION_PENDING")]:
+        inbox?.statuses.filter(
+          (e) => e.applicationstatus === "DSO_INPROGRESS"
+        )[0]?.count || 0,
+      [t("ES_VEHICLE_ASSIGNMENT_PENDING")]:
+        inbox?.statuses.filter(
+          (e) => e.applicationstatus === "PENDING_DSO_APPROVAL"
+        )[0]?.count || 0,
+    }),
+    [inbox?.totalCount]
+  );
 
   const links = useMemo(
     () => [
@@ -61,7 +93,13 @@ const DsoDashboard = () => {
 
   useEffect(() => {
     if (inbox) {
-      const total = inbox?.statuses.filter(e => e.applicationstatus === "DSO_INPROGRESS")[0]?.count + inbox?.statuses.filter(e => e.applicationstatus === "PENDING_DSO_APPROVAL")[0]?.count;
+      const total =
+        inbox?.statuses.filter(
+          (e) => e.applicationstatus === "DSO_INPROGRESS"
+        )[0]?.count +
+        inbox?.statuses.filter(
+          (e) => e.applicationstatus === "PENDING_DSO_APPROVAL"
+        )[0]?.count;
       setTotal(total);
       if (Object.keys(info).length) setLoader(false);
     }
@@ -73,21 +111,26 @@ const DsoDashboard = () => {
   const propsForModuleCard = {
     Icon: <ShippingTruck />,
     moduleName: t("ES_TITLE_FAECAL_SLUDGE_MGMT"),
-    kpis:[
+    kpis: [
       {
-          count: inbox?.statuses.filter(e => e.applicationstatus === "DSO_INPROGRESS")[0]?.count || 0,
-          label: t("ES_COMPLETION_PENDING"),
-          link: `/${window?.contextPath}/citizen/fsm/inbox`
+        count:
+          inbox?.statuses.filter(
+            (e) => e.applicationstatus === "DSO_INPROGRESS"
+          )[0]?.count || 0,
+        label: t("ES_COMPLETION_PENDING"),
+        link: `/${window?.contextPath}/citizen/fsm/inbox`,
       },
       {
-          count: inbox?.statuses.filter(e => e.applicationstatus === "PENDING_DSO_APPROVAL")[0]?.count || 0,
-          label: t("ES_VEHICLE_ASSIGNMENT_PENDING"),
-          link: `/${window?.contextPath}/citizen/fsm/inbox`
-      }  
+        count:
+          inbox?.statuses.filter(
+            (e) => e.applicationstatus === "PENDING_DSO_APPROVAL"
+          )[0]?.count || 0,
+        label: t("ES_VEHICLE_ASSIGNMENT_PENDING"),
+        link: `/${window?.contextPath}/citizen/fsm/inbox`,
+      },
     ],
     links,
-
-  }
+  };
   return (
     <div className="ground-container moduleCardWrapper">
       <EmployeeModuleCard {...propsForModuleCard} />

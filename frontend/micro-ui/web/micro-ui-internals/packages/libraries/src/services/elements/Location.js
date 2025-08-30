@@ -13,8 +13,18 @@ export const LocationService = {
   getRevenueLocalities: async (tenantId) => {
     const response = await ServiceRequest({
       serviceName: "getRevenueLocalities",
-      url: Urls.location.revenue_localities,
-      params: { tenantId: tenantId },
+      url: Urls.boundaryService,
+      params: { tenantId: tenantId,hierarchyType:"REVENUE-LOCALITY",boundaryType:"Locality",includeChildren:true },
+      useCache: true,
+    });
+    return response;
+  },
+  getGramPanchayats: async (tenantId) => {
+    const response = await ServiceRequest({
+      serviceName: "getGramPanchayats",
+      url: Urls.boundaryService,
+      params: { tenantId: tenantId,hierarchyType:'REVENUE-GP',boundaryType:'GP',includeChildren:true },
+      
       useCache: true,
     });
     return response;

@@ -1,4 +1,4 @@
-export const searchTest = async ({ id }) => {
+export const searchTest = async ({ id,tenantId }) => {
   const response = await Digit.CustomService.getResponse({
     url: "/pqm-service/v1/_search",
     body: {
@@ -8,6 +8,7 @@ export const searchTest = async ({ id }) => {
       },
       testSearchCriteria: {
         ids: [id],
+        tenantId:tenantId
       },
     },
   });

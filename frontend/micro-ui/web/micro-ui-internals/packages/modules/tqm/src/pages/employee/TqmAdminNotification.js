@@ -22,19 +22,30 @@ const TqmAdminNotification = () => {
   };
 
   const { isLoading, data} = Digit.Hooks.useCustomAPIHook(requestCriteria);
-
   const formatTimeAgo = (timestamp) => {
+    if (!timestamp || isNaN(timestamp)) return t("ES_TQM_INVALID_DATE"); // Handle invalid input
+  
     const currentTime = Date.now();
     const timeDifference = currentTime - timestamp;
-    const daysAgo = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    const monthsAgo = Math.floor(daysAgo / 30);
-
+  
+    if (timeDifference < 0) return t("ES_TQM_JUST_NOW"); // Future timestamps
+  
+    const daysAgo = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert to days
+    const monthsAgo = Math.floor(daysAgo / 30); // Convert to months
+  
     if (monthsAgo >= 1) {
-      return monthsAgo === 1 ? t("ES_TQM_MONTH_AGO") : t(`ES_TQM_MONTHS_AGO`, { NO_OF_MONTH: monthsAgo});
+      return monthsAgo === 1 
+        ? t("ES_TQM_MONTH_AGO") 
+        : t("ES_TQM_MONTHS_AGO", { NO_OF_MONTH: monthsAgo });
     } else {
-      return daysAgo === 1 ? t("ES_TQM_DAY_AGO") : t(`ES_TQM_DAYS_AGO`, { NO_OF_DAY: daysAgo});
+      return daysAgo === 0 
+        ? t("ES_TQM_TODAY") 
+        : daysAgo === 1 
+          ? t("ES_TQM_DAY_AGO") 
+          :`${daysAgo} ${t("ES_TQM_DAYS_AGO_VAL")}`;
     }
   };
+  
 
   if(isLoading){
     return <Loader />

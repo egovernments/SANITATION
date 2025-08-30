@@ -65,6 +65,7 @@ export const LocalizationService = {
     if (locale.indexOf("_IN") === -1) {
       locale += "_IN";
     }
+
     const [newModules, messages] = LocalizationStore.get(locale, modules);
     if (newModules.length > 0) {
       const data = await Request({ url: Urls.localization, params: { module: newModules.join(","), locale, tenantId }, useCache: false });

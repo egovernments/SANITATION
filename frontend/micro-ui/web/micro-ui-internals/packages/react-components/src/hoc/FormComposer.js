@@ -23,7 +23,21 @@ import ApiDropdown from "../molecules/ApiDropdown";
 import MultiSelectDropdown from "../atoms/MultiSelectDropdown";
 
 export const FormComposer = (props) => {
-  const { register, handleSubmit, setValue, getValues, reset, watch, trigger, control, formState, errors, setError, clearErrors, unregister } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    reset,
+    watch,
+    trigger,
+    control,
+    formState,
+    errors,
+    setError,
+    clearErrors,
+    unregister,
+  } = useForm({
     defaultValues: props.defaultValues,
   });
   const { t } = useTranslation();
@@ -36,7 +50,10 @@ export const FormComposer = (props) => {
       !props?.appData?.ConnectionHolderDetails?.[0]?.sameAsOwnerDetails &&
       iseyeIconClicked &&
       Object.keys(props?.appData)?.length > 0 &&
-      !_.isEqual(props?.appData?.ConnectionHolderDetails?.[0], formData?.ConnectionHolderDetails?.[0])
+      !_.isEqual(
+        props?.appData?.ConnectionHolderDetails?.[0],
+        formData?.ConnectionHolderDetails?.[0]
+      )
     ) {
       reset({ ...props?.appData });
     }
@@ -55,11 +72,22 @@ export const FormComposer = (props) => {
   }
 
   useEffect(() => {
-    props.onFormValueChange && props.onFormValueChange(setValue, formData, formState);
+    props.onFormValueChange &&
+      props.onFormValueChange(setValue, formData, formState);
   }, [formData]);
 
-  const fieldSelector = (type, populators, isMandatory, disable = false, component, config) => {
-    const Component = typeof component === "string" ? Digit.ComponentRegistryService.getComponent(component) : component;
+  const fieldSelector = (
+    type,
+    populators,
+    isMandatory,
+    disable = false,
+    component,
+    config
+  ) => {
+    const Component =
+      typeof component === "string"
+        ? Digit.ComponentRegistryService.getComponent(component)
+        : component;
 
     switch (type) {
       case "text":
@@ -70,18 +98,43 @@ export const FormComposer = (props) => {
         // if (populators.defaultValue) setTimeout(setValue(populators?.name, populators.defaultValue));
         return (
           <div className="field-container">
-            {populators?.componentInFront ? <span className={`component-in-front ${disable && "disabled"}`}>{populators.componentInFront}</span> : null}
-            <TextInput className="field" {...populators} inputRef={register(populators.validation)} isRequired={isMandatory} type={type} disable={disable} watch={watch} />
+            {populators?.componentInFront ? (
+              <span className={`component-in-front ${disable && "disabled"}`}>
+                {populators.componentInFront}
+              </span>
+            ) : null}
+            <TextInput
+              className="field"
+              {...populators}
+              inputRef={register(populators.validation)}
+              isRequired={isMandatory}
+              type={type}
+              disable={disable}
+              watch={watch}
+            />
           </div>
         );
       case "textarea":
         // if (populators.defaultValue) setTimeout(setValue(populators?.name, populators.defaultValue));
-        return <TextArea className="field" name={populators?.name || ""} {...populators} inputRef={register(populators.validation)} disable={disable} />;
+        return (
+          <TextArea
+            className="field"
+            name={populators?.name || ""}
+            {...populators}
+            inputRef={register(populators.validation)}
+            disable={disable}
+          />
+        );
       case "mobileNumber":
         return (
           <Controller
             render={(props) => (
-              <MobileNumber className={populators?.className || "field"} onChange={props.onChange} value={props.value} disable={disable} labelStyle={populators?.labelStyle} />
+              <MobileNumber
+                className={populators?.className || "field"}
+                onChange={props.onChange}
+                value={props.value}
+                disable={disable}
+              />
             )}
             defaultValue={populators.defaultValue}
             name={populators?.name}
@@ -91,7 +144,12 @@ export const FormComposer = (props) => {
       case "custom":
         return (
           <Controller
-            render={(props) => populators.component({ ...props, setValue }, populators.customProps)}
+            render={(props) =>
+              populators.component(
+                { ...props, setValue },
+                populators.customProps
+              )
+            }
             defaultValue={populators.defaultValue}
             name={populators?.name}
             control={control}
@@ -228,7 +286,14 @@ export const FormComposer = (props) => {
     if (section.head && section.subHead) {
       return (
         <>
-          <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : { margin: "5px 0px" }} id={section.headId}>
+          <CardSectionHeader
+            style={
+              props?.sectionHeadStyle
+                ? props?.sectionHeadStyle
+                : { margin: "5px 0px" }
+            }
+            id={section.headId}
+          >
             {t(section.head)}
           </CardSectionHeader>
           <CardSectionHeader style={titleStyle} id={`${section.headId}_DES`}>
@@ -239,7 +304,11 @@ export const FormComposer = (props) => {
     } else if (section.head) {
       return (
         <>
-          <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {}} className={props?.sectionHeaderClassName} id={section.headId}>
+          <CardSectionHeader
+            style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {}}
+            className={props?.sectionHeaderClassName}
+            id={section.headId}
+          >
             {t(section.head)}
           </CardSectionHeader>
         </>
@@ -260,10 +329,19 @@ export const FormComposer = (props) => {
               if (props.inline)
                 return (
                   <React.Fragment key={index}>
-                    <div style={field.isInsideBox ? getCombinedStyle(field?.placementinbox) : {}}>
+                    <div
+                      style={
+                        field.isInsideBox
+                          ? getCombinedStyle(field?.placementinbox)
+                          : {}
+                      }
+                    >
                       {!field.withoutLabel && (
                         <CardLabel
-                          style={{ color: field.isSectionText ? "#505A5F" : "", marginBottom: props.inline ? "8px" : "revert" }}
+                          style={{
+                            color: field.isSectionText ? "#505A5F" : "",
+                            marginBottom: props.inline ? "8px" : "revert",
+                          }}
                           className={field?.disable ? "disabled" : ""}
                         >
                           {t(field.label)}
@@ -271,11 +349,28 @@ export const FormComposer = (props) => {
                           {field.labelChildren && field.labelChildren}
                         </CardLabel>
                       )}
-                      {errors && errors[field.populators?.name] && Object.keys(errors[field.populators?.name]).length ? (
-                        <CardLabelError>{t(field.populators.error || errors[field.populators?.name]?.message)}</CardLabelError>
+                      {errors &&
+                      errors[field.populators?.name] &&
+                      Object.keys(errors[field.populators?.name]).length ? (
+                        <CardLabelError>
+                          {t(
+                            field.populators.error ||
+                              errors[field.populators?.name]?.message
+                          )}
+                        </CardLabelError>
                       ) : null}
-                      <div style={field.withoutLabel ? { width: "100%" } : {}} className="field">
-                        {fieldSelector(field.type, field.populators, field.isMandatory, field?.disable, field?.component, field)}
+                      <div
+                        style={field.withoutLabel ? { width: "100%" } : {}}
+                        className="field"
+                      >
+                        {fieldSelector(
+                          field.type,
+                          field.populators,
+                          field.isMandatory,
+                          field?.disable,
+                          field?.component,
+                          field
+                        )}
                         {field?.description && (
                           <CardLabel
                             style={{
@@ -297,24 +392,66 @@ export const FormComposer = (props) => {
                 <Fragment>
                   <LabelFieldPair key={index}>
                     {!field.withoutLabel && (
-                      <CardLabel style={{ color: field.isSectionText ? "#505A5F" : "", marginBottom: props.inline ? "8px" : "revert" }}>
+                      <CardLabel
+                        style={{
+                          color: field.isSectionText ? "#505A5F" : "",
+                          marginBottom: props.inline ? "8px" : "revert",
+                        }}
+                      >
                         {t(field.label)}
                         {field.isMandatory ? " * " : null}
                         {field.labelChildren && field.labelChildren}
                       </CardLabel>
                     )}
-                    <div style={field.withoutLabel ? { width: "100%", ...props?.fieldStyle } : {}} className="field">
-                      {fieldSelector(field.type, field.populators, field.isMandatory, field?.disable, field?.component, field)}
-                      {field?.description && <CardText style={{ fontSize: "14px", marginTop: "-24px" }}>{t(field?.description)}</CardText>}
+                    <div
+                      style={
+                        field.withoutLabel
+                          ? { width: "100%", ...props?.fieldStyle }
+                          : {}
+                      }
+                      className="field"
+                    >
+                      {fieldSelector(
+                        field.type,
+                        field.populators,
+                        field.isMandatory,
+                        field?.disable,
+                        field?.component,
+                        field
+                      )}
+                      {field?.description && (
+                        <CardText
+                          style={{ fontSize: "14px", marginTop: "-24px" }}
+                        >
+                          {t(field?.description)}
+                        </CardText>
+                      )}
                     </div>
                   </LabelFieldPair>
-                  {field?.populators?.name && errors && errors[field?.populators?.name] && Object.keys(errors[field?.populators?.name]).length ? (
-                    <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>{t(field?.populators?.error)}</CardLabelError>
+                  {field?.populators?.name &&
+                  errors &&
+                  errors[field?.populators?.name] &&
+                  Object.keys(errors[field?.populators?.name]).length ? (
+                    <CardLabelError
+                      style={{
+                        width: "70%",
+                        marginLeft: "30%",
+                        fontSize: "12px",
+                        marginTop: "-21px",
+                      }}
+                    >
+                      {t(field?.populators?.error)}
+                    </CardLabelError>
                   ) : null}
                 </Fragment>
               );
             })}
-            {!props.noBreakLine && (array.length - 1 === index ? null : <BreakLine style={props?.breaklineStyle ? props?.breaklineStyle : {}} />)}
+            {!props.noBreakLine &&
+              (array.length - 1 === index ? null : (
+                <BreakLine
+                  style={props?.breaklineStyle ? props?.breaklineStyle : {}}
+                />
+              ))}
           </React.Fragment>
         );
       }),
@@ -328,7 +465,11 @@ export const FormComposer = (props) => {
           <React.Fragment key={index}>
             <div className="fsm-inline-style">
               {section.head && (
-                <CardSectionHeader className="headererer" style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {}} id={section.headId}>
+                <CardSectionHeader
+                  className="headererer"
+                  style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {}}
+                  id={section.headId}
+                >
                   {t(section.head)}
                 </CardSectionHeader>
               )}
@@ -336,25 +477,74 @@ export const FormComposer = (props) => {
                 if (props.fms_inline)
                   return (
                     <Fragment>
-                      <LabelFieldPair key={index} style={field?.component === "SelectTankSize" ? { alignItems: "baseline" } : {}}>
+                      <LabelFieldPair
+                        key={index}
+                        style={
+                          field?.component === "SelectTankSize"
+                            ? { alignItems: "baseline" }
+                            : {}
+                        }
+                      >
                         {!field.withoutLabel && (
-                          <CardLabel style={{ color: field.isSectionText ? "#505A5F" : "", marginBottom: props.inline ? "8px" : "revert" }}>
+                          <CardLabel
+                            style={{
+                              color: field.isSectionText ? "#505A5F" : "",
+                              marginBottom: props.inline ? "8px" : "revert",
+                            }}
+                          >
                             {t(field.label)}
                             {field.isMandatory ? " * " : null}
                           </CardLabel>
                         )}
-                        <div style={field.withoutLabel ? { width: "100%", ...props?.fieldStyle } : {}} className="field">
-                          {fieldSelector(field.type, field.populators, field.isMandatory, field?.disable, field?.component, field)}
-                          {field?.description && <CardText style={{ fontSize: "14px", marginTop: "-24px" }}>{t(field?.description)}</CardText>}
+                        <div
+                          style={
+                            field.withoutLabel
+                              ? { width: "100%", ...props?.fieldStyle }
+                              : {}
+                          }
+                          className="field"
+                        >
+                          {fieldSelector(
+                            field.type,
+                            field.populators,
+                            field.isMandatory,
+                            field?.disable,
+                            field?.component,
+                            field
+                          )}
+                          {field?.description && (
+                            <CardText
+                              style={{ fontSize: "14px", marginTop: "-24px" }}
+                            >
+                              {t(field?.description)}
+                            </CardText>
+                          )}
                         </div>
                       </LabelFieldPair>
-                      {field?.populators?.name && errors && errors[field?.populators?.name] && Object.keys(errors[field?.populators?.name]).length ? (
-                        <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>{t(field?.populators?.error)}</CardLabelError>
+                      {field?.populators?.name &&
+                      errors &&
+                      errors[field?.populators?.name] &&
+                      Object.keys(errors[field?.populators?.name]).length ? (
+                        <CardLabelError
+                          style={{
+                            width: "70%",
+                            marginLeft: "30%",
+                            fontSize: "12px",
+                            marginTop: "-21px",
+                          }}
+                        >
+                          {t(field?.populators?.error)}
+                        </CardLabelError>
                       ) : null}
                     </Fragment>
                   );
               })}
-              {!props.noBreakLine && (array.length - 1 === index ? null : <BreakLine style={props?.breaklineStyle ? props?.breaklineStyle : {}} />)}
+              {!props.noBreakLine &&
+                (array.length - 1 === index ? null : (
+                  <BreakLine
+                    style={props?.breaklineStyle ? props?.breaklineStyle : {}}
+                  />
+                ))}
             </div>
           </React.Fragment>
         );
@@ -376,24 +566,64 @@ export const FormComposer = (props) => {
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => checkKeyDown(e)} id={props.formId} className={props.className}>
-      <Card style={getCardStyles()} className={props?.cardClassName ? props.cardClassName : ""}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      onKeyDown={(e) => checkKeyDown(e)}
+      id={props.formId}
+      className={props.className}
+    >
+      <Card
+        style={getCardStyles()}
+        className={props?.cardClassName ? props.cardClassName : ""}
+      >
         {!props.childrenAtTheBottom && props.children}
-        {props.heading && <CardSubHeader style={{ ...props.headingStyle }}> {props.heading} </CardSubHeader>}
-        {props.description && <CardLabelDesc className={"repos"}> {props.description} </CardLabelDesc>}
+        {props.heading && (
+          <CardSubHeader style={{ ...props.headingStyle }}>
+            {" "}
+            {props.heading}{" "}
+          </CardSubHeader>
+        )}
+        {props.description && (
+          <CardLabelDesc className={"repos"}>
+            {" "}
+            {props.description}{" "}
+          </CardLabelDesc>
+        )}
         {props.text && <CardText>{props.text}</CardText>}
         {props?.formCardStyle ? formFieldsFSM : formFields}
         {props.childrenAtTheBottom && props.children}
-        {props.submitInForm && <SubmitBar label={t(props.label)} style={{ ...props?.buttonStyle }} submit="submit" disabled={isDisabled} className="w-full" />}
+        {props.submitInForm && (
+          <SubmitBar
+            label={t(props.label)}
+            style={{ ...props?.buttonStyle }}
+            submit="submit"
+            disabled={isDisabled}
+            className="w-full"
+          />
+        )}
         {props.secondaryActionLabel && (
-          <div className="primary-label-btn" style={{ margin: "20px auto 0 auto" }} onClick={onSecondayActionClick}>
+          <div
+            className="primary-label-btn"
+            style={{ margin: "20px auto 0 auto" }}
+            onClick={onSecondayActionClick}
+          >
             {props.secondaryActionLabel}
           </div>
         )}
         {!props.submitInForm && props.label && (
           <ActionBar>
-            <SubmitBar label={t(props.label)} submit="submit" disabled={isDisabled} />
-            {props.onSkip && props.showSkip && <LinkButton style={props?.skipStyle} label={t(`CS_SKIP_CONTINUE`)} onClick={props.onSkip} />}
+            <SubmitBar
+              label={t(props.label)}
+              submit="submit"
+              disabled={isDisabled}
+            />
+            {props.onSkip && props.showSkip && (
+              <LinkButton
+                style={props?.skipStyle}
+                label={t(`CS_SKIP_CONTINUE`)}
+                onClick={props.onSkip}
+              />
+            )}
           </ActionBar>
         )}
       </Card>

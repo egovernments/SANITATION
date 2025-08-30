@@ -73,6 +73,15 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
   useEffect(() => {
     clearSearch()
   }, [activeLink])
+
+  useEffect(() => {
+    if (state.tableForm.limit > 10 && state.tableForm.offset !== 0) {
+      dispatch({
+        type: "tableForm",
+        state: { ...state.tableForm, offset: 0 },
+      });
+    }
+  }, [state.tableForm.limit]);
   
   const onSubmit = (data) => {
     

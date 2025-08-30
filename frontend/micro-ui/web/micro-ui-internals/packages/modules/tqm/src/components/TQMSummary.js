@@ -72,6 +72,8 @@ const TQMSummary = () => {
         url: "/pqm-service/v1/_downloadPdf",
         params: {
           testId: id,
+          tenantId:tenantId
+
         },
       });
       if (respo?.filestoreIds?.[0]) {

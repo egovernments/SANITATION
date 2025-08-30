@@ -44,7 +44,6 @@ const TqmInbox = () => {
     const tqmInboxSession = Digit.Hooks.useSessionStorage("TQM_INBOX_SESSION", {})    
 
     if(isLoading) return <Loader />
-    
     return (
         <React.Fragment>
             <Header styles={{ fontSize: "32px" }}>{t(config?.label)}{<span className="inbox-count">{location?.state?.count ? location?.state?.count : 0}</span>}</Header>
