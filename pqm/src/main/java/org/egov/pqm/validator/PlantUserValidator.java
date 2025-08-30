@@ -72,17 +72,29 @@ public class PlantUserValidator {
 	        UserDetailResponse userDetailResponse = userExists(plantUserRequest);
 
 	        List<String> code = new ArrayList<>();
-	        if (!userDetailResponse.getUser().isEmpty()) {
+	        if (plantUser.getPlantUserType().equals(PlantUserType.PLANT_OPERATOR) && !userDetailResponse.getUser().isEmpty()) {
 	            userDetailResponse.getUser().get(0).getRoles().forEach(role -> {
 	                code.add("" + role.getCode());
 	            });
-	            if (!code.contains(PlantUserConstants.PQM_TP_OPERATOR) && !code.contains(PlantUserConstants.PQM_ADMIN)) {
+	            if (!code.contains(PlantUserConstants.PQM_TP_OPERATOR)) {
 	                throw new CustomException(ErrorConstants.INVALID_APPLICANT_ERROR,
 	                        "Only PQM_TP_OPERATOR or PQM_ADMIN Employee Can do this creation.");
 	            }
 	        } else {
 	            throw new CustomException(ErrorConstants.PQM_TP_OPERATOR_EMPLOYEE_INVALID_ERROR,
 	                    "In PQM_TP_OPERATOR plant-to-employee mapping, employee doesn't exist");
+	        }
+	        if (plantUser.getPlantUserType().equals(PlantUserType.ULB) && !userDetailResponse.getUser().isEmpty()) {
+	            userDetailResponse.getUser().get(0).getRoles().forEach(role -> {
+	                code.add("" + role.getCode());
+	            });
+	            if (!code.contains(PlantUserConstants.PQM_ADMIN)) {
+	                throw new CustomException(ErrorConstants.INVALID_APPLICANT_ERROR,
+	                        "Only PQM_TP_OPERATOR or PQM_ADMIN Employee Can do this creation.");
+	            }
+	        } else {
+	            throw new CustomException(ErrorConstants.PQM_TP_OPERATOR_EMPLOYEE_INVALID_ERROR,
+	                    "In PQM_ADMIN plant-to-employee mapping, employee doesn't exist");
 	        }
 	        PlantUserType plantUserType = plantUser.getPlantUserType();
 	
