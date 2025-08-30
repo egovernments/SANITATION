@@ -4,7 +4,7 @@ import {
   getCommonCard,
   getCommonContainer,
   getCommonTitle,
-  getCommonParagraph
+  getCommonParagraph,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 import get from "lodash/get";
@@ -14,7 +14,7 @@ import {
   commonTransform,
   objectToDropdown,
   getCurrentFinancialYear,
-  getAllDataFromBillingSlab
+  getAllDataFromBillingSlab,
 } from "../utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
@@ -27,7 +27,7 @@ import { documentList } from "./applyResource/documentList";
 import { httpRequest } from "../../../../ui-utils";
 import {
   updatePFOforSearchResults,
-  getBoundaryData
+  getBoundaryData,
 } from "../../../../ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import commonConfig from "config/common.js";
@@ -36,7 +36,7 @@ export const stepsData = [
   { labelName: "Trade Details", labelKey: "TL_COMMON_TR_DETAILS" },
   { labelName: "Owner Details", labelKey: "TL_COMMON_OWN_DETAILS" },
   { labelName: "Documents", labelKey: "TL_COMMON_DOCS" },
-  { labelName: "Summary", labelKey: "TL_COMMON_SUMMARY" }
+  { labelName: "Summary", labelKey: "TL_COMMON_SUMMARY" },
 ];
 export const stepper = getStepperObject(
   { props: { activeStep: 0 } },
@@ -50,36 +50,36 @@ export const stepper = getStepperObject(
 export const header = getCommonContainer({
   header: getCommonHeader({
     labelName: `Apply for New Trade License (${getCurrentFinancialYear()})`,
-    labelKey: "TL_COMMON_APPL_NEW_LICe"
+    labelKey: "TL_COMMON_APPL_NEW_LICe",
   }),
   applicationNumber: {
     uiFramework: "custom-atoms-local",
     componentPath: "ApplicationNoContainer",
     props: {
-      number: "NA"
+      number: "NA",
     },
-    visible: false
-  }
+    visible: false,
+  },
 });
 
 export const tradeDocumentDetails = getCommonCard({
   header: getCommonTitle(
     {
       labelName: "Required Documents",
-      labelKey: "TL_NEW-UPLOAD-DOCS_HEADER"
+      labelKey: "TL_NEW-UPLOAD-DOCS_HEADER",
     },
     {
       style: {
-        marginBottom: 18
-      }
+        marginBottom: 18,
+      },
     }
   ),
   paragraph: getCommonParagraph({
     labelName:
       "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
-    labelKey: "TL_NEW-UPLOAD-DOCS_SUBHEADER"
+    labelKey: "TL_NEW-UPLOAD-DOCS_SUBHEADER",
   }),
-  documentList
+  documentList,
 });
 
 export const getMdmsData = async (action, state, dispatch) => {
@@ -91,8 +91,8 @@ export const getMdmsData = async (action, state, dispatch) => {
           moduleName: "TradeLicense",
           masterDetails: [
             { name: "TradeType", filter: `[?(@.type == "TL")]` },
-            { name: "AccessoriesCategory" }
-          ]
+            { name: "AccessoriesCategory" },
+          ],
         },
         {
           moduleName: "common-masters",
@@ -101,25 +101,25 @@ export const getMdmsData = async (action, state, dispatch) => {
             { name: "OwnerType" },
             { name: "OwnerShipCategory" },
             { name: "DocumentType" },
-            { name: "UOM" }
-          ]
+            { name: "UOM" },
+          ],
         },
         {
           moduleName: "tenant",
           masterDetails: [
             {
-              name: "tenants"
-            }
-          ]
-        }
-      ]
-    }
+              name: "tenants",
+            },
+          ],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -173,12 +173,12 @@ export const formwizardFourthStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form4"
+    id: "apply_form4",
   },
   children: {
-    tradeReviewDetails
+    tradeReviewDetails,
   },
-  visible: false
+  visible: false,
 };
 
 const screenConfig = {
@@ -189,7 +189,7 @@ const screenConfig = {
     dispatch(prepareFinalObject("Licenses", [{ licenseType: "PERMANENT" }]));
     dispatch(prepareFinalObject("LicensesTemp", []));
     // getData(action, state, dispatch);
-    getData(action, state, dispatch).then(responseAction => {
+    getData(action, state, dispatch).then((responseAction) => {
       const tenantId = getTenantId();
       const queryObj = [{ key: "tenantId", value: tenantId }];
       getBoundaryData(action, state, dispatch, queryObj);
@@ -227,16 +227,16 @@ const screenConfig = {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        className: "common-div-css"
+        className: "common-div-css",
       },
       children: {
         taskStatus: {
           uiFramework: "custom-containers-local",
-          componentPath: "WorkFlowContainer"
-        }
-      }
-    }
-  }
+          componentPath: "WorkFlowContainer",
+        },
+      },
+    },
+  },
 };
 
 export default screenConfig;

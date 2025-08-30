@@ -1,28 +1,48 @@
 import commonConfig from "config/common.js";
 import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons";
-import { getCommonSubHeader, getLabel, getTextField } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField, initScreen, prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  getCommonSubHeader,
+  getLabel,
+  getTextField,
+} from "egov-ui-framework/ui-config/screens/specs/utils";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  initScreen,
+  prepareFinalObject,
+  toggleSnackbar,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
-import { getLocaleLabels, getQueryArg, getTodaysDateInYMD, getTransformedLocalStorgaeLabels, getObjectKeys, getObjectValues, } from "egov-ui-framework/ui-utils/commons";
-import { getTenantId, getUserInfo, localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
+import {
+  getLocaleLabels,
+  getQueryArg,
+  getTodaysDateInYMD,
+  getTransformedLocalStorgaeLabels,
+  getObjectKeys,
+  getObjectValues,
+} from "egov-ui-framework/ui-utils/commons";
+import {
+  getTenantId,
+  getUserInfo,
+  localStorageGet,
+} from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import isUndefined from "lodash/isUndefined";
 import set from "lodash/set";
 import { httpRequest } from "../../../../ui-utils/api";
 import "./index.css";
-import { showHideAdhocPopup as showReqDocPopup} from "egov-ui-framework/ui-utils/commons";
+import { showHideAdhocPopup as showReqDocPopup } from "egov-ui-framework/ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getPaymentSearchAPI } from "egov-ui-kit/utils/commons";
 
-export const getCommonApplyFooter = children => {
+export const getCommonApplyFooter = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Div",
     props: {
-      className: "apply-wizard-footer"
+      className: "apply-wizard-footer",
     },
-    children
+    children,
   };
 };
 
@@ -30,7 +50,7 @@ export const getAsteric = () => {
   return {
     uiFramework: "custom-atoms-local",
     moduleName: "egov-tradelicence",
-    componentPath: "Asteric"
+    componentPath: "Asteric",
   };
 };
 
@@ -47,11 +67,11 @@ export const getTooltip = (children, toolTipProps) => {
           uiFramework: "custom-atoms",
           componentPath: "Icon",
           props: {
-            iconName: "info"
-          }
-        }
-      }
-    }
+            iconName: "info",
+          },
+        },
+      },
+    },
   };
 };
 
@@ -63,8 +83,8 @@ export const getCheckbox = (content, jsonPath, props = {}) => {
     props: {
       content,
       jsonPath,
-      ...props
-    }
+      ...props,
+    },
   };
 };
 
@@ -74,13 +94,13 @@ export const getUploadFile = {
   props: {
     documents: [
       {
-        name: "Upload Document"
-      }
-    ]
-  }
+        name: "Upload Document",
+      },
+    ],
+  },
 };
 
-export const getUploadFilesMultiple = jsonPath => {
+export const getUploadFilesMultiple = (jsonPath) => {
   return {
     uiFramework: "custom-molecules",
     componentPath: "UploadMultipleFiles",
@@ -88,12 +108,15 @@ export const getUploadFilesMultiple = jsonPath => {
       maxFiles: 4,
       jsonPath: jsonPath,
       inputProps: {
-        accept: "image/*, .pdf, .png, .jpeg"
+        accept: "image/*, .pdf, .png, .jpeg",
       },
-      buttonLabel: { labelName: "UPLOAD FILES", labelKey: "TL_UPLOAD_FILES_BUTTON" },
+      buttonLabel: {
+        labelName: "UPLOAD FILES",
+        labelKey: "TL_UPLOAD_FILES_BUTTON",
+      },
       maxFileSize: 5000,
-      moduleName: "TL"
-    }
+      moduleName: "TL",
+    },
   };
 };
 
@@ -104,8 +127,8 @@ export const getRadioButton = (buttons, jsonPath, defaultValue) => {
     props: {
       buttons,
       jsonPath,
-      defaultValue
-    }
+      defaultValue,
+    },
   };
 };
 
@@ -120,7 +143,7 @@ export const getRadioGroupWithLabel = (
     uiFramework: "custom-atoms",
     componentPath: "Container",
     props: {
-      alignItems: "center"
+      alignItems: "center",
     },
 
     children: {
@@ -129,7 +152,7 @@ export const getRadioGroupWithLabel = (
         componentPath: "Div",
         gridDefination: {
           xs: 12,
-          sm: 4
+          sm: 4,
         },
         children: {
           div: getLabel({
@@ -137,42 +160,42 @@ export const getRadioGroupWithLabel = (
             labelKey,
 
             style: {
-              fontSize: "14px"
-            }
+              fontSize: "14px",
+            },
           }),
-          asteric: getAsteric()
-        }
+          asteric: getAsteric(),
+        },
       },
       div2: {
         uiFramework: "custom-atoms",
         componentPath: "Div",
         gridDefination: {
           xs: 12,
-          sm: 8
+          sm: 8,
         },
         children: {
-          div: getRadioButtonGroup(buttons, jsonPath, defaultValue)
-        }
-      }
-    }
+          div: getRadioButtonGroup(buttons, jsonPath, defaultValue),
+        },
+      },
+    },
   };
 };
 
-export const getApplicationNoContainer = number => {
+export const getApplicationNoContainer = (number) => {
   return {
     uiFramework: "custom-atoms-local",
     moduleName: "egov-tradelicence",
     componentPath: "ApplicationNoContainer",
     props: {
-      number
-    }
+      number,
+    },
   };
 };
 
 export const getContainerWithElement = ({
   children,
   props = {},
-  gridDefination = {}
+  gridDefination = {},
 }) => {
   return {
     uiFramework: "custom-atoms",
@@ -180,8 +203,8 @@ export const getContainerWithElement = ({
     children,
     gridDefination,
     props: {
-      ...props
-    }
+      ...props,
+    },
   };
 };
 
@@ -190,7 +213,7 @@ export const transformById = (payload, id) => {
     payload &&
     payload.reduce((result, item) => {
       result[item[id]] = {
-        ...item
+        ...item,
       };
 
       return result;
@@ -212,16 +235,16 @@ export const getTranslatedLabel = (labelKey, localizationLabels) => {
   return translatedLabel || labelKey;
 };
 
-export const getApprovalTextField = queryValue => {
+export const getApprovalTextField = (queryValue) => {
   if (queryValue === "reject") {
     return getTextField({
       label: {
         labelName: "Comments",
-        labelKey: "TL_APPROVAL_CHECKLIST_COMMENTS_LABEL"
+        labelKey: "TL_APPROVAL_CHECKLIST_COMMENTS_LABEL",
       },
       placeholder: {
         labelName: "Enter Rejection Comments",
-        labelKey: "TL_REJECTION_CHECKLIST_COMMENTS_PLACEHOLDER"
+        labelKey: "TL_REJECTION_CHECKLIST_COMMENTS_PLACEHOLDER",
       },
       required: false,
       pattern: "",
@@ -229,19 +252,19 @@ export const getApprovalTextField = queryValue => {
         "Licenses[0].tradeLicenseDetail.additionalDetail.rejectDetail.comments",
       props: {
         style: {
-          paddingBottom: 5
-        }
-      }
+          paddingBottom: 5,
+        },
+      },
     });
   } else if (queryValue === "cancel") {
     return getTextField({
       label: {
         labelName: "Comments",
-        labelKey: "TL_APPROVAL_CHECKLIST_COMMENTS_LABEL"
+        labelKey: "TL_APPROVAL_CHECKLIST_COMMENTS_LABEL",
       },
       placeholder: {
         labelName: "Enter Cancellation Comments",
-        labelKey: "TL_CANCEL_CHECKLIST_COMMENTS_PLACEHOLDER"
+        labelKey: "TL_CANCEL_CHECKLIST_COMMENTS_PLACEHOLDER",
       },
       required: false,
       pattern: "",
@@ -249,19 +272,19 @@ export const getApprovalTextField = queryValue => {
         "Licenses[0].tradeLicenseDetail.additionalDetail.cancelDetail.comments",
       props: {
         style: {
-          paddingBottom: 5
-        }
-      }
+          paddingBottom: 5,
+        },
+      },
     });
   } else {
     return getTextField({
       label: {
         labelName: "Comments",
-        labelKey: "TL_APPROVAL_CHECKLIST_COMMENTS_LABEL"
+        labelKey: "TL_APPROVAL_CHECKLIST_COMMENTS_LABEL",
       },
       placeholder: {
         labelName: "Enter Approval Comments",
-        labelKey: "TL_APPROVAL_CHECKLIST_COMMENTS_PLACEHOLDER_APPR"
+        labelKey: "TL_APPROVAL_CHECKLIST_COMMENTS_PLACEHOLDER_APPR",
       },
       required: false,
       pattern: "",
@@ -269,14 +292,14 @@ export const getApprovalTextField = queryValue => {
         "Licenses[0].tradeLicenseDetail.additionalDetail.approveDetail.comments",
       props: {
         style: {
-          paddingBottom: 5
-        }
-      }
+          paddingBottom: 5,
+        },
+      },
     });
   }
 };
 
-export const getCheckBoxJsonpath = queryValue => {
+export const getCheckBoxJsonpath = (queryValue) => {
   if (queryValue === "reject") {
     return "Licenses[0].tradeLicenseDetail.additionalDetail.rejectDetail.check";
   } else if (queryValue === "cancel") {
@@ -286,7 +309,7 @@ export const getCheckBoxJsonpath = queryValue => {
   }
 };
 
-export const getSafetyNormsJson = queryValue => {
+export const getSafetyNormsJson = (queryValue) => {
   if (queryValue === "reject") {
     return "Licenses[0].tradeLicenseDetail.additionalDetail.rejectDetail.checklist.safetyNorms";
   } else if (queryValue === "cancel") {
@@ -296,7 +319,7 @@ export const getSafetyNormsJson = queryValue => {
   }
 };
 
-export const getHygeneLevelJson = queryValue => {
+export const getHygeneLevelJson = (queryValue) => {
   if (queryValue === "reject") {
     return "Licenses[0].tradeLicenseDetail.additionalDetail.rejectDetail.checklist.hygieneLevels";
   } else if (queryValue === "cancel") {
@@ -306,7 +329,7 @@ export const getHygeneLevelJson = queryValue => {
   }
 };
 
-export const getLocalityHarmedJson = queryValue => {
+export const getLocalityHarmedJson = (queryValue) => {
   if (queryValue === "reject") {
     return "Licenses[0].tradeLicenseDetail.additionalDetail.rejectDetail.checklist.localityHarmed";
   } else if (queryValue === "cancel") {
@@ -316,37 +339,37 @@ export const getLocalityHarmedJson = queryValue => {
   }
 };
 
-export const getSubHeaderLabel = queryValue => {
+export const getSubHeaderLabel = (queryValue) => {
   if (queryValue === "reject") {
     return getCommonSubHeader({
       labelName: "Rejection CheckList",
-      labelKey: "TL_REJECTION_CHECKLIST_REJ_CHECKLIST"
+      labelKey: "TL_REJECTION_CHECKLIST_REJ_CHECKLIST",
     });
   } else if (queryValue === "cancel") {
     return {};
   } else {
     return getCommonSubHeader({
       labelName: "Approve Checklist",
-      labelKey: "TL_APPROVAL_CHECKLIST_BUTTON_APPRV_CHECKLIST"
+      labelKey: "TL_APPROVAL_CHECKLIST_BUTTON_APPRV_CHECKLIST",
     });
   }
 };
 
-export const getFooterButtons = queryValue => {
+export const getFooterButtons = (queryValue) => {
   if (queryValue === "reject") {
     return getLabel({
       labelName: "REJECT APPLICATION",
-      labelKey: "TL_REJECTION_CHECKLIST_BUTTON_REJ_APPL"
+      labelKey: "TL_REJECTION_CHECKLIST_BUTTON_REJ_APPL",
     });
   } else if (queryValue === "cancel") {
     return getLabel({
       labelName: "CANCEL TRADE LICENSE",
-      labelKey: "TL_COMMON_BUTTON_CANCEL_LICENSE"
+      labelKey: "TL_COMMON_BUTTON_CANCEL_LICENSE",
     });
   } else {
     return getLabel({
       labelName: "APPROVE APPLICATION",
-      labelKey: "TL_APPROVAL_CHECKLIST_BUTTON_APPRV_APPL"
+      labelKey: "TL_APPROVAL_CHECKLIST_BUTTON_APPRV_APPL",
     });
   }
 };
@@ -381,7 +404,7 @@ export const onClickPreviousButton = (
       return `/tradelicence/search-preview?role=approver&status=pending_approval&applicationNumber=${applicationNumber}&tenantId=${tenantId}`;
   }
 };
-export const getFeesEstimateCard = props => {
+export const getFeesEstimateCard = (props) => {
   const { sourceJsonPath, ...rest } = props;
   return {
     uiFramework: "custom-containers-local",
@@ -389,8 +412,8 @@ export const getFeesEstimateCard = props => {
     componentPath: "EstimateCardContainer",
     props: {
       sourceJsonPath,
-      ...rest
-    }
+      ...rest,
+    },
   };
 };
 
@@ -398,15 +421,15 @@ const style = {
   textfieldIcon: {
     position: "relative",
     top: "25px",
-    left: "-249%"
+    left: "-249%",
   },
   headerIcon: {
     position: "relative",
-    bottom: "2px"
-  }
+    bottom: "2px",
+  },
 };
 
-export const getIconStyle = key => {
+export const getIconStyle = (key) => {
   return style[key];
 };
 
@@ -420,8 +443,7 @@ export const showHideAdhocPopup = (state, dispatch) => {
 };
 
 export const getButtonVisibility = (status, button) => {
-  if (status === "CITIZENACTIONREQUIRED" && button === "RESUBMIT")
-    return true;
+  if (status === "CITIZENACTIONREQUIRED" && button === "RESUBMIT") return true;
   if (status === "pending_payment" && button === "PROCEED TO PAYMENT")
     return true;
   if (status === "pending_approval" && button === "APPROVE") return true;
@@ -436,7 +458,7 @@ export const getButtonVisibility = (status, button) => {
 export const commonTransform = (object, path) => {
   let data = get(object, path);
   let transformedData = {};
-  data.map(a => {
+  data.map((a) => {
     const splitList = a.code.split(".");
     let ipath = "";
     for (let i = 0; i < splitList.length; i += 1) {
@@ -463,7 +485,7 @@ export const commonTransform = (object, path) => {
   return object;
 };
 
-export const objectToDropdown = object => {
+export const objectToDropdown = (object) => {
   let dropDown = [];
   for (var variable in object) {
     if (object.hasOwnProperty(variable)) {
@@ -474,7 +496,7 @@ export const objectToDropdown = object => {
 };
 
 // Search API call
-export const getSearchResults = async queryObject => {
+export const getSearchResults = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -489,7 +511,7 @@ export const getSearchResults = async queryObject => {
   }
 };
 
-export const getBill = async queryObject => {
+export const getBill = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -502,7 +524,7 @@ export const getBill = async queryObject => {
     console.log(error);
   }
 };
-export const calculateBill = async queryObject => {
+export const calculateBill = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -515,11 +537,11 @@ export const calculateBill = async queryObject => {
     console.log(error);
   }
 };
-export const getReceipt = async queryObject => {
+export const getReceipt = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
-      getPaymentSearchAPI('TL'),
+      getPaymentSearchAPI("TL"),
       "",
       queryObject
     );
@@ -529,7 +551,7 @@ export const getReceipt = async queryObject => {
   }
 };
 
-export const convertEpochToDate = dateEpoch => {
+export const convertEpochToDate = (dateEpoch) => {
   const dateFromApi = new Date(dateEpoch);
   let month = dateFromApi.getMonth() + 1;
   let day = dateFromApi.getDate();
@@ -555,7 +577,7 @@ export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
   }
 };
 
-export const convertDateTimeToEpoch = dateTimeString => {
+export const convertDateTimeToEpoch = (dateTimeString) => {
   //example input format : "26-07-2018 17:43:21"
   try {
     // const parts = dateTimeString.match(
@@ -570,11 +592,11 @@ export const convertDateTimeToEpoch = dateTimeString => {
   }
 };
 
-export const getReceiptData = async queryObject => {
+export const getReceiptData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
-      getPaymentSearchAPI('TL'),
+      getPaymentSearchAPI("TL"),
       "",
       queryObject
     );
@@ -585,27 +607,27 @@ export const getReceiptData = async queryObject => {
   }
 };
 
-export const getAutoSelector = textScheama => {
+export const getAutoSelector = (textScheama) => {
   return {
     uiFramework: "custom-molecules-local",
     moduleName: "egov-tradelicence",
     componentPath: "AutoSelector",
     gridDefination: {
       xs: 6,
-      sm: 3
+      sm: 3,
     },
     props: {
-      data: []
-    }
+      data: [],
+    },
   };
 };
 
-export const getMapLocator = textSchema => {
+export const getMapLocator = (textSchema) => {
   return {
     uiFramework: "custom-molecules-local",
     moduleName: "egov-tradelicence",
     componentPath: "MapLocator",
-    props: {}
+    props: {},
   };
 };
 
@@ -647,11 +669,11 @@ export const getHeaderSideText = (status, licenseNo = null) => {
   }
 };
 
-export const getMdmsData = async queryObject => {
+export const getMdmsData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_search",
+      "mdms-v2/v1/_search",
       "",
       [],
       queryObject
@@ -682,7 +704,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
           true,
           {
             labelName: "Please select city to search by property id !!",
-            labelKey: "ERR_SELECT_CITY_TO_SEARCH_PROPERTY_ID"
+            labelKey: "ERR_SELECT_CITY_TO_SEARCH_PROPERTY_ID",
           },
           "warning"
         )
@@ -708,7 +730,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
               true,
               {
                 labelName: "Property is not found with this Property Id",
-                labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
+                labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID",
               },
               "info"
             )
@@ -729,7 +751,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
               "props.value",
               {
                 value: payload.Properties[0].address.locality.code,
-                label: payload.Properties[0].address.locality.name
+                label: payload.Properties[0].address.locality.name,
               }
             )
           );
@@ -781,7 +803,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
           true,
           {
             labelName: "Owner already added !",
-            labelKey: "ERR_OWNER_ALREADY_ADDED"
+            labelKey: "ERR_OWNER_ALREADY_ADDED",
           },
           "error"
         )
@@ -791,7 +813,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
 
     //Same no search in whole array
     const matchingOwnerIndex = owners.findIndex(
-      item => item.userName === ownerNo
+      (item) => item.userName === ownerNo
     );
     if (matchingOwnerIndex > -1) {
       if (
@@ -814,7 +836,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         //Delete if current card was not part of oldOwners array - no need to save.
         if (
           oldOwnersArr.findIndex(
-            item => owners[cardIndex].userName === item.userName
+            (item) => owners[cardIndex].userName === item.userName
           ) == -1
         ) {
           owners.splice(cardIndex, 1);
@@ -828,7 +850,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
             true,
             {
               labelName: "Owner already added !",
-              labelKey: "ERR_OWNER_ALREADY_ADDED_1"
+              labelKey: "ERR_OWNER_ALREADY_ADDED_1",
             },
             "error"
           )
@@ -844,7 +866,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         [],
         {
           tenantId: commonConfig.tenantId,
-          userName: `${ownerNo}`
+          userName: `${ownerNo}`,
         }
       );
       if (payload && payload.user && payload.user.hasOwnProperty("length")) {
@@ -854,7 +876,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
               true,
               {
                 labelName: "This mobile number is not registered !",
-                labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED"
+                labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED",
               },
               "info"
             )
@@ -907,7 +929,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
   }
 };
 
-export const validateOwners = (state, dispatch)=>{
+export const validateOwners = (state, dispatch) => {
   let ownersJsonPath = "";
   let owners = [];
   let ownership = get(
@@ -916,65 +938,54 @@ export const validateOwners = (state, dispatch)=>{
     "INDIVIDUAL"
   );
   ownership = ownership.split(".")[0];
-  if(ownership==="INDIVIDUAL"){
-    ownersJsonPath = "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.OwnerInfoCard.props.items";
+  if (ownership === "INDIVIDUAL") {
+    ownersJsonPath =
+      "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.OwnerInfoCard.props.items";
     owners = get(
       state.screenConfiguration.screenConfig.apply,
       ownersJsonPath,
       []
     );
-    for(let i =0;i<owners.length;i++){
-      let obj = owners[i]["item"+i].children.cardContent.children.tradeUnitCardContainer.children;
+    for (let i = 0; i < owners.length; i++) {
+      let obj =
+        owners[i]["item" + i].children.cardContent.children
+          .tradeUnitCardContainer.children;
       applyRequiredValidation(obj, state, dispatch);
     }
   } else {
-    ownersJsonPath = "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.ownerInfoInstitutional";
+    ownersJsonPath =
+      "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.ownerInfoInstitutional";
     owners = get(
       state.screenConfiguration.screenConfig.apply,
       ownersJsonPath,
       []
     );
-    let obj = owners.children.cardContent.children.tradeUnitCardContainerInstitutional.children;
+    let obj =
+      owners.children.cardContent.children.tradeUnitCardContainerInstitutional
+        .children;
     applyRequiredValidation(obj, state, dispatch);
   }
-}
+};
 
 export const applyRequiredValidation = (obj, state, dispatch) => {
-  Object.keys(obj).map((item)=>{
+  Object.keys(obj).map((item) => {
     let jsonPath = obj[item].jsonPath;
     let componentJsonpath = obj[item].componentJsonpath;
     let isFieldValid = obj[item].isFieldValid;
-    let value = get(state.screenConfiguration.preparedFinalObject, jsonPath, null);
-    if(value && !isFieldValid){
-      dispatch(
-        handleField(
-          "apply",
-          componentJsonpath,
-          "props.error",
-          false
-        )
-      );
-      dispatch(
-        handleField(
-          "apply",
-          componentJsonpath,
-          "props.helperText",
-          ""
-        )
-      );
-      dispatch(
-        handleField(
-          "apply",
-          componentJsonpath,
-          "isFieldValid",
-          true
-        )
-      );
+    let value = get(
+      state.screenConfiguration.preparedFinalObject,
+      jsonPath,
+      null
+    );
+    if (value && !isFieldValid) {
+      dispatch(handleField("apply", componentJsonpath, "props.error", false));
+      dispatch(handleField("apply", componentJsonpath, "props.helperText", ""));
+      dispatch(handleField("apply", componentJsonpath, "isFieldValid", true));
     }
-  })
-}
+  });
+};
 
-const getStatementForDocType = docType => {
+const getStatementForDocType = (docType) => {
   switch (docType) {
     case "OWNERIDPROOF":
       return "TL_OWNERIDPROOF_NOTE";
@@ -987,13 +998,11 @@ const getStatementForDocType = docType => {
   }
 };
 
-
 export const downloadAcknowledgementForm = (Licenses, mode = "download") => {
-
   const queryStr = [
     { key: "key", value: "tlapplication" },
-    { key: "tenantId", value: commonConfig.tenantId }
-  ]
+    { key: "tenantId", value: commonConfig.tenantId },
+  ];
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",
@@ -1001,30 +1010,46 @@ export const downloadAcknowledgementForm = (Licenses, mode = "download") => {
     },
   };
   try {
-    httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Licenses }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
-      .then(res => {
-        res.filestoreIds[0]
-        if (res && res.filestoreIds && res.filestoreIds.length > 0) {
-          res.filestoreIds.map(fileStoreId => {
-            downloadReceiptFromFilestoreID(fileStoreId, mode)
-          })
-        } else {
-          console.log("Error In Acknowledgement form Download");
-        }
-      });
+    httpRequest(
+      "post",
+      DOWNLOADRECEIPT.GET.URL,
+      DOWNLOADRECEIPT.GET.ACTION,
+      queryStr,
+      { Licenses },
+      { Accept: "application/json" },
+      { responseType: "arraybuffer" }
+    ).then((res) => {
+      res.filestoreIds[0];
+      if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+        res.filestoreIds.map((fileStoreId) => {
+          downloadReceiptFromFilestoreID(fileStoreId, mode);
+        });
+      } else {
+        console.log("Error In Acknowledgement form Download");
+      }
+    });
   } catch (exception) {
-    alert('Some Error Occured while downloading Acknowledgement form!');
+    alert("Some Error Occured while downloading Acknowledgement form!");
   }
-}
+};
 
-export const downloadCertificateForm = async (Licenses, mode = 'download') => {
+export const downloadCertificateForm = async (Licenses, mode = "download") => {
   let tenantId = get(Licenses[0], "tenantId");
-  let applicationNumber = get(Licenses[0], "applicationNumber")
-  const applicationType = Licenses && Licenses.length > 0 ? get(Licenses[0], "applicationType") : "NEW";
+  let applicationNumber = get(Licenses[0], "applicationNumber");
+  const applicationType =
+    Licenses && Licenses.length > 0
+      ? get(Licenses[0], "applicationType")
+      : "NEW";
   const queryStr = [
-    { key: "key", value: applicationType === "RENEWAL" ? "tlrenewalcertificate" : "tlcertificate" },
-    { key: "tenantId", value: commonConfig.tenantId }
-  ]
+    {
+      key: "key",
+      value:
+        applicationType === "RENEWAL"
+          ? "tlrenewalcertificate"
+          : "tlcertificate",
+    },
+    { key: "tenantId", value: commonConfig.tenantId },
+  ];
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",
@@ -1035,59 +1060,65 @@ export const downloadCertificateForm = async (Licenses, mode = 'download') => {
     { key: "tenantId", value: tenantId },
     {
       key: "applicationNumber",
-      value: applicationNumber
-    }
+      value: applicationNumber,
+    },
   ];
   const LicensesPayload = await getSearchResults(queryObject);
   const updatedLicenses = get(LicensesPayload, "Licenses");
-  const oldFileStoreId = get(updatedLicenses[0], "fileStoreId")
+  const oldFileStoreId = get(updatedLicenses[0], "fileStoreId");
   if (oldFileStoreId) {
-    downloadReceiptFromFilestoreID(oldFileStoreId, mode)
-  }
-  else {
+    downloadReceiptFromFilestoreID(oldFileStoreId, mode);
+  } else {
     try {
-      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Licenses }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
-        .then(res => {
-          res.filestoreIds[0]
-          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
-            res.filestoreIds.map(fileStoreId => {
-              downloadReceiptFromFilestoreID(fileStoreId, mode)
-            })
-          } else {
-            console.log("Error In Acknowledgement form Download");
-          }
-        });
+      httpRequest(
+        "post",
+        DOWNLOADRECEIPT.GET.URL,
+        DOWNLOADRECEIPT.GET.ACTION,
+        queryStr,
+        { Licenses },
+        { Accept: "application/json" },
+        { responseType: "arraybuffer" }
+      ).then((res) => {
+        res.filestoreIds[0];
+        if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+          res.filestoreIds.map((fileStoreId) => {
+            downloadReceiptFromFilestoreID(fileStoreId, mode);
+          });
+        } else {
+          console.log("Error In Acknowledgement form Download");
+        }
+      });
     } catch (exception) {
-      alert('Some Error Occured while downloading Acknowledgement form!');
+      alert("Some Error Occured while downloading Acknowledgement form!");
     }
   }
-}
+};
 
-export const prepareDocumentTypeObj = documents => {
+export const prepareDocumentTypeObj = (documents) => {
   let documentsArr =
     documents.length > 0
       ? documents.reduce((documentsArr, item, ind) => {
-        documentsArr.push({
-          ...item,
-          jsonPath: `Licenses[0].tradeLicenseDetail.applicationDocuments[${ind}]`,
-        });
-        return documentsArr;
-      }, [])
+          documentsArr.push({
+            ...item,
+            jsonPath: `Licenses[0].tradeLicenseDetail.applicationDocuments[${ind}]`,
+          });
+          return documentsArr;
+        }, [])
       : [];
   return documentsArr;
 };
 
 //Common functions for Estimate card
 
-const getTaxValue = item => {
+const getTaxValue = (item) => {
   return item
     ? item.amount
       ? item.amount
       : item.debitAmount
-        ? -Math.abs(item.debitAmount)
-        : item.crAmountToBePaid
-          ? item.crAmountToBePaid
-          : 0
+      ? -Math.abs(item.debitAmount)
+      : item.crAmountToBePaid
+      ? item.crAmountToBePaid
+      : 0
     : 0;
 };
 
@@ -1124,9 +1155,9 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
           result.push({
             name: {
               labelName: item.accountDescription.split("-")[0],
-              labelKey: item.accountDescription.split("-")[0]
+              labelKey: item.accountDescription.split("-")[0],
             },
-            // value: getTaxValue(item)            
+            // value: getTaxValue(item)
             value: item.amount,
             info: getToolTipInfo(
               item.accountDescription.split("-")[0],
@@ -1139,44 +1170,44 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
               key: getToolTipInfo(
                 item.accountDescription.split("-")[0],
                 LicenseData
-              )
-            }
+              ),
+            },
           });
         item.taxHeadCode &&
           result.push({
             name: {
               labelName: item.taxHeadCode,
-              labelKey: item.taxHeadCode
+              labelKey: item.taxHeadCode,
             },
             // value: getTaxValue(item),
             value: item.amount,
             info: getToolTipInfo(item.taxHeadCode, LicenseData) && {
               value: getToolTipInfo(item.taxHeadCode, LicenseData),
-              key: getToolTipInfo(item.taxHeadCode, LicenseData)
-            }
+              key: getToolTipInfo(item.taxHeadCode, LicenseData),
+            },
           });
       } else {
         item.taxHeadCode &&
           result.push({
             name: {
               labelName: item.taxHeadCode,
-              labelKey: item.taxHeadCode
+              labelKey: item.taxHeadCode,
             },
             value: item.amount,
             // value: getTaxValue(item),
             // value : get(ResponseData , "totalAmount"),
             info: getToolTipInfo(item.taxHeadCode, LicenseData) && {
               value: getToolTipInfo(item.taxHeadCode, LicenseData),
-              key: getToolTipInfo(item.taxHeadCode, LicenseData)
-            }
+              key: getToolTipInfo(item.taxHeadCode, LicenseData),
+            },
           });
       }
 
       return result;
     }, []);
     return [
-      ...transformedData.filter(item => item.name.labelKey === "TL_TAX"),
-      ...transformedData.filter(item => item.name.labelKey !== "TL_TAX"),
+      ...transformedData.filter((item) => item.name.labelKey === "TL_TAX"),
+      ...transformedData.filter((item) => item.name.labelKey !== "TL_TAX"),
       // ...extraData
     ];
   }
@@ -1209,7 +1240,7 @@ const getBillingSlabData = async (
     accessoryUnit && (billingData = [...billingData, ...accessoryUnit]);
     const queryObject = [
       { key: "tenantId", value: tenantId },
-      { key: "ids", value: billingData && billingData.join(",") }
+      { key: "ids", value: billingData && billingData.join(",") },
     ];
     try {
       const response = await httpRequest(
@@ -1230,11 +1261,11 @@ const getBillingSlabData = async (
               result.tradeUnitData.push({
                 rate: item.rate,
                 category: item.tradeType,
-                type: "trade"
+                type: "trade",
               });
             } else {
               const count = accessories.find(
-                accessory =>
+                (accessory) =>
                   item.accessoryCategory === accessory.accessoryCategory
               ).count;
               accessoriesTotal = accessoriesTotal + item.rate * count;
@@ -1242,7 +1273,7 @@ const getBillingSlabData = async (
                 rate: item.rate,
                 total: item.rate * count,
                 category: item.accessoryCategory,
-                type: "accessories"
+                type: "accessories",
               });
             }
             return result;
@@ -1280,7 +1311,7 @@ const getBillingSlabData = async (
           open,
           {
             lableName: "Billing Slab error!",
-            labelKey: "ERR_BILLING_SLAB_ERROR"
+            labelKey: "ERR_BILLING_SLAB_ERROR",
           },
           "error"
         )
@@ -1294,18 +1325,25 @@ const isApplicationPaid = (currentStatus, workflowCode) => {
   if (currentStatus === "CITIZENACTIONREQUIRED") {
     return isPAID;
   }
-  const businessServiceData = JSON.parse(localStorageGet("businessServiceData"));
+  const businessServiceData = JSON.parse(
+    localStorageGet("businessServiceData")
+  );
 
   if (!isEmpty(businessServiceData)) {
-    const tlBusinessService = JSON.parse(localStorageGet("businessServiceData")).filter(item => item.businessService === workflowCode)
-    const states = tlBusinessService && tlBusinessService.length > 0 && tlBusinessService[0].states;
+    const tlBusinessService = JSON.parse(
+      localStorageGet("businessServiceData")
+    ).filter((item) => item.businessService === workflowCode);
+    const states =
+      tlBusinessService &&
+      tlBusinessService.length > 0 &&
+      tlBusinessService[0].states;
     for (var i = 0; i < states.length; i++) {
       if (states[i].state === currentStatus) {
         break;
       }
       if (
         states[i].actions &&
-        states[i].actions.filter(item => item.action === "PAY").length > 0
+        states[i].actions.filter((item) => item.action === "PAY").length > 0
       ) {
         isPAID = true;
         break;
@@ -1325,7 +1363,9 @@ export const createEstimateData = async (
   href = {},
   getFromReceipt
 ) => {
-  const workflowCode = get(LicenseData, "workflowCode") ? get(LicenseData, "workflowCode") : "NewTL"
+  const workflowCode = get(LicenseData, "workflowCode")
+    ? get(LicenseData, "workflowCode")
+    : "NewTL";
   const applicationNo =
     get(LicenseData, "applicationNumber") ||
     getQueryArg(href, "applicationNumber");
@@ -1336,49 +1376,47 @@ export const createEstimateData = async (
     { key: "tenantId", value: tenantId },
     {
       key: "consumerCodes",
-      value: applicationNo
+      value: applicationNo,
     },
     {
       key: "businessService",
-      value: businessService
-    }
+      value: businessService,
+    },
   ];
   const getBillQueryObj = [
     { key: "tenantId", value: tenantId },
     {
       key: "consumerCode",
-      value: applicationNo
+      value: applicationNo,
     },
     {
       key: "businessService",
-      value: businessService
-    }
+      value: businessService,
+    },
   ];
   const currentStatus = LicenseData.status;
   const isPAID = isApplicationPaid(currentStatus, workflowCode);
   const fetchBillResponse = await getBill(getBillQueryObj);
   const payload = isPAID
-    ? await getReceipt(queryObj.filter(item => item.key !== "businessService"))
+    ? await getReceipt(
+        queryObj.filter((item) => item.key !== "businessService")
+      )
     : fetchBillResponse && fetchBillResponse.Bill && fetchBillResponse.Bill[0];
 
   let estimateData = payload
     ? isPAID
       ? payload &&
-      payload.Payments &&
-      payload.Payments.length > 0 &&
-      getEstimateData(
-        payload.Payments[0].paymentDetails[0].bill,
-        isPAID,
-        LicenseData
-      )
+        payload.Payments &&
+        payload.Payments.length > 0 &&
+        getEstimateData(
+          payload.Payments[0].paymentDetails[0].bill,
+          isPAID,
+          LicenseData
+        )
       : payload && getEstimateData(payload, false, LicenseData)
     : [];
   estimateData = estimateData || [];
-  set(
-    estimateData,
-    "payStatus",
-    isPAID
-  );
+  set(estimateData, "payStatus", isPAID);
   dispatch(prepareFinalObject(jsonPath, estimateData));
   const accessories = get(LicenseData, "tradeLicenseDetail.accessories", []);
   if (payload) {
@@ -1418,7 +1456,11 @@ export const getCurrentFinancialYear = () => {
 };
 
 export const getnextFinancialYear = (year) => {
-  const nextFY = year.substring(0, 2) + (parseInt(year.substring(2, 4)) + 1) + year.substring(4, 5) + (parseInt(year.substring(5, 7)) + 1);
+  const nextFY =
+    year.substring(0, 2) +
+    (parseInt(year.substring(2, 4)) + 1) +
+    year.substring(4, 5) +
+    (parseInt(year.substring(5, 7)) + 1);
   return nextFY;
 };
 
@@ -1437,8 +1479,10 @@ export const validateFields = (
   for (var variable in fields) {
     if (fields.hasOwnProperty(variable)) {
       if (
-        fields[variable] && fields[variable].componentPath != "DynamicMdmsContainer" &&
-        fields[variable].props && fields[variable].jsonPath &&
+        fields[variable] &&
+        fields[variable].componentPath != "DynamicMdmsContainer" &&
+        fields[variable].props &&
+        fields[variable].jsonPath &&
         (fields[variable].props.disabled === undefined ||
           !fields[variable].props.disabled) &&
         !validate(
@@ -1448,23 +1492,28 @@ export const validateFields = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            )
+            ),
           },
           dispatch,
           true
         )
       ) {
         isFormValid = false;
-      } else if(fields[variable] && fields[variable].componentPath == "DynamicMdmsContainer" && fields[variable].props){
-        let {masterName, moduleName, rootBlockSub, dropdownFields} = fields[variable].props;
+      } else if (
+        fields[variable] &&
+        fields[variable].componentPath == "DynamicMdmsContainer" &&
+        fields[variable].props
+      ) {
+        let { masterName, moduleName, rootBlockSub, dropdownFields } =
+          fields[variable].props;
         let isIndex = fields[variable].index || 0;
         dropdownFields.forEach((item, i) => {
           let isValid = get(
-            state.screenConfiguration.preparedFinalObject ,
+            state.screenConfiguration.preparedFinalObject,
             `DynamicMdms.${moduleName}.${rootBlockSub}.selectedValues[${isIndex}].${item.key}`,
-            ''
+            ""
           );
-          if(isValid == '' || isValid == 'none') {
+          if (isValid == "" || isValid == "none") {
             isFormValid = false;
             dispatch(
               handleField(
@@ -1476,13 +1525,12 @@ export const validateFields = (
             );
           }
         });
-        
       }
     }
   }
   return isFormValid;
-};  
-export const epochToYmdDate = et => {
+};
+export const epochToYmdDate = (et) => {
   if (!et) return null;
   if (typeof et === "string") return et;
   var date = new Date(Math.round(Number(et)));
@@ -1557,8 +1605,8 @@ export const fetchBill = async (action, state, dispatch) => {
     { key: "tenantId", value: getQueryArg(window.location.href, "tenantId") },
     {
       key: "applicationNumber",
-      value: getQueryArg(window.location.href, "applicationNumber")
-    }
+      value: getQueryArg(window.location.href, "applicationNumber"),
+    },
   ];
   const LicensesPayload = await getSearchResults(queryObject);
   //get bill and populate estimate card
@@ -1739,16 +1787,16 @@ export const setValidToFromVisibilityForApply = (state, value) => {
   }
 };
 
-export const ifUserRoleExists = role => {
+export const ifUserRoleExists = (role) => {
   let userInfo = JSON.parse(getUserInfo());
   const roles = get(userInfo, "roles");
-  const roleCodes = roles ? roles.map(role => role.code) : [];
+  const roleCodes = roles ? roles.map((role) => role.code) : [];
   if (roleCodes.indexOf(role) > -1) {
     return true;
   } else return false;
 };
 
-export const getTransformedStatus = status => {
+export const getTransformedStatus = (status) => {
   switch (status) {
     case "PAID":
       return "pending_approval";
@@ -1771,40 +1819,62 @@ export const getDocList = (state, dispatch) => {
     "Licenses[0].tradeLicenseDetail.tradeUnits[0]"
   );
 
-  const documentObj = get(state.screenConfiguration.preparedFinalObject, "applyScreenMdmsData.TradeLicense.documentObj");
-  const documentTypes = get(state.screenConfiguration.preparedFinalObject, "applyScreenMdmsData.common-masters.DocumentType");
+  const documentObj = get(
+    state.screenConfiguration.preparedFinalObject,
+    "applyScreenMdmsData.TradeLicense.documentObj"
+  );
+  const documentTypes = get(
+    state.screenConfiguration.preparedFinalObject,
+    "applyScreenMdmsData.common-masters.DocumentType"
+  );
 
-  const applicationType = getQueryArg(window.location.href , "action") === "EDITRENEWAL" ? "RENEWAL" :
-  get( state.screenConfiguration.preparedFinalObject, "Licenses[0].applicationType", "NEW");
-  const documentObjArray = documentObj && tradeUnits&& documentObj.filter(item => item.tradeType === tradeUnits.tradeType.split(".")[0]);
+  const applicationType =
+    getQueryArg(window.location.href, "action") === "EDITRENEWAL"
+      ? "RENEWAL"
+      : get(
+          state.screenConfiguration.preparedFinalObject,
+          "Licenses[0].applicationType",
+          "NEW"
+        );
+  const documentObjArray =
+    documentObj &&
+    tradeUnits &&
+    documentObj.filter(
+      (item) => item.tradeType === tradeUnits.tradeType.split(".")[0]
+    );
 
-  const filteredDocTypes = documentObjArray[0].allowedDocs.reduce((acc, item, index) => {
-    documentTypes.find((document, index) => {
-      if (document.code === item.documentType)
-        acc.push({
-          ...documentTypes[index]
-        })
-    });
-    return acc;
-  }, [])
-  const applicationDocArray = filteredDocTypes && filteredDocTypes.reduce((result, item) => {
-    const transformedDocObj = documentObjArray[0].allowedDocs.filter(docObj => docObj.documentType === item.code)[0];
-    if (transformedDocObj.applicationType.includes(applicationType)) {
-      result.push(
-        {
+  const filteredDocTypes = documentObjArray[0].allowedDocs.reduce(
+    (acc, item, index) => {
+      documentTypes.find((document, index) => {
+        if (document.code === item.documentType)
+          acc.push({
+            ...documentTypes[index],
+          });
+      });
+      return acc;
+    },
+    []
+  );
+  const applicationDocArray =
+    filteredDocTypes &&
+    filteredDocTypes.reduce((result, item) => {
+      const transformedDocObj = documentObjArray[0].allowedDocs.filter(
+        (docObj) => docObj.documentType === item.code
+      )[0];
+      if (transformedDocObj.applicationType.includes(applicationType)) {
+        result.push({
           code: item.code,
           maxFileSize: item.maxFileSize,
           required: transformedDocObj.required,
           formatProps: {
-            accept: item.allowedFormat.join(",")
+            accept: item.allowedFormat.join(","),
           },
           description: `COMMON_${item.code}_DESCRIPTION`,
-          statement: `COMMON_${item.code}_STATEMENT`
-        }
-      )
-    }
-    return result;
-  }, [])
+          statement: `COMMON_${item.code}_STATEMENT`,
+        });
+      }
+      return result;
+    }, []);
 
   let applicationDocument = prepareDocumentTypeObj(applicationDocArray);
   dispatch(
@@ -1825,13 +1895,13 @@ export const getDocList = (state, dispatch) => {
     applicationDocs.length &&
     applicationDocument.reduce((acc, item) => {
       const index = applicationDocs.findIndex(
-        i => i.documentType === item.code
+        (i) => i.documentType === item.code
       );
-      if (index > - 1) {
-        acc.push(applicationDocs[index])
+      if (index > -1) {
+        acc.push(applicationDocs[index]);
       }
       return acc;
-    }, [])
+    }, []);
   applicationDocsReArranged &&
     dispatch(
       prepareFinalObject(
@@ -1839,8 +1909,7 @@ export const getDocList = (state, dispatch) => {
         applicationDocsReArranged
       )
     );
-
-}
+};
 
 export const showHideBreakupPopup = (state, dispatch, screenKey) => {
   let toggle = get(
@@ -1857,25 +1926,25 @@ export const getDialogButton = (name, key, screenKey) => {
     componentPath: "Button",
     props: {
       color: "primary",
-      style: {}
+      style: {},
     },
     children: {
       previousButtonLabel: getLabel({
         labelName: name,
-        labelKey: key
-      })
+        labelKey: key,
+      }),
     },
     onClickDefination: {
       action: "condition",
       callBack: (state, dispatch) => {
         showHideBreakupPopup(state, dispatch, screenKey);
-      }
-    }
+      },
+    },
     //visible: false
   };
 };
 
-const getAllBillingSlabs = async tenantId => {
+const getAllBillingSlabs = async (tenantId) => {
   let payload = await httpRequest(
     "post",
     `/tl-calculator/billingslab/_search?tenantId=${tenantId}`,
@@ -1924,9 +1993,9 @@ export const getAllDataFromBillingSlab = async (tenantId, dispatch) => {
   );
   structureTypes = commonTransform(
     {
-      StructureType: structureTypes.map(item => {
+      StructureType: structureTypes.map((item) => {
         return { code: item.structureType, active: true };
-      })
+      }),
     },
     "StructureType"
   );
@@ -1934,7 +2003,7 @@ export const getAllDataFromBillingSlab = async (tenantId, dispatch) => {
     processedData.tradeTypeData,
     "licenseType"
   );
-  licenseTypes = licenseTypes.map(item => {
+  licenseTypes = licenseTypes.map((item) => {
     return { code: item.licenseType, active: true };
   });
   dispatch(
@@ -2005,7 +2074,7 @@ export const setFilteredTradeTypes = (
       }, {});
       let tradeTypeList = [];
       tradeTypeBSlab.length > 0 &&
-        tradeTypeBSlab.forEach(item => {
+        tradeTypeBSlab.forEach((item) => {
           if (
             item.code &&
             mdmsTTTransformed[item.code] &&
@@ -2014,7 +2083,7 @@ export const setFilteredTradeTypes = (
             tradeTypeList.push({
               ...item,
               applicationDocument:
-                mdmsTTTransformed[item.code].applicationDocument
+                mdmsTTTransformed[item.code].applicationDocument,
             });
           }
         });
@@ -2022,7 +2091,7 @@ export const setFilteredTradeTypes = (
         let filteredList =
           tradeTypeList &&
           tradeTypeList.length > 0 &&
-          tradeTypeList.filter(item => {
+          tradeTypeList.filter((item) => {
             if (
               item.licenseType === licenseType &&
               item.structureType === structureSubtype
@@ -2070,24 +2139,29 @@ export const applyForm = (state, dispatch, action) => {
     state.screenConfiguration.preparedFinalObject,
     "citiesByModule.citizenTenantId"
   );
-  const reqDocUi=get( state, "screenConfiguration.screenConfig.home.components.adhocDialog.children.popup", []);
-  set(reqDocUi, 'children.footer.children.footerChildElement.children.applyButton.onClickDefination', {
-  action: "condition",
-    callBack: (state, dispatch) => {
-      dispatch(prepareFinalObject('documentsUploadRedux', {}))
-      const applyUrl = process.env.NODE_ENV === "production"
-        ? `/tradelicense-citizen/apply?tenantId=${tenantId}`
-        : process.env.REACT_APP_SELF_RUNNING === true
-          ? `/egov-ui-framework/tradelicense-citizen/apply?tenantId=${tenantId}`
-          : `/tradelicense-citizen/apply?tenantId=${tenantId}`;
-      dispatch(setRoute(applyUrl))
-    }
-  })
-  set(
-    action,
-    "screenConfig.components.adhocDialog.children.popup",
-    reqDocUi
+  const reqDocUi = get(
+    state,
+    "screenConfiguration.screenConfig.home.components.adhocDialog.children.popup",
+    []
   );
+  set(
+    reqDocUi,
+    "children.footer.children.footerChildElement.children.applyButton.onClickDefination",
+    {
+      action: "condition",
+      callBack: (state, dispatch) => {
+        dispatch(prepareFinalObject("documentsUploadRedux", {}));
+        const applyUrl =
+          process.env.NODE_ENV === "production"
+            ? `/tradelicense-citizen/apply?tenantId=${tenantId}`
+            : process.env.REACT_APP_SELF_RUNNING === true
+            ? `/egov-ui-framework/tradelicense-citizen/apply?tenantId=${tenantId}`
+            : `/tradelicense-citizen/apply?tenantId=${tenantId}`;
+        dispatch(setRoute(applyUrl));
+      },
+    }
+  );
+  set(action, "screenConfig.components.adhocDialog.children.popup", reqDocUi);
   const isTradeDetailsValid = validateFields(
     "components.cityPickerDialog.children.dialogContent.children.popup.children.cityPicker.children",
     state,
@@ -2114,16 +2188,16 @@ export const sortByEpoch = (data, order) => {
   }
 };
 
-export const getEpochForDate = date => {
+export const getEpochForDate = (date) => {
   const dateSplit = date.split("/");
   return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
 };
 
-export const getTradeTypeDropdownData = tradeTypes => {
+export const getTradeTypeDropdownData = (tradeTypes) => {
   return (
     tradeTypes &&
     tradeTypes.TradeType &&
-    Object.keys(tradeTypes.TradeType).map(item => {
+    Object.keys(tradeTypes.TradeType).map((item) => {
       return { code: item, active: true };
     })
   );
@@ -2138,7 +2212,7 @@ export const fillOldLicenseData = async (state, dispatch) => {
   );
 };
 
-export const getTextToLocalMapping = label => {
+export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
     case "Application No":
@@ -2243,53 +2317,82 @@ export const getTextToLocalMapping = label => {
         localisationLabels
       );
     case "RENEWAL":
-      return getLocaleLabels(
-        "Renewal",
-        "TL_TYPE_RENEWAL",
-        localisationLabels
-      );
+      return getLocaleLabels("Renewal", "TL_TYPE_RENEWAL", localisationLabels);
     case "NEW":
-      return getLocaleLabels(
-        "New",
-        "TL_TYPE_NEW",
-        localisationLabels
-      );
+      return getLocaleLabels("New", "TL_TYPE_NEW", localisationLabels);
   }
 };
 
-export const checkValueForNA = value => {
+export const checkValueForNA = (value) => {
   return value ? value : "NA";
 };
 export const triggerUpdateByKey = (state, keyIndex, value, dispatch) => {
-  if(dispatch == "set"){
-    set(state, `screenConfiguration.preparedFinalObject.DynamicMdms.TradeLicense.tradeUnits.selectedValues[${keyIndex}]`, value);
+  if (dispatch == "set") {
+    set(
+      state,
+      `screenConfiguration.preparedFinalObject.DynamicMdms.TradeLicense.tradeUnits.selectedValues[${keyIndex}]`,
+      value
+    );
   } else {
-    dispatch(prepareFinalObject( `DynamicMdms.TradeLicense.tradeUnits.${keyIndex}`, value ));
+    dispatch(
+      prepareFinalObject(
+        `DynamicMdms.TradeLicense.tradeUnits.${keyIndex}`,
+        value
+      )
+    );
   }
-}
-export const updateMdmsDropDowns = async ( state, dispatch ) => {
-  const tradeSubTypes = get( state, "screenConfiguration.preparedFinalObject.Licenses[0].tradeLicenseDetail.tradeUnits", []);
+};
+export const updateMdmsDropDowns = async (state, dispatch) => {
+  const tradeSubTypes = get(
+    state,
+    "screenConfiguration.preparedFinalObject.Licenses[0].tradeLicenseDetail.tradeUnits",
+    []
+  );
   if (tradeSubTypes.length > 0) {
     try {
       tradeSubTypes.forEach((tradeSubType, i) => {
         const tradeCat = tradeSubType.tradeType.split(".")[0];
         const tradeType = tradeSubType.tradeType.split(".")[1];
         let formObj = {
-          tradeCategory: tradeCat, tradeType: tradeType, tradeSubType: tradeSubType.tradeType
-        }
-        triggerUpdateByKey(state, i, formObj, 'set');
+          tradeCategory: tradeCat,
+          tradeType: tradeType,
+          tradeSubType: tradeSubType.tradeType,
+        };
+        triggerUpdateByKey(state, i, formObj, "set");
 
-        triggerUpdateByKey(state, `tradeTypeTransformed.allDropdown[${i}]`, getObjectKeys(get( state, `screenConfiguration.preparedFinalObject.DynamicMdms.TradeLicense.tradeUnits.tradeUnitsTransformed.${tradeCat}`, [])) , dispatch);
-        triggerUpdateByKey(state, `tradeSubTypeTransformed.allDropdown[${i}]`, getObjectValues(get( state, `screenConfiguration.preparedFinalObject.DynamicMdms.TradeLicense.tradeUnits.tradeUnitsTransformed.${tradeCat}.${tradeType}`, [])) , dispatch);
- 
-        triggerUpdateByKey(state, `selectedValues[${i}]`, formObj , dispatch);
+        triggerUpdateByKey(
+          state,
+          `tradeTypeTransformed.allDropdown[${i}]`,
+          getObjectKeys(
+            get(
+              state,
+              `screenConfiguration.preparedFinalObject.DynamicMdms.TradeLicense.tradeUnits.tradeUnitsTransformed.${tradeCat}`,
+              []
+            )
+          ),
+          dispatch
+        );
+        triggerUpdateByKey(
+          state,
+          `tradeSubTypeTransformed.allDropdown[${i}]`,
+          getObjectValues(
+            get(
+              state,
+              `screenConfiguration.preparedFinalObject.DynamicMdms.TradeLicense.tradeUnits.tradeUnitsTransformed.${tradeCat}.${tradeType}`,
+              []
+            )
+          ),
+          dispatch
+        );
+
+        triggerUpdateByKey(state, `selectedValues[${i}]`, formObj, dispatch);
       });
     } catch (e) {
       console.log(e);
     }
   }
 };
-export const updateStructureTypes = async ( state, dispatch ) => {
+export const updateStructureTypes = async (state, dispatch) => {
   const structType = get(
     state,
     "screenConfiguration.preparedFinalObject.Licenses[0].tradeLicenseDetail.structureType"
@@ -2301,41 +2404,75 @@ export const updateStructureTypes = async ( state, dispatch ) => {
       structType.split(".")[0]
     );
     try {
-      dispatch(prepareFinalObject( `DynamicMdms.common-masters.structureTypes.selectedValues[0].structureType`, structType.split(".")[0] ));
-  
-      let dropDownValues = getObjectValues(get(state.screenConfiguration.preparedFinalObject,`DynamicMdms.common-masters.structureTypes.structureTypesTransformed.${structType.split(".")[0]}`,[]));
+      dispatch(
+        prepareFinalObject(
+          `DynamicMdms.common-masters.structureTypes.selectedValues[0].structureType`,
+          structType.split(".")[0]
+        )
+      );
+
+      let dropDownValues = getObjectValues(
+        get(
+          state.screenConfiguration.preparedFinalObject,
+          `DynamicMdms.common-masters.structureTypes.structureTypesTransformed.${
+            structType.split(".")[0]
+          }`,
+          []
+        )
+      );
       let structureSubTypeDropValues = [];
       if (dropDownValues && dropDownValues.length === 0) {
-        dropDownValues = get(state.screenConfiguration.preparedFinalObject,`applyScreenMdmsData.common-masters.StructureType`,[]);
-        if (dropDownValues && dropDownValues,length > 0) {
-          structureSubTypeDropValues = dropDownValues.filter(data => data.code.split('.')[0] === structType.split(".")[0]);
-          dispatch(prepareFinalObject("DynamicMdms.common-masters.structureTypes.structureSubTypeTransformed.allDropdown[0]", structureSubTypeDropValues));
+        dropDownValues = get(
+          state.screenConfiguration.preparedFinalObject,
+          `applyScreenMdmsData.common-masters.StructureType`,
+          []
+        );
+        if ((dropDownValues && dropDownValues, length > 0)) {
+          structureSubTypeDropValues = dropDownValues.filter(
+            (data) => data.code.split(".")[0] === structType.split(".")[0]
+          );
+          dispatch(
+            prepareFinalObject(
+              "DynamicMdms.common-masters.structureTypes.structureSubTypeTransformed.allDropdown[0]",
+              structureSubTypeDropValues
+            )
+          );
         }
       } else {
-        dispatch(prepareFinalObject("DynamicMdms.common-masters.structureTypes.structureSubTypeTransformed.allDropdown[0]", dropDownValues));
+        dispatch(
+          prepareFinalObject(
+            "DynamicMdms.common-masters.structureTypes.structureSubTypeTransformed.allDropdown[0]",
+            dropDownValues
+          )
+        );
       }
-      
+
       // dispatch(prepareFinalObject( `DynamicMdms.common-masters.structureTypes.structureSubTypeTransformed.allDropdown[0]`, getObjectValues(get( state, `screenConfiguration.preparedFinalObject.DynamicMdms.common-masters.structureTypes.structureTypesTransformed.${structType.split(".")[0]}`, [])) ));
-      
-      dispatch(prepareFinalObject( `DynamicMdms.common-masters.structureTypes.selectedValues[0].structureSubType`, structType ));
-        dispatch(
-          prepareFinalObject(
-            "LicensesTemp[0].tradeLicenseDetail.structureType",
-            structType
-          )
-        );
-        dispatch(
-          prepareFinalObject(
-            "LicensesTemp[0].tradeLicenseDetail.structureSubType",
-            structType
-          )
-        );
+
+      dispatch(
+        prepareFinalObject(
+          `DynamicMdms.common-masters.structureTypes.selectedValues[0].structureSubType`,
+          structType
+        )
+      );
+      dispatch(
+        prepareFinalObject(
+          "LicensesTemp[0].tradeLicenseDetail.structureType",
+          structType
+        )
+      );
+      dispatch(
+        prepareFinalObject(
+          "LicensesTemp[0].tradeLicenseDetail.structureSubType",
+          structType
+        )
+      );
     } catch (e) {
       console.log(e);
-    }    
+    }
   }
-}
-export const updateOwnerShipEdit = async ( state, dispatch ) => {
+};
+export const updateOwnerShipEdit = async (state, dispatch) => {
   let tradeSubOwnershipCat = get(
     state,
     "screenConfiguration.preparedFinalObject.Licenses[0].tradeLicenseDetail.subOwnerShipCategory"
@@ -2359,13 +2496,13 @@ export const updateOwnerShipEdit = async ( state, dispatch ) => {
       "Licenses[0].tradeLicenseDetail.subOwnerShipCategory",
       tradeSubOwnershipCat
     );
-    
-      dispatch(
-        prepareFinalObject(
-          "Licenses[0].tradeLicenseDetail.subOwnerShipCategory",
-          tradeSubOwnershipCat
-        )
-      );
+
+    dispatch(
+      prepareFinalObject(
+        "Licenses[0].tradeLicenseDetail.subOwnerShipCategory",
+        tradeSubOwnershipCat
+      )
+    );
   }
 
   set(
@@ -2379,17 +2516,32 @@ export const updateOwnerShipEdit = async ( state, dispatch ) => {
     tradeOwnershipCat
   );
   try {
+    dispatch(
+      prepareFinalObject(
+        "DynamicMdms.common-masters.tradeOwner.selectedValues[0].ownership",
+        tradeOwnershipCat
+      )
+    );
 
-      dispatch(
-        prepareFinalObject(
-          "DynamicMdms.common-masters.tradeOwner.selectedValues[0].ownership",
-          tradeOwnershipCat
+    dispatch(
+      prepareFinalObject(
+        `DynamicMdms.common-masters.tradeOwner.subOwnershipTransformed.allDropdown[0]`,
+        getObjectValues(
+          get(
+            state.screenConfiguration.preparedFinalObject,
+            `DynamicMdms.common-masters.tradeOwner.tradeOwnerTransformed.${tradeOwnershipCat}`,
+            []
+          )
         )
-      );
+      )
+    );
 
-    dispatch(prepareFinalObject( `DynamicMdms.common-masters.tradeOwner.subOwnershipTransformed.allDropdown[0]`, getObjectValues(get( state.screenConfiguration.preparedFinalObject, `DynamicMdms.common-masters.tradeOwner.tradeOwnerTransformed.${tradeOwnershipCat}`, [])) ));
-
-    dispatch(prepareFinalObject( `DynamicMdms.common-masters.tradeOwner.selectedValues[0].subOwnership`, tradeSubOwnershipCat ));
+    dispatch(
+      prepareFinalObject(
+        `DynamicMdms.common-masters.tradeOwner.selectedValues[0].subOwnership`,
+        tradeSubOwnershipCat
+      )
+    );
     //handlefield for Type of OwnerShip while setting drop down values as beforeFieldChange won't be callled
     if (tradeOwnershipCat === "INDIVIDUAL") {
       dispatch(
@@ -2478,7 +2630,7 @@ export const updateOwnerShipEdit = async ( state, dispatch ) => {
   } catch (e) {
     console.log(e);
   }
-}
+};
 
 export const pageResetAndChange = (state, dispatch, tenant) => {
   dispatch(prepareFinalObject("Licenses", [{ licenseType: "PERMANENT" }]));

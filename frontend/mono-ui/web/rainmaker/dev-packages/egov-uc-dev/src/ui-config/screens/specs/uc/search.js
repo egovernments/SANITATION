@@ -1,5 +1,6 @@
 import {
-  getBreak, getCommonHeader
+  getBreak,
+  getCommonHeader,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
@@ -11,11 +12,10 @@ import "./index.css";
 import { searchResults } from "./universalCollectionResources/searchResults";
 import { UCSearchCard } from "./universalCollectionResources/ucSearch";
 
-
 const tenantId = getTenantId();
 const header = getCommonHeader({
   labelName: "Receipt",
-  labelKey: "UC_RECEIPT"
+  labelKey: "UC_RECEIPT",
 });
 
 const hasButton = getQueryArg(window.location.href, "hasButton");
@@ -27,7 +27,6 @@ const getData = async (action, state, dispatch) => {
 };
 
 const getMDMSData = async (action, state, dispatch) => {
-
   let mdmsBody = {
     MdmsCriteria: {
       tenantId: tenantId,
@@ -35,24 +34,24 @@ const getMDMSData = async (action, state, dispatch) => {
         {
           moduleName: "BillingService",
           masterDetails: [
-            { name: "BusinessService", filter: "[?(@.type=='Adhoc')]" }
-          ]
+            { name: "BusinessService", filter: "[?(@.type=='Adhoc')]" },
+          ],
         },
         {
           moduleName: "common-masters",
           masterDetails: [
             {
-              name: "uiCommonPay"
-            }
-          ]
+              name: "uiCommonPay",
+            },
+          ],
         },
-      ]
-    }
+      ],
+    },
   };
   try {
     const payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -63,17 +62,20 @@ const getMDMSData = async (action, state, dispatch) => {
         get(payload, "MdmsRes.BillingService.BusinessService", [])
       )
     );
-    dispatch(prepareFinalObject("applyScreenMdmsData.uiCommonConfig", get(payload.MdmsRes, "common-masters.uiCommonPay")))
+    dispatch(
+      prepareFinalObject(
+        "applyScreenMdmsData.uiCommonConfig",
+        get(payload.MdmsRes, "common-masters.uiCommonPay")
+      )
+    );
     setServiceCategory(
       get(payload, "MdmsRes.BillingService.BusinessService", []),
-      dispatch, null, false
+      dispatch,
+      null,
+      false
     );
-
-
-
   } catch (e) {
     console.log(e);
-
   }
 };
 
@@ -91,7 +93,7 @@ const ucSearchAndResult = {
       componentPath: "Form",
       props: {
         className: "common-div-css",
-        id: "universalCollection"
+        id: "universalCollection",
       },
       children: {
         headerDiv: {
@@ -102,21 +104,18 @@ const ucSearchAndResult = {
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 6
+                sm: 6,
               },
-              ...header
+              ...header,
             },
-
-          }
+          },
         },
         UCSearchCard,
         breakAfterSearch: getBreak(),
-        searchResults
-      }
-    }
-  }
+        searchResults,
+      },
+    },
+  },
 };
 
 export default ucSearchAndResult;
-
-

@@ -5,7 +5,7 @@ import {
   getCommonContainer,
   getCommonTitle,
   getCommonParagraph,
-  getBreak
+  getBreak,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 import get from "lodash/get";
@@ -16,11 +16,11 @@ import {
   objectToDropdown,
   getCurrentFinancialYear,
   getLicenseeTypeDropdownData,
-  addressDestruct
+  addressDestruct,
 } from "../utils";
 import {
   prepareFinalObject,
-  handleScreenConfigurationFieldChange as handleField
+  handleScreenConfigurationFieldChange as handleField,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { footer } from "./applyResource/footer";
@@ -28,7 +28,7 @@ import { tradeReviewDetails } from "./applyResource/tradeReviewDetails";
 import { organizationDetails } from "./applyResource/organizationDetails";
 import {
   permanentAddr,
-  corrospondanceAddr
+  corrospondanceAddr,
 } from "./applyResource/tradeLocationDetails";
 import { OwnerInfoCard } from "./applyResource/tradeOwnerDetails";
 import { LicenseeCard } from "./applyResource/licenseeDetails";
@@ -41,11 +41,11 @@ import commonConfig from "config/common.js";
 export const stepsData = [
   {
     labelName: "Licensee Details",
-    labelKey: "BPA_LICENSEE_DETAILS_HEADER_OWNER_INFO"
+    labelKey: "BPA_LICENSEE_DETAILS_HEADER_OWNER_INFO",
   },
   { labelName: "Applicant Details", labelKey: "BPA_COMMON_AP_DETAILS" },
   { labelName: "Document Upload", labelKey: "BPA_COMMON_DOCS" },
-  { labelName: "Summary", labelKey: "BPA_COMMON_SUMMARY" }
+  { labelName: "Summary", labelKey: "BPA_COMMON_SUMMARY" },
 ];
 export const stepper = getStepperObject(
   { props: { activeStep: 0 } },
@@ -60,7 +60,7 @@ export const getOrganizationReqd = {
   gridDefination: {
     xs: 12,
     sm: 12,
-    md: 6
+    md: 6,
   },
   jsonPath: "Licenses[0].tradeLicenseDetail.subOwnerShipCategory",
 
@@ -68,29 +68,29 @@ export const getOrganizationReqd = {
     ValueToHide: "INDIVIDUAL",
     componentPathToHide: [
       "components.div.children.formwizardSecondStep.children.organizationDetails",
-      "components.div.children.formwizardForthStep.children.tradeReviewDetails.children.cardContent.children.reviewOrganizationDetails"
+      "components.div.children.formwizardForthStep.children.tradeReviewDetails.children.cardContent.children.reviewOrganizationDetails",
     ],
     label: {
       name: "On behalf of any organization?",
-      key: "BPA_ORGANIZATION_REQD_LABEL"
+      key: "BPA_ORGANIZATION_REQD_LABEL",
     },
     buttons: [
       {
         labelName: "Yes",
         labelKey: "BPA_ORG_YES_LABEL",
-        value: "INSTITUTIONAL"
+        value: "INSTITUTIONAL",
       },
       {
         label: "No",
         labelKey: "BPA_ORG_NO_LABEL",
-        value: "INDIVIDUAL"
-      }
+        value: "INDIVIDUAL",
+      },
     ],
     jsonPath: "Licenses[0].tradeLicenseDetail.subOwnerShipCategory",
-    required: true
+    required: true,
   },
   required: true,
-  type: "array"
+  type: "array",
 };
 
 export const header = getCommonContainer({
@@ -102,7 +102,7 @@ export const header = getCommonContainer({
           labelKey:
             process.env.REACT_APP_NAME === "Citizen"
               ? "BPA_COMMON_APPL_NEW_LICENSE"
-              : "BPA_COMMON_APPL_NEW_LICENSE"
+              : "BPA_COMMON_APPL_NEW_LICENSE",
         })
       : {},
   applicationNumber: {
@@ -110,30 +110,30 @@ export const header = getCommonContainer({
     moduleName: "egov-tradelicence",
     componentPath: "ApplicationNoContainer",
     props: {
-      number: "NA"
+      number: "NA",
     },
-    visible: false
-  }
+    visible: false,
+  },
 });
 
 export const tradeDocumentDetails = getCommonCard({
   header: getCommonTitle(
     {
       labelName: "Required Documents",
-      labelKey: "BPA_DOCUMENT_DETAILS_HEADER"
+      labelKey: "BPA_DOCUMENT_DETAILS_HEADER",
     },
     {
       style: {
-        marginBottom: 18
-      }
+        marginBottom: 18,
+      },
     }
   ),
   paragraph: getCommonParagraph({
     labelName:
       "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
-    labelKey: "BPA_DOCUMENT_DETAILS_SUBTEXT"
+    labelKey: "BPA_DOCUMENT_DETAILS_SUBTEXT",
   }),
-  documentList
+  documentList,
 });
 
 export const getMdmsData = async (action, state, dispatch) => {
@@ -146,8 +146,8 @@ export const getMdmsData = async (action, state, dispatch) => {
           masterDetails: [
             { name: "TradeType", filter: `[?(@.type == "BPA")]` },
             { name: "AccessoriesCategory" },
-            { name: "ApplicationType" }
-          ]
+            { name: "ApplicationType" },
+          ],
         },
         {
           moduleName: "common-masters",
@@ -155,35 +155,33 @@ export const getMdmsData = async (action, state, dispatch) => {
             { name: "OwnerType" },
             { name: "OwnerShipCategory" },
             { name: "DocumentType" },
-            { name: "UOM" }
-          ]
+            { name: "UOM" },
+          ],
         },
         {
           moduleName: "tenant",
           masterDetails: [
             {
-              name: "tenants"
-            }
-          ]
+              name: "tenants",
+            },
+          ],
         },
         {
           moduleName: "egf-master",
-          masterDetails: [{ name: "FinancialYear" }]
+          masterDetails: [{ name: "FinancialYear" }],
         },
         {
           moduleName: "StakeholderRegistraition",
-          masterDetails: [
-            { name: "TradeTypetoRoleMapping" }
-          ]
-        }
-      ]
-    }
+          masterDetails: [{ name: "TradeTypetoRoleMapping" }],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -228,10 +226,9 @@ export const getMdmsData = async (action, state, dispatch) => {
       payload,
       "MdmsRes.egf-master.FinancialYear",
       []
-    ).filter(item => item.module === "TL" && item.active === true);
+    ).filter((item) => item.module === "TL" && item.active === true);
     set(payload, "MdmsRes.egf-master.FinancialYear", financialYearData);
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 // export const getData = async (action, state, dispatch) => {
@@ -318,18 +315,18 @@ export const formwizardFirstStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form1"
+    id: "apply_form1",
   },
   children: {
-    LicenseeCard
-  }
+    LicenseeCard,
+  },
 };
 
 export const formwizardSecondStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form2"
+    id: "apply_form2",
   },
   children: {
     OwnerInfoCard,
@@ -337,31 +334,31 @@ export const formwizardSecondStep = {
     // getOrganizationReqd,
     // organizationDetails,
     permanentAddr,
-    corrospondanceAddr
+    corrospondanceAddr,
   },
-  visible: false
+  visible: false,
 };
 
 export const formwizardThirdStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form3"
+    id: "apply_form3",
   },
   children: {
-    tradeDocumentDetails
+    tradeDocumentDetails,
   },
-  visible: false
+  visible: false,
 };
 
 export const formwizardFourthStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form4"
+    id: "apply_form4",
   },
   children: {
-    tradeReviewDetails
+    tradeReviewDetails,
   },
-  visible: false
+  visible: false,
 };

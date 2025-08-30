@@ -1,5 +1,11 @@
-export const useCustomMDMSV2 = ({ tenantId, schemaCode, select, changeQueryName = "Random",filters={},config={} }) => {
-  
+export const useCustomMDMSV2 = ({
+  tenantId,
+  schemaCode,
+  select,
+  changeQueryName = "Random",
+  filters = {},
+  config = {},
+}) => {
   const requestCriteria = {
     url: "/mdms-v2/v2/_search",
     body: {
@@ -10,7 +16,7 @@ export const useCustomMDMSV2 = ({ tenantId, schemaCode, select, changeQueryName 
         filters: filters,
         schemaCode: schemaCode,
         isActive: true,
-        limit: 100
+        limit: 100,
       },
     },
     config: {
@@ -24,13 +30,15 @@ export const useCustomMDMSV2 = ({ tenantId, schemaCode, select, changeQueryName 
             //refer the "code" key in data(for now) and set options array , also set i18nKey in each object to show in UI
             const options = mdms?.map((row) => {
               return {
-                i18nKey: Digit.Utils.locale.getTransformedLocale(`${row?.schemaCode}_${row?.data?.code}`),
+                i18nKey: Digit.Utils.locale.getTransformedLocale(
+                  `${row?.schemaCode}_${row?.data?.code}`
+                ),
                 ...row.data,
               };
             });
             return options;
           },
-          ...config
+      ...config,
     },
     changeQueryName,
   };

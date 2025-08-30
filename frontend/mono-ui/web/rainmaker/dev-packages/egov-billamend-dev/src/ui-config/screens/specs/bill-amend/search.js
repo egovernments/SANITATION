@@ -1,5 +1,12 @@
-import { getBreak, getCommonHeader, getCommonSubHeader } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  getBreak,
+  getCommonHeader,
+  getCommonSubHeader,
+} from "egov-ui-framework/ui-config/screens/specs/utils";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import commonConfig from "config/common.js";
@@ -11,11 +18,11 @@ import { searchResults } from "./searchResources/searchResults";
 
 const header = getCommonHeader({
   labelName: "Universal Bill",
-  labelKey: "BILL_UNIVERSAL_BILL_COMMON_HEADER"
+  labelKey: "BILL_UNIVERSAL_BILL_COMMON_HEADER",
 });
 const subHeader = getCommonSubHeader({
   labelName: "Universal Bill",
-  labelKey: "BILL_UNIVERSAL_BILL_COMMON_SUBHEADER"
+  labelKey: "BILL_UNIVERSAL_BILL_COMMON_SUBHEADER",
 });
 
 const hasButton = getQueryArg(window.location.href, "hasButton");
@@ -32,53 +39,53 @@ const getMDMSData = async (action, state, dispatch) => {
           moduleName: "BillingService",
           masterDetails: [
             {
-              name: "BusinessService"
-            }
-          ]
+              name: "BusinessService",
+            },
+          ],
         },
         {
           moduleName: "BillAmendment",
-          masterDetails: [
-            { name: "documentObj" }
-          ]
+          masterDetails: [{ name: "documentObj" }],
         },
         {
           moduleName: "common-masters",
           masterDetails: [
             {
-              name: "uiCommonPay"
-            }
-          ]
+              name: "uiCommonPay",
+            },
+          ],
         },
         {
           moduleName: "tenant",
           masterDetails: [
             {
-              name: "tenants"
-            }
-          ]
-        }
-      ]
-    }
+              name: "tenants",
+            },
+          ],
+        },
+      ],
+    },
   };
   try {
-    getRequiredDocData(action, dispatch, [{
-      moduleName: "BillAmendment",
-      masterDetails: [
-        { name: "documentObj" }
-      ]
-    }])
+    getRequiredDocData(action, dispatch, [
+      {
+        moduleName: "BillAmendment",
+        masterDetails: [{ name: "documentObj" }],
+      },
+    ]);
     const payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
     );
-    payload.MdmsRes.BillingService.BusinessService = payload.MdmsRes.BillingService.BusinessService.filter(service => service.isBillAmendmentEnabled);
+    payload.MdmsRes.BillingService.BusinessService =
+      payload.MdmsRes.BillingService.BusinessService.filter(
+        (service) => service.isBillAmendmentEnabled
+      );
     dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 const getData = async (action, state, dispatch) => {
@@ -92,18 +99,21 @@ const screenConfig = {
     getData(action, state, dispatch);
     const tenantId = getTenantId();
     if (tenantId) {
-      dispatch(prepareFinalObject("searchScreenBillAmend", { tenantId: tenantId, businessService: "", mobileNumber: "", amendmentId: "", consumerCode: "" }));
-      const ulbComponentJsonPath = "components.div.children.searchCard.children.cardContent.children.searchContainer.children.ulb";
+      dispatch(
+        prepareFinalObject("searchScreenBillAmend", {
+          tenantId: tenantId,
+          businessService: "",
+          mobileNumber: "",
+          amendmentId: "",
+          consumerCode: "",
+        })
+      );
+      const ulbComponentJsonPath =
+        "components.div.children.searchCard.children.cardContent.children.searchContainer.children.ulb";
 
       dispatch(
-        handleField(
-          "search",
-          ulbComponentJsonPath,
-          "props.value",
-          tenantId
-        )
+        handleField("search", ulbComponentJsonPath, "props.value", tenantId)
       );
-
     }
 
     return action;
@@ -114,7 +124,7 @@ const screenConfig = {
       componentPath: "Form",
       props: {
         className: "common-div-css",
-        id: "search"
+        id: "search",
       },
       children: {
         headerDiv: {
@@ -125,11 +135,11 @@ const screenConfig = {
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 6
+                sm: 6,
               },
-              ...header
-            }
-          }
+              ...header,
+            },
+          },
         },
         subHeaderDiv: {
           uiFramework: "custom-atoms",
@@ -138,16 +148,16 @@ const screenConfig = {
             subHeader: {
               gridDefination: {
                 xs: 12,
-                sm: 12
+                sm: 12,
               },
-              ...subHeader
+              ...subHeader,
             },
-          }
+          },
         },
         searchCard,
         breakAfterSearch: getBreak(),
-        searchResults
-      }
+        searchResults,
+      },
     },
     adhocDialog: {
       uiFramework: "custom-containers",
@@ -155,13 +165,13 @@ const screenConfig = {
       props: {
         open: false,
         maxWidth: false,
-        screenKey: "search"
+        screenKey: "search",
       },
       children: {
-        popup: {}
-      }
-    }
-  }
+        popup: {},
+      },
+    },
+  },
 };
 
 export default screenConfig;

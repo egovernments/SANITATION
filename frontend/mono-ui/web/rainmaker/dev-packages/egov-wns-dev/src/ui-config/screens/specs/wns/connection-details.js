@@ -6,11 +6,11 @@ import {
   getCommonCard,
   getCommonContainer,
   getCommonHeader,
-  getLabel
+  getLabel,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   handleScreenConfigurationFieldChange as handleField,
-  prepareFinalObject
+  prepareFinalObject,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -21,7 +21,7 @@ import {
   getDescriptionFromMDMS,
   getSearchResults,
   getSearchResultsForSewerage,
-  serviceConst
+  serviceConst,
 } from "../../../../ui-utils/commons";
 import { getDemand, ifUserRoleExists } from "../utils";
 import { connectionDetailsDownload } from "./connectionDetailsResource/connectionDetailsDownload";
@@ -29,7 +29,7 @@ import { connectionDetailsFooter } from "./connectionDetailsResource/connectionD
 import {
   connHolderDetailsSameAsOwnerSummary,
   connHolderDetailsSummary,
-  getOwnerDetails
+  getOwnerDetails,
 } from "./connectionDetailsResource/owner-deatils";
 import { getPropertyDetails } from "./connectionDetailsResource/property-details";
 import { getServiceDetails } from "./connectionDetailsResource/service-details";
@@ -37,7 +37,6 @@ import { getServiceDetails } from "./connectionDetailsResource/service-details";
 const tenantId = getQueryArg(window.location.href, "tenantId");
 let connectionNumber = getQueryArg(window.location.href, "connectionNumber");
 const service = getQueryArg(window.location.href, "service");
-
 
 const getApplicationNumber = (dispatch, connectionsObj) => {
   let appNos = "";
@@ -118,7 +117,7 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
   let queryObject = [
     { key: "tenantId", value: tenantId },
     { key: "connectionNumber", value: connectionNumber },
-    { key: "searchType", value: "CONNECTION" }
+    { key: "searchType", value: "CONNECTION" },
   ];
   let serviceUrl = getQueryArg(window.location.href, "service");
   if (serviceUrl === serviceConst.SEWERAGE) {
@@ -168,7 +167,7 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
           mdmsPropertyType !== undefined &&
           mdmsPropertyType !== null &&
           mdmsPropertyType.MdmsRes.PropertyTax.PropertyType[0].name !==
-          undefined &&
+            undefined &&
           mdmsPropertyType.MdmsRes.PropertyTax.PropertyType[0].name !== null
         ) {
           sewerageConnection.property.propertyTypeData =
@@ -221,11 +220,24 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
         },
       ];
       const bill = await getDemand(queryObjForBill, dispatch);
-      let billAMDSearch = process.env.REACT_APP_NAME !== "Citizen" ? await getBillAmdSearchResult(queryObjForBill, dispatch) : [];
+      let billAMDSearch =
+        process.env.REACT_APP_NAME !== "Citizen"
+          ? await getBillAmdSearchResult(queryObjForBill, dispatch)
+          : [];
       let amendments = get(billAMDSearch, "Amendments", []);
-      amendments = amendments && Array.isArray(amendments) && amendments.filter(amendment => amendment.status === 'INWORKFLOW');
+      amendments =
+        amendments &&
+        Array.isArray(amendments) &&
+        amendments.filter((amendment) => amendment.status === "INWORKFLOW");
       dispatch(prepareFinalObject("BILL_FOR_WNS", bill));
-      dispatch(prepareFinalObject("isAmendmentInWorkflow", amendments && Array.isArray(amendments) && amendments.length == 0 ? true : false));
+      dispatch(
+        prepareFinalObject(
+          "isAmendmentInWorkflow",
+          amendments && Array.isArray(amendments) && amendments.length == 0
+            ? true
+            : false
+        )
+      );
 
       dispatch(prepareFinalObject("WaterConnection[0]", sewerageConnection));
       getApplicationNumber(dispatch, payloadData.SewerageConnections);
@@ -247,7 +259,11 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
         )
       );
 
-      if (sewerageConnection && sewerageConnection.length > 0 && sewerageConnection[0].uom) {
+      if (
+        sewerageConnection &&
+        sewerageConnection.length > 0 &&
+        sewerageConnection[0].uom
+      ) {
         dispatch(
           handleField(
             "connection-details",
@@ -266,7 +282,6 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
           )
         );
       }
-
     }
   } else if (serviceUrl === serviceConst.WATER) {
     let payloadData = await getSearchResults(queryObject, true);
@@ -321,7 +336,7 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
         );
         waterConnection.property.propertyTypeData =
           mdmsPropertyType.MdmsRes.PropertyTax.PropertyType[0].name !==
-            undefined
+          undefined
             ? mdmsPropertyType.MdmsRes.PropertyTax.PropertyType[0].name
             : "NA"; //propertyType from Mdms
       }
@@ -354,11 +369,24 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
         },
       ];
       const bill = await getDemand(queryObjForBill, dispatch);
-      let billAMDSearch = process.env.REACT_APP_NAME !== "Citizen" ? await getBillAmdSearchResult(queryObjForBill, dispatch) : [];
+      let billAMDSearch =
+        process.env.REACT_APP_NAME !== "Citizen"
+          ? await getBillAmdSearchResult(queryObjForBill, dispatch)
+          : [];
       let amendments = get(billAMDSearch, "Amendments", []);
-      amendments = amendments && Array.isArray(amendments) && amendments.filter(amendment => amendment.status === 'INWORKFLOW');
+      amendments =
+        amendments &&
+        Array.isArray(amendments) &&
+        amendments.filter((amendment) => amendment.status === "INWORKFLOW");
       dispatch(prepareFinalObject("BILL_FOR_WNS", bill));
-      dispatch(prepareFinalObject("isAmendmentInWorkflow", amendments && Array.isArray(amendments) && amendments.length == 0 ? true : false));
+      dispatch(
+        prepareFinalObject(
+          "isAmendmentInWorkflow",
+          amendments && Array.isArray(amendments) && amendments.length == 0
+            ? true
+            : false
+        )
+      );
       showHideConnectionHolder(dispatch, waterConnection.connectionHolders);
       dispatch(prepareFinalObject("WaterConnection[0]", waterConnection));
       getApplicationNumber(dispatch, payloadData.WaterConnection);
@@ -380,25 +408,45 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
       );
 
       const service = getQueryArg(window.location.href, "service");
-      const connectionType = getQueryArg(window.location.href, "connectionType");
+      const connectionType = getQueryArg(
+        window.location.href,
+        "connectionType"
+      );
       const getRedirectionURL = async (state, dispatch) => {
         const getTenant = getQueryArg(window.location.href, "tenantId");
-        const connectionNumber = getQueryArg(window.location.href, "connectionNumber");
-        const environment = process.env.NODE_ENV === "production" ? process.env.REACT_APP_NAME === "Citizen" ? "citizen" : "employee" : "";
-        const origin = process.env.NODE_ENV === "production" ? window.location.origin + "/" : window.location.origin;
-        window.location.assign(`${origin}${environment}/wns/meter-reading?connectionNos=${connectionNumber}&tenantId=${getTenant}`);
+        const connectionNumber = getQueryArg(
+          window.location.href,
+          "connectionNumber"
+        );
+        const environment =
+          process.env.NODE_ENV === "production"
+            ? process.env.REACT_APP_NAME === "Citizen"
+              ? "citizen"
+              : "employee"
+            : "";
+        const origin =
+          process.env.NODE_ENV === "production"
+            ? window.location.origin + "/"
+            : window.location.origin;
+        window.location.assign(
+          `${origin}${environment}/wns/meter-reading?connectionNos=${connectionNumber}&tenantId=${getTenant}`
+        );
       };
       const editSection = {
         componentPath: "Button",
         props: { color: "primary", style: { margin: "-16px" } },
         visible: true,
         gridDefination: { xs: 12, sm: 12, align: "left" },
-        children: { buttonLabel: getLabel({ labelKey: "WS_CONNECTION_DETAILS_VIEW_CONSUMPTION_LABEL" }) },
+        children: {
+          buttonLabel: getLabel({
+            labelKey: "WS_CONNECTION_DETAILS_VIEW_CONSUMPTION_LABEL",
+          }),
+        },
         onClickDefination: {
           action: "condition",
-          callBack: getRedirectionURL
-        }
-      }
+          callBack: getRedirectionURL,
+        },
+      };
       if (service === "WATER" && connectionType === "Metered") {
         dispatch(
           handleField(
@@ -414,7 +462,7 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
             "connection-details",
             "components.div.children.connectionDetails.children.cardContent.children.serviceDetails.children.cardContent.children.waterDetails.children",
             "editSection",
-            { }
+            {}
           )
         );
       }
@@ -451,8 +499,9 @@ const connectionHolders = connHolderDetailsSummary();
 
 const connectionHoldersSameAsOwner = connHolderDetailsSameAsOwnerSummary();
 
-const getConnectionDetailsFooterAction = (ifUserRoleExists('WS_CEMP')) ? connectionDetailsFooter : { };
-
+const getConnectionDetailsFooterAction = ifUserRoleExists("WS_CEMP")
+  ? connectionDetailsFooter
+  : {};
 
 export const connectionDetails = getCommonCard({
   serviceDetails,
@@ -507,15 +556,17 @@ const getMDMSData = async (action, state, dispatch) => {
     ]);
     const payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
     );
-    payload.MdmsRes.BillingService.BusinessService = payload.MdmsRes.BillingService.BusinessService.filter(service => service.isBillAmendmentEnabled)
+    payload.MdmsRes.BillingService.BusinessService =
+      payload.MdmsRes.BillingService.BusinessService.filter(
+        (service) => service.isBillAmendmentEnabled
+      );
     dispatch(prepareFinalObject("connectDetailsData", payload.MdmsRes));
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 const getDataForBillAmendment = async (action, state, dispatch) => {
   await getMDMSData(action, state, dispatch);
@@ -524,7 +575,7 @@ const screenConfig = {
   uiFramework: "material-ui",
   name: "connection-details",
   beforeInitScreen: (action, state, dispatch) => {
-    dispatch(prepareFinalObject("WaterConnection[0]", { }));
+    dispatch(prepareFinalObject("WaterConnection[0]", {}));
     let connectionNo = getQueryArg(window.location.href, "connectionNumber");
     getDataForBillAmendment(action, state, dispatch);
 
@@ -550,9 +601,6 @@ const screenConfig = {
     //   "screenConfig.components.div.children.connectionDetails.children.cardContent.children.serviceDetails.children.cardContent.children.viewOne.children.editSection.onClickDefination.path",
     //   `meter-reading?connectionNos=${connectionNo}&tenantId=${getQueryArg(window.location.href, "tenantId")}`
     // );
-
-
-
 
     return action;
   },
@@ -608,7 +656,7 @@ const screenConfig = {
         screenKey: "connection-details",
       },
       children: {
-        popup: { },
+        popup: {},
       },
     },
   },

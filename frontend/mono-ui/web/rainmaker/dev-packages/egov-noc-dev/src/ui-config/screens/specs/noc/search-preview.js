@@ -2,19 +2,30 @@ import commonConfig from "config/common.js";
 import {
   getCommonCard,
   getCommonContainer,
-  getCommonGrayCard, getCommonHeader, getCommonSubHeader, getCommonTitle,
-  getLabel, getLabelWithValue
+  getCommonGrayCard,
+  getCommonHeader,
+  getCommonSubHeader,
+  getCommonTitle,
+  getLabel,
+  getLabelWithValue,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getQueryArg,
-  setBusinessServiceDataToLocalStorage
+  setBusinessServiceDataToLocalStorage,
 } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import set from "lodash/set";
 import { httpRequest } from "../../../../ui-utils/api";
-import { checkValueForNA, getNocSearchResults, requiredDocumentsData } from "../utils";
+import {
+  checkValueForNA,
+  getNocSearchResults,
+  requiredDocumentsData,
+} from "../utils";
 
 const titlebar = {
   uiFramework: "custom-atoms",
@@ -23,62 +34,62 @@ const titlebar = {
     leftContainerH: getCommonContainer({
       header: getCommonHeader({
         labelName: "NOC Application",
-        labelKey: "NOC_APPLICATION_HEADER_LABEL"
+        labelKey: "NOC_APPLICATION_HEADER_LABEL",
       }),
     }),
-  }
-}
+  },
+};
 
 const titlebar2 = {
   uiFramework: "custom-atoms",
   componentPath: "Div",
   // visible: false,
   props: {
-    style: { textAlign: "right", display: "flex" }
+    style: { textAlign: "right", display: "flex" },
   },
   children: {
     nocApprovalNumber: {
       uiFramework: "custom-atoms-local",
       moduleName: "egov-noc",
       componentPath: "NocNumber",
-      gridDefination: { },
+      gridDefination: {},
       props: {
-        number: "NA"
+        number: "NA",
       },
-    }
-  }
-}
+    },
+  },
+};
 const applicationOverview = getCommonContainer({
   header: getCommonTitle(
     {
       labelName: "Application Overview",
-      labelKey: "NOC_APP_OVER_VIEW_HEADER"
+      labelKey: "NOC_APP_OVER_VIEW_HEADER",
     },
     {
       style: {
-        marginBottom: 18
-      }
+        marginBottom: 18,
+      },
     }
   ),
   appOverViewDetailsContainer: getCommonContainer({
     applicationNo: getLabelWithValue(
       {
         labelName: "Application No",
-        labelKey: "NOC_APP_NO_LABEL"
+        labelKey: "NOC_APP_NO_LABEL",
       },
       {
         jsonPath: "Noc.applicationNo",
-        callBack: checkValueForNA
+        callBack: checkValueForNA,
       }
     ),
     module: getLabelWithValue(
       {
         labelName: "Module/Source",
-        labelKey: "NOC_MODULE_SOURCE_LABEL"
+        labelKey: "NOC_MODULE_SOURCE_LABEL",
       },
       {
         jsonPath: "Noc.source",
-        callBack: checkValueForNA
+        callBack: checkValueForNA,
       }
     ),
     // status: getLabelWithValue(
@@ -95,43 +106,57 @@ const applicationOverview = getCommonContainer({
       componentPath: "Button",
       gridDefination: {
         xs: 12,
-        sm: 3
+        sm: 3,
       },
       props: {
         variant: "outlined",
         style: {
           color: "#FE7A51",
           border: "#FE7A51 solid 1px",
-          borderRadius: "2px"
-        }
+          borderRadius: "2px",
+        },
       },
       children: {
         buttonLabel: getLabel({
           labelName: "VIEW SOURCE APPLICATION",
-          labelKey: "NOC_VIEW_APP_BUTTON"
-        })
+          labelKey: "NOC_VIEW_APP_BUTTON",
+        }),
       },
 
       onClickDefination: {
         action: "condition",
         callBack: (state, dispatch) => {
-          let nocData = get(state.screenConfiguration.preparedFinalObject, "Noc", "");
-          let checkingApp = getTenantId().split('.')[1] ? "employee" : "citizen";
+          let nocData = get(
+            state.screenConfiguration.preparedFinalObject,
+            "Noc",
+            ""
+          );
+          let checkingApp = getTenantId().split(".")[1]
+            ? "employee"
+            : "citizen";
           let appendUrl = window.location.origin;
           if (process.env.NODE_ENV === "production") {
-            appendUrl = `${window.location.origin}/${checkingApp}`
+            appendUrl = `${window.location.origin}/${checkingApp}`;
           }
           if (nocData && nocData.source === "BPA") {
-            let bpaAppurl = appendUrl + '/egov-bpa/search-preview?applicationNumber=' + nocData.sourceRefId + '&tenantId=' + nocData.tenantId;
-            window.open(bpaAppurl, '_blank');
-
+            let bpaAppurl =
+              appendUrl +
+              "/egov-bpa/search-preview?applicationNumber=" +
+              nocData.sourceRefId +
+              "&tenantId=" +
+              nocData.tenantId;
+            window.open(bpaAppurl, "_blank");
           } else if (nocData && nocData.source === "BPA_OC") {
-            let bpaAppurl = appendUrl + '/oc-bpa/search-preview?applicationNumber=' + nocData.sourceRefId + '&tenantId=' + nocData.tenantId;
-            window.open(bpaAppurl, '_blank');
+            let bpaAppurl =
+              appendUrl +
+              "/oc-bpa/search-preview?applicationNumber=" +
+              nocData.sourceRefId +
+              "&tenantId=" +
+              nocData.tenantId;
+            window.open(bpaAppurl, "_blank");
           }
-        }
-      }
-
+        },
+      },
     },
   }),
 });
@@ -141,19 +166,19 @@ const nocDetails = getCommonGrayCard({
     uiFramework: "custom-atoms",
     componentPath: "Container",
     props: {
-      style: { marginBottom: "10px" }
+      style: { marginBottom: "10px" },
     },
     children: {
       header: {
         gridDefination: {
-          xs: 12
+          xs: 12,
         },
         ...getCommonSubHeader({
           labelName: "Fire NOC",
           // labelKey: "BPA_NOC_FIRE_TITLE"
-        })
+        }),
       },
-    }
+    },
   },
   documentDetailsCard: {
     uiFramework: "custom-containers-local",
@@ -164,36 +189,40 @@ const nocDetails = getCommonGrayCard({
       className: "review-documents",
       buttonLabel: {
         labelName: "UPLOAD FILE",
-        labelKey: "NOC_DOCUMENT_DETAILS_BUTTON_UPLOAD_FILE"
+        labelKey: "NOC_DOCUMENT_DETAILS_BUTTON_UPLOAD_FILE",
       },
       inputProps: {
         accept: "image/*, .pdf, .png, .jpeg",
-        multiple: false
+        multiple: false,
       },
-      maxFileSize: 5000
-    }
-  }
+      maxFileSize: 5000,
+    },
+  },
 });
 
 const setSearchResponse = async (
   state,
   dispatch,
   applicationNumber,
-  tenantId, action
+  tenantId,
+  action
 ) => {
   await getRequiredMdmsDetails(state, dispatch);
 
   const response = await getNocSearchResults([
     {
       key: "tenantId",
-      value: tenantId
+      value: tenantId,
     },
-    { key: "applicationNo", value: applicationNumber }
+    { key: "applicationNo", value: applicationNumber },
   ]);
-  dispatch(prepareFinalObject("Noc", get(response, "Noc[0]", { })));
+  dispatch(prepareFinalObject("Noc", get(response, "Noc[0]", {})));
   const queryObject = [
     { key: "tenantId", value: tenantId },
-    { key: "businessServices", value: get(response, "Noc[0].additionalDetails.workflowCode") }
+    {
+      key: "businessServices",
+      value: get(response, "Noc[0].additionalDetails.workflowCode"),
+    },
   ];
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
 
@@ -207,7 +236,6 @@ const setSearchResponse = async (
       )
     );
   } else {
-
     dispatch(
       handleField(
         "search-preview",
@@ -215,7 +243,7 @@ const setSearchResponse = async (
         "visible",
         false
       )
-    )
+    );
   }
   set(
     action,
@@ -235,30 +263,30 @@ const getRequiredMdmsDetails = async (state, dispatch, action) => {
           moduleName: "common-masters",
           masterDetails: [
             {
-              name: "DocumentType"
-            }
-          ]
+              name: "DocumentType",
+            },
+          ],
         },
         {
           moduleName: "NOC",
           masterDetails: [
             {
-              name: "DocumentTypeMapping"
+              name: "DocumentTypeMapping",
             },
-          ]
-        }
-      ]
-    }
+          ],
+        },
+      ],
+    },
   };
   let payload = await httpRequest(
     "post",
-    "/egov-mdms-service/v1/_search",
+    "/mdms-v2/v1/_search",
     "_search",
     [],
     mdmsBody
   );
   dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
-}
+};
 
 export const prepareDocsInEmployee = (state, dispatch, action) => {
   let applicationDocuments = get(
@@ -273,12 +301,14 @@ export const prepareDocsInEmployee = (state, dispatch, action) => {
   );
   let nocType = get(
     state,
-    "screenConfiguration.preparedFinalObject.Noc.nocType", ""
+    "screenConfiguration.preparedFinalObject.Noc.nocType",
+    ""
   );
 
   let documents = [];
-  applicationDocuments && applicationDocuments.length > 0 &&
-    applicationDocuments.forEach(doc => {
+  applicationDocuments &&
+    applicationDocuments.length > 0 &&
+    applicationDocuments.forEach((doc) => {
       if (doc.applicationType === "NEW" && doc.nocType === nocType) {
         documents.push(doc.docTypes);
       }
@@ -286,10 +316,10 @@ export const prepareDocsInEmployee = (state, dispatch, action) => {
 
   let documentsList = [];
   if (documents[0] && documents[0].length > 0) {
-    documents[0].forEach(doc => {
+    documents[0].forEach((doc) => {
       let code = doc.documentType;
       doc.dropDownValues = [];
-      documentsDropDownValues.forEach(value => {
+      documentsDropDownValues.forEach((value) => {
         let values = value.code.slice(0, code.length);
         if (code === values) {
           doc.hasDropdown = true;
@@ -301,29 +331,29 @@ export const prepareDocsInEmployee = (state, dispatch, action) => {
   }
   const nocDocuments = documentsList;
   let documentsContract = [];
-  let tempDoc = { };
+  let tempDoc = {};
 
   if (nocDocuments && nocDocuments.length > 0) {
-    nocDocuments.forEach(doc => {
-      let card = { };
+    nocDocuments.forEach((doc) => {
+      let card = {};
       card["code"] = doc.documentType.split(".")[0];
       card["title"] = doc.documentType.split(".")[0];
       card["cards"] = [];
       tempDoc[doc.documentType.split(".")[0]] = card;
     });
-    nocDocuments.forEach(doc => {
-      let card = { };
+    nocDocuments.forEach((doc) => {
+      let card = {};
       card["name"] = doc.documentType;
       card["code"] = doc.documentType;
       card["required"] = doc.required ? true : false;
       if (doc.hasDropdown && doc.dropDownValues) {
-        let dropDownValues = { };
+        let dropDownValues = {};
         dropDownValues.label = "Select Documents";
         dropDownValues.required = doc.required;
-        dropDownValues.menu = doc.dropDownValues.filter(item => {
+        dropDownValues.menu = doc.dropDownValues.filter((item) => {
           return item.active;
         });
-        dropDownValues.menu = dropDownValues.menu.map(item => {
+        dropDownValues.menu = dropDownValues.menu.map((item) => {
           return { code: item.documentType, label: item.documentType };
         });
         card["dropDownValues"] = dropDownValues;
@@ -333,19 +363,21 @@ export const prepareDocsInEmployee = (state, dispatch, action) => {
   }
 
   if (tempDoc) {
-    Object.keys(tempDoc).forEach(key => {
+    Object.keys(tempDoc).forEach((key) => {
       documentsContract.push(tempDoc[key]);
     });
   }
 
   dispatch(prepareFinalObject("documentDetailsPreview", documentsContract));
-
-}
+};
 const screenConfig = {
   uiFramework: "material-ui",
   name: "search-preview",
   beforeInitScreen: (action, state, dispatch) => {
-    const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
+    const applicationNumber = getQueryArg(
+      window.location.href,
+      "applicationNumber"
+    );
     const tenantId = getQueryArg(window.location.href, "tenantId");
     setSearchResponse(state, dispatch, applicationNumber, tenantId, action);
     return action;
@@ -355,7 +387,7 @@ const screenConfig = {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        className: "common-div-css bpa-searchpview"
+        className: "common-div-css bpa-searchpview",
       },
       children: {
         headerDiv: {
@@ -366,28 +398,28 @@ const screenConfig = {
               gridDefination: {
                 xs: 12,
                 sm: 6,
-                md: 6
+                md: 6,
               },
-              ...titlebar
+              ...titlebar,
             },
             header2: {
               uiFramework: "custom-atoms",
               componentPath: "Container",
               props: {
                 color: "primary",
-                style: { justifyContent: "flex-end" }
+                style: { justifyContent: "flex-end" },
               },
               gridDefination: {
                 xs: 12,
                 sm: 6,
                 md: 6,
-                align: "right"
+                align: "right",
               },
               children: {
-                titlebar2
-              }
-            }
-          }
+                titlebar2,
+              },
+            },
+          },
         },
 
         taskStatus: {
@@ -398,18 +430,18 @@ const screenConfig = {
           props: {
             dataPath: "Noc",
             moduleName: "Noc",
-            updateUrl: "/noc-services/v1/noc/_update"
-          }
+            updateUrl: "/noc-services/v1/noc/_update",
+          },
         },
         applicationOverviewContainer: getCommonCard({
-          applicationOverview: applicationOverview
+          applicationOverview: applicationOverview,
         }),
         body: getCommonCard({
-          nocDetails: nocDetails
+          nocDetails: nocDetails,
         }),
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 export default screenConfig;

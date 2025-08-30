@@ -1,20 +1,26 @@
 import commonConfig from "config/common.js";
 import {
   getCommonContainer,
-  getCommonHeader
+  getCommonHeader,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  prepareFinalObject,
+  handleScreenConfigurationFieldChange as handleField,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import { httpRequest } from "../../../../ui-utils";
 import { footer } from "./applyResource/footer";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { propertyAssemblySummary } from "./summaryResource/propertyAssemblySummary";
 import { propertyLocationSummary } from "./summaryResource/propertyLocationSummary";
-import { institutionSummary, applicantSummary } from './summaryResource/propertyOwnershipSummary'
+import {
+  institutionSummary,
+  applicantSummary,
+} from "./summaryResource/propertyOwnershipSummary";
 
 export const header = getCommonContainer({
   header: getCommonHeader({
-    labelKey: "PT_COMMON_REGISTER_NEW_PROPERTY"
+    labelKey: "PT_COMMON_REGISTER_NEW_PROPERTY",
   }),
 });
 
@@ -22,30 +28,37 @@ export const formwizardFirstStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form1"
+    id: "apply_form1",
   },
   children: {
     propertyAssemblySummary,
     propertyLocationSummary,
     applicantSummary,
-    institutionSummary
-  }
+    institutionSummary,
+  },
 };
 
-
-const setSearchResponse = async (state, dispatch, propertyId, tenantId, action) => {
+const setSearchResponse = async (
+  state,
+  dispatch,
+  propertyId,
+  tenantId,
+  action
+) => {
   const response = await httpRequest(
     "post",
     "/property-services/property/_search",
     "",
-    [{
-      key: "tenantId",
-      value: tenantId
-    },
-    {
-      key: "propertyIds",
-      value: propertyId
-    }]
+    [
+      {
+        key: "tenantId",
+        value: tenantId,
+      },
+      {
+        key: "propertyIds",
+        value: propertyId,
+      },
+    ]
   );
   dispatch(prepareFinalObject("Property", get(response, "Properties[0]")));
   let ownershipCategory = get(response, "Properties[0].ownershipCategory", "");
@@ -84,7 +97,7 @@ const setSearchResponse = async (state, dispatch, propertyId, tenantId, action) 
       )
     );
   }
-}
+};
 
 const getMDMSPropertyData = async (dispatch) => {
   const mdmsBody = {
@@ -93,36 +106,39 @@ const getMDMSPropertyData = async (dispatch) => {
       moduleDetails: [
         {
           moduleName: "PropertyTax",
-          masterDetails: [
-            { name: "PTWorkflow" }
-          ]
-        }
+          masterDetails: [{ name: "PTWorkflow" }],
+        },
       ],
-
-    }
-  }
+    },
+  };
   try {
     let payload = null;
-    payload = await httpRequest("post", "/egov-mdms-service/v1/_search", "_search", [], mdmsBody);
+    payload = await httpRequest(
+      "post",
+      "/mdms-v2/v1/_search",
+      "_search",
+      [],
+      mdmsBody
+    );
 
     dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
     let ptWorkflowDetails = get(payload, "MdmsRes.PropertyTax.PTWorkflow", []);
-    ptWorkflowDetails.forEach(data => {
-      if(data.enable) {
+    ptWorkflowDetails.forEach((data) => {
+      if (data.enable) {
         let workFlow = {
-          tenantId : getQueryArg(window.location.href, "tenantId"),
-          businessService : data.businessService,
-          businessId : getQueryArg(window.location.href, "propertyId"),
-          action : "SUBMIT",
-          moduleName : "PT",
-          state : null,
-          comment : null,
-          documents : null,
-          assignes : null
+          tenantId: getQueryArg(window.location.href, "tenantId"),
+          businessService: data.businessService,
+          businessId: getQueryArg(window.location.href, "propertyId"),
+          action: "SUBMIT",
+          moduleName: "PT",
+          state: null,
+          comment: null,
+          documents: null,
+          assignes: null,
         };
         dispatch(prepareFinalObject("isWorkflowDetails", workFlow, null));
       }
-    })
+    });
   } catch (e) {
     console.log(e);
   }
@@ -145,7 +161,7 @@ const screenConfig = {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        className: "common-div-css"
+        className: "common-div-css",
       },
       children: {
         headerDiv: {
@@ -155,15 +171,15 @@ const screenConfig = {
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 10
+                sm: 10,
               },
-              ...header
-            }
-          }
+              ...header,
+            },
+          },
         },
         formwizardFirstStep,
-        footer
-      }
+        footer,
+      },
     },
     adhocDialog: {
       uiFramework: "custom-containers-local",
@@ -172,10 +188,10 @@ const screenConfig = {
       props: {
         open: false,
         maxWidth: "md",
-        screenKey: "summary"
-      }
-    }
-  }
+        screenKey: "summary",
+      },
+    },
+  },
 };
 
 export default screenConfig;

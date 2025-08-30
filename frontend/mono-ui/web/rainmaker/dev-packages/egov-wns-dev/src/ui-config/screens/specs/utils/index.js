@@ -1,15 +1,22 @@
 import commonConfig from "config/common.js";
 import {
-  getCommonCaption, getCommonCard, getLabel
+  getCommonCaption,
+  getCommonCard,
+  getLabel,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
-import { getLocaleLabels, getQueryArg, getTransformedLocalStorgaeLabels } from "egov-ui-framework/ui-utils/commons";
-import { getUserSearchedResponse } from "egov-ui-kit/utils/commons";
 import {
-  getTenantId,
-  getUserInfo
-} from "egov-ui-kit/utils/localStorageUtils";
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+  toggleSnackbar,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
+import {
+  getLocaleLabels,
+  getQueryArg,
+  getTransformedLocalStorgaeLabels,
+} from "egov-ui-framework/ui-utils/commons";
+import { getUserSearchedResponse } from "egov-ui-kit/utils/commons";
+import { getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
 import set from "lodash/set";
@@ -21,9 +28,9 @@ export const getCommonApplyFooter = (position, children) => {
     uiFramework: "custom-atoms",
     componentPath: "Div",
     props: {
-      className: (position === 'BOTTOM') ? "apply-wizard-footer" : ""
+      className: position === "BOTTOM" ? "apply-wizard-footer" : "",
     },
-    children
+    children,
   };
 };
 
@@ -32,7 +39,7 @@ export const transformById = (payload, id) => {
     payload &&
     payload.reduce((result, item) => {
       result[item[id]] = {
-        ...item
+        ...item,
       };
 
       return result;
@@ -54,21 +61,21 @@ export const getTranslatedLabel = (labelKey, localizationLabels) => {
   return translatedLabel || labelKey;
 };
 
-export const getFooterButtons = queryValue => {
+export const getFooterButtons = (queryValue) => {
   if (queryValue === "reject") {
     return getLabel({
       labelName: "REJECT APPLICATION",
-      labelKey: "TL_REJECTION_CHECKLIST_BUTTON_REJ_APPL"
+      labelKey: "TL_REJECTION_CHECKLIST_BUTTON_REJ_APPL",
     });
   } else if (queryValue === "cancel") {
     return getLabel({
       labelName: "CANCEL TRADE LICENSE",
-      labelKey: "TL_COMMON_BUTTON_CANCEL_LICENSE"
+      labelKey: "TL_COMMON_BUTTON_CANCEL_LICENSE",
     });
   } else {
     return getLabel({
       labelName: "APPROVE APPLICATION",
-      labelKey: "TL_APPROVAL_CHECKLIST_BUTTON_APPRV_APPL"
+      labelKey: "TL_APPROVAL_CHECKLIST_BUTTON_APPRV_APPL",
     });
   }
 };
@@ -103,7 +110,7 @@ export const onClickPreviousButton = (
       return `/wns/search-preview?role=approver&status=pending_approval&applicationNumber=${applicationNumber}&tenantId=${tenantId}`;
   }
 };
-export const getFeesEstimateCard = props => {
+export const getFeesEstimateCard = (props) => {
   const { sourceJsonPath, ...rest } = props;
   return {
     uiFramework: "custom-containers-local",
@@ -111,8 +118,8 @@ export const getFeesEstimateCard = props => {
     componentPath: "EstimateCardContainer",
     props: {
       sourceJsonPath,
-      ...rest
-    }
+      ...rest,
+    },
   };
 };
 
@@ -120,15 +127,15 @@ const style = {
   textfieldIcon: {
     position: "relative",
     top: "25px",
-    left: "-249%"
+    left: "-249%",
   },
   headerIcon: {
     position: "relative",
-    bottom: "2px"
-  }
+    bottom: "2px",
+  },
 };
 
-export const getFeesEstimateOverviewCard = props => {
+export const getFeesEstimateOverviewCard = (props) => {
   const { sourceJsonPath, ...rest } = props;
   return {
     uiFramework: "custom-containers-local",
@@ -136,16 +143,22 @@ export const getFeesEstimateOverviewCard = props => {
     componentPath: "EstimateOverviewCardContainer",
     props: {
       sourceJsonPath,
-      ...rest
-    }
+      ...rest,
+    },
   };
 };
 
-export const getIconStyle = key => {
+export const getIconStyle = (key) => {
   return style[key];
 };
 
-export const showHideAdhocPopup = (state, dispatch, screenKey, value = true, adhocDetails = {}) => {
+export const showHideAdhocPopup = (
+  state,
+  dispatch,
+  screenKey,
+  value = true,
+  adhocDetails = {}
+) => {
   let toggle = get(
     state.screenConfiguration.screenConfig[screenKey],
     "components.adhocDialog.props.open",
@@ -303,32 +316,132 @@ export const showHideAdhocPopup = (state, dispatch, screenKey, value = true, adh
   //   );
   // }
 
-  dispatch(handleField(screenKey, "components.adhocDialog", "props.open", !toggle));
+  dispatch(
+    handleField(screenKey, "components.adhocDialog", "props.open", !toggle)
+  );
 };
 
-export const showHideAdhocPopupAndValues = (state, dispatch, screenKey = "search-preview") => {
-  let toggle = get(state.screenConfiguration.screenConfig[screenKey],"components.adhocDialog.props.open",false);
+export const showHideAdhocPopupAndValues = (
+  state,
+  dispatch,
+  screenKey = "search-preview"
+) => {
+  let toggle = get(
+    state.screenConfiguration.screenConfig[screenKey],
+    "components.adhocDialog.props.open",
+    false
+  );
   let getValuesofAdhoc = localStorage.getItem("WS_ADDITIONAL_DETAILS_FOR_DATA");
-  let isAdditionalReqData = localStorage.getItem("IS_WS_ADDITIONAL_DETAILS_FOR_DATA");
+  let isAdditionalReqData = localStorage.getItem(
+    "IS_WS_ADDITIONAL_DETAILS_FOR_DATA"
+  );
   let adhocDetails = getValuesofAdhoc ? JSON.parse(getValuesofAdhoc) : {};
-  let additionalDetailsIsRequired = isAdditionalReqData ? JSON.parse(isAdditionalReqData) : false;
+  let additionalDetailsIsRequired = isAdditionalReqData
+    ? JSON.parse(isAdditionalReqData)
+    : false;
   if (additionalDetailsIsRequired) {
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.commentsField", "props.value", get(adhocDetails, "additionalDetails.adhocPenaltyComment", null)));
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.penaltyAmountAndReasonContainer.children.penaltyAmount", "props.value", get(adhocDetails, "additionalDetails.adhocPenalty", null)));
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.penaltyAmountAndReasonContainer.children.penaltyReason", "props.value", get(adhocDetails, "additionalDetails.adhocPenaltyReason", null)));
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateAmount", "props.value", get(adhocDetails, "additionalDetails.adhocRebate", null)));
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateCommentsField", "props.value", get(adhocDetails, "additionalDetails.adhocRebateComment", null)));
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateReason", "props.value", get(adhocDetails, "additionalDetails.adhocRebateReason", null)));
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.commentsField",
+        "props.value",
+        get(adhocDetails, "additionalDetails.adhocPenaltyComment", null)
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.penaltyAmountAndReasonContainer.children.penaltyAmount",
+        "props.value",
+        get(adhocDetails, "additionalDetails.adhocPenalty", null)
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.penaltyAmountAndReasonContainer.children.penaltyReason",
+        "props.value",
+        get(adhocDetails, "additionalDetails.adhocPenaltyReason", null)
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateAmount",
+        "props.value",
+        get(adhocDetails, "additionalDetails.adhocRebate", null)
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateCommentsField",
+        "props.value",
+        get(adhocDetails, "additionalDetails.adhocRebateComment", null)
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateReason",
+        "props.value",
+        get(adhocDetails, "additionalDetails.adhocRebateReason", null)
+      )
+    );
   } else {
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.commentsField", "props.value", null));
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.penaltyAmountAndReasonContainer.children.penaltyAmount", "props.value", null));
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.penaltyAmountAndReasonContainer.children.penaltyReason", "props.value", null));
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateAmount", "props.value", null));
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateCommentsField", "props.value", null));
-    dispatch(handleField("search-preview", "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateReason", "props.value", null));
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.commentsField",
+        "props.value",
+        null
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.penaltyAmountAndReasonContainer.children.penaltyAmount",
+        "props.value",
+        null
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocPenaltyCard.children.penaltyAmountAndReasonContainer.children.penaltyReason",
+        "props.value",
+        null
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateAmount",
+        "props.value",
+        null
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateCommentsField",
+        "props.value",
+        null
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.adhocDialog.children.popup.children.adhocRebateCard.children.rebateAmountAndReasonContainer.children.rebateReason",
+        "props.value",
+        null
+      )
+    );
   }
-  dispatch(handleField(screenKey, "components.adhocDialog", "props.open", !toggle));
-}
+  dispatch(
+    handleField(screenKey, "components.adhocDialog", "props.open", !toggle)
+  );
+};
 
 export const getButtonVisibility = (status, button) => {
   if (status === "pending_payment" && button === "PROCEED TO PAYMENT")
@@ -339,7 +452,7 @@ export const getButtonVisibility = (status, button) => {
   return false;
 };
 
-export const objectToDropdown = object => {
+export const objectToDropdown = (object) => {
   let dropDown = [];
   for (var variable in object) {
     if (object.hasOwnProperty(variable)) {
@@ -350,7 +463,7 @@ export const objectToDropdown = object => {
 };
 
 // Search API call
-export const getSearchResults = async queryObject => {
+export const getSearchResults = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -364,7 +477,7 @@ export const getSearchResults = async queryObject => {
   }
 };
 
-export const getBill = async queryObject => {
+export const getBill = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -373,11 +486,10 @@ export const getBill = async queryObject => {
       queryObject
     );
     return response;
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
-export const getReceipt = async queryObject => {
+export const getReceipt = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -386,11 +498,10 @@ export const getReceipt = async queryObject => {
       queryObject
     );
     return response;
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
-export const convertEpochToDateAndHandleNA = dateEpoch => {
+export const convertEpochToDateAndHandleNA = (dateEpoch) => {
   if (
     dateEpoch !== undefined &&
     dateEpoch !== null &&
@@ -400,30 +511,38 @@ export const convertEpochToDateAndHandleNA = dateEpoch => {
   ) {
     let convertedToDate = convertEpochToDate(dateEpoch);
     return convertedToDate;
-  } else { return "NA"; }
-}
+  } else {
+    return "NA";
+  }
+};
 
-export const handlePropertySubUsageType = params => {
+export const handlePropertySubUsageType = (params) => {
   params = handleNA(params);
   if (params !== "NA" && params.split(".").length > 1) {
     return params;
   } else {
     return "NA";
   }
-}
+};
 
-export const handleNA = params => {
-  if (params !== undefined && params !== null && params !== "" && params !== 0) {
+export const handleNA = (params) => {
+  if (
+    params !== undefined &&
+    params !== null &&
+    params !== "" &&
+    params !== 0
+  ) {
     return params;
-  } else { return "NA"; }
-}
+  } else {
+    return "NA";
+  }
+};
 
-export const handleRoadType = params => {
-  return handleNA(params) == "NA" ? "NA" : 'WS_ROADTYPE_' + params;
-}
+export const handleRoadType = (params) => {
+  return handleNA(params) == "NA" ? "NA" : "WS_ROADTYPE_" + params;
+};
 
-
-export const convertEpochToDate = dateEpoch => {
+export const convertEpochToDate = (dateEpoch) => {
   const dateFromApi = new Date(dateEpoch);
   let month = dateFromApi.getMonth() + 1;
   let day = dateFromApi.getDate();
@@ -449,7 +568,7 @@ export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
   }
 };
 
-export const convertDateTimeToEpoch = dateTimeString => {
+export const convertDateTimeToEpoch = (dateTimeString) => {
   //example input format : "26-07-2018 17:43:21"
   try {
     // const parts = dateTimeString.match(
@@ -464,7 +583,7 @@ export const convertDateTimeToEpoch = dateTimeString => {
   }
 };
 
-export const getReceiptData = async queryObject => {
+export const getReceiptData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -478,27 +597,27 @@ export const getReceiptData = async queryObject => {
   }
 };
 
-export const getAutoSelector = textScheama => {
+export const getAutoSelector = (textScheama) => {
   return {
     uiFramework: "custom-molecules-local",
     moduleName: "egov-wns",
     componentPath: "AutoSelector",
     gridDefination: {
       xs: 6,
-      sm: 3
+      sm: 3,
     },
     props: {
-      data: []
-    }
+      data: [],
+    },
   };
 };
 
-export const getMapLocator = textSchema => {
+export const getMapLocator = (textSchema) => {
   return {
     uiFramework: "custom-molecules-local",
     moduleName: "egov-wns",
     componentPath: "MapLocator",
-    props: {}
+    props: {},
   };
 };
 
@@ -540,11 +659,11 @@ export const getHeaderSideText = (status, licenseNo = null) => {
   }
 };
 
-export const getMdmsData = async queryObject => {
+export const getMdmsData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_get",
+      "mdms-v2/v1/_get",
       "",
       queryObject
     );
@@ -573,7 +692,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
           true,
           {
             labelName: "Please select city to search by property id !!",
-            labelKey: "ERR_SELECT_CITY_TO_SEARCH_PROPERTY_ID"
+            labelKey: "ERR_SELECT_CITY_TO_SEARCH_PROPERTY_ID",
           },
           "warning"
         )
@@ -599,7 +718,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
               true,
               {
                 labelName: "Property is not found with this Property Id",
-                labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
+                labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID",
               },
               "info"
             )
@@ -620,7 +739,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
               "props.value",
               {
                 value: payload.applyScreen.property.address.locality.code,
-                label: payload.applyScreen.property.address.locality.name
+                label: payload.applyScreen.property.address.locality.name,
               }
             )
           );
@@ -641,8 +760,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
         }
       }
     }
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
@@ -671,7 +789,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
           true,
           {
             labelName: "Owner already added !",
-            labelKey: "ERR_OWNER_ALREADY_ADDED"
+            labelKey: "ERR_OWNER_ALREADY_ADDED",
           },
           "error"
         )
@@ -681,7 +799,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
 
     //Same no search in whole array
     const matchingOwnerIndex = owners.findIndex(
-      item => item.userName === ownerNo
+      (item) => item.userName === ownerNo
     );
     if (matchingOwnerIndex > -1) {
       if (
@@ -704,7 +822,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         //Delete if current card was not part of oldOwners array - no need to save.
         if (
           oldOwnersArr.findIndex(
-            item => owners[cardIndex].userName === item.userName
+            (item) => owners[cardIndex].userName === item.userName
           ) == -1
         ) {
           owners.splice(cardIndex, 1);
@@ -718,7 +836,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
             true,
             {
               labelName: "Owner already added !",
-              labelKey: "ERR_OWNER_ALREADY_ADDED_1"
+              labelKey: "ERR_OWNER_ALREADY_ADDED_1",
             },
             "error"
           )
@@ -734,7 +852,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         [],
         {
           tenantId: commonConfig.tenantId,
-          userName: `${ownerNo}`
+          userName: `${ownerNo}`,
         }
       );
       if (payload && payload.user && payload.user.hasOwnProperty("length")) {
@@ -744,7 +862,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
               true,
               {
                 labelName: "This mobile number is not registered !",
-                labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED"
+                labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED",
               },
               "info"
             )
@@ -773,7 +891,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
           if (oldOwnersArr.length > 0) {
             currOwnersArr.push({
               ...oldOwnersArr[cardIndex],
-              userActive: false
+              userActive: false,
             });
           }
           dispatch(
@@ -791,7 +909,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
 };
 
 // Get user data from uuid API call
-export const getUserDataFromUuid = async bodyObject => {
+export const getUserDataFromUuid = async (bodyObject) => {
   try {
     // const response = await httpRequest(
     //   "post",
@@ -808,7 +926,7 @@ export const getUserDataFromUuid = async bodyObject => {
   }
 };
 
-const getStatementForDocType = docType => {
+const getStatementForDocType = (docType) => {
   switch (docType) {
     case "OWNERIDPROOF":
       return "Allowed documents are Aadhar Card / Voter ID Card / Driving License";
@@ -819,33 +937,33 @@ const getStatementForDocType = docType => {
   }
 };
 
-export const prepareDocumentTypeObj = documents => {
+export const prepareDocumentTypeObj = (documents) => {
   let documentsArr =
     documents.length > 0
       ? documents.reduce((documentsArr, item, ind) => {
-        documentsArr.push({
-          name: item,
-          required: true,
-          jsonPath: `Licenses[0].tradeLicenseDetail.applicationDocuments[${ind}]`,
-          statement: getStatementForDocType(item)
-        });
-        return documentsArr;
-      }, [])
+          documentsArr.push({
+            name: item,
+            required: true,
+            jsonPath: `Licenses[0].tradeLicenseDetail.applicationDocuments[${ind}]`,
+            statement: getStatementForDocType(item),
+          });
+          return documentsArr;
+        }, [])
       : [];
   return documentsArr;
 };
 
 //Common functions for Estimate card
 
-const getTaxValue = item => {
+const getTaxValue = (item) => {
   return item
     ? item.amount
       ? item.amount
       : item.debitAmount
-        ? -Math.abs(item.debitAmount)
-        : item.crAmountToBePaid
-          ? item.crAmountToBePaid
-          : 0
+      ? -Math.abs(item.debitAmount)
+      : item.crAmountToBePaid
+      ? item.crAmountToBePaid
+      : 0
     : 0;
 };
 
@@ -867,8 +985,8 @@ export const createEstimateData = async (
   href = {},
   getFromReceipt
 ) => {
-  const payload = billData
-  const estimateData = payload
+  const payload = billData;
+  const estimateData = payload;
   dispatch(prepareFinalObject(jsonPath, estimateData));
   var event = new CustomEvent("estimateLoaded", { detail: true });
   window.parent.document.dispatchEvent(event);
@@ -915,7 +1033,7 @@ export const validateFields = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            )
+            ),
           },
           dispatch,
           true
@@ -928,7 +1046,7 @@ export const validateFields = (
   return isFormValid;
 };
 
-export const epochToYmdDate = et => {
+export const epochToYmdDate = (et) => {
   if (!et) return null;
   if (typeof et === "string") return et;
   var date = new Date(Math.round(Number(et)));
@@ -1013,8 +1131,8 @@ export const fetchBill = async (action, state, dispatch) => {
     { key: "tenantId", value: getQueryArg(window.location.href, "tenantId") },
     {
       key: "applicationNumber",
-      value: getQueryArg(window.location.href, "applicationNumber")
-    }
+      value: getQueryArg(window.location.href, "applicationNumber"),
+    },
   ];
   const LicensesPayload = await getSearchResults(queryObject);
   //get bill and populate estimate card
@@ -1195,16 +1313,16 @@ export const setValidToFromVisibilityForApply = (state, value) => {
   }
 };
 
-export const ifUserRoleExists = role => {
+export const ifUserRoleExists = (role) => {
   let userInfo = JSON.parse(getUserInfo());
   const roles = get(userInfo, "roles");
-  const roleCodes = roles ? roles.map(role => role.code) : [];
+  const roleCodes = roles ? roles.map((role) => role.code) : [];
   if (roleCodes.indexOf(role) > -1) {
     return true;
   } else return false;
 };
 
-export const getTransformedStatus = status => {
+export const getTransformedStatus = (status) => {
   switch (status) {
     case "PAID":
       return "pending_approval";
@@ -1222,7 +1340,10 @@ export const getTransformedStatus = status => {
 };
 
 export const getDocList = (state, dispatch) => {
-  const documentList = get(state.screenConfiguration.preparedFinalObject, "applyScreenMdmsData.ws-services-masters.Documents");
+  const documentList = get(
+    state.screenConfiguration.preparedFinalObject,
+    "applyScreenMdmsData.ws-services-masters.Documents"
+  );
   function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
   }
@@ -1244,9 +1365,9 @@ export const getDocList = (state, dispatch) => {
   let applicationDocsReArranged =
     applicationDocs &&
     applicationDocs.length &&
-    applicationDocument.map(item => {
+    applicationDocument.map((item) => {
       const index = applicationDocs.findIndex(
-        i => i.documentType === item.name
+        (i) => i.documentType === item.name
       );
       return applicationDocs[index];
     });
@@ -1402,8 +1523,7 @@ export const setOwnerShipDropDownFieldChange = (state, dispatch, payload) => {
         )
       );
     }
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 export const showHideBreakupPopup = (state, dispatch, screenKey) => {
@@ -1421,25 +1541,25 @@ export const getDialogButton = (name, key, screenKey) => {
     componentPath: "Button",
     props: {
       color: "primary",
-      style: {}
+      style: {},
     },
     children: {
       previousButtonLabel: getLabel({
         labelName: name,
-        labelKey: key
-      })
+        labelKey: key,
+      }),
     },
     onClickDefination: {
       action: "condition",
       callBack: (state, dispatch) => {
         showHideBreakupPopup(state, dispatch, screenKey);
-      }
-    }
+      },
+    },
     //visible: false
   };
 };
 
-const getAllBillingSlabs = async tenantId => {
+const getAllBillingSlabs = async (tenantId) => {
   let payload = await httpRequest(
     "post",
     `/tl-calculator/billingslab/_search?tenantId=${tenantId}`,
@@ -1474,7 +1594,7 @@ export const sortByEpoch = (data, order) => {
   }
 };
 
-export const getEpochForDate = date => {
+export const getEpochForDate = (date) => {
   const dateSplit = date.split("/");
   return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
 };
@@ -1582,9 +1702,9 @@ export const resetFieldsForConnection = (state, dispatch) => {
       ""
     )
   );
-}
+};
 
-export const getCommonGrayCard = children => {
+export const getCommonGrayCard = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -1598,18 +1718,18 @@ export const getCommonGrayCard = children => {
               backgroundColor: "rgb(242, 242, 242)",
               boxShadow: "none",
               borderRadius: 0,
-              overflow: "visible"
-            }
-          })
+              overflow: "visible",
+            },
+          }),
         },
         gridDefination: {
-          xs: 12
-        }
-      }
+          xs: 12,
+        },
+      },
     },
     gridDefination: {
-      xs: 12
-    }
+      xs: 12,
+    },
   };
 };
 
@@ -1619,49 +1739,50 @@ export const getLabelOnlyValue = (value, props = {}) => {
     componentPath: "Div",
     gridDefination: {
       xs: 6,
-      sm: 4
+      sm: 4,
     },
     props: {
       style: {
-        marginBottom: "16px"
+        marginBottom: "16px",
       },
-      ...props
+      ...props,
     },
     children: {
-      value: getCommonCaption(value)
-    }
+      value: getCommonCaption(value),
+    },
   };
 };
 
 export const getRequiredDocData = async (action, state, dispatch) => {
-  let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
+  let tenantId =
+    process.env.REACT_APP_NAME === "Citizen"
+      ? JSON.parse(getUserInfo()).permanentCity
+      : getTenantId();
   let mdmsBody = {
     MdmsCriteria: {
       tenantId: tenantId,
       moduleDetails: [
         {
           moduleName: "FireNoc",
-          masterDetails: [{ name: "Documents" }]
-        }
-      ]
-    }
+          masterDetails: [{ name: "Documents" }],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
     );
     dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
-
-export const getTextToLocalMapping = label => {
+export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
     case "Application No":
@@ -1736,7 +1857,7 @@ export const getTextToLocalMapping = label => {
       return getLocaleLabels(
         "Application Status",
         "WS_COMMON_TABLE_COL_APPLICATION_STATUS"
-      )
+      );
     // case "Connection Type":
     //   return getLocaleLabels(
     //     "Connection Type",
@@ -1804,12 +1925,12 @@ const setVisible = (key, status, action) => {
     `screenConfig.components.div.children.formwizardThirdStep.children.additionDetails.children.cardContent.children.${key}.visible`,
     status
   );
-}
+};
 export const triggerModificationsDisplay = (action, isModeEnable) => {
-  setVisible('modificationsEffectiveFrom', isModeEnable, action);
-  setVisible('plumberDetailsContainer', !isModeEnable, action);
-  setVisible('roadCuttingChargeContainer', !isModeEnable, action);
-}
+  setVisible("modificationsEffectiveFrom", isModeEnable, action);
+  setVisible("plumberDetailsContainer", !isModeEnable, action);
+  setVisible("roadCuttingChargeContainer", !isModeEnable, action);
+};
 
 export const getDemand = async (queryObject, dispatch) => {
   try {
@@ -1846,8 +1967,10 @@ export const validateFieldOfWNS = (
   for (var variable in fields) {
     if (fields.hasOwnProperty(variable)) {
       if (
-        fields[variable] && fields[variable].componentPath != "DynamicMdmsContainer" &&
-        fields[variable].props && fields[variable].jsonPath &&
+        fields[variable] &&
+        fields[variable].componentPath != "DynamicMdmsContainer" &&
+        fields[variable].props &&
+        fields[variable].jsonPath &&
         (fields[variable].props.disabled === undefined ||
           !fields[variable].props.disabled) &&
         !validate(
@@ -1857,23 +1980,34 @@ export const validateFieldOfWNS = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            )
+            ),
           },
           dispatch,
           true
         )
       ) {
         isFormValid = false;
-      } else if (fields[variable] && fields[variable].componentPath == "DynamicMdmsContainer" && fields[variable].props && fields[variable].visible != false) {
-        let { masterName, moduleName, rootBlockSub, dropdownFields } = fields[variable].props;
+      } else if (
+        fields[variable] &&
+        fields[variable].componentPath == "DynamicMdmsContainer" &&
+        fields[variable].props &&
+        fields[variable].visible != false
+      ) {
+        let { masterName, moduleName, rootBlockSub, dropdownFields } =
+          fields[variable].props;
         let isIndex = fields[variable].index || 0;
         dropdownFields.forEach((item, i) => {
           let isValid = get(
             state.screenConfiguration.preparedFinalObject,
             `DynamicMdms.${moduleName}.${rootBlockSub}.selectedValues[${isIndex}].${item.key}`,
-            ''
+            ""
           );
-          if (isValid == '' || isValid == 'none' || isValid == null || isValid.includes("null")) {
+          if (
+            isValid == "" ||
+            isValid == "none" ||
+            isValid == null ||
+            isValid.includes("null")
+          ) {
             isFormValid = false;
             dispatch(
               handleField(
@@ -1885,7 +2019,6 @@ export const validateFieldOfWNS = (
             );
           }
         });
-
       }
     }
   }

@@ -1,15 +1,19 @@
 import {
-  getCommonCaption, getCommonCard,
-
-
-  getPattern
+  getCommonCaption,
+  getCommonCard,
+  getPattern,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+  toggleSnackbar,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
 import {
-  getLocaleLabels, getQueryArg,
-  getTransformedLocalStorgaeLabels
+  getLocaleLabels,
+  getQueryArg,
+  getTransformedLocalStorgaeLabels,
 } from "egov-ui-framework/ui-utils/commons";
 import { multiHttpRequest } from "egov-ui-kit/utils/api";
 import { getUserSearchedResponse } from "egov-ui-kit/utils/commons";
@@ -19,14 +23,14 @@ import isUndefined from "lodash/isUndefined";
 import set from "lodash/set";
 import { httpRequest } from "../../../../ui-utils/api";
 
-export const getCommonApplyFooter = children => {
+export const getCommonApplyFooter = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Div",
     props: {
-      className: "apply-wizard-footer"
+      className: "apply-wizard-footer",
     },
-    children
+    children,
   };
 };
 
@@ -35,7 +39,7 @@ export const transformById = (payload, id) => {
     payload &&
     payload.reduce((result, item) => {
       result[item[id]] = {
-        ...item
+        ...item,
       };
 
       return result;
@@ -83,7 +87,7 @@ export const validateFields = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            )
+            ),
           },
           dispatch,
           true
@@ -112,7 +116,7 @@ export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
   }
 };
 
-export const getEpochForDate = date => {
+export const getEpochForDate = (date) => {
   const dateSplit = date.split("/");
   return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
 };
@@ -129,16 +133,16 @@ export const sortByEpoch = (data, order) => {
   }
 };
 
-export const ifUserRoleExists = role => {
+export const ifUserRoleExists = (role) => {
   let userInfo = JSON.parse(getUserInfo());
   const roles = get(userInfo, "roles");
-  const roleCodes = roles ? roles.map(role => role.code) : [];
+  const roleCodes = roles ? roles.map((role) => role.code) : [];
   if (roleCodes.indexOf(role) > -1) {
     return true;
   } else return false;
 };
 
-export const convertEpochToDate = dateEpoch => {
+export const convertEpochToDate = (dateEpoch) => {
   const dateFromApi = new Date(dateEpoch);
   let month = dateFromApi.getMonth() + 1;
   let day = dateFromApi.getDate();
@@ -225,7 +229,7 @@ export const showHideAdhocPopup = (state, dispatch, screenKey) => {
   );
 };
 
-export const getCommonGrayCard = children => {
+export const getCommonGrayCard = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -239,18 +243,18 @@ export const getCommonGrayCard = children => {
               backgroundColor: "rgb(242, 242, 242)",
               boxShadow: "none",
               borderRadius: 0,
-              overflow: "visible"
-            }
-          })
+              overflow: "visible",
+            },
+          }),
         },
         gridDefination: {
-          xs: 12
-        }
-      }
+          xs: 12,
+        },
+      },
     },
     gridDefination: {
-      xs: 12
-    }
+      xs: 12,
+    },
   };
 };
 
@@ -260,21 +264,21 @@ export const getLabelOnlyValue = (value, props = {}) => {
     componentPath: "Div",
     gridDefination: {
       xs: 6,
-      sm: 4
+      sm: 4,
     },
     props: {
       style: {
-        marginBottom: "16px"
+        marginBottom: "16px",
       },
-      ...props
+      ...props,
     },
     children: {
-      value: getCommonCaption(value)
-    }
+      value: getCommonCaption(value),
+    },
   };
 };
 
-export const convertDateTimeToEpoch = dateTimeString => {
+export const convertDateTimeToEpoch = (dateTimeString) => {
   //example input format : "26-07-2018 17:43:21"
   try {
     const parts = dateTimeString.match(
@@ -300,7 +304,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
           true,
           {
             labelName: "Incorrect Number!",
-            labelKey: "ERR_MOBILE_NUMBER_INCORRECT"
+            labelKey: "ERR_MOBILE_NUMBER_INCORRECT",
           },
           "error"
         )
@@ -325,7 +329,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
           true,
           {
             labelName: "Owner has been added already!",
-            labelKey: "ERR_OWNER_ALREADY_ADDED_TOGGLE_MSG"
+            labelKey: "ERR_OWNER_ALREADY_ADDED_TOGGLE_MSG",
           },
           "error"
         )
@@ -335,7 +339,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
 
     //Same no search in whole array
     const matchingOwnerIndex = owners.findIndex(
-      item => item.userName === ownerNo
+      (item) => item.userName === ownerNo
     );
     if (matchingOwnerIndex > -1) {
       if (
@@ -358,7 +362,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         //Delete if current card was not part of oldOwners array - no need to save.
         if (
           oldOwnersArr.findIndex(
-            item => owners[cardIndex].userName === item.userName
+            (item) => owners[cardIndex].userName === item.userName
           ) == -1
         ) {
           owners.splice(cardIndex, 1);
@@ -375,7 +379,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
             true,
             {
               labelName: "Owner already added!",
-              labelKey: "ERR_OWNER_ALREADY_ADDED_1"
+              labelKey: "ERR_OWNER_ALREADY_ADDED_1",
             },
             "error"
           )
@@ -391,7 +395,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         [],
         {
           tenantId: "pb",
-          userName: `${ownerNo}`
+          userName: `${ownerNo}`,
         }
       );
       if (payload && payload.user && payload.user.hasOwnProperty("length")) {
@@ -401,7 +405,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
               true,
               {
                 labelName: "This mobile number is not registered!",
-                labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED"
+                labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED",
               },
               "info"
             )
@@ -453,7 +457,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
   }
 };
 
-export const getReceiptData = async queryObject => {
+export const getReceiptData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
@@ -468,11 +472,11 @@ export const getReceiptData = async queryObject => {
   }
 };
 
-export const getMdmsData = async queryObject => {
+export const getMdmsData = async (queryObject) => {
   try {
     const response = await httpRequest(
       "post",
-      "egov-mdms-service/v1/_get",
+      "mdms-v2/v1/_get",
       "",
       queryObject
     );
@@ -484,7 +488,7 @@ export const getMdmsData = async queryObject => {
 };
 
 // Get user data from uuid API call
-export const getUserDataFromUuid = async bodyObject => {
+export const getUserDataFromUuid = async (bodyObject) => {
   try {
     // const response = await httpRequest(
     //   "post",
@@ -512,12 +516,16 @@ export const getBill = async (queryObject, dispatch) => {
     );
     return response;
   } catch (error) {
-    if (!window.location.pathname.includes('acknowledgement')) {
+    if (!window.location.pathname.includes("acknowledgement")) {
       dispatch(
         toggleSnackbar(
           true,
           { labelName: error.message, labelKey: error.message },
-          error.message && error.message.includes && error.message.includes("No Demands Found") ? "warning" : "error"
+          error.message &&
+            error.message.includes &&
+            error.message.includes("No Demands Found")
+            ? "warning"
+            : "error"
         )
       );
     }
@@ -548,12 +556,12 @@ export const searchBill = async (dispatch, applicationNumber, tenantId) => {
     let queryObject = [
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId,
       },
       {
         key: "consumerCode",
-        value: applicationNumber
-      }
+        value: applicationNumber,
+      },
     ];
 
     // Get Receipt
@@ -568,13 +576,13 @@ export const searchBill = async (dispatch, applicationNumber, tenantId) => {
     const response = await getBill([
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId,
       },
       {
         key: "applicationNumber",
-        value: applicationNumber
+        value: applicationNumber,
       },
-      dispatch
+      dispatch,
     ]);
 
     // If pending payment then get bill else get receipt
@@ -582,7 +590,10 @@ export const searchBill = async (dispatch, applicationNumber, tenantId) => {
 
     if (billData) {
       dispatch(prepareFinalObject("ReceiptTemp[0].Bill", billData));
-      const estimateData = createEstimateData(billData[0], billData[0].totalAmount);
+      const estimateData = createEstimateData(
+        billData[0],
+        billData[0].totalAmount
+      );
       estimateData &&
         estimateData.length &&
         dispatch(
@@ -602,16 +613,16 @@ export const createEstimateData = (billObject, totalAmount) => {
 
   let forward = 0;
   if (totalAmount < 0) {
-    billDetails.forEach(e => {
-      e.billAccountDetails.forEach(cur => {
+    billDetails.forEach((e) => {
+      e.billAccountDetails.forEach((cur) => {
         if (cur.taxHeadCode.indexOf("ADVANCE_CARRYFORWARD") > -1) {
-          forward = forward + cur.amount
+          forward = forward + cur.amount;
         }
       });
     });
 
     let keyExist = false;
-    billDetails[0].billAccountDetails.forEach(cur => {
+    billDetails[0].billAccountDetails.forEach((cur) => {
       if (cur.taxHeadCode.indexOf("ADVANCE_CARRYFORWARD") > -1) {
         cur.amount = forward;
         keyExist = true;
@@ -622,45 +633,44 @@ export const createEstimateData = (billObject, totalAmount) => {
         amount: forward,
         taxHeadCode: "ADVANCE_CARRYFORWARD",
         order: 2,
-        value: "Please put some description in mdms for this key"
-      })
+        value: "Please put some description in mdms for this key",
+      });
     }
   }
 
   let fees =
     billDetails &&
     billDetails[0].billAccountDetails &&
-    billDetails[0].billAccountDetails.map(item => {
+    billDetails[0].billAccountDetails.map((item) => {
       return {
         name: { labelName: item.taxHeadCode, labelKey: item.taxHeadCode },
         value: item.amount,
-        info: { labelName: item.taxHeadCode, labelKey: item.taxHeadCode }
+        info: { labelName: item.taxHeadCode, labelKey: item.taxHeadCode },
       };
     });
   return fees;
 };
 export const getBusinessServiceMdmsData = async (dispatch, tenantId) => {
-
   let mdmsBody = {
     MdmsCriteria: {
       tenantId: tenantId,
       moduleDetails: [
         {
           moduleName: "BillingService",
-          masterDetails: [{ name: "BusinessService" }]
+          masterDetails: [{ name: "BusinessService" }],
         },
         {
           moduleName: "common-masters",
-          masterDetails: [{ name: "uiCommonPay" }]
-        }
-      ]
-    }
+          masterDetails: [{ name: "uiCommonPay" }],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -671,86 +681,100 @@ export const getBusinessServiceMdmsData = async (dispatch, tenantId) => {
   }
 };
 const loadArrearsDetails = async (dispatch, Bill = []) => {
-  if (Bill &&
+  if (
+    Bill &&
     Array.isArray(Bill) &&
     Bill.length > 0 &&
     Bill[0] &&
     Bill[0].billDetails &&
     Array.isArray(Bill[0].billDetails) &&
-    Bill[0].billDetails.length > 1) {
+    Bill[0].billDetails.length > 1
+  ) {
     let queries = [];
     let endpoints = [];
     let rb = [];
     Bill[0].billDetails.map(async (billDetail) => {
-
       let query = [
         {
           key: "tenantId",
-          value: get(Bill[0], 'tenantId', "")
+          value: get(Bill[0], "tenantId", ""),
         },
         {
           key: "consumerCode",
-          value: get(Bill[0], 'consumerCode', "")
-        }, {
+          value: get(Bill[0], "consumerCode", ""),
+        },
+        {
           key: "fromPeriod",
-          value: get(billDetail, 'fromPeriod', 0)
+          value: get(billDetail, "fromPeriod", 0),
         },
         {
           key: "toPeriod",
-          value: get(billDetail, 'toPeriod', 0)
-        }, {
+          value: get(billDetail, "toPeriod", 0),
+        },
+        {
           key: "service",
-          value: get(Bill[0], 'businessService', "")
+          value: get(Bill[0], "businessService", ""),
         },
         {
           key: "retrieveOldest",
-          value: true
-        }
-      ]
+          value: true,
+        },
+      ];
       rb.push([]);
       queries.push(query);
       endpoints.push("/billing-service/bill/v2/_search");
-    })
-
-    const resp = await multiHttpRequest(endpoints, "search", queries, rb)
-    resp && resp.map((res, ind) => {
-      if (res && res.Bill) {
-        if (res && res.Bill && res.Bill[0]) {
-          set(Bill[0].billDetails[ind], 'expiryDate', get(res, 'Bill[0].billDetails[0].expiryDate', 'NA'))
-          set(Bill[0].billDetails[ind], 'billNumber', get(res, 'Bill[0].billNumber', 'NA'))
-        }
-      }
     });
+
+    const resp = await multiHttpRequest(endpoints, "search", queries, rb);
+    resp &&
+      resp.map((res, ind) => {
+        if (res && res.Bill) {
+          if (res && res.Bill && res.Bill[0]) {
+            set(
+              Bill[0].billDetails[ind],
+              "expiryDate",
+              get(res, "Bill[0].billDetails[0].expiryDate", "NA")
+            );
+            set(
+              Bill[0].billDetails[ind],
+              "billNumber",
+              get(res, "Bill[0].billNumber", "NA")
+            );
+          }
+        }
+      });
     dispatch(prepareFinalObject("ReceiptTemp[0].Bill", Bill));
     const estimateData = createEstimateData(Bill[0], Bill[0].totalAmount);
     estimateData &&
       estimateData.length &&
       dispatch(
-        prepareFinalObject(
-          "applyScreenMdmsData.estimateCardData",
-          estimateData
-        )
+        prepareFinalObject("applyScreenMdmsData.estimateCardData", estimateData)
       );
   }
-}
+};
 
-export const generateBill = async (dispatch, consumerCode, tenantId, businessService) => {
+export const generateBill = async (
+  dispatch,
+  consumerCode,
+  tenantId,
+  businessService
+) => {
   try {
     if (consumerCode && tenantId) {
       const queryObj = [
         {
           key: "tenantId",
-          value: tenantId
+          value: tenantId,
         },
         {
           key: "consumerCode",
-          value: consumerCode
-        }
+          value: consumerCode,
+        },
       ];
       if (businessService) {
         queryObj.push({
           key: "businessService",
-          value: businessService
+          value: businessService,
         });
       }
       const payload = await getBill(queryObj, dispatch);
@@ -758,9 +782,12 @@ export const generateBill = async (dispatch, consumerCode, tenantId, businessSer
 
       if (payload && payload.Bill[0]) {
         dispatch(prepareFinalObject("ReceiptTemp[0].Bill", payload.Bill));
-        localStorage.setItem("pay-bill-mobile",payload.Bill[0].mobileNumber);
+        localStorage.setItem("pay-bill-mobile", payload.Bill[0].mobileNumber);
         loadArrearsDetails(dispatch, payload.Bill);
-        const estimateData = createEstimateData(payload.Bill[0], payload.Bill[0].totalAmount);
+        const estimateData = createEstimateData(
+          payload.Bill[0],
+          payload.Bill[0].totalAmount
+        );
         estimateData &&
           estimateData.length &&
           dispatch(
@@ -843,16 +870,16 @@ export const getRequiredDocData = async (action, state, dispatch) => {
       moduleDetails: [
         {
           moduleName: "FireNoc",
-          masterDetails: [{ name: "Documents" }]
-        }
-      ]
-    }
+          masterDetails: [{ name: "Documents" }],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -863,7 +890,7 @@ export const getRequiredDocData = async (action, state, dispatch) => {
   }
 };
 
-export const getTextToLocalMapping = label => {
+export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
     case "Application No":

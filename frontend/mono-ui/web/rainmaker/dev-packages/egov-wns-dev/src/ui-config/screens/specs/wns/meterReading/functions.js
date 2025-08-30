@@ -4,11 +4,14 @@ import { getConsumptionDetails } from "../../../../../ui-utils/commons";
 import {
   convertEpochToDate,
   convertDateToEpoch,
-  getTextToLocalMapping
+  getTextToLocalMapping,
 } from "../../utils/index";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validateFields } from "../../utils";
-import { getUserInfo, getTenantIdCommon } from "egov-ui-kit/utils/localStorageUtils";
+import {
+  getUserInfo,
+  getTenantIdCommon,
+} from "egov-ui-kit/utils/localStorageUtils";
 import commonConfig from "config/common.js";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { httpRequest } from "../../../../../ui-utils";
@@ -19,12 +22,12 @@ export const searchApiCall = async (state, dispatch) => {
   let queryObject = [
     {
       key: "tenantId",
-      value: getTenantIdCommon()
+      value: getTenantIdCommon(),
     },
     {
-      "connectionNos": getQueryArg(window.location.href, "connectionNos")
+      connectionNos: getQueryArg(window.location.href, "connectionNos"),
     },
-    { key: "offset", value: "0" }
+    { key: "offset", value: "0" },
   ];
   let searchScreenObject = get(
     state.screenConfiguration.preparedFinalObject,
@@ -51,21 +54,21 @@ export const searchApiCall = async (state, dispatch) => {
         true,
         {
           labelName: "Please fill valid fields to start search",
-          labelKey: "ERR_FILL_VALID_FIELDS"
+          labelKey: "ERR_FILL_VALID_FIELDS",
         },
         "warning"
       )
     );
   } else if (
     Object.keys(searchScreenObject).length == 0 ||
-    Object.values(searchScreenObject).every(x => x === "")
+    Object.values(searchScreenObject).every((x) => x === "")
   ) {
     dispatch(
       toggleSnackbar(
         true,
         {
           labelName: "Please fill at least one field to start search",
-          labelKey: "ERR_FILL_ONE_FIELDS"
+          labelKey: "ERR_FILL_ONE_FIELDS",
         },
         "warning"
       )
@@ -92,12 +95,12 @@ export const searchApiCall = async (state, dispatch) => {
         if (key === "fromDate") {
           queryObject.push({
             key: key,
-            value: convertDateToEpoch(searchScreenObject[key], "daystart")
+            value: convertDateToEpoch(searchScreenObject[key], "daystart"),
           });
         } else if (key === "toDate") {
           queryObject.push({
             key: key,
-            value: convertDateToEpoch(searchScreenObject[key], "dayend")
+            value: convertDateToEpoch(searchScreenObject[key], "dayend"),
           });
         } else {
           queryObject.push({ key: key, value: searchScreenObject[key].trim() });
@@ -160,20 +163,19 @@ const getMdmsData = async () => {
       moduleDetails: [
         {
           moduleName: "tenant",
-          masterDetails: [{ name: "citymodule" }]
-        }
-      ]
-    }
+          masterDetails: [{ name: "citymodule" }],
+        },
+      ],
+    },
   };
   try {
     let payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
     );
     return payload;
-  } catch (e) {
-  }
+  } catch (e) {}
 };

@@ -1,9 +1,16 @@
 import commonConfig from "config/common.js";
 import {
-  getCommonContainer, getCommonHeader, getLabel
+  getCommonContainer,
+  getCommonHeader,
+  getLabel,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSnackbar, toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject,
+  toggleSnackbar,
+  toggleSpinner,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { httpRequest } from "egov-ui-framework/ui-utils/api";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
@@ -16,7 +23,6 @@ import { newCollectionFooter } from "./newCollectionResource/newCollectionFooter
 import { newCollectionServiceDetailsCard } from "./newCollectionResource/newCollectionServiceDetails";
 
 const getData = async (action, state, dispatch) => {
-
   const tenantId = getTenantId();
 
   let requestBody = {
@@ -35,7 +41,7 @@ const getData = async (action, state, dispatch) => {
         {
           moduleName: "common-masters",
           masterDetails: [{ name: "Help" }],
-        }
+        },
       ],
     },
   };
@@ -44,7 +50,7 @@ const getData = async (action, state, dispatch) => {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       requestBody
@@ -74,7 +80,7 @@ const getData = async (action, state, dispatch) => {
         "/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=Locality",
         "_search",
         [{ key: "tenantId", value: `${tenantId}` }],
-        { }
+        {}
       );
       const mohallaData =
         payload &&
@@ -86,8 +92,8 @@ const getData = async (action, state, dispatch) => {
             name: `${tenantId
               .toUpperCase()
               .replace(/[.]/g, "_")}_REVENUE_${item.code
-                .toUpperCase()
-                .replace(/[._:-\s\/]/g, "_")}`,
+              .toUpperCase()
+              .replace(/[._:-\s\/]/g, "_")}`,
           });
           return result;
         }, []);
@@ -135,7 +141,6 @@ const getData = async (action, state, dispatch) => {
             true
           )
         );
-
       }
     } catch (e) {
       console.log(e);
@@ -170,7 +175,7 @@ const getData = async (action, state, dispatch) => {
       let payload = null;
       payload = await httpRequest(
         "post",
-        "/egov-mdms-service/v1/_search",
+        "/mdms-v2/v1/_search",
         "_search",
         [],
         requestBody1
@@ -190,7 +195,6 @@ const getData = async (action, state, dispatch) => {
     } catch (e) {
       console.log(e);
     }
-
   } catch (e) {
     console.error("Unable to fetch detail", e);
     dispatch(toggleSnackbar(true, { labelName: e.message }, "error"));
@@ -207,7 +211,7 @@ const getChallanSearchRes = async (action, state, dispatch) => {
       `/echallan-services/eChallan/v1/_search?challanNo=${challanNo}&tenantId=${tenantId}&businessService=${businessService}`,
       "_search",
       [],
-      { }
+      {}
     );
     if (
       searchpayload &&
@@ -219,7 +223,7 @@ const getChallanSearchRes = async (action, state, dispatch) => {
         `/billing-service/bill/v2/_fetchbill?consumerCode=${challanNo}&businessService=${businessService}&tenantId=${tenantId}`,
         "",
         [],
-        { }
+        {}
       );
       //Set the bill detail
       fetchbillPayload &&
@@ -297,9 +301,16 @@ const getChallanSearchRes = async (action, state, dispatch) => {
         )
       );
 
-      let consumerDetailsDisableFldList = ["ConsumerName", "ConsumerMobileNo", "ConsumerHouseNo", "ConsumerBuilidingName", "ConsumerStreetName", "ConsumerLocMohalla", "ConsumerPinCode"];
-      consumerDetailsDisableFldList.forEach(item => {
-
+      let consumerDetailsDisableFldList = [
+        "ConsumerName",
+        "ConsumerMobileNo",
+        "ConsumerHouseNo",
+        "ConsumerBuilidingName",
+        "ConsumerStreetName",
+        "ConsumerLocMohalla",
+        "ConsumerPinCode",
+      ];
+      consumerDetailsDisableFldList.forEach((item) => {
         dispatch(
           handleField(
             "newCollection",
@@ -325,9 +336,17 @@ const getChallanSearchRes = async (action, state, dispatch) => {
       //     true
       //   )
       // );
-
     } else {
-      dispatch(toggleSnackbar(true, { labelName: "Unable to find Challan Detail. Please search with valid Challan Detail" }, "error"));
+      dispatch(
+        toggleSnackbar(
+          true,
+          {
+            labelName:
+              "Unable to find Challan Detail. Please search with valid Challan Detail",
+          },
+          "error"
+        )
+      );
     }
   } catch (e) {
     console.error("Unable to fetch detail", e);
@@ -344,8 +363,8 @@ const newCollection = {
     const tenantId = getTenantId();
     const locale = getLocale() || "en_IN";
     dispatch(fetchLocalizationLabel(locale, tenantId, tenantId));
-    //Flush previous data 
-    dispatch(prepareFinalObject("ChallanTaxHeads", []))
+    //Flush previous data
+    dispatch(prepareFinalObject("ChallanTaxHeads", []));
     dispatch(prepareFinalObject("Challan", []));
     getData(action, state, dispatch);
     if (getQueryArg(window.location.href, "consumerCode") != null) {
@@ -353,8 +372,6 @@ const newCollection = {
     }
     dispatch(toggleSpinner());
     return action;
-
-
   },
 
   components: {
@@ -379,9 +396,9 @@ const newCollection = {
               number: "NA",
               label: {
                 labelKey: "PAYMENT_UC_CONSUMER_CODE",
-              }
+              },
             },
-            visible: false
+            visible: false,
           },
         }),
 
@@ -439,17 +456,16 @@ const newCollection = {
               children: {
                 buttonLabel: getLabel({
                   labelName: "Search And Pay",
-                  labelKey: "UC_SEARCHANDPAY_LABEL"
+                  labelKey: "UC_SEARCHANDPAY_LABEL",
                 }),
               },
               onClickDefination: {
                 action: "condition",
                 callBack: (state, dispatch) => {
                   openPayBillForm(state, dispatch);
-                }
-              }
+                },
+              },
             },
-
           },
         },
 
@@ -462,8 +478,6 @@ const newCollection = {
 };
 
 export default newCollection;
-
-
 
 const openChallanSearchForm = (state, dispatch) => {
   const path = `/uc/searchChallan`;

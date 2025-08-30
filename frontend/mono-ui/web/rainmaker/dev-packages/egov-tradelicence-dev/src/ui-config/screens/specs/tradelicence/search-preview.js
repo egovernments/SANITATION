@@ -1,37 +1,43 @@
 import {
   getCommonCard,
-
-
-  getCommonContainer, getCommonGrayCard, getCommonHeader,
-
-  getCommonTitle
+  getCommonContainer,
+  getCommonGrayCard,
+  getCommonHeader,
+  getCommonTitle,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   handleScreenConfigurationFieldChange as handleField,
   prepareFinalObject,
-  unMountScreen
+  unMountScreen,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getQueryArg,
-  setBusinessServiceDataToLocalStorage, setDocuments
+  setBusinessServiceDataToLocalStorage,
+  setDocuments,
 } from "egov-ui-framework/ui-utils/commons";
 import { loadUlbLogo } from "egov-ui-kit/utils/pdfUtils/generatePDF";
 import get from "lodash/get";
 import set from "lodash/set";
 import store from "ui-redux/store";
 import { httpRequest } from "../../../../ui-utils";
-import { checkValidOwners, getSearchResults } from "../../../../ui-utils/commons";
+import {
+  checkValidOwners,
+  getSearchResults,
+} from "../../../../ui-utils/commons";
 import {
   createEstimateData,
-
-
-  getDialogButton, getFeesEstimateCard,
+  getDialogButton,
+  getFeesEstimateCard,
   getHeaderSideText,
-  getTransformedStatus, setMultiOwnerForSV,
-  setValidToFromVisibilityForSV
+  getTransformedStatus,
+  setMultiOwnerForSV,
+  setValidToFromVisibilityForSV,
 } from "../utils";
 import { loadReceiptGenerationData } from "../utils/receiptTransformer";
-import { downloadPrintContainer, footerReviewTop } from "./applyResource/footer";
+import {
+  downloadPrintContainer,
+  footerReviewTop,
+} from "./applyResource/footer";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import { getReviewOwner } from "./applyResource/review-owner";
 import { getReviewTrade } from "./applyResource/review-trade";
@@ -40,21 +46,20 @@ const tenantId = getQueryArg(window.location.href, "tenantId");
 let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
 let headerSideText = { word1: "", word2: "" };
 
-
-const getTradeTypeSubtypeDetails = payload => {
+const getTradeTypeSubtypeDetails = (payload) => {
   const tradeUnitsFromApi = get(
     payload,
     "Licenses[0].tradeLicenseDetail.tradeUnits",
     []
   );
   const tradeUnitDetails = [];
-  tradeUnitsFromApi.forEach(tradeUnit => {
+  tradeUnitsFromApi.forEach((tradeUnit) => {
     const { tradeType } = tradeUnit;
     const tradeDetails = tradeType.split(".");
     tradeUnitDetails.push({
       trade: get(tradeDetails, "[0]", ""),
       tradeType: get(tradeDetails, "[1]", ""),
-      tradeSubType: get(tradeDetails, "[2]", "")
+      tradeSubType: get(tradeDetails, "[2]", ""),
     });
   });
   return tradeUnitDetails;
@@ -63,7 +68,7 @@ const getTradeTypeSubtypeDetails = payload => {
 const searchResults = async (action, state, dispatch, applicationNo) => {
   let queryObject = [
     { key: "tenantId", value: tenantId },
-    { key: "applicationNumber", value: applicationNo }
+    { key: "applicationNumber", value: applicationNo },
   ];
   let payload = await getSearchResults(queryObject);
 
@@ -74,9 +79,9 @@ const searchResults = async (action, state, dispatch, applicationNo) => {
   set(payload, "Licenses[0].headerSideText", headerSideText);
   set(payload, "Licenses[0].assignee", []);
   get(payload, "Licenses[0].tradeLicenseDetail.subOwnerShipCategory") &&
-    get(payload, "Licenses[0].tradeLicenseDetail.subOwnerShipCategory").split(
-      "."
-    )[0] === "INDIVIDUAL"
+  get(payload, "Licenses[0].tradeLicenseDetail.subOwnerShipCategory").split(
+    "."
+  )[0] === "INDIVIDUAL"
     ? setMultiOwnerForSV(action, true)
     : setMultiOwnerForSV(action, false);
 
@@ -91,12 +96,18 @@ const searchResults = async (action, state, dispatch, applicationNo) => {
     payload,
     "Licenses[0].tradeLicenseDetail.applicationDocuments",
     "LicensesTemp[0].reviewDocData",
-    dispatch, 'TL'
+    dispatch,
+    "TL"
   );
 
   let sts = getTransformedStatus(get(payload, "Licenses[0].status"));
   payload && dispatch(prepareFinalObject("Licenses[0]", payload.Licenses[0]));
-  payload && dispatch(prepareFinalObject("LicensesTemp[0].oldOwners", [...payload.Licenses[0].tradeLicenseDetail.owners]));
+  payload &&
+    dispatch(
+      prepareFinalObject("LicensesTemp[0].oldOwners", [
+        ...payload.Licenses[0].tradeLicenseDetail.owners,
+      ])
+    );
 
   //set business service data
 
@@ -108,11 +119,14 @@ const searchResults = async (action, state, dispatch, applicationNo) => {
     { key: "tenantId", value: tenantId },
     {
       key: "businessServices",
-      value: businessService ? businessService : "NewTL"
-    }
+      value: businessService ? businessService : "NewTL",
+    },
   ];
 
-  await setBusinessServiceDataToLocalStorage(businessServiceQueryObject, dispatch);
+  await setBusinessServiceDataToLocalStorage(
+    businessServiceQueryObject,
+    dispatch
+  );
 
   //set Trade Types
 
@@ -125,7 +139,6 @@ const searchResults = async (action, state, dispatch, applicationNo) => {
     );
   const LicenseData = payload.Licenses[0];
   const fetchFromReceipt = sts !== "pending_payment";
-
 
   // generate estimate data
   createEstimateData(
@@ -155,19 +168,22 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
     let queryObjectSearch = [
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId,
       },
       { key: "offset", value: "0" },
-      { key: "licenseNumbers", value: licenseNumber }
+      { key: "licenseNumbers", value: licenseNumber },
     ];
     const payload = await getSearchResults(queryObjectSearch);
     dispatch(prepareFinalObject("AllLicences", get(payload, `Licenses`, [])));
-    const length = payload && payload.Licenses.length > 0 ? get(payload, `Licenses`, []).length : 0;
+    const length =
+      payload && payload.Licenses.length > 0
+        ? get(payload, `Licenses`, []).length
+        : 0;
     dispatch(prepareFinalObject("licenseCount", length));
     get(payload, "Licenses[0].tradeLicenseDetail.subOwnerShipCategory") &&
-      get(payload, "Licenses[0].tradeLicenseDetail.subOwnerShipCategory").split(
-        "."
-      )[0] === "INDIVIDUAL"
+    get(payload, "Licenses[0].tradeLicenseDetail.subOwnerShipCategory").split(
+      "."
+    )[0] === "INDIVIDUAL"
       ? setMultiOwnerForSV(action, true)
       : setMultiOwnerForSV(action, false);
     const status = get(
@@ -183,28 +199,44 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
     let data = get(state, "screenConfiguration.preparedFinalObject");
 
     const obj = setStatusBasedValue(status);
-    let appDocuments=get(data, "Licenses[0].tradeLicenseDetail.applicationDocuments",[]);
+    let appDocuments = get(
+      data,
+      "Licenses[0].tradeLicenseDetail.applicationDocuments",
+      []
+    );
     if (appDocuments) {
       let applicationDocs = [];
-      appDocuments.forEach(doc => {
-        if(doc.length !== 0) {
+      appDocuments.forEach((doc) => {
+        if (doc.length !== 0) {
           applicationDocs.push(doc);
         }
-      })
-      applicationDocs=applicationDocs.filter(document=>document);
-      
-      let removedDocs=get(data, "LicensesTemp[0].removedDocs",[]);
-      if(removedDocs.length>0){
-          removedDocs.map(removedDoc=>{
-            applicationDocs=applicationDocs.filter(appDocument=>!(appDocument.documentType===removedDoc.documentType&&appDocument.fileStoreId===removedDoc.fileStoreId))
-          })             
+      });
+      applicationDocs = applicationDocs.filter((document) => document);
+
+      let removedDocs = get(data, "LicensesTemp[0].removedDocs", []);
+      if (removedDocs.length > 0) {
+        removedDocs.map((removedDoc) => {
+          applicationDocs = applicationDocs.filter(
+            (appDocument) =>
+              !(
+                appDocument.documentType === removedDoc.documentType &&
+                appDocument.fileStoreId === removedDoc.fileStoreId
+              )
+          );
+        });
       }
-      dispatch(prepareFinalObject("Licenses[0].tradeLicenseDetail.applicationDocuments",applicationDocs));
+      dispatch(
+        prepareFinalObject(
+          "Licenses[0].tradeLicenseDetail.applicationDocuments",
+          applicationDocs
+        )
+      );
       await setDocuments(
         get(state, "screenConfiguration.preparedFinalObject"),
         "Licenses[0].tradeLicenseDetail.applicationDocuments",
         "LicensesTemp[0].reviewDocData",
-        dispatch, 'TL'
+        dispatch,
+        "TL"
       );
     }
 
@@ -218,26 +250,41 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
         moduleDetails: [
           {
             moduleName: "common-masters",
-            masterDetails: [{ name: "uiCommonPay", filter: `[?(@.code=="${businessService}")]` }]
+            masterDetails: [
+              {
+                name: "uiCommonPay",
+                filter: `[?(@.code=="${businessService}")]`,
+              },
+            ],
           },
           {
             moduleName: "TradeLicense",
-            masterDetails: [{ name: "TradeRenewal" }]
-          }
-        ]
-      }
+            masterDetails: [{ name: "TradeRenewal" }],
+          },
+        ],
+      },
     };
     try {
       let payload = null;
       payload = await httpRequest(
         "post",
-        "/egov-mdms-service/v1/_search",
+        "/mdms-v2/v1/_search",
         "_search",
         [],
         mdmsBody
       );
-      dispatch(prepareFinalObject("renewalPeriod", get(payload.MdmsRes, "TradeLicense.TradeRenewal[0].renewalPeriod")));
-      dispatch(prepareFinalObject("uiCommonConfig", get(payload.MdmsRes, "common-masters.uiCommonPay[0]")));
+      dispatch(
+        prepareFinalObject(
+          "renewalPeriod",
+          get(payload.MdmsRes, "TradeLicense.TradeRenewal[0].renewalPeriod")
+        )
+      );
+      dispatch(
+        prepareFinalObject(
+          "uiCommonConfig",
+          get(payload.MdmsRes, "common-masters.uiCommonPay[0]")
+        )
+      );
     } catch (e) {
       console.log(e);
     }
@@ -246,31 +293,31 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
       word1: {
         ...getCommonTitle(
           {
-            jsonPath: "Licenses[0].headerSideText.word1"
+            jsonPath: "Licenses[0].headerSideText.word1",
           },
           {
             style: {
               marginRight: "10px",
-              color: "rgba(0, 0, 0, 0.6000000238418579)"
-            }
+              color: "rgba(0, 0, 0, 0.6000000238418579)",
+            },
           }
-        )
+        ),
       },
       word2: {
         ...getCommonTitle({
-          jsonPath: "Licenses[0].headerSideText.word2"
-        })
+          jsonPath: "Licenses[0].headerSideText.word2",
+        }),
       },
       cancelledLabel: {
         ...getCommonHeader(
           {
             labelName: "Cancelled",
-            labelKey: "TL_COMMON_STATUS_CANC"
+            labelKey: "TL_COMMON_STATUS_CANC",
           },
           { variant: "body1", style: { color: "#E54D42" } }
         ),
-        visible: false
-      }
+        visible: false,
+      },
     };
 
     const printCont = downloadPrintContainer(
@@ -294,15 +341,15 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
     if (status !== "INITIATED") {
       process.env.REACT_APP_NAME === "Citizen"
         ? set(
-          action,
-          "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-          CitizenprintCont
-        )
+            action,
+            "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+            CitizenprintCont
+          )
         : set(
-          action,
-          "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-          printCont
-        );
+            action,
+            "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+            printCont
+          );
     }
 
     // Get approval details based on status and set it in screenconfig
@@ -323,7 +370,8 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
           data,
           "Licenses[0].tradeLicenseDetail.verificationDocuments",
           "LicensesTemp[0].verifyDocData",
-          dispatch, 'TL'
+          dispatch,
+          "TL"
         );
       } else {
         dispatch(
@@ -351,7 +399,10 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
     const headerrow = getCommonContainer({
       header: getCommonHeader({
         labelName: "Trade License Application (2018-2019)",
-        labelKey: applicationType === "RENEWAL" ? "TL_TRADE_RENEW_APPLICATION" : "TL_TRADE_APPLICATION"
+        labelKey:
+          applicationType === "RENEWAL"
+            ? "TL_TRADE_RENEW_APPLICATION"
+            : "TL_TRADE_APPLICATION",
       }),
       applicationLicence: getCommonContainer({
         applicationNumber: {
@@ -359,8 +410,8 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
           moduleName: "egov-tradelicence",
           componentPath: "ApplicationNoContainer",
           props: {
-            number: applicationNumber
-          }
+            number: applicationNumber,
+          },
         },
         licenceNumber: {
           uiFramework: "custom-atoms-local",
@@ -369,9 +420,9 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
           visible: licenseNumber ? true : false,
           props: {
             number: licenseNumber,
-          }
-        }
-      })
+          },
+        },
+      }),
     });
     set(
       action.screenConfig,
@@ -392,7 +443,7 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
 
 let titleText = "";
 
-const setStatusBasedValue = status => {
+const setStatusBasedValue = (status) => {
   switch (status) {
     case "approved":
       return {
@@ -401,8 +452,8 @@ const setStatusBasedValue = status => {
         titleVisibility: true,
         roleDefination: {
           rolePath: "user-info.roles",
-          roles: ["TL_APPROVER"]
-        }
+          roles: ["TL_APPROVER"],
+        },
       };
     case "pending_payment":
       return {
@@ -411,8 +462,8 @@ const setStatusBasedValue = status => {
         titleVisibility: true,
         roleDefination: {
           rolePath: "user-info.roles",
-          roles: ["TL_CEMP"]
-        }
+          roles: ["TL_CEMP"],
+        },
       };
     case "pending_approval":
       return {
@@ -421,38 +472,37 @@ const setStatusBasedValue = status => {
         titleVisibility: true,
         roleDefination: {
           rolePath: "user-info.roles",
-          roles: ["TL_APPROVER"]
-        }
+          roles: ["TL_APPROVER"],
+        },
       };
     case "cancelled":
       return {
         titleText: "",
         titleVisibility: false,
-        roleDefination: {}
+        roleDefination: {},
       };
     case "rejected":
       return {
         titleText: "",
         titleVisibility: false,
-        roleDefination: {}
+        roleDefination: {},
       };
 
     default:
       return {
         titleText: "",
         titleVisibility: false,
-        roleDefination: {}
+        roleDefination: {},
       };
   }
 };
 
-const headerrow = getCommonContainer({
-});
+const headerrow = getCommonContainer({});
 
 const estimate = getCommonGrayCard({
   estimateSection: getFeesEstimateCard({
-    sourceJsonPath: "LicensesTemp[0].estimateCardData"
-  })
+    sourceJsonPath: "LicensesTemp[0].estimateCardData",
+  }),
 });
 
 const reviewTradeDetails = getReviewTrade(false);
@@ -470,7 +520,7 @@ const setActionItems = (action, object) => {
     "screenConfig.components.div.children.tradeReviewDetails.children.cardContent.children.title",
     getCommonTitle({
       labelName: get(object, "titleText"),
-      labelKey: get(object, "titleKey")
+      labelKey: get(object, "titleKey"),
     })
   );
   set(
@@ -495,19 +545,34 @@ export const tradeReviewDetails = getCommonCard({
   ),
   reviewTradeDetails,
   reviewOwnerDetails,
-  reviewDocumentDetails
+  reviewDocumentDetails,
 });
 
-export const beforeSubmitHook =  (Licenses=[{}]) => {
+export const beforeSubmitHook = (Licenses = [{}]) => {
   let state = store.getState();
-  let oldOwners =  JSON.parse(
-    JSON.stringify(get(state, "screenConfiguration.preparedFinalObject.LicensesTemp[0].oldOwners", {}))
+  let oldOwners = JSON.parse(
+    JSON.stringify(
+      get(
+        state,
+        "screenConfiguration.preparedFinalObject.LicensesTemp[0].oldOwners",
+        {}
+      )
+    )
   );
-  Licenses&&Array.isArray(Licenses)&&Licenses.length>0&& set(Licenses[0] ,"tradeLicenseDetail.owners", checkValidOwners(get(Licenses[0], "tradeLicenseDetail.owners",[]),oldOwners));
-  
-return Licenses;
+  Licenses &&
+    Array.isArray(Licenses) &&
+    Licenses.length > 0 &&
+    set(
+      Licenses[0],
+      "tradeLicenseDetail.owners",
+      checkValidOwners(
+        get(Licenses[0], "tradeLicenseDetail.owners", []),
+        oldOwners
+      )
+    );
 
-}
+  return Licenses;
+};
 const screenConfig = {
   uiFramework: "material-ui",
   name: "search-preview",
@@ -530,7 +595,7 @@ const screenConfig = {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        className: "common-div-css search-preview"
+        className: "common-div-css search-preview",
       },
       children: {
         headerDiv: {
@@ -540,26 +605,25 @@ const screenConfig = {
             header1: {
               gridDefination: {
                 xs: 12,
-                sm: 8
+                sm: 8,
               },
 
-              ...headerrow
-
+              ...headerrow,
             },
             helpSection: {
               uiFramework: "custom-atoms",
               componentPath: "Container",
               props: {
                 color: "primary",
-                style: { justifyContent: "flex-end" }
+                style: { justifyContent: "flex-end" },
               },
               gridDefination: {
                 xs: 12,
                 sm: 4,
-                align: "right"
-              }
-            }
-          }
+                align: "right",
+              },
+            },
+          },
         },
         taskStatus: {
           uiFramework: "custom-containers-local",
@@ -570,8 +634,8 @@ const screenConfig = {
             dataPath: "Licenses",
             moduleName: "NewTL",
             updateUrl: "/tl-services/v1/_update",
-            beforeSubmitHook:beforeSubmitHook
-          }
+            beforeSubmitHook: beforeSubmitHook,
+          },
         },
         // actionDialog: {
         //   uiFramework: "custom-containers-local",
@@ -597,8 +661,8 @@ const screenConfig = {
         //     }
         //   }
         // },
-        tradeReviewDetails
-      }
+        tradeReviewDetails,
+      },
     },
     breakUpDialog: {
       uiFramework: "custom-containers-local",
@@ -607,10 +671,10 @@ const screenConfig = {
       props: {
         open: false,
         maxWidth: "md",
-        screenKey: "search-preview"
-      }
-    }
-  }
+        screenKey: "search-preview",
+      },
+    },
+  },
 };
 
 export default screenConfig;

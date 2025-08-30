@@ -1,7 +1,5 @@
 import { getCommonHeader } from "egov-ui-framework/ui-config/screens/specs/utils";
-import {
-  prepareFinalObject
-} from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "../../../../ui-utils";
 import { searchApiCall } from "./billDownloadResources/function";
@@ -33,14 +31,13 @@ const getMDMSData = async (action, state, dispatch) => {
   try {
     const payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
     );
     dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 const getData = async (action, state, dispatch) => {

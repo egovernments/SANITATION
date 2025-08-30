@@ -1,4 +1,4 @@
-import Input from '@material-ui/core/Input';
+import Input from "@material-ui/core/Input";
 import { withStyles } from "@material-ui/core/styles";
 import { Icon } from "components";
 import commonConfig from "config/common";
@@ -11,7 +11,7 @@ import { getLocale, setLocale, setModule } from "egov-ui-kit/utils/localStorageU
 import Label from "egov-ui-kit/utils/translationNode";
 import get from "lodash/get";
 import { Screen } from "modules/common";
-import queryString from 'query-string';
+import queryString from "query-string";
 import React from "react";
 import { connect } from "react-redux";
 import "./index.css";
@@ -46,20 +46,12 @@ class WhatsAppCity extends React.Component {
     phone: undefined,
     stateId: undefined,
   };
-  getListItems = items =>
+  getListItems = (items) =>
     items.map((item) => ({
-      primaryText: (
-        <Label
-          label={item.label}
-          fontSize="16px"
-          color="#484848"
-          labelStyle={{ fontWeight: 500 }}
-        />
-      )
+      primaryText: <Label label={item.label} fontSize="16px" color="#484848" labelStyle={{ fontWeight: 500 }} />,
     }));
   getMDMSData = async (stateId) => {
     let mdmsBody = {
-
       MdmsCriteria: {
         tenantId: stateId || "pb.amritsar",
         moduleDetails: [
@@ -67,72 +59,63 @@ class WhatsAppCity extends React.Component {
             moduleName: "tenant",
             masterDetails: [
               {
-                name: "citymodule"
-              }
-            ]
+                name: "citymodule",
+              },
+            ],
           },
-        ]
-      }
+        ],
+      },
     };
     try {
-      const payload = await httpRequest(
-        "/egov-mdms-service/v1/_search",
-        "_search",
-        [],
-        mdmsBody
-      );
+      const payload = await httpRequest("/mdms-v2/v1/_search", "_search", [], mdmsBody);
       return payload;
-    } catch (e) {
-    }
+    } catch (e) {}
   };
 
   componentDidMount = async () => {
     localStorage.clear();
-    const values = queryString.parse(this.props.location.search)
+    const values = queryString.parse(this.props.location.search);
     const phone = values.phone;
     const stateId = values.tenantId;
     this.setState({
       phone: phone,
-    })
+    });
     this.setState({
       stateId: stateId,
-    })
-    let locale = getQueryArg(window.location.href, "locale") || 'en_IN';
+    });
+    let locale = getQueryArg(window.location.href, "locale") || "en_IN";
     setLocale(locale);
-    setModule('rainmaker-common');
+    setModule("rainmaker-common");
     this.props.fetchLocalizationLabel(getLocale(), commonConfig.tenantId, commonConfig.tenantId);
 
     const citydata = await this.getMDMSData(stateId);
 
     const citylistCodeModule = get(citydata, "MdmsRes.tenant.citymodule", []);
-    const citylistCode = citylistCodeModule.filter(item => item.module === "PGR.WHATSAPP")[0].tenants
+    const citylistCode = citylistCodeModule.filter((item) => item.module === "PGR.WHATSAPP")[0].tenants;
     const citylist = citylistCode.map((item) => {
       return {
         code: item.code,
-        label: item.name
-      }
-    })
+        label: item.name,
+      };
+    });
 
     this.setState({
       citylist: citylist,
-      data: [...citylist]
-    })
-
+      data: [...citylist],
+    });
   };
-
-
 
   onChangeText = (searchText, citylist) => {
     this.setState({ searchText });
-    //logic to like search on items    
-    const filterData = citylist.filter(item => item.label.toLowerCase().includes(searchText.toLowerCase()));
+    //logic to like search on items
+    const filterData = citylist.filter((item) => item.label.toLowerCase().includes(searchText.toLowerCase()));
     this.setState({
       data: filterData,
-    })
+    });
     if (searchText === "") {
       this.setState({
         data: citylist,
-      })
+      });
     }
   };
 
@@ -141,20 +124,12 @@ class WhatsAppCity extends React.Component {
     const { citylist } = this.state;
     const { onChangeText } = this;
 
-
     return (
       <div>
         <div className="search-background">
           <div className="header-iconText">
             {/* <Icon id="back-navigator" action="navigation" name="arrow-back" /> */}
-            <Label
-              label="CHOOSE CITY"
-              color="white"
-              fontSize={18}
-              bold={true}
-              containerStyle={{ marginLeft: 30, marginTop: -2 }}
-            />
-
+            <Label label="CHOOSE CITY" color="white" fontSize={18} bold={true} containerStyle={{ marginLeft: 30, marginTop: -2 }} />
           </div>
 
           <div className={`${classes.root} dashboard-search-main-cont`}>
@@ -165,11 +140,10 @@ class WhatsAppCity extends React.Component {
               fullWidth={true}
               //className={classes.input}
               inputProps={{
-                'aria-label': 'Description',
+                "aria-label": "Description",
               }}
               onChange={(e) => {
                 onChangeText(e.target.value, citylist);
-
               }}
             />
           </div>
@@ -182,27 +156,18 @@ class WhatsAppCity extends React.Component {
               const number = this.state.phone || commonConfig.whatsappNumber;
               const name = getLocaleLabels(item.primaryText.props.label, item.primaryText.props.label);
               const weblink = "https://api.whatsapp.com/send?phone=" + number + "&text=" + name;
-              window.location.href = weblink
+              window.location.href = weblink;
             }}
             listItemStyle={{ borderBottom: "1px solid grey" }}
-
-
           />
         </Screen>
-
       </div>
     );
   }
 }
 
-
 const mapDispatchToProps = (dispatch) => ({
   fetchLocalizationLabel: (locale, moduleName, tenantId) => dispatch(fetchLocalizationLabel(locale, moduleName, tenantId)),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(
-  (WhatsAppCity)
-));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(WhatsAppCity));

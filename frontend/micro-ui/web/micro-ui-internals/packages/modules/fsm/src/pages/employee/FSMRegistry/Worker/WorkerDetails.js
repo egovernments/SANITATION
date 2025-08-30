@@ -70,7 +70,7 @@ const WorkerDetails = (props) => {
     },
     details: {
       Individual: {
-        individualId: id,
+        individualId: [id],
       },
     },
     t

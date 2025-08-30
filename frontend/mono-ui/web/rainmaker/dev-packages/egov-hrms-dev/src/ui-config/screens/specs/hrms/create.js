@@ -1,4 +1,8 @@
-import { getCommonContainer, getCommonHeader, getStepperObject } from "egov-ui-framework/ui-config/screens/specs/utils";
+import {
+  getCommonContainer,
+  getCommonHeader,
+  getStepperObject,
+} from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -11,7 +15,7 @@ import { assignmentDetails } from "./createResource/assignment-details";
 
 import {
   employeeDetails,
-  professionalDetails
+  professionalDetails,
 } from "./createResource/employee-details";
 import { footer } from "./createResource/footer";
 import { jurisdictionDetails } from "./createResource/jurisdiction-details";
@@ -20,20 +24,18 @@ import { serviceDetails } from "./createResource/service-details";
 import { employeeReviewDetails } from "./viewResource/employee-review";
 import { getEmployeeData } from "./viewResource/functions";
 
-
-
 export const stepsData = [
   { labelName: "Employee Details", labelKey: "HR_NEW_EMPLOYEE_FORM_HEADER" },
   {
     labelName: "Jurisdiction & Assignment Details",
-    labelKey: "HR_DETAILS_HEADER"
+    labelKey: "HR_DETAILS_HEADER",
   },
   // { labelName: "Assignment Details", labelKey: "HR_ASSIGN_DET_HEADER" },
   { labelName: "Summary", labelKey: "HR_SUMMARY_DETAILS" },
   // { labelName: "Other Details", labelKey: "HR_OTHER_DET_HEADER" }
 ];
 export const stepper = getStepperObject(
-  { props: { activeStep: 0} },
+  { props: { activeStep: 0 } },
   stepsData
 );
 // export const queryValue = getQueryArg(
@@ -44,33 +46,33 @@ export const stepper = getStepperObject(
 export const header = getCommonContainer({
   header: getCommonHeader({
     labelName: `Create New Employee`,
-    labelKey: "HR_COMMON_CREATE_EMPLOYEE_HEADER"
-  })
+    labelKey: "HR_COMMON_CREATE_EMPLOYEE_HEADER",
+  }),
 });
 
 export const formwizardFirstStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form1"
+    id: "apply_form1",
   },
   children: {
     employeeDetails,
-    professionalDetails
-  }
+    professionalDetails,
+  },
 };
 
 export const formwizardSecondStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form2"
+    id: "apply_form2",
   },
   children: {
     jurisdictionDetails,
-    assignmentDetails
+    assignmentDetails,
   },
-  visible: false
+  visible: false,
 };
 
 // export const formwizardThirdStep = {
@@ -84,18 +86,18 @@ export const formwizardSecondStep = {
 //   },
 //   visible: false
 // };
-const reviewDetails = employeeReviewDetails(true)
+const reviewDetails = employeeReviewDetails(true);
 export const formwizardThirdStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
- 
+
   props: {
-    id: "apply_form3"
+    id: "apply_form3",
   },
   children: {
-    reviewDetails
+    reviewDetails,
   },
-  visible: false
+  visible: false,
 };
 
 // export const formwizardFifthStep = {
@@ -120,72 +122,72 @@ const getMdmsData = async (state, dispatch, tenantId) => {
           masterDetails: [
             {
               name: "Department",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "Designation",
-              filter: "[?(@.active == true)]"
-            }
-          ]
+              filter: "[?(@.active == true)]",
+            },
+          ],
         },
         {
           moduleName: "ACCESSCONTROL-ROLES",
           masterDetails: [
             {
               name: "roles",
-              filter: "$.[?(@.code!='CITIZEN')]"
-            }
-          ]
+              filter: "$.[?(@.code!='CITIZEN')]",
+            },
+          ],
         },
         {
           moduleName: "egov-location",
           masterDetails: [
             {
-              name: "TenantBoundary"
+              name: "TenantBoundary",
               // filter: "$.*.hierarchyType"
-            }
-          ]
+            },
+          ],
         },
         {
           moduleName: "egov-hrms",
           masterDetails: [
             {
               name: "Degree",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "EmployeeStatus",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "EmployeeType",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "DeactivationReason",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "EmploymentTest",
-              filter: "[?(@.active == true)]"
+              filter: "[?(@.active == true)]",
             },
             {
               name: "Specalization",
-              filter: "[?(@.active == true)]"
-            }
-          ]
+              filter: "[?(@.active == true)]",
+            },
+          ],
         },
         {
           moduleName: "tenant",
-          masterDetails: [{ name: "tenants" }]
-        }
-      ]
-    }
+          masterDetails: [{ name: "tenants" }],
+        },
+      ],
+    },
   };
   try {
     const response = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
@@ -207,8 +209,8 @@ const getYearsList = (startYear, state, dispatch) => {
   startYear = startYear || 1980;
 
   while (startYear <= currentYear) {
-    let yearNumbers = startYear++
-    years.push({ code: (yearNumbers).toString(), name: (yearNumbers).toString() });
+    let yearNumbers = startYear++;
+    years.push({ code: yearNumbers.toString(), name: yearNumbers.toString() });
   }
 
   dispatch(prepareFinalObject("yearsList", years));
@@ -220,7 +222,7 @@ const setRolesList = (state, dispatch) => {
     `createScreenMdmsData.ACCESSCONTROL-ROLES.roles`,
     []
   );
-  let furnishedRolesList = rolesList.filter(item => {
+  let furnishedRolesList = rolesList.filter((item) => {
     return item.code;
   });
   dispatch(
@@ -267,11 +269,11 @@ const screenConfig = {
       "Employee[0].tenantId"
     );
     set(
-            action.screenConfig,
-            "components.div.children.formwizardFirstStep.children.professionalDetails.children.cardContent.children.employeeDetailsContainer.children.employeeId.props.disabled",
-            false
-          );
- 
+      action.screenConfig,
+      "components.div.children.formwizardFirstStep.children.professionalDetails.children.cardContent.children.employeeDetailsContainer.children.employeeId.props.disabled",
+      false
+    );
+
     const tenantId = pickedTenant || empTenantId || getTenantId();
     const mdmsDataStatus = getMdmsData(state, dispatch, tenantId);
     let employeeCode = getQueryArg(window.location.href, "employeeCode");
@@ -313,19 +315,40 @@ const screenConfig = {
     //     );
     //   });
 
-    const step=getQueryArg(
-      window.location.href,
-      "step"
-    );
-if(step&&Number(step)>0){
-  set(action.screenConfig,"components.div.children.stepper.props.activeStep",Number(step));
-  set(action.screenConfig,"components.div.children.formwizardFifthStep.visible",step=='4'?true:false);
-  set(action.screenConfig,"components.div.children.formwizardFourthStep.visible",step=='3'?true:false);
-  set(action.screenConfig,"components.div.children.formwizardThirdStep.visible",step=='2'?true:false);
-  set(action.screenConfig,"components.div.children.formwizardSecondStep.visible",step=='1'?true:false);
-  set(action.screenConfig,"components.div.children.formwizardFirstStep.visible",step=='0'?true:false);
-}
-dispatch(prepareFinalObject("existingPhoneNumbers", []));
+    const step = getQueryArg(window.location.href, "step");
+    if (step && Number(step) > 0) {
+      set(
+        action.screenConfig,
+        "components.div.children.stepper.props.activeStep",
+        Number(step)
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFifthStep.visible",
+        step == "4" ? true : false
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFourthStep.visible",
+        step == "3" ? true : false
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardThirdStep.visible",
+        step == "2" ? true : false
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardSecondStep.visible",
+        step == "1" ? true : false
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.visible",
+        step == "0" ? true : false
+      );
+    }
+    dispatch(prepareFinalObject("existingPhoneNumbers", []));
     return action;
   },
 
@@ -334,7 +357,7 @@ dispatch(prepareFinalObject("existingPhoneNumbers", []));
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        className: "common-div-css"
+        className: "common-div-css",
       },
       children: {
         headerDiv: {
@@ -344,11 +367,11 @@ dispatch(prepareFinalObject("existingPhoneNumbers", []));
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 10
+                sm: 10,
               },
-              ...header
-            }
-          }
+              ...header,
+            },
+          },
         },
         stepper,
         formwizardFirstStep,
@@ -356,9 +379,9 @@ dispatch(prepareFinalObject("existingPhoneNumbers", []));
         formwizardThirdStep,
         // formwizardFourthStep,
         // formwizardFifthStep,
-        footer
-      }
-    }
+        footer,
+      },
+    },
     // breakUpDialog: {
     //   uiFramework: "custom-containers-local",
     //   componentPath: "ViewBreakupContainer",
@@ -368,7 +391,7 @@ dispatch(prepareFinalObject("existingPhoneNumbers", []));
     //     screenKey: "apply"
     //   }
     // }
-  }
+  },
 };
 
 export default screenConfig;

@@ -3,19 +3,19 @@ import {
   getCommonHeader,
   getStepperObject,
   getCommonSubHeader,
-  getLabel
+  getLabel,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   getQueryArg,
   getFileUrlFromAPI,
   setBusinessServiceDataToLocalStorage,
   getTransformedLocale,
-  orderWfProcessInstances
+  orderWfProcessInstances,
 } from "egov-ui-framework/ui-utils/commons";
 import {
   prepareFinalObject,
   handleScreenConfigurationFieldChange as handleField,
-  toggleSnackbar
+  toggleSnackbar,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTenantId, getLocale } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest, edcrHttpRequest } from "../../../../ui-utils/api";
@@ -25,16 +25,26 @@ import jp from "jsonpath";
 import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 import { documentDetails } from "./applyResource/documentDetails";
 import { footer } from "./applyResource/footer";
-import  summary from "./applyResource/summary"
-import { AddDemandRevisionBasis,AddAdjustmentAmount } from "./applyResource/amountDetails";
+import summary from "./applyResource/summary";
+import {
+  AddDemandRevisionBasis,
+  AddAdjustmentAmount,
+} from "./applyResource/amountDetails";
 import commonConfig from "config/common.js";
 import { docdata } from "./applyResource/docData";
-import { getFetchBill, procedToNextStep, cancelPopUp, searchBill } from "../utils";
+import {
+  getFetchBill,
+  procedToNextStep,
+  cancelPopUp,
+  searchBill,
+} from "../utils";
 import "./index.scss";
 
-
 export const stepsData = [
-  { labelName: "Amount Details", labelKey: "BILL_STEPPER_AMOUNT_DETAILS_HEADER" },
+  {
+    labelName: "Amount Details",
+    labelKey: "BILL_STEPPER_AMOUNT_DETAILS_HEADER",
+  },
   { labelName: "Documents", labelKey: "BILL_STEPPER_DOCUMENTS_HEADER" },
   { labelName: "Summary", labelKey: "BILL_STEPPER_SUMMARY_HEADER" },
 ];
@@ -47,99 +57,113 @@ export const stepper = getStepperObject(
 export const header = getCommonContainer({
   header: getCommonHeader({
     labelName: `Generate Note`,
-    labelKey: "BILL_APPLY_FOR_BILL"
+    labelKey: "BILL_APPLY_FOR_BILL",
   }),
   applicationNumber: {
     uiFramework: "custom-atoms-local",
-        moduleName: "egov-billamend",
-        componentPath: "ConsumerNo",
-        props: {
-            number: "NA",
-            label: { labelValue: "Consumer No.", labelKey: "BILL_CONSUMER_NO" }
-        },
+    moduleName: "egov-billamend",
+    componentPath: "ConsumerNo",
+    props: {
+      number: "NA",
+      label: { labelValue: "Consumer No.", labelKey: "BILL_CONSUMER_NO" },
+    },
     // visible: false
-  }
+  },
 });
 
 export const formwizardFirstStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form1"
+    id: "apply_form1",
   },
   children: {
     AddAdjustmentAmount,
-    AddDemandRevisionBasis
-  }
+    AddDemandRevisionBasis,
+  },
 };
 
 export const formwizardSecondStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form2"
+    id: "apply_form2",
   },
   children: {
-    documentDetails
+    documentDetails,
   },
-  visible: false
+  visible: false,
 };
 
 export const formwizardThirdStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form3"
+    id: "apply_form3",
   },
   children: {
-    summary
+    summary,
   },
-  visible: false
+  visible: false,
 };
 
- const setSearchResponse = async (state, dispatch, action) => {
-  const connectionNumber = getQueryArg( window.location.href, "connectionNumber");
-  const businessService = getQueryArg( window.location.href, "businessService");
-  const tenantId = getTenantId() || getQueryArg( window.location.href, "businessService");
+const setSearchResponse = async (state, dispatch, action) => {
+  const connectionNumber = getQueryArg(
+    window.location.href,
+    "connectionNumber"
+  );
+  const businessService = getQueryArg(window.location.href, "businessService");
+  const tenantId =
+    getTenantId() || getQueryArg(window.location.href, "businessService");
 
   let fetBill = await searchBill(state, dispatch, action, [
     {
       key: "tenantId",
-      value: tenantId
+      value: tenantId,
     },
     {
       key: "consumerCode",
-      value: connectionNumber
+      value: connectionNumber,
     },
     {
       key: "service",
-      value: businessService
-    }
+      value: businessService,
+    },
   ]);
-  
-  if(fetBill && fetBill.Bill && fetBill && fetBill.Bill.length > 0) {
-    let billDetails = get(fetBill, "Bill[0].billDetails[0].billAccountDetails",[]);
-    let totalAmount=get(fetBill, "Bill[0].billDetails[0].amount",0);
-    
-    let searchedBill={"TOTAL":totalAmount}
-    billDetails&&billDetails.map&&billDetails.map(item=>{
-      searchedBill[item.taxHeadCode]=item.amount;
-    })
+
+  if (fetBill && fetBill.Bill && fetBill && fetBill.Bill.length > 0) {
+    let billDetails = get(
+      fetBill,
+      "Bill[0].billDetails[0].billAccountDetails",
+      []
+    );
+    let totalAmount = get(fetBill, "Bill[0].billDetails[0].amount", 0);
+
+    let searchedBill = { TOTAL: totalAmount };
+    billDetails &&
+      billDetails.map &&
+      billDetails.map((item) => {
+        searchedBill[item.taxHeadCode] = item.amount;
+      });
     dispatch(prepareFinalObject("searchBillDetails-bill", searchedBill));
-  }else{
+  } else {
     dispatch(prepareFinalObject("searchBillDetails-bill", {}));
   }
-}
+};
 
 export const getData = async (action, state, dispatch) => {
   await getMdmsData(action, state, dispatch);
   await setSearchResponse(state, dispatch, action);
-}
+};
 
 export const getMdmsData = async (action, state, dispatch) => {
-  const connectionNumber = getQueryArg( window.location.href, "connectionNumber");
-  const businessService = getQueryArg( window.location.href, "businessService");
-  const tenantId = getTenantId() || getQueryArg( window.location.href, "tenantId");
+  const connectionNumber = getQueryArg(
+    window.location.href,
+    "connectionNumber"
+  );
+  const businessService = getQueryArg(window.location.href, "businessService");
+  const tenantId =
+    getTenantId() || getQueryArg(window.location.href, "tenantId");
 
   let mdmsBody = {
     MdmsCriteria: {
@@ -149,44 +173,52 @@ export const getMdmsData = async (action, state, dispatch) => {
           moduleName: "BillAmendment",
           masterDetails: [
             { name: "documentObj" },
-            { name: "DemandRevisionBasis" }
-          ]
+            { name: "DemandRevisionBasis" },
+          ],
         },
         {
           moduleName: "common-masters",
-          masterDetails: [
-            { name: "DocumentType" }
-          ]
+          masterDetails: [{ name: "DocumentType" }],
         },
         {
           moduleName: "BillingService",
-          masterDetails: [
-            { name: "TaxHeadMaster" } ]
-        }
-      ]
-    }
+          masterDetails: [{ name: "TaxHeadMaster" }],
+        },
+      ],
+    },
   };
   try {
     let payload = null;
     payload = await httpRequest(
       "post",
-      "/egov-mdms-service/v1/_search",
+      "/mdms-v2/v1/_search",
       "_search",
       [],
       mdmsBody
     );
-    let taxHeadMasterMdmsDetails = get(payload, "MdmsRes.BillingService.TaxHeadMaster", []), taxHeadMasterDetails;
+    let taxHeadMasterMdmsDetails = get(
+        payload,
+        "MdmsRes.BillingService.TaxHeadMaster",
+        []
+      ),
+      taxHeadMasterDetails;
     if (taxHeadMasterMdmsDetails && taxHeadMasterMdmsDetails.length > 0) {
-      taxHeadMasterDetails = taxHeadMasterMdmsDetails.filter(service => (service.service == businessService));
-      let billTaxHeadMasterDetails = taxHeadMasterDetails.filter(data => (data.IsBillamend== true));
-      if(billTaxHeadMasterDetails && billTaxHeadMasterDetails.length > 0) {
-       billTaxHeadMasterDetails.map(bill => {
+      taxHeadMasterDetails = taxHeadMasterMdmsDetails.filter(
+        (service) => service.service == businessService
+      );
+      let billTaxHeadMasterDetails = taxHeadMasterDetails.filter(
+        (data) => data.IsBillamend == true
+      );
+      if (billTaxHeadMasterDetails && billTaxHeadMasterDetails.length > 0) {
+        billTaxHeadMasterDetails.map((bill) => {
           bill.reducedAmountValue = 0;
           bill.additionalAmountValue = 0;
           bill.taxHeadCode = bill.code;
         });
       }
-      dispatch(prepareFinalObject("fetchBillDetails", billTaxHeadMasterDetails, []));
+      dispatch(
+        prepareFinalObject("fetchBillDetails", billTaxHeadMasterDetails, [])
+      );
     } else {
       dispatch(prepareFinalObject("fetchBillDetails", []));
     }
@@ -203,8 +235,7 @@ export const getMdmsData = async (action, state, dispatch) => {
         connectionNumber
       )
     );
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 const screenConfig = {
@@ -216,11 +247,10 @@ const screenConfig = {
     dispatch(prepareFinalObject("AmendmentTemp", {}));
     dispatch(prepareFinalObject("documentsUploadRedux", {}));
     dispatch(prepareFinalObject("documentsContract", []));
-    dispatch(prepareFinalObject("AmendmentTemp.isPreviousDemandRevBasisValue", true));
-    getData(action, state, dispatch).then(responseAction => {
-
-    });
-
+    dispatch(
+      prepareFinalObject("AmendmentTemp.isPreviousDemandRevBasisValue", true)
+    );
+    getData(action, state, dispatch).then((responseAction) => {});
 
     const step = getQueryArg(window.location.href, "step");
     // Code to goto a specific step through URL
@@ -256,7 +286,7 @@ const screenConfig = {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        className: "common-div-css"
+        className: "common-div-css",
       },
       children: {
         headerDiv: {
@@ -266,11 +296,11 @@ const screenConfig = {
             header: {
               gridDefination: {
                 xs: 12,
-                sm: 10
+                sm: 10,
               },
-              ...header
-            }
-          }
+              ...header,
+            },
+          },
         },
         stepper,
         taskStatus: {
@@ -278,53 +308,54 @@ const screenConfig = {
           uiFramework: "custom-containers-local",
           componentPath: "WorkFlowContainer",
           visible: false,
-          componentJsonpath: 'components.div.children.taskStatus',
+          componentJsonpath: "components.div.children.taskStatus",
           props: {
             dataPath: "",
             moduleName: "",
-            updateUrl: ""
-          }
+            updateUrl: "",
+          },
         },
         formwizardFirstStep,
         formwizardSecondStep,
         formwizardThirdStep,
-        footer
-      }
+        footer,
+      },
     },
-    billAmdAlertDialog :{
+    billAmdAlertDialog: {
       componentPath: "Dialog",
       props: {
         open: false,
-        maxWidth: "sm"
+        maxWidth: "sm",
       },
       children: {
-        dialogTitle:{
+        dialogTitle: {
           componentPath: "DialogTitle",
           children: {
             popup: getCommonContainer({
               billamdHeader: getCommonHeader({
                 labelName: "Confirm change",
-                labelKey: "BILL_CONFIRM_CHANGE_HEADER"
+                labelKey: "BILL_CONFIRM_CHANGE_HEADER",
               }),
-            }) 
-          }
+            }),
+          },
         },
         dialogContent: {
           componentPath: "DialogContent",
           props: {
             classes: {
-              root: "city-picker-dialog-style"
-            }
+              root: "city-picker-dialog-style",
+            },
           },
           children: {
             popup: getCommonContainer({
-              billamdSubheader: getCommonSubHeader ({
-                labelName: "Changing the Demand Revision basis will erase the previosly selected values.",
-                labelKey: "BILL_CONFIRM_CHANGE_SUB_HEADER"
+              billamdSubheader: getCommonSubHeader({
+                labelName:
+                  "Changing the Demand Revision basis will erase the previosly selected values.",
+                labelKey: "BILL_CONFIRM_CHANGE_SUB_HEADER",
               }),
-              billamdSubheader1: getCommonSubHeader ({
+              billamdSubheader1: getCommonSubHeader({
                 labelName: "Are you sure want to proceed?",
-                labelKey: "BILL_CONFIRM_CHANGE_SUB_HEADER_1"
+                labelKey: "BILL_CONFIRM_CHANGE_SUB_HEADER_1",
               }),
               billAmdDialogPicker: getCommonContainer({
                 div: {
@@ -340,19 +371,19 @@ const screenConfig = {
                           width: "110px",
                           height: "30px",
                           marginRight: "4px",
-                          marginTop: "16px"
-                        }
+                          marginTop: "16px",
+                        },
                       },
                       children: {
                         previousButtonLabel: getLabel({
                           labelName: "CANCEL",
-                          labelKey: "BILL_CANCEL_BUTTON"
-                        })
+                          labelKey: "BILL_CANCEL_BUTTON",
+                        }),
                       },
                       onClickDefination: {
                         action: "condition",
-                        callBack: cancelPopUp
-                      }
+                        callBack: cancelPopUp,
+                      },
                     },
                     cancelButton: {
                       componentPath: "Button",
@@ -363,29 +394,29 @@ const screenConfig = {
                           width: "100px",
                           height: "30px",
                           marginRight: "4px",
-                          marginTop: "16px"
-                        }
+                          marginTop: "16px",
+                        },
                       },
                       children: {
                         previousButtonLabel: getLabel({
                           labelName: "OK",
-                          labelKey: "BILL_OK_BUTTON"
-                        })
+                          labelKey: "BILL_OK_BUTTON",
+                        }),
                       },
                       onClickDefination: {
                         action: "condition",
-                        callBack: procedToNextStep
-                      }
-                    }
-                  }
-                }
-              })
-            })
-          }
-        }
-      }
+                        callBack: procedToNextStep,
+                      },
+                    },
+                  },
+                },
+              }),
+            }),
+          },
+        },
+      },
     },
-  }
+  },
 };
 
 export default screenConfig;
