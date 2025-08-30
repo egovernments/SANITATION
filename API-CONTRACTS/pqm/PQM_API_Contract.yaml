@@ -26,7 +26,7 @@ paths:
             '*/*':
               schema:
                 $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
-
+                
   /pqm/test/v1/_update:
     post:
       tags:
@@ -49,7 +49,7 @@ paths:
             '*/*':
               schema:
                 $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
-
+  
   /pqm/test/v1/_search:
     post:
       tags:
@@ -72,6 +72,28 @@ paths:
             '*/*':
               schema:
                 $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
+  /pqm/test/v1/_plainsearch:
+    post:
+      tags:
+        - PQM Service
+      operationId: plainsearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestInfoWrapper:
+                  $ref: '#/components/schemas/RequestInfoWrapper'
+                criteria:
+                  $ref: '#/components/schemas/TestSearchCriteria'
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TestResponse'
 
   /plant/user/v1/_create:
     post:
@@ -95,7 +117,7 @@ paths:
             '*/*':
               schema:
                 $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
-
+  
   /plant/user/v1/_update:
     post:
       tags:
@@ -118,7 +140,7 @@ paths:
             '*/*':
               schema:
                 $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/ErrorRes'
-
+                
   /plant/user/v1/_search:
     post:
       tags:
@@ -255,7 +277,7 @@ components:
         - stageCode
         - materialCode
         - testCriteria
-
+    
     Measurement:
       title: QualityCriteria
       description: Object to capture results for a quality criteria from MDMS data.
@@ -298,11 +320,11 @@ components:
             - $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/AuditDetails'
             - description: Collection of audit related fields used by most models
               readOnly: true
-
+        
       required:
         - code
         - value
-
+        
     PlantUser:
       title: PlantUser
       description: Plant mapped with a user
@@ -335,7 +357,7 @@ components:
           description: Json object to capture any extra information which is not accommodated by model
           type: object
         auditDetails:
-          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/AuditDetails'
+             $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/AuditDetails'
         isActive:
           type: boolean
       required:
@@ -361,7 +383,7 @@ components:
       required:
         - requestInfo
         - tests
-
+    
     TestResponse:
       title: TestResponse
       type: object
@@ -381,7 +403,7 @@ components:
           allOf:
             - $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/Pagination'
             - description: Pagination details
-
+    
     TestSearchCriteria:
       title: TestSearchCriteria
       description: Test search attributes
@@ -474,7 +496,7 @@ components:
           description: to date of test scheduled
           type: integer
           format: int64
-
+    
     TestSearchRequest:
       type: object
       properties:
@@ -488,7 +510,7 @@ components:
         - requestInfo
         - testSearchCriteria
         - pagination
-
+    
     PlantUserRequest:
       title: PlantUserRequest
       type: object
@@ -501,12 +523,12 @@ components:
         plantUsers:
           type: array
           items:
-            $ref: '#/components/schemas/PlantUser'
+             $ref: '#/components/schemas/PlantUser'
 
       required:
         - requestInfo
         - tests
-
+    
     PlantUserResponse:
       title: PlantUserResponse
       type: object
@@ -524,7 +546,7 @@ components:
         pagination:
           $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-OSS/master/core-services/docs/common-contract_v1-1.yml#/components/schemas/Pagination'
 
-
+    
     PlantUserSearchCriteria:
       title: PlantUserSearchCriteria
       description: Plant user search attributes
@@ -558,7 +580,7 @@ components:
             description: Unique identifier of the individual from individual registry
             type: string
             minLength: 2
-
+    
     PlantUserSearchRequest:
       type: object
       properties:
@@ -572,3 +594,99 @@ components:
         - requestInfo
         - plantUserSearchCriteria
         - pagination
+    RequestInfoWrapper:
+      type: object
+      properties:
+        RequestInfo:
+          $ref: '#/components/schemas/RequestInfo'
+    RequestInfo:
+      type: object
+      properties:
+        apiId:
+          type: string
+        ver:
+          type: string
+        ts:
+          type: integer
+          format: int64
+        action:
+          type: string
+        did:
+          type: string
+        key:
+          type: string
+        msgId:
+          type: string
+        authToken:
+          type: string
+        correlationId:
+          type: string
+        plainAccessRequest:
+          $ref: '#/components/schemas/PlainAccessRequest'
+        userInfo:
+          $ref: '#/components/schemas/User'
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        code:
+          maxLength: 50
+          minLength: 0
+          type: string
+        tenantId:
+          maxLength: 256
+          minLength: 0
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userName:
+          maxLength: 180
+          minLength: 0
+          type: string
+        name:
+          maxLength: 250
+          minLength: 0
+          type: string
+        type:
+          maxLength: 50
+          minLength: 0
+          type: string
+        mobileNumber:
+          maxLength: 150
+          minLength: 0
+          type: string
+        emailId:
+          maxLength: 300
+          minLength: 0
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        tenantId:
+          maxLength: 256
+          minLength: 0
+          type: string
+        uuid:
+          maxLength: 36
+          minLength: 0
+          type: string
+    PlainAccessRequest:
+      type: object
+      properties:
+        recordId:
+          type: string
+        plainRequestFields:
+          type: array
+          items:
+            type: string
