@@ -150,7 +150,7 @@ const ApplicationDetails = () => {
         className="multilinkWrapper"
         onHeadClick={handleDownloadPdf}
         label={t("CS_COMMON_APPLICATION_ACKNOWLEDGEMENT")}
-        style={{ marginTop: "10px" }}
+        // style={{ marginTop: "10px" }}
         // displayOptions={showOptions}
         // options={dowloadOptions}
       />
