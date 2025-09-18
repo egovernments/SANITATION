@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Header,
@@ -54,6 +54,7 @@ const ApplicationDetails = () => {
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const { tenants } = storeData || {};
   const [showOptions, setShowOptions] = useState(false);
+  const menuRef = useRef();
 
   if (isLoading || !application) {
     return <Loader />;
@@ -97,7 +98,7 @@ const ApplicationDetails = () => {
     }
   };
 
-  const dowloadOptions = [
+  const downloadOptions = [
     {
       label: t("CS_COMMON_APPLICATION_ACKNOWLEDGEMENT"),
       onClick: handleDownloadPdf,
@@ -146,18 +147,19 @@ const ApplicationDetails = () => {
   };
   return (
     <React.Fragment>
-      <MultiLink
-        className="multilinkWrapper"
-        onHeadClick={handleDownloadPdf}
-        label={t("CS_COMMON_APPLICATION_ACKNOWLEDGEMENT")}
-        // style={{ marginTop: "10px" }}
-        // displayOptions={showOptions}
-        // options={dowloadOptions}
-      />
-      <div className="cardHeaderWithOptions">
-        <Header>
-          {t("CS_FSM_APPLICATION_DETAIL_TITLE_APPLICATION_DETAILS")}
-        </Header>
+      <div className="cardHeaderWithOptions" style={{ marginRight: "auto", maxWidth: "960px" }}>
+        <Header>{t("CS_FSM_APPLICATION_DETAIL_TITLE_APPLICATION_DETAILS")}</Header>
+        {downloadOptions && downloadOptions.length > 0 && (
+          <div ref={menuRef}>
+          <MultiLink
+            className="multilinkWrapper"
+            onHeadClick={() => setShowOptions(!showOptions)}
+            displayOptions={showOptions}
+            options={downloadOptions}
+            optionsStyle={{margin: '0px'}}
+          />
+          </div>
+        )}
       </div>
       {application?.applicationDetails?.map(({ title, values }, index) => {
         return (
