@@ -1,5 +1,6 @@
 package org.egov.fsm.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -65,6 +66,13 @@ public class BoundaryService {
 			throw new CustomException(FSMErrorConstants.INVALID_ADDRES, "The address or locality cannot be null");
 		}
 
+		// Check if locality code is null and skip boundary enrichment if so
+		if (fsm.getAddress().getLocality().getCode() == null) {
+			log.warn("Locality code is null for FSM application: " + fsm.getApplicationNo() +
+				", skipping boundary enrichment");
+			return;
+		}
+
 		StringBuilder uri = new StringBuilder(config.getLocationHost());
 		uri.append(config.getLocationContextPath()).append(config.getLocationEndpoint());
 		uri.append("?").append("tenantId=").append(tenantId);
@@ -105,11 +113,14 @@ public class BoundaryService {
 
 		DocumentContext context = JsonPath.parse(jsonString1);
 
+		String localityCode = fsm.getAddress().getLocality().getCode();
 		List<Boundary> boundaryResponse = context
-				.read("$..boundary[?(@.code==\"{}\")]".replace("{}", fsm.getAddress().getLocality().getCode()));
-		if (boundaryResponse.isEmpty() && CollectionUtils.isEmpty((boundaryResponse))) {
-			log.debug("The boundary data was not found");
-			throw new CustomException(FSMErrorConstants.BOUNDARY_MDMS_DATA_ERROR, "The boundary data was not found");
+				.read("$..boundary[?(@.code==\"{}\")]".replace("{}", localityCode));
+
+		if (CollectionUtils.isEmpty(boundaryResponse)) {
+			log.debug("The boundary data was not found for code: " + localityCode);
+			throw new CustomException(FSMErrorConstants.BOUNDARY_MDMS_DATA_ERROR,
+				"The boundary data was not found for code: " + localityCode);
 		}
 
 		Boundary boundary = mapper.convertValue(boundaryResponse.stream().findFirst(), Boundary.class);
