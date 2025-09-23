@@ -53,7 +53,7 @@ const FSMLink = ({ parentRoute, isMobile, data, cardStyle }) => {
   );
 
   return (
-    <Card className="employeeCard filter inboxLinksInbox" style={cardStyle}>
+    <Card className="employeeCard filter inboxLinksInbox" style={{...cardStyle, margin: '0px'}}>
       <div className="complaint-links-container">
         {GetLogo()}
         <div className="body">
