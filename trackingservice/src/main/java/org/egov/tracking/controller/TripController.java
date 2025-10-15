@@ -149,6 +149,11 @@ public class TripController implements TripApi {
             @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
     ) {
          log.info("## updateTrip is invoked");
+         log.info("## DEBUG - Trip ID: {}, Status: {}, TenantId: {}", trip.getId(), trip.getStatus(), trip.getTenantId());
+         log.info("## DEBUG - Auth Token Present: {}, Token Length: {}", (xAuthToken != null), (xAuthToken != null ? xAuthToken.length() : 0));
+         if (xAuthToken != null && xAuthToken.length() > 20) {
+             log.info("## DEBUG - Token Prefix: {}...", xAuthToken.substring(0, 20));
+         }
 
         String tripId = tripService.updateTrip(trip, xAuthToken);
         ACK ack = new ACK();

@@ -66,6 +66,10 @@ public class TripSao {
 
     public String fetchFsmTrips(String referenceApplicationNo, String tripId, String tenantId, String authToken, String vehicleTripUrl) {
          log.info("## fetchFsmTripsForApplication is invoked");
+         log.info("## DEBUG - TripSao.fetchFsmTrips() - referenceNo: {}, tripId: {}, tenantId: {}", referenceApplicationNo, tripId, tenantId);
+         log.info("## DEBUG - TripSao.fetchFsmTrips() - Auth Token Present: {}, Token Length: {}",
+                  (authToken != null), (authToken != null ? authToken.length() : 0));
+
         HttpEntity<Map<String, Object>> entity = SaoUtil.getMapHttpEntity(authToken, null);
         StringBuilder searchUrl = new StringBuilder().append(vehicleTripUrl).append("vehicle/trip/v1/").append("_search?tenantId=").append(tenantId).append("&applicationStatus=").append(
             Constants.FSM_TRIP_SEARCH_STATUS_FILTER);
@@ -77,6 +81,7 @@ public class TripSao {
         }
 
          log.info("## " + searchUrl);
+         log.info("## DEBUG - Making POST request to FSM vehicle trip API");
 
         ResponseEntity<String> response = restTemplate.postForEntity(searchUrl.toString(), entity, String.class);
 

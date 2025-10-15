@@ -94,8 +94,14 @@ public class TripServiceHelper {
     }
 
     public void updateFSMTripStatus(Trip trip, String authToken, TripSao tripSao) {
+        log.info("## DEBUG - TripServiceHelper.updateFSMTripStatus() - Trip ID: {}, TenantId: {}", trip.getId(), trip.getTenantId());
+        log.info("## DEBUG - TripServiceHelper.updateFSMTripStatus() - Auth Token Present: {}, Vehicle Trip URL: {}",
+                (authToken != null && !authToken.trim().isEmpty()), applicationConfig.getVehicleTripUrl());
+
         String tripResponseJson = tripSao.fetchFsmTrips(
                 null, trip.getId(), trip.getTenantId(), authToken, applicationConfig.getVehicleTripUrl());
+
+        log.info("## DEBUG - TripServiceHelper.updateFSMTripStatus() - Received trip response, proceeding to update");
 
         //Step 2.2 - Update FSM vehicle trip map entity
         Map<String, Object> updatedVehicleTrip = JsonUtil.updateFsmTripEndActionJson(tripResponseJson, trip.getTripEndType());

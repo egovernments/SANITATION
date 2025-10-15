@@ -122,11 +122,16 @@ public class TripService {
 
     //Update function to manage both VTS and FSM trip status updates
     public String updateTrip(Trip trip, String authToken) {
+        log.info("## DEBUG - TripService.updateTrip() - Trip ID: {}, Status: {}", trip.getId(), trip.getStatus());
+        log.info("## DEBUG - TripService.updateTrip() - Auth Token Present: {}", (authToken != null && !authToken.trim().isEmpty()));
 
         if (trip.getStatus() == Trip.StatusEnum.COMPLETED) {
+            log.info("## DEBUG - Trip status is COMPLETED, updating FSM trip status");
             trip.setTripEndType(Constants.TRIP_CLOSE_DRIVER);
             //Step 1 - Update trip status in FSM vehicle trip application
             tripServiceHelper.updateFSMTripStatus(trip, authToken, tripSao);
+        } else {
+            log.info("## DEBUG - Trip status is {}, skipping FSM update", trip.getStatus());
         }
 
         //Step 2 - Update trip status in vehicle tracking application
