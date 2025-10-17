@@ -83,8 +83,8 @@ export const UserService = {
       },
       params: { tenantId: stateCode },
     }),
-  updateUser: async (details, stateCode) =>
-    ServiceRequest({
+  updateUser: async (details, stateCode) => {
+    const response = await ServiceRequest({
       serviceName: "updateUser",
       url: Urls.UserProfileUpdate,
       auth: true,
@@ -92,7 +92,17 @@ export const UserService = {
         user: details,
       },
       params: { tenantId: stateCode },
-    }),
+    });
+    
+    // Reload page after successful profile update
+    if (response && response.user) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
+    
+    return response;
+  },
   hasAccess: (accessTo) => {
     const user = Digit.UserService.getUser();
     if (!user || !user.info) return false;
