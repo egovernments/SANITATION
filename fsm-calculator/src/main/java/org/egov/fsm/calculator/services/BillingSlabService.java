@@ -64,7 +64,7 @@ public class BillingSlabService {
 		validator.validateSearch(requestInfo, criteria);
 		List<BillingSlab> billingSlabList = new ArrayList<>();
 
-		if (criteria.getSlum() == null || criteria.getSlum().equals(SlumEnum.NO)) {
+		if (criteria.getSlum() == null || criteria.getSlum().equals(SlumEnum.NO) || criteria.getSlum().equals(SlumEnum.YES)) {
 			log.info("zeroPrice Search With Slum-NO ::");
 			billingSlabList = repository.getBillingSlabData(criteria);
 
@@ -78,9 +78,9 @@ public class BillingSlabService {
 				billingSlab.setPrice(new BigDecimal(0));
 				billingSlab.setSlum(criteria.getSlum());
 				billingSlab.setTenantId(criteria.getTenantId());
-				billingSlab.setPropertyType(criteria.getTenantId());
+				billingSlab.setPropertyType(criteria.getPropertyType());
 				billingSlabList.add(billingSlab);
-				
+
 			} else {
 				billingSlabList = repository.getBillingSlabData(criteria);
 
