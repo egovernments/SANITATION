@@ -1,0 +1,215 @@
+name: Backend Build Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build from (leave empty to use workflow branch)'
+        required: false
+        type: string
+        default: ''
+      service:
+        description: 'Name of the service to build and deploy'
+        required: true
+        type: choice
+        options:
+          - "fsm"
+          - "vehicle"
+          - "vendor"
+          - "fsm-calculator"
+          - "inbox"
+          - "pqm-service"
+          - "pqm-anomaly-finder"
+          - "trackingservice"
+        default: "fsm"
+
+env:
+  DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+
+jobs:
+  resolve-config:
+    runs-on: ubuntu-latest
+    outputs:
+      dockerfile_path: ${{ steps.pick_dockerfile.outputs.dockerfile_path }}
+      work_dir:        ${{ steps.pick_dockerfile.outputs.work_dir }}
+      tag:             ${{ steps.tag.outputs.tag }}
+      branch:          ${{ steps.resolve_branch.outputs.branch }}
+    steps:
+      - name: Resolve Branch
+        id: resolve_branch
+        run: |
+          INPUT_BRANCH="${{ github.event.inputs.branch }}"
+          WORKFLOW_BRANCH="${{ github.ref_name }}"
+
+          if [ -z "$INPUT_BRANCH" ] || [ "$INPUT_BRANCH" = "" ]; then
+            echo "No branch specified, using workflow branch: $WORKFLOW_BRANCH"
+            RESOLVED_BRANCH="$WORKFLOW_BRANCH"
+          else
+            echo "Using specified branch: $INPUT_BRANCH"
+            RESOLVED_BRANCH="$INPUT_BRANCH"
+          fi
+
+          echo "branch=$RESOLVED_BRANCH" >> "$GITHUB_OUTPUT"
+          echo "RESOLVED_BRANCH=$RESOLVED_BRANCH" >> "$GITHUB_ENV"
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.resolve_branch.outputs.branch }}
+
+      - name: Install yq
+        run: |
+          VERSION="4.30.8"
+          URL="https://github.com/mikefarah/yq/releases/download/v${VERSION}/yq_linux_amd64"
+          sudo curl -sSL "$URL" -o /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Determine Dockerfile path and work-dir from build-config.yml
+        id: pick_dockerfile
+        run: |
+          SERVICE="${{ github.event.inputs.service }}"
+          DEFAULT_DOCKERFILE="build/maven/Dockerfile"
+
+          echo "Looking for service '$SERVICE' in build-config.yml..."
+          DF=$(yq eval ".config[].build[] | select(.\"image-name\" == \"${SERVICE}\") | .dockerfile // \"\"" build/build-config.yml)
+          WORK_DIR=$(yq eval ".config[].build[] | select(.\"image-name\" == \"${SERVICE}\") | .\"work-dir\" // \"\"" build/build-config.yml)
+
+          if [ -z "$DF" ] || [ "$DF" = "null" ]; then
+            echo "No dockerfile entry found; defaulting to $DEFAULT_DOCKERFILE"
+            DF="$DEFAULT_DOCKERFILE"
+          else
+            echo "Found dockerfile: $DF"
+          fi
+
+          if [ -z "$WORK_DIR" ] || [ "$WORK_DIR" = "null" ]; then
+            echo "ERROR: No work-dir found for service $SERVICE in build-config.yml"
+            exit 1
+          else
+            echo "Found work-dir: $WORK_DIR"
+          fi
+
+          echo "dockerfile_path=$DF" >> "$GITHUB_OUTPUT"
+          echo "work_dir=$WORK_DIR" >> "$GITHUB_OUTPUT"
+          echo "DOCKERFILE_PATH=$DF" >> "$GITHUB_ENV"
+          echo "WORK_DIR=$WORK_DIR" >> "$GITHUB_ENV"
+
+      - name: Generate the Next Tag
+        id: tag
+        run: |
+          set -euxo pipefail
+          BRANCH="${{ steps.resolve_branch.outputs.branch }}"
+          # Sanitize branch name for Docker tag (replace / with -)
+          BRANCH_CLEAN=$(echo "$BRANCH" | sed 's/\//-/g')
+          HASH=$(git rev-parse --short HEAD)
+          TAG="${BRANCH_CLEAN}-${HASH}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "NEXT_TAG=$TAG" >> "$GITHUB_ENV"
+
+  build-matrix:
+    needs: resolve-config
+    # expose whether a DB folder was present
+    outputs:
+      db_folder_exists: ${{ steps.check-db-folder.outputs.folder_exists }}
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.resolve-config.outputs.branch }}
+
+      - name: Check for DB folder
+        id: check-db-folder
+        run: |
+          if [ -d "${{ needs.resolve-config.outputs.work_dir }}/src/main/resources/db" ]; then
+            echo "folder_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "folder_exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Build & push ${{ matrix.arch }} image
+        id: build_push_app
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ needs.resolve-config.outputs.dockerfile_path }}
+          platforms: ${{ matrix.platform }}
+          push: true
+          tags: egovio/${{ github.event.inputs.service }}:${{ needs.resolve-config.outputs.tag }}-${{ matrix.arch }}
+          build-args: |
+            WORK_DIR=${{ needs.resolve-config.outputs.work_dir }}
+
+      - name: Build and Push Database Docker Image
+        if: ${{ steps.check-db-folder.outputs.folder_exists == 'true' }}
+        id: build_push_db
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ needs.resolve-config.outputs.work_dir }}/src/main/resources/db
+          file: ${{ needs.resolve-config.outputs.work_dir }}/src/main/resources/db/Dockerfile
+          platforms: ${{ matrix.platform }}
+          push: true
+          tags: egovio/${{ github.event.inputs.service }}-db:${{ needs.resolve-config.outputs.tag }}-${{ matrix.arch }}
+
+
+  create-manifest:
+    needs: [build-matrix, resolve-config]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Create & push multi-arch manifest (application)
+        run: |
+          docker buildx imagetools create \
+            --tag egovio/${{ github.event.inputs.service }}:${{ needs.resolve-config.outputs.tag }} \
+            egovio/${{ github.event.inputs.service }}:${{ needs.resolve-config.outputs.tag }}-amd64 \
+            egovio/${{ github.event.inputs.service }}:${{ needs.resolve-config.outputs.tag }}-arm64
+
+      - name: Create & push multi-arch manifest (database)
+        if: ${{ needs.build-matrix.outputs.db_folder_exists == 'true' }}
+        run: |
+          docker buildx imagetools create \
+            --tag egovio/${{ github.event.inputs.service }}-db:${{ needs.resolve-config.outputs.tag }} \
+            egovio/${{ github.event.inputs.service }}-db:${{ needs.resolve-config.outputs.tag }}-amd64 \
+            egovio/${{ github.event.inputs.service }}-db:${{ needs.resolve-config.outputs.tag }}-arm64
+
+      - name: Add all image tags to GitHub summary
+        env:
+          DB_EXISTS: ${{ needs.build-matrix.outputs.db_folder_exists }}
+        run: |
+          echo "## App Docker images" >> $GITHUB_STEP_SUMMARY
+          echo "- \`egovio/${{ github.event.inputs.service }}:${{ needs.resolve-config.outputs.tag }}-amd64\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`egovio/${{ github.event.inputs.service }}:${{ needs.resolve-config.outputs.tag }}-arm64\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **multi‑arch** \`egovio/${{ github.event.inputs.service }}:${{ needs.resolve-config.outputs.tag }}\`" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$DB_EXISTS" = "true" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## DB Docker images" >> $GITHUB_STEP_SUMMARY
+            echo "- \`egovio/${{ github.event.inputs.service }}-db:${{ needs.resolve-config.outputs.tag }}-amd64\`" >> $GITHUB_STEP_SUMMARY
+            echo "- \`egovio/${{ github.event.inputs.service }}-db:${{ needs.resolve-config.outputs.tag }}-arm64\`" >> $GITHUB_STEP_SUMMARY
+            echo "- **multi‑arch** \`egovio/${{ github.event.inputs.service }}-db:${{ needs.resolve-config.outputs.tag }}\`" >> $GITHUB_STEP_SUMMARY
+          fi
