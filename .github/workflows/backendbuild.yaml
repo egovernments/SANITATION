@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch to build from'
-        required: true
+        description: 'Branch to build from (leave empty to use workflow branch)'
+        required: false
         type: string
-        default: 'master'
+        default: ''
       service:
         description: 'Name of the service to build and deploy'
         required: true
@@ -34,11 +34,29 @@ jobs:
       dockerfile_path: ${{ steps.pick_dockerfile.outputs.dockerfile_path }}
       work_dir:        ${{ steps.pick_dockerfile.outputs.work_dir }}
       tag:             ${{ steps.tag.outputs.tag }}
+      branch:          ${{ steps.resolve_branch.outputs.branch }}
     steps:
+      - name: Resolve Branch
+        id: resolve_branch
+        run: |
+          INPUT_BRANCH="${{ github.event.inputs.branch }}"
+          WORKFLOW_BRANCH="${{ github.ref_name }}"
+
+          if [ -z "$INPUT_BRANCH" ] || [ "$INPUT_BRANCH" = "" ]; then
+            echo "No branch specified, using workflow branch: $WORKFLOW_BRANCH"
+            RESOLVED_BRANCH="$WORKFLOW_BRANCH"
+          else
+            echo "Using specified branch: $INPUT_BRANCH"
+            RESOLVED_BRANCH="$INPUT_BRANCH"
+          fi
+
+          echo "branch=$RESOLVED_BRANCH" >> "$GITHUB_OUTPUT"
+          echo "RESOLVED_BRANCH=$RESOLVED_BRANCH" >> "$GITHUB_ENV"
+
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ steps.resolve_branch.outputs.branch }}
 
       - name: Install yq
         run: |
@@ -80,7 +98,7 @@ jobs:
         id: tag
         run: |
           set -euxo pipefail
-          BRANCH="${{ github.event.inputs.branch }}"
+          BRANCH="${{ steps.resolve_branch.outputs.branch }}"
           # Sanitize branch name for Docker tag (replace / with -)
           BRANCH_CLEAN=$(echo "$BRANCH" | sed 's/\//-/g')
           HASH=$(git rev-parse --short HEAD)
@@ -107,7 +125,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ needs.resolve-config.outputs.branch }}
 
       - name: Check for DB folder
         id: check-db-folder

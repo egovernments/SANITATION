@@ -4,19 +4,17 @@ run-name: Build ${{ github.event.inputs.pipeline_name }}
 on:
   workflow_dispatch:
     inputs:
+      branch:
+        description: 'Branch to build from (leave empty to use workflow branch)'
+        required: false
+        type: string
+        default: ''
       pipeline_name:
         description: 'Name of the config pipeline to build and deploy'
         required: true
         type: choice
         options:
           - sanitation-ui
-          - rainmaker-citizen
-          - rainmaker-employee
-          - rainmaker-employee-mcs
-          - rainmaker-localization
-          - dss-dashboard
-          - ui-uploader
-          - vehicle-tracker-map
 
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
@@ -31,9 +29,29 @@ jobs:
       image_name:  ${{ steps.setenv.outputs.image_name }}
       dockerfile:  ${{ steps.setenv.outputs.dockerfile }}
       tag:         ${{ steps.tag.outputs.tag }}
+      branch:      ${{ steps.resolve_branch.outputs.branch }}
     steps:
+      - name: Resolve Branch
+        id: resolve_branch
+        run: |
+          INPUT_BRANCH="${{ github.event.inputs.branch }}"
+          WORKFLOW_BRANCH="${{ github.ref_name }}"
+
+          if [ -z "$INPUT_BRANCH" ] || [ "$INPUT_BRANCH" = "" ]; then
+            echo "No branch specified, using workflow branch: $WORKFLOW_BRANCH"
+            RESOLVED_BRANCH="$WORKFLOW_BRANCH"
+          else
+            echo "Using specified branch: $INPUT_BRANCH"
+            RESOLVED_BRANCH="$INPUT_BRANCH"
+          fi
+
+          echo "branch=$RESOLVED_BRANCH" >> "$GITHUB_OUTPUT"
+          echo "RESOLVED_BRANCH=$RESOLVED_BRANCH" >> "$GITHUB_ENV"
+
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.resolve_branch.outputs.branch }}
 
       - name: Install yq
         run: |
@@ -86,7 +104,7 @@ jobs:
         id: tag
         run: |
           set -euxo pipefail
-          BRANCH="${GITHUB_REF##*/}"
+          BRANCH="${{ steps.resolve_branch.outputs.branch }}"
           COMMIT_HASH=$(git rev-parse --short HEAD)
           SERVICE_NAME="${{ env.SERVICE_IMAGE_NAME }}"
 
@@ -141,6 +159,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.resolve-config.outputs.branch }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
