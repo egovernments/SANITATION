@@ -15,6 +15,7 @@ on:
         type: choice
         options:
           - sanitation-ui
+          - route_map
 
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
