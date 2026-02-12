@@ -24,7 +24,7 @@ RUN flutter doctor -v
 # create folder to copy source code
 RUN mkdir $APP
 # copy source code to folder
-COPY . $APP
+COPY frontend/vehicle-tracker/map_web_app/route_map $APP
 # stup new folder as the working directory
 WORKDIR $APP
 
@@ -40,7 +40,7 @@ FROM nginx:1.25.2-alpine
 RUN mkdir -p /var/web/route_map
 # copy the info of the builded web app to nginx
 COPY --from=build-env /app/build/web /var/web/route_map
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build-env /app/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose and run nginx
 EXPOSE 80

@@ -106,7 +106,7 @@ config:
     build:
       - work-dir: 'frontend/vehicle-tracker/map_web_app/route_map'
         image-name: 'route-map'
-        dockerfile: 'frontend/vehicle-tracker/map_web_app/docker/Dockerfile'
+        dockerfile: 'frontend/vehicle-tracker/map_web_app/route_map/Dockerfile'
 
   - name: 'builds/SANITATION/individual'
     build:
