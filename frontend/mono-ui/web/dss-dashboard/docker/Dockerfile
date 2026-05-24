@@ -13,7 +13,7 @@ RUN apk --update add git
 RUN npm i && npm run build
 
 # Create runtime image
-FROM nginx:mainline-alpine 
+FROM nginx:1.29.5-alpine3.23 
 ENV WEB_DIR=/var/web/dashboard
 
 RUN mkdir -p ${WEB_DIR}
